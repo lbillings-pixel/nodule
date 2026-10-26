@@ -4,6 +4,9 @@
 - Date: 2026-10-26
 - Builds on: agatesim ADR 0072 (the full reasoning and the literature passes
   behind this project)
+- Amended by: [ADR 0003](0003-scope-a-3d-specimen-simulator.md), which
+  reorders the goals (image synthesis, then realistic specimens, then the
+  goal in decision 1 as hypothesis testing)
 
 ## Context
 

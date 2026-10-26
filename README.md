@@ -1,15 +1,26 @@
 # Nodule
 
-**Nodule** explores how the processes that form agate interact inside a single
-nodule or seam: wall banding, settled layers, dendrites, crystals and colour,
-growing together from one shared chemistry instead of one at a time. It asks
-which combinations of conditions give the mixtures of forms that real
-specimens show.
+**Nodule** simulates agate nodules as heterogeneous 3D objects: exterior
+shape, banding, inclusions, cavities, fractures, colour, optics, texture and
+composition, organised across scales. It generates complete 3D nodules, cuts
+through them and rendered images. Its goals, in order:
+
+1. **image synthesis:** images of cut and whole agates that look real;
+2. **realistic specimens:** 3D nodules whose exteriors, cuts and measured
+   statistics match real ones;
+3. **hypothesis testing:** how formation processes interact within one
+   nodule or seam, and which conditions give the mixtures of forms that real
+   specimens show.
+
+It describes what is seen before trying to explain it: things that look
+alike need not share an origin.
 
 > **Status.** Founded 2026-10-26. No models yet: the first steps are a
-> taxonomy of agate forms and an architecture decision, then a small 2D
-> trial. See the [roadmap](docs/roadmap.md) and the
-> [founding decision](docs/adr/0002-founding-nodule.md).
+> characterization schema (ten domains), then the 3D representation and one
+> simple nodule built end to end. See the [scope brief](docs/scope.md), the
+> [roadmap](docs/roadmap.md), the
+> [founding decision](docs/adr/0002-founding-nodule.md) and the
+> [scope decision](docs/adr/0003-scope-a-3d-specimen-simulator.md).
 
 ## Where it comes from
 

@@ -998,3 +998,697 @@ licence = "cite only"
 checked = "abstract"
 topics = ["boundaries", "evaluation"]
 notes = "Abstract read 2026-10-24 (M33). The BSDS500 benchmark: detected boundaries scored by precision and recall after one-to-one matching to human boundaries within a distance tolerance. The tolerance value (0.0075 of the image diagonal) is as quoted by later papers, not read here. Basis of mm-tolerance boundary scoring in ADR 0068."
+
+# --- Exterior morphology and weathering (N1 reading pass, 2026-10-26) --------
+
+[[references]]
+id = "ross1941"
+kind = "article"
+authors = ["Ross, C. S."]
+year = 1941
+title = "Origin and geometric form of chalcedony-filled spherulites from Oregon"
+venue = "American Mineralogist 26(12), 727–732"
+url = "https://msaweb.org/AmMin/AM26/AM26_727.pdf"
+access = "open"
+licence = "publisher copyright (MSA archive); cite only"
+checked = "full-text"
+topics = ["thunder-egg", "lithophysae", "spherulites", "external-morphology", "cavity-geometry"]
+notes = """Read in full 2026-10-26 (pypdf text of the MSA scan). Oregon thunder eggs, quoting Dake: average about six inches across, from 1/4 inch to 3 feet, 'associated only with rhyolitic rocks', in lenses or 'beds' (p. 727). Ross: the most striking forms are five-pointed stars; 'the position cannot be determined in advance of cutting' (p. 727); some fillings are roughly square (Pl. 1d). Model (p. 729): in viscous or almost solid glass, 'expansion by rupture or tearing will require very much less energy' than spherical growth, and the rupture planes enclose the cavity symmetrically. Cube cavities come from six flattened four-sided pyramids (after Wright 1915, Iceland lithophysae). Stars are 'sections across a modified pyritohedron, each of whose 12, 5-sided faces is represented by an inward projecting pentagonal pyramid', produced by '30 triangular shear planes' (p. 729). The best star comes from a cut 'about one-third above or below the equator' (p. 731). Exterior: 'the boundaries between the twelve pseudopyritohedral faces are marked by irregular ridges on the outer surface' (p. 731), with small protuberances at each star point; the spherulite's outer boundary 'has a cauliflower-like habit although roughly spherical in shape' (p. 731). Host: devitrified welded tuff; the shell is radial feldspar + cristobalite. The surrounding glass altered to clay (probably bentonite), while 'The part that crystallized resisted weathering and lies imbedded in clay' (p. 731), which explains how the nodules are freed. Cavity growth: volatiles released by crystallisation plus cooling shrinkage of the enclosing material; chalcedony fill 'probably deposited during the alteration of the enclosing material to a clay' (p. 732). Formation claims are the author's interpretation (plausible); the geometry is observed."""
+
+[[references]]
+id = "domokos2014"
+kind = "article"
+authors = ["Domokos, G.", "Jerolmack, D. J.", "Sipos, A. Á.", "Török, Á."]
+year = 2014
+title = "How river rocks round: resolving the shape-size paradox"
+venue = "PLoS ONE 9(2), e88657"
+doi = "10.1371/journal.pone.0088657"
+access = "open"
+licence = "CC-BY-4.0"
+checked = "sections"
+sections_read = ["model", "experiments", "results", "discussion (read via summariser, PMC3922984)"]
+topics = ["abrasion", "pebble-shape", "curvature-flow", "convexity", "weathering"]
+notes = """Read 2026-10-26 through a summarising fetch of the PMC full text. Abrasion modelled as curvature-driven flow (Firey: speed proportional to Gaussian curvature; Bloore adds mean-curvature terms): 'pebble abrasion is a curvature-driven flow problem'. Two phases: 'first, pebble edges rapidly round without any change in axis dimensions until the shape becomes entirely convex' (Phase I; 'up to half of pebble mass is lost in this Phase'), then axes shrink toward an ellipsoid (Phase II). 'The transition in phases coincides with the complete removal of the original facets'. Descriptors: axis ratios, Wadell sphericity, surface convexity index (convex-patch area over convex-hull area), superellipsoid exponent. Drum experiment: limestone cuboids about 71×61×51 mm rounded to near-spheres in about one day; Phase I length in rivers about 1 km. Fragmentation acts against smoothing. No chemical-weathering criteria."""
+
+[[references]]
+id = "novakszabo2018"
+kind = "article"
+authors = ["Novák-Szabó, T.", "Sipos, A. Á.", "Shaw, S.", "Bertoni, D.", "Pozzebon, A.", "Grottoli, E.", "Sarti, G.", "Ciavola, P.", "Domokos, G.", "Jerolmack, D. J."]
+year = 2018
+title = "Universal characteristics of particle shape evolution by bed-load chipping"
+venue = "Science Advances 4(3), eaao4946"
+doi = "10.1126/sciadv.aao4946"
+access = "open"
+licence = "CC-BY-NC-4.0"
+checked = "sections"
+sections_read = ["Introduction", "Results: theoretical expectations", "Results: empirical evidence (part)", "Discussion (part)", "Methods (image resolution)"]
+topics = ["abrasion", "chipping", "circularity", "pebble-shape", "fragments"]
+notes = """Read 2026-10-26 (pypdf, Padua repository copy). Three attrition mechanisms, in order of rising energy: frictional abrasion (planation; 'leads to the formation of flat or cylindrical particles'), chipping (rounding toward a sphere) and fragmentation ('creates irregular and nonrounded particles') (p. 1). In water, particles smaller than about 10 mm suffer little attrition (p. 1). Bloore: v = 1 + 2c1H + c2K. Small impactors give flat faces and sharp edges (ventifacts, aquafacts) (p. 2). Equilibrium points: fragments nS ≈ nU ≈ 4.5, falling to 2 for ellipsoids (p. 2). Axis ratio stays constant during early rounding and is 'very sensitive to fragmentation' (p. 2). Circularity R = 4πA/P² of the projection along the shortest axis, not strongly affected by weak to moderate fragmentation (p. 2). R(m) is monotonic and concave, with a vertical tangent at m = 0 (p. 3). River, dune, drum and beach data collapse onto one curve. Low-energy friction may pull trajectories off it when m > 0.5 (flat beach pebbles) (pp. 4, 9). 'R is highly resolution-dependent'; contours were resampled to about 200 pixels (pp. 10, Methods)."""
+
+[[references]]
+id = "domokos2020"
+kind = "article"
+authors = ["Domokos, G.", "Jerolmack, D. J.", "Kun, F.", "Török, J."]
+year = 2020
+title = "Plato's cube and the natural geometry of fragmentation"
+venue = "PNAS 117(31), 18178–18185"
+doi = "10.1073/pnas.2001037117"
+access = "open"
+licence = "PNAS license; cite only"
+checked = "sections"
+sections_read = ["abstract", "results (read via summariser, PMC7414180)"]
+topics = ["fragments", "fracture", "shape"]
+notes = """Read 2026-10-26 through a summarising fetch of the PMC text. 'Remarkably, the average shape of natural rock fragments is cuboid': mean faces and vertices [6.63, 8.93] for dolomite fragments against a cube's [6, 8], within 12% of the model. Primary fracture gives regular primitive mosaics; secondary binary splitting drives patterns to irregular mosaics that keep cuboid averages. A planar section of a 3D primitive mosaic is a 2D primitive mosaic (quadrangles on average). Use for Nodule: telling broken pieces of nodules (domain H) from whole nodules."""
+
+[[references]]
+id = "jia2016"
+kind = "review"
+authors = ["Jia, X.", "Garboczi, E. J."]
+year = 2016
+title = "Advances in shape measurement in the digital world"
+venue = "Particuology 26, 19–31"
+doi = "10.1016/j.partic.2015.12.005"
+url = "https://eprints.whiterose.ac.uk/id/eprint/96984/"
+access = "open"
+licence = "publisher copyright; self-archived accepted version; cite only"
+checked = "sections"
+sections_read = ["2.1", "2.2", "2.3 (part)", "3", "3.1", "3.2", "3.3", "4", "5"]
+topics = ["shape-descriptors", "spherical-harmonics", "x-ray-ct", "2d-vs-3d"]
+notes = """Access: Open (accepted manuscript). Read 2026-10-26 (pypdf, White Rose accepted version). 2D projections are ambiguous: a cylinder can be 'misrecognised as a sphere, a disc, a rectangular plate, a cube, or a spherocylinder' (§2.1). The 2.5D methods (confocal, profilometry, focus stacking, SEM stereo) 'only give half the 3D object' (§2.2). CT objects need at least about 5–10 voxels across (§2.3). Shape factors describe three things: 'closeness to an ideal shape (sphericity); curvature of the overall form (roundness); and details of surface texture (asperity)'; advice is to use 'two descriptors, one for the overall form and one for surface texture details' (§3.1). Fourier outline series; spherical harmonics apply only to star-shaped particles, and the coefficients 'contain all the size and shape information... available in the original particle image'. New particles statistically like real ones can be generated (Grigoriu et al. 2006; Liu et al. 2011) (§3.2). Truncated SH series show Gibbs ringing; a Lanczos sigma filter reduces it 'at the probable price of removing some real surface detail' (§3.2)."""
+
+[[references]]
+id = "sun2020"
+kind = "article"
+authors = ["Sun, Q.", "Zheng, J."]
+year = 2020
+title = "Realistic soil particle generation based on limited morphological information by probability-based spherical harmonics"
+venue = "Computational Particle Mechanics (online 2020)"
+doi = "10.1007/s40571-020-00325-6"
+url = "https://par.nsf.gov/servlets/purl/10294173"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "sections"
+sections_read = ["Abstract", "3", "4", "5 (Table 1)", "6 (part)", "8"]
+topics = ["spherical-harmonics", "particle-generation", "sphericity", "convexity"]
+notes = """Access: Open (accepted manuscript, NSF PAR). Read 2026-10-26 (pypdf, NSF PAR accepted manuscript; volume and pages not checked). SH expansion r(θ,φ) = Σ c_mn Y_mn to degree n = 15 (256 coefficients), following earlier work that found 15 adequate. c_00 sets volume; n = 1 sets position relative to the origin; n ≥ 2 holds morphology. Coefficients normalised by L0 act as the 'morphological gene'; adding Gaussian or uniform noise scaled by g ('gene mutation') yields populations whose descriptors are roughly Gaussian. Example: g = 0.3 gives mean convexity 0.975 (SD 0.007) against 0.978 for the parent. Table 1 defines convexity V/Vhull, 'circularity' (6V/sqrt(As^3)), intercept sphericity ((d2 d3)/d1²)^(1/3) (Krumbein and Sloss), area sphericity V/Vcircumsphere (Riley), diameter sphericity De/Dcir (Wadell), and perimeter sphericity Ae/As. Principal dimensions from PCA. Validation: 107,000 generated against 214 CT-scanned particles, compared by t-test."""
+
+[[references]]
+id = "shea2010"
+kind = "article"
+authors = ["Shea, T.", "Houghton, B. F.", "Gurioli, L.", "Cashman, K. V.", "Hammer, J. E.", "Hobden, B. J."]
+year = 2010
+title = "Textural studies of vesicles in volcanic rocks: an integrated methodology"
+venue = "Journal of Volcanology and Geothermal Research 190(3–4), 271–289"
+doi = "10.1016/j.jvolgeores.2009.12.003"
+url = "https://www.soest.hawaii.edu/GG/FACULTY/JHAMMER/documents/Shea_JVGR_2010-texture.pdf"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "sections"
+sections_read = ["Abstract", "2.1", "2.2", "2.3 (shape part)", "3.7", "4.3 (shape panel)", "5.1", "6.1", "6.2", "Appendix C"]
+topics = ["vesicles", "amygdales", "stereology", "shape-descriptors", "coalescence"]
+notes = """Access: Open (author-hosted copy). Read 2026-10-26 (pypdf). Vesicles record degassing. Simple or pure shear elongates them, 'and coalescence may produce complex polylobate shapes' (§2.3). Two shape parameters are needed: a roundness one (circle against ellipse) and a complexity one (outline tortuosity). App. C: AR = b/a; elongation ε = (a−b)/(a+b); SF = 4πA/p², which mixes elongation and complexity; new 'regularity' rg = A/(πab) 'accounting for irregularities in vesicle outline while disregarding elongation'. Stereology (§2.2): 2D sections suffer the cut effect and intersection probability; Sahagian and Proussevitch (1998) conversion assumes spheres; elongated shapes 'cannot be expressed analytically'. CT resolves about 10–70 µm and can merge objects whose thin walls are missed (§2.1). Makapuu (Oahu) transitional lava: round vesicles of similar size in the pahoehoe-like lower part, irregular vesicles of varied size in the a'a-like upper part, within about 20 cm (§5.1). Large-vesicle tails are represented by few individuals; flag bins with fewer than 5–10 (§6.2)."""
+
+[[references]]
+id = "yoshida2018"
+kind = "article"
+authors = ["Yoshida, H.", "Yamamoto, K.", "Minami, M.", "Katsuta, N.", "Sin-ichi, S.", "Metcalfe, R."]
+year = 2018
+title = "Generalized conditions of spherical carbonate concretion formation around decaying organic matter in early diagenesis"
+venue = "Scientific Reports 8, 6308"
+doi = "10.1038/s41598-018-24205-5"
+access = "open"
+licence = "CC-BY-4.0"
+checked = "sections"
+sections_read = ["Results (concretion descriptions, rim profiles)", "Discussion (diffusion-growth diagram)", "Methods (read via summariser, PMC5910387)"]
+topics = ["concretion", "nodule-shape", "rim", "diffusion", "analogue"]
+notes = """Analogue for nodules in sedimentary hosts. Read 2026-10-26 through a summarising fetch of the PMC full text. Spherical concretions of 1–2 cm (Teshio), 1.5–3 cm (Yatsuo) and 3–7 cm (Morozaki), each around a fossil core. 'All concretions have sharp boundaries between the cemented bodies and surrounding matrices'; Ca stays uniform across the body and then 'decreased rapidly across the rim'. Rim width L ≈ 1 mm, 2–3 mm and 3–6 mm respectively; L = aR^b with a = 0.0807 ± 0.0105 and b = 0.992 ± 0.017; L = D/V. Growth rates 1e-5 to 1e-7 cm/s (figure caption; the main text says to 1e-8, an internal inconsistency). Spherical forms favoured in clay- to silt-grade marine sediment with diffusive transport. That advective, permeable hosts give diffuse concretions is the authors' inference, not a tested result. No sphericity measure is reported."""
+
+[[references]]
+id = "jain2013"
+kind = "article"
+authors = ["Jain, P. K.", "Coetzee, S. H.", "Diskin, S."]
+year = 2013
+title = "Optical features, microstructure and microanalysis of Botswana agates"
+venue = "Botswana Notes and Records 45, 111–125 (posted online 2015-07-08; 'Notes' section)"
+url = "https://journals.ub.bw/index.php/bnr/article/view/403"
+access = "open"
+licence = "not stated; cite only"
+checked = "sections"
+sections_read = ["Abstract", "Introduction", "Agate genesis", "The Botswana agates", "Microanalysis and XRD of green earth"]
+topics = ["rind", "celadonite", "weathering", "external-morphology"]
+notes = """Read 2026-10-26 (pypdf). Published in the journal's 'Notes' section; peer review not stated, so treat with care. Karoo basalt (180 Ma) wall-lining agates from NE Central District. 'Both the wall-lining agates and the gorgonzola are coated with a green-clay which is easily eroded on weathering'; XRD identifies the coating as 'Celadonite-1M, aluminian'. EDS of the coating: Si 35–48%, Fe 29–50%, K 4–15%, Al 2–4%, Mg 3–6% (Table 2). Citing Moxon 1996 and Macpherson 1989: 'Unweathered agates have a characteristic green-earth coating'; 'Weathering may abrade the green coating, but the agate nodule itself is resistant to abrasion'. Loose nodules are freed by weathering; after the rainy season, fields along the river 'are littered with agates'. Literature summary (secondary, plausible at most): agate shrinks on ageing, leaving 'a gap between the agate and the cavity' filled by clay that forms the green coating. Bands 'nearly concentric... following the shape of the vesicle boundary'."""
+
+# --- Quantitative band descriptors (N1 reading pass, 2026-10-26) -------------
+
+[[references]]
+id = "murphy2015"
+kind = "article"
+authors = ["Murphy, J. N.", "Harris, K. D.", "Buriak, J. M."]
+year = 2015
+title = "Automated Defect and Correlation Length Analysis of Block Copolymer Thin Film Nanopatterns"
+venue = "PLoS ONE 10(7), e0133088"
+doi = "10.1371/journal.pone.0133088"
+access = "open"
+licence = "CC-BY-4.0 (article); MIT (ADAblock code)"
+checked = "sections"
+sections_read = ["Stages 1-7 (methods)", "Application: image area and sampling"]
+topics = ["stripe-patterns", "defects", "topology", "correlation-length", "line-edge-roughness", "image-analysis", "analogue"]
+notes = """Analogue (lamellar block-copolymer stripes), read 2026-10-26 (PMC4514826; about 100k of 160k characters, the methods and application sections). ImageJ tool ADAblock. Period from the azimuthally averaged FFT. Skeletons of both phases: terminal (1 neighbour) n=+1/2, junction n=-1/2(B-2), dot +1; dislocations are "junction-terminal point pairs immediately adjacent", disclinations isolated terminals or junctions; "the sum of all defects in the pattern should be zero". Grooming prunes endpoints within 1.5 x line width of a junction; edge-touching features are excluded. Orientation from a rolling average of the skeleton tangent; C(r)=<cos 2(phi-phi')> fitted exp(-r/kappa); C(r) shows modulation at the pattern period; measured kappa falls with image area and "should be significantly shorter than the dimensions of the image". Herman's S2D=2<cos^2 phi>-1 depends strongly on sampled area. LER/LWR = 3 sigma; skeleton centre biased for lines narrower than about 7 px. About 7 min per 1280x896 image; about 4% of images give a reproducible error."""
+
+[[references]]
+id = "marichal2025"
+kind = "article"
+authors = ["Marichal, H.", "Passarella, D.", "Randall, G."]
+year = 2025
+title = "CS-TRD: a Cross-Section Tree Ring Detection Method"
+venue = "Image Processing On Line 15, 78–107"
+doi = "10.5201/ipol.2025.485"
+url = "https://arxiv.org/abs/2305.10809"
+access = "open"
+licence = "open access (arXiv preprint and IPOL); licence not checked"
+checked = "sections"
+sections_read = ["3.1-3.2 (assumptions)", "4.1-4.6 (pipeline)", "6.1-6.5 (data, metrics, results)"]
+topics = ["tree-rings", "concentric-rings", "ring-segmentation", "image-analysis", "analogue"]
+notes = """Analogue (whole tree cross-sections), read 2026-10-26 from arXiv v2 HTML. Pipeline: background removal, resize to 1500x1500, Canny-Devernay sub-pixel edges; keep edge points whose gradient is within 30 deg of the pith-to-point ray (drops radial cracks); sample 360 rays into nodes and chains; merge chains longest-first with radial tolerance, similar radial distribution and no intervening chain, over nine relaxing iterations; close a gap only if the chains cover more than 180 deg. Assumptions (§3): "The rings are roughly concentric, even if their shape is irregular", rings do not intersect, "Each ray crosses a curve only once"; pith location required. Metric (§6.2): ground-truth influence areas, a match needs 60% of nodes inside, P/R/F plus radial RMSE. UruDendro F 0.89-0.91, Kennel F 0.97; about 17 s per image. F falls with pith error; knots and fungus give false rings; "rings can disappear without forming a closed curve" and stay open (not counted)."""
+
+[[references]]
+id = "gillert2023"
+kind = "article"
+authors = ["Gillert, A.", "Resente, G.", "Anadon-Rosell, A.", "Wilmking, M.", "von Lukas, U. F."]
+year = 2023
+title = "Iterative Next Boundary Detection for Instance Segmentation of Tree Rings in Microscopy Images of Shrub Cross Sections"
+venue = "Proceedings of CVPR 2023, 14540–14548"
+url = "https://arxiv.org/abs/2212.03022"
+access = "open"
+licence = "CVF open access / arXiv; licence not checked"
+checked = "sections"
+sections_read = ["1", "3.2", "3.4", "4.3 (metrics, skimmed)"]
+topics = ["tree-rings", "concentric-rings", "wedging-rings", "ring-segmentation", "deep-learning", "analogue"]
+notes = """Analogue (shrub cross-sections), read 2026-10-26 from arXiv v2. Year rings "can also form incomplete circles (wedging rings) and grow from only one side, or even in multiple disconnected parts"; wedging rings can range "from zero to being the majority". Bottom-up methods merge rings where boundaries are faint and split narrow ones (§1). After segmenting background, centre and boundaries, INBD unrolls a polar grid (N=256 radial, adaptive angular) from the previous boundary and predicts the next one; "Polar coordinates impose a prior, ensuring a coherent (quasi-)convex shape" (§3.2). A recurrent wedging-ring module accumulates a 1D angular signal that rises at a wedging ring's start and falls at its end (§3.4). The only compared method with built-in chronological order. Metrics: mAR and ARAND. Code and data: github.com/alexander-g/INBD."""
+
+[[references]]
+id = "weber2010"
+kind = "article"
+authors = ["Weber, M. E.", "Reichelt, L.", "Kuhn, G.", "Pfeiffer, M.", "Korff, B.", "Thurow, J.", "Ricken, W."]
+year = 2010
+title = "BMPix and PEAK tools: New methods for automated laminae recognition and counting—Application to glacial varves from Antarctic marine sediment"
+venue = "Geochemistry, Geophysics, Geosystems 11, Q0AA05"
+doi = "10.1029/2009GC002611"
+url = "https://discovery.ucl.ac.uk/id/eprint/1334710/"
+access = "open"
+licence = "publisher copyright (AGU); repository copy; cite only"
+checked = "sections"
+sections_read = ["Abstract", "3.1 BMPix", "3.2 PEAK", "4 Saanich Inlet evaluation", "5 (paras 34-36)"]
+topics = ["varves", "lamina-counting", "greyscale-profiles", "band-thickness", "image-analysis", "analogue"]
+notes = """Analogue (varves; also tested on tree rings), read 2026-10-26. BMPix extracts RGB and grey profiles at pixel resolution, averaged over an adjustable line width; several laterally shifted lines possible (¶10). PEAK counts by (1) maxima of a Gaussian-smoothed curve, one per couplet, (2) zero crossings about a wide moving average, one per season, (3) Fourier band-pass truncation then zero crossings. Parameters: FWHM, minimum cycle length, minimum amplitude (¶12-17); thickness of each year or season follows from count positions (¶18). Starting window "approximately half the number of pixel that was anticipated for the average width of a bright lamina"; widen it for thick laminae to avoid counting internal peaks (¶22). Saanich Inlet: 473 against 469 varves over three intervals; 412 against 396 in one, "more a matter of opinion than one of methodology" (¶23, Table 2). Best averaging width 20-30 px (1.5-2.5 mm); wider widths blur if "stratification is not exactly perpendicular to the scanning direction" (¶34). Manual counters differed by up to 5% in low-contrast parts (¶36)."""
+
+[[references]]
+id = "torrence1998"
+kind = "article"
+authors = ["Torrence, C.", "Compo, G. P."]
+year = 1998
+title = "A Practical Guide to Wavelet Analysis"
+venue = "Bulletin of the American Meteorological Society 79(1), 61–78"
+doi = "10.1175/1520-0477(1998)079<0061:APGTWA>2.0.CO;2"
+url = "https://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf"
+access = "open"
+licence = "publisher copyright (AMS); free to read; cite only"
+checked = "sections"
+sections_read = ["3c (scales)", "3g (cone of influence)", "4a-4b (red-noise significance)", "5a-5b (global and scale-averaged spectra)"]
+topics = ["wavelet", "spectral-analysis", "red-noise", "significance", "multiscale", "method"]
+notes = """Method source, read 2026-10-26. For Morlet with omega0=6, Fourier period lambda = 1.03 s, "the wavelet scale is almost equal to the Fourier period" (p. 68). Zero-padding to the next power of two; the cone of influence is "the e-folding time for the autocorrelation of wavelet power at each scale", where edge effects matter (§3g). Background: AR(1) red noise x_n = alpha x_{n-1} + z_n with an analytic Fourier spectrum (eq. 16); wavelet power tested against a chi-square distribution (§4). Global wavelet spectrum (time-averaged) is an "unbiased and consistent estimation of the true power spectrum" (citing Percival 1995); smoothing raises degrees of freedom (§5a); scale-averaged power over a band of scales (§5b)."""
+
+[[references]]
+id = "baker2008"
+kind = "review"
+authors = ["Baker, A.", "Smith, C. L.", "Jex, C.", "Fairchild, I. J.", "Genty, D.", "Fuller, L."]
+year = 2008
+title = "Annually laminated speleothems: a review"
+venue = "International Journal of Speleology 37(3), 193–206"
+doi = "10.5038/1827-806X.37.3.4"
+url = "https://nora.nerc.ac.uk/id/eprint/5350/"
+access = "open"
+licence = "open access journal; licence not checked"
+checked = "sections"
+sections_read = ["Introduction", "Fluorescent laminae", "Visible laminae (hyperspectral imaging)", "Lamina width as climate proxy", "Future directions"]
+topics = ["speleothems", "laminae", "lamina-width", "time-series", "replication", "analogue"]
+notes = """Analogue (stalagmite laminae), read 2026-10-26. Annual lamina width 10-1000 µm. Four lamina types: fluorescent, visible or petrographic, calcite-aragonite couplets, trace-element. Lamina series "exhibit persistence", non-stationarity ("variability of lamina thickness varies through time, often in proportion to growth rate") and non-linearity ("sudden nonlinear jumps"). Using width as a proxy assumes the thickness at one point represents the sample; "candlestick" shapes preferred because elsewhere "within lamina variability of thickness may be greater than that between lamina variability"; basal thickness can reflect deposit geometry (slope). Proposed reporting rules: number of transects and their SD, inter-researcher reproducibility, and "the rational for any normalization / detrending procedures". Hyperspectral imaging separates laminae better than RGB."""
+
+[[references]]
+id = "lantink2022"
+kind = "article"
+authors = ["Lantink, M. L.", "Davies, J. H. F. L.", "Ovtcharova, M.", "Hilgen, F. J."]
+year = 2022
+title = "Milankovitch cycles in banded iron formations constrain the Earth–Moon system 2.46 billion years ago"
+venue = "PNAS 119(40), e2117146119"
+doi = "10.1073/pnas.2117146119"
+url = "https://pmc.ncbi.nlm.nih.gov/articles/PMC9546617/"
+access = "open"
+licence = "CC-BY-NC-ND-4.0"
+checked = "sections"
+sections_read = ["Results: Cyclostratigraphic Results from Joffre Falls", "Results: Reconstructing the Precession Period", "Discussion", "Materials and Methods: Cyclostratigraphic Analyses"]
+topics = ["banded-iron-formation", "cyclostratigraphy", "spectral-analysis", "hierarchy", "bundling", "analogue"]
+notes = """Analogue (BIF, Joffre Member), read 2026-10-26 (main text; SI not read). Signals: ranked weathering-relief log over about 47 m, plus colour lightness, Si/Fe and K% by handheld XRF. "linearly detrended and interpolated records"; "MTM power spectral analysis (using a time-bandwidth product of three)" against a LOWSPEC robust red-noise background (90/95/99%); band-pass 65-105 cm with a Hilbert amplitude envelope; Astrochron. Peaks at 78 and 93 cm above 99%. Three nested levels: about 8.9 cm (Knox cyclothems), 78-93 cm and about 3.3 m; ratios about 1:9 and 1:4; "8.9 cyclothems per bundle". Precession-scale "stratigraphic distortion" ruled out spectra, so cycles were counted visually; rates from U-Pb ages (about 5-15 m/My). Interpretation (extrinsic orbital forcing) is the authors' and is graded separately from the descriptors."""
+
+[[references]]
+id = "droz1999"
+kind = "article"
+authors = ["Droz, M.", "Magnin, J.", "Zrínyi, M."]
+year = 1999
+title = "Liesegang patterns: Studies on the width law"
+venue = "Journal of Chemical Physics 110, 9618"
+doi = "10.1063/1.478927"
+url = "https://arxiv.org/abs/cond-mat/9901079"
+access = "open"
+licence = "arXiv preprint; publisher copyright for the journal version"
+checked = "full-text"
+topics = ["liesegang", "spacing-law", "width-law", "band-width", "image-analysis"]
+notes = """Read in full 2026-10-26 (arXiv). Three generic Liesegang laws (§I): spacing law x_{n+1}/x_n -> 1+p with p>0; time law x_n ~ sqrt(t_n); width law w_n ~ x_n^alpha with alpha>0. The width law "has largely been ignored" partly because widths are hard to measure "without having recourse to sophisticated digitizing methods". Mn(OH)2 in PVA gel, more than 20 bands; band upper and lower edges located on CCD or scanner images, w_n = lower minus upper edge, width uncertainty 2-5% (§II). Log-log fits give alpha = 0.99, 0.94, 0.90; a conservation argument for intermediate-species models gives alpha = 1 (§III)."""
+
+[[references]]
+id = "batchelor2004"
+kind = "article"
+authors = ["Batchelor, M. T.", "Burne, R. V.", "Henry, B. I.", "Jackson, M. J."]
+year = 2004
+title = "A case for biotic morphogenesis of coniform stromatolites"
+venue = "Physica A 337 (2004) 319–326 (journal details not verified; read as arXiv nlin/0401026)"
+url = "https://arxiv.org/abs/nlin/0401026"
+access = "open"
+licence = "arXiv preprint; cite only"
+checked = "sections"
+sections_read = ["1", "2", "3"]
+topics = ["stromatolites", "laminae", "growth-direction", "isopachy", "interface-growth", "analogue"]
+notes = """Analogue model (stromatolite laminae), read 2026-10-26. Lamina profile h(x,t) grows as dh/dt = v + lambda sqrt(1+h_x^2): v is vertical growth, lambda surface-normal accretion (eq. 1), solved by characteristics. "Domical stromatolites form when v is less than or comparable to lambda. Coniform structures with thickened apical zones ... form when v >> lambda", and angular cones when v >>> lambda. Reviews grotzinger1996: a modified KPZ model with vertical sediment fallout, normal precipitation, surface tension and noise reproduced a self-affine stromatolite. Use here: lamina thickness against local slope separates normal from vertical accretion (a descriptor, not a mechanism claim)."""
+
+[[references]]
+id = "riecke2006"
+kind = "article"
+authors = ["Riecke, H.", "Madruga, S."]
+year = 2006
+title = "Geometric diagnostics of complex patterns: spiral defect chaos"
+venue = "Chaos 16, 013125 (journal details not verified; read as arXiv nlin/0511016)"
+url = "https://arxiv.org/abs/nlin/0511016"
+access = "open"
+licence = "arXiv preprint; cite only"
+checked = "sections"
+sections_read = ["contour extraction and curvature", "spiral and defect identification", "Betti numbers and compactness", "discussion of caveats"]
+topics = ["stripe-patterns", "curvature", "topology", "betti-numbers", "defects", "analogue"]
+notes = """Analogue (convection stripe patterns), read 2026-10-26 via ar5iv. Mid-level contours smoothed by iterated diffusion (delta=0.2, about 50 steps); curvature from quadratic fits to 5-11 contour points. Spiral tips at maximal positive curvature; vertices where arm width exceeds w_max; winding number from the angle turned. Betti numbers from counting white and black components of the thresholded field; compactness 4 pi A/P^2. Caveats: threshold dependence; "local changes that reconnect stripes can have large effects" on arclength and winding; global measures "fluctuate more strongly than purely local measures". Wavenumber and orientation methods are cited (Egolf et al. 1998; Hu et al. 1995), not developed here."""
+
+[[references]]
+id = "hayashi2026"
+kind = "article"
+authors = ["Hayashi, H.", "Yamada, K."]
+year = 2026
+title = "Agate-like stripe pattern formation via cyclic-voltage-driven reaction-transport-reaction process"
+venue = "Frontiers in Physics 14"
+doi = "10.3389/fphy.2026.1926941"
+access = "open"
+licence = "CC-BY-4.0"
+checked = "sections"
+sections_read = ["Introduction", "2.3", "3.2", "3.5", "4.2"]
+topics = ["agate-analogue", "liesegang", "gel-experiments", "band-width", "curvature"]
+notes = """Gel analogue, read 2026-10-26. Measures band geometry only in its own Ag2O/agarose patterns, not in agate; agate comparison is visual, from photos of commercial specimens. Pattern classes "diverging", "distorted", "arching", "meeting"; Table 2 gives radius of curvature r, spacings d1 and d2, and width w (mean ± SD), e.g. diverging r 21±3 mm, w 0.6±0.4 mm; spread is large. Says Liesegang models do not "adequately account for several features commonly observed in natural agates, including irregular band spacing" (citation, untested here); treats the gels as "abstract model systems", not agate formation (§4.2). Useful for vocabulary only; no evidence about agate."""
+
+[[references]]
+id = "cartwright2026b"
+kind = "preprint"
+authors = ["Cartwright, J. H. E.", "Cockell, C. S.", "Cosmidis, J. G.", "Holler, S.", "Huertas, F. J.", "Jordan, S. F.", "Knoll, P.", "Kotopoulou, E.", "Loron, C. C.", "McMahon, S.", "Neubeck, A.", "Pimentel, C.", "Sainz-Díaz, C. I.", "Szymczak, P."]
+year = 2026
+title = "Self-assembled versus biological pattern formation in geology"
+venue = "arXiv 2601.00323"
+url = "https://arxiv.org/abs/2601.00323"
+access = "open"
+licence = "arXiv preprint; licence not checked"
+checked = "sections"
+sections_read = ["2.4 Banded patterns", "2.4.1 (opening)"]
+topics = ["banding", "self-organization", "autogenic-allogenic", "banded-iron-formation", "stromatolites"]
+notes = """Read 2026-10-26 (§2.4 only). Bands from µm oscillatory zoning to metre-scale BIF; "A central question is whether such bands are intrinsic products of internally driven self-organization ... primarily extrinsic records of externally imposed environmental cycles; or some combination". Small-scale BIF banding "now widely interpreted" as internal geochemical dynamics (Wang et al. 2009); carbonate stromatolite and travertine laminae track seasonal forcing. Banded structures "occupy a continuum between purely autogenic ... and purely allogenic" patterns, and placing a specimen on it is "essential before using it as a quantitative palaeo-environmental archive"."""
+
+[[references]]
+id = "hildebrand1997"
+kind = "article"
+authors = ["Hildebrand, T.", "Rüegsegger, P."]
+year = 1997
+title = "A new method for the model-independent assessment of thickness in three-dimensional images"
+venue = "Journal of Microscopy 185(1), 67–75"
+doi = "10.1046/j.1365-2818.1997.1340694.x"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "abstract"
+topics = ["local-thickness", "distance-transform", "3d-image-analysis", "method"]
+notes = """Abstract only (via search snippets; DOI confirmed on Crossref 2026-10-26). Defines the thickness of arbitrary structures from 3D images with no structure model, by a distance transformation: local thickness is the diameter of the largest sphere that contains the point and fits inside the object. Applied to trabecular bone micro-CT. Basis of the BoneJ/ImageJ "local thickness"; the same definition works in 2D."""
+
+[[references]]
+id = "grotzinger1996"
+kind = "article"
+authors = ["Grotzinger, J. P.", "Rothman, D. H."]
+year = 1996
+title = "An abiotic model for stromatolite morphogenesis"
+venue = "Nature 383, 423–425"
+doi = "10.1038/383423a0"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "abstract"
+topics = ["stromatolites", "interface-roughness", "self-affine", "kpz", "analogue"]
+notes = """Abstract and secondary accounts only (batchelor2004 §1; AAPG abstract). Morphological characterisation of ancient stromatolite growth surfaces as self-affine fractals (Cowles Lake Fm., about 1.8 Ga, D about 2.5 per the conference abstract), reproduced by a KPZ-type model: precipitation normal to the interface, sediment fallout and diffusive smoothing, uncorrelated noise. Roughness exponents and measurement method not seen."""
+
+# --- 3D imaging (N1 reading pass, 2026-10-26) --------------------------------
+
+[[references]]
+id = "cnudde2013"
+kind = "review"
+authors = ["Cnudde, V.", "Boone, M. N."]
+year = 2013
+title = "High-resolution X-ray computed tomography in geosciences: A review of the current technology and applications"
+venue = "Earth-Science Reviews 123, 1–17"
+doi = "10.1016/j.earscirev.2013.04.003"
+access = "open"
+licence = "publisher copyright; accepted manuscript; cite only"
+checked = "sections"
+sections_read = ["Abstract", "2 Technology: typical micro-CT setup, resolution, non-destructive technique, imaging artefacts", "applications: ore/mineral (dual energy) paragraph"]
+topics = ["x-ray-ct", "micro-ct", "resolution", "partial-volume", "artefacts", "multiscale", "phase-contrast"]
+notes = """Access: Open (accepted manuscript, Ghent University repository biblio.ugent.be/publication/3232121). Read 2026-10-26 (accepted-manuscript pages). Micro-CT/CT boundary set at 200 µm; 'Sample sizes for micro-CT range from as large as 40 cm to as small as several micrometers, with typical sample sizes for micro-CT in geosciences ranging from 1 mm to 5 cm' (ms p.6). Detector width 'usually limited to several thousands of pixels, which sets a limit to the achievable voxel size as a function of the sample size'; features below voxel size 'cannot be distinguished' but contribute via the partial volume effect; 'voxel size is often confused with spatial resolution' (ms p.8). Multi-scale imaging: high-resolution subsample scans registered with low-resolution whole-sample scans (ms p.9). Artefacts: beam hardening (cupping), cone-beam artefacts 'often a problem when investigating layered structures', removed by helical scanning; phase contrast is edge enhancement that helps visual contrast but 'often hinders correct segmentation' (ms pp.9–10). Dual-energy scanning separates density and effective atomic number (Ghorbani et al. 2011)."""
+
+[[references]]
+id = "sutton2008"
+kind = "review"
+authors = ["Sutton, M. D."]
+year = 2008
+title = "Tomographic techniques for the study of exceptionally preserved fossils"
+venue = "Proceedings of the Royal Society B 275(1643), 1587–1593"
+doi = "10.1098/rspb.2008.0263"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "sections"
+sections_read = ["Abstract", "2 Tomographic techniques (physical-optical, optical, X-ray CT, synchrotron, laminography, neutron, MRI)", "Conclusions"]
+topics = ["serial-grinding", "serial-sawing", "x-ray-ct", "synchrotron", "neutron-tomography", "laminography", "confocal", "contrast"]
+notes = """Access: Free to read (PMC2394564). Read 2026-10-26 (PMC HTML). Serial grinding since Sollas 1903; high-resolution serial grinding 'at 20–30 μm intervals' with microscope photography; serial sawing loses '200–300 μm' per cut. Physical-optical methods 'record optical data in colour (which in some cases provides optimal fossil/matrix contrast)' and need no dedicated equipment. Optical tomography (CLSM) is 'only applicable to clean translucent materials'; in chert 'difficulties in obtaining clean data at depths below 150 μm' (Schopf et al. 2006). Medical CT voxels 'several hundred microns'; UTCT 'less than 5 μm'. Herefordshire fossils: attenuation contrast insufficient even for SRXTM; propagation phase contrast may help. Neutron tomography: strong attenuation by organics/H, voxel 'approx. 100 μm', activation hazard for Co/Eu-bearing rock. MRI ~50 μm voxels on fossils. 'Fundamental limitations of all variants to material with X-ray attenuation contrast and to sub-equidimensional samples' – laminography for slabs."""
+
+[[references]]
+id = "moreau2014"
+kind = "article"
+authors = ["Moreau, J.-D.", "Néraudeau, D.", "Gomez, B.", "Tafforeau, P.", "Dépré, É."]
+year = 2014
+title = "Inclusions of conifers, echinoids, foraminifers and sponges in flints from the Cenomanian of Charente-Maritime (France): Contribution of synchrotron microtomography"
+venue = "Comptes Rendus Palevol 13(6), 455–461"
+doi = "10.1016/j.crpv.2014.03.007"
+access = "open"
+licence = "© 2014 Académie des sciences, all rights reserved; cite only"
+checked = "full-text"
+topics = ["synchrotron", "phase-contrast", "flint", "silica-nodule", "inclusions", "analogue"]
+notes = """Access: Free PDF on the journal's current site (sciencepress.mnhn.fr). Read in full 2026-10-26 (7 pp.). Analogue for silica-in-silica contrast. Flint nodules 10–50 cm wide in clay-with-flints; 40 fragments 5–15 cm long; six scanned by propagation phase-contrast synchrotron microtomography at ESRF ID19 and BM05; 'Because of large sizes and high densities of the samples, high energy and long propagation distance between the sample stage and the source were combined' (p.457); voxels 13 and 30 µm. Resolved: whole-nodule renderings of hidden conifer axes (Fig. 4, 30 µm), leaf cuticle with stomatal crypt apertures (Fig. 5D, 13 µm), echinoid tests ~1 cm, sponge spicule accumulations (Fig. 6). Fossils are themselves silicified (late Eocene–Oligocene pedogenic silicification), so contrast is silica vs silica, aided by phase contrast. Acquisition details deferred to Moreau et al. 2014b."""
+
+[[references]]
+id = "macente2022"
+kind = "article"
+authors = ["Macente, A.", "Dobson, K. J.", "MacDonald, J.", "Wadsworth, F. B.", "Vasseur, J."]
+year = 2022
+title = "The Evolution of Paleo-Porosity in Basalts: Reversing Pore-Filling Mechanisms Using X-Ray Computed Tomography"
+venue = "Transport in Porous Media 145(3), 697–717"
+doi = "10.1007/s11242-022-01869-2"
+access = "open"
+licence = "CC-BY-4.0"
+checked = "sections"
+sections_read = ["Abstract", "1 Introduction", "2 Methods and Analysis (2.1, 2.1.1, 2.1.2)", "3.1 Results: amygdale description", "3.2 Back-stripping", "4 Discussion (limitations)"]
+topics = ["x-ray-ct", "amygdales", "segmentation", "porosity", "connectivity", "fill-sequence", "analogue"]
+notes = """Read 2026-10-26 (Strathprints PDF). Calcite-filled amygdaloidal Mull basalt (~60.5 Ma). Nikon XT H 320 LC, 110 kV, 109 µA, 3141 projections × 1.42 s (≈74 min), voxel 12.58 µm; VOI 1142×863×1072 voxels (≈14×11×13.5 mm) (§2.1). Four-phase Trainable Weka (random forest) segmentation; 26-neighbourhood labelling (§2.1.1). Paleo-porosity 18.49 vol%: amygdales 18.19 vol% (0.19 vol% still air), fractures 0.40 vol%; two cross-cutting fracture generations; clusters >1 mm³ make 99.8 vol%, largest 54.8 mm³ (§3.1). Back-stripping by morphological dilation/erosion reverses precipitation in time; connectivity 76.5% (Z), 85.7% (X), 93.3% (Y, elongation direction) at t0 (§3.2). Limitation: 'limitations in XCT resolution may have missed the presence of microcracks or micropore network'; trade-off between representative sample size and voxel size (§4)."""
+
+[[references]]
+id = "sekhon2023"
+kind = "article"
+authors = ["Sekhon, N.", "Banner, J. L.", "Breecker, D. O.", "Tremaine, D. M."]
+year = 2023
+title = "Using high-resolution X-ray computed tomography to test the suitability and guide the preparation of stalagmites for paleoclimate reconstruction"
+venue = "Journal of Cave and Karst Studies 85(1), 1–15"
+doi = "10.4311/2021ES0122"
+access = "open"
+licence = "not stated on the copy read; cite only"
+checked = "sections"
+sections_read = ["Abstract", "Introduction", "Background: XRCT in speleothem science", "Methods: XRCT", "Results: SBFC9, HRC2, BC5", "Discussion: XRCT scans"]
+topics = ["x-ray-ct", "medical-ct", "banding", "growth-axis", "voids", "speleothem", "analogue"]
+notes = """Access: Open (NSF PAR author copy par.nsf.gov/servlets/purl/10420104). Read 2026-10-26. Banded-carbonate analogue for 'are bands visible in CT'. SBFC9 (core ~10 cm Ø, 14 cm): UTCT 300 kV, 0.85 mA, three brass filters against beam hardening, 1921 slices at 82.9 µm, 2 h. HRC2/BC5 (5 cm Ø, up to 43 cm): medical GE Lightspeed VCT 140 kV, 600 µm slices, ~7 h total. Seen: 'Continuous and noncontinuous laminated bands … varying thicknesses, colors, and geometries'; HRC2 axial view 'clear concentric dark and light circles'; growth-axis migration through depth; 1–5 mm ellipsoidal voids. Contrast mechanism: 'Calcite laminae density is a function of crystal morphology and affects the opacity' – porous columnar fast growth vs dense compact slow growth; density drops at hiatuses. CT saw voids that 'were smoothed away in the slabbing and polishing process'."""
+
+[[references]]
+id = "mehra2020"
+kind = "article"
+authors = ["Mehra, A.", "Watters, W. A.", "Grotzinger, J. P.", "Maloof, A. C."]
+year = 2020
+title = "Three-dimensional reconstructions of the putative metazoan Namapoikia show that it was a microbial construction"
+venue = "PNAS 117(33), 19760–19766"
+doi = "10.1073/pnas.2009129117"
+access = "open"
+licence = "PNAS licence; cite only"
+checked = "sections"
+sections_read = ["Abstract", "Significance", "Results (partition and void thickness)", "Discussion", "Materials and Methods: Sample collection and serial grinding; segmentation"]
+topics = ["serial-grinding", "GIRI", "colour-segmentation", "thickness-distribution", "laminated", "analogue"]
+notes = """Access: Free to read (PMC7443946). Read 2026-10-26 (PMC HTML). Serial grinding 'relies on color and texture to differentiate between features'; 2D slab measurements 'are subject to misinterpretation and measurement error', so '3D data are required'. GIRI: CNC surface grinder plus 80 MP Phase One IQ180, 120 mm macro lens, 1:1, 5.73 µm/pixel; ground 30 µm per step, 658 repeats (~20 mm); comparison sample at 20 µm steps. Manual alternative: 100 µm steps, flatbed scanner at 600 dpi (42.33 µm/px). Segmentation by neural networks on superpixels (colour, texture) or a CNN, thresholded probability maps. Results as 25/50/75th percentile thickness: partitions 640/1030/1393 µm and voids 1559/2402/3547 µm (sample A). Per-slice time (~90 s) and 'few micron' slices appear only in press coverage, not in the paper."""
+
+[[references]]
+id = "zel2022"
+kind = "article"
+authors = ["Zel, I.", "Abdurakhimov, B.", "Kichanov, S.", "Lis, O.", "Myrzabekova, E.", "Kozlenko, D.", "Tashmetov, M.", "Ishbaev, K.", "Kosbergenov, K."]
+year = 2022
+title = "Neutron Tomography Studies of Two Lamprophyre Dike Samples: 3D Data Analysis for the Characterization of Rock Fabric"
+venue = "Journal of Imaging 8(3), 80"
+doi = "10.3390/jimaging8030080"
+access = "open"
+licence = "CC-BY-4.0"
+checked = "sections"
+sections_read = ["Abstract", "1 Introduction", "2 Materials and Methods (Raman, neutron tomography)", "3 Results (segmentation, inclusion shape/orientation)"]
+topics = ["neutron-tomography", "hydrogen-contrast", "amygdales", "inclusion-fabric", "inertia-tensor", "analogue"]
+notes = """Read 2026-10-26 (Europe PMC full text). IBR-2 pulsed reactor, Dubna; 360 projections, 15 s each, ~4 h per tomogram; 2048³ grid, voxel ~98 µm, resolution 'restricted by the minimum size of a resolved item up to ~150 µm' (pinhole blurring). Neutrons: 'high penetration ability … allows one to measure rather large volumes', 'high contrast between hydrous and anhydrous minerals'; quartz, feldspar, calcite 'rather transparent for neutrons'. Amygdales of quartz ± calcite found. Inclusions mostly <5 mm, largest ~10 mm; shape fabric from principal axes of the inertia tensor, stereonets, bootstrap of 10,000 resamples on normalised tensors."""
+
+[[references]]
+id = "som2013"
+kind = "article"
+authors = ["Som, S. M.", "Hagadorn, J. W.", "Thelen, W. A.", "Gillespie, A. R.", "Catling, D. C.", "Buick, R."]
+year = 2013
+title = "Quantitative discrimination between geological materials with variable density contrast by high resolution X-ray computed tomography: An example using amygdule size-distribution in ancient lava flows"
+venue = "Computers & Geosciences 54, 231–238"
+doi = "10.1016/j.cageo.2012.11.019"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "abstract"
+topics = ["x-ray-ct", "amygdales", "segmentation", "dynamic-threshold", "size-distribution"]
+notes = """Abstract only (VPL summary page). 2.7 Ga lava flows; past work handled mainly high-contrast cases such as empty vesicles; introduces a dynamic thresholding method (adapted from seismology) that follows grey-value gradients rather than one absolute threshold to separate amygdules from basalt; whole-flow mean and s.d. of amygdule volume by bootstrap and the Central Limit Theorem."""
+
+[[references]]
+id = "chen2007"
+kind = "article"
+authors = ["Chen, T.", "Lensch, H. P. A.", "Fuchs, C.", "Seidel, H.-P."]
+year = 2007
+title = "Polarization and Phase-Shifting for 3D Scanning of Translucent Objects"
+venue = "IEEE Conference on Computer Vision and Pattern Recognition (CVPR) 2007"
+doi = "10.1109/CVPR.2007.383209"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "abstract"
+topics = ["structured-light", "translucency", "subsurface-scattering", "exterior-scan"]
+notes = """Access: Closed (author copies link-expired or bot-blocked). Abstract/introduction as quoted in search results only. Subsurface scattering weakens the structured-light signal and shifts the apparent intensity peak, corrupting depth; polarization-difference imaging rejects multiply scattered (depolarised) light; phase shifting also descatters 'if the frequency of the projected pattern is sufficiently high'."""
+
+[[references]]
+id = "chang2010"
+kind = "article"
+authors = ["Chang, S.", "Mao, Y.", "Chang, G.", "Flueraru, C."]
+year = 2010
+title = "Jade detection and analysis based on optical coherence tomography images"
+venue = "Optical Engineering 49(6)"
+doi = "10.1117/1.3449112"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "citation"
+topics = ["oct", "translucency", "gem", "subsurface"]
+notes = """Not read. Numbers from an OCT News summary: swept-source OCT, depth resolution 4 µm in jade, penetration ~5 mm, 3D volume data for jade grading. DOI found by Crossref title search 2026-10-26 (10.1117/1.3449113, first proposed, is a fibre-optics paper)."""
+
+# --- Stereology and 2D-to-3D inference (N1 reading pass, 2026-10-26) ---------
+
+[[references]]
+id = "cruzorive2017"
+kind = "review"
+authors = ["Cruz-Orive, L. M."]
+year = 2017
+title = "Stereology: A Historical Survey"
+venue = "Image Analysis & Stereology 36(3), 153–177"
+doi = "10.5566/ias.1767"
+access = "open"
+licence = "open access (licence not checked); cite only"
+checked = "sections"
+sections_read = ["Abstract", "Crofton formulae", "The Cavalieri principle", "Probe and object interaction: dimensional considerations", "Sampling in a continuous domain (end)", "Model based stereology", "Global stereology: the general design", "Particle number", "Connectivity", "Planar area and volume", "Surface area and length under isotropy", "Particle size", "Membrane thickness", "Anisotropy (part)", "Second order stereology", "Error variance prediction under systematic sampling (part)", "Recent trends"]
+topics = ["stereology", "delesse", "cavalieri", "crofton", "wicksell", "disector", "euler-characteristic", "membrane-thickness", "2d-to-3d"]
+notes = """Read 2026-10-26. Delesse principle: under first-order stationarity, A(Y∩T)/A(T) is an unbiased estimator of VV "irrespective of the location of T" (Eqs. 17–19, p.158); Delesse (1847) showed "the mean area fraction of a mineral in a polished section of a rock is equal to the volume fraction". If neither structure nor probe is full-dimensional and Y is anisotropic, "the probe T should be isotropically rotated" (p.158). Cavalieri estimator V̂ = h·ΣA(z+kh) with z uniform random in [0,h) (Eq. 13, p.157); variance from the covariogram near the origin (Matheron; Gundersen & Jensen 1987) (p.168). Crofton/stereology: SV = (4/π)BA, SV = 2IL, LV = 2QA under isotropy (Eq. 24, p.162). Particles "cannot be counted unless a three dimensional probe is used" (p.159); the Wicksell problem "is indeterminate unless the particles are assumed to have specific, simple geometric shapes" and is ill-conditioned near the origin (p.160); NV = NA/E(H), but E(H) "is not accessible from independent sections" (p.160). Connectivity: χ = N(particles) − N(extra connections) + N(cavities); χ = ½(I − B + H) by disector sweep (Eqs. 22–23, p.160–161). Size distributions "are inaccessible from information solely on independent planar or linear sections unless the particles are assumed to have a simple geometric shape" (p.165–166). Membrane thickness: E(τ) = ½E(l), harmonic mean E(1/τ) = (3/2)E(1/l) for IUR lines; unfolding from planar-section strip widths solved by Cruz-Orive (1979) and Jensen et al. (1979); Var(τ) is estimable directly from planar but not linear sections (p.166). Point processes in 3D "require 3D probes" (p.167). Recent trend: random-set models (tessellations) often lack "a cross check of the models with stereological estimators, which are known to be unbiased and model free" (p.169)."""
+
+[[references]]
+id = "coleman1992"
+kind = "article"
+authors = ["Coleman, R."]
+year = 1992
+title = "The stereology of spherical shells"
+venue = "Acta Stereologica 11(2), 137–142"
+url = "https://popups.uliege.be/0351-580x/index.php?id=1887"
+access = "open"
+licence = "free to read (Acta Stereologica archive, ULiège); licence not checked; cite only"
+checked = "full-text"
+topics = ["stereology", "spherical-shells", "wicksell", "concentric-layers", "section-offset", "unfolding"]
+notes = """Read in full 2026-10-26 (scanned pages read as images). Model: spherical particles with a concentric spherical core, cut by an IUR plane; profiles are "a mixture of discs and annular rings" (abstract). A ring at offset z has radii (a₀, b₀) = (√(a² − z²), √(b² − z²)) (Eq. 1, p.138). Ring intensity λR = 2λS·μB and disc intensity λD = 2λS(μA − μB) (Eqs. 5, 8, p.138–139), so the fraction of profiles that cut the core is μB/μA. Key invariant: "z² = a² − b² = a₀² − b₀²" (Eq. 11, p.141). The disc profiles obey Wicksell's formula. Inversion (Theorem 3, Eq. 10) exists, but "numerical inversion of integral relationships like these is notoriously unstable" (p.140); "We cannot complete the inversion by obtaining f_S in terms of f_D, since the disc diameters do not contain sufficient information about the shells" (p.140). Analogue for agate: concentric spherical banding is an exact, testable null model for band radii seen in random cuts."""
+
+[[references]]
+id = "coleman1993"
+kind = "article"
+authors = ["Coleman, R."]
+year = 1993
+title = "Measuring membrane thickness"
+venue = "Acta Stereologica 12(2), 85–88 (Proc. 6th European Congress for Stereology)"
+url = "https://popups.uliege.be/0351-580x/index.php?id=1420"
+access = "open"
+licence = "free to read (Acta Stereologica archive, ULiège); licence not checked; cite only"
+checked = "full-text"
+topics = ["stereology", "membrane-thickness", "apparent-thickness", "oblique-section", "unfolding"]
+notes = """Read in full 2026-10-26 (scanned pages read as images). Membranes modelled as planar sheets with random thickness T, cut by IUR planes; the strip width L in the section satisfies "T = L cos Θ", where Θ is the angle that the normal to the IUR section makes with the sheet surface, with density p(θ) = (4/π)cos²θ on [0, π/2) (Eq. 3, p.86–87). So apparent width ≥ true thickness. Gives F(ℓ) = (4/π)∫₀^ℓ G(t)(t²/ℓ²)(1/√(ℓ² − t²))dt (Eq. 5) and an unbiased, consistent estimator of G(t) as the sample mean of h(ℓ_i/t) (Eq. 1–2, p.85–87). Caveats (p.87–88): the estimate of G "is not restricted to the range [0,1]", "is not monotone increasing", and inherits the "ill-conditioning … in inverse problems involving Abel type integrals, such as … the Wicksell problem"; regularisation advised. Analogue for apparent vs true agate band thickness when the band is locally planar."""
+
+[[references]]
+id = "higgins1994"
+kind = "article"
+authors = ["Higgins, M. D."]
+year = 1994
+title = "Numerical modeling of crystal shapes in thin sections: Estimation of crystal habit and true size"
+venue = "American Mineralogist 79, 113–119"
+url = "https://msaweb.org/AmMin/AM79/AM79_113.pdf"
+access = "open"
+licence = "MSA; free to read, cite only"
+checked = "full-text"
+topics = ["stereology", "crystal-size-distribution", "cut-effect", "intersection-probability", "crystal-habit", "fabric"]
+notes = """Read in full 2026-10-26. 2D→3D for crystals: "An exact solution to this problem is only possible for spherical objects, and empirical methods must be used for other shapes" (p.113). Monte Carlo of 50000 random planes through orthogonal solids S:I:L (p.114). Intersection length mode = I, width mode = S, width/length peak at S/I; cubes "rarely produce square intersections", prisms do; tabular crystals give elongated sections (p.114–115, 119). With laminar or linear fabric, sections normal and parallel to the fabric give different, sometimes invariant, values (Table 1, p.115). Two sectioning effects: the cut effect (sections smaller than the crystal) and the intersection-probability effect (large crystals hit more often); "both require a knowledge of the crystal habit" (abstract). For orthogonal solids NV = NA/(0.64·D′), D′ = (S+I+L)/3 (p.119). The model's sharp peaks are unlikely in nature (rounded crystals, few observations) (p.116). Analogue for inclusions and spherulites in agate (domain C)."""
+
+[[references]]
+id = "jiao2007"
+kind = "article"
+authors = ["Jiao, Y.", "Stillinger, F. H.", "Torquato, S."]
+year = 2007
+title = "Modeling heterogeneous materials via two-point correlation functions: Basic principles"
+venue = "Physical Review E 76, 031110 (arXiv:0705.2434)"
+doi = "10.1103/PhysRevE.76.031110"
+url = "https://arxiv.org/abs/0705.2434"
+access = "open"
+licence = "arXiv preprint; publisher copyright for the journal version"
+checked = "sections"
+sections_read = ["Abstract", "I", "II", "V.A", "VII"]
+topics = ["two-point-correlation", "reconstruction", "yeong-torquato", "degeneracy", "2d-to-3d"]
+notes = """Read the arXiv version, 2026-10-26. Reviews the Yeong–Torquato (1998) stochastic-optimisation reconstruction: start from an arbitrary configuration and minimise the squared difference to target correlation functions by simulated annealing (§I, p.4). It lists 3D reconstruction "using information extracted from two-dimensional plane cuts" as a key application (§I, p.3). Definitions: S_n, specific surface s = ⟨|∇I|⟩, two-point cluster function C(x1,x2), lineal-path function L(x1,x2) used "to study the non-uniqueness issue of the reconstruction" (§II, p.6–7). Proof that S2 cannot specify a medium: for an N×N digitised medium the equations number Ne = 4[N/2]² − 8[N/2] + 6 < Nu = N², and fewer still for angle-averaged S2; "one could never find a unique solution … unless some assumptions have been made"; extends trivially to 3D (§V.A, p.23–24). The scheme assumes statistically homogeneous, isotropic media (§VII)."""
+
+[[references]]
+id = "gommes2012"
+kind = "article"
+authors = ["Gommes, C. J.", "Jiao, Y.", "Torquato, S."]
+year = 2012
+title = "Microstructural degeneracy associated with a two-point correlation function and its information content"
+venue = "Physical Review E 85, 051140 (arXiv:1205.3382)"
+doi = "10.1103/PhysRevE.85.051140"
+url = "https://arxiv.org/abs/1205.3382"
+access = "open"
+licence = "arXiv preprint; publisher copyright for the journal version"
+checked = "sections"
+sections_read = ["Abstract", "I", "VI"]
+topics = ["two-point-correlation", "degeneracy", "information-content", "reconstruction"]
+notes = """Read the arXiv version, 2026-10-26. "distinctly different microstructures may have the same correlation function" (abstract). Examples of non-trivial degeneracy: Poisson polyhedra tessellations and Debye random media have identical S2 (§I, p.3). Orientation information reduces degeneracy; radial (rotationally averaged) S2 is the degenerate case (§I, p.4). Degeneracy is lowest where S2 takes extremal values (single disk, crystals) and huge for Poisson-like media where S2 ≈ φ² ("an 8 × 8 Poisson point process can have a degeneracy as large as Ω0 ≈ 10^7") (§VI, p.32–33). Criterion: a reconstruction can be accurate only if the information content of S2, in bits, is "comparable to the number of pixels in the unknown microstructure" (abstract)."""
+
+[[references]]
+id = "kopf2007"
+kind = "article"
+authors = ["Kopf, J.", "Fu, C.-W.", "Cohen-Or, D.", "Deussen, O.", "Lischinski, D.", "Wong, T.-T."]
+year = 2007
+title = "Solid texture synthesis from 2D exemplars"
+venue = "ACM Transactions on Graphics 26(3) (SIGGRAPH 2007), article 2"
+doi = "10.1145/1276377.1276380"
+url = "https://www.cse.cuhk.edu.hk/~ttwong/papers/solid/solid.pdf"
+access = "open"
+licence = "author copy; publisher (ACM) copyright; cite only"
+checked = "sections"
+sections_read = ["Abstract", "1", "2", "3", "4 (start)", "6", "6.3", "7"]
+topics = ["solid-texture", "texture-synthesis", "2d-to-3d", "histogram-matching", "rendering"]
+notes = """Read the author PDF, 2026-10-26 (DOI confirmed on Crossref 2026-10-26). Synthesises a 3D solid whose slices match a 2D exemplar by minimising an MRF neighbourhood energy over the three orthogonal slices through each voxel, E = Σ_v Σ_{i∈x,y,z} ||s_v,i − e_v,i||^0.8, with histogram matching of global statistics (§3–4, Eq. 1). Differences are measured only on the three axis-orthogonal slices "to reduce computation time"; the authors say this "works well in practice" (§4). 128³ RGB solid in 10–90 min on a 2.4 GHz CPU (§6). Isotropic formulation; for anisotropic exemplars "no isotropic extension of the exemplar to 3D exists", and two of three directions dominate (§6). Limitation (§6.3, Fig. 11): a cellular stone exemplar produced "many elongated tube-like cells", so slices in certain directions differ from the exemplar. Feature maps (signed distance) help large structures. Directly relevant to rendering cut agate interiors (goal 1) and as a cautionary negative control."""
+
+[[references]]
+id = "kench2021"
+kind = "article"
+authors = ["Kench, S.", "Cooper, S. J."]
+year = 2021
+title = "Generating three-dimensional structures from a two-dimensional slice with generative adversarial network-based dimensionality expansion"
+venue = "Nature Machine Intelligence 3, 299–305 (preprint arXiv:2102.07708)"
+doi = "10.1038/s42256-021-00322-1"
+url = "https://arxiv.org/abs/2102.07708"
+access = "open"
+licence = "arXiv preprint; publisher copyright for the journal version"
+checked = "full-text"
+topics = ["slicegan", "gan", "2d-to-3d", "microstructure", "two-point-correlation", "anisotropy"]
+notes = """Read the arXiv v1 preprint in full incl. SI, 2026-10-26 (journal version not read; DOI confirmed on Crossref 2026-10-26). SliceGAN: a 3D generator whose volumes are sliced along x, y, z (all 64 slices per direction) and scored by a 2D discriminator against 2D training images (§3, Alg. 1). "only suitable for isotropic materials"; anisotropic materials need a training image per orthogonal plane and separate discriminators (§3, SI S1). Edge artefacts come from non-uniform information density in transpose convolutions; rules s<k, k mod s = 0, p ≥ k−s (§4). Assumes statistical homogeneity: "the relative position of features is important, their absolute location is often arbitrary" (§4); generator periodicity means it cannot capture "anisotropy within a given plane (e.g a graded density)" (§4). Failure: with two discriminators, interface particles "form long ridges on the surface at a 45° angle" (§5.2, row F). Validation on an NMC cathode: volume fraction, surface area and relative diffusivity (TauFactor), plus S2 and TPB density (SI S7), matched in median but the diffusivity distribution was not identical; diffusivity "is not measurable from any individual 2D slice" (§5.2). Training c. 4 h on a Titan Xp; 10^8 voxels generated in seconds; 12 GB GPU limited colour images (§2.2, §5.2). Code: github.com/stke9/SliceGAN."""
+
+[[references]]
+id = "higgins2000"
+kind = "article"
+authors = ["Higgins, M. D."]
+year = 2000
+title = "Measurement of crystal size distributions"
+venue = "American Mineralogist 85, 1105–1116"
+doi = "10.2138/am-2000-8-901"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "abstract"
+topics = ["crystal-size-distribution", "stereology", "csdcorrections", "saltikov"]
+notes = """Abstract only (2026-10-26); full text not found open (UQAC repository copy restricted). Abstract: the widely used Wager method lacks a good theoretical basis; proposes a modified Saltikov correction that accounts for crystal shape and fabric; population densities differ from the Wager method by factors of 0.02–100; implemented in the program CSDCorrections."""
+
+[[references]]
+id = "morgan2006"
+kind = "article"
+authors = ["Morgan, D. J.", "Jerram, D. A."]
+year = 2006
+title = "On estimating crystal shape for crystal size distribution analysis"
+venue = "Journal of Volcanology and Geothermal Research 154, 1–7"
+doi = "10.1016/j.jvolgeores.2005.09.016"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "abstract"
+topics = ["crystal-shape", "crystal-size-distribution", "stereology", "csdslice"]
+notes = """Abstract/search summary only (2026-10-26); an unofficial course-page copy exists but failed to load (TLS error), and the HAL-INSU record was bot-blocked. Per the abstract: a spreadsheet tool (CSDslice) compares 2D section width/length data against a database of 703 habits from random sections of parallelepipeds; about 250 sections are needed for acicular shapes and about 75 for tabular ones. DOI confirmed on Crossref 2026-10-26."""
+
+[[references]]
+id = "mock2005"
+kind = "article"
+authors = ["Mock, A.", "Jerram, D. A."]
+year = 2005
+title = "Crystal size distributions (CSD) in three dimensions: insights from the 3D reconstruction of a highly porphyritic rhyolite"
+venue = "Journal of Petrology 46(8), 1525–1541"
+doi = "10.1093/petrology/egi024"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "abstract"
+topics = ["crystal-size-distribution", "serial-sectioning", "3d-reconstruction", "stereology-validation"]
+notes = """Abstract only (2026-10-26; Durham repository returned 403). Serial-sectioning 3D reconstruction of phenocrysts (217 crystals; 1599 K-feldspars). The 3D CSD is log-linear, but single-section CSDs scatter considerably; CSDs are robust with more than about 200 crystals; the shape assumed in stereological correction strongly affects estimated residence times. A direct test of 2D stereology against true 3D: the template for Nodule's own validation."""
+
+[[references]]
+id = "watters2001"
+kind = "article"
+authors = ["Watters, W. A.", "Grotzinger, J. P."]
+year = 2001
+title = "Digital reconstruction of calcified early metazoans, terminal Proterozoic Nama Group, Namibia"
+venue = "Paleobiology 27(1), 159–171"
+doi = "10.1666/0094-8373(2001)027<0159:DROCEM>2.0.CO;2"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "abstract"
+topics = ["serial-grinding", "3d-reconstruction", "synthetic-sections", "validation"]
+notes = """Abstract only (2026-10-26). Samples ground and photographed at 25 µm intervals; Delaunay triangulation reconstructs the 3D form; an idealised mathematical model is fitted; "A mathematical description of the morphology is used to obtain a database of randomly oriented synthetic cross-sections", which "reproduces the vast majority of cross-sections observed in outcrop". Methodological analogue for Nodule goal 2 (random cuts of 3D specimens vs real 2D sections)."""
+
+[[references]]
+id = "wicksell1925"
+kind = "article"
+authors = ["Wicksell, S. D."]
+year = 1925
+title = "The corpuscle problem. A mathematical study of a biometric problem"
+venue = "Biometrika 17(1/2), 84–99"
+doi = "10.1093/biomet/17.1-2.84"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "citation"
+topics = ["wicksell", "stereology", "unfolding", "sphere-size-distribution"]
+notes = """Citation only; known through [@cruzorive2017] (p.160) and [@coleman1992]: sphere-size distribution from plane sections leads to an Abel integral equation, ill-conditioned near the origin. DOI confirmed on Crossref 2026-10-26."""

@@ -1138,6 +1138,48 @@ sections_read = ["Abstract", "Introduction", "Agate genesis", "The Botswana agat
 topics = ["rind", "celadonite", "weathering", "external-morphology"]
 notes = """Read 2026-10-26 (pypdf). Published in the journal's 'Notes' section; peer review not stated, so treat with care. Karoo basalt (180 Ma) wall-lining agates from NE Central District. 'Both the wall-lining agates and the gorgonzola are coated with a green-clay which is easily eroded on weathering'; XRD identifies the coating as 'Celadonite-1M, aluminian'. EDS of the coating: Si 35–48%, Fe 29–50%, K 4–15%, Al 2–4%, Mg 3–6% (Table 2). Citing Moxon 1996 and Macpherson 1989: 'Unweathered agates have a characteristic green-earth coating'; 'Weathering may abrade the green coating, but the agate nodule itself is resistant to abrasion'. Loose nodules are freed by weathering; after the rainy season, fields along the river 'are littered with agates'. Literature summary (secondary, plausible at most): agate shrinks on ageing, leaving 'a gap between the agate and the cavity' filled by clay that forms the green coating. Bands 'nearly concentric... following the shape of the vesicle boundary'."""
 
+[[references]]
+id = "breitkreuz2013"
+kind = "review"
+authors = ["Breitkreuz, C."]
+year = 2013
+title = "Spherulites and lithophysae—200 years of investigation on high-temperature crystallization domains in silica-rich volcanic rocks"
+venue = "Bulletin of Volcanology 75, 705 (16 pp.)"
+doi = "10.1007/s00445-013-0705-6"
+access = "closed"
+licence = "publisher copyright (Springer-Verlag); cite only"
+checked = "full-text"
+topics = ["lithophysae", "spherulites", "thunder-egg", "external-morphology", "cavity-geometry", "host-rocks", "terminology"]
+notes = """Read in full from the owner's PDF, 2026-10-27 (pypdf; ESM 'Direct quotes' not read; figures read via captions only). Defines HTCD, spherulite, spheruloid, lithophysa ('HTCD with one or more internal cavities'), and axiolite (Table 1); thunder eggs are lithophysae (p. 2); distinguishes them from 'nodules' in non-welded pyroclastics and from 'true vesicles' (p. 7); unknown from SiO2-poor rocks (p. 1). Sizes 'from millimeters to meters', megaspherulites up to 4.3 m (p. 9); Fig. 4 shows min/mean/max diameter (0–30 cm axis) in 15 horizons of an Egyptian ignimbrite. Exterior (p. 11, Fig. 5): '(semi-)spherical'; 'ring-type girdles' or 'lobes' from foliation-enhanced growth; boudin shapes; 'irregular ridges that crisscross the surface' positioned by 'terminations of radiating cracks'; smooth, blister-shaped, coarse-grained (porphyritic host) and late-broken surfaces; interconnected groups. Interior (pp. 11–12, Fig. 6): radiating fibrous or microcrystalline, concentric zonation, inherited foliation/fiamme, frequent 'initial spherulite'; cavities central or lateral, 'sickle-, sphere-, chevron-, or irregular-shaped', central often 'lenticular', stars grown from sickles by radiating cracks; chevrons 'always show a concave-out orientation' (origin unclear); geopetal Uruguay-type agate or breccia in some cavities; cavities 'always form at the interface' between domain and ductile melt; multiple cavities = repeated cycles. Weathering of glass to clay frees lithophysae; freed agate fills are multiplanar with 'negative' pyramids (p. 7). Mechanisms are offered as alternatives: overpressure (von Richthofen, Wright), vapour-phase dissolution (Szabó, Cole), tension plus gas (Delesse, Iddings), overpressure plus melt shrinkage (Ross 1941); the author favours 'transient tensional stress' at the crystallisation front above Tg, with vapour-phase corrosion/brecciation enlarging some cavities, and cavity opening before or during crystallisation (pp. 12–13). 'no numeric modeling or experiments' on cavity growth exist (p. 7). Spherulite growth 10–100 µm/day (p. 6). Qualitative: no shape metrics or specimen counts."""
+
+[[references]]
+id = "goetze2024"
+kind = "article"
+authors = ["Götze, J.", "Möckel, R.", "Pan, Y.", "Müller, A."]
+year = 2024
+title = "Geochemistry and formation of agate-bearing lithophysae in Lower Permian volcanics of the NW-Saxonian Basin (Germany)"
+venue = "Mineralogy and Petrology 118, 23–40 (online 22 Aug 2023)"
+doi = "10.1007/s00710-023-00841-2"
+access = "open"
+licence = "CC-BY-4.0"
+checked = "full-text"
+topics = ["lithophysae", "thunder-egg", "agate", "fill-sequence", "rind", "host-rocks", "geochemistry", "formation-temperature"]
+notes = """Read in full from the owner's PDF, 2026-10-27 (pypdf; ESM not read). Kemmlitz rhyolite, NW Saxony: one massive lithophysa-free sample plus nine lithophysa localities (Table 1; specimen counts not given); most lithophysae came from soil or clay, so 'no material of the primary rhyolites' was available (p. 25). Lithophysae and host are chemically and mineralogically alike (quartz, sanidine, orthoclase; Tables 2–3); porphyritic, phenocrysts 5–20%, mean c. 1 mm (p. 29); 'blotched colour variations' from Fe pigment or bleaching (p. 27). Rind: 'adherent residues' of pitchstone with 'distinct perlitic cracks' on almost all specimens (p. 30, Fig. 4e/f); embedded in R1 illite/smectite clay (Fig. 5), occurring only where I-S is high (up to 30 wt%, p. 36). Fill: agate, lath-shaped silica pseudomorphs after barite and/or bladed carbonate (Fig. 2c), euhedral quartz; sequence 'granular micro-crystalline quartz, fibrous bundle-like chalcedony and macrocrystalline quartz in the centre', several chalcedony generations each starting spherulitic (Fig. 7); CL zoning matches banding; late high-crystallinity kaolinite only in the kaolin district (p. 38); weathering bleaching altered 'primary agate colours' (Fig. 11b). Primary fluid-inclusion Th 134–186 °C (minima 134/157/177 °C), salinity c. 5–9 eq% NaCl (Table 6), with heterogeneous trapping, so Th values are minimum temperatures. Authors' interpretation (an option): host-derived silica supplied through fissures after lithophysa solidification (Fig. 11a), above 150 °C, late in or soon after volcanism, with F-complex transport and an amorphous precursor. This conflicts with the earlier 'low-temperature' 50–250 / 70–130 °C framing (cited in [@breitkreuz2013] p. 6). No lithophysa sizes or shapes are reported."""
+
+[[references]]
+id = "blott2008"
+kind = "article"
+authors = ["Blott, S. J.", "Pye, K."]
+year = 2008
+title = "Particle shape: a review and new methods of characterization and classification"
+venue = "Sedimentology 55, 31–63"
+doi = "10.1111/j.1365-3091.2007.00892.x"
+access = "closed"
+licence = "publisher copyright (2007 the authors; journal compilation IAS/Wiley); cite only"
+checked = "full-text"
+topics = ["particle-shape", "form-ratios", "sphericity", "circularity", "roundness", "irregularity", "convexity", "measurement-precision"]
+notes = """Read in full from the owner's PDF (file blott2007.pdf), 2026-10-27 (pypdf). Shape = form, roundness, irregularity, sphericity, treated as separate concepts (Introduction). L, I, S are the sides of the smallest enclosing box: orient for the smallest projected area (I×S), then measure L perpendicular to it (Fig. 1). Caliper precision CV 0.5–2.8% for one operator, 2.8–5.9% across operators (Table 1, 23 particles). S/L is equancy; 'True flatness is best described by the parameter S/I'; elongation is I/L. Folk maximum projection sphericity is the 'best overall compromise' among form factors (Table 2), but these cannot tell a cube from a sphere. Sorted random triplets skew I/L (P(L>0.9) = 26.9%), and the Zingg diagram spreads forms more evenly than Sneed & Folk (Figs. 6–7). New scheme: I/L and S/I in five 0.2 classes, giving 25 codes (Table 5, Figs. 8–11). Wadell roundness in four log-base-0.5 classes (0.13/0.25/0.50 limits, Table 9), measured on photos in three orthogonal views (p. 51); a dodecahedron has zero roundness. True sphericity is an area ratio (sphere 1.00, dodecahedron 0.91, cube 0.81) and is 3D only; 2D measures are 'circularity', and Riley √(Di/Dc) is 'the best to use' (Table 12 classes 0.447/0.632/0.775/0.894; square 0.841, octagon 0.961; Fig. 16). P²/A runs 4π to c. 30 for natural grains. The three-view mean is 'a proxy for ‘sphericity’'. Irregularity I(2D) = Σ(y−x)/y over concavities, measured from the inscribed-circle centre to the concavity (x) and the convex hull (y); I(3D) is the sum over three views; most sediments 0–1, branching coral 7.47; five classes (Table 14; star comparators, Fig. 17); zero for any convex outline. 'No single quantitative measure can provide a full description of three-dimensional shape'."""
+
 # --- Quantitative band descriptors (N1 reading pass, 2026-10-26) -------------
 
 [[references]]
@@ -1335,9 +1377,9 @@ venue = "Journal of Microscopy 185(1), 67–75"
 doi = "10.1046/j.1365-2818.1997.1340694.x"
 access = "closed"
 licence = "publisher copyright; cite only"
-checked = "abstract"
+checked = "full-text"
 topics = ["local-thickness", "distance-transform", "3d-image-analysis", "method"]
-notes = """Abstract only (via search snippets; DOI confirmed on Crossref 2026-10-26). Defines the thickness of arbitrary structures from 3D images with no structure model, by a distance transformation: local thickness is the diameter of the largest sphere that contains the point and fits inside the object. Applied to trabecular bone micro-CT. Basis of the BoneJ/ImageJ "local thickness"; the same definition works in 2D."""
+notes = """Read the publisher PDF in full, 2026-10-27 (DOI confirmed on Crossref 2026-10-26). Local thickness τ(p) is "the diameter of the largest sphere which contains the point and which is completely inside the structure" (§2.1, Eq. 1); plates, cylinders and balls of size d return d. Mean is volume-weighted (Eq. 2); distribution and moments (SD, skewness) from Eqs 4–5. Applied to background it gives separations (§2.1). Biases (§2.3): rough surfaces and noise cause "undesirable underestimation" (corrected mean above T_min, Eq. 6, T_min > one voxel, §2.4); cut edges lower τ, remedied by shrinking the ROI by T_max (Fig. 4). Implementation: Euclidean distance map plus "distance ridge" of non-redundant spheres (§2.4, Eqs 7–11); "stochastic error corresponding to the dimension of one voxel". The paper applies the definition only in 3D; the 2D circle-fitting analogue (Garrahan et al. 1987) yields "local apparent widths" that need stereological correction (§1). Demonstrated on two trabecular-bone µCT biopsies (14 µm voxels, 286³): mean 0.20 ± 0.11 mm and 0.11 ± 0.03 mm (§3, Figs 6–8); no phantom or ground-truth test. "Our method requires true 3-D images"; proposes calibrating 2D stereology on a 3D subset (§4). Basis of BoneJ/ImageJ local thickness."""
 
 [[references]]
 id = "grotzinger1996"
@@ -1501,6 +1543,20 @@ checked = "citation"
 topics = ["oct", "translucency", "gem", "subsurface"]
 notes = """Not read. Numbers from an OCT News summary: swept-source OCT, depth resolution 4 µm in jade, penetration ~5 mm, 3D volume data for jade grading. DOI found by Crossref title search 2026-10-26 (10.1117/1.3449113, first proposed, is a fibre-optics paper)."""
 
+[[references]]
+id = "ketcham2001"
+kind = "article"
+authors = ["Ketcham, R. A.", "Carlson, W. D."]
+year = 2001
+title = "Acquisition, optimization and interpretation of X-ray computed tomographic imagery: applications to the geosciences"
+venue = "Computers & Geosciences 27, 381–400"
+doi = "10.1016/S0098-3004(00)00116-3"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["x-ray-ct", "partial-volume", "beam-hardening", "ring-artefacts", "segmentation", "3d-imaging", "banding"]
+notes = """Read the publisher PDF in full, 2026-10-27 (DOI confirmed on Crossref 2026-10-27). Review of industrial X-ray CT at the UT Austin facility; no quantitative accuracy tests. Table 1: high-resolution CT = dm objects at ~100 µm, ultra-high = cm at ~10 µm. 5 cm of quartz raises the mean energy of a 420 kV beam from 114 to 178 keV (Fig. 2). Beam hardening "causes the edges of an object to appear brighter than the center, even if the material is the same throughout" and in irregular objects is hard to tell from "actual material variations" (§4.1). Rings are "circles centered on the rotational axis"; polar-coordinate removal may erase features tangential to such circles (§4.2, Fig. 5B). Partial volume: linear mixing errs by "10% or more" for high-contrast boundaries "nearly parallel with the scan plane" (§4.4); fractures thinner than 42 µm pixels remain visible and were checked by thin sections cut after scanning (Fig. 6). Isocontours where CT values overlap are "arbitrary and hazardous"; the boundary value depends on the neighbouring phase (§6); pore sizes need "scanned standards" (Peyton et al. 1992, §6). Coral density bands "may not remain perpendicular" to the sampled surface; CT guides sampling (§7.5, Fig. 12)."""
+
 # --- Stereology and 2D-to-3D inference (N1 reading pass, 2026-10-26) ---------
 
 [[references]]
@@ -1633,9 +1689,9 @@ venue = "American Mineralogist 85, 1105–1116"
 doi = "10.2138/am-2000-8-901"
 access = "closed"
 licence = "publisher copyright; cite only"
-checked = "abstract"
+checked = "full-text"
 topics = ["crystal-size-distribution", "stereology", "csdcorrections", "saltikov"]
-notes = """Abstract only (2026-10-26); full text not found open (UQAC repository copy restricted). Abstract: the widely used Wager method lacks a good theoretical basis; proposes a modified Saltikov correction that accounts for crystal shape and fabric; population densities differ from the Wager method by factors of 0.02–100; implemented in the program CSDCorrections."""
+notes = """Read in full 2026-10-27 (publisher PDF; equations garbled in the text layer). Practical guide plus CSDCorrections. Wager n_V = n_A^1.5 has no basis and "should be discontinued" (pp. 1107-8). Defines cut-section and intersection-probability effects (p. 1108); classes methods as direct (serial sections; smallest detectable = spacing) vs indirect parametric or distribution-free (Fig. 3). For randomly oriented parallelepipeds the modal intersection length ≈ I and width ≈ S (p. 1110, Fig. 4B); modified Saltikov unfolding centres the first bin on the modal length/width and rescales by L/I or L/S (eqs. 5-6, Fig. 6B); probabilities from numerical models "sectioned using randomly oriented planes placed at random distances from the center" (p. 1110). Shape from w/l: mode = S/I, I/L ≈ skewness + 0.5 for massive rocks (eq. 9); fabric handled by constraining plane orientation (Table 1). Concave or branching forms "cannot be corrected" (p. 1112-3); sections must be thin relative to objects or outlines are projections (p. 1107). Verified on Peterson's independent synthetic data to ± 0.5 ln units (Fig. 9). Asks that raw 2D data, areas, shapes and fabrics be published (concluding remarks)."""
 
 [[references]]
 id = "morgan2006"
@@ -1647,9 +1703,9 @@ venue = "Journal of Volcanology and Geothermal Research 154, 1–7"
 doi = "10.1016/j.jvolgeores.2005.09.016"
 access = "closed"
 licence = "publisher copyright; cite only"
-checked = "abstract"
+checked = "full-text"
 topics = ["crystal-shape", "crystal-size-distribution", "stereology", "csdslice"]
-notes = """Abstract/search summary only (2026-10-26); an unofficial course-page copy exists but failed to load (TLS error), and the HAL-INSU record was bot-blocked. Per the abstract: a spreadsheet tool (CSDslice) compares 2D section width/length data against a database of 703 habits from random sections of parallelepipeds; about 250 sections are needed for acicular shapes and about 75 for tabular ones. DOI confirmed on Crossref 2026-10-26."""
+notes = """Read in full 2026-10-27 (publisher PDF). CSDslice: 703 parallelepiped habits, each "randomly sectioned 10,000 times" by CSDcut2, which rotates "through a random angle around the x, y and z axes sequentially, repeated ten times" and cuts "at a randomly determined level between ± l, the length of the body diagonal" (§3); sections fitted by equal-area ellipses; sample short/long-axis curves (25 bins) matched by linear regression, 5 best habits with R² (§3). Assumes "the 3D habit of all the crystals ... is the same" and non-foliated samples (§1, §4). Sample-size test on 1:1:3, 1:2:3, 1:10:10 with 10-1000 sections (§5, Fig. 4): tabular shapes converge fast; acicular and cubic give R² 0.4-0.6 at 200 sections, hence "∼250 sections"; R² > 0.8 with > 200 sections recommended (§6); "minimum 75" for tabular (abstract). Mixtures of 400 sections: dominant shape (50%+) recovered (§5). Natural Stromboli data: 1:2.8:4, R² 0.8835, "less accurate" than ideal shapes (§5, Fig. 5). All axes affect CSD volume fraction and slope (§4, Fig. 3). No biased-plane test and no negative control."""
 
 [[references]]
 id = "mock2005"
@@ -1661,9 +1717,9 @@ venue = "Journal of Petrology 46(8), 1525–1541"
 doi = "10.1093/petrology/egi024"
 access = "closed"
 licence = "publisher copyright; cite only"
-checked = "abstract"
+checked = "full-text"
 topics = ["crystal-size-distribution", "serial-sectioning", "3d-reconstruction", "stereology-validation"]
-notes = """Abstract only (2026-10-26; Durham repository returned 403). Serial-sectioning 3D reconstruction of phenocrysts (217 crystals; 1599 K-feldspars). The 3D CSD is log-linear, but single-section CSDs scatter considerably; CSDs are robust with more than about 200 crystals; the shape assumed in stereological correction strongly affects estimated residence times. A direct test of 2D stereology against true 3D: the template for Nodule's own validation."""
+notes = """Read in full 2026-10-27 (publisher PDF; symbol glyphs garbled in the text layer, numbers decoded). Serial grinding of a ~7.5 x 8 x 4 cm rhyolite slab: 11 flatbed scans at 400 dpi, outlines linked into surfaces in GOCAD (pp. 1528-1531); singular sections modelled as prisms, edge-touching crystals excluded, CSD3D insensitive to singular sections. 1599 KF modelled; 247 best-fit ellipsoids, median 2.8:1.6:1 with "very large variation of shapes" (Fig. 7c); shapes "deviate ... from ideal geometrical shapes so far employed in stereological CSD correction" (p. 1531). CSD3D straight (slope -1.02, R² 0.99). Subvolume test: CSD "starts to break down" between 224 and 178 crystals, so "> ~200" (Fig. 8). Virtual sections (14 parallel planes) and real ones "display a considerable spread" (Fig. 10); corrected 2D reproduces 3D "within reasonable error (~10% for CL, ~20% for maximum lengths ...)" (p. 1537). Sphere vs ellipsoid shape models change slope (-1.84 vs -1.01 vs -0.88 measured) and residence times ~2x (Table 3). Straight CSDs despite size-dependent shapes: "simple CSDs are not necessarily an indicator of simple crystallization conditions" (concl. 3). Cut-section effects "cancel out" only for randomly distributed crystals (p. 1536). One sample, no fabric, parallel planes only."""
 
 [[references]]
 id = "watters2001"
@@ -1675,9 +1731,9 @@ venue = "Paleobiology 27(1), 159–171"
 doi = "10.1666/0094-8373(2001)027<0159:DROCEM>2.0.CO;2"
 access = "closed"
 licence = "publisher copyright; cite only"
-checked = "abstract"
+checked = "full-text"
 topics = ["serial-grinding", "3d-reconstruction", "synthetic-sections", "validation"]
-notes = """Abstract only (2026-10-26). Samples ground and photographed at 25 µm intervals; Delaunay triangulation reconstructs the 3D form; an idealised mathematical model is fitted; "A mathematical description of the morphology is used to obtain a database of randomly oriented synthetic cross-sections", which "reproduces the vast majority of cross-sections observed in outcrop". Methodological analogue for Nodule goal 2 (random cuts of 3D specimens vs real 2D sections)."""
+notes = """Read the BioOne PDF in full, 2026-10-27. Calcitic fossils in calcite are serially ground at 25.4 µm steps in a steel mount with six 1 mm registration holes and photographed (1524 × 1012 px, two images per layer; 77 µm/px in one sample); 6–7 layers/h, so 2.54 cm ≈ 1000 images ≈ 150 person-hours (pp. 160–161). Global thresholds (Fig. 2E–G: T = 0.25, 0.32, 0.55), closing and a manual "erasing tool" give contours; registration error "about 0.2 mm", "3.3%" of a 0.6 cm specimen (p. 164). Geiger's Nuages Delaunay tetrahedra connect adjacent contours (Fig. 4); accuracy accepted from Geiger (1993) who tested a known geometric object. A parametric model (stem, cup, lip, 6–7 windows, wall thickness T) is fitted "prior to diagenetic effects" (Figs 5–6). Synthetic sections were cut by hand-orienting the model in SceneViewer (clipping planes 0.0001 units apart); the database is "nearly exhaustive" for "obviously distinctive" sections, classed by number of connected components (types 0–7) plus filled Type F (Figs 7–10); no frequencies or statistics. Walls look "thickest in oblique cross-sections that 'graze' the surface" (Fig. 8). Based "on only two tomographic reconstructions"; Type F weighed against alternative readings (diagenetic fattening, separate taxon) by three observations (pp. 170–171). Conclusion: "the vast majority" of outcrop shapes belong to one taxon. MRI tomography gave "discouraging results" (p. 160)."""
 
 [[references]]
 id = "wicksell1925"

@@ -9,6 +9,9 @@ license-files = ["LICENSE"]
 authors = [{ name = "lbillings-pixel" }]
 dependencies = [
     "agatesim",
+    "numpy>=2.5.4",
+    "scipy>=1.18.1",
+    "tomli-w>=1.2.0",
 ]
 
 [project.optional-dependencies]

@@ -167,12 +167,22 @@ def _to_hull(
     return float(np.min(-(normals[ahead] @ centre + offsets[ahead]) / along[ahead]))
 
 
-def concavities(mask: NDArray[np.bool_], centre: NDArray[np.float64]) -> list[tuple[float, float]]:
-    """(x, y) of each concavity of a filled mask, as Blott and Pye measure them
-    from `centre`, the inscribed circle's centre."""
+@dataclass(frozen=True)
+class Concavity:
+    """One concavity as Blott and Pye measure it: x to its floor and y to the
+    hull, both from the centre along the unit `direction` (dx, dy)."""
+
+    x: float
+    y: float
+    direction: tuple[float, float]
+
+
+def concavities(mask: NDArray[np.bool_], centre: NDArray[np.float64]) -> list[Concavity]:
+    """Each concavity of a filled mask, measured from `centre`, the inscribed
+    circle's centre."""
     vertices, edges = hull_2d(_corners(mask))
     pockets = agatesim_scipy.label(_hull_mask(vertices, mask.shape) & ~mask, eight_connected=False)
-    out: list[tuple[float, float]] = []
+    out: list[Concavity] = []
     for n in range(1, int(pockets.max()) + 1):
         rows, cols = np.nonzero(pockets == n)
         pts = np.stack([cols, rows], axis=1).astype(np.float64)
@@ -180,9 +190,10 @@ def concavities(mask: NDArray[np.bool_], centre: NDArray[np.float64]) -> list[tu
         i = int(np.argmin(dist))
         # The pocket's nearest pixel lies just outside the region's edge.
         x = float(dist[i]) - 0.5
-        y = _to_hull(centre, (pts[i] - centre) / dist[i], edges)
+        direction = (pts[i] - centre) / dist[i]
+        y = _to_hull(centre, direction, edges)
         if y - x >= max(MIN_CONCAVITY * y, MIN_CONCAVITY_PX):
-            out.append((x, y))
+            out.append(Concavity(x, y, (float(direction[0]), float(direction[1]))))
     return out
 
 
@@ -204,6 +215,6 @@ def measure(mask: NDArray[np.bool_]) -> Outline | None:
         aspect=b / a,
         regularity=float(region.sum()) / (math.pi * a * b),
         circularity=math.sqrt(r_in / r_out),
-        irregularity=sum((y - x) / y for x, y in found),
+        irregularity=sum((c.y - c.x) / c.y for c in found),
         concavities=len(found),
     )

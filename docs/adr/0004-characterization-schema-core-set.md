@@ -212,6 +212,18 @@ carry over, but none of them is read as a cause:
   stand on 11 photos and C6 on 10 until the owner's check, or a better
   segmentation in agatesim, says otherwise. 128 of the 230 proposals are low
   confidence.
+- **Better outlines, in agatesim (owner decided, 2026-10-28).** With the rim
+  found on 11 of 230 photos, the deferred option above is taken up: improve
+  the outline-finding in agatesim, with its own tests and ADR, then move the
+  pin here. agatesim's `segment()` was built for the owner's specimen photos
+  (blue cloth, ruler, optional click) and feeds agatesim's specimen server,
+  shape statistics and regression, so a separate rim-finder for library
+  photos is recommended over changing it in place. It is judged on photos it
+  was not tuned on, by the same yes/no outline check (the owner's check of 30
+  measures how far Claude's yes/no can be trusted), and on synthetic stones
+  of known outline (exact overlap; a background-only image must give no
+  outline). Rejected for now: hand-traced outlines (slow, owner's time);
+  C1-C3 on 11 photos.
 
 ### 9. Choices (owner accepted the recommendations, 2026-10-27)
 

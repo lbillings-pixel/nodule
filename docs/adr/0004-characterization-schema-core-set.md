@@ -180,6 +180,17 @@ carry over, but none of them is read as a cause:
   finish, lighting, C4, C5, C22) are tagged per choice 9b.
 - Tags live in this repository's `references/library-tags.toml`, keyed by
   agatesim library id. No image is copied.
+- **Outline check (owner decided, 2026-10-28).** On 10 sampled photos,
+  agatesim's segmentation, built to find a working region for band profiles,
+  often missed the stone's rim: it cut inside the face, took in stand clips,
+  or picked a patch of a cropped close-up or of a photo that is not a cut
+  face. C1–C3 describe whatever outline they are given, so a value counts only
+  after the outline has been seen to follow the rim. In the labelling batches
+  (9b) each photo is shown with its outline drawn on and gets a yes/no
+  "outline follows the rim"; "no" makes C1–C3 unknown. An outline touching
+  the frame is unknown without a check, as [@shea2010] discard
+  edge-bordering vesicles. Rejected: improving agatesim's segmentation first
+  (worth doing later, in agatesim); C1–C3 only on photos taken to a protocol.
 
 ### 9. Choices (owner accepted the recommendations, 2026-10-27)
 

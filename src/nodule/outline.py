@@ -7,11 +7,12 @@ since these describe the outline only.
 - **C1, aspect ratio and regularity** [@shea2010, App. C]: b/a and A/(πab),
   where a and b are the semi-axes of an ellipse fitted to the outline. Shea et
   al. call A/(πab) "regularity": it accounts for irregularities in the
-  outline while disregarding elongation. How their ellipse is fitted is not
-  recorded in our reading of the paper, so here a and b are those of the
-  ellipse with the same second moments as the mask (an assumption). With that
-  fit an ellipse gives exactly 1 at any aspect ratio, a square 3/π ≈ 0.955,
-  and lobed outlines less.
+  outline while disregarding elongation. Their best-fit ellipse comes from
+  Matlab's `regionprops` (§4.1), which fits the ellipse with the same
+  normalised second central moments as the region; that ellipse is used here
+  (`moment_ellipse`). It gives exactly 1 for an ellipse at any aspect ratio,
+  a square 3/π ≈ 0.955, and lobed outlines less. As in their §4.1, a region
+  touching the image's edge is not measured.
 - **C2, Riley circularity** √(Di/Dc) [@blott2008, Table 12]: Di is the
   diameter of the largest inscribed circle, Dc of the smallest circumscribing
   circle. A circle gives 1, an octagon 0.961, a square 0.841.

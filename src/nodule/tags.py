@@ -11,8 +11,9 @@ Each usable photo gets one record:
 
 - agatesim's labels carried over as aliases (section 7): verdict, forms,
   features;
-- the view (section 1): kind, finish and lighting are "unknown" until tagged
-  (choice 9b), and the library has no scale;
+- the view (section 1): kind, finish and lighting, labelled by eye with C4,
+  C5, C22 and the outline check (`nodule.labels`, choice 9b); the library has
+  no scale;
 - C1-C3 measured here on the outline that agatesim's segmentation finds
   (`nodule.outline`);
 - C7, C8, C9, C11 and C17 read from agatesim's cached band-shape statistics
@@ -20,6 +21,10 @@ Each usable photo gets one record:
   agatesim's shape gate ("fit" or "borderline"); "unknown" otherwise;
 - C6 and C10 measured here along rim-to-centre profiles (`nodule.bands`) on
   the same photos, with the band spacing and noise agatesim's cache holds.
+
+Where the outline check says the outline does not follow the rim, C1-C3 and
+C6 are "unknown" (section 8). `--relabel` applies new labels to the tag file
+without measuring again.
 
 A value that cannot be had is written "unknown", never left out.
 """
@@ -30,6 +35,7 @@ import argparse
 import json
 import os
 import time
+import tomllib
 import tracemalloc
 from collections.abc import Sequence
 from pathlib import Path
@@ -44,11 +50,11 @@ from agatesim.specimen.photo import load_photo
 from agatesim.specimen.quality import luminance
 from agatesim.specimen.segment import segment
 
-from nodule import bands, outline
+from nodule import bands, labels, outline
 
 ROOT = Path(__file__).resolve().parents[2]
 TAGS_TOML = ROOT / "references" / "library-tags.toml"
-UNKNOWN = "unknown"
+UNKNOWN = labels.UNKNOWN
 # The library's section-sampling model (ADR 0004, choice 9a).
 SAMPLING = "unknown, compared as centre-seeking"
 # Core descriptors read from agatesim's cached statistics: name here -> name there.
@@ -60,6 +66,18 @@ IMPORTED = {
     "C17_core": "core",
 }
 GATE_PASSES = ("fit", "borderline")
+# Values that count only once the outline is seen to follow the rim (section 8).
+OUTLINE_BOUND = (
+    "C1_aspect",
+    "C1_regularity",
+    "C2_circularity",
+    "C3_irregularity",
+    "C3_concavities",
+    "C6_count",
+    "C6_low",
+    "C6_high",
+    "C6_rule_gap",
+)
 # Band count and persistence measured here: name in the record -> field of `bands.Bands`.
 MEASURED = {
     "C6_count": "count",
@@ -135,9 +153,10 @@ def record(
         "verdict": label.verdict,
         "forms": list(label.forms),
         "features": list(label.features),
-        "view_kind": UNKNOWN,
-        "finish": UNKNOWN,
-        "lighting": UNKNOWN,
+        **{name: UNKNOWN for name in labels.FIELDS if name != "outline"},
+        "outline_check": UNKNOWN,
+        "labels_by": UNKNOWN,
+        "C6_eye": UNKNOWN,
         "scale": "none",
         "shape_gate": str(entry.get("level", UNKNOWN)) if entry is not None else UNKNOWN,
     }
@@ -153,6 +172,20 @@ def record(
             "C3_concavities": shape.concavities,
         }
     return rec | imported(entry, size) | measured(band)
+
+
+def labelled(rec: dict[str, Value], entry: dict[str, labels.Row] | None) -> dict[str, Value]:
+    """A record with its photo's labels filled in, and the outline-bound values
+    made unknown where the outline check says no."""
+    row, by = labels.chosen(entry)
+    out = dict(rec)
+    for name in labels.FIELDS:
+        out["outline_check" if name == "outline" else name] = row.get(name, UNKNOWN)
+    out["labels_by"] = by
+    out["C6_eye"] = row.get("C6_eye", UNKNOWN)
+    if out["outline_check"] == "no":
+        out |= {name: UNKNOWN for name in OUTLINE_BOUND}
+    return out
 
 
 def measure_photo(
@@ -195,12 +228,13 @@ def tag_library(
     seconds each took."""
     refs = agatesim / "references"
     library = load_library(refs / "library.toml")
-    labels = load_labels(refs / "library-labels.toml")
+    carried = load_labels(refs / "library-labels.toml")
+    view = labels.load()
     shapes_json = refs / "models" / "shapes.json"
     cache: dict[str, dict[str, object]] = (
         json.loads(shapes_json.read_text("utf-8")) if shapes_json.exists() else {}
     )
-    ids = sorted(k for k, v in labels.items() if v.verdict != "unusable")
+    ids = sorted(k for k, v in carried.items() if v.verdict != "unusable")
     if sample is not None:
         ids = sorted(np.random.default_rng(0).choice(ids, size=sample, replace=False).tolist())
     records: dict[str, dict[str, Value]] = {}
@@ -214,16 +248,41 @@ def tag_library(
         data = path.read_bytes()
         entry = cache.get(image_id)
         shape, band = measure_photo(data, entry)
-        records[image_id] = record(labels[image_id], shape, entry, len(data), band)
+        rec = record(carried[image_id], shape, entry, len(data), band)
+        records[image_id] = labelled(rec, view.get(image_id))
         seconds.append(time.perf_counter() - start)
     return records, seconds
+
+
+def relabel(path: Path = TAGS_TOML) -> int:
+    """Apply the current labels to an existing tag file."""
+    records: dict[str, dict[str, Value]] = tomllib.loads(path.read_text("utf-8"))["images"]
+    view = labels.load()
+    lost = [
+        k
+        for k, rec in records.items()
+        if rec.get("outline_check") == "no"
+        and labels.chosen(view.get(k))[0].get("outline") == "yes"
+    ]
+    write({k: labelled(rec, view.get(k)) for k, rec in records.items()}, path)
+    print(f"relabelled {len(records)} photos in {path}")
+    if lost:
+        print(
+            f"{len(lost)} photos now pass the outline check but lost C1-C3 and C6: re-run in full"
+        )
+    return 0
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="re-tag the reference library (ADR 0004)")
     parser.add_argument("--sample", type=int, help="tag only this many photos, chosen at random")
     parser.add_argument("--out", type=Path, default=TAGS_TOML, help="where to write the tags")
+    parser.add_argument(
+        "--relabel", action="store_true", help="apply the labels to the tag file, measuring nothing"
+    )
     args = parser.parse_args(argv)
+    if args.relabel:
+        return relabel(args.out)
     agatesim = agatesim_dir()
     if not (agatesim / "references" / "library.toml").exists():
         print(f"no agatesim library at {agatesim}; set NODULE_AGATESIM")

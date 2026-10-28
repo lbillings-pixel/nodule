@@ -1,0 +1,3262 @@
+# Labels of the library photos judged by eye (ADR 0004, choice 9b). Keyed by
+# agatesim library id; no image is held here. "proposed" is Claude's, from
+# helper agents viewing the outline-check pictures; "checked" is the owner's,
+# from `python -m nodule.check`, and overrides it. Appearance only: never
+# evidence for a formation mechanism (ADR 0002).
+
+[meta]
+schema = "ADR 0004, choice 9b"
+proposed_by = "Claude (helper agents viewing the outline-check pictures)"
+checked_by = "owner"
+check_sample = [
+    "2006-10-30buchstutzeachat03",
+    "achat-2",
+    "achaty-zajecov-3",
+    "agat-3d-bobonong-botswana",
+    "agat-lake-superior-lake-superior-agate-minnesota-usa",
+    "agate-2-31731816833",
+    "agate-east-of-the-black-hills-south-dakota-usa-6",
+    "agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-11",
+    "agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-13",
+    "agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-6",
+    "agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-9-34651173151",
+    "agate-quartz-filled-geode-1-32164187660",
+    "agate-sio2-from-brazil-50583624161",
+    "agate-with-uruguay-type-banding-om1-078a",
+    "agate3-hg-cropped",
+    "agate7-hg",
+    "agate8-hg",
+    "blue-lace-agate-geode",
+    "details-agat-lake-superior-agat-z-jez-gornego-minnesota-usa-cropped",
+    "estonian-museum-of-natural-history-specimen-no-176133-photo-g244-g244-9-1-jpg",
+    "high-grade-slaughter-mountain-arizona-fire-agate-rough",
+    "image",
+    "imgp2020361-50579722543",
+    "laguna-agate-chihuahua-mexico-2-32661870051",
+    "moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-3",
+    "nellie-blue-flint-upper-mercer-flint-middle-pennsylvanian-eastern-ohio-usa-60",
+    "oregon003",
+    "oregon004",
+    "quartz-agateplate-bluegrey",
+    "sliced-agate-geode-with-crystals-2",
+]
+
+[images.2006-10-30buchstutzeachat03.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Two bookend halves side by side; vertical line is the join; outline cuts inside"
+
+[images.2006-10-30buchstutzeachat07-o.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Two bookend halves; green cuts inside left stone only. Thin brown skin, type unclear."
+
+[images.achat-1.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = 0.08
+C22_count = 3
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Green follows inner band, excludes outer bands and host rock"
+
+[images.achat-2.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = 0.08
+C22_count = 3
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Green cuts inside agate; excludes outer bands and host. On labelled stand."
+
+[images.achat-rasovka.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline takes background corner; dark rim skin, type unclear; many cracks in jasper zone"
+
+[images.achatscheibe.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "No outline found; dark outer bands vs rind unclear when backlit"
+
+[images.achaty-zajecov-2.proposed]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "clay or celadonite coat"
+C5_width = 0.02
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline takes in background on left; dark rim coat type uncertain"
+
+[images.achaty-zajecov-3.proposed]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline excludes dark outer rim; dark skin could be host or coat; finish unclear"
+
+[images.agat-3d-bobonong-botswana.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline takes in inset scale picture; rough brown crust, host or skin unclear"
+
+[images.agat-bobonong-botswana.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "yes"
+confidence = "low"
+note = "Polished window on mostly rough exterior nodule; view kind ambiguous."
+
+[images.agat-lake-superior-agat-z-jez-gornego-minnesota-usa.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Green extends along horizontal line to frame edges at top."
+
+[images.agat-lake-superior-agat-z-jez-gornego-minnesota-usa-cropped.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Close-up crop; rim not visible; outline is an inner patch"
+
+[images.agat-lake-superior-duluth-minnesota-usa.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Outline is a tiny patch on an eye; water-worn rim, no skin"
+
+[images.agat-lake-superior-dwie-poowki-minnesota-usa.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 2
+C22_fill = "open"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Outline encloses both halves; thin rim, rind unclear"
+
+[images.agat-lake-superior-dwie-poowki-minnesota-usa-cropped.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Close-up detail; rim not visible; outline is small interior patch"
+
+[images.agat-lake-superior-lake-superior-agate-minnesota-usa.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Outline takes in scale inset and background box"
+
+[images.agat-lake-superior-minnesota-stany-zjednoczone-ameryki-ponocnej-usa.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 2
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Outline takes in inset scale picture; cracks healed or open unclear"
+
+[images.agat-lake-superior-stan-minnesota-usa.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline takes in background boxes beside stone and scale inset"
+
+[images.agat-lake-superior-stan-minnesota-usa-cropped.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Close-up crop; stone runs off frame, green outlines a small patch."
+
+[images.agat-lake-superior-usa-minnesota.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Green outlines only a tiny patch at left edge."
+
+[images.agat-ognisty-calvillo-aguascalientes-meksyk.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "lobed"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "yes"
+confidence = "medium"
+note = "Fire agate botryoidal exterior; lobed vs blistered uncertain"
+
+[images.agat-ojo-de-laguna-chihuahua-meksyk.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "filled"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Two halves; outline only a central patch; rough brown skin unclassified"
+
+[images.agat-ojo-de-laguna-chihuahua-meksyk-cropped.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 2
+C22_fill = "filled"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Crop of interior; outline traces core only; one major healed crack"
+
+[images.agat-winogronowy-agate-grape-san-rafael-swell-emery-county-utah-usa.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "lobed"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Botryoidal grape agate cluster on matrix, not a nodule; outline is small patch"
+
+[images.agat-winogronowy-agate-grape-san-rafael-swell-emery-county-utah-usa-cropped.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "lobed"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Botryoidal cluster close-up; outline covers one small patch only"
+
+[images.agat-z-geoda-rancho-gregoria-meksyk.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Green takes in background and scale label at top. Brown iron-stained rind."
+
+[images.agat-ze-stalaktytami-agate-creek-queensland-australia.proposed]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Green extends to frame edges via horizontal bar; rough lower part unclear."
+
+[images.agat-ze-stalaktytami-agate-creek-queensland-australia-cropped.proposed]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Close-up of stalactites; rim not visible; outline an interior patch"
+
+[images.agate-005b-6mm.proposed]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Extreme macro of bands; stone runs off frame; outline a patch"
+
+[images.agate-1-29790070266.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Outline only a tiny blob at corner; thin brown skin, class unclear"
+
+[images.agate-11-30746153457.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "broken"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline is a background patch top-right; water-worn broken pebble"
+
+[images.agate-12-30746153687.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 4
+C22_fill = "filled"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Outline cuts inside stone along lower edge; red-brown filled cracks"
+
+[images.agate-14-30746154167.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "open"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Broken fragment; outline cuts inside and takes in background"
+
+[images.agate-16-30746154767.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Rough broken chunk; green cuts inside stone."
+
+[images.agate-17-30746155127.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "filled"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Outline cuts inside stone and takes in background on left"
+
+[images.agate-19-30746155707.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Pebble touches bottom frame; green runs along frame edge."
+
+[images.agate-2-31731816833.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "filled"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Outline on background; many short filled radial cracks at rim, too many to count"
+
+[images.agate-21-30746156187.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline cuts inside stone at left; rough rim crust unclassified"
+
+[images.agate-22-30746156427.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "broken"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline strays into background top-right, cuts inside at bottom-left"
+
+[images.agate-23-48609868172.proposed]
+view_kind = "exterior"
+finish = "tumbled"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Glossy worn pebble, tumbled or water-worn unclear; outline takes shadow"
+
+[images.agate-24-51867236448.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Domed cabochon; outline is tiny background patch"
+
+[images.agate-7-32755748235.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "yes"
+confidence = "low"
+note = "Lighting probably backlit; dark opaque rim of unclear type; central channel not counted as fracture."
+
+[images.agate-9-32408237080.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "clay or celadonite coat"
+C5_width = 0.04
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Green excludes dark outer rim; rim may be pebble exterior, not coat"
+
+[images.agate-adrasman-city-tajikistan-32755918215.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "filled"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Stone runs off frame; green outlines background patch. White rind unclear."
+
+[images.agate-agate-creek-queensland-australia.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = 0.03
+C22_count = 2
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline traces core only; dark rough rim may be host or altered skin"
+
+[images.agate-agate-creek-queensland-australia-cropped.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Cropped detail; stone runs off frame; outline follows internal bands"
+
+[images.agate-amethyste-quartz.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 12
+C22_fill = "filled"
+C22_offset = "yes"
+outline = "no"
+confidence = "low"
+note = "Brecciated slab, many healed cracks; count approximate; outline background patch"
+
+[images.agate-borden-formation-lower-mississippian-eastern-kentucky-usa-11-32632652021.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Outline traces central cavity only; stone touches top frame; faint hairline crack"
+
+[images.agate-borden-formation-lower-mississippian-eastern-kentucky-usa-6-32632652621.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 4
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Outline is background patch; thick grey rough skin of unclear nature"
+
+[images.agate-borden-formation-lower-mississippian-eastern-kentucky-usa-8-32756316565.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Green outlines background patch at right, not the slab."
+
+[images.agate-chalcedony-quartz-sio2-27633474479.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline is background; stone runs off frame; mostly quartz"
+
+[images.agate-d-bruyere.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Green outlines background patch only; thin dark skin at rim unclear."
+
+[images.agate-detail-agat-lake-superior-usa-minnesota-cropped.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Cropped detail; fine lines may be scratches or cracks; outline tiny patch"
+
+[images.agate-east-of-the-black-hills-south-dakota-usa-21.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Agate within host rock; outline takes in background, stone off frame"
+
+[images.agate-east-of-the-black-hills-south-dakota-usa-29.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "coarse-grained"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline only a patch; stone runs off frame; surface class uncertain"
+
+[images.agate-east-of-the-black-hills-south-dakota-usa-6.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 2
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Outline is tiny patch at top-right corner, not the stone"
+
+[images.agate-filled-geode-brazil-1-31912507804.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "filled"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline takes in background at sides; thin rough outer skin unclassified"
+
+[images.agate-filled-geode-brazil-2-32714553426.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Green is small patch at lower right. Grey exterior seen obliquely at left."
+
+[images.agate-filled-geode-condor-agate-argentina-31941551193.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = 0.08
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Two halves; outline cuts inside host, takes in stand/background"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m.proposed]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "yes"
+confidence = "medium"
+note = "Finish sawn/polished unclear; large white zone may be host or filling."
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-10.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Green outlines only quartz core; host/shell layers unclear."
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-11.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "spherulitic shell"
+C5_width = 0.04
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline covers agate zone only plus a label; rind type guessed from rough grey shell"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-12.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 10
+C22_fill = "filled"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Many black veins, count approximate; outline wanders inside and includes label"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-13.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline strays into background on left; thin grey rim unclassified"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-14.proposed]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "filled"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline is triangle in corner; blue curved feature may be filled fracture"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-15.proposed]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "both"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline is background patch top-left; finish sawn vs polished uncertain"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-2.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Green takes in background objects top right. Rough tan shell, type unclear."
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-3.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = 0.05
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline excludes rough host shell at right and bottom"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-4.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Green cuts inside, excluding granular rim; rim host or shell unclear."
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-5.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "spherulitic shell"
+C5_width = 0.03
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline only blue agate zone; rind type uncertain; lower part has few cracks"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-6.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 4
+C22_fill = "filled"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Outline traces small agate pocket only; fine dark cracks in brown zone"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-7.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Agate in large host rock; outline only inner agate patch; label behind"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-8.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline excludes host half, takes background; host thickness very uneven; veins in host only"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-9.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline follows agate fill only, not geode's thick dark shell"
+
+[images.agate-free-texture-2732496325.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline is a tiny background patch at top"
+
+[images.agate-from-poczki-gorne-rn3.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Green cuts inside rim at lower right."
+
+[images.agate-geode-a.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "yes"
+confidence = "medium"
+note = "Radial lines may be fibrous texture or cracks; rim dark, rind unclear"
+
+[images.agate-geol-water-level.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "No outline found; thin brown edge skin, class unclear"
+
+[images.agate-india-minerals-gallery-natural-history-museum-london-sw7-flickr-edk7.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "clay or celadonite coat"
+C5_width = 0.02
+C22_count = 2
+C22_fill = "filled"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Outline takes in background on right; coat type uncertain"
+
+[images.agate-lined-geode-black-rock-desert-gerlach-nevada-usa-33974978773.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = 0.2
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline traces agate lining only, not thick host rim; finish uncertain"
+
+[images.agate-madagascar-1-32755917455.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Stone runs off frame; outline tiny patch; rusty crust host or coat unclear"
+
+[images.agate-nodule-lake-superior-agate-1-23248724760.proposed]
+view_kind = "exterior"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "broken"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "open"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Green is patch on background lower left. Glossy: wet, natural or polished unclear."
+
+[images.agate-nodule-lake-superior-agate-2-23518382156.proposed]
+view_kind = "exterior"
+finish = "tumbled"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline a tiny background patch; gloss may be natural water-wear"
+
+[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "broken"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Water-worn pitted nodule with chipped faces; outline is one face patch"
+
+[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-2.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "broken"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Water-worn pebble; green outlines background patch at corner."
+
+[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-3.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "broken"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline small interior patch; mixed pitted skin and conchoidal broken faces"
+
+[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-4.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "broken"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline on background patch; surface mixes pitted skin and conchoidal breaks"
+
+[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-5.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline cuts inside stone on left and bottom; water-worn pebble"
+
+[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-6.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Water-worn pebble; outline cuts inside along right and bottom"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-10-34651169521.proposed]
+view_kind = "exterior"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Green takes in label card at top. Water-worn or polished unclear."
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-11-34783586145.proposed]
+view_kind = "exterior"
+finish = "tumbled"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "No outline found; stone runs off bottom edge"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-12-34651139191.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Green outlines neighbouring stone; several stones; worn natural face."
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-13-34621074542.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 5
+C22_fill = "both"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Outline tiny patch at rim; may be naturally worn face; other stones in frame"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-14-34743267776.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Unsure if natural water-worn face or polished; outline inner bands only"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-15-34397930990.proposed]
+view_kind = "exterior"
+finish = "tumbled"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "open"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Outline is background patch bottom-left; glossy, may be hand-polished"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-16-34783567065.proposed]
+view_kind = "exterior"
+finish = "tumbled"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Outline wanders into textured background; tumbled versus water-worn unclear"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-17-34743255036.proposed]
+view_kind = "exterior"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Glossy rounded pebble, natural vs tumbled unclear; outline is background patch"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-3-34397979740.proposed]
+view_kind = "exterior"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Green is background patch at right. Glossy; tumbled vs water-worn unclear."
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-4-33974568193.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline a tiny background patch; may be face-polished pebble"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-5-34651181261.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Green outlines tiny background patch; neighbouring stones in frame."
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-6-34651179201.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "No outline found; glossy worn/polished stone, catalogue ink on rim"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-7-34743298056.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Unsure if natural water-worn face or polished; outline on glare patch"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-8-34651174951.proposed]
+view_kind = "exterior"
+finish = "tumbled"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline is background patch; polished face vs tumbled unclear"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-9-34651173151.proposed]
+view_kind = "exterior"
+finish = "tumbled"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "filled"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Outline includes background card at top; red-filled crack top right"
+
+[images.agate-nowy-kosicol-poland-31912720284.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Agate embedded in host filling frame; outline cuts inside agate"
+
+[images.agate-panoramio-brandon-menth.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Wet pebble in snow, partly buried; outline is snow"
+
+[images.agate-panoramio-brandon-menth-1.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "broken"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outdoor shot in grass; green outlines sky/background patch."
+
+[images.agate-quartz-filled-geode-1-32164187660.proposed]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = 0.04
+C22_count = 2
+C22_fill = "open"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Green outlines quartz core only. Rind layering ambiguous; finish unclear."
+
+[images.agate-quartz-lined-geode-4-32632020771.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "clay or celadonite coat"
+C5_width = 0.02
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline cuts inside dark outer bands; thin brown skin, coat type uncertain"
+
+[images.agate-quartz-lined-geode-5-32375570960.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline traces quartz-lined cavity only; outer rim dark, unclassifiable"
+
+[images.agate-quartz-lined-geode-dryhead-montana-usa-1-32755917835.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline is background patch; dark outer zone may be host or matrix"
+
+[images.agate-quartz-lined-geode-dryhead-montana-usa-2-31912720794.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = 0.1
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline is patch on neighbouring stone; dark host uneven width"
+
+[images.agate-quartz-lined-geode-dryhead-montana-usa-3-31971016393.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = 0.15
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline is background patch; grey rim taken as host, uncertain"
+
+[images.agate-rio-grande-do-sul-caillois-donation-mnhn-n10.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Green takes in mounting clips and bulges at right; backlighting probable."
+
+[images.agate-rio-grande-do-sul-caillois-donation-mnhn-n14.proposed]
+view_kind = "slab in transmitted light"
+finish = "polished"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline is background corner; thin dark rim skin of unclear type"
+
+[images.agate-rio-grande-do-sul-caillois-donation-mnhn-n20.proposed]
+view_kind = "slab in transmitted light"
+finish = "polished"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "filled"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Green outlines interior patch only; slab held by clips."
+
+[images.agate-rio-grande-do-sul-caillois-donation-mnhn-n25.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline on background corner; slab held by wire clips; rough rim crust"
+
+[images.agate-sio2-25505269264.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline traces ruler, not stone; host remnant at right end"
+
+[images.agate-sio2-from-brazil-50583624161.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Broken geode on rod; outline only drusy patch inside"
+
+[images.agate-tertiary-agate-bay-king-george-island-south-shetland-islands-1.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline is tiny patch near bottom; worn pebble"
+
+[images.agate-wave-hill-australia-5-32755915795.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 2
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Several stones; main one runs off frame; outline is background"
+
+[images.agate-with-uruguay-type-banding-om1-077a.proposed]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "clay or celadonite coat"
+C5_width = 0.015
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Green outlines only the white Uruguay-banded core. Greenish coat likely celadonite."
+
+[images.agate-with-uruguay-type-banding-om1-078a.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "clay or celadonite coat"
+C5_width = 0.02
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Outline only inner white zone; face may be sawn, unclear"
+
+[images.agate1-hg.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "yes"
+confidence = "low"
+note = "Green runs slightly outside rim through backlight halo."
+
+[images.agate3-hg.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline covers small rim patch only"
+
+[images.agate3-hg-cropped.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Cropped detail, stone runs off frame; outline on small inclusion; backlit look"
+
+[images.agate4-hg.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline is tiny line above stone; thin brownish edge unclassified"
+
+[images.agate5-hg.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "yes"
+confidence = "medium"
+note = "Dark rough rim present but class not judgeable in transmitted light"
+
+[images.agate7-hg.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Glowing halo may mean backlit slab; outline misses outer bands"
+
+[images.agate8-hg.proposed]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Green takes in white sand bed. Grey rim may be adhering host."
+
+[images.amethyst-bergkristall-achat-scheibe-aus-schlottwitz-sachsen.proposed]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline traced the label card; vein agate, not nodule"
+
+[images.apache-flame-agate-chihuahua-mexico-33716719924.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "clay or celadonite coat"
+C5_width = 0.015
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Green takes in background, label and stand."
+
+[images.banded-agate-artigas-or-rio-grande-do-sul-caillois-donation-mnhn-n01.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline on background corner; slab on stand with clips; granular rim crust"
+
+[images.banded-agate-artigas-or-rio-grande-do-sul-caillois-donation-mnhn-n02.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline is tiny blob at top-left; slab held by clips"
+
+[images.banded-agate-from-mexico-cropped.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 2
+C22_fill = "open"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Close crop, rim not visible; outline tiny inner patch"
+
+[images.beach-agate-with-sagenite-from-central-oregon-coast-near-newport-and-yachats-ore.proposed]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Close-up of interior only; stone edge not visible; outline is patch"
+
+[images.berschweiler-agate-near-trier-germany-31942571364.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = 0.1
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline cuts inside agate; red glittery host attached at rim"
+
+[images.blue-lace-agate-geode.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Broken-open geode; green outlines only the cavity."
+
+[images.brazilian-agate-section.proposed]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Green takes in shadow/background along lower right edge."
+
+[images.brazilian-agate-section-detail.proposed]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline is inner patch; slab runs off top of frame"
+
+[images.center-detail-quartz-uruguay-dation-caillois-cropped.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 5
+C22_fill = "open"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Outline follows an inner band only; cropped detail in quartz"
+
+[images.crazy-lace-agate-11-cropped.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Detail crop, no rim; hairline crackle hard to count"
+
+[images.crazy-lace-agate-3-cropped.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Close crop, rim not visible; outline inner patch"
+
+[images.czech025.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Outline tiny patch in cavity; orange-brown rim crust class unclear"
+
+[images.dendritic-agate-cropped.proposed]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Close-up of dendrite; no rim visible; outline is interior patch"
+
+[images.dendritic-agate-with-three-dendrite-occurances.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Green outlines a small interior patch. Yellow-brown rim skin, type unclear."
+
+[images.detail-agat-lake-superior-duluth-minnesota-usa-cropped.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "filled"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Close-up; rim not visible; outline a small eye patch"
+
+[images.detail-agat-lake-superior-stan-minnesota-usa-cropped.proposed]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Close crop; no rim visible; no usable green outline."
+
+[images.detail-agat-ognisty-calvillo-aguascalientes-meksyk-cropped.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "lobed"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Macro of fire agate botryoids; no outline drawn; stone off frame"
+
+[images.details-agat-lake-superior-agat-z-jez-gornego-minnesota-usa-cropped.proposed]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Detail crop, no rim; unclear if natural or polished surface"
+
+[images.details-agat-lake-superior-stan-minnesota-usa-cropped.proposed]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Detail crop, rim not visible; outline tiny patch"
+
+[images.dugway-geode-juab-county-utah-usa-1-34540239846.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 6
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline traces cavity only; many hairline cracks in brown outer zone"
+
+[images.dugway-geode-juab-county-utah-usa-2-34581522545.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 4
+C22_fill = "filled"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Thick banded rhyolite shell: host vs spherulitic shell unclear; outline follows agate only"
+
+[images.earth-and-man-agate.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Slab on acrylic stand; green outlines small patch. Backlighting uncertain."
+
+[images.estonian-museum-of-natural-history-specimen-no-174648-photo-g286-g286-24-jpg.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline is a small interior patch; thin brown rim skin unclassified"
+
+[images.estonian-museum-of-natural-history-specimen-no-174649-photo-g286-g286-25-1-jpg.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "yes"
+confidence = "medium"
+note = "Outline good; buff outer layer may be rind or agate."
+
+[images.estonian-museum-of-natural-history-specimen-no-174692-photo-g286-g286-68-1-jpg.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline tiny patch off stone; reddish crust at rim, host vs coat unclear"
+
+[images.estonian-museum-of-natural-history-specimen-no-176133-photo-g244-g244-9-1-jpg.proposed]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = 0.15
+C22_count = 5
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "yes"
+confidence = "medium"
+note = "Agate core in thick host rock; width varies; cracks in core approximate"
+
+[images.estonian-museum-of-natural-history-specimen-no-178064-photo-g229-g229-427-jpg.proposed]
+view_kind = "exterior"
+finish = "tumbled"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline includes background top-right; dendritic tumbled pebble"
+
+[images.estonian-museum-of-natural-history-specimen-no-178073-photo-g229-g229-436-jpg.proposed]
+view_kind = "exterior"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Polished domed stone; outline cuts inside at dark lower right"
+
+[images.eye-agate-texas-usa-32775594145.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "yes"
+outline = "no"
+confidence = "low"
+note = "Fragment; outline is background patch; possible offset at lower-right crack"
+
+[images.feuerachat-fireagate-from-brazil-tumble-polished-stone.proposed]
+view_kind = "exterior"
+finish = "tumbled"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 2
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Green is a tiny blob off the stone. Hairline cracks visible."
+
+[images.fire-agate.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "lobed"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline traces background vignette, not stone; botryoidal surface"
+
+[images.gaillac-museum-d-histoire-naturelle-115.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Close-up of brecciated face; no rim; green on small patch."
+
+[images.gdcn0024070-50192449478.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline includes shadow below; face may be sawn not broken"
+
+[images.geneva-natural-history-museum-agate.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Outline takes in stand and background; white lines may be reflections"
+
+[images.gestein-mit-verschiedenen-mineralen-mineralogia.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Amygdale in host rock; outline only agate plus some host"
+
+[images.high-grade-slaughter-mountain-arizona-fire-agate-rough.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "lobed"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Held in hand; outline takes background and covers top half only"
+
+[images.hildesheim-roemer-und-pelizaeus-museum-achat.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Dyed slab on stand; outline traces inner zone only; granular skin unclassified"
+
+[images.holley-blue-agate-linn-county-oregon-usa-7.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Rough chunk; green covers only left part plus background."
+
+[images.image.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 4
+C22_fill = "filled"
+C22_offset = "no"
+outline = "yes"
+confidence = "medium"
+note = "Oblique view; rough top may be host or skin; iron-stained cracks"
+
+[images.image-2.proposed]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "open"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline a background patch; drusy geode, face type unclear"
+
+[images.image-3.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = 0.05
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Green outlines small host-rock patch at left only."
+
+[images.image-4.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline is the museum label; grey speckled outer skin, type unclear"
+
+[images.imgp2020360-50580579282.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 5
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Outline is background patch; several hairline cracks, fill unclear"
+
+[images.imgp2020361-50579722543.proposed]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 6
+C22_fill = "both"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline is patch in cavity; possibly broken not sawn; several cross-cutting cracks"
+
+[images.imgp2020363-50579723983.proposed]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 6
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline cuts inside stone; many cracks, fill and offset hard to judge"
+
+[images.imgp2020364-50580451931.proposed]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 5
+C22_fill = "both"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Stone runs off right edge; green cuts inside. Several cross-cutting cracks."
+
+[images.imgp2020365-50579721383.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 5
+C22_fill = "filled"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Stone runs off left/top edge; outline cuts inside rim"
+
+[images.iris-agate-from-agatized-petrified-wood-stinking-water-oregon-detail-from-oregon.proposed]
+view_kind = "slab in transmitted light"
+finish = "polished"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "open"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Detail view; no rim; green outlines one fragment; open cracks."
+
+[images.iris-agate-from-agatized-petrified-wood-stinking-water-oregon-usa-detail-from-or.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "open"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Detail of backlit iris slab; outline follows internal zones; wood agate"
+
+[images.laguna-agate-chihuahua-mexico-2-32661870051.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = 0.07
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline traces core only; rough crust width varies"
+
+[images.laguna-agate-chihuahua-mexico-3-32785167565.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Outline tiny patch at rim; rough grey skin may be host; label says Texas"
+
+[images.malawi-agate-malawi-southeastern-africa-32734668126.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "open"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Outline is patch on background; brown rough skin class unclear; stone touches frame"
+
+[images.mexico004.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline is tiny patch in centre; thin tan skin at rim unclassified"
+
+[images.mineral-181-hg.proposed]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Green bulges onto background at right. Thin brown skin, type unclear."
+
+[images.montana-moss-agate.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline takes in background and stand at lower left"
+
+[images.moosachat-hg.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Pendant cabochon; green takes in bail and background."
+
+[images.moss-agate-1.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Macro of dendrites, no bands; outline a patch; stone off frame"
+
+[images.moss-agate-detail-cropped.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Detail crop of moss inclusions; no bands or rim"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-1.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline is tiny patch below stone; polished moss agate slab"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-10.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline cuts inside along dark areas; no bands to judge cracks against"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-2.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Polished moss agate, little banding; outline takes part stone plus background"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-3.proposed]
+view_kind = "exterior"
+finish = "tumbled"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Polished flat pebble, maybe a polished slice; green cuts inside stone."
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-4.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline cuts inside stone along dendrite band; polished freeform"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-5.proposed]
+view_kind = "slab in transmitted light"
+finish = "polished"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Green outlines interior patch; stone partly off frame."
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-6.proposed]
+view_kind = "slab in transmitted light"
+finish = "polished"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Backlit moss agate; stone runs off frame; outline cuts inside"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-7.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Backlit close-up; rim barely visible; outline on interior patch"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-8.proposed]
+view_kind = "slab in transmitted light"
+finish = "polished"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Stone runs off frame; outline inner patch"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-9.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline cuts inside at dark inclusions; stone runs off frame; no bands"
+
+[images.museo-de-la-plata-agata.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 2
+C22_fill = "open"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Green outlines a small band patch near top."
+
+[images.museo-de-la-plata-agata-cropped.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 2
+C22_fill = "filled"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Close-up, rim not visible; outline tiny patch; orange-filled veins top and bottom"
+
+[images.museo-di-mineralogia-trasperenze-quarzo-agata-02.proposed]
+view_kind = "slab in transmitted light"
+finish = "polished"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Several slabs; outline is background lightbox area"
+
+[images.museum-mineralogia-munchen-06.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Green outlines museum label, not stone. Dark rim crust unclear."
+
+[images.museum-of-the-history-of-the-mirozdanie-agate-2026-03-p03.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 6
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Outline tiny patch in quartz; brown crystalline rim crust; stained cracks"
+
+[images.nellie-blue-flint-upper-mercer-flint-middle-pennsylvanian-eastern-ohio-usa-60.proposed]
+view_kind = "exterior"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Freeform polished stone; outline on background patch"
+
+[images.oregon001.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "spherulitic shell"
+C5_width = 0.25
+C22_count = 6
+C22_fill = "both"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Thunderegg; outline tiny inner patch; shell width rough"
+
+[images.oregon002.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline is small patch; worn sagenitic pebble, partly broken faces"
+
+[images.oregon003.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 2
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Brown rhyolite rim: adhering host or thunderegg spherulitic shell; outline tiny patch"
+
+[images.oregon004.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Very dark backlit scene; rim invisible; green is tiny patch."
+
+[images.panoramio-diego-viveros-13.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 1
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Dyed slab held by hand against sky; outline is background"
+
+[images.panoramio-diego-viveros-6.proposed]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Hand-held against sky; green outlines background."
+
+[images.polished-agate-macro-3.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "yes"
+confidence = "medium"
+note = "Outline good; bottom edge shows brownish skin in perspective"
+
+[images.precious-stone-agate-blue-semi-precious-stone.proposed]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 2
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Dyed slab; outline is tiny dot; lighting possibly partly transmitted"
+
+[images.pyrolusite-in-moss-agate-geodil-number-41.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Stone touches left frame; dark dendrites blur top rim"
+
+[images.quartz-agate-le-vaisseau-bresil-dation-caillois.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 2
+C22_fill = "open"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Outline takes in large background area; rough crystalline crust at top"
+
+[images.quartz-agateplate-bluegrey.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Thin slab on paper; outline takes background and touches frame"
+
+[images.quartz-agateplate-redbrown-white.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Green takes in background at top right."
+
+[images.quartz-uruguay-dation-caillois.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "medium"
+note = "Outline mostly on rim but takes in background at lower left"
+
+[images.quarz-achatmandel.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "clay or celadonite coat"
+C5_width = 0.03
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "No outline found. Thin grey-green skin at rim."
+
+[images.quarz-augenachat.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Stalactitic slice in quartz druse; outline excludes crystals at bottom"
+
+[images.quarz-augenachat-cropped.proposed]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Eye agate in quartz; outline wanders through quartz and inner zones"
+
+[images.richardson-ranch-thunder-egg-with-plume-from-plume-beds-richardson-ranch-madras-.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Close-up, rim not visible; outline tiny patch"
+
+[images.sagenitic-fire-agate-01.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "absent"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Polished freeform; outline is tiny patch near top right"
+
+[images.scotland007.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 3
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline cuts inside stone; prominent crack upper right"
+
+[images.sliced-agate-geode-with-crystals-2.proposed]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Oblique view of thin geode slice; green is tiny patch at corner."
+
+[images.teepee-canyon-agate-custer-south-dakota-usa-26560771781.proposed]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 5
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Outline an interior patch; many hairline cracks, fill unclear"
+
+[images.turnov-muzeum-ceskeho-raje-mineralogicka-expozice-3.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C5_width = 0.05
+C22_count = 2
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+confidence = "low"
+note = "Green outlines background patch at lower right."
+
+[images.unknown-polished-rock-macro-1.proposed]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = 0
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+confidence = "medium"
+note = "Outline takes in shadow below stone; thin brown rim material"
+
+[images.winogronowy-agat-agate-grape-san-rafael-swell-emery-county-utah-usa.proposed]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "blistered"
+C5_rind = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+confidence = "low"
+note = "Botryoidal cluster on matrix; outline is small patch; blistered vs lobed unsure"

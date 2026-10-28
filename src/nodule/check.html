@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Label Check</title>
+<style>
+:root {
+  --bg: #f6f5f2; --panel: #ffffff; --ink: #1d1d1b; --muted: #6b6a66;
+  --line: #dddbd5; --accent: #2b6cb0; --changed: #fff3cd; --changed-ink: #7a5a00;
+  --ok: #2f7d4a; --bad: #b42318;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161615; --panel: #20201f; --ink: #ecebe8; --muted: #a09f9a;
+    --line: #3a3936; --accent: #7fb2f0; --changed: #3d3315; --changed-ink: #f0d58a;
+    --ok: #6cc28c; --bad: #f08a80;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--panel); }
+header h1 { font-size: 17px; margin: 0; font-weight: 600; }
+#progress { color: var(--muted); }
+#dots { display: flex; gap: 4px; flex-wrap: wrap; }
+#dots button { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--line);
+  background: var(--panel); color: var(--muted); font-size: 10px; padding: 0; cursor: pointer; }
+#dots button.done { background: var(--ok); border-color: var(--ok); color: #fff; }
+#dots button.here { outline: 2px solid var(--accent); outline-offset: 1px; }
+main { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 16px; padding: 16px; }
+@media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+#picture { background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+#picture img { width: 100%; max-height: calc(100vh - 150px); object-fit: contain; cursor: zoom-in; }
+#legend, .hint { color: var(--muted); font-size: 13px; }
+#legend b { font-weight: 600; }
+form { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px;
+  display: flex; flex-direction: column; gap: 12px; align-self: start; }
+.claude { font-size: 13px; color: var(--muted); border-left: 3px solid var(--line); padding-left: 8px; }
+fieldset { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+fieldset.changed { background: var(--changed); border-radius: 6px; padding: 6px; margin: -6px; }
+fieldset.changed .was { display: block; }
+.was { display: none; font-size: 12px; color: var(--changed-ink); }
+label { font-weight: 600; font-size: 14px; }
+select, input[type=text], input[type=number] { font: inherit; padding: 5px 7px; border-radius: 5px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 100%; }
+.row { display: flex; gap: 8px; }
+.row > fieldset { flex: 1; }
+h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted);
+  margin: 6px 0 -4px; }
+.actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+button.primary { font: inherit; font-weight: 600; padding: 8px 14px; border-radius: 6px;
+  border: 0; background: var(--accent); color: #fff; cursor: pointer; }
+button.plain { font: inherit; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--line);
+  background: var(--panel); color: var(--ink); cursor: pointer; }
+#status { font-size: 13px; }
+#status.ok { color: var(--ok); } #status.bad { color: var(--bad); }
+#finished { display: none; padding: 10px 14px; margin: 16px 16px 0; border-radius: 8px;
+  background: var(--panel); border: 1px solid var(--ok); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Label check</h1>
+  <span id="progress"></span>
+  <div id="dots"></div>
+</header>
+<div id="finished">All photos checked: thank you. You can close this tab and tell Claude in the terminal.</div>
+<main>
+  <section id="picture">
+    <img id="photo" alt="">
+    <div id="legend"><b>Green</b>: outline found for the stone. <b>Cyan</b>: its convex hull.
+      <b>Red</b>: counted concavities. <b>Yellow</b>: centre. Click the picture to open it full size.</div>
+    <div class="hint" id="name"></div>
+  </section>
+  <form id="form" autocomplete="off">
+    <div class="claude" id="claude"></div>
+    <div class="hint">Claude's proposals are filled in. Change any you disagree with; a changed
+      answer turns yellow. "unknown" is a fine answer where the photo can't tell.</div>
+
+    <h2>Outline</h2>
+    <fieldset data-name="outline"><label for="outline">Does the green line follow the stone's rim all round?</label>
+      <select id="outline"></select>
+      <span class="hint">No if it cuts inside the stone, takes in background, stands or labels,
+        or the stone runs off the photo.</span><span class="was"></span></fieldset>
+
+    <h2>View</h2>
+    <fieldset data-name="view_kind"><label for="view_kind">What is shown</label>
+      <select id="view_kind"></select><span class="was"></span></fieldset>
+    <div class="row">
+      <fieldset data-name="finish"><label for="finish">Surface finish</label>
+        <select id="finish"></select><span class="was"></span></fieldset>
+      <fieldset data-name="lighting"><label for="lighting">Lighting</label>
+        <select id="lighting"></select><span class="was"></span></fieldset>
+    </div>
+
+    <h2>Outside and rim</h2>
+    <fieldset data-name="C4_surface"><label for="C4_surface">C4 exterior surface (exteriors only)</label>
+      <select id="C4_surface"></select><span class="was"></span></fieldset>
+    <div class="row">
+      <fieldset data-name="C5_rind"><label for="C5_rind">C5 rind</label>
+        <select id="C5_rind"></select><span class="was"></span></fieldset>
+      <fieldset data-name="C5_width"><label for="C5_width">Rind width</label>
+        <input id="C5_width" type="text" placeholder="unknown">
+        <span class="hint">share of face width, e.g. 0.03</span><span class="was"></span></fieldset>
+    </div>
+    <span class="hint">Host rock still attached is "adhering host", not a rind.</span>
+
+    <h2>Fractures (C22)</h2>
+    <div class="row">
+      <fieldset data-name="C22_count"><label for="C22_count">Count</label>
+        <input id="C22_count" type="text" placeholder="unknown"><span class="was"></span></fieldset>
+      <fieldset data-name="C22_fill"><label for="C22_fill">Open or filled</label>
+        <select id="C22_fill"></select><span class="was"></span></fieldset>
+      <fieldset data-name="C22_offset"><label for="C22_offset">Bands offset</label>
+        <select id="C22_offset"></select><span class="was"></span></fieldset>
+    </div>
+
+    <h2>Your band count (optional)</h2>
+    <fieldset><label for="C6_eye">Light bands from rim to centre</label>
+      <input id="C6_eye" type="number" min="0" step="1" placeholder="leave blank if unsure">
+      <span class="hint">Follow a line from the rim straight in to the centre (or to the quartz
+        core) and count the light bands you cross. Rough is fine.</span></fieldset>
+    <fieldset><label for="note">Note (optional)</label><input id="note" type="text"></fieldset>
+
+    <div class="actions">
+      <button type="button" class="plain" id="prev">&larr; Back</button>
+      <button type="submit" class="primary">Save and next</button>
+      <span id="status"></span>
+    </div>
+    <span class="hint">Ctrl+Enter saves.</span>
+  </form>
+</main>
+<script>
+const DATA = /*DATA*/null;
+const rows = DATA.rows;
+const CHOICE_FIELDS = Object.keys(DATA.choices);
+const NUMBER_FIELDS = ["C5_width", "C22_count"];
+let here = Math.max(0, rows.findIndex(r => !r.checked));
+const $ = id => document.getElementById(id);
+
+for (const name of CHOICE_FIELDS) {
+  for (const value of DATA.choices[name]) $(name).add(new Option(value, value));
+}
+
+function shown(value) { return value === undefined || value === "unknown" ? "" : String(value); }
+
+function load() {
+  const row = rows[here];
+  const values = row.checked || row.proposed;
+  $("photo").src = "/img/" + encodeURIComponent(row.id) + ".png";
+  $("photo").alt = row.id;
+  $("name").textContent = row.id;
+  $("claude").textContent = "Claude (" + row.proposed.confidence + " confidence): "
+    + (row.proposed.note || "no note");
+  for (const name of CHOICE_FIELDS) $(name).value = values[name];
+  for (const name of NUMBER_FIELDS) $(name).value = shown(values[name]);
+  $("C6_eye").value = shown(row.checked && row.checked.C6_eye);
+  $("note").value = (row.checked && row.checked.note) || "";
+  $("status").textContent = row.checked ? "Saved earlier; saving again replaces it." : "";
+  $("status").className = "";
+  marks();
+  draw();
+  window.scrollTo(0, 0);
+}
+
+function value(name) {
+  if (CHOICE_FIELDS.includes(name)) return $(name).value;
+  const text = $(name).value.trim();
+  if (text === "" || text.toLowerCase() === "unknown") return "unknown";
+  const n = Number(text);
+  return Number.isFinite(n) ? n : text;
+}
+
+function marks() {
+  const proposed = rows[here].proposed;
+  for (const set of document.querySelectorAll("fieldset[data-name]")) {
+    const name = set.dataset.name;
+    const changed = value(name) !== proposed[name];
+    set.classList.toggle("changed", changed);
+    set.querySelector(".was").textContent = changed ? "Claude proposed: " + proposed[name] : "";
+  }
+}
+
+function draw() {
+  const done = rows.filter(r => r.checked).length;
+  $("progress").textContent = "Photo " + (here + 1) + " of " + rows.length + " · " + done + " checked";
+  $("dots").replaceChildren(...rows.map((r, i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = i + 1; b.title = r.id;
+    b.className = (r.checked ? "done " : "") + (i === here ? "here" : "");
+    b.onclick = () => { here = i; load(); };
+    return b;
+  }));
+  $("finished").style.display = done === rows.length ? "block" : "none";
+}
+
+async function save(event) {
+  event.preventDefault();
+  const values = {};
+  for (const name of [...CHOICE_FIELDS, ...NUMBER_FIELDS, "C6_eye"]) values[name] = value(name);
+  values.note = $("note").value.trim();
+  $("status").textContent = "Saving…"; $("status").className = "";
+  try {
+    const reply = await fetch("/save", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: rows[here].id, values }) });
+    const got = await reply.json();
+    if (!got.ok) { $("status").textContent = got.problems.join("; "); $("status").className = "bad"; return; }
+  } catch (err) {
+    $("status").textContent = "Could not save: is the terminal still running?"; $("status").className = "bad";
+    return;
+  }
+  if (values.note === "") delete values.note;
+  rows[here].checked = values;
+  const next = rows.findIndex((r, i) => i > here && !r.checked);
+  const any = rows.findIndex(r => !r.checked);
+  here = next >= 0 ? next : any >= 0 ? any : here;
+  load();
+  $("status").textContent = "Saved."; $("status").className = "ok";
+}
+
+$("form").addEventListener("submit", save);
+$("form").addEventListener("input", marks);
+$("form").addEventListener("keydown", e => { if (e.key === "Enter" && e.ctrlKey) save(e); });
+$("prev").onclick = () => { here = (here - 1 + rows.length) % rows.length; load(); };
+$("photo").onclick = () => window.open($("photo").src, "_blank");
+load();
+</script>
+</body>
+</html>

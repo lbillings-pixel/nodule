@@ -203,6 +203,15 @@ carry over, but none of them is read as a cause:
   could be judged on only a few faces. C6 is a lower bound where the outline
   cuts inside the rim, so it shares C1–C3's outline check; on photos it
   stays plausible at best and is read as a range.
+- **Labels (2026-10-28).** Eight helper agents proposed the labels for all
+  230 photos from the outline-check pictures (`references/library-view-labels.toml`,
+  `nodule.labels`); the owner checks a fixed random 30 on a local page
+  (`python -m nodule.check`), may add a rough band count by eye, and the check
+  overrides the proposal. The proposals judge the outline to follow the rim on
+  11 of 230 photos (Claude viewed two to confirm the reading), so C1-C3 now
+  stand on 11 photos and C6 on 10 until the owner's check, or a better
+  segmentation in agatesim, says otherwise. 128 of the 230 proposals are low
+  confidence.
 
 ### 9. Choices (owner accepted the recommendations, 2026-10-27)
 

@@ -1,0 +1,7054 @@
+# Reference library tags under the characterization schema (ADR 0004).
+# Written by `python -m nodule.tags`; do not edit by hand. Keyed by agatesim
+# library id; no image is held here. "unknown" marks a value that cannot be
+# had from this photo, or has not been tagged yet. Appearance only: never
+# evidence for a formation mechanism (ADR 0002).
+
+[meta]
+schema = "ADR 0004"
+sampling = "unknown, compared as centre-seeking"
+photos = 230
+
+[images.2006-10-30buchstutzeachat03]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.6064
+C1_regularity = 0.9629
+C2_circularity = 0.7559
+C3_irregularity = 0.5108
+C3_concavities = 12
+C7_spread = 0.6347
+C8_trend = 1.3208
+C9_ratio = 1.0016
+C11_hurst = 0.2648
+C17_core = 0.1857
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 4.0
+C6_rule_gap = 0.2917
+C6_profiles = 14
+C10_persistence = "unknown"
+
+[images.2006-10-30buchstutzeachat07-o]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7406
+C1_regularity = 0.6941
+C2_circularity = 0.5651
+C3_irregularity = 1.4504
+C3_concavities = 11
+C7_spread = 0.6036
+C8_trend = 0.5965
+C9_ratio = 1.0105
+C11_hurst = 0.441
+C17_core = 0.2308
+C6_count = 2.0
+C6_low = 0.0
+C6_high = 5.0
+C6_rule_gap = 0.0
+C6_profiles = 17
+C10_persistence = "unknown"
+
+[images.achat-1]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+    "open cavity",
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.6722
+C1_regularity = 0.9786
+C2_circularity = 0.7435
+C3_irregularity = 1.1073
+C3_concavities = 16
+C7_spread = 0.6207
+C8_trend = -0.7376
+C9_ratio = 0.8735
+C11_hurst = 0.4261
+C17_core = 0.0696
+C6_count = 2.0
+C6_low = 0.0
+C6_high = 3.0
+C6_rule_gap = 0.3333
+C6_profiles = 15
+C10_persistence = "unknown"
+
+[images.achat-2]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+    "shadow",
+]
+features = [
+    "open cavity",
+    "quartz core",
+    "inclusions",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.933
+C1_regularity = 0.9777
+C2_circularity = 0.8412
+C3_irregularity = 1.2662
+C3_concavities = 15
+C7_spread = 0.6033
+C8_trend = -1.0329
+C9_ratio = 0.892
+C11_hurst = 0.4103
+C17_core = 0.0361
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 6.0
+C6_rule_gap = 0.3333
+C6_profiles = 17
+C10_persistence = "unknown"
+
+[images.achat-rasovka]
+verdict = "forms"
+forms = [
+    "fortification",
+    "moss",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.424
+C1_regularity = 0.7961
+C2_circularity = 0.5814
+C3_irregularity = 0.7742
+C3_concavities = 12
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.achatscheibe]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.achaty-zajecov-2]
+verdict = "forms"
+forms = [
+    "fortification",
+    "fortification-waterline",
+    "waterline",
+]
+features = [
+    "host rock",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.8908
+C1_regularity = 0.9709
+C2_circularity = 0.8366
+C3_irregularity = 0.5289
+C3_concavities = 9
+C7_spread = 0.722
+C8_trend = 0.8497
+C9_ratio = 1.0621
+C11_hurst = 0.4865
+C17_core = 0.2391
+C6_count = 2.0
+C6_low = 1.0
+C6_high = 4.0
+C6_rule_gap = 0.3667
+C6_profiles = 16
+C10_persistence = "unknown"
+
+[images.achaty-zajecov-3]
+verdict = "forms"
+forms = [
+    "fortification-waterline",
+    "waterline",
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.8073
+C1_regularity = 0.9869
+C2_circularity = 0.8623
+C3_irregularity = 0.4551
+C3_concavities = 6
+C7_spread = 0.6233
+C8_trend = 0.9215
+C9_ratio = 1.0725
+C11_hurst = 0.5384
+C17_core = 0.5092
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 6.0
+C6_rule_gap = 0.25
+C6_profiles = 21
+C10_persistence = "unknown"
+
+[images.agat-3d-bobonong-botswana]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.6474
+C1_regularity = 0.9338
+C2_circularity = 0.7279
+C3_irregularity = 1.0209
+C3_concavities = 7
+C7_spread = 0.7185
+C8_trend = 0.2433
+C9_ratio = 0.9732
+C11_hurst = 0.4966
+C17_core = 0.0325
+C6_count = 5.0
+C6_low = 2.0
+C6_high = 8.5
+C6_rule_gap = 0.1833
+C6_profiles = 20
+C10_persistence = 0.0395
+
+[images.agat-bobonong-botswana]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.3853
+C1_regularity = 0.9529
+C2_circularity = 0.617
+C3_irregularity = 0.5941
+C3_concavities = 11
+C7_spread = 0.6211
+C8_trend = 0.5147
+C9_ratio = 0.9856
+C11_hurst = 0.407
+C17_core = 0.0
+C6_count = 5.0
+C6_low = 2.0
+C6_high = 8.0
+C6_rule_gap = 0.2
+C6_profiles = 23
+C10_persistence = -0.0721
+
+[images.agat-lake-superior-agat-z-jez-gornego-minnesota-usa]
+verdict = "forms"
+forms = [
+    "fortification",
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5282
+C1_regularity = 0.9593
+C2_circularity = 0.6956
+C3_irregularity = 0.8471
+C3_concavities = 7
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agat-lake-superior-agat-z-jez-gornego-minnesota-usa-cropped]
+verdict = "forms"
+forms = [
+    "fortification",
+    "plume",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.5974
+C1_regularity = 0.8501
+C2_circularity = 0.6408
+C3_irregularity = 1.0526
+C3_concavities = 11
+C7_spread = 0.5973
+C8_trend = 1.118
+C9_ratio = 1.0205
+C11_hurst = 0.4282
+C17_core = 0.0
+C6_count = 1.0
+C6_low = 0.0
+C6_high = 2.0
+C6_rule_gap = 0.0
+C6_profiles = 13
+C10_persistence = "unknown"
+
+[images.agat-lake-superior-duluth-minnesota-usa]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+    "tube",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.7179
+C1_regularity = 0.9223
+C2_circularity = 0.7503
+C3_irregularity = 0.5718
+C3_concavities = 3
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agat-lake-superior-dwie-poowki-minnesota-usa]
+verdict = "forms"
+forms = [
+    "waterline",
+    "fortification-waterline",
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.4585
+C1_regularity = 0.8636
+C2_circularity = 0.6701
+C3_irregularity = 0.6979
+C3_concavities = 5
+C7_spread = 0.5595
+C8_trend = -0.1656
+C9_ratio = 0.9918
+C11_hurst = 0.4138
+C17_core = 0.009
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 5.0
+C6_rule_gap = 0.25
+C6_profiles = 21
+C10_persistence = "unknown"
+
+[images.agat-lake-superior-dwie-poowki-minnesota-usa-cropped]
+verdict = "forms"
+forms = [
+    "waterline",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.425
+C1_regularity = 0.8735
+C2_circularity = 0.5663
+C3_irregularity = 1.4455
+C3_concavities = 10
+C7_spread = 0.2654
+C8_trend = 0.3737
+C9_ratio = 1.1242
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 0
+C10_persistence = "unknown"
+
+[images.agat-lake-superior-lake-superior-agate-minnesota-usa]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.6479
+C1_regularity = 0.9068
+C2_circularity = 0.7276
+C3_irregularity = 1.0882
+C3_concavities = 8
+C7_spread = 0.5734
+C8_trend = 0.0801
+C9_ratio = 1.0026
+C11_hurst = 0.1865
+C17_core = 0.0369
+C6_count = 2.0
+C6_low = 1.0
+C6_high = 4.0
+C6_rule_gap = 0.2083
+C6_profiles = 14
+C10_persistence = "unknown"
+
+[images.agat-lake-superior-minnesota-stany-zjednoczone-ameryki-ponocnej-usa]
+verdict = "forms"
+forms = [
+    "fortification",
+    "waterline",
+    "fortification-waterline",
+    "eye",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.5759
+C1_regularity = 0.9404
+C2_circularity = 0.7104
+C3_irregularity = 0.6794
+C3_concavities = 7
+C7_spread = 0.6231
+C8_trend = -0.0384
+C9_ratio = 0.9915
+C11_hurst = 0.3159
+C17_core = 0.0848
+C6_count = 5.0
+C6_low = 2.0
+C6_high = 11.0
+C6_rule_gap = 0.25
+C6_profiles = 19
+C10_persistence = 0.0058
+
+[images.agat-lake-superior-stan-minnesota-usa]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.4801
+C1_regularity = 0.9701
+C2_circularity = 0.6693
+C3_irregularity = 0.4718
+C3_concavities = 5
+C7_spread = 0.7299
+C8_trend = -0.1601
+C9_ratio = 1.0216
+C11_hurst = 0.4823
+C17_core = 0.0021
+C6_count = 6.0
+C6_low = 2.0
+C6_high = 10.0
+C6_rule_gap = 0.1667
+C6_profiles = 21
+C10_persistence = 0.0263
+
+[images.agat-lake-superior-stan-minnesota-usa-cropped]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.3672
+C1_regularity = 0.8726
+C2_circularity = 0.5417
+C3_irregularity = 1.5075
+C3_concavities = 7
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agat-lake-superior-usa-minnesota]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+    "tube",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.3871
+C1_regularity = 0.8503
+C2_circularity = 0.5587
+C3_irregularity = 0.4415
+C3_concavities = 2
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agat-ognisty-calvillo-aguascalientes-meksyk]
+verdict = "forms"
+forms = [
+    "eye",
+    "botryoidal",
+]
+features = [
+    "rough",
+    "iridescence",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.8025
+C1_regularity = 0.9764
+C2_circularity = 0.819
+C3_irregularity = 0.6463
+C3_concavities = 7
+C7_spread = 0.6385
+C8_trend = -0.4072
+C9_ratio = 1.0462
+C11_hurst = 0.4672
+C17_core = 0.0027
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 5.0
+C6_rule_gap = 0.25
+C6_profiles = 20
+C10_persistence = "unknown"
+
+[images.agat-ojo-de-laguna-chihuahua-meksyk]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.6158
+C1_regularity = 0.7731
+C2_circularity = 0.6122
+C3_irregularity = 1.0988
+C3_concavities = 5
+C7_spread = 0.5658
+C8_trend = 0.5655
+C9_ratio = 1.0533
+C11_hurst = 0.257
+C17_core = 0.2683
+C6_count = 2.0
+C6_low = 1.0
+C6_high = 3.0
+C6_rule_gap = 0.2
+C6_profiles = 11
+C10_persistence = "unknown"
+
+[images.agat-ojo-de-laguna-chihuahua-meksyk-cropped]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7348
+C1_regularity = 0.9486
+C2_circularity = 0.7754
+C3_irregularity = 0.3369
+C3_concavities = 4
+C7_spread = 0.5572
+C8_trend = -1.0847
+C9_ratio = 0.9806
+C11_hurst = 0.5611
+C17_core = 0.3392
+C6_count = 2.0
+C6_low = 1.0
+C6_high = 3.0
+C6_rule_gap = 0.3333
+C6_profiles = 19
+C10_persistence = "unknown"
+
+[images.agat-winogronowy-agate-grape-san-rafael-swell-emery-county-utah-usa]
+verdict = "forms"
+forms = [
+    "botryoidal",
+]
+features = [
+    "rough",
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.6255
+C1_regularity = 0.8057
+C2_circularity = 0.6662
+C3_irregularity = 0.8899
+C3_concavities = 5
+C7_spread = 0.6448
+C8_trend = 1.5913
+C9_ratio = 1.123
+C11_hurst = 0.4843
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 1
+C10_persistence = "unknown"
+
+[images.agat-winogronowy-agate-grape-san-rafael-swell-emery-county-utah-usa-cropped]
+verdict = "forms"
+forms = [
+    "botryoidal",
+]
+features = [
+    "host rock",
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.4478
+C1_regularity = 0.9312
+C2_circularity = 0.6342
+C3_irregularity = 0.7004
+C3_concavities = 9
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agat-z-geoda-rancho-gregoria-meksyk]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.6035
+C1_regularity = 0.96
+C2_circularity = 0.7536
+C3_irregularity = 0.9423
+C3_concavities = 11
+C7_spread = 0.6565
+C8_trend = 1.333
+C9_ratio = 1.0514
+C11_hurst = 0.4744
+C17_core = 0.0781
+C6_count = 6.5
+C6_low = 1.5
+C6_high = 10.0
+C6_rule_gap = 0.1623
+C6_profiles = 18
+C10_persistence = 0.1558
+
+[images.agat-ze-stalaktytami-agate-creek-queensland-australia]
+verdict = "forms"
+forms = [
+    "tube",
+    "quartz-geode",
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.5838
+C1_regularity = 0.9616
+C2_circularity = 0.715
+C3_irregularity = 0.4895
+C3_concavities = 9
+C7_spread = 0.5382
+C8_trend = 0.97
+C9_ratio = 1.0089
+C11_hurst = 0.5012
+C17_core = 0.048
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 5.0
+C6_rule_gap = 0.2857
+C6_profiles = 17
+C10_persistence = "unknown"
+
+[images.agat-ze-stalaktytami-agate-creek-queensland-australia-cropped]
+verdict = "forms"
+forms = [
+    "tube",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.562
+C1_regularity = 0.6679
+C2_circularity = 0.5323
+C3_irregularity = 2.0582
+C3_concavities = 8
+C7_spread = "unknown"
+C8_trend = 0.3756
+C9_ratio = "unknown"
+C11_hurst = 0.8788
+C17_core = 0.1055
+C6_count = 2.0
+C6_low = 0.0
+C6_high = 2.0
+C6_rule_gap = 0.5
+C6_profiles = 9
+C10_persistence = "unknown"
+
+[images.agate-005b-6mm]
+verdict = "forms"
+forms = [
+    "fortification",
+    "shadow",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.4935
+C1_regularity = 0.8171
+C2_circularity = 0.5409
+C3_irregularity = 2.2928
+C3_concavities = 10
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-1-29790070266]
+verdict = "forms"
+forms = [
+    "fortification",
+    "moss",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.6271
+C1_regularity = 0.9754
+C2_circularity = 0.7218
+C3_irregularity = 0.416
+C3_concavities = 2
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-11-30746153457]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.3514
+C1_regularity = 0.8755
+C2_circularity = 0.5473
+C3_irregularity = 1.5511
+C3_concavities = 11
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-12-30746153687]
+verdict = "forms"
+forms = [
+    "fortification",
+    "tube",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.5976
+C1_regularity = 0.9698
+C2_circularity = 0.753
+C3_irregularity = 0.6088
+C3_concavities = 7
+C7_spread = 0.5996
+C8_trend = -0.3277
+C9_ratio = 0.9672
+C11_hurst = 0.3514
+C17_core = 0.0014
+C6_count = 5.0
+C6_low = 1.0
+C6_high = 6.0
+C6_rule_gap = 0.3
+C6_profiles = 13
+C10_persistence = -0.1043
+
+[images.agate-14-30746154167]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.9952
+C1_regularity = 0.9382
+C2_circularity = 0.8049
+C3_irregularity = 1.2867
+C3_concavities = 11
+C7_spread = 0.6431
+C8_trend = -0.6027
+C9_ratio = 0.952
+C11_hurst = 0.3323
+C17_core = 0.1847
+C6_count = 3.5
+C6_low = 1.5
+C6_high = 8.0
+C6_rule_gap = 0.1667
+C6_profiles = 14
+C10_persistence = "unknown"
+
+[images.agate-16-30746154767]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.6884
+C1_regularity = 0.9605
+C2_circularity = 0.7527
+C3_irregularity = 0.9777
+C3_concavities = 7
+C7_spread = 0.6295
+C8_trend = -0.2452
+C9_ratio = 0.9827
+C11_hurst = 0.2213
+C17_core = 0.0
+C6_count = 1.0
+C6_low = 1.0
+C6_high = 2.0
+C6_rule_gap = 0.5
+C6_profiles = 12
+C10_persistence = "unknown"
+
+[images.agate-17-30746155127]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.768
+C1_regularity = 0.5992
+C2_circularity = 0.5074
+C3_irregularity = 1.8094
+C3_concavities = 6
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-19-30746155707]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.838
+C1_regularity = 0.9563
+C2_circularity = 0.8215
+C3_irregularity = 0.1961
+C3_concavities = 4
+C7_spread = 0.5855
+C8_trend = -0.2102
+C9_ratio = 1.0276
+C11_hurst = 0.6064
+C17_core = 0.0
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 5.0
+C6_rule_gap = 0.25
+C6_profiles = 21
+C10_persistence = 0.1328
+
+[images.agate-2-31731816833]
+verdict = "forms"
+forms = [
+    "waterline",
+    "fortification-waterline",
+    "fortification",
+    "moss",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.4181
+C1_regularity = 0.8292
+C2_circularity = 0.5558
+C3_irregularity = 2.1877
+C3_concavities = 10
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-21-30746156187]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.6692
+C1_regularity = 0.9808
+C2_circularity = 0.7943
+C3_irregularity = 0.5525
+C3_concavities = 8
+C7_spread = 0.6223
+C8_trend = -0.7903
+C9_ratio = 1.0018
+C11_hurst = 0.3119
+C17_core = 0.0
+C6_count = 4.0
+C6_low = 1.0
+C6_high = 6.0
+C6_rule_gap = 0.25
+C6_profiles = 15
+C10_persistence = "unknown"
+
+[images.agate-22-30746156427]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.6103
+C1_regularity = 0.9804
+C2_circularity = 0.775
+C3_irregularity = 0.6173
+C3_concavities = 11
+C7_spread = 0.68
+C8_trend = -0.009
+C9_ratio = 1.0027
+C11_hurst = 0.2631
+C17_core = 0.0
+C6_count = 5.0
+C6_low = 2.0
+C6_high = 9.0
+C6_rule_gap = 0.2
+C6_profiles = 13
+C10_persistence = -0.0544
+
+[images.agate-23-48609868172]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.6123
+C1_regularity = 0.9732
+C2_circularity = 0.7769
+C3_irregularity = 0.6471
+C3_concavities = 13
+C7_spread = 0.6682
+C8_trend = -0.2693
+C9_ratio = 0.9991
+C11_hurst = 0.577
+C17_core = 0.0385
+C6_count = 4.0
+C6_low = 2.0
+C6_high = 7.0
+C6_rule_gap = 0.25
+C6_profiles = 21
+C10_persistence = -0.0999
+
+[images.agate-24-51867236448]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.4277
+C1_regularity = 0.9469
+C2_circularity = 0.5882
+C3_irregularity = 1.1422
+C3_concavities = 8
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-7-32755748235]
+verdict = "forms"
+forms = [
+    "fortification",
+    "shadow",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.8593
+C1_regularity = 0.9935
+C2_circularity = 0.8874
+C3_irregularity = 0.3965
+C3_concavities = 8
+C7_spread = 0.5811
+C8_trend = -1.8187
+C9_ratio = 1.0109
+C11_hurst = 0.4905
+C17_core = 0.063
+C6_count = 9.5
+C6_low = 4.0
+C6_high = 19.5
+C6_rule_gap = 0.1082
+C6_profiles = 20
+C10_persistence = 0.2565
+
+[images.agate-9-32408237080]
+verdict = "forms"
+forms = [
+    "moss",
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.674
+C1_regularity = 0.9786
+C2_circularity = 0.7813
+C3_irregularity = 0.3007
+C3_concavities = 9
+C7_spread = 0.6798
+C8_trend = -0.0843
+C9_ratio = 0.9749
+C11_hurst = 0.3692
+C17_core = 0.0158
+C6_count = 3.0
+C6_low = 2.0
+C6_high = 7.0
+C6_rule_gap = 0.15
+C6_profiles = 21
+C10_persistence = 0.3247
+
+[images.agate-adrasman-city-tajikistan-32755918215]
+verdict = "forms"
+forms = [
+    "moss",
+    "fortification",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5564
+C1_regularity = 0.9326
+C2_circularity = 0.6773
+C3_irregularity = 1.1813
+C3_concavities = 13
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-agate-creek-queensland-australia]
+verdict = "forms"
+forms = [
+    "fortification",
+    "tube",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.8364
+C1_regularity = 0.9092
+C2_circularity = 0.7736
+C3_irregularity = 0.8931
+C3_concavities = 11
+C7_spread = 0.5639
+C8_trend = -0.3314
+C9_ratio = 0.9758
+C11_hurst = 0.5871
+C17_core = 0.4545
+C6_count = 1.0
+C6_low = 0.0
+C6_high = 3.0
+C6_rule_gap = 0.5
+C6_profiles = 16
+C10_persistence = "unknown"
+
+[images.agate-agate-creek-queensland-australia-cropped]
+verdict = "forms"
+forms = [
+    "tube",
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.849
+C1_regularity = 0.9093
+C2_circularity = 0.7063
+C3_irregularity = 1.7306
+C3_concavities = 18
+C7_spread = 0.5452
+C8_trend = 1.6535
+C9_ratio = 1.0246
+C11_hurst = 0.5457
+C17_core = 0.207
+C6_count = 1.0
+C6_low = 0.0
+C6_high = 4.0
+C6_rule_gap = 0.4
+C6_profiles = 15
+C10_persistence = "unknown"
+
+[images.agate-amethyste-quartz]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.4921
+C1_regularity = 0.9141
+C2_circularity = 0.6102
+C3_irregularity = 1.8128
+C3_concavities = 11
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-borden-formation-lower-mississippian-eastern-kentucky-usa-11-32632652021]
+verdict = "forms"
+forms = [
+    "fortification",
+    "moss",
+    "eye",
+    "plume",
+]
+features = [
+    "quartz core",
+    "inclusions",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.4246
+C1_regularity = 0.8693
+C2_circularity = 0.5363
+C3_irregularity = 1.375
+C3_concavities = 6
+C7_spread = 0.6502
+C8_trend = -0.4286
+C9_ratio = 0.96
+C11_hurst = 0.4172
+C17_core = 0.7126
+C6_count = 1.0
+C6_low = 0.0
+C6_high = 2.0
+C6_rule_gap = 0.0
+C6_profiles = 13
+C10_persistence = "unknown"
+
+[images.agate-borden-formation-lower-mississippian-eastern-kentucky-usa-6-32632652621]
+verdict = "forms"
+forms = [
+    "fortification",
+    "moss",
+    "eye",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.455
+C1_regularity = 0.7727
+C2_circularity = 0.5692
+C3_irregularity = 0.6698
+C3_concavities = 7
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-borden-formation-lower-mississippian-eastern-kentucky-usa-8-32756316565]
+verdict = "forms"
+forms = [
+    "fortification",
+    "moss",
+]
+features = [
+    "open cavity",
+    "inclusions",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.6006
+C1_regularity = 0.85
+C2_circularity = 0.6602
+C3_irregularity = 1.5123
+C3_concavities = 19
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-chalcedony-quartz-sio2-27633474479]
+verdict = "forms"
+forms = [
+    "waterline",
+    "tube",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.4042
+C1_regularity = 0.7998
+C2_circularity = 0.5926
+C3_irregularity = 0.7413
+C3_concavities = 13
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-d-bruyere]
+verdict = "forms"
+forms = [
+    "waterline",
+    "fortification-waterline",
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5958
+C1_regularity = 0.8518
+C2_circularity = 0.6301
+C3_irregularity = 1.5286
+C3_concavities = 8
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-detail-agat-lake-superior-usa-minnesota-cropped]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+    "moss",
+]
+features = [
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.4723
+C1_regularity = 0.8605
+C2_circularity = 0.6359
+C3_irregularity = 1.428
+C3_concavities = 9
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 0
+C10_persistence = "unknown"
+
+[images.agate-east-of-the-black-hills-south-dakota-usa-21]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "host rock",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5254
+C1_regularity = 0.801
+C2_circularity = 0.6026
+C3_irregularity = 1.0197
+C3_concavities = 11
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-east-of-the-black-hills-south-dakota-usa-29]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+    "botryoidal",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.4761
+C1_regularity = 0.8644
+C2_circularity = 0.5939
+C3_irregularity = 1.7558
+C3_concavities = 11
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-east-of-the-black-hills-south-dakota-usa-6]
+verdict = "forms"
+forms = [
+    "eye",
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.458
+C1_regularity = 0.7338
+C2_circularity = 0.5355
+C3_irregularity = 1.9058
+C3_concavities = 14
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-filled-geode-brazil-1-31912507804]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.8557
+C1_regularity = 0.9903
+C2_circularity = 0.8725
+C3_irregularity = 1.2236
+C3_concavities = 19
+C7_spread = 0.6397
+C8_trend = 1.4835
+C9_ratio = 1.0264
+C11_hurst = 0.2472
+C17_core = 0.0602
+C6_count = 6.0
+C6_low = 1.0
+C6_high = 8.0
+C6_rule_gap = 0.1667
+C6_profiles = 15
+C10_persistence = 0.1595
+
+[images.agate-filled-geode-brazil-2-32714553426]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+    "tube",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.7156
+C1_regularity = 0.7951
+C2_circularity = 0.6282
+C3_irregularity = 1.7797
+C3_concavities = 13
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0833
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 0
+C10_persistence = "unknown"
+
+[images.agate-filled-geode-condor-agate-argentina-31941551193]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.9095
+C1_regularity = 0.9289
+C2_circularity = 0.7848
+C3_irregularity = 0.8885
+C3_concavities = 12
+C7_spread = 0.7244
+C8_trend = 0.6783
+C9_ratio = 1.1062
+C11_hurst = 0.3074
+C17_core = 0.0111
+C6_count = 5.0
+C6_low = 1.0
+C6_high = 10.0
+C6_rule_gap = 0.25
+C6_profiles = 14
+C10_persistence = 0.3521
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+    "moss",
+]
+features = [
+    "quartz core",
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.9347
+C1_regularity = 0.9946
+C2_circularity = 0.9141
+C3_irregularity = 0.4301
+C3_concavities = 10
+C7_spread = 0.6513
+C8_trend = -0.2148
+C9_ratio = 0.9836
+C11_hurst = 0.3334
+C17_core = 0.1181
+C6_count = 2.0
+C6_low = 0.0
+C6_high = 3.0
+C6_rule_gap = 0.2
+C6_profiles = 19
+C10_persistence = "unknown"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-10]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+    "waterline",
+    "fortification-waterline",
+    "moss",
+]
+features = [
+    "quartz core",
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.471
+C1_regularity = 0.9737
+C2_circularity = 0.6634
+C3_irregularity = 0.6347
+C3_concavities = 10
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.7955
+C6_count = 2.0
+C6_low = 1.0
+C6_high = 3.5
+C6_rule_gap = 0.25
+C6_profiles = 14
+C10_persistence = "unknown"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-11]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+    "waterline",
+    "fortification-waterline",
+]
+features = [
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.3926
+C1_regularity = 0.7759
+C2_circularity = 0.4903
+C3_irregularity = 1.1279
+C3_concavities = 9
+C7_spread = 0.656
+C8_trend = 0.6479
+C9_ratio = 1.0287
+C11_hurst = 0.2466
+C17_core = 0.0137
+C6_count = 4.0
+C6_low = 1.0
+C6_high = 6.0
+C6_rule_gap = 0.4
+C6_profiles = 17
+C10_persistence = "unknown"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-12]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "seam",
+    "moss",
+]
+features = [
+    "inclusions",
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.84
+C1_regularity = 0.7776
+C2_circularity = 0.6036
+C3_irregularity = 1.8909
+C3_concavities = 14
+C7_spread = 0.6329
+C8_trend = 0.4813
+C9_ratio = 1.028
+C11_hurst = 0.2351
+C17_core = 0.1093
+C6_count = 2.0
+C6_low = 0.0
+C6_high = 3.0
+C6_rule_gap = 0.3333
+C6_profiles = 12
+C10_persistence = "unknown"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-13]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "tube",
+]
+features = [
+    "inclusions",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.8339
+C1_regularity = 0.9871
+C2_circularity = 0.8685
+C3_irregularity = 0.9744
+C3_concavities = 11
+C7_spread = 0.6682
+C8_trend = 1.0685
+C9_ratio = 1.0476
+C11_hurst = 0.2989
+C17_core = 0.0573
+C6_count = 2.0
+C6_low = 0.0
+C6_high = 3.0
+C6_rule_gap = 0.3333
+C6_profiles = 17
+C10_persistence = "unknown"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-14]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "seam",
+    "waterline",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.4777
+C1_regularity = 0.7916
+C2_circularity = 0.5933
+C3_irregularity = 1.8308
+C3_concavities = 15
+C7_spread = 0.549
+C8_trend = -0.1256
+C9_ratio = 0.9949
+C11_hurst = 0.1291
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 4
+C10_persistence = "unknown"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-15]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+    "moss",
+    "botryoidal",
+]
+features = [
+    "quartz core",
+    "open cavity",
+    "inclusions",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.4865
+C1_regularity = 0.8605
+C2_circularity = 0.5886
+C3_irregularity = 1.6558
+C3_concavities = 9
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-2]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.9362
+C1_regularity = 0.9692
+C2_circularity = 0.8383
+C3_irregularity = 1.2338
+C3_concavities = 14
+C7_spread = 0.7049
+C8_trend = 1.8876
+C9_ratio = 1.0804
+C11_hurst = 0.5689
+C17_core = 0.0
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 5.0
+C6_rule_gap = 0.0
+C6_profiles = 21
+C10_persistence = "unknown"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-3]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.8955
+C1_regularity = 0.9853
+C2_circularity = 0.8777
+C3_irregularity = 0.8878
+C3_concavities = 16
+C7_spread = 0.7146
+C8_trend = 1.2439
+C9_ratio = 1.0601
+C11_hurst = 0.5613
+C17_core = 0.0
+C6_count = 4.0
+C6_low = 2.0
+C6_high = 5.0
+C6_rule_gap = 0.25
+C6_profiles = 20
+C10_persistence = "unknown"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-4]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+    "shadow",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7186
+C1_regularity = 0.9568
+C2_circularity = 0.7474
+C3_irregularity = 1.9288
+C3_concavities = 18
+C7_spread = 0.62
+C8_trend = 0.0058
+C9_ratio = 0.9869
+C11_hurst = 0.3387
+C17_core = 0.0078
+C6_count = 8.0
+C6_low = 2.0
+C6_high = 10.0
+C6_rule_gap = 0.1818
+C6_profiles = 11
+C10_persistence = 0.0919
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-5]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+    "fortification-waterline",
+    "waterline",
+    "moss",
+]
+features = [
+    "inclusions",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.6065
+C1_regularity = 0.9412
+C2_circularity = 0.6973
+C3_irregularity = 1.4744
+C3_concavities = 15
+C7_spread = 0.8846
+C8_trend = 0.1741
+C9_ratio = 0.9494
+C11_hurst = 0.4162
+C17_core = 0.0167
+C6_count = 3.0
+C6_low = 0.0
+C6_high = 7.0
+C6_rule_gap = 0.1429
+C6_profiles = 13
+C10_persistence = "unknown"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-6]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+    "moss",
+    "waterline",
+    "fortification-waterline",
+]
+features = [
+    "inclusions",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.3661
+C1_regularity = 0.9206
+C2_circularity = 0.5396
+C3_irregularity = 1.0196
+C3_concavities = 7
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-7]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "inclusions",
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.4467
+C1_regularity = 0.9194
+C2_circularity = 0.6368
+C3_irregularity = 0.6713
+C3_concavities = 7
+C7_spread = 0.5571
+C8_trend = 1.3184
+C9_ratio = 1.0651
+C11_hurst = 0.3759
+C17_core = 0.0
+C6_count = 2.0
+C6_low = 1.0
+C6_high = 3.0
+C6_rule_gap = 0.5
+C6_profiles = 22
+C10_persistence = "unknown"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-8]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+    "seam",
+]
+features = [
+    "quartz core",
+    "inclusions",
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7299
+C1_regularity = 0.6893
+C2_circularity = 0.6658
+C3_irregularity = 0.9901
+C3_concavities = 10
+C7_spread = 0.5435
+C8_trend = 1.0829
+C9_ratio = 1.0185
+C11_hurst = 0.304
+C17_core = 0.3352
+C6_count = 1.0
+C6_low = 0.0
+C6_high = 2.0
+C6_rule_gap = 0.2
+C6_profiles = 15
+C10_persistence = "unknown"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-9]
+verdict = "forms"
+forms = [
+    "waterline",
+    "fortification",
+    "quartz-geode",
+    "fortification-waterline",
+    "moss",
+]
+features = [
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7372
+C1_regularity = 0.9786
+C2_circularity = 0.7955
+C3_irregularity = 0.8632
+C3_concavities = 17
+C7_spread = 0.7789
+C8_trend = 0.1822
+C9_ratio = 0.9599
+C11_hurst = 0.434
+C17_core = 0.0754
+C6_count = 4.0
+C6_low = 1.5
+C6_high = 5.0
+C6_rule_gap = 0.3333
+C6_profiles = 22
+C10_persistence = "unknown"
+
+[images.agate-free-texture-2732496325]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.4822
+C1_regularity = 0.8883
+C2_circularity = 0.6166
+C3_irregularity = 0.9024
+C3_concavities = 5
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-from-poczki-gorne-rn3]
+verdict = "forms"
+forms = [
+    "fortification",
+    "moss",
+    "tube",
+]
+features = [
+    "inclusions",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.6117
+C1_regularity = 0.9817
+C2_circularity = 0.7691
+C3_irregularity = 0.7388
+C3_concavities = 12
+C7_spread = 0.7566
+C8_trend = 2.0305
+C9_ratio = 1.114
+C11_hurst = 0.3272
+C17_core = 0.0312
+C6_count = 2.0
+C6_low = 0.0
+C6_high = 3.0
+C6_rule_gap = 0.5
+C6_profiles = 20
+C10_persistence = "unknown"
+
+[images.agate-geode-a]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+    "eye",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.9789
+C1_regularity = 0.9997
+C2_circularity = 0.9738
+C3_irregularity = 0.095
+C3_concavities = 4
+C7_spread = 0.6213
+C8_trend = -0.7067
+C9_ratio = 0.9397
+C11_hurst = 0.2755
+C17_core = 0.0
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 5.0
+C6_rule_gap = 0.25
+C6_profiles = 24
+C10_persistence = "unknown"
+
+[images.agate-geol-water-level]
+verdict = "forms"
+forms = [
+    "fortification",
+    "waterline",
+    "fortification-waterline",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-india-minerals-gallery-natural-history-museum-london-sw7-flickr-edk7]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.6026
+C1_regularity = 0.8421
+C2_circularity = 0.6667
+C3_irregularity = 1.395
+C3_concavities = 12
+C7_spread = 0.645
+C8_trend = 0.1563
+C9_ratio = 1.019
+C11_hurst = 0.3994
+C17_core = 0.0145
+C6_count = 4.0
+C6_low = 0.0
+C6_high = 7.0
+C6_rule_gap = 0.25
+C6_profiles = 16
+C10_persistence = 0.0598
+
+[images.agate-lined-geode-black-rock-desert-gerlach-nevada-usa-33974978773]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "botryoidal",
+    "fortification",
+]
+features = [
+    "host rock",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.8428
+C1_regularity = 0.8953
+C2_circularity = 0.748
+C3_irregularity = 0.7734
+C3_concavities = 9
+C7_spread = 0.6443
+C8_trend = 0.4518
+C9_ratio = 1.0262
+C11_hurst = 0.4176
+C17_core = 0.0494
+C6_count = 2.0
+C6_low = 1.0
+C6_high = 6.0
+C6_rule_gap = 0.3333
+C6_profiles = 21
+C10_persistence = "unknown"
+
+[images.agate-madagascar-1-32755917455]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5839
+C1_regularity = 0.7992
+C2_circularity = 0.6158
+C3_irregularity = 1.6305
+C3_concavities = 5
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-1-23248724760]
+verdict = "forms"
+forms = [
+    "waterline",
+    "fortification",
+]
+features = [
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.4139
+C1_regularity = 0.8638
+C2_circularity = 0.554
+C3_irregularity = 1.2372
+C3_concavities = 11
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 4
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-2-23518382156]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.7812
+C1_regularity = 0.8187
+C2_circularity = 0.6789
+C3_irregularity = 2.1344
+C3_concavities = 12
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 1
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.5752
+C1_regularity = 0.9598
+C2_circularity = 0.7445
+C3_irregularity = 0.8785
+C3_concavities = 12
+C7_spread = 0.6643
+C8_trend = -1.4
+C9_ratio = 0.9581
+C11_hurst = 0.5676
+C17_core = 0.0
+C6_count = 2.0
+C6_low = 0.0
+C6_high = 3.0
+C6_rule_gap = 0.25
+C6_profiles = 17
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-2]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.4217
+C1_regularity = 0.655
+C2_circularity = 0.577
+C3_irregularity = 1.4025
+C3_concavities = 10
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 0
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-3]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.35
+C1_regularity = 0.9036
+C2_circularity = 0.5246
+C3_irregularity = 1.5145
+C3_concavities = 10
+C7_spread = 0.7202
+C8_trend = 2.0961
+C9_ratio = 1.5785
+C11_hurst = 0.2188
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 7
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-4]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.4754
+C1_regularity = 0.8254
+C2_circularity = 0.6156
+C3_irregularity = 0.8273
+C3_concavities = 7
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-5]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7701
+C1_regularity = 0.9228
+C2_circularity = 0.739
+C3_irregularity = 1.3123
+C3_concavities = 9
+C7_spread = 0.5742
+C8_trend = -0.8108
+C9_ratio = 0.9956
+C11_hurst = 0.3831
+C17_core = 0.0
+C6_count = 5.0
+C6_low = 2.0
+C6_high = 7.5
+C6_rule_gap = 0.2361
+C6_profiles = 22
+C10_persistence = 0.0082
+
+[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-6]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.8301
+C1_regularity = 0.8019
+C2_circularity = 0.6523
+C3_irregularity = 2.1298
+C3_concavities = 11
+C7_spread = 0.5701
+C8_trend = 0.3206
+C9_ratio = 1.0167
+C11_hurst = 0.4607
+C17_core = 0.0
+C6_count = 2.5
+C6_low = 1.0
+C6_high = 5.0
+C6_rule_gap = 0.2833
+C6_profiles = 12
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-10-34651169521]
+verdict = "forms"
+forms = [
+    "fortification",
+    "tube",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.8566
+C1_regularity = 0.9626
+C2_circularity = 0.8344
+C3_irregularity = 0.4757
+C3_concavities = 5
+C7_spread = 0.6567
+C8_trend = 0.6294
+C9_ratio = 1.0231
+C11_hurst = 0.5304
+C17_core = 0.0
+C6_count = 4.0
+C6_low = 1.0
+C6_high = 8.0
+C6_rule_gap = 0.25
+C6_profiles = 19
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-11-34783586145]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5709
+C1_regularity = 0.9722
+C2_circularity = 0.6855
+C3_irregularity = 0
+C3_concavities = 0
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-12-34651139191]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.4286
+C1_regularity = 0.9417
+C2_circularity = 0.624
+C3_irregularity = 1.1318
+C3_concavities = 17
+C7_spread = 0.6812
+C8_trend = 1.5215
+C9_ratio = 1.0431
+C11_hurst = 0.225
+C17_core = 0.0
+C6_count = 2.5
+C6_low = 1.0
+C6_high = 3.0
+C6_rule_gap = 0.5
+C6_profiles = 16
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-13-34621074542]
+verdict = "forms"
+forms = [
+    "fortification",
+    "shadow",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.4332
+C1_regularity = 0.9473
+C2_circularity = 0.6101
+C3_irregularity = 1.3206
+C3_concavities = 8
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-14-34743267776]
+verdict = "forms"
+forms = [
+    "fortification",
+    "shadow",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.8442
+C1_regularity = 0.9621
+C2_circularity = 0.7972
+C3_irregularity = 0.8117
+C3_concavities = 7
+C7_spread = 0.4181
+C8_trend = -0.1472
+C9_ratio = 1.0445
+C11_hurst = 0.4554
+C17_core = 0.0
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 3.0
+C6_rule_gap = 0.25
+C6_profiles = 22
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-15-34397930990]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.519
+C1_regularity = 0.8087
+C2_circularity = 0.6083
+C3_irregularity = 1.2364
+C3_concavities = 9
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 2
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-16-34783567065]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.7915
+C1_regularity = 0.9918
+C2_circularity = 0.8338
+C3_irregularity = 1.0762
+C3_concavities = 15
+C7_spread = 0.6562
+C8_trend = -0.7562
+C9_ratio = 0.9572
+C11_hurst = 0.4962
+C17_core = 0.011
+C6_count = 7.0
+C6_low = 3.0
+C6_high = 14.0
+C6_rule_gap = 0.25
+C6_profiles = 19
+C10_persistence = 0.0668
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-17-34743255036]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+]
+features = [
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.507
+C1_regularity = 0.7584
+C2_circularity = 0.5778
+C3_irregularity = 1.8183
+C3_concavities = 14
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 0
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-3-34397979740]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.6232
+C1_regularity = 0.7672
+C2_circularity = 0.6319
+C3_irregularity = 1.2733
+C3_concavities = 12
+C7_spread = 0.4158
+C8_trend = 0.4927
+C9_ratio = 1.038
+C11_hurst = 0.2356
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 3
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-4-33974568193]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+    "fortification-waterline",
+    "waterline",
+]
+features = [
+    "polished",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.7694
+C1_regularity = 0.9032
+C2_circularity = 0.6984
+C3_irregularity = 1.6255
+C3_concavities = 8
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 0
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-5-34651181261]
+verdict = "forms"
+forms = [
+    "fortification-waterline",
+    "fortification",
+    "waterline",
+    "eye",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.8031
+C1_regularity = 0.8652
+C2_circularity = 0.6814
+C3_irregularity = 1.3147
+C3_concavities = 6
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-6-34651179201]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+    "tube",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-7-34743298056]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.7575
+C1_regularity = 0.8392
+C2_circularity = 0.6623
+C3_irregularity = 1.5864
+C3_concavities = 11
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-8-34651174951]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.6506
+C1_regularity = 0.9178
+C2_circularity = 0.7075
+C3_irregularity = 0.9823
+C3_concavities = 7
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-9-34651173151]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.8897
+C1_regularity = 0.9611
+C2_circularity = 0.8312
+C3_irregularity = 0.1801
+C3_concavities = 3
+C7_spread = 0.6212
+C8_trend = 0.3473
+C9_ratio = 0.9811
+C11_hurst = 0.4999
+C17_core = 0.0255
+C6_count = 9.0
+C6_low = 4.0
+C6_high = 12.5
+C6_rule_gap = 0.1909
+C6_profiles = 18
+C10_persistence = 0.1639
+
+[images.agate-nowy-kosicol-poland-31912720284]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "host rock",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5895
+C1_regularity = 0.8975
+C2_circularity = 0.6683
+C3_irregularity = 1.4456
+C3_concavities = 10
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-panoramio-brandon-menth]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.5262
+C1_regularity = 0.8026
+C2_circularity = 0.6213
+C3_irregularity = 1.3887
+C3_concavities = 9
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0533
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 4
+C10_persistence = "unknown"
+
+[images.agate-panoramio-brandon-menth-1]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.6902
+C1_regularity = 0.8629
+C2_circularity = 0.6487
+C3_irregularity = 1.5521
+C3_concavities = 11
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-quartz-filled-geode-1-32164187660]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "host rock",
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7214
+C1_regularity = 0.9296
+C2_circularity = 0.7585
+C3_irregularity = 1.8648
+C3_concavities = 17
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.3465
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 7
+C10_persistence = "unknown"
+
+[images.agate-quartz-lined-geode-4-32632020771]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.8042
+C1_regularity = 0.9897
+C2_circularity = 0.8584
+C3_irregularity = 0.4016
+C3_concavities = 6
+C7_spread = 0.5864
+C8_trend = -0.6301
+C9_ratio = 0.9745
+C11_hurst = 0.3147
+C17_core = 0.1695
+C6_count = 6.0
+C6_low = 2.0
+C6_high = 9.0
+C6_rule_gap = 0.1667
+C6_profiles = 23
+C10_persistence = 0.0243
+
+[images.agate-quartz-lined-geode-5-32375570960]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.4375
+C1_regularity = 0.9402
+C2_circularity = 0.6475
+C3_irregularity = 0.6116
+C3_concavities = 7
+C7_spread = "unknown"
+C8_trend = 0.5689
+C9_ratio = "unknown"
+C11_hurst = 0.2226
+C17_core = 0.7476
+C6_count = 2.0
+C6_low = 0.0
+C6_high = 3.0
+C6_rule_gap = 0.125
+C6_profiles = 11
+C10_persistence = "unknown"
+
+[images.agate-quartz-lined-geode-dryhead-montana-usa-1-32755917835]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+    "botryoidal",
+]
+features = [
+    "host rock",
+    "inclusions",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.424
+C1_regularity = 0.9341
+C2_circularity = 0.6299
+C3_irregularity = 0.6479
+C3_concavities = 9
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-quartz-lined-geode-dryhead-montana-usa-2-31912720794]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+    "botryoidal",
+]
+features = [
+    "open cavity",
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.3782
+C1_regularity = 0.874
+C2_circularity = 0.5895
+C3_irregularity = 0.9863
+C3_concavities = 10
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-quartz-lined-geode-dryhead-montana-usa-3-31971016393]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5335
+C1_regularity = 0.8605
+C2_circularity = 0.6605
+C3_irregularity = 1.0688
+C3_concavities = 9
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-rio-grande-do-sul-caillois-donation-mnhn-n10]
+verdict = "forms"
+forms = [
+    "eye",
+    "fortification",
+    "quartz-geode",
+    "tube",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.8554
+C1_regularity = 0.9975
+C2_circularity = 0.9055
+C3_irregularity = 0.236
+C3_concavities = 7
+C7_spread = 0.7397
+C8_trend = 0.341
+C9_ratio = 1.0024
+C11_hurst = 0.3987
+C17_core = 0.1084
+C6_count = 4.0
+C6_low = 1.0
+C6_high = 8.5
+C6_rule_gap = 0.3095
+C6_profiles = 18
+C10_persistence = 0.0479
+
+[images.agate-rio-grande-do-sul-caillois-donation-mnhn-n14]
+verdict = "forms"
+forms = [
+    "fortification",
+    "iris",
+    "moss",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5896
+C1_regularity = 0.7111
+C2_circularity = 0.6018
+C3_irregularity = 1.5918
+C3_concavities = 9
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-rio-grande-do-sul-caillois-donation-mnhn-n20]
+verdict = "forms"
+forms = [
+    "tube",
+    "stick",
+    "waterline",
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.5715
+C1_regularity = 0.8928
+C2_circularity = 0.6704
+C3_irregularity = 0.8768
+C3_concavities = 6
+C7_spread = 0.5378
+C8_trend = 2.4232
+C9_ratio = 1.1229
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 1
+C10_persistence = "unknown"
+
+[images.agate-rio-grande-do-sul-caillois-donation-mnhn-n25]
+verdict = "forms"
+forms = [
+    "fortification",
+    "waterline",
+    "fortification-waterline",
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.6233
+C1_regularity = 0.7485
+C2_circularity = 0.5808
+C3_irregularity = 1.8281
+C3_concavities = 13
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-sio2-25505269264]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.5384
+C1_regularity = 0.9238
+C2_circularity = 0.6835
+C3_irregularity = 0.4929
+C3_concavities = 10
+C7_spread = 0.2683
+C8_trend = 0.5861
+C9_ratio = 1.0031
+C11_hurst = 0.1548
+C17_core = 0.0135
+C6_count = 4.0
+C6_low = 1.0
+C6_high = 4.0
+C6_rule_gap = 0.5
+C6_profiles = 13
+C10_persistence = "unknown"
+
+[images.agate-sio2-from-brazil-50583624161]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.3947
+C1_regularity = 0.8688
+C2_circularity = 0.5742
+C3_irregularity = 2.0864
+C3_concavities = 12
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.1304
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 3
+C10_persistence = "unknown"
+
+[images.agate-tertiary-agate-bay-king-george-island-south-shetland-islands-1]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.683
+C1_regularity = 0.8555
+C2_circularity = 0.697
+C3_irregularity = 0.746
+C3_concavities = 5
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-wave-hill-australia-5-32755915795]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5796
+C1_regularity = 0.8285
+C2_circularity = 0.658
+C3_irregularity = 0.7723
+C3_concavities = 12
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate-with-uruguay-type-banding-om1-077a]
+verdict = "forms"
+forms = [
+    "waterline",
+    "fortification",
+    "fortification-waterline",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.4628
+C1_regularity = 0.8565
+C2_circularity = 0.5956
+C3_irregularity = 1.0957
+C3_concavities = 8
+C7_spread = 0.5934
+C8_trend = 0.5467
+C9_ratio = 1.0063
+C11_hurst = 0.4574
+C17_core = 0.0182
+C6_count = 2.0
+C6_low = 1.0
+C6_high = 3.0
+C6_rule_gap = 0.4167
+C6_profiles = 14
+C10_persistence = "unknown"
+
+[images.agate-with-uruguay-type-banding-om1-078a]
+verdict = "forms"
+forms = [
+    "waterline",
+    "fortification",
+    "fortification-waterline",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.4465
+C1_regularity = 0.8733
+C2_circularity = 0.5732
+C3_irregularity = 1.365
+C3_concavities = 8
+C7_spread = 0.5888
+C8_trend = 0.653
+C9_ratio = 1.0225
+C11_hurst = 0.3845
+C17_core = 0.011
+C6_count = 1.0
+C6_low = 1.0
+C6_high = 2.0
+C6_rule_gap = 0.5
+C6_profiles = 13
+C10_persistence = "unknown"
+
+[images.agate1-hg]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.8116
+C1_regularity = 0.9815
+C2_circularity = 0.8736
+C3_irregularity = 0.2323
+C3_concavities = 8
+C7_spread = 0.7397
+C8_trend = 0.9929
+C9_ratio = 1.1114
+C11_hurst = 0.3881
+C17_core = 0.0015
+C6_count = 6.0
+C6_low = 2.5
+C6_high = 10.5
+C6_rule_gap = 0.2679
+C6_profiles = 24
+C10_persistence = -0.1368
+
+[images.agate3-hg]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.2954
+C1_regularity = 0.7489
+C2_circularity = 0.4754
+C3_irregularity = 1.3818
+C3_concavities = 9
+C7_spread = 0.7238
+C8_trend = 1.1119
+C9_ratio = 1.0687
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 6
+C10_persistence = "unknown"
+
+[images.agate3-hg-cropped]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "inclusions",
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.8827
+C1_regularity = 0.9333
+C2_circularity = 0.789
+C3_irregularity = 1.3079
+C3_concavities = 14
+C7_spread = 0.6118
+C8_trend = 2.6021
+C9_ratio = 1.5397
+C11_hurst = 0.7802
+C17_core = 0.0
+C6_count = 0.0
+C6_low = 0.0
+C6_high = 2.0
+C6_rule_gap = 1.0
+C6_profiles = 14
+C10_persistence = "unknown"
+
+[images.agate4-hg]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.108
+C1_regularity = 0.8419
+C2_circularity = 0.2924
+C3_irregularity = 0.4758
+C3_concavities = 2
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.agate5-hg]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.901
+C1_regularity = 0.9986
+C2_circularity = 0.9277
+C3_irregularity = 0.3104
+C3_concavities = 9
+C7_spread = 0.5958
+C8_trend = 0.9609
+C9_ratio = 1.2148
+C11_hurst = 0.6431
+C17_core = 0.1018
+C6_count = 3.0
+C6_low = 2.0
+C6_high = 6.5
+C6_rule_gap = 0.225
+C6_profiles = 24
+C10_persistence = "unknown"
+
+[images.agate7-hg]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.5366
+C1_regularity = 0.9421
+C2_circularity = 0.6912
+C3_irregularity = 0.3724
+C3_concavities = 5
+C7_spread = 0.6259
+C8_trend = -0.6413
+C9_ratio = 1.026
+C11_hurst = 0.2997
+C17_core = 0.3659
+C6_count = 3.5
+C6_low = 2.0
+C6_high = 5.0
+C6_rule_gap = 0.2
+C6_profiles = 18
+C10_persistence = "unknown"
+
+[images.agate8-hg]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.8805
+C1_regularity = 0.9853
+C2_circularity = 0.891
+C3_irregularity = 0.4203
+C3_concavities = 7
+C7_spread = 0.6968
+C8_trend = 1.5165
+C9_ratio = 1.0298
+C11_hurst = 0.4997
+C17_core = 0.0277
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 6.0
+C6_rule_gap = 0.2308
+C6_profiles = 17
+C10_persistence = 0.381
+
+[images.amethyst-bergkristall-achat-scheibe-aus-schlottwitz-sachsen]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.5265
+C1_regularity = 0.9491
+C2_circularity = 0.6485
+C3_irregularity = 0.7644
+C3_concavities = 9
+C7_spread = 0.8756
+C8_trend = 0.7285
+C9_ratio = 1.0894
+C11_hurst = 0.2146
+C17_core = 0.7647
+C6_count = 1.5
+C6_low = 0.0
+C6_high = 2.0
+C6_rule_gap = 0.2917
+C6_profiles = 12
+C10_persistence = "unknown"
+
+[images.apache-flame-agate-chihuahua-mexico-33716719924]
+verdict = "forms"
+forms = [
+    "fortification",
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.7575
+C1_regularity = 0.9573
+C2_circularity = 0.7607
+C3_irregularity = 0.6254
+C3_concavities = 6
+C7_spread = 0.726
+C8_trend = -1.0119
+C9_ratio = 1.0489
+C11_hurst = 0.6799
+C17_core = 0.001
+C6_count = 3.5
+C6_low = 2.5
+C6_high = 8.0
+C6_rule_gap = 0.2614
+C6_profiles = 16
+C10_persistence = 0.4953
+
+[images.banded-agate-artigas-or-rio-grande-do-sul-caillois-donation-mnhn-n01]
+verdict = "forms"
+forms = [
+    "waterline",
+    "fortification-waterline",
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.3735
+C1_regularity = 0.8588
+C2_circularity = 0.5716
+C3_irregularity = 1.4653
+C3_concavities = 10
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.banded-agate-artigas-or-rio-grande-do-sul-caillois-donation-mnhn-n02]
+verdict = "forms"
+forms = [
+    "fortification-waterline",
+    "waterline",
+    "fortification",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.6284
+C1_regularity = 0.9549
+C2_circularity = 0.7462
+C3_irregularity = 0.9444
+C3_concavities = 7
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.banded-agate-from-mexico-cropped]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.6818
+C1_regularity = 0.9401
+C2_circularity = 0.7207
+C3_irregularity = 0.9643
+C3_concavities = 8
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.2
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 1
+C10_persistence = "unknown"
+
+[images.beach-agate-with-sagenite-from-central-oregon-coast-near-newport-and-yachats-ore]
+verdict = "forms"
+forms = [
+    "moss",
+    "stick",
+]
+features = [
+    "inclusions",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.6411
+C1_regularity = 0.9132
+C2_circularity = 0.7097
+C3_irregularity = 1.5292
+C3_concavities = 12
+C7_spread = 0.5401
+C8_trend = 0.8502
+C9_ratio = 0.9143
+C11_hurst = 0.6687
+C17_core = 0.0
+C6_count = 1.5
+C6_low = 0.5
+C6_high = 3.5
+C6_rule_gap = 0.0
+C6_profiles = 10
+C10_persistence = "unknown"
+
+[images.berschweiler-agate-near-trier-germany-31942571364]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.4965
+C1_regularity = 0.9428
+C2_circularity = 0.6336
+C3_irregularity = 0.7517
+C3_concavities = 12
+C7_spread = 0.6192
+C8_trend = -0.0673
+C9_ratio = 1.015
+C11_hurst = 0.2167
+C17_core = 0.2616
+C6_count = 5.0
+C6_low = 1.0
+C6_high = 7.0
+C6_rule_gap = 0.1833
+C6_profiles = 16
+C10_persistence = "unknown"
+
+[images.blue-lace-agate-geode]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.6795
+C1_regularity = 0.8714
+C2_circularity = 0.7146
+C3_irregularity = 1.5503
+C3_concavities = 15
+C7_spread = 0.7145
+C8_trend = 2.2067
+C9_ratio = 1.1291
+C11_hurst = 0.5302
+C17_core = 0.0897
+C6_count = 2.0
+C6_low = 0.0
+C6_high = 4.0
+C6_rule_gap = 0.3333
+C6_profiles = 19
+C10_persistence = "unknown"
+
+[images.brazilian-agate-section]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.4428
+C1_regularity = 0.9848
+C2_circularity = 0.6659
+C3_irregularity = 0.5855
+C3_concavities = 10
+C7_spread = 0.8478
+C8_trend = 0.3238
+C9_ratio = 1.1352
+C11_hurst = 0.295
+C17_core = 0.0027
+C6_count = 2.0
+C6_low = 1.0
+C6_high = 4.0
+C6_rule_gap = 0.1667
+C6_profiles = 22
+C10_persistence = "unknown"
+
+[images.brazilian-agate-section-detail]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.432
+C1_regularity = 0.9594
+C2_circularity = 0.6192
+C3_irregularity = 1.0858
+C3_concavities = 16
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.center-detail-quartz-uruguay-dation-caillois-cropped]
+verdict = "forms"
+forms = [
+    "eye",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.9128
+C1_regularity = 0.9996
+C2_circularity = 0.946
+C3_irregularity = 0.0446
+C3_concavities = 2
+C7_spread = 0.4377
+C8_trend = 0.1757
+C9_ratio = 0.8165
+C11_hurst = 0.5015
+C17_core = 0.0178
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 4.0
+C6_rule_gap = 0.0
+C6_profiles = 24
+C10_persistence = "unknown"
+
+[images.crazy-lace-agate-11-cropped]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+    "tube",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.7927
+C1_regularity = 0.9686
+C2_circularity = 0.8056
+C3_irregularity = 0.842
+C3_concavities = 9
+C7_spread = 0.6636
+C8_trend = 1.3692
+C9_ratio = 1.3049
+C11_hurst = 0.3681
+C17_core = 0.0
+C6_count = 1.0
+C6_low = 0.0
+C6_high = 3.0
+C6_rule_gap = 0.3333
+C6_profiles = 20
+C10_persistence = "unknown"
+
+[images.crazy-lace-agate-3-cropped]
+verdict = "forms"
+forms = [
+    "eye",
+    "fortification",
+    "stick",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.7691
+C1_regularity = 0.9003
+C2_circularity = 0.7529
+C3_irregularity = 1.6218
+C3_concavities = 13
+C7_spread = 0.5752
+C8_trend = -0.0217
+C9_ratio = 1.0066
+C11_hurst = 0.4674
+C17_core = 0.0098
+C6_count = 2.0
+C6_low = 0.0
+C6_high = 3.0
+C6_rule_gap = 0.3333
+C6_profiles = 13
+C10_persistence = "unknown"
+
+[images.czech025]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+    "stick",
+    "moss",
+    "plume",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.7047
+C1_regularity = 0.9382
+C2_circularity = 0.7432
+C3_irregularity = 0.8569
+C3_concavities = 6
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.dendritic-agate-cropped]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.6201
+C1_regularity = 0.6458
+C2_circularity = 0.6176
+C3_irregularity = 1.5255
+C3_concavities = 11
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 1
+C10_persistence = "unknown"
+
+[images.dendritic-agate-with-three-dendrite-occurances]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7056
+C1_regularity = 0.919
+C2_circularity = 0.7299
+C3_irregularity = 1.3924
+C3_concavities = 10
+C7_spread = 0.7079
+C8_trend = 0.9119
+C9_ratio = 1.0869
+C11_hurst = 0.5341
+C17_core = 0.0465
+C6_count = 1.0
+C6_low = 0.0
+C6_high = 1.5
+C6_rule_gap = 0.0
+C6_profiles = 8
+C10_persistence = "unknown"
+
+[images.detail-agat-lake-superior-duluth-minnesota-usa-cropped]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.6288
+C1_regularity = 0.9452
+C2_circularity = 0.731
+C3_irregularity = 0.7676
+C3_concavities = 11
+C7_spread = 0.5957
+C8_trend = 1.021
+C9_ratio = 0.9815
+C11_hurst = 0.3055
+C17_core = 0.1053
+C6_count = 1.5
+C6_low = 0.0
+C6_high = 2.0
+C6_rule_gap = 0.8333
+C6_profiles = 16
+C10_persistence = "unknown"
+
+[images.detail-agat-lake-superior-stan-minnesota-usa-cropped]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5659
+C1_regularity = 0.9272
+C2_circularity = 0.6618
+C3_irregularity = 0.3623
+C3_concavities = 1
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.detail-agat-ognisty-calvillo-aguascalientes-meksyk-cropped]
+verdict = "forms"
+forms = [
+    "botryoidal",
+    "eye",
+]
+features = [
+    "rough",
+    "iridescence",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5654
+C1_regularity = 0.9453
+C2_circularity = 0.6411
+C3_irregularity = 0
+C3_concavities = 0
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.details-agat-lake-superior-agat-z-jez-gornego-minnesota-usa-cropped]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.4829
+C1_regularity = 0.9188
+C2_circularity = 0.6192
+C3_irregularity = 1.1186
+C3_concavities = 8
+C7_spread = 0.478
+C8_trend = -0.1345
+C9_ratio = 0.9942
+C11_hurst = 0.6749
+C17_core = 0.129
+C6_count = 1.0
+C6_low = 0.0
+C6_high = 3.0
+C6_rule_gap = 0.0
+C6_profiles = 15
+C10_persistence = "unknown"
+
+[images.details-agat-lake-superior-stan-minnesota-usa-cropped]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.6376
+C1_regularity = 0.8541
+C2_circularity = 0.6941
+C3_irregularity = 0.8041
+C3_concavities = 4
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.dugway-geode-juab-county-utah-usa-1-34540239846]
+verdict = "forms"
+forms = [
+    "fortification",
+    "botryoidal",
+]
+features = [
+    "quartz core",
+    "open cavity",
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.8931
+C1_regularity = 0.9625
+C2_circularity = 0.8307
+C3_irregularity = 1.1148
+C3_concavities = 16
+C7_spread = 0.581
+C8_trend = 0.3357
+C9_ratio = 1.0255
+C11_hurst = 0.4575
+C17_core = 0.0504
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 5.0
+C6_rule_gap = 0.25
+C6_profiles = 23
+C10_persistence = "unknown"
+
+[images.dugway-geode-juab-county-utah-usa-2-34581522545]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+    "botryoidal",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.6407
+C1_regularity = 0.9671
+C2_circularity = 0.6919
+C3_irregularity = 1.3122
+C3_concavities = 12
+C7_spread = 0.7036
+C8_trend = -0.4661
+C9_ratio = 0.9938
+C11_hurst = 0.4174
+C17_core = 0.1824
+C6_count = 4.0
+C6_low = 1.0
+C6_high = 6.0
+C6_rule_gap = 0.25
+C6_profiles = 19
+C10_persistence = "unknown"
+
+[images.earth-and-man-agate]
+verdict = "forms"
+forms = [
+    "fortification-waterline",
+    "fortification",
+    "waterline",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.4515
+C1_regularity = 0.9387
+C2_circularity = 0.674
+C3_irregularity = 0.9942
+C3_concavities = 10
+C7_spread = 0.5645
+C8_trend = 1.498
+C9_ratio = 1.0226
+C11_hurst = 0.4369
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 6
+C10_persistence = "unknown"
+
+[images.estonian-museum-of-natural-history-specimen-no-174648-photo-g286-g286-24-jpg]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.901
+C1_regularity = 0.8159
+C2_circularity = 0.614
+C3_irregularity = 1.389
+C3_concavities = 10
+C7_spread = 0.6538
+C8_trend = 0.848
+C9_ratio = 1.1246
+C11_hurst = 0.1361
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 6
+C10_persistence = "unknown"
+
+[images.estonian-museum-of-natural-history-specimen-no-174649-photo-g286-g286-25-1-jpg]
+verdict = "forms"
+forms = [
+    "fortification-waterline",
+    "fortification",
+    "waterline",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.8674
+C1_regularity = 0.9968
+C2_circularity = 0.898
+C3_irregularity = 0.2261
+C3_concavities = 6
+C7_spread = 0.7926
+C8_trend = 0.1067
+C9_ratio = 1.0425
+C11_hurst = 0.4399
+C17_core = 0.1174
+C6_count = 4.5
+C6_low = 1.0
+C6_high = 9.5
+C6_rule_gap = 0.275
+C6_profiles = 24
+C10_persistence = 0.0664
+
+[images.estonian-museum-of-natural-history-specimen-no-174692-photo-g286-g286-68-1-jpg]
+verdict = "forms"
+forms = [
+    "fortification",
+    "moss",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.4617
+C1_regularity = 0.9719
+C2_circularity = 0.6198
+C3_irregularity = 0
+C3_concavities = 0
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.estonian-museum-of-natural-history-specimen-no-176133-photo-g244-g244-9-1-jpg]
+verdict = "forms"
+forms = [
+    "seam",
+    "fortification",
+    "moss",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.7412
+C1_regularity = 0.9807
+C2_circularity = 0.8305
+C3_irregularity = 0.21
+C3_concavities = 7
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.estonian-museum-of-natural-history-specimen-no-178064-photo-g229-g229-427-jpg]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = [
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.6513
+C1_regularity = 0.9884
+C2_circularity = 0.7796
+C3_irregularity = 0.3901
+C3_concavities = 8
+C7_spread = 0.6126
+C8_trend = 0.2106
+C9_ratio = 1.0299
+C11_hurst = 0.6069
+C17_core = 0.0065
+C6_count = 2.5
+C6_low = 0.5
+C6_high = 4.5
+C6_rule_gap = 0.2
+C6_profiles = 14
+C10_persistence = "unknown"
+
+[images.estonian-museum-of-natural-history-specimen-no-178073-photo-g229-g229-436-jpg]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = [
+    "inclusions",
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7163
+C1_regularity = 0.9983
+C2_circularity = 0.8407
+C3_irregularity = 0.2853
+C3_concavities = 5
+C7_spread = 0.6202
+C8_trend = 0.1082
+C9_ratio = 1.0
+C11_hurst = 0.6814
+C17_core = 0.0183
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 5.5
+C6_rule_gap = 0.25
+C6_profiles = 22
+C10_persistence = "unknown"
+
+[images.eye-agate-texas-usa-32775594145]
+verdict = "forms"
+forms = [
+    "eye",
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+    "host rock",
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5582
+C1_regularity = 0.8745
+C2_circularity = 0.6319
+C3_irregularity = 0.5767
+C3_concavities = 5
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.feuerachat-fireagate-from-brazil-tumble-polished-stone]
+verdict = "forms"
+forms = [
+    "botryoidal",
+    "eye",
+    "moss",
+]
+features = [
+    "polished",
+    "iridescence",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.3742
+C1_regularity = 0.7019
+C2_circularity = 0.5585
+C3_irregularity = 1.5542
+C3_concavities = 5
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.fire-agate]
+verdict = "forms"
+forms = [
+    "botryoidal",
+]
+features = [
+    "rough",
+    "iridescence",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7359
+C1_regularity = 0.9891
+C2_circularity = 0.825
+C3_irregularity = 0.9886
+C3_concavities = 28
+C7_spread = 0.7339
+C8_trend = -0.8004
+C9_ratio = 1.0239
+C11_hurst = 0.4934
+C17_core = 0.0174
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 7.0
+C6_rule_gap = 0.1429
+C6_profiles = 23
+C10_persistence = -0.1414
+
+[images.gaillac-museum-d-histoire-naturelle-115]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.7004
+C1_regularity = 0.7455
+C2_circularity = 0.6393
+C3_irregularity = 1.5296
+C3_concavities = 9
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 0
+C10_persistence = "unknown"
+
+[images.gdcn0024070-50192449478]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.4984
+C1_regularity = 0.9753
+C2_circularity = 0.6801
+C3_irregularity = 0.5308
+C3_concavities = 11
+C7_spread = 0.6701
+C8_trend = 1.3018
+C9_ratio = 1.1548
+C11_hurst = 0.3641
+C17_core = 0.0
+C6_count = 1.5
+C6_low = 1.0
+C6_high = 2.0
+C6_rule_gap = 0.225
+C6_profiles = 14
+C10_persistence = "unknown"
+
+[images.geneva-natural-history-museum-agate]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.7311
+C1_regularity = 0.8526
+C2_circularity = 0.6772
+C3_irregularity = 1.5215
+C3_concavities = 8
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.gestein-mit-verschiedenen-mineralen-mineralogia]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "host rock",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.7221
+C1_regularity = 0.9767
+C2_circularity = 0.8004
+C3_irregularity = 1.0708
+C3_concavities = 13
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.high-grade-slaughter-mountain-arizona-fire-agate-rough]
+verdict = "forms"
+forms = [
+    "botryoidal",
+]
+features = [
+    "rough",
+    "iridescence",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.4717
+C1_regularity = 0.7798
+C2_circularity = 0.5516
+C3_irregularity = 1.2722
+C3_concavities = 8
+C7_spread = 0.7374
+C8_trend = -0.0741
+C9_ratio = 0.9781
+C11_hurst = 0.3843
+C17_core = 0.0
+C6_count = 2.0
+C6_low = 0.0
+C6_high = 4.0
+C6_rule_gap = 0.4
+C6_profiles = 13
+C10_persistence = "unknown"
+
+[images.hildesheim-roemer-und-pelizaeus-museum-achat]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.9618
+C1_regularity = 0.9879
+C2_circularity = 0.9113
+C3_irregularity = 0.5562
+C3_concavities = 20
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.holley-blue-agate-linn-county-oregon-usa-7]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+    "open cavity",
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7628
+C1_regularity = 0.8442
+C2_circularity = 0.6811
+C3_irregularity = 1.9172
+C3_concavities = 14
+C7_spread = 0.7389
+C8_trend = 1.2765
+C9_ratio = 0.9926
+C11_hurst = 0.5996
+C17_core = 0.0608
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 7
+C10_persistence = "unknown"
+
+[images.image]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.5705
+C1_regularity = 0.9764
+C2_circularity = 0.7407
+C3_irregularity = 0.1816
+C3_concavities = 7
+C7_spread = 0.7007
+C8_trend = 0.0206
+C9_ratio = 1.0082
+C11_hurst = 0.3974
+C17_core = 0.0088
+C6_count = 4.0
+C6_low = 1.0
+C6_high = 8.0
+C6_rule_gap = 0.1667
+C6_profiles = 21
+C10_persistence = -0.096
+
+[images.image-2]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.5938
+C1_regularity = 0.9578
+C2_circularity = 0.7151
+C3_irregularity = 1.1081
+C3_concavities = 13
+C7_spread = 0.5851
+C8_trend = 0.5381
+C9_ratio = 1.0207
+C11_hurst = 0.0615
+C17_core = 0.0
+C6_count = 2.0
+C6_low = 0.0
+C6_high = 3.0
+C6_rule_gap = 0.5
+C6_profiles = 12
+C10_persistence = "unknown"
+
+[images.image-3]
+verdict = "forms"
+forms = [
+    "moss",
+    "fortification",
+]
+features = [
+    "quartz core",
+    "inclusions",
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.489
+C1_regularity = 0.9337
+C2_circularity = 0.6296
+C3_irregularity = 1.3488
+C3_concavities = 10
+C7_spread = 0.5438
+C8_trend = 0.5332
+C9_ratio = 1.0408
+C11_hurst = 0.2703
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 5
+C10_persistence = "unknown"
+
+[images.image-4]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.3072
+C1_regularity = 0.9248
+C2_circularity = 0.5475
+C3_irregularity = 0.2702
+C3_concavities = 4
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.imgp2020360-50580579282]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5712
+C1_regularity = 0.9506
+C2_circularity = 0.6625
+C3_irregularity = 1.2184
+C3_concavities = 8
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.imgp2020361-50579722543]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.5068
+C1_regularity = 0.8535
+C2_circularity = 0.6117
+C3_irregularity = 1.3767
+C3_concavities = 9
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.2
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 0
+C10_persistence = "unknown"
+
+[images.imgp2020363-50579723983]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5607
+C1_regularity = 0.9764
+C2_circularity = 0.7193
+C3_irregularity = 0.7306
+C3_concavities = 8
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.imgp2020364-50580451931]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7508
+C1_regularity = 0.9578
+C2_circularity = 0.7598
+C3_irregularity = 1.5113
+C3_concavities = 13
+C7_spread = 0.6284
+C8_trend = 0.4537
+C9_ratio = 0.9895
+C11_hurst = 0.5708
+C17_core = 0.2245
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 4.5
+C6_rule_gap = 0.2917
+C6_profiles = 12
+C10_persistence = "unknown"
+
+[images.imgp2020365-50579721383]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.6804
+C1_regularity = 0.9612
+C2_circularity = 0.7618
+C3_irregularity = 1.2873
+C3_concavities = 17
+C7_spread = 0.6329
+C8_trend = -0.0934
+C9_ratio = 0.969
+C11_hurst = 0.4873
+C17_core = 0.2094
+C6_count = 4.5
+C6_low = 1.0
+C6_high = 9.5
+C6_rule_gap = 0.2679
+C6_profiles = 12
+C10_persistence = "unknown"
+
+[images.iris-agate-from-agatized-petrified-wood-stinking-water-oregon-detail-from-oregon]
+verdict = "forms"
+forms = [
+    "fortification",
+    "iris",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.7486
+C1_regularity = 0.875
+C2_circularity = 0.6728
+C3_irregularity = 1.6848
+C3_concavities = 10
+C7_spread = 0.8518
+C8_trend = 0.4676
+C9_ratio = 1.0044
+C11_hurst = 0.6368
+C17_core = 0.0156
+C6_count = 1.0
+C6_low = 0.0
+C6_high = 3.0
+C6_rule_gap = 0.5
+C6_profiles = 13
+C10_persistence = "unknown"
+
+[images.iris-agate-from-agatized-petrified-wood-stinking-water-oregon-usa-detail-from-or]
+verdict = "forms"
+forms = [
+    "iris",
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.7115
+C1_regularity = 0.7875
+C2_circularity = 0.66
+C3_irregularity = 2.1211
+C3_concavities = 11
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.laguna-agate-chihuahua-mexico-2-32661870051]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+    "moss",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.6957
+C1_regularity = 0.9241
+C2_circularity = 0.7326
+C3_irregularity = 0.7876
+C3_concavities = 7
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.laguna-agate-chihuahua-mexico-3-32785167565]
+verdict = "forms"
+forms = [
+    "eye",
+    "fortification",
+    "tube",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.4775
+C1_regularity = 0.7454
+C2_circularity = 0.5672
+C3_irregularity = 1.5928
+C3_concavities = 6
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.malawi-agate-malawi-southeastern-africa-32734668126]
+verdict = "forms"
+forms = [
+    "fortification",
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.4374
+C1_regularity = 0.8691
+C2_circularity = 0.5903
+C3_irregularity = 1.209
+C3_concavities = 11
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.mexico004]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.6696
+C1_regularity = 0.948
+C2_circularity = 0.7392
+C3_irregularity = 0.9152
+C3_concavities = 6
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.mineral-181-hg]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "open cavity",
+    "quartz core",
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.8826
+C1_regularity = 0.9942
+C2_circularity = 0.9051
+C3_irregularity = 0.4143
+C3_concavities = 8
+C7_spread = 0.6205
+C8_trend = 0.92
+C9_ratio = 1.0317
+C11_hurst = 0.4341
+C17_core = 0.0511
+C6_count = 5.0
+C6_low = 1.0
+C6_high = 7.5
+C6_rule_gap = 0.3333
+C6_profiles = 20
+C10_persistence = 0.0094
+
+[images.montana-moss-agate]
+verdict = "forms"
+forms = [
+    "moss",
+    "fortification",
+]
+features = [
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7068
+C1_regularity = 0.8624
+C2_circularity = 0.6711
+C3_irregularity = 1.0049
+C3_concavities = 9
+C7_spread = 0.6997
+C8_trend = 0.7555
+C9_ratio = 1.0245
+C11_hurst = 0.6412
+C17_core = 0.0843
+C6_count = 1.0
+C6_low = 0.0
+C6_high = 3.0
+C6_rule_gap = 0.5
+C6_profiles = 11
+C10_persistence = "unknown"
+
+[images.moosachat-hg]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = [
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.8937
+C1_regularity = 0.9735
+C2_circularity = 0.8651
+C3_irregularity = 0.6744
+C3_concavities = 8
+C7_spread = 0.7507
+C8_trend = 0.3554
+C9_ratio = 0.9928
+C11_hurst = 0.399
+C17_core = 0.0598
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 5.5
+C6_rule_gap = 0.1964
+C6_profiles = 18
+C10_persistence = -0.1412
+
+[images.moss-agate-1]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.8912
+C1_regularity = 0.9219
+C2_circularity = 0.7806
+C3_irregularity = 1.2495
+C3_concavities = 10
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 3
+C10_persistence = "unknown"
+
+[images.moss-agate-detail-cropped]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.6399
+C1_regularity = 0.5117
+C2_circularity = 0.453
+C3_irregularity = 2.4738
+C3_concavities = 18
+C7_spread = 0.564
+C8_trend = 0.3876
+C9_ratio = 1.0114
+C11_hurst = 0.3867
+C17_core = 0.0297
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 5.0
+C6_rule_gap = 0.0
+C6_profiles = 9
+C10_persistence = "unknown"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-1]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.2262
+C1_regularity = 0.6721
+C2_circularity = 0.4458
+C3_irregularity = 1.1307
+C3_concavities = 5
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-10]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.7801
+C1_regularity = 0.9173
+C2_circularity = 0.7397
+C3_irregularity = 1.4218
+C3_concavities = 15
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-2]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.4973
+C1_regularity = 0.8844
+C2_circularity = 0.6442
+C3_irregularity = 1.4167
+C3_concavities = 12
+C7_spread = "unknown"
+C8_trend = 0.1666
+C9_ratio = "unknown"
+C11_hurst = 0.5401
+C17_core = 0.0071
+C6_count = 1.0
+C6_low = 0.0
+C6_high = 1.0
+C6_rule_gap = 0.5
+C6_profiles = 11
+C10_persistence = "unknown"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-3]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.5965
+C1_regularity = 0.9278
+C2_circularity = 0.6932
+C3_irregularity = 0.6119
+C3_concavities = 6
+C7_spread = 0.6701
+C8_trend = 0.4931
+C9_ratio = 0.8947
+C11_hurst = 0.4302
+C17_core = 0.0514
+C6_count = 1.0
+C6_low = 0.0
+C6_high = 2.0
+C6_rule_gap = 0.1667
+C6_profiles = 10
+C10_persistence = "unknown"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-4]
+verdict = "forms"
+forms = [
+    "moss",
+    "fortification",
+]
+features = [
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.5828
+C1_regularity = 0.9151
+C2_circularity = 0.6371
+C3_irregularity = 0.9327
+C3_concavities = 5
+C7_spread = "unknown"
+C8_trend = -0.6362
+C9_ratio = "unknown"
+C11_hurst = 0.7551
+C17_core = 0.05
+C6_count = 1.0
+C6_low = 0.0
+C6_high = 2.0
+C6_rule_gap = 0.1667
+C6_profiles = 10
+C10_persistence = "unknown"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-5]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.5333
+C1_regularity = 0.8496
+C2_circularity = 0.613
+C3_irregularity = 1.8922
+C3_concavities = 11
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = 1.0
+C6_low = 0.0
+C6_high = 1.0
+C6_rule_gap = 0.3333
+C6_profiles = 10
+C10_persistence = "unknown"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-6]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.7498
+C1_regularity = 0.9623
+C2_circularity = 0.7857
+C3_irregularity = 1.0049
+C3_concavities = 18
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-7]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.8745
+C1_regularity = 0.8051
+C2_circularity = 0.6347
+C3_irregularity = 2.0306
+C3_concavities = 14
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 6
+C10_persistence = "unknown"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-8]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7175
+C1_regularity = 0.9041
+C2_circularity = 0.6591
+C3_irregularity = 1.8961
+C3_concavities = 14
+C7_spread = 0.483
+C8_trend = 0.4939
+C9_ratio = 1.0471
+C11_hurst = 0.611
+C17_core = 0.0
+C6_count = 1.0
+C6_low = 0.0
+C6_high = 2.0
+C6_rule_gap = 0.0
+C6_profiles = 15
+C10_persistence = "unknown"
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-9]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.9474
+C1_regularity = 0.9242
+C2_circularity = 0.7805
+C3_irregularity = 1.1293
+C3_concavities = 12
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.museo-de-la-plata-agata]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.4677
+C1_regularity = 0.8431
+C2_circularity = 0.6094
+C3_irregularity = 1.2383
+C3_concavities = 11
+C7_spread = 0.7505
+C8_trend = 1.3294
+C9_ratio = 1.3845
+C11_hurst = 0.2657
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 5
+C10_persistence = "unknown"
+
+[images.museo-de-la-plata-agata-cropped]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.6678
+C1_regularity = 0.9574
+C2_circularity = 0.7306
+C3_irregularity = 1.5639
+C3_concavities = 13
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.museo-di-mineralogia-trasperenze-quarzo-agata-02]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.554
+C1_regularity = 0.7758
+C2_circularity = 0.6327
+C3_irregularity = 0.7067
+C3_concavities = 5
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.museum-mineralogia-munchen-06]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.6618
+C1_regularity = 0.9528
+C2_circularity = 0.7327
+C3_irregularity = 0.3918
+C3_concavities = 5
+C7_spread = 0.772
+C8_trend = 1.7729
+C9_ratio = 1.0249
+C11_hurst = 0.3102
+C17_core = 0.3243
+C6_count = 1.0
+C6_low = 0.5
+C6_high = 1.0
+C6_rule_gap = 0.25
+C6_profiles = 14
+C10_persistence = "unknown"
+
+[images.museum-of-the-history-of-the-mirozdanie-agate-2026-03-p03]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+]
+features = [
+    "quartz core",
+    "open cavity",
+    "iridescence",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.6948
+C1_regularity = 0.8901
+C2_circularity = 0.7024
+C3_irregularity = 1.5716
+C3_concavities = 11
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.nellie-blue-flint-upper-mercer-flint-middle-pennsylvanian-eastern-ohio-usa-60]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+    "inclusions",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.3746
+C1_regularity = 0.5925
+C2_circularity = 0.4872
+C3_irregularity = 2.5722
+C3_concavities = 9
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.oregon001]
+verdict = "forms"
+forms = [
+    "plume",
+]
+features = [
+    "inclusions",
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.6797
+C1_regularity = 0.7649
+C2_circularity = 0.5918
+C3_irregularity = 1.8416
+C3_concavities = 7
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.oregon002]
+verdict = "forms"
+forms = [
+    "stick",
+    "moss",
+]
+features = [
+    "inclusions",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.6938
+C1_regularity = 0.9447
+C2_circularity = 0.7624
+C3_irregularity = 1.2991
+C3_concavities = 9
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.oregon003]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+]
+features = [
+    "quartz core",
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5678
+C1_regularity = 0.8754
+C2_circularity = 0.6348
+C3_irregularity = 1.1339
+C3_concavities = 6
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.oregon004]
+verdict = "forms"
+forms = [
+    "iris",
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5228
+C1_regularity = 0.8379
+C2_circularity = 0.6841
+C3_irregularity = 0.9707
+C3_concavities = 6
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.panoramio-diego-viveros-13]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.4402
+C1_regularity = 0.8898
+C2_circularity = 0.5935
+C3_irregularity = 1.2146
+C3_concavities = 12
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.panoramio-diego-viveros-6]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.408
+C1_regularity = 0.93
+C2_circularity = 0.5874
+C3_irregularity = 0.6051
+C3_concavities = 8
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.polished-agate-macro-3]
+verdict = "forms"
+forms = [
+    "waterline",
+    "fortification-waterline",
+    "fortification",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7129
+C1_regularity = 0.9808
+C2_circularity = 0.8232
+C3_irregularity = 0.1269
+C3_concavities = 3
+C7_spread = 0.6408
+C8_trend = -0.1352
+C9_ratio = 0.9999
+C11_hurst = 0.4135
+C17_core = 0.0171
+C6_count = 8.5
+C6_low = 2.0
+C6_high = 14.0
+C6_rule_gap = 0.1742
+C6_profiles = 22
+C10_persistence = -0.057
+
+[images.precious-stone-agate-blue-semi-precious-stone]
+verdict = "forms"
+forms = [
+    "fortification",
+    "waterline",
+    "fortification-waterline",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5527
+C1_regularity = 0.9753
+C2_circularity = 0.6855
+C3_irregularity = 0
+C3_concavities = 0
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.pyrolusite-in-moss-agate-geodil-number-41]
+verdict = "forms"
+forms = [
+    "moss",
+]
+features = [
+    "host rock",
+    "inclusions",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5866
+C1_regularity = 0.9562
+C2_circularity = 0.7166
+C3_irregularity = 0.4791
+C3_concavities = 5
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.quartz-agate-le-vaisseau-bresil-dation-caillois]
+verdict = "forms"
+forms = [
+    "fortification",
+    "waterline",
+    "tube",
+    "moss",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.6067
+C1_regularity = 0.9303
+C2_circularity = 0.7109
+C3_irregularity = 1.0024
+C3_concavities = 16
+C7_spread = 0.6626
+C8_trend = -0.4952
+C9_ratio = 0.9712
+C11_hurst = 0.3893
+C17_core = 0.0841
+C6_count = 5.0
+C6_low = 2.0
+C6_high = 9.0
+C6_rule_gap = 0.2857
+C6_profiles = 17
+C10_persistence = -0.0309
+
+[images.quartz-agateplate-bluegrey]
+verdict = "forms"
+forms = [
+    "fortification",
+    "fortification-waterline",
+    "waterline",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.8372
+C1_regularity = 0.9601
+C2_circularity = 0.8136
+C3_irregularity = 0.7517
+C3_concavities = 16
+C7_spread = 0.6561
+C8_trend = -0.0557
+C9_ratio = 1.0161
+C11_hurst = 0.4792
+C17_core = 0.0246
+C6_count = 5.0
+C6_low = 2.0
+C6_high = 10.0
+C6_rule_gap = 0.1458
+C6_profiles = 14
+C10_persistence = "unknown"
+
+[images.quartz-agateplate-redbrown-white]
+verdict = "forms"
+forms = [
+    "fortification",
+    "fortification-waterline",
+    "waterline",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.5136
+C1_regularity = 0.9036
+C2_circularity = 0.6228
+C3_irregularity = 1.3239
+C3_concavities = 11
+C7_spread = 0.5447
+C8_trend = 0.0294
+C9_ratio = 1.0034
+C11_hurst = 0.4696
+C17_core = 0.0507
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 6.0
+C6_rule_gap = 0.3333
+C6_profiles = 15
+C10_persistence = "unknown"
+
+[images.quartz-uruguay-dation-caillois]
+verdict = "forms"
+forms = [
+    "eye",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7347
+C1_regularity = 0.9756
+C2_circularity = 0.7952
+C3_irregularity = 0.7864
+C3_concavities = 13
+C7_spread = 0.5758
+C8_trend = 0.4528
+C9_ratio = 0.9746
+C11_hurst = 0.3634
+C17_core = 0.0758
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 7.0
+C6_rule_gap = 0.25
+C6_profiles = 15
+C10_persistence = "unknown"
+
+[images.quarz-achatmandel]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.quarz-augenachat]
+verdict = "forms"
+forms = [
+    "tube",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.6469
+C1_regularity = 0.9592
+C2_circularity = 0.7211
+C3_irregularity = 1.4725
+C3_concavities = 14
+C7_spread = "unknown"
+C8_trend = 0.74
+C9_ratio = "unknown"
+C11_hurst = 0.5272
+C17_core = 0.0179
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 7
+C10_persistence = "unknown"
+
+[images.quarz-augenachat-cropped]
+verdict = "forms"
+forms = [
+    "tube",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.5128
+C1_regularity = 0.7744
+C2_circularity = 0.6244
+C3_irregularity = 1.6245
+C3_concavities = 17
+C7_spread = "unknown"
+C8_trend = 0.984
+C9_ratio = "unknown"
+C11_hurst = 0.492
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 5
+C10_persistence = "unknown"
+
+[images.richardson-ranch-thunder-egg-with-plume-from-plume-beds-richardson-ranch-madras-]
+verdict = "forms"
+forms = [
+    "plume",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.7667
+C1_regularity = 0.8488
+C2_circularity = 0.6816
+C3_irregularity = 1.4391
+C3_concavities = 8
+C7_spread = "unknown"
+C8_trend = 0.8616
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 0
+C10_persistence = "unknown"
+
+[images.sagenitic-fire-agate-01]
+verdict = "forms"
+forms = [
+    "botryoidal",
+    "stick",
+    "iris",
+    "fortification",
+]
+features = [
+    "polished",
+    "iridescence",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5904
+C1_regularity = 0.8846
+C2_circularity = 0.6681
+C3_irregularity = 1.5292
+C3_concavities = 8
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.scotland007]
+verdict = "forms"
+forms = [
+    "fortification",
+    "waterline",
+    "fortification-waterline",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.6767
+C1_regularity = 0.7673
+C2_circularity = 0.6316
+C3_irregularity = 2.1631
+C3_concavities = 8
+C7_spread = 0.569
+C8_trend = 0.1479
+C9_ratio = 0.9958
+C11_hurst = 0.2147
+C17_core = 0.026
+C6_count = 2.0
+C6_low = 0.0
+C6_high = 4.0
+C6_rule_gap = 0.2
+C6_profiles = 15
+C10_persistence = "unknown"
+
+[images.sliced-agate-geode-with-crystals-2]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.5245
+C1_regularity = 0.8081
+C2_circularity = 0.6142
+C3_irregularity = 1.3493
+C3_concavities = 11
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.teepee-canyon-agate-custer-south-dakota-usa-26560771781]
+verdict = "forms"
+forms = [
+    "fortification",
+    "moss",
+]
+features = [
+    "inclusions",
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.5542
+C1_regularity = 0.8803
+C2_circularity = 0.6351
+C3_irregularity = 1.6077
+C3_concavities = 8
+C7_spread = 0.578
+C8_trend = 0.8723
+C9_ratio = 1.033
+C11_hurst = 0.2021
+C17_core = 0.1448
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 7
+C10_persistence = "unknown"
+
+[images.turnov-muzeum-ceskeho-raje-mineralogicka-expozice-3]
+verdict = "forms"
+forms = [
+    "eye",
+    "fortification",
+    "tube",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.3954
+C1_regularity = 0.8819
+C2_circularity = 0.5499
+C3_irregularity = 0.9612
+C3_concavities = 8
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.unknown-polished-rock-macro-1]
+verdict = "forms"
+forms = [
+    "fortification",
+    "moss",
+]
+features = [
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.5193
+C1_regularity = 0.9525
+C2_circularity = 0.7133
+C3_irregularity = 0.727
+C3_concavities = 9
+C7_spread = 0.6922
+C8_trend = 0.8131
+C9_ratio = 1.1238
+C11_hurst = 0.6347
+C17_core = 0.0255
+C6_count = 3.0
+C6_low = 1.0
+C6_high = 4.0
+C6_rule_gap = 0.3333
+C6_profiles = 18
+C10_persistence = "unknown"
+
+[images.winogronowy-agat-agate-grape-san-rafael-swell-emery-county-utah-usa]
+verdict = "forms"
+forms = [
+    "botryoidal",
+]
+features = [
+    "rough",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.7883
+C1_regularity = 0.8721
+C2_circularity = 0.7165
+C3_irregularity = 2.3037
+C3_concavities = 15
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 3
+C10_persistence = "unknown"

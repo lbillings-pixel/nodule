@@ -191,6 +191,18 @@ carry over, but none of them is read as a cause:
   the frame is unknown without a check, as [@shea2010] discard
   edge-bordering vesicles. Rejected: improving agatesim's segmentation first
   (worth doing later, in agatesim); C1–C3 only on photos taken to a protocol.
+- **Band count and persistence (2026-10-28).** agatesim's profiles reach a few
+  band spacings each way, too short to count a face's bands, so C6 and C10
+  use new rim-to-centre profiles that follow the band normal
+  (`nodule.bands`): two of [@weber2010]'s counting rules over a parameter
+  sweep, and the lag-1 of detrended log thickness less a shuffled baseline
+  [@baker2008]. Tests check drawn rings of known count and both controls (a
+  flat profile counts 0; red noise swings with the parameters; a shuffled
+  series gives ≈ 0). On 10 library photos the counts were low against the eye
+  (median 1–6 per face) and wide over the sweep (one profile 3–16), and C10
+  could be judged on only a few faces. C6 is a lower bound where the outline
+  cuts inside the rim, so it shares C1–C3's outline check; on photos it
+  stays plausible at best and is read as a range.
 
 ### 9. Choices (owner accepted the recommendations, 2026-10-27)
 

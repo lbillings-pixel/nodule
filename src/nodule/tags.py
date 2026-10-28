@@ -17,7 +17,9 @@ Each usable photo gets one record:
   (`nodule.outline`);
 - C7, C8, C9, C11 and C17 read from agatesim's cached band-shape statistics
   (`agatesim library shape`), where the cache is current and the photo passes
-  agatesim's shape gate ("fit" or "borderline"); "unknown" otherwise.
+  agatesim's shape gate ("fit" or "borderline"); "unknown" otherwise;
+- C6 and C10 measured here along rim-to-centre profiles (`nodule.bands`) on
+  the same photos, with the band spacing and noise agatesim's cache holds.
 
 A value that cannot be had is written "unknown", never left out.
 """
@@ -39,9 +41,10 @@ from agatesim.library import Label, LibraryImage, load_labels, load_library
 from agatesim.shapes import VERSION as SHAPES_VERSION
 from agatesim.shapes import WORKING_PX
 from agatesim.specimen.photo import load_photo
+from agatesim.specimen.quality import luminance
 from agatesim.specimen.segment import segment
 
-from nodule import outline
+from nodule import bands, outline
 
 ROOT = Path(__file__).resolve().parents[2]
 TAGS_TOML = ROOT / "references" / "library-tags.toml"
@@ -57,6 +60,15 @@ IMPORTED = {
     "C17_core": "core",
 }
 GATE_PASSES = ("fit", "borderline")
+# Band count and persistence measured here: name in the record -> field of `bands.Bands`.
+MEASURED = {
+    "C6_count": "count",
+    "C6_low": "count_low",
+    "C6_high": "count_high",
+    "C6_rule_gap": "rule_gap",
+    "C6_profiles": "profiles",
+    "C10_persistence": "persistence",
+}
 
 HEADER = """\
 # Reference library tags under the characterization schema (ADR 0004).
@@ -79,14 +91,19 @@ def image_path(agatesim: Path, image: LibraryImage) -> Path:
     return agatesim / "references" / "library" / image.path.name
 
 
-def imported(entry: dict[str, object] | None, size: int) -> dict[str, Value]:
-    """The five descriptors from one cached agatesim entry, where the cache is
-    current for this file and the photo passes the shape gate."""
-    current = (
+def passes(entry: dict[str, object] | None, size: int) -> bool:
+    """The cached agatesim entry is current for this file and the photo passes
+    the shape gate."""
+    return (
         entry is not None
         and str(entry.get("key", "")).split(":")[:2] == [str(SHAPES_VERSION), str(size)]
         and entry.get("level") in GATE_PASSES
     )
+
+
+def imported(entry: dict[str, object] | None, size: int) -> dict[str, Value]:
+    """The five descriptors from one cached agatesim entry, where it `passes`."""
+    current = passes(entry, size)
     out: dict[str, Value] = {}
     for name, there in IMPORTED.items():
         value = entry.get(there) if entry is not None and current else None
@@ -95,8 +112,23 @@ def imported(entry: dict[str, object] | None, size: int) -> dict[str, Value]:
     return out
 
 
+def measured(band: bands.Bands | None) -> dict[str, Value]:
+    """C6 and C10, "unknown" where they could not be judged."""
+    out: dict[str, Value] = {}
+    for name, field in MEASURED.items():
+        value = getattr(band, field) if band is not None else None
+        out[name] = round(float(value), 4) if value is not None else UNKNOWN
+    if band is not None:
+        out["C6_profiles"] = band.profiles
+    return out
+
+
 def record(
-    label: Label, shape: outline.Outline | None, entry: dict[str, object] | None, size: int
+    label: Label,
+    shape: outline.Outline | None,
+    entry: dict[str, object] | None,
+    size: int,
+    band: bands.Bands | None = None,
 ) -> dict[str, Value]:
     """One photo's tags."""
     rec: dict[str, Value] = {
@@ -120,15 +152,31 @@ def record(
             "C3_irregularity": round(shape.irregularity, 4),
             "C3_concavities": shape.concavities,
         }
-    return rec | imported(entry, size)
+    return rec | imported(entry, size) | measured(band)
 
 
-def measure_outline(data: bytes) -> outline.Outline | None:
-    """C1-C3 of a photo's specimen outline, at agatesim's working size."""
+def measure_photo(
+    data: bytes, entry: dict[str, object] | None
+) -> tuple[outline.Outline | None, bands.Bands | None]:
+    """C1-C3 of a photo's specimen outline, at agatesim's working size, and C6
+    and C10 at full resolution where agatesim's cache `passes` and holds the
+    band spacing and noise."""
     seg = segment(load_photo(data, WORKING_PX).rgb)
     if len(seg.outline) < 3:
-        return None
-    return outline.measure(seg.mask)
+        return None, None
+    shape = outline.measure(seg.mask)
+    spacing = entry.get("spacing_px") if entry is not None else None
+    noise = entry.get("noise") if entry is not None else None
+    if not passes(entry, len(data)) or not isinstance(spacing, int | float):
+        return shape, None
+    if not isinstance(noise, int | float):
+        return shape, None
+    lum = luminance(load_photo(data, 10**6).rgb)
+    scale = seg.mask.shape[1] / lum.shape[1]
+    band = bands.measure(
+        lum, seg.mask, scale, float(noise), float(spacing), rng=np.random.default_rng(0)
+    )
+    return shape, band
 
 
 def write(records: dict[str, dict[str, Value]], path: Path = TAGS_TOML) -> None:
@@ -164,8 +212,9 @@ def tag_library(
             continue
         start = time.perf_counter()
         data = path.read_bytes()
-        shape = measure_outline(data)
-        records[image_id] = record(labels[image_id], shape, cache.get(image_id), len(data))
+        entry = cache.get(image_id)
+        shape, band = measure_photo(data, entry)
+        records[image_id] = record(labels[image_id], shape, entry, len(data), band)
         seconds.append(time.perf_counter() - start)
     return records, seconds
 

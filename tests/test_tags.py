@@ -10,10 +10,12 @@ from agatesim.library import Label
 from agatesim.shapes import VERSION
 
 from nodule import tags
+from nodule.bands import Bands
 from nodule.outline import Outline
 
 LABEL = Label(verdict="forms", forms=["fortification"], features=["quartz core"])
 SHAPE = Outline(aspect=0.8, regularity=0.97, circularity=0.9, irregularity=0.1, concavities=1)
+BAND = Bands(14.0, 12.0, 15.0, 0.0714, None, 20, 300)
 
 
 def entry(level: str = "fit", size: int = 1234, version: int = VERSION) -> dict[str, object]:
@@ -47,11 +49,14 @@ def test_a_stale_or_ungated_cache_entry_gives_unknown() -> None:
 
 
 def test_a_record_has_every_field_and_no_gap_when_nothing_is_measured() -> None:
-    full = tags.record(LABEL, SHAPE, entry(), 1234)
+    full = tags.record(LABEL, SHAPE, entry(), 1234, BAND)
     empty = tags.record(LABEL, None, None, 1234)
     assert full.keys() == empty.keys()
     assert full["forms"] == ["fortification"]
     assert full["C1_aspect"] == 0.8
+    assert full["C6_count"] == 14.0
+    assert full["C6_profiles"] == 20
+    assert full["C10_persistence"] == tags.UNKNOWN  # too few widths to judge
     assert all(empty[k] == tags.UNKNOWN for k in empty if k.startswith("C"))
     assert empty["view_kind"] == empty["finish"] == empty["lighting"] == tags.UNKNOWN
     assert empty["scale"] == "none"

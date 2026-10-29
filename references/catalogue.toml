@@ -1748,3 +1748,79 @@ licence = "publisher copyright; cite only"
 checked = "citation"
 topics = ["wicksell", "stereology", "unfolding", "sphere-size-distribution"]
 notes = """Citation only; known through [@cruzorive2017] (p.160) and [@coleman1992]: sphere-size distribution from plane sections leads to an Abel integral equation, ill-conditioned near the origin. DOI confirmed on Crossref 2026-10-26."""
+
+# --- Band counts and resolution (ADR 0006 search, 2026-10-29) ---------------
+
+[[references]]
+id = "lorenzi2022"
+kind = "article"
+authors = ["Lorenzi, R.", "Zullino, A.", "Gagliardi, V.", "Prosperi, L.", "Paleari, A.", "Adamo, I."]
+year = 2022
+title = "Atomic and microstructural origin of banded colours in purple-blue variety of agate from Yozgat Province, Turkey"
+venue = "Physics and Chemistry of Minerals 49, 33"
+doi = "10.1007/s00269-022-01208-3"
+url = "https://boa.unimib.it/retrieve/6bf6f8b6-159c-46d9-abf4-7f348ee48919/"
+access = "open"
+licence = "CC-BY-4.0"
+checked = "sections"
+sections_read = ["Abstract", "Introduction", "Discussion (absorption and scattering, pp. 5-6)", "Conclusions"]
+topics = ["agate", "banding", "scattering", "translucency", "crystallite-size", "colour", "shadow"]
+notes = """Read 2026-10-29 (pypdf, Milano-Bicocca repository copy). White and purple-blue bands have the same Fe and OH content; the colour difference is structural: grains 'about 5 µm' (white) against '300 nm' (blue), 'resulting in an accentuated scattering component for the white bands' (abstract). Colour is set by the 'diffuse to in-line transmission ratio' (p. 5); Mie scattering makes coarse-grained bands 'milkier and opaquer' (p. 6); loss γ = 3π²Δn²r/λ after Apetz and Van Bruggen 2003. Says the causes of agate colour by scattering 'are still unclear' (p. 1). No mention of shadow effects or angle dependence; cited only for the translucency contrast between bands that a shadow effect would need."""
+
+[[references]]
+id = "winstrup2012"
+kind = "article"
+authors = ["Winstrup, M.", "Svensson, A. M.", "Rasmussen, S. O.", "Winther, O.", "Steig, E. J.", "Axelrod, A. E."]
+year = 2012
+title = "An automated approach for annual layer counting in ice cores"
+venue = "Climate of the Past 8, 1881–1895"
+doi = "10.5194/cp-8-1881-2012"
+access = "open"
+licence = "CC-BY-3.0"
+checked = "sections"
+sections_read = ["Introduction", "Forward-backward pass (p. 1885)", "Results: MCE paragraph and NGRIP sections (p. 1891)", "Conclusions"]
+topics = ["ice-cores", "lamina-counting", "resolution", "counting-error", "hidden-markov", "censoring", "analogue"]
+notes = """Analogue, read 2026-10-29 (pypdf). Introduction: 'limited measurement resolution, etc. may act to decrease the number of layers that can be recognised', whereas folds 'may cause some layers to occur twice'. GICC05 counted uncertain layers 'as 1/2 ± 1/2 yr' (p. 1885); the MCE sums ±1/2 yr per uncertain layer, so it grows almost linearly with depth, against square-root growth for unbiased counting (p. 1891). A hidden semi-Markov model gives a probabilistic count. No test of count against resolution."""
+
+[[references]]
+id = "arcusa2022"
+kind = "article"
+authors = ["Arcusa, S. H.", "McKay, N. P.", "Wiman, C.", "Patterson, S.", "Munoz, S. E.", "Aquino-López, M. A."]
+year = 2022
+title = "A Bayesian approach to integrating radiometric dating and varve measurements in intermittently indistinct sediment"
+venue = "Geochronology 4, 409–433"
+doi = "10.5194/gchron-4-409-2022"
+access = "open"
+licence = "CC-BY-4.0"
+checked = "abstract"
+topics = ["varves", "lamina-counting", "counting-error", "undercounting", "resolution", "bayesian", "analogue"]
+notes = """Held at abstract level: read 2026-10-29 only through a summarising fetch, not the text itself; to be read in full before any claim beyond the abstract. The summary reported: Analogue, read 2026-10-29 through a summarising WebFetch (short verbatim quotes). Cumulative counting uncertainty '−13 % to +7 %', 'indicative of systematic observer under-counting' (abstract); indistinct sequences up to '± 15 %' (§1); errors usually the RMSE of several observers' counts (§1). Laminae 'typically <0.5 mm' (§3.4); thin-section images at 2× and 10× (§3.3). Delineation uncertainty is large 'because of the image quality and pixel resolution used in this study' (§5.1.1); main cause given as 'complex sub-lamina internal structures'; erosion removes laminae. The modelled minimum thickness (0.04 mm) is floored at the smallest measured value (§4.3). Resolution is not varied."""
+
+[[references]]
+id = "jamba2025"
+kind = "article"
+authors = ["Jamba, M.-E. M. P.", "Francus, P.", "Gagnon-Poiré, A.", "St-Onge, G."]
+year = 2025
+title = "Measuring varve thickness using micro-computed tomography (µCT): a comparison with thin section"
+venue = "Geochronology 7, 83–111"
+doi = "10.5194/gchron-7-83-2025"
+access = "open"
+licence = "CC-BY-4.0"
+checked = "abstract"
+topics = ["varves", "x-ray-ct", "lamina-counting", "resolution", "two-resolution-test", "analogue"]
+notes = """Held at abstract level: read 2026-10-29 only through a summarising fetch, not the text itself; to be read in full before any claim beyond the abstract. The summary reported: Analogue, read 2026-10-29 through a summarising WebFetch (short verbatim quotes). µCT at 45 µm voxels against SEM thin sections at 1 µm per pixel (§2.2-2.3). Counts 'very similar'; µCT 'slightly higher' (§3.1, abstract), put down to 3D access to laminae off the thin-section plane, thin laminae without a clay cap left uncounted in thin sections, and deformation (§4.1), not to resolution. §4.5: going 'well below' 45 µm 'did not provide additional information'; boundaries of a 0.92 mm lamina visible 'up to 77 µm (∼12 voxels)'; 'a minimum of about 13 voxels per varve'. Fig. 19 not seen; rescan or downsampling not stated. Data cost: 170 GB per 1.5 m core at 45 µm."""
+
+[[references]]
+id = "vandenbulcke2019"
+kind = "article"
+authors = ["Van den Bulcke, J.", "Boone, M. A.", "Dhaene, J.", "Van Loo, D.", "Van Hoorebeke, L.", "Boone, M. N.", "Wyffels, F.", "Beeckman, H.", "Van Acker, J.", "De Mil, T."]
+year = 2019
+title = "Advanced X-ray CT scanning can boost tree ring research for earth system sciences"
+venue = "Annals of Botany 124(5), 837–847"
+doi = "10.1093/aob/mcz126"
+url = "https://pmc.ncbi.nlm.nih.gov/articles/PMC6868372/"
+access = "open"
+licence = "OUP standard licence (free in PMC); cite only"
+checked = "abstract"
+topics = ["tree-rings", "x-ray-ct", "resolution", "multiscale", "analogue"]
+notes = """Held at abstract level: read 2026-10-29 only through a summarising fetch, not the text itself; to be read in full before any claim beyond the abstract. The summary reported: Negative result for count against resolution, read 2026-10-29 through a summarising WebFetch. Increment cores at 60 µm down to 4.5 µm; 60 µm is 'in most cases sufficient for TRW measurements, yet lacks detail for further analysis'; coarse scans guide finer ones (multiscale). No comparison of the same samples at different resolutions, no voxels-per-ring rule, no missing or false rings discussed."""

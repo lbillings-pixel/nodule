@@ -1824,3 +1824,59 @@ licence = "OUP standard licence (free in PMC); cite only"
 checked = "abstract"
 topics = ["tree-rings", "x-ray-ct", "resolution", "multiscale", "analogue"]
 notes = """Held at abstract level: read 2026-10-29 only through a summarising fetch, not the text itself; to be read in full before any claim beyond the abstract. The summary reported: Negative result for count against resolution, read 2026-10-29 through a summarising WebFetch. Increment cores at 60 µm down to 4.5 µm; 60 µm is 'in most cases sufficient for TRW measurements, yet lacks detail for further analysis'; coarse scans guide finer ones (multiscale). No comparison of the same samples at different resolutions, no voxels-per-ring rule, no missing or false rings discussed."""
+
+[[references]]
+id = "jayaraman1953"
+kind = "article"
+authors = ["Jayaraman, A."]
+year = 1953
+title = "The structure and optical behaviour of chalcedony"
+venue = "Proceedings of the Indian Academy of Sciences, Section A 38, 441–449"
+doi = "10.1007/BF03045262"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["chalcedony", "optics", "diffusion", "polarisation", "fibres", "lamellae", "diffraction", "translucency", "shadow"]
+notes = """Read in full 2026-10-29 (owner's scanned PDF, publisher OCR layer checked against page images; plates viewed). Theory (pp. 442-444): random quartz crystallites diffuse light by birefringent phase differences, transmission I = I0·exp(-π²(μ1-μ2)²Δz/λ²) after Raman's Christiansen theory (exponent decoded from the worked values), so thicker plates and coarser crystallites transmit less and redden; fibres with common a-axis pass light polarised along the fibres and diffuse the transverse component into a brush; laminae with c-axis orientation changing from lamina to lamina diffract, and act as a phase grating if periodic. Observations on five colourless plates 0.15–2 mm thick from the institute museum (no locality): transparency complementary between window light and oblique dark-field light, 'the dark portions now appear bright and vice versa' (p. 445, Figs. 4-5 for banded pieces); diffuse brush parallel to the banding that 'follows the course of banding' (p. 447); an enlargement 'exhibits numerous closely-spaced lamellae which are not visible' at smaller scale, 'a general feature' (p. 448); fine lamellae best seen 'on the boundary between light and darkness' (p. 448); diffraction spectra beside a small source; transmission falls rapidly with tilt of the band planes (p. 448). Lamellae attributed to c-axis orientation changing between successive layers across the fibres (p. 449). Qualitative only: no scales, spacings or angles. Does not describe a shadow effect, sectors or whole-stone viewing."""
+
+[[references]]
+id = "andersen2006"
+kind = "article"
+authors = ["Andersen, K. K.", "Svensson, A.", "Johnsen, S. J.", "Rasmussen, S. O.", "Bigler, M.", "Röthlisberger, R.", "Ruth, U.", "Siggaard-Andersen, M.-L.", "Steffensen, J. P.", "Dahl-Jensen, D.", "Vinther, B. M.", "Clausen, H. B."]
+year = 2006
+title = "The Greenland Ice Core Chronology 2005, 15–42 ka. Part 1: constructing the time scale"
+venue = "Quaternary Science Reviews 25, 3246–3257"
+doi = "10.1016/j.quascirev.2006.08.002"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["ice-cores", "lamina-counting", "resolution", "counting-error", "censoring", "analogue"]
+notes = """Analogue, read in full 2026-10-29 (owner's PDF, pypdf; Figs. 4-6 viewed). Uncertain annual layers 'are counted as 0.5 ± 0.5 years in the same manner as described by Rasmussen et al. (2006)' (pp. 3248-3249), so the rule originates there; assigned 'when only some of the used records display an annual signal, when the relative timing of seasonal peaks is inconsistent ... or ... the probability ... lies somewhere between 25% and 75%' (p. 3249). MCE = N × 0.5 yr, summed linearly (p. 3249); ½√N rejected as 'unrealistically low' because uncertain marks are correlated where resolution is limited; MCE used pragmatically as 2σ (pp. 3252-3253); final count takes every second uncertain layer (p. 3254). Effective resolution defined as 'the shortest wavelength that can be identified from the data': 10-25 mm for CFA recorded at 1 mm, about 4 mm for ECM (p. 3248). §3.3 (p. 3251, Fig. 4): single-record peak counts over 50 m are 'highly dependent on the measurement resolution'; fine VS overcounts sub-annual events, coarse Na misses thin stadial layers; 'None of the applied records alone suffices'. MCE assumes 'the data resolution is sufficient to resolve annual layers' (p. 3252). Checks: two counters differ by 1.3% < MCE; Laschamp within error; no direct bias test. No count-against-resolution curve."""
+
+[[references]]
+id = "damci2016"
+kind = "article"
+authors = ["Damcı, E.", "Çağatay, M. N."]
+year = 2016
+title = "An automated algorithm for dating annually laminated sediments using X-ray radiographic images, with applications to Lake Van (Turkey), Lake Nautajarvi (Finland) and Byfjorden (Sweden)"
+venue = "Quaternary International 401, 174–183"
+doi = "10.1016/j.quaint.2015.05.007"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["varves", "lamina-counting", "resolution", "x-ray-radiography", "counting-error", "analogue"]
+notes = """Analogue, read in full 2026-10-29 (owner's PDF, pypdf; equations and figures checked on rendered pages). Counts every strict local grey maximum and minimum along columns of an X-ray radiograph as laminae, divides by k laminae per varve, and takes the column-to-column variance (Eqs 7–9) as a cumulative error. Resolution rule, asserted without derivation, citation or test: "the smallest lamina thickness should include at least three pixels", so s ≤ (1/3)·t/k; Itrax 60 µm → 180 µm, Avaatech 100 µm → 300 µm thinnest detectable lamina (p. 177). Applied to the average lamina, not the thinnest (Byfjorden 0.75 mm → 0.25 mm pixels, p. 180). Resolution and k are tuned "iteratively … to fit the reference stratigraphic levels with known ages" (p. 177); no ladder of resolutions and no core counted at two resolutions. No uncertain-lamina rule; faint lamination only widens the error (p. 181); thick storm beds count as two years (p. 181). Agreement: Nautajarvi within 2 % of an earlier varve count; Byfjorden storm layers within 1–3 yr; Lake Van ~1000 yr older than Landmann's tephra (varve) ages below 3000 BP, outside its own error bars (p. 181), read by the authors as earlier under-counting. Several internal inconsistencies (Fig. 5 caption swapped; Fig. 4 totals do not match the varve counts)."""
+
+[[references]]
+id = "rasmussen2006"
+kind = "article"
+authors = ["Rasmussen, S. O.", "et al. (full list not checked)"]
+year = 2006
+title = "A new Greenland ice core chronology for the last glacial termination"
+venue = "Journal of Geophysical Research: Atmospheres 111, D06102"
+doi = "10.1029/2005JD006079"
+access = "closed"
+licence = "not checked; cite only (access not checked)"
+checked = "citation"
+topics = ["ice-cores", "lamina-counting", "counting-error", "analogue"]
+notes = "Cited by andersen2006 (pp. 3248-3249) as the source of the GICC05 rule that counts each uncertain annual layer as 0.5 ± 0.5 yr. Title, venue and DOI checked on Crossref 2026-10-29; not read. On the owner's download list."

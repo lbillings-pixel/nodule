@@ -1,7 +1,9 @@
 # 6. Band counts as censored records, and what the eye adds
 
 - Status: accepted (owner, 2026-10-29, with the recommendations in 7a–7e;
-  the reading of 7e found no source that changes them)
+  the reading of 7e found no source that changes them). Amended
+  2026-10-29 after three papers were read in full; no decision or grade
+  changed (see Consequences).
 - Date: 2026-10-29
 - Builds on: [ADR 0004](0004-characterization-schema-core-set.md) sections
   1, 4 (C6, C10, C13) and 8. Records the owner's choice of 2026-10-29 to
@@ -27,23 +29,41 @@
   concealed by pigmentation" [@cartwright2026].
 - **A photo resolves far less.** Arithmetic, not a measurement: a 3000 px
   photo of a 60 mm face has 0.02 mm pixels, and a light–dark couplet needs at
-  least 2 pixels, with blur and JPEG compression often 4 or more. So the
-  finest couplet a good library photo can show is about 0.04–0.1 mm, two
-  orders of magnitude above iris spacing. Library photos have no scale, so
-  even this limit is known only in pixels.
+  least 2 pixels, with blur and JPEG compression often 4 or more. A varve
+  rule asks for at least three pixels per lamina, so 6 per couplet
+  [@damci2016], which gives about 0.12 mm. So the finest couplet a good
+  library photo can show is about 0.04–0.12 mm, two orders of magnitude
+  above iris spacing. Library photos have no scale, so even this limit is
+  known only in pixels.
 - **So a band count belongs to the photo, not the stone.** C6 (machine,
   `nodule.bands`) and `C6_eye` (owner) count the bands coarser than the
   photo's limit. The same face photographed sharper gives more. ADR 0004
   already reads C6 as a lower bound where the outline cuts inside the rim;
   the same holds at every face for bands below the limit. C6 can also
   overcount, from noise or texture, which its range over the sweep shows
-  [@weber2010].
+  [@weber2010]. In thin chalcedony plates, an enlargement "exhibits
+  numerous closely-spaced lamellae which are not visible" at the smaller
+  scale, "a general feature" of both specimens [@jayaraman1953, p. 448]:
+  one qualitative case of the same premise, without scales.
 - **Layer counting elsewhere meets the same limit.** In ice cores, "limited
   measurement resolution" can "decrease the number of layers that can be
   recognised", and the GICC05 count enters each uncertain layer as ½ ± ½
-  year, so the uncertainty is an interval, not a point [@winstrup2012]. No
-  source found (time-boxed search, 2026-10-29) measures how a count changes
-  over a ladder of resolutions, or explains agate's shadow effect.
+  year, so the uncertainty is an interval, not a point [@winstrup2012].
+  The rule is stated in [@andersen2006], which takes it from
+  [@rasmussen2006] (not read): a layer is uncertain where its probability
+  is judged to lie between 25 % and 75 %, and the maximum counting error
+  adds ½ year per uncertain layer. That error assumes "the data resolution
+  is sufficient to resolve annual layers" (p. 3252), so layers below the
+  limit lie outside it, as here. The same paper defines a record's
+  effective resolution as "the shortest wavelength that can be identified
+  from the data" (p. 3248), and finds single-record counts "highly
+  dependent on the measurement resolution": coarse records miss thin
+  layers, fine ones count events within a year (p. 3251) [@andersen2006].
+  In varves, the three-pixel rule above is asserted without derivation,
+  citation or test, ignores blur, and is applied to the average lamina,
+  not the thinnest [@damci2016, p. 177, 180]. No source found (time-boxed
+  search, 2026-10-29) measures how a count changes over a ladder of
+  resolutions, or explains agate's shadow effect.
 
 The owner chose (2026-10-29) to try recording differently first, with a
 fallback written in that loosens the requirement toward goals 1 and 2 (image
@@ -72,14 +92,24 @@ stone's band number:
   *L* are compared after the finer one is recounted at the coarser limit
   (section 2). Counts are also compared only within one lighting kind,
   since transmitted light can invert which bands look light (owner's note on
-  agate3; ADR 0004 section 1 already records the lighting).
+  agate3; ADR 0004 section 1 already records the lighting). In thin
+  chalcedony plates, bands dark against a window look bright under oblique
+  light on a dark background, "and vice versa" [@jayaraman1953, p. 445,
+  447]: a published case of the owner's note. Thicker plates there were less
+  transparent (p. 447), so a slab's thickness also changes what shows; it
+  isn't in the schema and is listed as a candidate.
 
 Negative controls: a synthetic face with fine bands below *L* drawn over
 coarse ones must count only the coarse ones and report *L* above the fine
 spacing; the same synthetic stone imaged at two resolutions must give a
 higher-resolution count at least the lower-resolution one, and equal counts
 once both are taken at the coarser *L*. Grade: plausible (the limit is
-standard sampling; its use on agate photos is untested).
+standard sampling, and ice-core counting defines a record's resolution the
+same way, as its shortest identifiable wavelength [@andersen2006]; its use
+on agate photos is untested). A pixel floor after [@damci2016] (*L* no
+finer than 6 px per couplet, flagged where the spectrum says finer) is a
+candidate cross-check, not adopted: speculative, since no source compares
+the two.
 
 ### 2. Count against limit, N(L)
 
@@ -116,9 +146,14 @@ no peer-reviewed source found explains the shadow effect, so it stays
 speculative. Neighbouring agate bands can differ in translucency through
 crystallite size alone (about 5 µm against 300 nm, by scattering)
 [@lorenzi2022], which a shadow effect would need, but that source says
-nothing of viewing angle, sectors or band spacing. The likeliest optics
-source (Jayaraman 1953, with [@raman1955] and [@graetsch1985]) is on the
-owner's download list. The owner's idea of reading
+nothing of viewing angle, sectors or band spacing. [@jayaraman1953], read
+in full, doesn't describe it either: on thin colourless plates, light
+scattered by the fibres spreads in a brush that "follows the course of
+banding" (p. 447), and transmission falls quickly as the band planes are
+tilted against the beam (p. 448). A shadow effect could arise from these
+(reasoning, speculative). Its companion paper on iridescent agate (Raman
+and Jayaraman 1953) is on the owner's download list, with [@raman1955] and
+[@graetsch1985] behind it. The owner's idea of reading
 fine-band spacing from shadow banding is listed as a later candidate.
 
 ### 4. Who labels
@@ -234,8 +269,15 @@ is what the core set already does for synthetic cuts).
   [@jamba2025], [@arcusa2022] and [@vandenbulcke2019] at abstract level,
   having been seen only through a summarising fetch. Its report is in
   `notes/n1-reading/adr0006-search.md` (unreviewed agent output).
-- Owner downloads that could lift a grade: Jayaraman 1953
-  (10.1007/BF03045262) for cue (c); Andersen et al. 2006
-  (10.1016/j.quascirev.2006.08.002), the origin of the ½ ± ½ rule; Damci and
-  Cagatay 2016 (10.1016/j.quaint.2015.05.007), a rule linking sampling
-  resolution to the thinnest countable lamina.
+- Read in full after acceptance (2026-10-29), from the owner's downloads:
+  [@jayaraman1953], [@andersen2006] and [@damci2016] (reports
+  `notes/n1-reading/tier1-*.md`, unreviewed agent output). They change no
+  decision or grade. They correct where the ½ ± ½ rule comes from (Andersen
+  et al. take it from [@rasmussen2006], catalogued at citation level), back
+  the lighting rule and the definition of *L* with published cases, widen
+  the photo-limit arithmetic, and add one candidate (the pixel floor). Cue
+  (c) stays speculative.
+- Further downloads for this ADR, by priority, are in
+  `notes/n1-reading/downloads.md` (Rasmussen et al. 2006; Raman and
+  Jayaraman 1953; Ojala and Francus 2002; Ojala et al. 2012; Holten et al.
+  1998 for C11). The band code waits until they are read.

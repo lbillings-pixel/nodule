@@ -251,6 +251,13 @@ carry over, but none of them is read as a cause:
   - The tag file reports how many rim outlines were used and the estimated
     share wrong by the owner's standard (2 of 20 owner-checked helper passes,
     95% interval 3% to 30%).
+  - Outlines drawn here that nobody has judged are saved as a run of their own
+    in the same layout (`python -m nodule.rims --draw-unjudged NAME`, in this
+    repository's gitignored `runs/rim-check/`) and judged by helper agents with
+    the same two questions. First pass, 2026-10-29: 32 outlines, 18 passed.
+  - Result on the 230 usable photos: rim outlines judged "yes" on 100 (C1-C3
+    on 98; two touch the frame), "no" on 28, no outline on 102; C6 on 64
+    (median 4 bands), C10 on 49. Re-tagging takes about 630 s.
   - Rejected: matching verdicts by photo alone (a changed outline would inherit
     a judgment, against agatesim ADR 0075 point 2); matching by overlap within
     a tolerance (unneeded while outlines reproduce exactly).

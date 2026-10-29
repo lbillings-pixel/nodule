@@ -78,6 +78,28 @@ def test_gather_ties_answers_to_outlines(tmp_path: Path):
     assert (vb["mask"], vb["follows"], vb["by"]) == (rims.fingerprint(b), False, "owner")
 
 
+def test_gather_reads_several_folders_and_the_owner_still_wins(tmp_path: Path):
+    a = disc()
+    there, here = tmp_path / "agatesim", tmp_path / "nodule"
+    write_run(there, "held", "C", {"a": a}, {"a": None})
+    write_run(here, "own", "C", {"a": a}, {"a": None})
+    answers(there, "owner-held.json", "held", {"a": ("yes", "yes")})
+    answers(here, "judge-own.json", "own", {"a": ("yes", "no")})
+    (va,) = rims.gather(there, here)["a"]
+    assert (va["follows"], va["by"]) == (True, "owner")
+
+
+def test_unjudged_outlines_are_listed(tmp_path: Path):
+    path = tmp_path / "tags.toml"
+    rows = {
+        "a": 'rim = "found"\noutline_check = "unknown"',
+        "b": 'rim = "found"\noutline_check = "yes"',
+        "c": 'rim = "none: cut-off"\noutline_check = "unknown"',
+    }
+    path.write_text("".join(f"[images.{k}]\n{v}\n" for k, v in rows.items()))
+    assert rims.unjudged(path) == ["a"]
+
+
 def test_write_and_load_round_trip(tmp_path: Path):
     m = disc()
     rows = {

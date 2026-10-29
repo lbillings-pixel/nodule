@@ -267,6 +267,13 @@ by = "helper"
 run = "tune-sam-open"
 
 [[images.agat-lake-superior-duluth-minnesota-usa]]
+mask = "5e9d2fe3e63acd73"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
+
+[[images.agat-lake-superior-duluth-minnesota-usa]]
 mask = "fc85a84ccac481f7"
 rim_in_frame = true
 follows = true
@@ -322,6 +329,20 @@ follows = true
 by = "helper"
 run = "tune-sam-open"
 
+[[images.agate-19-30746155707]]
+mask = "c5f626a479b2e629"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
+
+[[images.agate-22-30746156427]]
+mask = "de2b7bb5331e5e91"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
+
 [[images.agate-22-30746156427]]
 mask = "f7586518ae826fe8"
 rim_in_frame = true
@@ -335,6 +356,13 @@ rim_in_frame = true
 follows = true
 by = "helper"
 run = "tune-sam-open"
+
+[[images.agate-23-48609868172]]
+mask = "5c963723336bc11e"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
 
 [[images.agate-7-32755748235]]
 mask = "6e0288844c4abf40"
@@ -350,6 +378,13 @@ follows = true
 by = "helper"
 run = "tune-sam-open"
 
+[[images.agate-agate-creek-queensland-australia]]
+mask = "f96a6b4ad2f2fe0e"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
+
 [[images.agate-amethyste-quartz]]
 mask = "18c90190fe46c757"
 rim_in_frame = true
@@ -363,6 +398,20 @@ rim_in_frame = true
 follows = true
 by = "helper"
 run = "tune-sam-open"
+
+[[images.agate-d-bruyere]]
+mask = "ffcbddd76bc69c00"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "nodule-unjudged-1"
+
+[[images.agate-filled-geode-brazil-1-31912507804]]
+mask = "213d503ed13c1bd6"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "nodule-unjudged-1"
 
 [[images.agate-filled-geode-brazil-1-31912507804]]
 mask = "fb81fcc0bdcdf3ef"
@@ -378,12 +427,33 @@ follows = true
 by = "helper"
 run = "tune-sam-open"
 
+[[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-4]]
+mask = "965481137b41d062"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "nodule-unjudged-1"
+
+[[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-7]]
+mask = "7b103847d885d427"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "nodule-unjudged-1"
+
 [[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-7]]
 mask = "e60d6f4673cc1590"
 rim_in_frame = true
 follows = false
 by = "helper"
 run = "tune-sam-open"
+
+[[images.agate-free-texture-2732496325]]
+mask = "69ed9fb38fbd66c2"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
 
 [[images.agate-free-texture-2732496325]]
 mask = "8a4184cd20e6cbe0"
@@ -393,6 +463,13 @@ by = "helper"
 run = "tune-sam-open"
 
 [[images.agate-from-poczki-gorne-rn3]]
+mask = "5ffee3f2bc20e643"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
+
+[[images.agate-from-poczki-gorne-rn3]]
 mask = "65f0dbed22db5db0"
 rim_in_frame = true
 follows = true
@@ -400,11 +477,25 @@ by = "helper"
 run = "tune-sam-open"
 
 [[images.agate-geode-a]]
+mask = "232c3ae04b5a8ecc"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
+
+[[images.agate-geode-a]]
 mask = "aa9aca4dfa144adb"
 rim_in_frame = true
 follows = true
 by = "helper"
 run = "tune-sam-open"
+
+[[images.agate-lined-geode-black-rock-desert-gerlach-nevada-usa-33974978773]]
+mask = "55f2e8005215f267"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "nodule-unjudged-1"
 
 [[images.agate-lined-geode-black-rock-desert-gerlach-nevada-usa-33974978773]]
 mask = "e8f38f416cbca181"
@@ -419,6 +510,20 @@ rim_in_frame = true
 follows = true
 by = "helper"
 run = "tune-sam-open"
+
+[[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins]]
+mask = "d5d84cf4ae70308a"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "nodule-unjudged-1"
+
+[[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-4]]
+mask = "01e2eb3607bc2c55"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
 
 [[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-4]]
 mask = "8008b27130d71e5e"
@@ -469,12 +574,33 @@ follows = true
 by = "helper"
 run = "tune-sam-open"
 
+[[images.agate1-hg]]
+mask = "a871e018735fac6b"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
+
+[[images.agate4-hg]]
+mask = "38c480aa20d9ff97"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
+
 [[images.agate4-hg]]
 mask = "a2fdc22cac4e6288"
 rim_in_frame = true
 follows = true
 by = "helper"
 run = "tune-sam-open"
+
+[[images.banded-agate-artigas-or-rio-grande-do-sul-caillois-donation-mnhn-n02]]
+mask = "94881b6bb3d2e799"
+rim_in_frame = false
+follows = false
+by = "helper"
+run = "nodule-unjudged-1"
 
 [[images.banded-agate-artigas-or-rio-grande-do-sul-caillois-donation-mnhn-n02]]
 mask = "f67be156e76b1767"
@@ -489,6 +615,13 @@ rim_in_frame = true
 follows = false
 by = "helper"
 run = "tune-sam-open"
+
+[[images.center-detail-quartz-uruguay-dation-caillois-cropped]]
+mask = "057d169f6ff14a35"
+rim_in_frame = false
+follows = false
+by = "helper"
+run = "nodule-unjudged-1"
 
 [[images.center-detail-quartz-uruguay-dation-caillois-cropped]]
 mask = "504009446d8f6407"
@@ -659,11 +792,25 @@ by = "helper"
 run = "tune-sam-bm06"
 
 [[images.dugway-geode-juab-county-utah-usa-2-34581522545]]
+mask = "104a9ad1155771a7"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "nodule-unjudged-1"
+
+[[images.dugway-geode-juab-county-utah-usa-2-34581522545]]
 mask = "dda930ffe5d55c13"
 rim_in_frame = true
 follows = true
 by = "helper"
 run = "tune-sam-open"
+
+[[images.estonian-museum-of-natural-history-specimen-no-174649-photo-g286-g286-25-1-jpg]]
+mask = "a8d4860169868f41"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
 
 [[images.estonian-museum-of-natural-history-specimen-no-174649-photo-g286-g286-25-1-jpg]]
 mask = "ae0df151582b7f0f"
@@ -686,12 +833,33 @@ follows = true
 by = "helper"
 run = "tune-sam-open"
 
+[[images.estonian-museum-of-natural-history-specimen-no-178073-photo-g229-g229-436-jpg]]
+mask = "c129fa51809a3bc8"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
+
+[[images.feuerachat-fireagate-from-brazil-tumble-polished-stone]]
+mask = "17df76b445904a38"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
+
 [[images.feuerachat-fireagate-from-brazil-tumble-polished-stone]]
 mask = "8a2f463217dcee12"
 rim_in_frame = true
 follows = true
 by = "helper"
 run = "tune-sam-open"
+
+[[images.fire-agate]]
+mask = "2d1791f4818b0640"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "nodule-unjudged-1"
 
 [[images.fire-agate]]
 mask = "49d4d95f1611ab7a"
@@ -707,6 +875,13 @@ follows = true
 by = "helper"
 run = "tune-sam-open"
 
+[[images.geneva-natural-history-museum-agate]]
+mask = "8ae64dfaaa2bea8c"
+rim_in_frame = false
+follows = false
+by = "helper"
+run = "nodule-unjudged-1"
+
 [[images.gestein-mit-verschiedenen-mineralen-mineralogia]]
 mask = "7ee541c04ea2bbe8"
 rim_in_frame = true
@@ -714,12 +889,26 @@ follows = true
 by = "helper"
 run = "tune-sam-open"
 
+[[images.gestein-mit-verschiedenen-mineralen-mineralogia]]
+mask = "f85ef40d5ddd4963"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "nodule-unjudged-1"
+
 [[images.moosachat-hg]]
 mask = "9cfb8321d42b5731"
 rim_in_frame = true
 follows = true
 by = "helper"
 run = "tune-sam-open"
+
+[[images.moosachat-hg]]
+mask = "aff4f99b0779963a"
+rim_in_frame = false
+follows = false
+by = "helper"
+run = "nodule-unjudged-1"
 
 [[images.museo-de-la-plata-agata-cropped]]
 mask = "ef7ff1be0af079b0"
@@ -735,12 +924,26 @@ follows = true
 by = "helper"
 run = "tune-sam-open"
 
+[[images.polished-agate-macro-3]]
+mask = "a852f577537bc346"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
+
 [[images.quartz-agate-le-vaisseau-bresil-dation-caillois]]
 mask = "6f412fb6c08ec0d5"
 rim_in_frame = true
 follows = true
 by = "helper"
 run = "tune-sam-open"
+
+[[images.quartz-agate-le-vaisseau-bresil-dation-caillois]]
+mask = "fc53ec0211c10466"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
 
 [[images.quarz-achatmandel]]
 mask = "163b6e512d14d5b4"
@@ -749,6 +952,13 @@ follows = true
 by = "helper"
 run = "tune-sam-open"
 
+[[images.quarz-achatmandel]]
+mask = "28184a61a5cbc0fb"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "nodule-unjudged-1"
+
 [[images.quarz-augenachat]]
 mask = "9626cd6d4ea29800"
 rim_in_frame = true
@@ -756,12 +966,26 @@ follows = true
 by = "helper"
 run = "tune-sam-open"
 
+[[images.quarz-augenachat]]
+mask = "b2c0fd23847de8fb"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
+
 [[images.richardson-ranch-thunder-egg-with-plume-from-plume-beds-richardson-ranch-madras-]]
 mask = "2ba1905901b62be1"
 rim_in_frame = false
 follows = false
 by = "owner"
 run = "held"
+
+[[images.turnov-muzeum-ceskeho-raje-mineralogicka-expozice-3]]
+mask = "21030ba01fc235a9"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "nodule-unjudged-1"
 
 [[images.turnov-muzeum-ceskeho-raje-mineralogicka-expozice-3]]
 mask = "ec087d6022696a85"

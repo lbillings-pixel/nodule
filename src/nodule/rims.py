@@ -13,9 +13,13 @@ saved it, hashed. Here the outline is drawn again with the model passed in
 explicitly, and a verdict applies only where the fingerprints match; a changed
 outline (new agatesim commit or settings) finds no verdict and is not measured.
 
-The verdicts are read once from agatesim's `runs/rim-check/` (gitignored there)
-into `references/rim-verdicts.toml` (`python -m nodule.rims`). Only runs of the
-model (method C) are read: B's outlines would need their own judgments.
+The verdicts are read from agatesim's `runs/rim-check/` (gitignored there)
+and from this repository's own `runs/rim-check/` (gitignored), in the same
+layout, into `references/rim-verdicts.toml` (`python -m nodule.rims`). Only
+runs of the model (method C) are read: B's outlines would need their own
+judgments. Outlines drawn here that nobody has judged yet are saved as a run
+of their own, with pictures to judge (`--draw-unjudged NAME`); the helpers'
+answers go to `judge-NAME.json` beside it.
 """
 
 from __future__ import annotations
@@ -42,6 +46,7 @@ if TYPE_CHECKING:
 
 ROOT = Path(__file__).resolve().parents[2]
 VERDICTS_TOML = ROOT / "references" / "rim-verdicts.toml"
+OWN_RUNS = ROOT / "runs" / "rim-check"
 RIM_PX = 1024  # long side of the photo the outlines were drawn and judged on
 MASK_PX = 256  # long side of the saved masks the fingerprint is taken from
 # The owner's check of helper "yes" outlines (agatesim ADR 0075): wrong, checked.
@@ -110,22 +115,23 @@ def _answers(path: Path) -> tuple[str, dict[str, dict[str, str]]]:
     return run, data
 
 
-def gather(rim_check: Path) -> dict[str, list[dict[str, str | bool]]]:
-    """Verdicts on the model's outlines in agatesim's `runs/rim-check`, keyed by
-    photo. Owner answers replace the helpers' on the same outline; where two
-    runs judged the same outline differently, the "no" is kept."""
+def gather(*rim_checks: Path) -> dict[str, list[dict[str, str | bool]]]:
+    """Verdicts on the model's outlines in rim-check folders, keyed by photo.
+    Owner answers replace the helpers' on the same outline; where two runs
+    judged the same outline differently, the "no" is kept."""
     found: dict[str, dict[str, dict[str, str | bool]]] = {}
-    files = [*sorted(rim_check.glob("judge-*.json")), *sorted(rim_check.glob("owner-*.json"))]
-    for path in files:
+    judges = [p for d in rim_checks for p in sorted(d.glob("judge-*.json"))]
+    owners = [p for d in rim_checks for p in sorted(d.glob("owner-*.json"))]
+    for path in [*judges, *owners]:
         by = "owner" if path.name.startswith("owner-") else "helper"
         run, answers = _answers(path)
-        results_path = rim_check / run / "results.json"
+        results_path = path.parent / run / "results.json"
         if not results_path.exists():
             continue
         results = json.loads(results_path.read_text("utf-8"))
         if results.get("method") != "C":
             continue
-        masks = np.load(rim_check / run / "masks.npz")
+        masks = np.load(path.parent / run / "masks.npz")
         for image_id, answer in answers.items():
             if results["results"].get(image_id, {}).get("reason", "") is not None:
                 continue  # judged a photo without an outline: nothing to tie it to
@@ -200,17 +206,66 @@ class Finder:
         return rgb, find_rim(rgb, patches=patches, sam=self.model)
 
 
-def main(argv: Sequence[str] | None = None) -> int:
-    from nodule.tags import agatesim_dir
+def unjudged(tags_toml: Path) -> list[str]:
+    """Photos in a tag file whose rim outline was found but never judged."""
+    images = tomllib.loads(tags_toml.read_text("utf-8"))["images"]
+    return sorted(
+        k for k, r in images.items() if r["rim"] == "found" and r["outline_check"] == "unknown"
+    )
 
-    parser = argparse.ArgumentParser(description="bring in agatesim's rim-outline verdicts")
+
+def save_run(finder: Finder, images: Mapping[str, Path], out: Path) -> None:
+    """A rim-check run of the model's outlines, laid out as agatesim's
+    `scripts/rim_check.py` lays one out: results.json, masks.npz (masks at
+    `MASK_PX`) and a picture of each outline (green, no metadata) to judge."""
+    from nodule.overlay import GREEN, edge, label
+
+    out.mkdir(parents=True, exist_ok=True)
+    results: dict[str, dict[str, object]] = {}
+    masks: dict[str, NDArray[np.bool_]] = {}
+    for image_id, path in images.items():
+        rgb, rim = finder.find(image_id, path.read_bytes())
+        results[image_id] = {"reason": rim.reason, "area": float(rim.mask.mean())}
+        small = Image.fromarray(rim.mask)
+        small.thumbnail((MASK_PX, MASK_PX), Image.Resampling.NEAREST)
+        masks[image_id] = np.asarray(small, dtype=bool)
+        pixels = rgb.copy()
+        line = edge(rim.mask)
+        for shift in ((0, 0), (0, 1), (1, 0), (1, 1)):  # a line 2 px wide
+            pixels[np.roll(line, shift, axis=(0, 1))] = GREEN
+        note = "outline" if rim.found else f"no outline: {rim.reason}"
+        label(Image.fromarray(pixels), note).save(out / f"{image_id}.png")
+    settings = {"rim_px": RIM_PX, "method": "C"}
+    (out / "results.json").write_text(json.dumps({**settings, "results": results}, indent=1))
+    np.savez_compressed(out / "masks.npz", **masks)  # pyright: ignore[reportArgumentType]
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    from agatesim.library import load_library
+
+    from nodule.tags import TAGS_TOML, agatesim_dir, image_path
+
+    parser = argparse.ArgumentParser(description="bring in the rim-outline verdicts")
     parser.add_argument("--out", type=Path, default=VERDICTS_TOML)
+    parser.add_argument(
+        "--draw-unjudged",
+        metavar="NAME",
+        help="save the tag file's unjudged outlines as run NAME in runs/rim-check, to be judged",
+    )
     args = parser.parse_args(argv)
-    rim_check = agatesim_dir() / "runs" / "rim-check"
+    agatesim = agatesim_dir()
+    rim_check = agatesim / "runs" / "rim-check"
     if not rim_check.exists():
         print(f"no rim-check runs at {rim_check}; set NODULE_AGATESIM")
         return 1
-    verdicts = gather(rim_check)
+    if args.draw_unjudged:
+        library = load_library(agatesim / "references" / "library.toml")
+        ids = unjudged(TAGS_TOML)
+        out = OWN_RUNS / args.draw_unjudged
+        save_run(Finder(agatesim), {k: image_path(agatesim, library.get(k)) for k in ids}, out)
+        print(f"saved {len(ids)} unjudged outlines to {out}; answers go to judge-{out.name}.json")
+        return 0
+    verdicts = gather(rim_check, OWN_RUNS)
     write(verdicts, args.out)
     rows = [v for vs in verdicts.values() for v in vs]
     passed = sum(bool(v["rim_in_frame"] and v["follows"]) for v in rows)

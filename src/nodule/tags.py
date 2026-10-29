@@ -14,17 +14,21 @@ Each usable photo gets one record:
 - the view (section 1): kind, finish and lighting, labelled by eye with C4,
   C5, C22 and the outline check (`nodule.labels`, choice 9b); the library has
   no scale;
-- C1-C3 measured here on the outline that agatesim's segmentation finds
-  (`nodule.outline`);
+- C1-C3 measured here on the outline that agatesim's rim-finder draws
+  (`nodule.outline`, `nodule.rims`), only where a helper or the owner has
+  judged that very outline to follow the whole rim (agatesim ADR 0075);
 - C7, C8, C9, C11 and C17 read from agatesim's cached band-shape statistics
   (`agatesim library shape`), where the cache is current and the photo passes
   agatesim's shape gate ("fit" or "borderline"); "unknown" otherwise;
 - C6 and C10 measured here along rim-to-centre profiles (`nodule.bands`) on
-  the same photos, with the band spacing and noise agatesim's cache holds.
+  the same photos, with the band spacing and noise agatesim's cache holds:
+  inside the judged rim outline, or else inside agatesim's working region
+  (`segment()`), where C10 still counts.
 
-Where the outline check says the outline does not follow the rim, C1-C3 and
-C6 are "unknown" (section 8). `--relabel` applies new labels to the tag file
-without measuring again.
+Where the rim outline is missing, unjudged or judged "no", C1-C3 and C6 are
+"unknown" (section 8). The labels' own outline check judged the old
+`segment()` outline, so it no longer applies. `--relabel` applies new labels
+to the tag file without measuring again.
 
 A value that cannot be had is written "unknown", never left out.
 """
@@ -50,7 +54,7 @@ from agatesim.specimen.photo import load_photo
 from agatesim.specimen.quality import luminance
 from agatesim.specimen.segment import segment
 
-from nodule import bands, labels, outline
+from nodule import bands, labels, outline, rims
 
 ROOT = Path(__file__).resolve().parents[2]
 TAGS_TOML = ROOT / "references" / "library-tags.toml"
@@ -147,14 +151,16 @@ def record(
     entry: dict[str, object] | None,
     size: int,
     band: bands.Bands | None = None,
+    rim: dict[str, Value] | None = None,
 ) -> dict[str, Value]:
-    """One photo's tags."""
+    """One photo's tags; `rim` from `rim_tags`. The outline-bound values count
+    only where the rim outline was judged "yes"."""
     rec: dict[str, Value] = {
         "verdict": label.verdict,
         "forms": list(label.forms),
         "features": list(label.features),
         **{name: UNKNOWN for name in labels.FIELDS if name != "outline"},
-        "outline_check": UNKNOWN,
+        **(rim if rim is not None else rim_tags(UNKNOWN, None)),
         "labels_by": UNKNOWN,
         "C6_eye": UNKNOWN,
         "scale": "none",
@@ -171,50 +177,74 @@ def record(
             "C3_irregularity": round(shape.irregularity, 4),
             "C3_concavities": shape.concavities,
         }
-    return rec | imported(entry, size) | measured(band)
+    rec |= imported(entry, size) | measured(band)
+    if rec["outline_check"] != "yes":
+        rec |= {name: UNKNOWN for name in OUTLINE_BOUND}
+    return rec
+
+
+def rim_tags(reason: str | None, judged: rims.Verdict | None) -> dict[str, Value]:
+    """What the rim-finder gave ("found", or "none: " and its reason) and the
+    judgment of that very outline, if any. `reason` "unknown": not run."""
+    rim = UNKNOWN if reason == UNKNOWN else "found" if reason is None else f"none: {reason}"
+    if reason is not None or judged is None:
+        return {"rim": rim, "outline_check": UNKNOWN, "outline_by": UNKNOWN}
+    return {"rim": rim, "outline_check": "yes" if judged.passed else "no", "outline_by": judged.by}
 
 
 def labelled(rec: dict[str, Value], entry: dict[str, labels.Row] | None) -> dict[str, Value]:
-    """A record with its photo's labels filled in, and the outline-bound values
-    made unknown where the outline check says no."""
+    """A record with its photo's labels filled in. The labels' own outline check
+    judged an older outline and is left out."""
     row, by = labels.chosen(entry)
     out = dict(rec)
     for name in labels.FIELDS:
-        out["outline_check" if name == "outline" else name] = row.get(name, UNKNOWN)
+        if name != "outline":
+            out[name] = row.get(name, UNKNOWN)
     out["labels_by"] = by
     out["C6_eye"] = row.get("C6_eye", UNKNOWN)
-    if out["outline_check"] == "no":
-        out |= {name: UNKNOWN for name in OUTLINE_BOUND}
     return out
 
 
 def measure_photo(
-    data: bytes, entry: dict[str, object] | None
-) -> tuple[outline.Outline | None, bands.Bands | None]:
-    """C1-C3 of a photo's specimen outline, at agatesim's working size, and C6
-    and C10 at full resolution where agatesim's cache `passes` and holds the
-    band spacing and noise."""
-    seg = segment(load_photo(data, WORKING_PX).rgb)
-    if len(seg.outline) < 3:
-        return None, None
-    shape = outline.measure(seg.mask)
+    finder: rims.Finder,
+    verdicts: rims.Verdicts,
+    image_id: str,
+    data: bytes,
+    entry: dict[str, object] | None,
+) -> tuple[outline.Outline | None, bands.Bands | None, dict[str, Value]]:
+    """C1-C3 of the photo's rim outline where it was judged "yes" (at
+    `rims.RIM_PX`), and C6 and C10 at full resolution where agatesim's cache
+    `passes` and holds the band spacing and noise: inside that outline, or else
+    inside agatesim's working region. Also the photo's `rim_tags`."""
+    _, rim = finder.find(image_id, data)
+    judged = rims.verdict(verdicts, image_id, rim.mask) if rim.found else None
+    tag = rim_tags(rim.reason, judged)
+    if judged is not None and judged.passed:
+        mask, shape = rim.mask, outline.measure(rim.mask)
+    else:
+        mask, shape = segment(load_photo(data, WORKING_PX).rgb).mask, None
+    if not mask.any():
+        return shape, None, tag
     spacing = entry.get("spacing_px") if entry is not None else None
     noise = entry.get("noise") if entry is not None else None
     if not passes(entry, len(data)) or not isinstance(spacing, int | float):
-        return shape, None
+        return shape, None, tag
     if not isinstance(noise, int | float):
-        return shape, None
+        return shape, None, tag
     lum = luminance(load_photo(data, 10**6).rgb)
-    scale = seg.mask.shape[1] / lum.shape[1]
+    scale = mask.shape[1] / lum.shape[1]
     band = bands.measure(
-        lum, seg.mask, scale, float(noise), float(spacing), rng=np.random.default_rng(0)
+        lum, mask, scale, float(noise), float(spacing), rng=np.random.default_rng(0)
     )
-    return shape, band
+    return shape, band, tag
 
 
 def write(records: dict[str, dict[str, Value]], path: Path = TAGS_TOML) -> None:
+    used = sum(rec.get("outline_check") == "yes" for rec in records.values())
+    meta: dict[str, Value] = {"schema": "ADR 0004", "sampling": SAMPLING, "photos": len(records)}
+    meta |= {"rim_outlines_used": used, "rim_outlines_wrong": rims.error_note()}
     doc = {
-        "meta": {"schema": "ADR 0004", "sampling": SAMPLING, "photos": len(records)},
+        "meta": meta,
         "images": dict(sorted(records.items())),
     }
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -237,6 +267,8 @@ def tag_library(
     ids = sorted(k for k, v in carried.items() if v.verdict != "unusable")
     if sample is not None:
         ids = sorted(np.random.default_rng(0).choice(ids, size=sample, replace=False).tolist())
+    finder = rims.Finder(agatesim)
+    verdicts = rims.load()
     records: dict[str, dict[str, Value]] = {}
     seconds: list[float] = []
     for n, image_id in enumerate(ids):
@@ -247,8 +279,8 @@ def tag_library(
         start = time.perf_counter()
         data = path.read_bytes()
         entry = cache.get(image_id)
-        shape, band = measure_photo(data, entry)
-        rec = record(carried[image_id], shape, entry, len(data), band)
+        shape, band, rim = measure_photo(finder, verdicts, image_id, data, entry)
+        rec = record(carried[image_id], shape, entry, len(data), band, rim)
         records[image_id] = labelled(rec, view.get(image_id))
         seconds.append(time.perf_counter() - start)
     return records, seconds
@@ -258,18 +290,8 @@ def relabel(path: Path = TAGS_TOML) -> int:
     """Apply the current labels to an existing tag file."""
     records: dict[str, dict[str, Value]] = tomllib.loads(path.read_text("utf-8"))["images"]
     view = labels.load()
-    lost = [
-        k
-        for k, rec in records.items()
-        if rec.get("outline_check") == "no"
-        and labels.chosen(view.get(k))[0].get("outline") == "yes"
-    ]
     write({k: labelled(rec, view.get(k)) for k, rec in records.items()}, path)
     print(f"relabelled {len(records)} photos in {path}")
-    if lost:
-        print(
-            f"{len(lost)} photos now pass the outline check but lost C1-C3 and C6: re-run in full"
-        )
     return 0
 
 

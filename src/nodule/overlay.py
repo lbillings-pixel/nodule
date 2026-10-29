@@ -2,14 +2,16 @@
 choice 9b).
 
 C1-C3 count only once the outline has been seen to follow the stone's rim. For
-each usable library photo this draws, at agatesim's working size:
+each usable library photo this draws, at the size the rim outlines are judged
+at (`rims.RIM_PX`):
 
-- the outline agatesim's segmentation found (green);
+- the outline agatesim's rim-finder drew (green), the one C1-C3 measure;
 - its convex hull (cyan), against which concavities are measured;
 - each counted concavity (C3) as a red line from its floor to the hull, along
   the ray from the inscribed circle's centre (yellow dot);
-- a note in the corner: "touches frame" where the outline runs off the photo
-  (C1-C3 unknown without a check), and the concavity count.
+- a note in the corner: the outline's verdict (agatesim ADR 0075) or why
+  there is none, "touches frame" where the outline runs off the photo (C1-C3
+  unknown without a check), and the concavity count.
 
 Pictures go to `runs/outline-check/` (gitignored), named by agatesim library
 id, as plain PNG with no metadata. They are made from the library's Commons
@@ -27,13 +29,10 @@ import numpy as np
 from agatesim import _scipy as agatesim_scipy  # pyright: ignore[reportPrivateUsage]
 from agatesim import progress
 from agatesim.library import load_labels, load_library
-from agatesim.shapes import WORKING_PX
-from agatesim.specimen.photo import load_photo
-from agatesim.specimen.segment import segment
 from numpy.typing import NDArray
 from PIL import Image, ImageDraw
 
-from nodule import outline
+from nodule import outline, rims
 from nodule._scipy import hull_2d
 from nodule.tags import ROOT, agatesim_dir, image_path
 
@@ -68,13 +67,24 @@ def label(img: Image.Image, note: str) -> Image.Image:
     return img
 
 
-def draw(rgb: NDArray[np.uint8], mask: NDArray[np.bool_]) -> Image.Image:
-    """The photo with its outline, hull and counted concavities drawn on."""
+def judgment(reason: str | None, judged: rims.Verdict | None) -> str:
+    """The rim outline's standing, for the corner note."""
+    if reason is not None:
+        return f"no outline: {reason}"
+    if judged is None:
+        return "unjudged"
+    return f"judged {'yes' if judged.passed else 'no'} ({judged.by})"
+
+
+def draw(rgb: NDArray[np.uint8], mask: NDArray[np.bool_], note: str = "") -> Image.Image:
+    """The photo with its outline, hull and counted concavities drawn on, and
+    `note` before the caption."""
     img = Image.fromarray(rgb).convert("RGB")
     region = outline.filled(mask)
     width = max(2, round(max(mask.shape) / 600))
+    lead = f"{note}; " if note else ""
     if not region.any():
-        return label(img, caption(region, 0))
+        return label(img, lead + caption(region, 0))
     pixels = np.asarray(img).copy()
     line = edge(region)
     pixels[agatesim_scipy.dilate(line, width - 1) if width > 1 else line] = GREEN
@@ -91,7 +101,7 @@ def draw(rgb: NDArray[np.uint8], mask: NDArray[np.bool_]) -> Image.Image:
         pen.line([(cx + c.x * dx, cy + c.x * dy), (cx + c.y * dx, cy + c.y * dy)], RED, width)
     r = 3 * width
     pen.ellipse([cx - r, cy - r, cx + r, cy + r], fill=YELLOW)
-    return label(img, caption(region, len(found)))
+    return label(img, lead + caption(region, len(found)))
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -110,14 +120,18 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.sample is not None:
         ids = sorted(np.random.default_rng(0).choice(ids, size=args.sample, replace=False).tolist())
     args.out.mkdir(parents=True, exist_ok=True)
+    finder = rims.Finder(agatesim)
+    verdicts = rims.load()
     start = time.perf_counter()
     for n, image_id in enumerate(ids):
         progress.report(n / max(len(ids), 1), "drawing outlines")
         path = image_path(agatesim, library.get(image_id))
         if not path.exists():
             continue
-        rgb = load_photo(path.read_bytes(), WORKING_PX).rgb
-        draw(rgb, segment(rgb).mask).save(args.out / f"{image_id}.png")
+        rgb, rim = finder.find(image_id, path.read_bytes())
+        judged = rims.verdict(verdicts, image_id, rim.mask) if rim.found else None
+        note = judgment(rim.reason, judged)
+        draw(rgb, rim.mask, note).save(args.out / f"{image_id}.png")
     print(f"drew {len(ids)} photos into {args.out} in {time.perf_counter() - start:.1f} s")
     return 0
 

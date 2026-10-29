@@ -1,0 +1,771 @@
+# Judgments of agatesim's rim outlines on library photos (agatesim ADR 0075).
+# Written by `python -m nodule.rims` from agatesim's runs/rim-check; do not
+# edit by hand. Keyed by agatesim library id; `mask` fingerprints the judged
+# outline, and a verdict applies only to an outline with the same fingerprint.
+# No image is held here.
+
+[meta]
+source = "agatesim ADR 0075"
+photos = 156
+
+[images]
+2006-10-30buchstutzeachat03 = [
+    { mask = "aa4dad392a0b7165", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+achat-2 = [
+    { mask = "bb93c32651d90531", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+achat-rasovka = [
+    { mask = "23be5b24c6dbb8d7", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+achatscheibe = [
+    { mask = "ac9fab6982a0055d", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+achaty-zajecov-2 = [
+    { mask = "5625a50b336a647b", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+achaty-zajecov-3 = [
+    { mask = "45e9d19bdc0fd69c", rim_in_frame = true, follows = false, by = "owner", run = "held" },
+]
+agat-3d-bobonong-botswana = [
+    { mask = "a53d3714d37aea2c", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agat-bobonong-botswana = [
+    { mask = "8c4620f0a6a6fab8", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agat-lake-superior-agat-z-jez-gornego-minnesota-usa = [
+    { mask = "4c08c2f88d45108e", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agat-lake-superior-lake-superior-agate-minnesota-usa = [
+    { mask = "325f9001a53382c8", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agat-lake-superior-minnesota-stany-zjednoczone-ameryki-ponocnej-usa = [
+    { mask = "60667b4c3917b413", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agat-lake-superior-stan-minnesota-usa = [
+    { mask = "cbfbb95245e72381", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agat-lake-superior-usa-minnesota = [
+    { mask = "255243a23a4dd0b5", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agat-ognisty-calvillo-aguascalientes-meksyk = [
+    { mask = "08eeea067c4f6ba3", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agat-ze-stalaktytami-agate-creek-queensland-australia = [
+    { mask = "52d03618feef6cc5", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+agate-17-30746155127 = [
+    { mask = "00fd6769ecd9bcbe", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-21-30746156187 = [
+    { mask = "64ffce5b8e438dce", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+agate-24-51867236448 = [
+    { mask = "b0d985bfd6d3e41c", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m = [
+    { mask = "31a2b2156af32b0a", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-11 = [
+    { mask = "989582f4326f4c43", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-13 = [
+    { mask = "562f1d9c787ecd02", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-14 = [
+    { mask = "874096b1ccfa382d", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-2 = [
+    { mask = "79b54f4205635ac4", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-8 = [
+    { mask = "0cd7e4402f6407cd", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-9 = [
+    { mask = "946af051dec1fc09", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-geol-water-level = [
+    { mask = "12bfa6572b3bcbba", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-india-minerals-gallery-natural-history-museum-london-sw7-flickr-edk7 = [
+    { mask = "7ac74b2eca3136a1", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-nodule-lake-superior-agate-2-23518382156 = [
+    { mask = "fbeba65a4b73e781", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-2 = [
+    { mask = "e68b89b3639fce04", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-3 = [
+    { mask = "042f29fa9d6b54d4", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-5 = [
+    { mask = "09af071846ec8b91", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-6 = [
+    { mask = "8d21b1985d028f1a", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-10-34651169521 = [
+    { mask = "2dbbb01a85c9f644", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-13-34621074542 = [
+    { mask = "6e636d996789d444", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-15-34397930990 = [
+    { mask = "d5e6a87df54b7c01", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-8-34651174951 = [
+    { mask = "4e5fa9ad8e2f1362", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-9-34651173151 = [
+    { mask = "9d901852d5d4c81c", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-nowy-kosicol-poland-31912720284 = [
+    { mask = "173b64747d48ee1d", rim_in_frame = true, follows = false, by = "owner", run = "held" },
+]
+agate-panoramio-brandon-menth = [
+    { mask = "120650a3259544c0", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-quartz-filled-geode-1-32164187660 = [
+    { mask = "1d3768311aac0fb7", rim_in_frame = true, follows = false, by = "owner", run = "held" },
+]
+agate-quartz-lined-geode-dryhead-montana-usa-3-31971016393 = [
+    { mask = "bdc4a14779592f62", rim_in_frame = true, follows = false, by = "owner", run = "held" },
+]
+agate-rio-grande-do-sul-caillois-donation-mnhn-n14 = [
+    { mask = "277f33cf702df889", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-sio2-25505269264 = [
+    { mask = "554f539adb62f6f5", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-sio2-from-brazil-50583624161 = [
+    { mask = "2cd29b4473be9dbe", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-tertiary-agate-bay-king-george-island-south-shetland-islands-1 = [
+    { mask = "95c04e31f152164f", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate-with-uruguay-type-banding-om1-078a = [
+    { mask = "e8cf1d3f162d4750", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate3-hg = [
+    { mask = "7e0a6048817be16d", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+agate5-hg = [
+    { mask = "4372527661d89dec", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+amethyst-bergkristall-achat-scheibe-aus-schlottwitz-sachsen = [
+    { mask = "d906925bad400cc3", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+banded-agate-artigas-or-rio-grande-do-sul-caillois-donation-mnhn-n01 = [
+    { mask = "208e05963c002f58", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+blue-lace-agate-geode = [
+    { mask = "0dc25e14d4c335b8", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+brazilian-agate-section = [
+    { mask = "53aa2de77ba56f88", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+czech025 = [
+    { mask = "3390c81e2553f948", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+dendritic-agate-with-three-dendrite-occurances = [
+    { mask = "e6b83d62be65c300", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+earth-and-man-agate = [
+    { mask = "e0663c8a850847b7", rim_in_frame = true, follows = false, by = "owner", run = "held" },
+]
+estonian-museum-of-natural-history-specimen-no-174692-photo-g286-g286-68-1-jpg = [
+    { mask = "b76d152dbe92fec8", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+estonian-museum-of-natural-history-specimen-no-176133-photo-g244-g244-9-1-jpg = [
+    { mask = "9397a3d5e990f922", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+gdcn0024070-50192449478 = [
+    { mask = "a3692d2518b27fcc", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+hildesheim-roemer-und-pelizaeus-museum-achat = [
+    { mask = "af8049bb112621d0", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+holley-blue-agate-linn-county-oregon-usa-7 = [
+    { mask = "4da69b01d3ffe133", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+image = [
+    { mask = "ad5b4a6eaf15f00d", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+image-2 = [
+    { mask = "ddc9fb60193c2ffb", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+imgp2020360-50580579282 = [
+    { mask = "c093f5609c5bbc30", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+imgp2020361-50579722543 = [
+    { mask = "19aa4353996f244b", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+imgp2020363-50579723983 = [
+    { mask = "2da576530338c241", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+laguna-agate-chihuahua-mexico-3-32785167565 = [
+    { mask = "4a1059992d210d86", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+mexico004 = [
+    { mask = "44b0d9a6b2a5db86", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+mineral-181-hg = [
+    { mask = "f7e7ce22f245c6f3", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+montana-moss-agate = [
+    { mask = "37a60667b0f1e9ce", rim_in_frame = true, follows = false, by = "owner", run = "held" },
+]
+museo-de-la-plata-agata = [
+    { mask = "d19569c93f3c8e57", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+museum-mineralogia-munchen-06 = [
+    { mask = "06020f866a68ad3a", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+museum-of-the-history-of-the-mirozdanie-agate-2026-03-p03 = [
+    { mask = "2be4c58f5475a995", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+oregon001 = [
+    { mask = "59e8326eea6719a5", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+oregon002 = [
+    { mask = "5ebe7a243da12de3", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+oregon003 = [
+    { mask = "71f5fe73b634599b", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+panoramio-diego-viveros-13 = [
+    { mask = "ca126acce5810d4d", rim_in_frame = true, follows = false, by = "owner", run = "held" },
+]
+panoramio-diego-viveros-6 = [
+    { mask = "ce41dec92b91aa3b", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+precious-stone-agate-blue-semi-precious-stone = [
+    { mask = "d07d7f89a15e20c3", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+quartz-agateplate-redbrown-white = [
+    { mask = "7d462b153097adeb", rim_in_frame = true, follows = false, by = "owner", run = "held" },
+]
+quartz-uruguay-dation-caillois = [
+    { mask = "7c9c730dbc70891a", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+sagenitic-fire-agate-01 = [
+    { mask = "3f23881c7757b8b9", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+scotland007 = [
+    { mask = "9acd6d8c16618132", rim_in_frame = true, follows = true, by = "owner", run = "held" },
+]
+unknown-polished-rock-macro-1 = [
+    { mask = "ee47accb21743223", rim_in_frame = true, follows = true, by = "helper", run = "held" },
+]
+
+[[images.achat-1]]
+mask = "822d12e93bc4469d"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agat-lake-superior-duluth-minnesota-usa]]
+mask = "fc85a84ccac481f7"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agat-ojo-de-laguna-chihuahua-meksyk]]
+mask = "a9222b61a2dab01d"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agat-winogronowy-agate-grape-san-rafael-swell-emery-county-utah-usa-cropped]]
+mask = "db89083b07f2e160"
+rim_in_frame = false
+follows = false
+by = "helper"
+run = "tune-sam-bm06"
+
+[[images.agat-z-geoda-rancho-gregoria-meksyk]]
+mask = "15f6e6a4eff02836"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate-1-29790070266]]
+mask = "7f6ece038b167ed9"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-bm06"
+
+[[images.agate-11-30746153457]]
+mask = "22e9ebcf3e684656"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-bm06"
+
+[[images.agate-12-30746153687]]
+mask = "4de1e5125c488f07"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-bm06"
+
+[[images.agate-19-30746155707]]
+mask = "8f5ca6d59207f09e"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate-22-30746156427]]
+mask = "f7586518ae826fe8"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate-23-48609868172]]
+mask = "00e2d03549b87762"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate-7-32755748235]]
+mask = "6e0288844c4abf40"
+rim_in_frame = false
+follows = false
+by = "owner"
+run = "held"
+
+[[images.agate-agate-creek-queensland-australia]]
+mask = "504f81ec1cdd3e33"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate-amethyste-quartz]]
+mask = "18c90190fe46c757"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate-d-bruyere]]
+mask = "195290bdcc61b324"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate-filled-geode-brazil-1-31912507804]]
+mask = "fb81fcc0bdcdf3ef"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-4]]
+mask = "8bd36d8ae1d28962"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-7]]
+mask = "e60d6f4673cc1590"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate-free-texture-2732496325]]
+mask = "8a4184cd20e6cbe0"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate-from-poczki-gorne-rn3]]
+mask = "65f0dbed22db5db0"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate-geode-a]]
+mask = "aa9aca4dfa144adb"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate-lined-geode-black-rock-desert-gerlach-nevada-usa-33974978773]]
+mask = "e8f38f416cbca181"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins]]
+mask = "9d308963d4a101f3"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-4]]
+mask = "8008b27130d71e5e"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-3-34397979740]]
+mask = "9d3c923499581164"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "tune-sam-bm06"
+
+[[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-4-33974568193]]
+mask = "2b1d333b70c4921e"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-bm06"
+
+[[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-5-34651181261]]
+mask = "fcc4a277e29cd517"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-bm06"
+
+[[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-6-34651179201]]
+mask = "13b395335367cb77"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-bm06"
+
+[[images.agate-panoramio-brandon-menth-1]]
+mask = "bf2de05758f0a7d9"
+rim_in_frame = false
+follows = false
+by = "owner"
+run = "held"
+
+[[images.agate1-hg]]
+mask = "81f3a18783705b0b"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.agate4-hg]]
+mask = "a2fdc22cac4e6288"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.banded-agate-artigas-or-rio-grande-do-sul-caillois-donation-mnhn-n02]]
+mask = "f67be156e76b1767"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.berschweiler-agate-near-trier-germany-31942571364]]
+mask = "b5fa8a73497c675a"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "tune-sam-open"
+
+[[images.center-detail-quartz-uruguay-dation-caillois-cropped]]
+mask = "504009446d8f6407"
+rim_in_frame = false
+follows = false
+by = "helper"
+run = "tune-sam-open"
+
+[[images.collector-1-b1-1]]
+mask = "1dc9c21fe5e73d19"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b1-2]]
+mask = "3bed7f2813737c2c"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b1-3]]
+mask = "6ad022fcaea5dc00"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b1-4]]
+mask = "c85ecfb1b80eda56"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-a2]]
+mask = "1126cf0f386c0a8b"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-a3]]
+mask = "615f9a2335141275"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-b3]]
+mask = "1aa12333898b5717"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-c2]]
+mask = "1f0370c28e5f4cbf"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-c3]]
+mask = "e394c384c82a4eda"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-d1]]
+mask = "cd507f2a3119821b"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-d2]]
+mask = "397b4d9d6120ed6c"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-e2]]
+mask = "e216877ae7f03314"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-e3]]
+mask = "de3cdde788140daa"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-f1]]
+mask = "79122cb700c8e492"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-g1]]
+mask = "3e3048211987ec9d"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-g2]]
+mask = "03abb8f06c87cc5f"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-h1]]
+mask = "c343e8d7f1129dcd"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-h3]]
+mask = "b521638c477e07e2"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-i1]]
+mask = "7b63551c2a18791a"
+rim_in_frame = true
+follows = false
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-i2]]
+mask = "ab9aee3f564e159f"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "friend"
+
+[[images.collector-1-b2-i3]]
+mask = "15ab8a14a133744b"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "friend"
+
+[[images.dendritic-agate-cropped]]
+mask = "5ada2617d85984e5"
+rim_in_frame = false
+follows = false
+by = "owner"
+run = "held"
+
+[[images.dugway-geode-juab-county-utah-usa-1-34540239846]]
+mask = "888a46576a0a7323"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-bm06"
+
+[[images.dugway-geode-juab-county-utah-usa-2-34581522545]]
+mask = "dda930ffe5d55c13"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.estonian-museum-of-natural-history-specimen-no-174649-photo-g286-g286-25-1-jpg]]
+mask = "ae0df151582b7f0f"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.estonian-museum-of-natural-history-specimen-no-178064-photo-g229-g229-427-jpg]]
+mask = "e557582fa376e3be"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.estonian-museum-of-natural-history-specimen-no-178073-photo-g229-g229-436-jpg]]
+mask = "3fa7f532479c6f8c"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.feuerachat-fireagate-from-brazil-tumble-polished-stone]]
+mask = "8a2f463217dcee12"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.fire-agate]]
+mask = "49d4d95f1611ab7a"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.geneva-natural-history-museum-agate]]
+mask = "6dc0066819086fae"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.gestein-mit-verschiedenen-mineralen-mineralogia]]
+mask = "7ee541c04ea2bbe8"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.moosachat-hg]]
+mask = "9cfb8321d42b5731"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.museo-de-la-plata-agata-cropped]]
+mask = "ef7ff1be0af079b0"
+rim_in_frame = false
+follows = false
+by = "owner"
+run = "held"
+
+[[images.polished-agate-macro-3]]
+mask = "21ae65a1f5dc3375"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.quartz-agate-le-vaisseau-bresil-dation-caillois]]
+mask = "6f412fb6c08ec0d5"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.quarz-achatmandel]]
+mask = "163b6e512d14d5b4"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.quarz-augenachat]]
+mask = "9626cd6d4ea29800"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"
+
+[[images.richardson-ranch-thunder-egg-with-plume-from-plume-beds-richardson-ranch-madras-]]
+mask = "2ba1905901b62be1"
+rim_in_frame = false
+follows = false
+by = "owner"
+run = "held"
+
+[[images.turnov-muzeum-ceskeho-raje-mineralogicka-expozice-3]]
+mask = "ec087d6022696a85"
+rim_in_frame = true
+follows = true
+by = "helper"
+run = "tune-sam-open"

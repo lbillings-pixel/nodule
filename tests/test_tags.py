@@ -9,13 +9,14 @@ from pathlib import Path
 from agatesim.library import Label
 from agatesim.shapes import VERSION
 
-from nodule import tags
+from nodule import rims, tags
 from nodule.bands import Bands
 from nodule.outline import Outline
 
 LABEL = Label(verdict="forms", forms=["fortification"], features=["quartz core"])
 SHAPE = Outline(aspect=0.8, regularity=0.97, circularity=0.9, irregularity=0.1, concavities=1)
 BAND = Bands(14.0, 12.0, 15.0, 0.0714, None, 20, 300)
+YES = tags.rim_tags(None, rims.Verdict(True, True, "helper", "held"))
 
 
 def entry(level: str = "fit", size: int = 1234, version: int = VERSION) -> dict[str, object]:
@@ -49,7 +50,7 @@ def test_a_stale_or_ungated_cache_entry_gives_unknown() -> None:
 
 
 def test_a_record_has_every_field_and_no_gap_when_nothing_is_measured() -> None:
-    full = tags.record(LABEL, SHAPE, entry(), 1234, BAND)
+    full = tags.record(LABEL, SHAPE, entry(), 1234, BAND, YES)
     empty = tags.record(LABEL, None, None, 1234)
     assert full.keys() == empty.keys()
     assert full["forms"] == ["fortification"]
@@ -60,11 +61,33 @@ def test_a_record_has_every_field_and_no_gap_when_nothing_is_measured() -> None:
     assert all(empty[k] == tags.UNKNOWN for k in empty if k.startswith("C"))
     assert empty["view_kind"] == empty["finish"] == empty["lighting"] == tags.UNKNOWN
     assert empty["scale"] == "none"
+    assert empty["rim"] == empty["outline_check"] == tags.UNKNOWN
+
+
+def test_outline_bound_values_need_a_yes_on_that_outline() -> None:
+    """Negative controls (agatesim ADR 0075): an unjudged outline, one judged
+    "no", or none at all keeps C1-C3 and C6 unknown; band shape still counts."""
+    no = rims.Verdict(True, False, "owner", "held")
+    cases = {
+        "unjudged": tags.rim_tags(None, None),
+        "judged no": tags.rim_tags(None, no),
+        "declined": tags.rim_tags("cut-off", None),
+    }
+    for case, rim in cases.items():
+        rec = tags.record(LABEL, SHAPE, entry(), 1234, BAND, rim)
+        assert all(rec[k] == tags.UNKNOWN for k in tags.OUTLINE_BOUND), case
+        assert rec["C7_spread"] == 0.6123, case
+    assert cases["judged no"]["outline_check"] == "no"
+    assert cases["judged no"]["outline_by"] == "owner"
+    assert cases["declined"]["rim"] == "none: cut-off"
+    assert YES["outline_check"] == "yes"
 
 
 def test_the_tag_file_round_trips(tmp_path: Path) -> None:
     path = tmp_path / "tags.toml"
-    tags.write({"b-photo": tags.record(LABEL, SHAPE, entry(), 1234)}, path)
+    tags.write({"b-photo": tags.record(LABEL, SHAPE, entry(), 1234, rim=YES)}, path)
     doc = tomllib.loads(path.read_text("utf-8"))
     assert doc["meta"]["sampling"] == tags.SAMPLING
+    assert doc["meta"]["rim_outlines_used"] == 1
+    assert "2 of 20" in doc["meta"]["rim_outlines_wrong"]
     assert doc["images"]["b-photo"]["C2_circularity"] == 0.9

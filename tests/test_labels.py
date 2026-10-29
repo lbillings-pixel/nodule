@@ -14,7 +14,7 @@ import pytest
 from agatesim.library import Label
 from agatesim.shapes import VERSION
 
-from nodule import check, labels, tags
+from nodule import check, labels, rims, tags
 from nodule.bands import Bands
 from nodule.outline import Outline
 
@@ -104,8 +104,11 @@ def test_the_check_sample_is_fixed_and_bounded() -> None:
     assert labels.check_sample(ids[:5]) == sorted(ids[:5])
 
 
-def test_labels_fill_the_record_and_an_off_rim_outline_blanks_its_values() -> None:
-    rec = tags.record(LABEL, SHAPE, ENTRY, 1234, BAND)
+def test_labels_fill_the_record_but_their_old_outline_check_is_left_out() -> None:
+    """The labels' outline check judged `segment()`'s outline; the rim
+    outline's own verdict (agatesim ADR 0075) decides instead."""
+    yes = tags.rim_tags(None, rims.Verdict(True, True, "helper", "held"))
+    rec = tags.record(LABEL, SHAPE, ENTRY, 1234, BAND, yes)
     on_rim = tags.labelled(rec, {"proposed": PROPOSED})
     assert on_rim.keys() == rec.keys()
     assert on_rim["view_kind"] == "cut face"
@@ -113,11 +116,11 @@ def test_labels_fill_the_record_and_an_off_rim_outline_blanks_its_values() -> No
     assert on_rim["labels_by"] == "Claude, proposed"
     assert on_rim["C1_aspect"] == 0.8
     assert on_rim["C6_count"] == 14.0
-    off_rim = tags.labelled(rec, {"proposed": PROPOSED | {"outline": "no"}})
-    assert all(off_rim[k] == tags.UNKNOWN for k in tags.OUTLINE_BOUND)
-    assert off_rim["C7_spread"] == 0.6123  # band shape does not need the rim
+    old_no = tags.labelled(rec, {"proposed": PROPOSED | {"outline": "no"}})
+    assert old_no["outline_check"] == "yes"
+    assert old_no["C1_aspect"] == 0.8
     unlabelled = tags.labelled(rec, None)
-    assert unlabelled["outline_check"] == unlabelled["view_kind"] == tags.UNKNOWN
+    assert unlabelled["view_kind"] == tags.UNKNOWN
     assert unlabelled["C1_aspect"] == 0.8
 
 

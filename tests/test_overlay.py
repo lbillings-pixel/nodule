@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from nodule import overlay
+from nodule import overlay, rims
 
 
 def notched_disc(size: int = 200) -> np.ndarray:
@@ -35,3 +35,10 @@ def test_no_region_says_so() -> None:
     assert overlay.caption(np.zeros((50, 50), bool), 0) == "no outline found"
     img = overlay.draw(np.zeros((50, 50, 3), np.uint8), np.zeros((50, 50), bool))
     assert img.size == (50, 50)
+
+
+def test_the_note_gives_the_outline_verdict() -> None:
+    assert overlay.judgment("cut-off", None) == "no outline: cut-off"
+    assert overlay.judgment(None, None) == "unjudged"
+    no = rims.Verdict(True, False, "owner", "held")
+    assert overlay.judgment(None, no) == "judged no (owner)"

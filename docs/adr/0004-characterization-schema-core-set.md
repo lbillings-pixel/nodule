@@ -224,6 +224,36 @@ carry over, but none of them is read as a cause:
   of known outline (exact overlap; a background-only image must give no
   outline). Rejected for now: hand-traced outlines (slow, owner's time);
   C1-C3 on 11 photos.
+- **Rim outlines measured after a yes (2026-10-29).** agatesim's rim-finder
+  (agatesim ADRs 0073-0075) missed its held-out bar (75 of 88 outlines follow
+  the rim; bar 90%), and the owner chose to use it as a proposal: an outline is
+  measured only after a helper agent, or the owner, has judged that very
+  outline (agatesim ADR 0075). Here, `nodule.rims`:
+  - Each judgment is stored with a fingerprint of the outline it judged (its
+    mask reduced to 256 px on the long side, as agatesim's rim check saved it,
+    hashed) in `references/rim-verdicts.toml`, read from agatesim's rim-check
+    runs: 156 judged outlines, 130 passed, 32 answered by the owner. Only the
+    model's runs are read (method B's outlines would need their own). The
+    owner's answer replaces the helper's; where two runs judged the same
+    outline differently, "no" is kept.
+  - Tagging draws each outline again with the model named explicitly (agatesim
+    pinned at 7158429, which lets the model's folder be given), and a verdict
+    applies only where the fingerprints match. On spot checks the held-out and
+    friend outlines came out pixel for pixel the same (8 of 8); tuning outlines
+    judged under earlier settings mostly did not, and stay unmeasured until
+    judged. Assumption: the finder gives the same outline on this PC each
+    time; a mismatch only loses a measurement, never adds a wrong one.
+  - C1-C3 and C6 count only on an outline judged "yes"; an unjudged outline,
+    one judged "no" and a declined photo leave them unknown (tested as
+    negative controls). The labels' own outline check judged the older
+    `segment()` outline and no longer applies. C10 is still measured inside
+    the judged outline, or else inside agatesim's working region.
+  - The tag file reports how many rim outlines were used and the estimated
+    share wrong by the owner's standard (2 of 20 owner-checked helper passes,
+    95% interval 3% to 30%).
+  - Rejected: matching verdicts by photo alone (a changed outline would inherit
+    a judgment, against agatesim ADR 0075 point 2); matching by overlap within
+    a tolerance (unneeded while outlines reproduce exactly).
 
 ### 9. Choices (owner accepted the recommendations, 2026-10-27)
 

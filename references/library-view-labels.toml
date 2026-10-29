@@ -55,6 +55,20 @@ outline = "no"
 confidence = "medium"
 note = "Two bookend halves side by side; vertical line is the join; outline cuts inside"
 
+[images.2006-10-30buchstutzeachat03.checked]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = 13
+note = "there is clear evidence of sub-resolution banding; i have marked the visually clear bands that i can see."
+
 [images.2006-10-30buchstutzeachat07-o.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -96,6 +110,19 @@ C22_offset = "no"
 outline = "no"
 confidence = "medium"
 note = "Green cuts inside agate; excludes outer bands and host. On labelled stand."
+
+[images.achat-2.checked]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+C5_width = 0.08
+C22_count = 3
+C6_eye = "unknown"
 
 [images.achat-rasovka.proposed]
 view_kind = "cut face"
@@ -153,6 +180,19 @@ outline = "no"
 confidence = "low"
 note = "Outline excludes dark outer rim; dark skin could be host or coat; finish unclear"
 
+[images.achaty-zajecov-3.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = 3
+
 [images.agat-3d-bobonong-botswana.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -166,6 +206,20 @@ C22_offset = "unknown"
 outline = "no"
 confidence = "medium"
 note = "Outline takes in inset scale picture; rough brown crust, host or skin unclear"
+
+[images.agat-3d-bobonong-botswana.checked]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = 25
+note = "very important note: this specimen displays clear signs of shadow banding, which would indicate in those sections that the banding is very tight, indeed. perhaps the spacing of the banding in these regions can be derived from the available data, factoring in the observed pattern of shadow banding. if so, this could potentially be useful for estimating the location and number of sub-resolution bands in available images of certain specimens. i have given my band count based on the bands i can clearly see, but the shadow banding suggests there are many more, concentrated in two big swathes approaching the exterior."
 
 [images.agat-bobonong-botswana.proposed]
 view_kind = "cut face"
@@ -264,6 +318,20 @@ C22_offset = "no"
 outline = "no"
 confidence = "medium"
 note = "Outline takes in scale inset and background box"
+
+[images.agat-lake-superior-lake-superior-agate-minnesota-usa.checked]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+C5_width = "unknown"
+C22_count = 1
+C6_eye = 2
+note = "progressing inward from the rim, i see two lighter-orange bands. these bands surround a quartz center. but there is a core of orange with perhaps one very faint band at the cusp of detectability. i have left this central region out of my count."
 
 [images.agat-lake-superior-minnesota-stany-zjednoczone-ameryki-ponocnej-usa.proposed]
 view_kind = "cut face"
@@ -559,6 +627,20 @@ outline = "no"
 confidence = "medium"
 note = "Outline on background; many short filled radial cracks at rim, too many to count"
 
+[images.agate-2-31731816833.checked]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "filled"
+C22_offset = "no"
+outline = "no"
+C5_width = "unknown"
+C22_count = "unknown"
+C6_eye = "unknown"
+note = "important note: moving outward from the quartz center, there are surrounding visible bands numbering at least 14. after these relatively well-defined bands, there is another banded region that extends almost to the rim. the bands of this outer region, especially in the lower half of the image of the cut face, appear as if almost clumpy or curdled, looking much more particulate. this shift in form also occurs as the outer banding shifts in color, moving from reds closest to the quartz center outward through oranges and pinks and yellows and then whites approaching the rim. the well-defined bands around the quartz center display a similar color shift. additionally, subtle evidence of sub-resolution banding can be seen in essentially all visibly banded portions of the cut face. these effects all together make it very hard for me to provide an accurate count of bands."
+
 [images.agate-21-30746156187.proposed]
 view_kind = "broken surface"
 finish = "natural"
@@ -825,6 +907,20 @@ outline = "no"
 confidence = "medium"
 note = "Outline is tiny patch at top-right corner, not the stone"
 
+[images.agate-east-of-the-black-hills-south-dakota-usa-6.checked]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+C5_width = "unknown"
+C22_count = 2
+C6_eye = 10
+note = "i think there are 10 bands, if we exclude what appear to be a couple of very minor partial bands."
+
 [images.agate-filled-geode-brazil-1-31912507804.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -909,6 +1005,20 @@ outline = "no"
 confidence = "low"
 note = "Outline covers agate zone only plus a label; rind type guessed from rough grey shell"
 
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-11.checked]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "spherulitic shell"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = 0.04
+C22_count = 0
+C6_eye = 12
+note = "this one is very strange. there is evidence of sub-resolution banding throughout the cut face, but the visible bands vary in number and show fascinating structure, having what seem too be three or four \"centers\" rather than just one and with the number of visible bands changing based on which center they appear to be primarily associated with. this complicates the act of band counting considerably."
+
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-12.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -936,6 +1046,19 @@ C22_offset = "unknown"
 outline = "no"
 confidence = "medium"
 note = "Outline strays into background on left; thin grey rim unclassified"
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-13.checked]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = 0
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-14.proposed]
 view_kind = "cut face"
@@ -1287,6 +1410,20 @@ outline = "no"
 confidence = "low"
 note = "Water-worn pebble; outline cuts inside along right and bottom"
 
+[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-6.checked]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = "unknown"
+C6_eye = "unknown"
+note = "there are too many sub-resolution bands as well as color and brightness shifts between the bands to make this one very useful. my best guess is \"about 10\"."
+
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-10-34651169521.proposed]
 view_kind = "exterior"
 finish = "unknown"
@@ -1497,6 +1634,20 @@ outline = "no"
 confidence = "medium"
 note = "Outline includes background card at top; red-filled crack top right"
 
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-9-34651173151.checked]
+view_kind = "exterior"
+finish = "tumbled"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C22_fill = "filled"
+C22_offset = "no"
+outline = "no"
+C5_width = "unknown"
+C22_count = 1
+C6_eye = 27
+note = "there is ample evidence of sub-resolution banding, but the number i have given above represents the ones i can clearly see."
+
 [images.agate-nowy-kosicol-poland-31912720284.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -1552,6 +1703,20 @@ C22_offset = "no"
 outline = "no"
 confidence = "low"
 note = "Green outlines quartz core only. Rind layering ambiguous; finish unclear."
+
+[images.agate-quartz-filled-geode-1-32164187660.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = 0.04
+C22_count = 0
+C6_eye = "unknown"
+note = "there may be sub-resolution banding here. the number of visually apparent bands is either 3 or 4, depending on if you count a \"band\" that is either dark blue or indicative of a gap/absence of banding."
 
 [images.agate-quartz-lined-geode-4-32632020771.proposed]
 view_kind = "cut face"
@@ -1707,6 +1872,20 @@ outline = "no"
 confidence = "low"
 note = "Broken geode on rod; outline only drusy patch inside"
 
+[images.agate-sio2-from-brazil-50583624161.checked]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = "unknown"
+C6_eye = 0
+note = "there are loose, almost blurry linear features across much of the broken surface, looking almost like fibers or skeins of curly hair or wisps of cloud. no banding, though."
+
 [images.agate-tertiary-agate-bay-king-george-island-south-shetland-islands-1.proposed]
 view_kind = "exterior"
 finish = "natural"
@@ -1763,6 +1942,20 @@ outline = "no"
 confidence = "low"
 note = "Outline only inner white zone; face may be sawn, unclear"
 
+[images.agate-with-uruguay-type-banding-om1-078a.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "clay or celadonite coat"
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+C5_width = 0.02
+C22_count = 1
+C6_eye = "unknown"
+note = "there is very subtle evidence of sub-resolution banding in a very dark, almost black region surrounding a big lighter/whiter core. within the core there are thick, lumpy/cloudy-looking so-called \"waterline\" bands of indeterminate number. i think it would be very difficult to derive a good estimate for the number of sub-resolution bands in the specimen from this image."
+
 [images.agate1-hg.proposed]
 view_kind = "slab in transmitted light"
 finish = "unknown"
@@ -1804,6 +1997,20 @@ C22_offset = "unknown"
 outline = "no"
 confidence = "low"
 note = "Cropped detail, stone runs off frame; outline on small inclusion; backlit look"
+
+[images.agate3-hg-cropped.checked]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
+note = "there is abundant evidence for sub-resolution banding, but because of how the transmitted light shines through it makes counting only the \"light\" bands difficult, as the \"light\" bands may be regions lacking banding that allow more light to pass through."
 
 [images.agate4-hg.proposed]
 view_kind = "slab in transmitted light"
@@ -1847,6 +2054,19 @@ outline = "no"
 confidence = "low"
 note = "Glowing halo may mean backlit slab; outline misses outer bands"
 
+[images.agate7-hg.checked]
+view_kind = "cut face"
+finish = "polished"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = 4
+
 [images.agate8-hg.proposed]
 view_kind = "cut face"
 finish = "unknown"
@@ -1860,6 +2080,20 @@ C22_offset = "no"
 outline = "no"
 confidence = "low"
 note = "Green takes in white sand bed. Grey rim may be adhering host."
+
+[images.agate8-hg.checked]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+C5_width = "unknown"
+C22_count = 1
+C6_eye = "unknown"
+note = "i count about 35 relatively visible bands, but there is abundant evidence of a very large number of sub-resolution bands. there is what appears to be shadow banding or some similar related effect a region of the cut face toward the bottom of the image."
 
 [images.amethyst-bergkristall-achat-scheibe-aus-schlottwitz-sachsen.proposed]
 view_kind = "cut face"
@@ -1972,6 +2206,20 @@ C22_offset = "unknown"
 outline = "no"
 confidence = "medium"
 note = "Broken-open geode; green outlines only the cavity."
+
+[images.blue-lace-agate-geode.checked]
+view_kind = "broken surface"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = "unknown"
+C6_eye = "unknown"
+note = "there are maybe 3 rather blurry/indistinct bands."
 
 [images.brazilian-agate-section.proposed]
 view_kind = "cut face"
@@ -2141,6 +2389,20 @@ outline = "no"
 confidence = "low"
 note = "Detail crop, no rim; unclear if natural or polished surface"
 
+[images.details-agat-lake-superior-agat-z-jez-gornego-minnesota-usa-cropped.checked]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = "unknown"
+C6_eye = "unknown"
+note = "there are too many (and too much evidence of ones that are sub-resolution) bands to be easily countable. additionally the bands have what look like droplets or spatters of red and yellow that can easily confuse the eye, making counting coherent/continuous bands in some areas difficult."
+
 [images.details-agat-lake-superior-stan-minnesota-usa-cropped.proposed]
 view_kind = "cut face"
 finish = "unknown"
@@ -2252,6 +2514,20 @@ C22_offset = "unknown"
 outline = "yes"
 confidence = "medium"
 note = "Agate core in thick host rock; width varies; cracks in core approximate"
+
+[images.estonian-museum-of-natural-history-specimen-no-176133-photo-g244-g244-9-1-jpg.checked]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "yes"
+C5_width = 0.15
+C22_count = 5
+C6_eye = "unknown"
+note = "there are multiple banding centers and sub-centers, as well as evidence of sub-resolution banding, making band counting somewhat futile/pointless."
 
 [images.estonian-museum-of-natural-history-specimen-no-178064-photo-g229-g229-427-jpg.proposed]
 view_kind = "exterior"
@@ -2393,6 +2669,20 @@ outline = "no"
 confidence = "medium"
 note = "Held in hand; outline takes background and covers top half only"
 
+[images.high-grade-slaughter-mountain-arizona-fire-agate-rough.checked]
+view_kind = "exterior"
+finish = "natural"
+lighting = "reflected"
+C4_surface = "lobed"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = "unknown"
+C6_eye = "unknown"
+note = "this image marvelously displays botryoidal formations, \"fire\" iridescence, and other subtle and beautiful effects."
+
 [images.hildesheim-roemer-und-pelizaeus-museum-achat.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2434,6 +2724,20 @@ C22_offset = "no"
 outline = "yes"
 confidence = "medium"
 note = "Oblique view; rough top may be host or skin; iron-stained cracks"
+
+[images.image.checked]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "filled"
+C22_offset = "no"
+outline = "yes"
+C5_width = "unknown"
+C22_count = 4
+C6_eye = "unknown"
+note = "i'd say i can count \"about 20\" somewhat clear \"bands,\" but there is abundant evidence that many of these bands are in fact groups of tighter sub-resolution bands. there is also a \"lumpy\" curdled-like quality to some of the banding that makes clear counting difficult."
 
 [images.image-2.proposed]
 view_kind = "broken surface"
@@ -2504,6 +2808,20 @@ C22_offset = "unknown"
 outline = "no"
 confidence = "low"
 note = "Outline is patch in cavity; possibly broken not sawn; several cross-cutting cracks"
+
+[images.imgp2020361-50579722543.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "both"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 6
+C6_eye = "unknown"
+note = "there is very subtle color shifting in the banding, which shows some evidence of sub-resolution bands, so it's very hard to give a count on this one."
 
 [images.imgp2020363-50579723983.proposed]
 view_kind = "cut face"
@@ -2588,6 +2906,20 @@ C22_offset = "unknown"
 outline = "no"
 confidence = "medium"
 note = "Outline traces core only; rough crust width varies"
+
+[images.laguna-agate-chihuahua-mexico-2-32661870051.checked]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "adhering host"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = 0.07
+C22_count = 0
+C6_eye = "unknown"
+note = "my count would be \"about 12\" with the caveat that t here is considerable evidence of sub-resolution banding, so my count is an underestimate."
 
 [images.laguna-agate-chihuahua-mexico-3-32785167565.proposed]
 view_kind = "cut face"
@@ -2757,6 +3089,20 @@ outline = "no"
 confidence = "low"
 note = "Polished flat pebble, maybe a polished slice; green cuts inside stone."
 
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-3.checked]
+view_kind = "exterior"
+finish = "tumbled"
+lighting = "reflected"
+C4_surface = "smooth"
+C5_rind = "absent"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
+note = "this appears to be a montana moss agate, a type that can display loosely linear clumps of dark/black \"moss\". when the clumps get closer together along a line, that line becomes much more visually apparent. these are \"bands\" of sorts but it's unclear whether we should include them in the tally. there are also wispy features in this specimen, especially toward the right side of the image, that suggest potential sub-resolution banding."
+
 [images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-4.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2925,6 +3271,20 @@ outline = "no"
 confidence = "medium"
 note = "Freeform polished stone; outline on background patch"
 
+[images.nellie-blue-flint-upper-mercer-flint-middle-pennsylvanian-eastern-ohio-usa-60.checked]
+view_kind = "exterior"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "absent"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = "unknown"
+C6_eye = "unknown"
+note = "there is subtle wall banding in parts of this polished specimen, but the number of bands unclear. i'd say either \"1\" or \"2\", although there is some subtle potential evidence of sub-resolution banding as well."
+
 [images.oregon001.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2967,6 +3327,20 @@ outline = "no"
 confidence = "low"
 note = "Brown rhyolite rim: adhering host or thunderegg spherulitic shell; outline tiny patch"
 
+[images.oregon003.checked]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+C5_width = "unknown"
+C22_count = 2
+C6_eye = "unknown"
+note = "there is what looks like one partial band near the edge of what looks almost like a quartz center but is filled with tube- or plume-like forms. some of these forms seem too have some degree of wall banding around them. then within this \"quartz center\" (quote marks because it probably isn't an actual quartz center) there is a region with abundant evidence of sub-resolution banding around a smaller cavity subcenter. a very interesting specimen, but from this image it's almost impossible to get a band count."
+
 [images.oregon004.proposed]
 view_kind = "slab in transmitted light"
 finish = "unknown"
@@ -2980,6 +3354,20 @@ C22_offset = "unknown"
 outline = "no"
 confidence = "low"
 note = "Very dark backlit scene; rim invisible; green is tiny patch."
+
+[images.oregon004.checked]
+view_kind = "slab in transmitted light"
+finish = "unknown"
+lighting = "transmitted"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = "unknown"
+C6_eye = "unknown"
+note = "i'd count 11 or 12 visible bands, but there may be evidence of sub-resolution bands."
 
 [images.panoramio-diego-viveros-13.proposed]
 view_kind = "slab in transmitted light"
@@ -3078,6 +3466,20 @@ C22_offset = "unknown"
 outline = "no"
 confidence = "low"
 note = "Thin slab on paper; outline takes background and touches frame"
+
+[images.quartz-agateplate-bluegrey.checked]
+view_kind = "cut face"
+finish = "polished"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "absent"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
+note = "a very interesting specimen. there is abundant evidence of sub-resolution banding, and the banding is a more-intricate than usual mix of \"fortification\" and \"waterline\" banding."
 
 [images.quartz-agateplate-redbrown-white.proposed]
 view_kind = "cut face"
@@ -3204,6 +3606,20 @@ C22_offset = "unknown"
 outline = "no"
 confidence = "low"
 note = "Oblique view of thin geode slice; green is tiny patch at corner."
+
+[images.sliced-agate-geode-with-crystals-2.checked]
+view_kind = "cut face"
+finish = "unknown"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = "unknown"
+C6_eye = "unknown"
+note = "there is somewhat clear banding in the specimen region toward the lower right of the image, but overall the banding on this specimen is too unclear/uncertain."
 
 [images.teepee-canyon-agate-custer-south-dakota-usa-26560771781.proposed]
 view_kind = "cut face"

@@ -379,6 +379,22 @@ took the recommendations (2026-10-29).
     missed and possible extra bands reported separately per zone, after
     [@ojala2012, Fig. 4].
 
+Choice 7i was put once *L* was built (`nodule.bands`, 12ead29) and checked
+on 8 library photos with judged rim outlines (2026-10-29). Native *L* was
+2.2–2.6 px; added blur raised it (σ 1, 2, 4 px gave 3.7–6.2, 6–10 and
+10–17 px), and re-saving as JPEG at quality 90 to 30 never made it finer
+(2.2–4.4 px). The spectrum can't tell bands from fine texture or processed
+noise at those periods, and the quality gate's noise sits at its 1 grey-level
+floor on 147 of 257 photos, so the floor there is a stand-in. The counting
+rule's couplets (12–32 px on these photos) are far coarser than *L*, so the
+rule, not *L*, censors their counts. Grade: plausible (one check, 8 photos).
+
+- **7i. How *L* enters the record.**
+  - *(Recommended, taken)* As measured, with the caveats above.
+  - The candidate pixel floor of section 1 (no finer than 6 px per couplet,
+    after [@damci2016]): more conservative, but nearly every photo would sit
+    at it.
+
 ## Alternatives considered
 
 - **Keep C6 as a count and note the limit in prose.** Rejected: the record

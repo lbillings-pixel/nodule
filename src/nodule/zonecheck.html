@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Band Zones Check</title>
+<style>
+:root {
+  --bg: #f6f5f2; --panel: #ffffff; --ink: #1d1d1b; --muted: #6b6a66;
+  --line: #dddbd5; --accent: #2b6cb0; --changed: #fff3cd; --changed-ink: #7a5a00;
+  --ok: #2f7d4a; --bad: #b42318; --blind: #6b46c1;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161615; --panel: #20201f; --ink: #ecebe8; --muted: #a09f9a;
+    --line: #3a3936; --accent: #7fb2f0; --changed: #3d3315; --changed-ink: #f0d58a;
+    --ok: #6cc28c; --bad: #f08a80; --blind: #b69cf0;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--panel); }
+header h1 { font-size: 17px; margin: 0; font-weight: 600; }
+#progress { color: var(--muted); }
+#dots { display: flex; gap: 4px; flex-wrap: wrap; }
+#dots button { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--line);
+  background: var(--panel); color: var(--muted); font-size: 10px; padding: 0; cursor: pointer; }
+#dots button.blind { border-color: var(--blind); color: var(--blind); }
+#dots button.done { background: var(--ok); border-color: var(--ok); color: #fff; }
+#dots button.here { outline: 2px solid var(--accent); outline-offset: 1px; }
+#dots button:disabled { opacity: .4; cursor: not-allowed; }
+main { display: grid; grid-template-columns: minmax(0, 1fr) 460px; gap: 16px; padding: 16px; }
+@media (max-width: 960px) { main { grid-template-columns: 1fr; } }
+#picture { background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+#picture img { width: 100%; max-height: calc(100vh - 150px); object-fit: contain; cursor: zoom-in; }
+.hint { color: var(--muted); font-size: 13px; }
+form { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px;
+  display: flex; flex-direction: column; gap: 12px; align-self: start; }
+.banner { font-size: 13px; border-left: 3px solid var(--line); padding-left: 8px; color: var(--muted); }
+.banner.blind { border-color: var(--blind); color: var(--blind); }
+fieldset { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+fieldset.changed { background: var(--changed); border-radius: 6px; padding: 6px; margin: -6px; }
+.was { font-size: 12px; color: var(--changed-ink); }
+label, .label { font-weight: 600; font-size: 14px; }
+select, input[type=text], input[type=number] { font: inherit; padding: 4px 6px; border-radius: 5px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 100%; }
+h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 6px 0 -4px; }
+#bandsonly.off { opacity: .35; pointer-events: none; }
+#bandsonly { display: flex; flex-direction: column; gap: 12px; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th { text-align: left; font-weight: 600; padding: 2px 4px; vertical-align: bottom; }
+td { padding: 2px 4px; }
+td select.empty { border-color: var(--bad); }
+#zones td:last-child { width: 28px; }
+.small { font: inherit; font-size: 13px; padding: 3px 8px; border-radius: 5px; border: 1px solid var(--line);
+  background: var(--panel); color: var(--ink); cursor: pointer; }
+.actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+button.primary { font: inherit; font-weight: 600; padding: 8px 14px; border-radius: 6px;
+  border: 0; background: var(--accent); color: #fff; cursor: pointer; }
+button.plain { font: inherit; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--line);
+  background: var(--panel); color: var(--ink); cursor: pointer; }
+#status { font-size: 13px; }
+#status.ok { color: var(--ok); } #status.bad { color: var(--bad); }
+#finished, #closed { display: none; padding: 10px 14px; margin: 16px 16px 0; border-radius: 8px;
+  background: var(--panel); border: 1px solid var(--ok); }
+.recount, .zonesonly { display: none; }
+body.recount .recount, body.zones .zonesonly { display: flex; }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="title">Band zones check</h1>
+  <span id="progress"></span>
+  <div id="dots"></div>
+</header>
+<div id="finished">All faces done: thank you. You can close this tab and tell Claude in the terminal.</div>
+<div id="closed"></div>
+<main>
+  <section id="picture">
+    <img id="photo" alt="">
+    <div class="hint"><b>Green</b>: the outline found for the stone. <b>Yellow</b> dot: the machine's
+      centre (not a band centre). Click the picture to open it full size.</div>
+    <div class="hint" id="name"></div>
+  </section>
+
+  <form id="form" autocomplete="off">
+    <div class="banner" id="banner"></div>
+
+    <div class="recount" style="flex-direction: column; gap: 8px">
+      <fieldset><label for="C6_eye">Light bands from rim to centre</label>
+        <input id="C6_eye" type="number" min="0" step="1" placeholder="leave blank if unsure">
+        <span class="hint">Follow a line from the rim straight in to the centre (or to the quartz core)
+          and count the light bands you cross, as in your first check. Rough is fine.</span></fieldset>
+    </div>
+
+    <div class="zonesonly" style="flex-direction: column; gap: 12px">
+      <fieldset data-name="banded"><label for="banded">Does the photo show a banded face?</label>
+        <select id="banded"><option value="">choose</option><option>yes</option><option>no</option></select>
+        <span class="hint">No for an exterior, a broken surface or a face with no bands to judge;
+          then the rest is skipped.</span><span class="was"></span></fieldset>
+
+      <div id="bandsonly">
+        <h2>C23 Band centres</h2>
+        <fieldset data-name="C23_centres"><label for="C23_centres">How many separate band centres?</label>
+          <input id="C23_centres" type="text" placeholder="unknown">
+          <span class="hint">A centre is where a set of nested bands closes around. 0 if bands show but
+            no centre lies in the face. Blank means unknown.</span><span class="was"></span></fieldset>
+
+        <h2>C25 Zones from rim to centre</h2>
+        <fieldset data-name="C25_zones">
+          <table id="zones"><thead><tr><th>Kind</th><th style="width:90px">Share</th><th></th></tr></thead>
+            <tbody></tbody></table>
+          <div class="actions"><button type="button" class="small" id="addzone">+ add a zone</button>
+            <span class="hint" id="sum"></span></div>
+          <span class="hint">List zones from the rim inwards. Share = the zone's part of the rim-to-centre
+            distance; shares add up to 1. No zones means unknown.</span><span class="was"></span></fieldset>
+
+        <h2>C24 Signs of bands too fine to see</h2>
+        <span class="hint">For the outer, middle and inner third of the way from rim to centre: is each
+          sign present, absent, or can't you tell? Always blank to start.</span>
+        <table id="cues"></table>
+      </div>
+    </div>
+
+    <fieldset><label for="note">Note (optional)</label><input id="note" type="text"></fieldset>
+    <div class="actions">
+      <button type="button" class="plain" id="prev">&larr; Back</button>
+      <button type="submit" class="primary">Save and next</button>
+      <span id="status"></span>
+    </div>
+    <span class="hint">Ctrl+Enter saves.</span>
+  </form>
+</main>
+<script>
+const DATA = /*DATA*/null;
+const rows = DATA.rows;
+const RECOUNT = DATA.mode === "recount";
+const CUE_NAMES = [];
+const $ = id => document.getElementById(id);
+document.body.className = DATA.mode;
+const done = r => RECOUNT ? !!r.recount : !!r.checked;
+let here = Math.max(0, rows.findIndex(r => !done(r)));
+
+if (RECOUNT) {
+  $("title").textContent = "Band recount";
+  if (!DATA.open) {
+    $("closed").textContent = "The recount opens on " + DATA.opens + ", a week after your first counts. Saving is off until then.";
+    $("closed").style.display = "block";
+  }
+}
+
+// The C24 grid: thirds down, cues across.
+{
+  const head = document.createElement("tr");
+  head.append(document.createElement("th"));
+  for (const label of Object.values(DATA.cues)) {
+    const th = document.createElement("th"); th.textContent = label; head.append(th);
+  }
+  $("cues").append(head);
+  for (const third of DATA.thirds) {
+    const tr = document.createElement("tr");
+    const th = document.createElement("th"); th.textContent = third; tr.append(th);
+    for (const cue of Object.keys(DATA.cues)) {
+      const name = "C24_" + third + "_" + cue;
+      CUE_NAMES.push(name);
+      const select = document.createElement("select"); select.id = name;
+      select.add(new Option("—", ""));
+      for (const v of DATA.cue_values) select.add(new Option(v, v));
+      const td = document.createElement("td"); td.append(select); tr.append(td);
+    }
+    $("cues").append(tr);
+  }
+}
+
+function addZone(zone) {
+  const tr = document.createElement("tr");
+  const kind = document.createElement("select");
+  kind.add(new Option("choose", ""));
+  for (const k of DATA.kinds) kind.add(new Option(k, k));
+  kind.value = zone ? zone.kind : "";
+  const share = document.createElement("input"); share.type = "text"; share.placeholder = "e.g. 0.3";
+  share.value = zone ? String(zone.share) : "";
+  const drop = document.createElement("button"); drop.type = "button"; drop.className = "small";
+  drop.textContent = "✕"; drop.title = "remove this zone";
+  drop.onclick = () => { tr.remove(); marks(); };
+  for (const el of [kind, share, drop]) { const td = document.createElement("td"); td.append(el); tr.append(td); }
+  $("zones").tBodies[0].append(tr);
+}
+
+function zonesNow() {
+  return [...$("zones").tBodies[0].rows].map(tr => {
+    const [kind, share] = tr.querySelectorAll("select, input");
+    const n = Number(share.value.trim());
+    return { kind: kind.value, share: share.value.trim() === "" || !Number.isFinite(n) ? share.value : n };
+  });
+}
+
+function centresNow() {
+  const text = $("C23_centres").value.trim();
+  if (text === "" || text.toLowerCase() === "unknown") return "unknown";
+  const n = Number(text);
+  return Number.isFinite(n) ? n : text;
+}
+
+function shownZones(zones) {
+  return zones.length ? zones.map(z => z.kind + " " + z.share).join(", ") : "unknown";
+}
+
+function load() {
+  const row = rows[here];
+  $("photo").src = "/img/" + encodeURIComponent(row.id) + ".png";
+  $("photo").alt = row.id;
+  $("name").textContent = row.id;
+  $("note").value = (RECOUNT ? row.recount && row.recount.note : row.checked && row.checked.note) || "";
+  if (RECOUNT) {
+    const c = row.recount && row.recount.C6_eye;
+    $("C6_eye").value = c === undefined || c === null || c === "unknown" ? "" : String(c);
+    $("banner").textContent = "Count the bands as you see them today; your earlier count is not shown.";
+  } else {
+    const values = row.checked || row.proposed || {};
+    $("banner").className = "banner" + (row.blind ? " blind" : "");
+    $("banner").textContent = row.blind
+      ? "Blind face: nothing is filled in. Answer from the picture alone."
+      : "Claude's proposals are filled in, except the C24 signs. Change any you disagree with."
+        + (row.proposed && row.proposed.note ? " Claude: " + row.proposed.note : "");
+    $("banded").value = values.banded || "";
+    $("C23_centres").value = values.C23_centres === undefined || values.C23_centres === "unknown"
+      ? "" : String(values.C23_centres);
+    $("zones").tBodies[0].replaceChildren();
+    for (const z of values.C25_zones || []) addZone(z);
+    for (const name of CUE_NAMES) $(name).value = (row.checked && row.checked[name]) || "";
+  }
+  $("status").textContent = done(row) ? "Saved earlier; saving again replaces it." : "";
+  $("status").className = "";
+  marks();
+  draw();
+  window.scrollTo(0, 0);
+}
+
+function marks() {
+  if (RECOUNT) return;
+  const row = rows[here];
+  const off = $("banded").value !== "yes";
+  $("bandsonly").classList.toggle("off", off);
+  for (const name of CUE_NAMES) $(name).classList.toggle("empty", !off && $(name).value === "");
+  const zones = zonesNow();
+  const total = zones.reduce((s, z) => s + (typeof z.share === "number" ? z.share : 0), 0);
+  $("sum").textContent = zones.length ? "shares add up to " + total.toFixed(2) : "";
+  const now = { banded: $("banded").value, C23_centres: centresNow(), C25_zones: zones };
+  for (const set of document.querySelectorAll("fieldset[data-name]")) {
+    const name = set.dataset.name;
+    const proposed = row.proposed && row.proposed[name];
+    const changed = !!row.proposed && JSON.stringify(now[name]) !== JSON.stringify(proposed);
+    set.classList.toggle("changed", changed);
+    set.querySelector(".was").textContent = !changed ? ""
+      : "Claude proposed: " + (name === "C25_zones" ? shownZones(proposed) : proposed);
+  }
+}
+
+function blindLeft() { return rows.some(r => r.blind && !r.checked); }
+
+function draw() {
+  const n = rows.filter(done).length;
+  const blind = rows.filter(r => r.blind).length;
+  $("progress").textContent = "Face " + (here + 1) + " of " + rows.length + " · " + n + " done"
+    + (blind && !RECOUNT ? " · the first " + blind + " are blind" : "");
+  $("dots").replaceChildren(...rows.map((r, i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = i + 1; b.title = r.id + (r.blind ? " (blind)" : "");
+    b.className = (r.blind ? "blind " : "") + (done(r) ? "done " : "") + (i === here ? "here" : "");
+    b.disabled = !RECOUNT && !r.blind && blindLeft();
+    b.onclick = () => { here = i; load(); };
+    return b;
+  }));
+  $("finished").style.display = n === rows.length ? "block" : "none";
+}
+
+function gather() {
+  const note = $("note").value.trim();
+  if (RECOUNT) {
+    const text = $("C6_eye").value.trim();
+    return { C6_eye: text === "" ? "unknown" : Number(text), ...(note ? { note } : {}) };
+  }
+  const values = { banded: $("banded").value };
+  const banded = values.banded === "yes";
+  values.C23_centres = banded ? centresNow() : "unknown";
+  values.C25_zones = banded ? zonesNow() : [];
+  for (const name of CUE_NAMES) values[name] = banded ? $(name).value : "unknown";
+  if (note) values.note = note;
+  return values;
+}
+
+async function save(event) {
+  event.preventDefault();
+  const values = gather();
+  if (!RECOUNT) {
+    if (values.banded === "") { bad("Say first whether the photo shows a banded face."); return; }
+    if (CUE_NAMES.some(n => values[n] === "")) { bad("Choose each C24 sign (unknown is fine)."); return; }
+  }
+  $("status").textContent = "Saving…"; $("status").className = "";
+  try {
+    const reply = await fetch("/save", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: rows[here].id, values }) });
+    const got = await reply.json();
+    if (!got.ok) { bad(got.problems.join("; ")); return; }
+  } catch (err) {
+    bad("Could not save: is the terminal still running?");
+    return;
+  }
+  if (RECOUNT) rows[here].recount = values;
+  else rows[here].checked = { ...values, blind: rows[here].blind };
+  const next = rows.findIndex((r, i) => i > here && !done(r));
+  const any = rows.findIndex(r => !done(r));
+  here = next >= 0 ? next : any >= 0 ? any : here;
+  load();
+  $("status").textContent = "Saved."; $("status").className = "ok";
+}
+
+function bad(text) { $("status").textContent = text; $("status").className = "bad"; }
+
+if (RECOUNT && !DATA.open) for (const b of document.querySelectorAll("form button")) b.disabled = true;
+$("addzone").onclick = () => { addZone(null); marks(); };
+$("form").addEventListener("submit", save);
+$("form").addEventListener("input", marks);
+$("form").addEventListener("change", marks);
+$("form").addEventListener("keydown", e => { if (e.key === "Enter" && e.ctrlKey) save(e); });
+$("prev").onclick = () => {
+  let i = here;
+  do { i = (i - 1 + rows.length) % rows.length; } while (!RECOUNT && !rows[i].blind && blindLeft() && i !== here);
+  here = i; load();
+};
+$("photo").onclick = () => window.open($("photo").src, "_blank");
+load();
+</script>
+</body>
+</html>

@@ -22,6 +22,8 @@ from collections.abc import Sequence
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from typing import Any, Protocol
+from urllib.parse import unquote
 
 from nodule import labels
 from nodule.overlay import OUT_DIR
@@ -40,6 +42,14 @@ class Checker:
         self.images = labels.load(path)
         self.sample = [k for k in labels.check_sample(self.images) if "proposed" in self.images[k]]
         self.lock = threading.Lock()
+
+    page = PAGE
+
+    def data(self) -> dict[str, object]:
+        return {"rows": self.rows(), "choices": labels.CHOICES}
+
+    def picture(self, name: str) -> Path | None:
+        return self.pictures / f"{name}.png" if name in self.sample else None
 
     def rows(self) -> list[dict[str, object]]:
         return [
@@ -65,7 +75,19 @@ class Checker:
         return []
 
 
-def handler(checker: Checker) -> type[BaseHTTPRequestHandler]:
+class Page(Protocol):
+    """What the server needs of a check: the page, its data, pictures, saves."""
+
+    page: Path
+
+    def data(self) -> dict[str, object]: ...
+
+    def picture(self, name: str) -> Path | None: ...
+
+    def save(self, image_id: str, values: dict[str, Any]) -> list[str]: ...
+
+
+def handler(checker: Page) -> type[BaseHTTPRequestHandler]:
     class Handler(BaseHTTPRequestHandler):
         def send(self, status: HTTPStatus, body: bytes, kind: str) -> None:
             self.send_response(status)
@@ -77,14 +99,15 @@ def handler(checker: Checker) -> type[BaseHTTPRequestHandler]:
 
         def do_GET(self) -> None:
             if self.path == "/":
-                data = json.dumps({"rows": checker.rows(), "choices": labels.CHOICES})
-                page = PAGE.read_text("utf-8").replace("/*DATA*/null", data.replace("</", "<\\/"))
+                data = json.dumps(checker.data())
+                page = checker.page.read_text("utf-8")
+                page = page.replace("/*DATA*/null", data.replace("</", "<\\/"))
                 self.send(HTTPStatus.OK, page.encode("utf-8"), "text/html; charset=utf-8")
                 return
-            name = self.path.removeprefix("/img/").removesuffix(".png")
-            if self.path.startswith("/img/") and name in checker.sample:
-                picture = checker.pictures / f"{name}.png"
-                if picture.exists():
+            name = unquote(self.path.removeprefix("/img/").removesuffix(".png"))
+            if self.path.startswith("/img/"):
+                picture = checker.picture(name)
+                if picture is not None and picture.exists():
                     self.send(HTTPStatus.OK, picture.read_bytes(), "image/png")
                     return
             self.send(HTTPStatus.NOT_FOUND, b"not found", "text/plain")

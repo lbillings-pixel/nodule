@@ -1,0 +1,676 @@
+# C23-C25 of the library photos, judged by eye (ADR 0006, section 3). Keyed by
+# agatesim library id; no image is held here. "proposed" is Claude's, from
+# helper agents viewing the outline-check pictures (and the owner's notes on
+# the check sample); "checked" is the owner's, from `python -m nodule.zonecheck`,
+# and overrides it; "recount" is the owner's later eye count (choice 7h).
+# Appearance only: never evidence for a formation mechanism (ADR 0002).
+
+[meta]
+schema = "ADR 0006, section 3"
+proposed_by = "Claude (helper agents viewing the outline-check pictures and the owner's notes)"
+checked_by = "owner"
+
+[images.2006-10-30buchstutzeachat03.proposed]
+banded = "yes"
+C23_centres = 2
+C24_outer_gradient = "unknown"
+C24_outer_striations = "unknown"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "present"
+C24_middle_striations = "present"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "present"
+C24_inner_striations = "present"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.05 },
+    { kind = "coarse quartz", share = 0.25 },
+    { kind = "even bands", share = 0.7 },
+]
+confidence = "low"
+note = "A thin rind and a broad layer of quartz crystals line the rim; the blue agate's bands close around two separate pale cores (upper right and lower left), and the right half is all coarse quartz."
+
+[images.achat-2.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "present"
+C24_outer_striations = "present"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "unknown"
+C24_middle_striations = "unknown"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.45 },
+    { kind = "coarse quartz", share = 0.45 },
+    { kind = "cavity", share = 0.1 },
+]
+confidence = "medium"
+note = "One set of rim-parallel bands (brown, yellow, black, blue-grey, white) encloses a thick shell of coarse quartz crystals around a small central cavity."
+
+[images.achaty-zajecov-3.proposed]
+banded = "yes"
+C23_centres = 0
+C24_outer_gradient = "absent"
+C24_outer_striations = "present"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "unknown"
+C24_middle_striations = "unknown"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.25 },
+    { kind = "coarse quartz", share = 0.75 },
+]
+confidence = "low"
+note = "Thin bands follow the rim, but the interior is filled by flat horizontal layers and crystalline quartz, so no closed centre lies in the face."
+
+[images.agat-3d-bobonong-botswana.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "present"
+C24_outer_striations = "present"
+C24_outer_shadow = "present"
+C24_outer_iris = "absent"
+C24_middle_gradient = "present"
+C24_middle_striations = "present"
+C24_middle_shadow = "present"
+C24_middle_iris = "absent"
+C24_inner_gradient = "present"
+C24_inner_striations = "absent"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.45 },
+    { kind = "coarse quartz", share = 0.05 },
+    { kind = "even bands", share = 0.35 },
+    { kind = "colour change", share = 0.15 },
+]
+confidence = "medium"
+note = "One nested set: outer white and grey bands, a thin line of sparkling quartz, then red-brown bands closing around a plain red-brown core."
+
+[images.agat-lake-superior-lake-superior-agate-minnesota-usa.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "present"
+C24_outer_striations = "present"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "unknown"
+C24_middle_striations = "unknown"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "present"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.35 },
+    { kind = "coarse quartz", share = 0.35 },
+    { kind = "colour change", share = 0.3 },
+]
+confidence = "medium"
+note = "One nested set: an orange rind and grey-orange bands, then a white shell of radiating quartz around a plain orange core."
+
+[images.agate-2-31731816833.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "present"
+C24_outer_striations = "present"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "present"
+C24_middle_striations = "present"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "present"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.1 },
+    { kind = "curdled or mottled bands", share = 0.35 },
+    { kind = "even bands", share = 0.4 },
+    { kind = "coarse quartz", share = 0.15 },
+]
+confidence = "medium"
+note = "One nested set: a dark rim band, a clumpy outer banded region, then well-defined red-orange bands around a quartz core (with a separate patch of parallel bands at right)."
+
+[images.agate-east-of-the-black-hills-south-dakota-usa-6.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "absent"
+C24_outer_striations = "present"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "absent"
+C24_middle_striations = "present"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.25 },
+    { kind = "coarse quartz", share = 0.2 },
+    { kind = "even bands", share = 0.15 },
+    { kind = "coarse quartz", share = 0.4 },
+]
+confidence = "low"
+note = "This fragment shows two wavy parallel band layers separated by pinkish quartz, with quartz below; the only closed centre is a small eye in the top layer."
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-11.proposed]
+banded = "yes"
+C23_centres = 3
+C24_outer_gradient = "present"
+C24_outer_striations = "present"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "present"
+C24_middle_striations = "present"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "present"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "colour change", share = 0.15 },
+    { kind = "even bands", share = 0.85 },
+]
+confidence = "low"
+note = "The blue agate's fortification bands nest around about three separate centres (left, middle and top right), inside a darker grey rim, above a brown and grey layered lower half."
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-13.proposed]
+banded = "no"
+C23_centres = "unknown"
+C24_outer_gradient = "unknown"
+C24_outer_striations = "unknown"
+C24_outer_shadow = "unknown"
+C24_outer_iris = "unknown"
+C24_middle_gradient = "unknown"
+C24_middle_striations = "unknown"
+C24_middle_shadow = "unknown"
+C24_middle_iris = "unknown"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "unknown"
+C24_inner_iris = "unknown"
+C25_zones = []
+confidence = "medium"
+note = "Plain blue chalcedony with white tube-like inclusions and a drusy rim, with no banding to read."
+
+[images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-6.proposed]
+banded = "yes"
+C23_centres = 2
+C24_outer_gradient = "present"
+C24_outer_striations = "present"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "present"
+C24_middle_striations = "present"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "present"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.85 },
+    { kind = "colour change", share = 0.15 },
+]
+confidence = "low"
+note = "On this curved surface, red and white bands close around two separate centres: a small eye at left with a pale core, and a brown patch right of centre."
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-9-34651173151.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "present"
+C24_outer_striations = "present"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "present"
+C24_middle_striations = "present"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "present"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.4 },
+    { kind = "coarse quartz", share = 0.05 },
+    { kind = "even bands", share = 0.4 },
+    { kind = "curdled or mottled bands", share = 0.15 },
+]
+confidence = "medium"
+note = "One nested set closes on the orange core at right; a thin sugary quartz layer separates the fine grey outer bands from the white and orange inner bands (the polished surface shows bands clearly despite being labelled exterior)."
+
+[images.agate-quartz-filled-geode-1-32164187660.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "present"
+C24_outer_striations = "unknown"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "absent"
+C24_middle_striations = "absent"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "curdled or mottled bands", share = 0.15 },
+    { kind = "even bands", share = 0.15 },
+    { kind = "coarse quartz", share = 0.4 },
+    { kind = "even bands", share = 0.1 },
+    { kind = "coarse quartz", share = 0.2 },
+]
+confidence = "medium"
+note = "One set: a wavy brown rind, blue-white bands, a wide layer of radiating quartz, then a thin cream band around a crystal-lined core."
+
+[images.agate-sio2-from-brazil-50583624161.proposed]
+banded = "no"
+C23_centres = "unknown"
+C24_outer_gradient = "unknown"
+C24_outer_striations = "unknown"
+C24_outer_shadow = "unknown"
+C24_outer_iris = "unknown"
+C24_middle_gradient = "unknown"
+C24_middle_striations = "unknown"
+C24_middle_shadow = "unknown"
+C24_middle_iris = "unknown"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "unknown"
+C24_inner_iris = "unknown"
+C25_zones = []
+confidence = "medium"
+note = "Broken geode surface with wispy fibrous texture around a druse cavity; following the owner, no judgeable banding."
+
+[images.agate-with-uruguay-type-banding-om1-078a.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "present"
+C24_outer_striations = "present"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "present"
+C24_middle_striations = "present"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "present"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.25 },
+    { kind = "curdled or mottled bands", share = 0.75 },
+]
+confidence = "low"
+note = "A dark concentric rim set encloses a white core filled with thick, lumpy parallel waterline bands, so the only closed centre is that core."
+
+[images.agate3-hg-cropped.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "present"
+C24_outer_striations = "present"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "present"
+C24_middle_striations = "present"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.65 },
+    { kind = "curdled or mottled bands", share = 0.35 },
+]
+confidence = "low"
+note = "Yellow and brown bands wrap one elongated core of mossy inclusions and pale chalcedony; the rim is mostly cut off by the frame."
+
+[images.agate7-hg.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "present"
+C24_outer_striations = "unknown"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "absent"
+C24_middle_striations = "absent"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "absent"
+C24_inner_striations = "absent"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.25 },
+    { kind = "coarse quartz", share = 0.75 },
+]
+confidence = "high"
+note = "One set of white, grey and brown rim bands lines a large core of coarse quartz crystals."
+
+[images.agate8-hg.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "present"
+C24_outer_striations = "present"
+C24_outer_shadow = "present"
+C24_outer_iris = "absent"
+C24_middle_gradient = "present"
+C24_middle_striations = "present"
+C24_middle_shadow = "present"
+C24_middle_iris = "absent"
+C24_inner_gradient = "present"
+C24_inner_striations = "present"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.9 },
+    { kind = "coarse quartz", share = 0.1 },
+]
+confidence = "high"
+note = "One nested set of many fine bands, wider and whiter inward, closing on a small quartz core."
+
+[images.blue-lace-agate-geode.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "unknown"
+C24_outer_striations = "unknown"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "present"
+C24_middle_striations = "unknown"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "unknown"
+C24_inner_iris = "unknown"
+C25_zones = [
+    { kind = "coarse quartz", share = 0.3 },
+    { kind = "even bands", share = 0.25 },
+    { kind = "coarse quartz", share = 0.05 },
+    { kind = "cavity", share = 0.4 },
+]
+confidence = "low"
+note = "A few blurry blue bands line one open cavity floored with drusy quartz, inside a granular grey-brown crust; the face is broken rather than cut."
+
+[images.details-agat-lake-superior-agat-z-jez-gornego-minnesota-usa-cropped.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "present"
+C24_outer_striations = "present"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "present"
+C24_middle_striations = "present"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "present"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = []
+confidence = "low"
+note = "Close-up crop: the red-spotted bands close on one pale core at the left edge, but the rim is out of frame so zone shares can't be read."
+
+[images.estonian-museum-of-natural-history-specimen-no-176133-photo-g244-g244-9-1-jpg.proposed]
+banded = "yes"
+C23_centres = 3
+C24_outer_gradient = "unknown"
+C24_outer_striations = "unknown"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "absent"
+C24_middle_striations = "absent"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "present"
+C24_inner_striations = "present"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "curdled or mottled bands", share = 0.3 },
+    { kind = "coarse quartz", share = 0.15 },
+    { kind = "colour change", share = 0.15 },
+    { kind = "even bands", share = 0.4 },
+]
+confidence = "low"
+note = "Separate pink banded sets (one large, two small) sit in a plain yellow zone fringed by grey quartz, inside a mottled green outer zone."
+
+[images.high-grade-slaughter-mountain-arizona-fire-agate-rough.proposed]
+banded = "no"
+C23_centres = "unknown"
+C24_outer_gradient = "unknown"
+C24_outer_striations = "unknown"
+C24_outer_shadow = "unknown"
+C24_outer_iris = "unknown"
+C24_middle_gradient = "unknown"
+C24_middle_striations = "unknown"
+C24_middle_shadow = "unknown"
+C24_middle_iris = "unknown"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "unknown"
+C24_inner_iris = "unknown"
+C25_zones = []
+confidence = "high"
+note = "Rough botryoidal exterior held in the hand; no cut face to read band centres or zones."
+
+[images.image.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "absent"
+C24_outer_striations = "present"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "present"
+C24_middle_striations = "absent"
+C24_middle_shadow = "unknown"
+C24_middle_iris = "absent"
+C24_inner_gradient = "absent"
+C24_inner_striations = "present"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.3 },
+    { kind = "colour change", share = 0.25 },
+    { kind = "even bands", share = 0.3 },
+    { kind = "curdled or mottled bands", share = 0.15 },
+]
+confidence = "medium"
+note = "One fortification set closes around a pale, lumpy core left of centre, with a broad grey translucent band between the outer and inner groups of white bands."
+
+[images.imgp2020361-50579722543.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "present"
+C24_outer_striations = "absent"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "absent"
+C24_middle_striations = "present"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "unknown"
+C24_inner_iris = "unknown"
+C25_zones = [
+    { kind = "colour change", share = 0.35 },
+    { kind = "even bands", share = 0.25 },
+    { kind = "coarse quartz", share = 0.4 },
+]
+confidence = "medium"
+note = "One set: broad blue-grey and red-pink outer layers, then thin pink and white bands lining an elongated central zone of quartz crystals."
+
+[images.laguna-agate-chihuahua-mexico-2-32661870051.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "absent"
+C24_outer_striations = "present"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "present"
+C24_middle_striations = "present"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "present"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.55 },
+    { kind = "colour change", share = 0.2 },
+    { kind = "coarse quartz", share = 0.25 },
+]
+confidence = "medium"
+note = "One fortification set of blue then pink bands closes onto a broad white zone and an amethyst-quartz core at the left."
+
+[images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-3.proposed]
+banded = "no"
+C23_centres = "unknown"
+C24_outer_gradient = "unknown"
+C24_outer_striations = "unknown"
+C24_outer_shadow = "unknown"
+C24_outer_iris = "unknown"
+C24_middle_gradient = "unknown"
+C24_middle_striations = "unknown"
+C24_middle_shadow = "unknown"
+C24_middle_iris = "unknown"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "unknown"
+C24_inner_iris = "unknown"
+C25_zones = []
+confidence = "medium"
+note = "Polished moss agate with lines of dark dendrite clumps but no nested banding to give a centre or zones."
+
+[images.nellie-blue-flint-upper-mercer-flint-middle-pennsylvanian-eastern-ohio-usa-60.proposed]
+banded = "no"
+C23_centres = "unknown"
+C24_outer_gradient = "unknown"
+C24_outer_striations = "unknown"
+C24_outer_shadow = "unknown"
+C24_outer_iris = "unknown"
+C24_middle_gradient = "unknown"
+C24_middle_striations = "unknown"
+C24_middle_shadow = "unknown"
+C24_middle_iris = "unknown"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "unknown"
+C24_inner_iris = "unknown"
+C25_zones = []
+confidence = "medium"
+note = "Polished flint exterior with irregular blue chalcedony veins and only one or two thin wall bands, not a nested banded face."
+
+[images.oregon003.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "unknown"
+C24_outer_striations = "unknown"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "absent"
+C24_middle_striations = "absent"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "present"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.3 },
+    { kind = "curdled or mottled bands", share = 0.4 },
+    { kind = "colour change", share = 0.25 },
+    { kind = "cavity", share = 0.05 },
+]
+confidence = "low"
+note = "Dark outer bands enclose a white zone of tube- and plume-like forms, inside which a tan patch closes around a small cavity, the one centre."
+
+[images.oregon004.proposed]
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_gradient = "unknown"
+C24_outer_striations = "unknown"
+C24_outer_shadow = "unknown"
+C24_outer_iris = "unknown"
+C24_middle_gradient = "unknown"
+C24_middle_striations = "present"
+C24_middle_shadow = "unknown"
+C24_middle_iris = "present"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "unknown"
+C24_inner_iris = "unknown"
+C25_zones = []
+confidence = "low"
+note = "Backlit slab with arcs of bands in several cracked lobes around a bright gap; too dark and fragmented to tell the centres or the rim-to-centre zones."
+
+[images.quartz-agateplate-bluegrey.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "present"
+C24_outer_striations = "present"
+C24_outer_shadow = "absent"
+C24_outer_iris = "absent"
+C24_middle_gradient = "present"
+C24_middle_striations = "present"
+C24_middle_shadow = "absent"
+C24_middle_iris = "absent"
+C24_inner_gradient = "present"
+C24_inner_striations = "present"
+C24_inner_shadow = "absent"
+C24_inner_iris = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.6 },
+    { kind = "colour change", share = 0.25 },
+    { kind = "even bands", share = 0.15 },
+]
+confidence = "medium"
+note = "One fortification set with flat waterline bands in its lower part and in the inner chamber, closing around a small triangular core."
+
+[images.sliced-agate-geode-with-crystals-2.proposed]
+banded = "yes"
+C23_centres = 1
+C24_outer_gradient = "unknown"
+C24_outer_striations = "present"
+C24_outer_shadow = "unknown"
+C24_outer_iris = "absent"
+C24_middle_gradient = "unknown"
+C24_middle_striations = "unknown"
+C24_middle_shadow = "unknown"
+C24_middle_iris = "unknown"
+C24_inner_gradient = "unknown"
+C24_inner_striations = "unknown"
+C24_inner_shadow = "unknown"
+C24_inner_iris = "unknown"
+C25_zones = [
+    { kind = "curdled or mottled bands", share = 0.5 },
+    { kind = "coarse quartz", share = 0.3 },
+    { kind = "cavity", share = 0.2 },
+]
+confidence = "low"
+note = "Thin oblique geode slice: wavy, uneven chalcedony layers line a quartz-crystal lining around an open cavity, the one centre."

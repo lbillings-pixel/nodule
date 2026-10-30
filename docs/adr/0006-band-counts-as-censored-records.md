@@ -5,6 +5,8 @@
   2026-10-29 after three papers were read in full; no decision or grade
   changed (see Consequences). Amended again 2026-10-29 after ten more were
   read in full: the owner took choices 7f–7h (section 7); no grade changed.
+  Amended 2026-10-30 with what was built for C23–C25 and the check
+  (section 8); no decision or grade changed.
 - Date: 2026-10-29
 - Builds on: [ADR 0004](0004-characterization-schema-core-set.md) sections
   1, 4 (C6, C10, C13) and 8. Records the owner's choice of 2026-10-29 to
@@ -395,6 +397,63 @@ rule, not *L*, censors their counts. Grade: plausible (one check, 8 photos).
     after [@damci2016]): more conservative, but nearly every photo would sit
     at it.
 
+### 8. As built: C23–C25 and the check (2026-10-30)
+
+`nodule.zones` holds the labels (`references/band-zone-labels.toml`, a
+`proposed` and a `checked` table per photo, as ADR 0004's labels);
+`nodule.zonecheck` is the check page. Choices made in building it, each an
+assumption unless sourced:
+
+- **`banded` first.** Each photo is first labelled banded yes or no: yes
+  when bands can be judged on the face shown, whatever its view kind (two
+  faces the owner labelled exterior and three labelled broken surface show
+  bands, and the owner's notes count them). When no, C23–C25 are unknown.
+- **C23** is a whole number from 0 to 50: 0 when bands show but no centre lies
+  in the face. The cross-check against C13 waits, as C13 isn't measured yet.
+- **C24's zones are thirds** of the rim-to-centre distance (outer, middle,
+  inner), fixed whatever C25 finds, so every face has the same 12 items.
+- **C25** lists zones from the rim inwards, each with its share of the
+  radius; shares sum to 1 within 0.05; two neighbouring zones of one kind
+  are one zone; an empty list means unknown. Where a face has several
+  centres, the helpers read a typical path in the largest set.
+- **Scoring, item by item:** `banded` is one item; when both sides say yes,
+  C23 is one item, each C24 cue one (12), and each C25 zone position one
+  (a zone one side lacks disagrees; two unknown sequences agree as one item).
+  When either side says no, only `banded` is scored. Share differences of
+  agreeing zones are reported apart (median), not scored.
+- **Blind 10** are picked from the 30 by a stream spawned from seed 6,
+  separate from the check sample's. They come first, and the page refuses the
+  other 20 until they are saved. Proposals never show on them, even later.
+  C24 starts blank on all 30. Proposal notes avoid C24 cues for that reason.
+- **Delayed recount:** 5 of the faces with an eye count, picked by a second
+  spawned stream, served by `--recount` from 2026-11-05 (a week after the
+  first counts), without the earlier count.
+- **Negative controls** (section 3): three synthetic faces drawn in world
+  coordinates (`zones.CONTROLS`): one concentric set, two sets in one outline,
+  and even bands around coarse quartz and a cavity (0.5, 0.3, 0.2 of the
+  radius). Bands are at least 8 pixels per couplet, so no cue below the
+  limit can show. One was put among each helper's ten pictures under a
+  neutral name. Each must give its own C23 and C25 kinds (shares within
+  0.1) and no C24 cue present.
+- **Staged:** proposals were made first for the 30 check faces only; the
+  other banded faces wait for the owner's check, since a failed check
+  (section 6) would make their proposals moot.
+
+First results (2026-10-30; three helpers, ten faces and one control each):
+
+- All three controls were labelled as they must be (C23 of 1 and 2, the
+  three zones within 0.1, no cue present). One control per helper is a
+  weak test; it rejects gross misreadings only.
+- The proposals: 25 of 30 faces banded; C23 is 1 on 19, 0 on 1, 2 on 2, 3 on 2
+  and unknown on 6; of the 300 C24 items on banded faces, 85 present, 150
+  absent and 65 unknown.
+- C25 against C17 (section 3's control): where both are given (17 faces),
+  the innermost C25 zone is coarse quartz or a cavity on 14 of the 17 faces
+  exactly where `C17_core` is at least 0.05; 12 of 17 at 0.02, 13 at 0.1. The
+  0.05 cut was picked after looking, and C25 shows quartz layers between
+  bands that a core share doesn't, so this is no pass yet. Grade:
+  speculative, to be read again after the owner's check.
+
 ## Alternatives considered
 
 - **Keep C6 as a count and note the limit in prose.** Rejected: the record
@@ -425,6 +484,8 @@ rule, not *L*, censors their counts. Grade: plausible (one check, 8 photos).
 
 ## Consequences
 
+- C23–C25 and their check are built (`nodule.zones`, `nodule.zonecheck`;
+  section 8); `nodule.tags` doesn't read them until the owner has checked.
 - `nodule.bands` gains *L*, `C6_blank` and N(L); `nodule.tags` stores C6
   and `C6_eye` as lower bounds with *L*; the check page gains C23–C25, the
   blind 10 and the owner's delayed recount. Timing is measured on 10 photos

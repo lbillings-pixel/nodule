@@ -97,7 +97,7 @@ C25_zones = [
     { kind = "even bands", share = 0.45 },
     { kind = "coarse quartz", share = 0.05 },
     { kind = "even bands", share = 0.35 },
-    { kind = "colour change", share = 0.15 },
+    { kind = "plain: no visible bands", share = 0.15 },
 ]
 confidence = "medium"
 note = "One nested set: outer white and grey bands, a thin line of sparkling quartz, then red-brown bands closing around a plain red-brown core."
@@ -120,7 +120,7 @@ C24_inner_iris = "absent"
 C25_zones = [
     { kind = "even bands", share = 0.35 },
     { kind = "coarse quartz", share = 0.35 },
-    { kind = "colour change", share = 0.3 },
+    { kind = "plain: no visible bands", share = 0.3 },
 ]
 confidence = "medium"
 note = "One nested set: an orange rind and grey-orange bands, then a white shell of radiating quartz around a plain orange core."
@@ -189,11 +189,11 @@ C24_inner_striations = "present"
 C24_inner_shadow = "absent"
 C24_inner_iris = "absent"
 C25_zones = [
-    { kind = "colour change", share = 0.15 },
+    { kind = "plain: no visible bands", share = 0.15 },
     { kind = "even bands", share = 0.85 },
 ]
 confidence = "low"
-note = "The blue agate's fortification bands nest around about three separate centres (left, middle and top right), inside a darker grey rim, above a brown and grey layered lower half."
+note = "The blue agate's fortification bands nest around about three separate centres (left, middle and top right), inside a darker grey rim, above a brown and grey layered lower half. Re-read 2026-10-30 for 'plain: no visible bands' (7k) from this note alone: unsure whether the grey rim shows bands."
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-13.proposed]
 banded = "no"
@@ -231,7 +231,7 @@ C24_inner_shadow = "absent"
 C24_inner_iris = "absent"
 C25_zones = [
     { kind = "even bands", share = 0.85 },
-    { kind = "colour change", share = 0.15 },
+    { kind = "plain: no visible bands", share = 0.15 },
 ]
 confidence = "low"
 note = "On this curved surface, red and white bands close around two separate centres: a small eye at left with a pale core, and a brown patch right of centre."
@@ -453,7 +453,7 @@ C24_inner_iris = "absent"
 C25_zones = [
     { kind = "curdled or mottled bands", share = 0.3 },
     { kind = "coarse quartz", share = 0.15 },
-    { kind = "colour change", share = 0.15 },
+    { kind = "plain: no visible bands", share = 0.15 },
     { kind = "even bands", share = 0.4 },
 ]
 confidence = "low"
@@ -495,12 +495,12 @@ C24_inner_shadow = "absent"
 C24_inner_iris = "absent"
 C25_zones = [
     { kind = "even bands", share = 0.3 },
-    { kind = "colour change", share = 0.25 },
+    { kind = "plain: no visible bands", share = 0.25 },
     { kind = "even bands", share = 0.3 },
     { kind = "curdled or mottled bands", share = 0.15 },
 ]
 confidence = "medium"
-note = "One fortification set closes around a pale, lumpy core left of centre, with a broad grey translucent band between the outer and inner groups of white bands."
+note = "One fortification set closes around a pale, lumpy core left of centre, with a broad grey translucent band between the outer and inner groups of white bands. Re-read 2026-10-30 for 'plain: no visible bands' (7k) from this note alone: unsure whether the broad grey band shows bands within it."
 
 [images.imgp2020361-50579722543.proposed]
 banded = "yes"
@@ -518,12 +518,11 @@ C24_inner_striations = "unknown"
 C24_inner_shadow = "unknown"
 C24_inner_iris = "unknown"
 C25_zones = [
-    { kind = "colour change", share = 0.35 },
-    { kind = "even bands", share = 0.25 },
+    { kind = "even bands", share = 0.6 },
     { kind = "coarse quartz", share = 0.4 },
 ]
 confidence = "medium"
-note = "One set: broad blue-grey and red-pink outer layers, then thin pink and white bands lining an elongated central zone of quartz crystals."
+note = "One set: broad blue-grey and red-pink outer layers, then thin pink and white bands lining an elongated central zone of quartz crystals. Re-read 2026-10-30 for 'plain: no visible bands' (7k): the broad outer layers are bands, so they join the even bands."
 
 [images.laguna-agate-chihuahua-mexico-2-32661870051.proposed]
 banded = "yes"
@@ -542,7 +541,7 @@ C24_inner_shadow = "absent"
 C24_inner_iris = "absent"
 C25_zones = [
     { kind = "even bands", share = 0.55 },
-    { kind = "colour change", share = 0.2 },
+    { kind = "plain: no visible bands", share = 0.2 },
     { kind = "coarse quartz", share = 0.25 },
 ]
 confidence = "medium"
@@ -604,7 +603,7 @@ C24_inner_iris = "absent"
 C25_zones = [
     { kind = "even bands", share = 0.3 },
     { kind = "curdled or mottled bands", share = 0.4 },
-    { kind = "colour change", share = 0.25 },
+    { kind = "plain: no visible bands", share = 0.25 },
     { kind = "cavity", share = 0.05 },
 ]
 confidence = "low"
@@ -646,11 +645,11 @@ C24_inner_shadow = "absent"
 C24_inner_iris = "absent"
 C25_zones = [
     { kind = "even bands", share = 0.6 },
-    { kind = "colour change", share = 0.25 },
+    { kind = "plain: no visible bands", share = 0.25 },
     { kind = "even bands", share = 0.15 },
 ]
 confidence = "medium"
-note = "One fortification set with flat waterline bands in its lower part and in the inner chamber, closing around a small triangular core."
+note = "One fortification set with flat waterline bands in its lower part and in the inner chamber, closing around a small triangular core. Re-read 2026-10-30 for 'plain: no visible bands' (7k) from this note alone: unsure what the middle zone shows."
 
 [images.sliced-agate-geode-with-crystals-2.proposed]
 banded = "yes"

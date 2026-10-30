@@ -6,7 +6,8 @@
   changed (see Consequences). Amended again 2026-10-29 after ten more were
   read in full: the owner took choices 7f–7h (section 7); no grade changed.
   Amended 2026-10-30 with what was built for C23–C25 and the check
-  (section 8), and the owner took choice 7j (section 7); no grade changed.
+  (section 8), and the owner took choices 7j and 7k (section 7); no grade
+  changed.
 - Date: 2026-10-29
 - Builds on: [ADR 0004](0004-characterization-schema-core-set.md) sections
   1, 4 (C6, C10, C13) and 8. Records the owner's choice of 2026-10-29 to
@@ -220,7 +221,7 @@ speculative (no source applies count-against-resolution to laminae; choice
 |---|---|---|---|---|---|
 | C23 | B, D | Centre count: separate band centres in the face, by eye, cross-checked against C13 where it is measured | owner's notes; [@marichal2025] (via C13) | One concentric set gives 1; two drawn separate sets give 2 | plausible |
 | C24 | B, E | Fine-banding evidence, per zone (outer, middle, inner): each cue present, absent or unknown: (a) colour gradient within a band, (b) faint striations at the limit, (c) shadow-like bands in radial sectors, (d) iris colours | owner's notes; [@raman1953] for (c), as an analogue; [@heaney1995; @cartwright2026; @jones1952; @raman1953; @raman1955] for (d) | A synthetic face with no sub-limit bands must give no cue under the same rendering; a cue is never converted into a count | speculative |
-| C25 | B, F | Zone sequence rim to centre: each zone's kind (even bands, curdled or mottled bands, colour change, coarse quartz, cavity) and its share of the radius | owner's notes; ADR 0004 C17 for the core | A face of one even banded zone gives one zone; C17's core and C25's quartz zone agree | plausible |
+| C25 | B, F | Zone sequence rim to centre: each zone's kind (even bands, curdled or mottled bands, plain: no visible bands, coarse quartz, cavity; 7k) and its share of the radius | owner's notes; ADR 0004 C17 for the core | A face of one even banded zone gives one zone; C17's core and C25's quartz zone agree | plausible |
 
 C24's cues are signs, not measurements. Cue (c) is the owner's observation;
 no peer-reviewed source found explains the shadow effect, so it stays
@@ -407,6 +408,20 @@ about 16 items per banded face, so it dominates a pooled test.
     each alone and on all items pooled; any one failing triggers the
     fallback.
   - As first written: all items pooled.
+
+Choice 7k was put during the owner's check, before any answer was saved: the
+proposals used the C25 kind "colour change" for a plain core, one broad
+translucent band and broad coloured layers, so the kind meant three things.
+
+- **7k. What the third C25 kind means.**
+  - *(Recommended, taken 2026-10-30)* "plain: no visible bands": a stretch of
+    fairly even colour with no banding seen at the photo's resolution (a
+    lower bound, like the counts: not proof of no bands). A change of colour
+    alone starts no new zone; bands that change colour stay "even bands".
+    The ten proposals using the old kind were re-read from their notes
+    alone: one became even bands (merged with its neighbour), six stay
+    plain, and three stay plain marked unsure in their notes.
+  - As first written: "colour change", undefined.
 
 ### 8. As built: C23–C25 and the check (2026-10-30)
 

@@ -55,7 +55,13 @@ CUES = {
 }
 CUE_FIELDS = tuple(f"C24_{t}_{c}" for t in THIRDS for c in CUES)
 CUE_VALUES = ("present", "absent", UNKNOWN)
-ZONE_KINDS = ("even bands", "curdled or mottled bands", "colour change", "coarse quartz", "cavity")
+ZONE_KINDS = (
+    "even bands",
+    "curdled or mottled bands",
+    "plain: no visible bands",
+    "coarse quartz",
+    "cavity",
+)
 MAX_CENTRES = 50
 SHARE_SUM = 0.05  # shares may sum to 1 within this
 BLIND = 10  # of the check sample, answered with the proposals hidden (choice 7f)

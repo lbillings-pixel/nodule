@@ -524,9 +524,16 @@ zones.
   one path, so C25 describes that path, not the whole face. Alternatives:
   zone by zone, as round 1; the owner clicks each centre.
 
-Open, for the owner: whether section 6's fallback, met by round 1, is taken
-now, or weighed at the end of the re-tagging with round 2 (whose
-descriptors are new) as section 6's timing reads.
+Drafted on the 30 checked photos (7e620bc), the centre was right on about
+half by eye (13 from paths, about 6 good; 9 deepest points, about 6
+sensible; 8 with no band spacing, about 4 outside the stone). The owner
+chose to go ahead: on the line check they click the centre wherever the
+draft is off, rather than the drafting being tuned first.
+
+Section 6's fallback, met by round 1, is weighed at the end of the
+re-tagging with round 2 and the other two tests, as section 6's timing
+reads (owner, 2026-10-30). Round 2's rules are fixed here before any of its
+photos is seen, so it is no retry until a pass.
 
 ## Alternatives considered
 

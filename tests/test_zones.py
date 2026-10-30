@@ -117,6 +117,135 @@ def test_blind_and_recount_faces_are_fixed_and_separate_streams() -> None:
     assert all(isinstance(views[k]["checked"]["C6_eye"], int) for k in recount)
 
 
+ROUND2: dict[str, Any] = {
+    "round": 2,
+    "banded": "yes",
+    "C23_centres": 1,
+    **dict.fromkeys(zones.ROUND2_CUE_FIELDS, "absent"),
+    "C25_zones": [{"kind": "even bands", "share": 0.7}, {"kind": "coarse quartz", "share": 0.3}],
+}
+
+
+def test_round_2_rows_have_their_own_fields() -> None:
+    assert zones.problems(ROUND2 | {"confidence": "low"}) == []
+    assert zones.problems(ROUND2 | {"blind": True}, checked=True) == []
+    # Round 1 cues are refused in round 2, and round 1 rows still need theirs.
+    assert any("not a label" in p for p in zones.problems(ROUND2 | ABSENT, checked=True))
+    assert zones.problems(BANDED | {"round": 1}, checked=True)
+    assert zones.problems(ROUND2 | {"round": True}, checked=True)
+    assert zones.problems(BANDED, checked=True) == []
+
+
+def test_round_2_zones_cover_at_least_a_twentieth_of_the_line() -> None:
+    thin = [
+        {"kind": "even bands", "share": 0.96},
+        {"kind": "plain: no visible bands", "share": 0.04},
+    ]
+    assert any("choice 7l" in p for p in zones.problems(ROUND2 | {"C25_zones": thin}, True))
+    assert zones.problems(BANDED | {"C25_zones": thin}, checked=True) == []  # round 1 unchanged
+
+
+def test_line_match_measures_the_shared_stretch() -> None:
+    a = [{"kind": "even bands", "share": 0.7}, {"kind": "coarse quartz", "share": 0.3}]
+    b = [{"kind": "even bands", "share": 0.5}, {"kind": "coarse quartz", "share": 0.5}]
+    assert zones.line_match(a, a) == pytest.approx(1.0)
+    assert zones.line_match(a, b) == pytest.approx(0.8)
+    # Shares off 1 within SHARE_SUM are scaled, not left short.
+    assert zones.line_match(a, [{"kind": "even bands", "share": 0.98}]) == pytest.approx(0.7)
+    assert zones.line_match(a, []) == 0.0
+
+
+def test_round_2_scores_c25_once_along_the_line() -> None:
+    same = zones.items(ROUND2, ROUND2)
+    assert [k for k, _ in same] == ["banded", "C23", "C24", "C24", "C24", "C25"]
+    # Negative control: zones in the right order but the split far off (0.7 vs
+    # 0.2 of the line in bands) match on only half the line, so disagree.
+    off = ROUND2 | {
+        "C25_zones": [{"kind": "even bands", "share": 0.2}, {"kind": "coarse quartz", "share": 0.8}]
+    }
+    assert zones.items(ROUND2, off)[-1] == ("C25", False)
+    near = ROUND2 | {
+        "C25_zones": [{"kind": "even bands", "share": 0.5}, {"kind": "coarse quartz", "share": 0.5}]
+    }
+    assert zones.items(ROUND2, near)[-1] == ("C25", True)
+    with pytest.raises(ValueError, match="round 1"):
+        zones.items(BANDED, ROUND2)
+
+
+def test_the_rounds_are_reported_and_tested_apart() -> None:
+    images = {f"r1-{i}": {"proposed": PROPOSED, "checked": BANDED} for i in range(30)}
+    first = zones.report(images)
+    assert "round 2" not in first
+    wrong = ROUND2 | {"C23_centres": 3, "blind": True}
+    images |= {f"r2-{i}": {"proposed": ROUND2, "checked": wrong} for i in range(10)}
+    text = zones.report(images)
+    assert text.startswith(first)  # round 1's result stands as scored
+    assert "round 2 (ADR 0006, s.9)" in text
+    assert "blind  50/60 items" in text
+    assert "FALLBACK: more than a third of the blind C23 items" in text.split("round 2")[1]
+    assert "share of the line where kinds match: median 1.00, n 10" in text
+
+
+def test_round_2_draws_a_fixed_pool_outside_round_1() -> None:
+    views: dict[str, dict[str, labels.Row]] = {
+        f"p{i:03d}": {"proposed": {"view_kind": "exterior" if i % 5 == 0 else "cut face"}}
+        for i in range(120)
+    }
+    first = set(labels.check_sample(views))
+    images: dict[str, dict[str, Any]] = {k: {"proposed": PROPOSED} for k in first}
+    pool = zones.round2_pool(views, images)
+    assert not first & set(pool)
+    assert all(views[k]["proposed"]["view_kind"] == "cut face" for k in pool)
+    assert pool == zones.round2_pool(dict(reversed(views.items())), images)
+    picked = zones.round2_sample(views, images)
+    assert picked == pool[: zones.BLIND]
+    # A face the owner marks not banded at the line check gives way to the next.
+    images[picked[0]] = {"line": {"banded": "no"}}
+    assert zones.round2_sample(views, images) == pool[1 : zones.BLIND + 1]
+    # Round 2 answers keep a face in the pool; round 1 labels take it out.
+    images[pool[1]] = {"proposed": ROUND2}
+    assert pool[1] in zones.round2_pool(views, images)
+    images[pool[2]] = {"proposed": PROPOSED}
+    assert pool[2] not in zones.round2_pool(views, images)
+
+
+@pytest.mark.parametrize(
+    ("line", "says"),
+    [
+        ({"banded": "no", "note": "a broken surface"}, None),
+        ({"rim": [0.1, 0.5], "centre": [0.5, 0.5], "source": "paths", "draw": 0}, None),
+        (
+            {
+                "rim": [0.1, 0.5],
+                "centre": [0.5, 0.5],
+                "source": "owner",
+                "draw": 1,
+                "reasons": ["crack or edge"],
+            },
+            None,
+        ),
+        ({"banded": "yes"}, "only no"),
+        ({"rim": [1.2, 0.5], "centre": [0.5, 0.5], "source": "paths", "draw": 0}, "rim"),
+        ({"rim": [0.1, 0.5], "centre": [0.5], "source": "paths", "draw": 0}, "centre"),
+        ({"rim": [0.1, 0.5], "centre": [0.5, 0.5], "source": "guess", "draw": 0}, "source"),
+        ({"rim": [0.1, 0.5], "centre": [0.5, 0.5], "source": "paths", "draw": 2}, "one per draw"),
+        (
+            {
+                "rim": [0.1, 0.5],
+                "centre": [0.5, 0.5],
+                "source": "paths",
+                "draw": 1,
+                "reasons": ["prettier"],
+            },
+            "each one of",
+        ),
+    ],
+)
+def test_checked_lines_are_validated(line: dict[str, Any], says: str | None) -> None:
+    found = zones.line_problems(line)
+    assert found == [] if says is None else any(says in p for p in found), found
+
+
 def test_the_labels_file_round_trips(tmp_path: Path) -> None:
     path = tmp_path / "zones.toml"
     assert zones.add_proposals({"a": PROPOSED}, path) == []

@@ -530,6 +530,18 @@ sensible; 8 with no band spacing, about 4 outside the stone). The owner
 chose to go ahead: on the line check they click the centre wherever the
 draft is off, rather than the drafting being tuned first.
 
+As built (round 2's rules, `nodule.zones`, fixed before any of its faces is
+seen): round 2 rows carry `round = 2`; round 1's rows, scoring and report
+are unchanged. A zone under 0.05 of the line is refused (7l). C25 is one
+item per face, agreed where the kinds match on at least 2/3 of the line
+(shares scaled to sum to 1). The blind 10 come from a fixed pool: the photos
+whose view is a cut face or a slab in transmitted light, outside round 1's
+check sample, shuffled by stream 3 of seed 6 (153 photos; the friend's 31
+have no view labels and are not in it). A face the owner marks "no banded
+face" at the line check gives way to the next in the pool; the line check
+stores the owner's line beside the labels (rim, centre, its source, the
+draw and one reason per draw passed over).
+
 Section 6's fallback, met by round 1, is weighed at the end of the
 re-tagging with round 2 and the other two tests, as section 6's timing
 reads (owner, 2026-10-30). Round 2's rules are fixed here before any of its

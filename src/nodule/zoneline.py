@@ -55,7 +55,7 @@ MAX_AXIAL = 0.9
 MIN_ANGLE = math.radians(10)  # effective: two lines meeting at less than this give no crossing
 TICKS = 10  # ticks along the line, one every 0.1
 LINE_STREAM = 2  # child of zones.SEED's streams (0 and 1 pick faces for the owner)
-REASONS = ("crack or edge", "misses the bands", "waterline banding")
+REASONS = zones.LINE_REASONS
 
 
 @dataclass(frozen=True)

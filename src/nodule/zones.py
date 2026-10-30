@@ -17,6 +17,16 @@ sample with the proposals hidden (choice 7f). Agreement is scored item by item
 (`items`). Labels live in `references/band-zone-labels.toml`, keyed by agatesim
 library id, as `proposed` and `checked` tables, like `nodule.labels`.
 
+**Round 2** (section 9, choices 7l-7o; rows carry `round = 2`, rows without
+it are round 1 and keep its rules and scoring): C24 is faint striations only,
+per third (`ROUND2_CUE_FIELDS`); C25's zones are read along the face's drawn
+line (`nodule.zoneline`), each at least `MIN_SHARE` of it; a face's C25
+agrees where the kinds match on at least `LINE_AGREE` of the line. The owner's
+checked line is stored as `line` beside the labels (`line_problems`). The
+blind 10 are drawn from banded faces nobody has checked (`round2_pool`, choice
+7m): the next in the pool stands in for a face the owner marks not banded at
+the line check.
+
 The control faces (`CONTROLS`) are synthetic, drawn here, and labelled by the
 helpers among the real pictures without being told which they are: the
 negative controls of C23-C25 (ADR 0006, section 3). Appearance only: never
@@ -70,13 +80,32 @@ RECOUNT_FROM = date(2026, 11, 5)  # a week after the first eye counts (2026-10-2
 SEED = 6  # ADR 0006; its spawned streams pick the blind and recount faces
 FIELDS = ("banded", "C23_centres", *CUE_FIELDS, "C25_zones")
 
+# Round 2 (section 9).
+ROUND2_CUE_FIELDS = tuple(f"C24_{t}_striations" for t in THIRDS)  # choice 7n
+ROUND2_FIELDS = ("round", "banded", "C23_centres", *ROUND2_CUE_FIELDS, "C25_zones")
+MIN_SHARE = 0.05  # choice 7l: a zone covers at least this share of the line
+LINE_AGREE = 2 / 3  # choice 7o: C25 agrees where kinds match on this much of the line
+POOL_STREAM = 3  # child of SEED's streams that orders round 2's pool (choice 7m)
+POOL_VIEWS = ("cut face", "slab in transmitted light")  # views that can show a banded face
+LINE_REASONS = ("crack or edge", "misses the bands", "waterline banding")
+LINE_SOURCES = ("paths", "deepest point", "owner")
+
 Row = dict[str, Any]
+
+
+def round_of(row: Mapping[str, object]) -> int:
+    return 2 if row.get("round") == 2 else 1
 
 
 def problems(row: Mapping[str, object], checked: bool = False) -> list[str]:
     """What is wrong with one photo's C23-C25 labels (empty when nothing is)."""
-    allowed = set(FIELDS) | {"note"} | ({"blind"} if checked else {"confidence"})
+    second = "round" in row
+    fields = ROUND2_FIELDS if second else FIELDS
+    cue_fields = ROUND2_CUE_FIELDS if second else CUE_FIELDS
+    allowed = set(fields) | {"note"} | ({"blind"} if checked else {"confidence"})
     out = [f"{k}: not a label" for k in row if k not in allowed]
+    if second and (type(row["round"]) is not int or row["round"] != 2):
+        out.append(f"round: {row['round']!r} is not 2 (round 1 rows carry no round)")
     if row.get("banded") not in ("yes", "no"):
         out.append(f"banded: {row.get('banded')!r} is not yes or no")
     centres = row.get("C23_centres")
@@ -86,10 +115,10 @@ def problems(row: Mapping[str, object], checked: bool = False) -> list[str]:
         out.append(
             f"C23_centres: {centres!r} is not a whole number from 0 to {MAX_CENTRES}, or unknown"
         )
-    for name in CUE_FIELDS:
+    for name in cue_fields:
         if row.get(name) not in CUE_VALUES:
             out.append(f"{name}: {row.get(name)!r} is not one of {', '.join(CUE_VALUES)}")
-    out += zone_problems(row.get("C25_zones"))
+    out += zone_problems(row.get("C25_zones"), MIN_SHARE if second else 0.0)
     if not checked and row.get("confidence") not in labels.PROPOSED_ONLY["confidence"]:
         out.append(f"confidence: {row.get('confidence')!r} is not high, medium or low")
     if checked and not isinstance(row.get("blind", False), bool):
@@ -97,13 +126,13 @@ def problems(row: Mapping[str, object], checked: bool = False) -> list[str]:
     if not isinstance(row.get("note", ""), str):
         out.append("note: not text")
     unknown = centres == UNKNOWN and not row.get("C25_zones")
-    unknown = unknown and all(row[n] == UNKNOWN for n in CUE_FIELDS)
+    unknown = unknown and all(row[n] == UNKNOWN for n in cue_fields)
     if not out and row["banded"] == "no" and not unknown:
         out.append("banded: no, so C23-C25 are unknown")
     return out
 
 
-def zone_problems(found: object) -> list[str]:
+def zone_problems(found: object, min_share: float = 0.0) -> list[str]:
     if not isinstance(found, list):
         return ["C25_zones: not a list of zones"]
     out: list[str] = []
@@ -119,6 +148,8 @@ def zone_problems(found: object) -> list[str]:
         share = zone["share"]
         if isinstance(share, bool) or not isinstance(share, int | float) or not 0 < share <= 1:
             out.append(f"C25 zone {i}: share {share!r} is not a number above 0, at most 1")
+        elif share < min_share - 1e-9:
+            out.append(f"C25 zone {i}: share {share} is under {min_share} of the line (choice 7l)")
     if out or not zones:
         return out
     if any(a["kind"] == b["kind"] for a, b in itertools.pairwise(zones)):
@@ -131,7 +162,7 @@ def zone_problems(found: object) -> list[str]:
 
 def stream(child: int) -> np.random.Generator:
     """One of the spawned RNG streams that pick faces for the owner."""
-    return np.random.default_rng(np.random.SeedSequence(SEED).spawn(2)[child])
+    return np.random.default_rng(np.random.SeedSequence(SEED, spawn_key=(child,)))
 
 
 def blind_sample(sample: Sequence[str], size: int = BLIND) -> list[str]:
@@ -150,23 +181,125 @@ def recount_sample(
     return sorted(str(i) for i in stream(1).choice(pool, size=min(size, len(pool)), replace=False))
 
 
+def round2_pool(
+    view_labels: Mapping[str, Mapping[str, labels.Row]], images: Mapping[str, Mapping[str, Row]]
+) -> list[str]:
+    """Round 2's candidates in their fixed order (choice 7m): photos whose view
+    can show a banded face (`POOL_VIEWS`), outside the round 1 check sample
+    and with no round 1 labels, shuffled by stream `POOL_STREAM`."""
+    sample = set(labels.check_sample(view_labels))
+    pool = sorted(
+        k
+        for k, e in view_labels.items()
+        if labels.chosen(e)[0].get("view_kind") in POOL_VIEWS
+        and k not in sample
+        and all(round_of(r) == 2 for n, r in images.get(k, {}).items() if n != "line")
+    )
+    return [str(i) for i in stream(POOL_STREAM).permutation(pool)]
+
+
+def round2_sample(
+    view_labels: Mapping[str, Mapping[str, labels.Row]],
+    images: Mapping[str, Mapping[str, Row]],
+    size: int = BLIND,
+) -> list[str]:
+    """The first `size` of the pool the owner has not marked not banded at the
+    line check: the blind faces of round 2."""
+    pool = round2_pool(view_labels, images)
+    kept = [k for k in pool if images.get(k, {}).get("line", {}).get("banded") != "no"]
+    return kept[:size]
+
+
+def line_problems(line: Mapping[str, object]) -> list[str]:
+    """What is wrong with the owner's checked line of one face: either
+    `banded = "no"` (the face shows no banded face; the pool's next stands
+    in), or rim and centre as [x, y] fractions of the picture, the centre's
+    source, the direction draw and one reason (`LINE_REASONS`) per draw
+    passed over (choice 7o)."""
+    allowed = (
+        {"banded", "note"}
+        if "banded" in line
+        else {"rim", "centre", "source", "draw", "reasons", "note"}
+    )
+    out = [f"line {k}: not a field" for k in line if k not in allowed]
+    if not isinstance(line.get("note", ""), str):
+        out.append("line note: not text")
+    if "banded" in line:
+        if line["banded"] != "no":
+            out.append(f"line banded: {line['banded']!r}; only no is stored")
+        return out
+    for end in ("rim", "centre"):
+        p = line.get(end)
+        if not (
+            isinstance(p, list)
+            and len(cast("list[object]", p)) == 2
+            and all(
+                isinstance(v, int | float) and not isinstance(v, bool) and 0 <= v <= 1
+                for v in cast("list[object]", p)
+            )
+        ):
+            out.append(f"line {end}: {p!r} is not [x, y], each from 0 to 1")
+    if line.get("source") not in LINE_SOURCES:
+        out.append(f"line source: {line.get('source')!r} is not one of {', '.join(LINE_SOURCES)}")
+    draw, reasons = line.get("draw"), line.get("reasons", [])
+    if type(draw) is not int or draw < 0:
+        out.append(f"line draw: {draw!r} is not a whole number from 0")
+    elif not isinstance(reasons, list) or len(cast("list[object]", reasons)) != draw:
+        out.append(f"line reasons: one per draw passed over ({draw}) is needed")
+    elif any(r not in LINE_REASONS for r in cast("list[object]", reasons)):
+        out.append(f"line reasons: each one of {', '.join(LINE_REASONS)}")
+    return out
+
+
 def items(proposed: Mapping[str, Any], checked: Mapping[str, Any]) -> list[tuple[str, bool]]:
     """The scored items of one face: (descriptor, agreed). C23 is one item,
     each C24 cue one, each C25 zone position one (a missing zone disagrees;
     two unknown sequences agree as one item). Only `banded` is scored when
-    either side says the face is not banded."""
+    either side says the face is not banded. Round 2 (choices 7n, 7o): each
+    striation third one item, C25 one item, agreed where `line_match` is at
+    least `LINE_AGREE`."""
+    second = round_of(checked) == 2
+    if round_of(proposed) != round_of(checked):
+        raise ValueError("a round 1 answer cannot be scored against a round 2 one")
     out = [("banded", proposed["banded"] == checked["banded"])]
     if proposed["banded"] != "yes" or checked["banded"] != "yes":
         return out
     out.append(("C23", proposed["C23_centres"] == checked["C23_centres"]))
-    out += [("C24", proposed[n] == checked[n]) for n in CUE_FIELDS]
+    out += [
+        ("C24", proposed[n] == checked[n]) for n in (ROUND2_CUE_FIELDS if second else CUE_FIELDS)
+    ]
     p, c = proposed["C25_zones"], checked["C25_zones"]
     if not p and not c:
         return [*out, ("C25", True)]
+    if second:
+        return [*out, ("C25", line_match(p, c) >= LINE_AGREE - 1e-9)]
     for i in range(max(len(p), len(c))):
         same = i < len(p) and i < len(c) and p[i]["kind"] == c[i]["kind"]
         out.append(("C25", same))
     return out
+
+
+def line_match(a: Sequence[Mapping[str, Any]], b: Sequence[Mapping[str, Any]]) -> float:
+    """The share of the line, rim (0) to centre (1), where two zone sequences
+    give the same kind; 0 when either is unknown (empty). Shares are scaled
+    to sum to 1, since they may miss it by `SHARE_SUM`."""
+    if not a or not b:
+        return 0.0
+
+    def stretches(found: Sequence[Mapping[str, Any]]) -> list[tuple[float, float, str]]:
+        total = sum(z["share"] for z in found)
+        ends = np.cumsum([z["share"] / total for z in found])
+        starts = np.concatenate([[0.0], ends[:-1]])
+        return [
+            (float(s), float(e), z["kind"]) for s, e, z in zip(starts, ends, found, strict=True)
+        ]
+
+    return sum(
+        max(0.0, min(e1, e2) - max(s1, s2))
+        for s1, e1, k1 in stretches(a)
+        for s2, e2, k2 in stretches(b)
+        if k1 == k2
+    )
 
 
 def share_gaps(proposed: Mapping[str, Any], checked: Mapping[str, Any]) -> list[float]:
@@ -183,16 +316,30 @@ TESTED = ("C23", "C24", "C25", "whole")
 def report(images: Mapping[str, Mapping[str, Row]]) -> str:
     """Agreement of the owner's check with the proposals, blind and shown apart,
     and the fallback test of ADR 0006 section 6: more than a third disagree,
-    in any of `TESTED`."""
+    in any of `TESTED`. Each round is scored and tested apart, round 2 only
+    once it has answers."""
+    done = [e for e in images.values() if {"proposed", "checked"} <= e.keys()]
+    first = [e for e in done if round_of(e["checked"]) == 1]
+    second = [e for e in done if round_of(e["checked"]) == 2]
+    lines = agreement(first, "agreement with the proposals, item by item:")
+    if second:
+        lines += agreement(second, "round 2 (ADR 0006, s.9), item by item:")
+    return "\n".join(lines)
+
+
+def agreement(entries: Sequence[Mapping[str, Row]], title: str) -> list[str]:
     groups: dict[str, list[tuple[str, bool]]] = {"blind": [], "shown": []}
     gaps: list[float] = []
-    for e in images.values():
-        if {"proposed", "checked"} <= e.keys():
-            group = "blind" if e["checked"].get("blind") else "shown"
-            groups[group] += items(e["proposed"], e["checked"])
+    matches: list[float] = []
+    for e in entries:
+        group = "blind" if e["checked"].get("blind") else "shown"
+        groups[group] += items(e["proposed"], e["checked"])
+        if round_of(e["checked"]) == 1:
             gaps += share_gaps(e["proposed"], e["checked"])
+        elif "yes" == e["proposed"]["banded"] == e["checked"]["banded"]:
+            matches.append(line_match(e["proposed"]["C25_zones"], e["checked"]["C25_zones"]))
     groups["all"] = groups["blind"] + groups["shown"]
-    lines = ["agreement with the proposals, item by item:"]
+    lines = [title]
     for name, scored in groups.items():
         parts = [
             f"{d} {sum(a for k, a in scored if k == d)}/{sum(k == d for k, _ in scored)}"
@@ -212,7 +359,12 @@ def report(images: Mapping[str, Mapping[str, Row]]) -> str:
         lines.append(
             f"C25 share gap where kinds agree: median {np.median(gaps):.2f}, n {len(gaps)}"
         )
-    return "\n".join(lines)
+    if matches:
+        lines.append(
+            f"C25 share of the line where kinds match: median {np.median(matches):.2f},"
+            f" n {len(matches)}"
+        )
+    return lines
 
 
 def load(path: Path = ZONES_TOML) -> dict[str, dict[str, Row]]:
@@ -227,7 +379,9 @@ HEADER = """\
 # helper agents viewing the outline-check pictures (and the owner's notes on
 # the check sample); "checked" is the owner's, from `python -m nodule.zonecheck`,
 # and overrides it; "recount" is the owner's later eye count (choice 7h).
-# Appearance only: never evidence for a formation mechanism (ADR 0002).
+# Rows with round = 2 follow section 9; "line" is the owner's checked
+# rim-to-centre line of a round 2 face (choice 7o). Appearance only: never
+# evidence for a formation mechanism (ADR 0002).
 
 """
 

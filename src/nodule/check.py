@@ -23,7 +23,7 @@ from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any, Protocol
-from urllib.parse import unquote
+from urllib.parse import parse_qs, unquote, urlsplit
 
 from nodule import labels
 from nodule.overlay import OUT_DIR
@@ -104,8 +104,15 @@ def handler(checker: Page) -> type[BaseHTTPRequestHandler]:
                 page = page.replace("/*DATA*/null", data.replace("</", "<\\/"))
                 self.send(HTTPStatus.OK, page.encode("utf-8"), "text/html; charset=utf-8")
                 return
-            name = unquote(self.path.removeprefix("/img/").removesuffix(".png"))
-            if self.path.startswith("/img/"):
+            url = urlsplit(self.path)
+            name = unquote(url.path.removeprefix("/img/").removesuffix(".png"))
+            render = getattr(checker, "render", None)  # a check that draws its pictures
+            if url.path.startswith("/img/") and render is not None:
+                body = render(name, parse_qs(url.query))
+                if body is not None:
+                    self.send(HTTPStatus.OK, body, "image/png")
+                    return
+            elif url.path.startswith("/img/"):
                 picture = checker.picture(name)
                 if picture is not None and picture.exists():
                     self.send(HTTPStatus.OK, picture.read_bytes(), "image/png")

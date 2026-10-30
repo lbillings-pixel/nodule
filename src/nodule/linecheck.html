@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Line Check</title>
+<style>
+:root {
+  --bg: #f6f5f2; --panel: #ffffff; --ink: #1d1d1b; --muted: #6b6a66;
+  --line: #dddbd5; --accent: #2b6cb0; --ok: #2f7d4a; --bad: #b42318; --no: #8a5a00;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161615; --panel: #20201f; --ink: #ecebe8; --muted: #a09f9a;
+    --line: #3a3936; --accent: #7fb2f0; --ok: #6cc28c; --bad: #f08a80; --no: #f0c070;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--panel); }
+header h1 { font-size: 17px; margin: 0; font-weight: 600; }
+#progress { color: var(--muted); }
+#dots { display: flex; gap: 4px; flex-wrap: wrap; }
+#dots button { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--line);
+  background: var(--panel); color: var(--muted); font-size: 10px; padding: 0; cursor: pointer; }
+#dots button.done { background: var(--ok); border-color: var(--ok); color: #fff; }
+#dots button.no { background: var(--no); border-color: var(--no); color: #fff; }
+#dots button.spare { opacity: .4; }
+#dots button.here { outline: 2px solid var(--accent); outline-offset: 1px; }
+main { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 16px; padding: 16px; }
+@media (max-width: 960px) { main { grid-template-columns: 1fr; } }
+#picture { background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 8px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+#picture img { max-width: 100%; max-height: calc(100vh - 150px); cursor: crosshair; }
+.hint { color: var(--muted); font-size: 13px; }
+form { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px;
+  display: flex; flex-direction: column; gap: 12px; align-self: start; }
+.banner { font-size: 13px; border-left: 3px solid var(--line); padding-left: 8px; color: var(--muted); }
+label, .label { font-weight: 600; font-size: 14px; }
+select, input[type=text] { font: inherit; padding: 4px 6px; border-radius: 5px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 100%; }
+.small { font: inherit; font-size: 13px; padding: 3px 8px; border-radius: 5px; border: 1px solid var(--line);
+  background: var(--panel); color: var(--ink); cursor: pointer; }
+.actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+button.primary { font: inherit; padding: 6px 14px; border-radius: 6px; border: 0;
+  background: var(--accent); color: #fff; cursor: pointer; }
+#status.ok { color: var(--ok); } #status.bad { color: var(--bad); }
+#finished { display: none; color: var(--ok); font-weight: 600; }
+ul { margin: 0; padding-left: 18px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Round 2 line check</h1>
+  <span id="progress"></span>
+  <div id="dots"></div>
+</header>
+<main>
+  <section id="picture">
+    <img id="photo" alt="the photo with its drawn line">
+    <span class="hint" id="drawing"></span>
+  </section>
+  <form id="form">
+    <div class="banner" id="source"></div>
+    <div class="hint">
+      The line runs from the rim (0) to the centre of the largest band set (1), with ticks
+      every 0.1. Helpers will see exactly this picture.
+      <ul>
+        <li>Centre off? <b>Click the centre</b> on the photo. With several centres, click the
+          one of the largest band set.</li>
+        <li>Direction bad? Choose why, then <b>Next direction</b>. Only these reasons count.</li>
+      </ul>
+    </div>
+    <div class="actions">
+      <select id="reason" aria-label="why the next direction"></select>
+      <button type="button" class="small" id="nextdraw">Next direction</button>
+    </div>
+    <div class="hint" id="state"></div>
+    <div class="actions">
+      <button type="button" class="small" id="reset">Back to the draft</button>
+    </div>
+    <div>
+      <label for="note">Note (optional)</label>
+      <input type="text" id="note">
+    </div>
+    <div class="actions">
+      <button type="submit" class="primary" id="accept">Save this line</button>
+      <button type="button" class="small" id="nobands">No banded face</button>
+    </div>
+    <div class="actions">
+      <button type="button" class="small" id="prev">◀ Previous</button>
+      <button type="button" class="small" id="next">Next ▶</button>
+      <span id="status"></span>
+    </div>
+    <div id="finished">All the lines needed are checked. Thank you!</div>
+  </form>
+</main>
+<script>
+const DATA = /*DATA*/null;
+const $ = id => document.getElementById(id);
+const rows = DATA.rows;
+const SOURCES = { "paths": "drafted from where the band paths meet",
+  "deepest point": "the computer found no centre: this is the stone's deepest point",
+  "owner": "your centre" };
+let here = 0;
+let state = null;  // { centre: [x, y] | null (the draft's), draw, reasons }
+
+for (const r of DATA.reasons) $("reason").add(new Option(r, r));
+
+// The faces that need a line: in the pool's order, until DATA.needed faces are kept.
+function needed() {
+  const out = new Set(); let kept = 0;
+  for (const r of rows) {
+    if (kept >= DATA.needed) break;
+    out.add(r.id);
+    if (!(r.line && r.line.banded === "no")) kept++;
+  }
+  return out;
+}
+
+function fromLine(line) {
+  if (!line || line.banded) return { centre: null, draw: 0, reasons: [] };
+  return { centre: line.source === "owner" ? line.centre : null, draw: line.draw,
+    reasons: line.reasons || [] };
+}
+
+function picture() {
+  const r = rows[here];
+  const q = new URLSearchParams({ draw: state.draw });
+  if (state.centre) { q.set("x", state.centre[0]); q.set("y", state.centre[1]); }
+  $("drawing").textContent = "Drawing…";
+  $("photo").src = "/img/" + encodeURIComponent(r.id) + ".png?" + q;
+  const source = state.centre ? "owner" : r.draft.source;
+  $("source").textContent = "Centre: " + SOURCES[source] + ".";
+  $("state").textContent = state.draw
+    ? "Direction " + (state.draw + 1) + "; passed over: " + state.reasons.join(", ") + "."
+    : "First direction.";
+}
+
+function load() {
+  const r = rows[here];
+  state = fromLine(r.line);
+  $("note").value = (r.line && r.line.note) || "";
+  $("status").textContent = r.line
+    ? (r.line.banded ? "Saved as no banded face." : "Saved; save again to change it.") : "";
+  $("status").className = "";
+  picture();
+  marks();
+}
+
+function marks() {
+  const need = needed();
+  const done = rows.filter(r => need.has(r.id) && r.line).length;
+  $("progress").textContent = "Face " + (here + 1) + " of " + rows.length + " · "
+    + done + " of " + need.size + " needed faces done";
+  $("dots").replaceChildren(...rows.map((r, i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = i + 1; b.title = r.id;
+    b.className = (r.line ? (r.line.banded ? "no " : "done ") : "") + (need.has(r.id) ? "" : "spare ")
+      + (i === here ? "here" : "");
+    b.onclick = () => { here = i; load(); };
+    return b;
+  }));
+  $("finished").style.display = done === need.size && need.size > 0 ? "block" : "none";
+}
+
+$("photo").onload = () => { $("drawing").textContent = ""; };
+$("photo").onclick = e => {
+  const box = $("photo").getBoundingClientRect();
+  const x = (e.clientX - box.left) / box.width, y = (e.clientY - box.top) / box.height;
+  state.centre = [Math.round(x * 1e4) / 1e4, Math.round(y * 1e4) / 1e4];
+  picture();
+};
+$("nextdraw").onclick = () => {
+  state.reasons = [...state.reasons, $("reason").value]; state.draw++; picture();
+};
+$("reset").onclick = () => { state = { centre: null, draw: 0, reasons: [] }; picture(); };
+
+async function send(values) {
+  const note = $("note").value.trim();
+  if (note) values.note = note;
+  $("status").textContent = "Saving…"; $("status").className = "";
+  try {
+    const reply = await fetch("/save", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: rows[here].id, values }) });
+    const got = await reply.json();
+    if (!got.ok) { bad(got.problems.join("; ")); return; }
+  } catch (err) {
+    bad("Could not save: is the terminal still running?");
+    return;
+  }
+  rows[here].line = values.banded ? values
+    : { ...values, source: values.centre ? "owner" : rows[here].draft.source };
+  const need = needed();
+  const next = rows.findIndex(r => need.has(r.id) && !r.line);
+  if (next >= 0) here = next;
+  load();
+  $("status").textContent = "Saved."; $("status").className = "ok";
+}
+
+function bad(text) { $("status").textContent = text; $("status").className = "bad"; }
+
+$("form").addEventListener("submit", e => {
+  e.preventDefault();
+  send({ centre: state.centre, draw: state.draw, reasons: state.reasons });
+});
+$("nobands").onclick = () => send({ banded: "no" });
+$("prev").onclick = () => { here = (here - 1 + rows.length) % rows.length; load(); };
+$("next").onclick = () => { here = (here + 1) % rows.length; load(); };
+load();
+</script>
+</body>
+</html>

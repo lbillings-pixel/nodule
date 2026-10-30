@@ -542,6 +542,12 @@ face" at the line check gives way to the next in the pool; the line check
 stores the owner's line beside the labels (rim, centre, its source, the
 draw and one reason per draw passed over).
 
+The line check (`nodule.linecheck`): drafts go to runs/zone-lines/ (photo at
+1 MP as plain PNG, never committed); a page on this PC only shows each line
+drawn exactly as helpers will see it, and the server, not the page, works
+out the rim end from the face and refuses a centre off the stone. The
+checked lines are then drawn for the helpers (`--ticked`).
+
 Section 6's fallback, met by round 1, is weighed at the end of the
 re-tagging with round 2 and the other two tests, as section 6's timing
 reads (owner, 2026-10-30). Round 2's rules are fixed here before any of its

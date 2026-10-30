@@ -887,13 +887,13 @@ authors = ["Chowns, T. M.", "Elkins, J. E."]
 year = 1974
 title = "The origin of quartz geodes and cauliflower cherts through the silicification of anhydrite nodules"
 venue = "Journal of Sedimentary Petrology 44(3), 885–903"
+doi = "10.1306/212F6BD1-2B24-11D7-8648000102C1865D"
 url = "https://archives.datapages.com/data/sepm/journals/v42-46/data/044/044003/0885.htm"
 access = "closed"
 licence = "publisher copyright; cite only"
-checked = "abstract"
-topics = ["pseudomorph", "replacement", "anhydrite", "quartz"]
-notes = "Abstract (2026-10-17): quartz geodes in Tennessee dolostones are pseudomorphs after early diagenetic anhydrite nodules, silicified before compaction; silica probably from sponge spicules. Later authors question the sabkha setting."
-
+checked = "full-text"
+topics = ["pseudomorph", "replacement", "anhydrite", "quartz", "geode-exterior", "cauliflower", "sedimentary-geode"]
+notes = """Read in full 2026-10-29 (scanned PDF the owner supplied; OCR layer, rotated Table 3 read as an image). Woodbury, Tennessee, mid-Mississippian geodes: maximum size about 10 cm (Maury Shale), 15 cm (Fort Payne), up to 60 cm (basal 'Warsaw'); 'optimum shape appears to be a sphereoid or oblate sphereoid, but less regular forms also occur'; euhedral linings up to 5–8 cm (p.889); rind 1–25 mm (p.891); quartz pyramids to 10 mm (p.893). No axis ratios or n. Cauliflower rind of 'rounded cerebral protuberances, swelling bladed rosettes, or polygonally netted mounds'; adjacent nodules distort each other into West's (1965) macrocell structure (p.889). Geodes favour dolostone lenses over spiculite, rarely break chert lenses, and cause differential compaction (p.888). Anhydrite laths up to 250 µm in every specimen examined, with a flow lineation parallel to the surface bumps (pp.889–890). Four-stage silicification with geopetal internal and occasional external collapse (pp.891–893). Claim: pseudomorphs after early diagenetic, displacively grown anhydrite nodules, silicified before compaction with spicule silica (pp.891, 896, 900). Sabkha setting by analogy; Woodbury itself lacks peritidal indicators (pp.888, 894). Disputes Van Tuyl 1916 and Hayes 1964 (silicified calcareous concretions) for Keokuk (pp.897–898). Later authors question the sabkha setting. DOI checked against Crossref 2026-10-30."""
 [[references]]
 id = "powolny2025"
 kind = "article"
@@ -1511,10 +1511,9 @@ venue = "Computers & Geosciences 54, 231–238"
 doi = "10.1016/j.cageo.2012.11.019"
 access = "closed"
 licence = "publisher copyright; cite only"
-checked = "abstract"
-topics = ["x-ray-ct", "amygdales", "segmentation", "dynamic-threshold", "size-distribution"]
-notes = """Abstract only (VPL summary page). 2.7 Ga lava flows; past work handled mainly high-contrast cases such as empty vesicles; introduces a dynamic thresholding method (adapted from seismology) that follows grey-value gradients rather than one absolute threshold to separate amygdules from basalt; whole-flow mean and s.d. of amygdule volume by bootstrap and the Central Limit Theorem."""
-
+checked = "full-text"
+topics = ["x-ray-ct", "amygdales", "segmentation", "dynamic-threshold", "size-distribution", "intensity-drift", "coalescence", "bootstrap", "analogue"]
+notes = """Read in full 2026-10-29 (owner's PDF; scan settings checked on page images). Supersedes the earlier abstract-only note. ~2.75 Ga Fortescue Group basalt; spheroidal amygdules 1–6 mm, independent, partly coalesced (throat) or fully coalesced (undetectable); fill mostly quartz (0.5 mm to microcrystalline, < 20 µm equant at rims) and chlorite (cores with quartz veneer in > 2 mm amygdules); concentric microquartz growth rings in thin section (p.232; Figs 2–3, pp.233–234). Skyscan 1172; 2.5 cm × ~3–4 cm cores; 30 µm voxels; 100 kV, 100 µA; 0.5° steps over 180°, 3-frame averages; three vertical sections; ~3 h per core; 800–1300 slices (p.233). Densities basalt ~2800, quartz ~2650, chlorite 2700–3300 kg/m³: amygdules brighter or darker than matrix; intensity drift between sections defeats global thresholds (p.233; Fig. 4, p.235). Method: wiener2 10×10 px; STA/LTA picker (boxcars 3 and 6 px, ratio 2) on 5–15 profiles per slice; per-amygdule mean DN, slice threshold shifted by f·σ with f tuned on 1 then 6 slices; separate passes for dark and bright amygdules; opening r = 2 px, closing r = 5 px (fills unfilled voids); BLOB3D manual blob selection and separation, truncated blobs discarded (pp.233–235). 885 amygdules; sample mean 2.24 ± 2.01 mm³; bootstrap (1000) population mean 2.25 ± 0.066 mm³ ≈ 1.6 ± 0.5 mm diameter; log-normality rejected (r = 0.9932 < 0.9976) (pp.235–236). No CT imaging of internal growth rings reported; no ground-truth volume test; code on request. DOI checked against Crossref 2026-10-30."""
 [[references]]
 id = "chen2007"
 kind = "article"
@@ -1745,10 +1744,9 @@ venue = "Biometrika 17(1/2), 84–99"
 doi = "10.1093/biomet/17.1-2.84"
 access = "closed"
 licence = "publisher copyright; cite only"
-checked = "citation"
-topics = ["wicksell", "stereology", "unfolding", "sphere-size-distribution"]
-notes = """Citation only; known through [@cruzorive2017] (p.160) and [@coleman1992]: sphere-size distribution from plane sections leads to an Abel integral equation, ill-conditioned near the origin. DOI confirmed on Crossref 2026-10-26."""
-
+checked = "full-text"
+topics = ["wicksell", "stereology", "unfolding", "sphere-size-distribution", "abel-equation", "size-weighted-sampling", "ellipsoids"]
+notes = """Read in full 2026-10-29 (owner's scanned PDF; equations and the sideways p.95 tables read from rendered pages; DOI confirmed on Crossref 2026-10-26). r and x are diameters. Spheres with uniform density of centres and size distribution (p.86). Bodies cut per unit section area = N·r·F(r)dr, total N·r0; size-weighted f(r) = rF(r)/r0 (Eqs. 2–3, p.87). Kernel: x² = r² − 4y², φ(x) = (x/r0)∫_x^R F(r)dr/√(r²−x²) (Eq. 5, p.87). Solved via Abel/von Zeipel: F(r) = (2r·r0/π)∫₀^{√(R²−r²)} P(√(l²+r²))dl, P(x) = −(1/x)d(φ/x)/dx (Eqs. 8–9, p.88), applied to a hand-smoothed histogram (p.88). N = V/v0 or n = N·r0·Y (p.89). Moments: N₃' = (3/2)N₁'v₂' (area fraction = volume fraction); general Eq. 11 and p.91; mean true diameter = (π/2) × harmonic mean of apparent diameters (p.90). Rayleigh F(r) = (r/σ²)e^{−r²/2σ²} is invariant under sectioning, r0 = σ√(π/2); Rayleigh mixtures are not (pp.91–92). The kernel written with f(r) also holds for randomly oriented ellipsoids of any shape if 'diameter' is the geometric mean of the section's largest and smallest diameters (A_y = A0(1 − y²/h²), p.92); the paper gives no population (F) link for ellipsoids. Globular-cluster analogue (p.93). Discrete unfolding in 1 mm classes: f_i = Σ P_{i+j}a_ij, a_ij = √((i+j)² − (i−½)²) − √((i+j)² − (i+½)²), with a_ij = combined thickness of the centre layers giving apparent diameter i ± ½ (Eq. 16, p.94); inverse matrix Eq. 18 (p.95). Tests: Rayleigh σ = 5 recovered well, r0 6.22 vs 6.26; 6 classes too few for high accuracy (r0 1.52 vs 1.57); a mixture is inexact in clustered classes (pp.96–98); Hellman's 1092 spleen profiles: a truncated small class gave a negative P₂ and the smallest classes were extrapolated by hand, r0 = 5.82 (p.99). The paper does not itself use the term ill-conditioning (that framing is from [@cruzorive2017]). DOI checked against Crossref 2026-10-30."""
 # --- Band counts and resolution (ADR 0006 search, 2026-10-29) ---------------
 
 [[references]]
@@ -1936,3 +1934,247 @@ licence = "© 2006 AGU (p. 1); cite only"
 checked = "full-text"
 topics = ["ice-cores", "lamina-counting", "counting-error", "resolution", "inter-counter-agreement", "analogue"]
 notes = """Analogue, read in full 2026-10-29 (owner's PDF, pypdf; pp. 3, 8, 11, 12 viewed rendered for Table 1, Fig. 5, the error formulas and Table 3). Origin of the GICC05 uncertain-layer convention: 'From the start it was agreed between the investigators that the uncertain marks should be regarded and counted as "half years"' (¶17, p. 5); 'regarded as 0.5 ± 0.5 year', MCE = sum, 'assuming that the counting errors are correlated' (¶40, p. 11), 'highly conservative' (p. 12); alternatives 9 yr (uncorrelated) and 72 yr (by period) computed and set aside. No 25–75 % probability band here (that wording is andersen2006's). Uncertain marks by criteria: weak or mistimed seasonal indicators; evidence in some series only (type I); shoulders/double peaks possibly two unresolved layers (type II, ~3/4 of YD uncertain marks); data gaps; counter disagreement. Effective resolution = 'the shortest wavelength that can be identified from the data' (Table 1, p. 3; ¶9), 3–25× the sampling step, GRIP values 'from inspection of the data'. YD mean layer < 2× shortest resolvable cycle, so thin layers 'may ... vanish' (¶22); lost layers upper limit 'a few tens of years', ~1 %, not in the MCE (¶38). Finer VS data hold sub-annual peaks and are smoothed (σ = 4 mm, ¶6); [Ca2+] fewer peaks than [NH4+] partly from lower resolution, all NH4+ peaks +7 % (¶17). No resolution ladder. Counters: 3 independent + arbitrator; totals within 1.5 % but ~200 positional differences in 2.4 kyr (¶18); NGRIP up to 5 % (YD) and 10 % (OD) (¶19); two-group bias ≤ 1 % (¶40). Reinterpretation moved counts +1.5 %/+6.6 %, 4–5× the uncertain marks (¶39); rule bias excluded from all errors (abstract, ¶48)."""
+
+# --- Stereology for N2 (tier 2 reading, 2026-10-29) -----------------------
+
+[[references]]
+id = "jensen1979"
+kind = "article"
+authors = ["Jensen, E. B.", "Gundersen, H. J. G.", "Østerby, R."]
+year = 1979
+title = "Determination of membrane thickness distribution from orthogonal intercepts"
+venue = "Journal of Microscopy 115(1), 19–33"
+doi = "10.1111/j.1365-2818.1979.tb00149.x"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["stereology", "membrane-thickness", "orthogonal-intercept", "band-thickness", "unfolding", "abel-equation", "curvature-bias", "section-thickness"]
+notes = """Read in full 2026-10-29 (owner's PDF; equations read from rendered pages, since the text layer was garbled; DOI as supplied, not Crossref-checked). Orthogonal intercept L0 = T/sinΘ, measured on IUR planes perpendicular to a boundary trace (Eq. 2, p.21). The pdf of Θ for sectioned surface elements is r(θ) = (4/π)sin²θ (Eq. 1, p.20), which assumes T independent of Θ. F(l0) = ∫[1 − H(τ/l0)]g(τ)dτ, H(u) = (2/π)[arcsin u − u√(1−u²)] (Eqs. 3–4, p.21). Moments: E(L0^m) = (2/π)B((3−m)/2, ½)E(T^m), infinite for m ≥ 3; E(L0) = (4/π)E(T), E(1/L0) = (8/3π)E(1/T), E(L0²) = 2E(T²), E(L0⁻²) = (3/4)E(T⁻²) (Eqs. 8–11, p.22). For constant T, 94% of L0 lie in [T, 2T] (Fig. 2, p.22). Unbiased: (π/4)·mean L0 and ½·mean L estimate E(T); (3π/8)·mean(1/L0) and (3/2)·mean(1/L) estimate E(1/T) (p.25). CV relations (Eqs. 13–14, p.25): orthogonal intercepts are 1.08–3.05× more efficient than IUR intercepts for E(1/T); Var(L) = ∞. Curvature (concentric spheres, c = ±T/r): L0' = (T/c){sinΘ − [(1−c)² − cos²Θ]^½} (Eq. 12, p.23); positive curvature overestimates and lacks intercepts for Θ < arccos(1−c), negative curvature underestimates. Section thickness s: L0' = (T/sinΘ)(1 ± (s/T)cosΘ) for maximal/minimal projection; s/T is decisive (p.23). Too-curved traces give 'islands' and 'waves' with no intercept; take the minimal perpendicular (Fig. 4, p.24). Abel inversion (Eq. 15, p.25) is numerically troublesome (p.26); grouped Saltykov-type unfolding (Eqs. 16–17, p.26) shows negative correlation between adjacent classes (p.30); a generalised-gamma ML fit (Eqs. 18–21) did better on 1081 intercepts vs 449 direct thicknesses, (α,β,δ) = (5.65, 0.968, 1.35) (Table 1, p.30). Validity rests on isotropy of surface orientation relative to the plane, 'a problem of sampling, not of measuring' (pp.32–33). DOI checked against Crossref 2026-10-30."""
+
+[[references]]
+id = "cruzorive1979"
+kind = "article"
+authors = ["Cruz-Orive, L. M."]
+year = 1979
+title = "Estimation of sheet thickness distributions from linear and plane sections"
+venue = "Biometrical Journal 21(8), 717–730"
+doi = "10.1002/bimj.4710210803"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["stereology", "membrane-thickness", "band-thickness", "apparent-thickness", "line-intercept", "unfolding", "abel-equation", "moment-estimators"]
+notes = """Read in full 2026-10-29 (owner's scanned PDF; OCR text plus rendered pages for all equations and tables; DOI from the file name, not Crossref-checked). Sheet between locally planar, parallel faces; target S_V(τ), face area per volume by thickness τ (p.718). The probe must be IUR unless face orientation is isotropic (p.718). Apparent thickness r = distance from the reference trace to the opposite trace, weighted by trace length (B_A, p.719). Plane: f(θ | hit) = (4/π)sin²θ, r = τ/sinθ (p.720). Abel inversions for t = τ^n (Eqs. 3–4). E(τ^k) = (√π/2)Γ((4−k)/2)/Γ((3−k)/2)·E(r^k), k < 3: E(τ) = (π/4)E(r), E(τ²) = ½E(r²), E(1/τ) = (3π/8)E(1/r), E(1/τ²) = (4/3)E(1/r²) (Eq. 5, p.720), identical to Jensen et al. 1979. Line: f(θ | hit) = 2 sinθ cosθ, l = τ/cosθ, E(τ^k) = (1 − k/2)E(l^k), k < 2, so E(τ²) is not estimable from lines (Eq. 14, p.723); S_V(t) = (n+2)N_L + n t dN_L/dt (Eq. 13, p.722). Discrete unfolding with mid-point class values and F(x) = ½(x − sin x cos x) (Eqs. 6–9, 15–17). Inverse matrices for n = −1/2 (Table 1 plane: upper-triangular, diagonal 4/π to 2.346; Table 2 line: alternating entries up to |14.45|). Exponential classes (factor 15^0.1 = 1.31) give Toeplitz q-coefficients (Tables 3–4, Eqs. 10, 18). Gundersen et al. 1978's class conventions shift the unfolded histogram (p.724). Variance not predictable without sheet size and shape (pp.721, 724). Noise-free synthetic test, S_V = 4000, τ^{−1/2} ~ truncated N(0.50, 0.12): mean(1/τ) true 0.2644, plane-unfolded 0.2574, line-unfolded 0.2595, direct 0.2653/0.2656 (Table 5, p.726); for τ itself, mean true 4.5905, unfolded 4.6337/4.5664 (Table 6, p.728). Needs smooth, low-curvature faces and IUR probes; prefers negative powers (1/τ) because r and l are unbounded (p.729). No curvature or section-thickness correction (see jensen1979). DOI checked against Crossref 2026-10-30."""
+
+[[references]]
+id = "sterio1984"
+kind = "article"
+authors = ["Sterio, D. C."]
+year = 1984
+title = "The unbiased estimation of number and sizes of arbitrary particles using the disector"
+venue = "Journal of Microscopy 134(2), 127–136"
+doi = "10.1111/j.1365-2818.1984.tb02501.x"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["stereology", "disector", "particle-number", "particle-size", "cavalieri", "counting-frame", "mean-caliper", "euler-characteristic"]
+notes = """Read in full 2026-10-29 (owner's PDF; equations read from rendered pages; DOI as supplied, not Crossref-checked). 'Sterio' is a pen name (editors' footnote, p.127). Sections sample particles with chance ∝ size; arbitrary particles are sampled uniformly 'only with a three-dimensional probe' (p.127). Disector: two parallel planes h apart plus an unbiased counting frame. Count Q⁻ transects in the frame not hit by the exclusion edges or the look-up plane; N(par) = (ΣQ⁻/ΣP)·(p/(h·a))·V(ref) (Eq. 1, p.129). It requires h < min particle height h_i perpendicular to the planes, and identifiable transects. Unbiased under inhomogeneity (p.129). v̄_N = (ΣP'/ΣQ⁻)(h·a/p') (Eq. 2); s̄_N = (ΣI/ΣQ⁻)(2h·a/l) (Eq. 3); mean height H̄_N = (ΣQ/ΣQ⁻)·h (Eq. 4, p.130). s̄_N and H̄_N need random orientation of particles or disectors; N and v̄_N do not (p.130). Changes in transect topology between the planes correspond one-to-one to signed tangent planes, giving genus/connectivity (p.130). v̄_V = (π/3)·mean(l0³) (Eq. 5) and SD_N(v) = √[v̄_N(v̄_V − v̄_N)] (Eq. 6, p.131). Individual volumes by Cavalieri on an exhaustive stack, v_j = ΣP_j'(h·a/p') (Eq. 7); individual height k_{i,j}·h (Eq. 8, p.132); individual surface not obtainable from sections (p.132). N is unbiased under lost caps if h < min(h_i) − h_c (p.133). Translucent sections of thickness t: h < min(h_i) + t; height estimators gain +t̄ (−h̄_c), and V_V, v̄_N, s̄_N, v_j are biased by t > 0 and h_c > 0 (pp.134–135). Earlier two-plane ideas: Miles 1972, Patterson & Rhines 1979, Exner 1976 (p.135). DOI checked against Crossref 2026-10-30."""
+
+[[references]]
+id = "gundersen1993"
+kind = "article"
+authors = ["Gundersen, H. J. G.", "Boyce, R. W.", "Nyengaard, J. R.", "Odgaard, A."]
+year = 1993
+title = "The ConnEulor: unbiased estimation of connectivity using physical disectors under projection"
+venue = "Bone 14, 217–222"
+doi = "10.1016/8756-3282(93)90144-Y"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["stereology", "euler-characteristic", "connectivity", "disector", "topology", "edge-effects", "estimator-precision"]
+notes = """Read in full 2026-10-29 (owner's PDF; equations read from rendered pages; DOI as supplied, not Crossref-checked). Four authors, including Odgaard (p.217). χ3 = #parts − #extra connections + #enclosed cavities (Eq. 1); connectivity W = 2 − χ3 only for a single network without enclosed cavities (Eq. 2, p.217). χ is defined by sweeping a plane: islands and holes count +1 whether gained or lost, bridges −1, and the signed sum is independent of sweep direction (Fig. 1, p.218). Disector: χ3 = (I + H − B)/2 counted both ways (Eq. 3); χ_V = Σ(H + I − B)/(2·h·Σa) over uniformly sampled disectors (Eq. 4, p.218). W = 2 − χ_V·V(ref) (Eq. 5); fractionator W = 2 − f·χ' (Eq. 6, p.219). Worked bone example: H = 4, I = 1, B = 19 → χ = −14 in 1.56 mm³, χ_V = −8.99 mm⁻³, W ≈ 33,200 (Fig. 2, p.219). 'Flatlands syndrome': 3D connectivity cannot be estimated from 2D sections ('simply not room in a 2-D section'), and a 1D probe carries no 2D Euler information, though paired probes h apart do (pp.219–221, Fig. 3). Edge rule: two adjacent edges act as a profile, two as void; an isolated torus (χ = 0) does not count (Fig. 4, p.220, after Prasad et al. 1989). Needs perfect alignment of corresponding edges (hard for arbitrary imaging windows), near-perfect sections, and h small compared to the size and spacing of decisive features (p.221). Precision CE(W) = √(B+H+I)/(B−H−I) for systematic uniform disectors (Eq. 7, p.221); for isolated particles N := c·((H+I) − B) (Fig. 5 caption). DOI checked against Crossref 2026-10-30."""
+
+[[references]]
+id = "yeong1998a"
+kind = "article"
+authors = ["Yeong, C. L. Y.", "Torquato, S."]
+year = 1998
+title = "Reconstructing random media"
+venue = "Physical Review E 57(1), 495–506"
+doi = "10.1103/PhysRevE.57.495"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["reconstruction", "yeong-torquato", "simulated-annealing", "two-point-correlation", "lineal-path", "degeneracy", "stationarity-assumption"]
+notes = """Read in full 2026-10-29 (owner's PDF). The original Yeong–Torquato method: on a periodic pixel lattice started as a random checkerboard at the reference volume fraction, swap two pixels of different phase (preserving φ) and accept by Metropolis to minimise E = Σ[f_s(r) − f_0(r)]² (Eq. 1), or a weighted sum over phases and several n-point functions with weights α that may change by stage (Eq. 3) (p.496). T₀ set for 50% initial acceptance; stop at E < tolerance or ~20 000 consecutive rejections; no cooling rate given (p.496). Uses isotropic S2(r) and lineal-path L(r), sampled exhaustively along rows and columns only, assuming isotropy (p.497–498); digitised S2 slope at 0 is −s/(2D) vs −s/4 for a 3D continuum (Eqs 7–8, p.497); incremental updates along lines through swapped pixels (p.497–498). Tests: 1D 1000-px and 2D 400×400 media; periodic rods reconstructed perfectly (p.499); for hard rods, hard disks (φ=0.2, d=17 px) and overlapping disks (d=31, φ=0.5) S2-only reconstructions match S2 yet give wrong structures (wrong rod lengths; overlapping-disk result percolates), L does better and S2+L best (p.499–502); orthogonal-only sampling makes square particles (p.501); unrealisable targets give the nearest feasible structure (p.500–501, 504); Fontainebleau 2D slice 280×280 at 7.5 µm, hybrid resembles the original but voids are more rounded (p.505). No CPU times or iteration counts reported. Assumes statistically homogeneous, isotropic media; not applicable as published to concentrically banded agate. DOI checked against Crossref 2026-10-30."""
+
+[[references]]
+id = "yeong1998b"
+kind = "article"
+authors = ["Yeong, C. L. Y.", "Torquato, S."]
+year = 1998
+title = "Reconstructing random media. II. Three-dimensional media from two-dimensional cuts"
+venue = "Physical Review E 58(1), 224–233"
+doi = "10.1103/PhysRevE.58.224"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["reconstruction", "yeong-torquato", "2d-to-3d", "simulated-annealing", "two-point-correlation", "lineal-path", "validation", "stationarity-assumption", "digitisation-correction"]
+notes = """Read in full 2026-10-29 (owner's PDF). Reconstructs a 3D Fontainebleau sandstone (128³ periodic voxels at 7.5 µm) from S2 and lineal-path L measured on one 2D micro-CT slice, using the paper-I annealing (unweighted E = ΣΣ[f_s − f_o]², pixel swaps, Metropolis, T₀ at 50% acceptance; footnote 25: T down 1% per 10 000 swaps, stop after 100 000 consecutive rejections) (p.228, 233). Premise: for 3D isotropic media φ, s, S2 and L are obtainable exactly from 2D planes (p.224–225). Digitised 3D S2 slope is −s/6 vs −s/4 continuum, used to correct s from 1.962 to 1.541 ×10⁻² µm⁻¹ (expt 1.546) (p.226, 229). Reference (512×512×300 CT): φ=0.1485, percolating 98.8%, ⟨δ⟩=6.47 µm, τD=89.1 µm², k≈1.18 µm² vs expt 1.3 (p.229). Table I (four slices): S2-only gives percolation 84.7–89.9%, ⟨δ⟩ 5.59–5.91 µm, k 0.85–0.94; S2+L gives 89.2–95.2%, 6.44–6.79 µm, 1.18–1.33 (p.230); percolating fraction ~12% / ~6% low on average (p.232). Reconstructed pores are globular where the real ones are platelike; 2D cuts look right while 3D topology differs, so matching the fitted functions and 2D sections "can be misleading" as validation; validate on held-out intrinsically 3D properties (p.230–231). No CPU times reported. Assumes statistically homogeneous, isotropic media; statistics-only (not conditioned on the observed slice); not applicable as published to concentrically banded agate. DOI checked against Crossref 2026-10-30."""
+
+# --- Exterior shape and host flows (tier 2 reading, 2026-10-29) -----------
+
+[[references]]
+id = "hartmann2015"
+kind = "article"
+authors = ["Hartmann, L. A.", "Medeiros, J. T. N.", "Baggio, S. B.", "Antunes, L. M."]
+year = 2015
+title = "Controls on prolate and oblate geode geometries in the Veia Alta basalt flow, largest world producer of amethyst, Paraná volcanic province, Brazil"
+venue = "Ore Geology Reviews 66, 243–251"
+doi = "10.1016/j.oregeorev.2014.11.005"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["geode-shape", "exterior", "aspect-ratio", "amethyst", "basalt", "parana", "cavity-origin"]
+notes = """Read in full 2026-10-29 (PDF the owner supplied). Table 1 (p.247): base width and height of 36 amethyst geodes measured in walls of three Ametista do Sul mines (Veia Alta flow; text and Fig. 6 say 38). Prolaticity P = height/base width (p.243); bases 'flat or concave upwards' over hydraulic breccia (p.243; 'convex' on p.246). Sample biased to medium/small geodes (p.244); district maximum 4 m tall × 1 m base (p.244). Base 13–139 cm, height 6–150 cm, P 0.11–5.38; 18 P>1, 18 P<1 by ratio (computed from Table 1). Prolate geodes mostly 50–150 cm tall with base <50 cm; oblate <50 cm tall, base 20–90 cm (p.245). Shapes include 'pyramidal, cubic and other' (p.247); Fig. 3 shows vertical columns and sub-horizontal lenses. Geodes in the massive core, 1–2 m above a flat-lying fracture, at the tips of inclined feeder fractures, with breccia bases (p.245). Claims LOI >5 wt.% gives only prolate geodes, 'definitive' (p.247), but two oblate geodes have LOI 5.2–5.4 (Table 2) and a re-analysis gives Spearman rho(LOI,P)=0.26, p=0.13. Mechanism (hypothesis, contested by Gilg et al. 2014): hydrothermal 'ballooning' of smectite-altered basalt, shape set by Young's modulus or yield stress from the authors' 2012 simulations (p.247). DOI checked against Crossref 2026-10-30."""
+
+[[references]]
+id = "proust2007a"
+kind = "article"
+authors = ["Proust, D.", "Fontaine, C."]
+year = 2007
+title = "Amethyst-bearing lava flows in the Paraná Basin (Rio Grande do Sul, Brazil): cooling, vesiculation and formation of the geodic cavities"
+venue = "Geological Magazine 144(1), 53–65"
+doi = "10.1017/S001675680600269X"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["geode-shape", "geode-size", "vesicles", "vesicle-size-distribution", "lava-flow-structure", "amethyst", "basalt", "parana", "cavity-origin", "cooling-model"]
+notes = """Read in full 2026-10-29 (owner's PDF; DOI and online date 19 Oct 2006 printed on p.53). Companion to proust2007 (2007b). One 30 m Triz-quarry flow: 20 m massive core, 5 m upper and 2 m lower vesicular levels, no columnar jointing; amethyst level ≤ 3 m thick, base at 10 m depth (p.54; 700–1000 cm in Table 4). Geodes have a 'dominant vertical tubular habit with downwards-increasing diameter, with a 0.3 m average height', metre-sized locally (p.54); up to 2.5 m and cone-shaped in the district (p.53). Diameters from photographs of 5 gallery walls (p.55; Fig. 2a about 30 profiles in 4×2 m windows, figure-read; n not stated). Table 3 (p.61): mean equivalent radius 17.68 cm (gallery means 9.30–22.21), max 32.99 cm, mean gap 'with no visible vesiculation' 78.85 cm (60.61–111.88). Table 3 is internally inconsistent: gallery 1's mean volume exceeds its max-radius sphere, and the 'All' row is not a pooled mean. Vesicles (Table 2): mean radius 0.07–0.12 cm, max 0.14–0.40, 1.46e4–1.48e5 per litre, 11–28 % vesicularity, coarsening upward by coalescence; 2D→3D by Cashman & Marsh 1988 (p.58). CSD n = n0 exp(−L/Gt): Gt = 0.029 cm, n0 = 3.57e6 per litre (p.58). Jaeger cooling: x = 4.92√t (top), 2.62√t (base), m and yr; 12 yr total, fronts meet at 18.7 m (pp.56–57); printed coefficients do not reproduce 12 yr (my check gives about 15.8 yr). Bubble-freezing at 1150 °C; modelled max radii are 10× too small; geodes need bubble accumulation (p.60). Water budget: 3.14e5 cm³ from a 39 cm-radius column is enough for about 13 mean geodes (p.63); '83.59 × 10^4 cm³, 7 %' should read 8.359e4 (p.62). Mechanism (hypothesis): magmatic vapour, no external water; cone shape from a Philpotts & Lewis 1987 cooling cap above accumulating bubbles; upward-convex base, intact celadonite rim, no hydraulic fracture; metre geodes by coalescence of tubular cavities (pp.63–64; abstract and conclusion disagree on whether diffusive growth contributes). Opposes Duarte, Hartmann & Vasconcellos 2005 and Hartmann et al. 2015 (ballooning, fractured bases). DOI checked against Crossref 2026-10-30."""
+
+[[references]]
+id = "proust2007"
+kind = "article"
+authors = ["Proust, D.", "Fontaine, C."]
+year = 2007
+title = "Amethyst geodes in the basaltic flow from Triz quarry at Ametista do Sul (Rio Grande do Sul, Brazil): magmatic source of silica for the amethyst crystallizations"
+venue = "Geological Magazine 144(4), 731–739"
+doi = "10.1017/S0016756807003457"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["geode-size", "amethyst", "basalt", "parana", "lava-flow-structure", "silica-source", "fluid-inclusions"]
+notes = """Read in full 2026-10-29 (PDF the owner supplied). This is '2007b'; the cavity-formation paper is Proust & Fontaine 2007a, Geol. Mag. 144, 53–65 (not read). Triz quarry flow, 30 m thick: massive core about 20 m, upper vesicular zone 5 m with vesicles coarsening upward from mm to cm, lower vesicular zone 2 m (p.732). Geodes 'always' in the upper third of flows (p.731), in a level under 3 m thick, each rimmed by a few mm of green clay (celadonite), a coating that eases extraction (pp.732, 734). Image analysis on photographs of 106 exposed geodes, converted 2D to 3D by Cashman & Marsh (1988) (p.733): maximum radius 53.30 cm, maximum silica rim 11.30 cm, 49% maximum fill (pp.732, 737); no distribution or aspect ratios given. Neighbour spacing about 0.15–1.7 m (Fig. 4c, figure-read); two 53.30 cm-radius geodes 78 cm apart (p.737). Lining: celadonite, then 5–10 mm milky rim, then 2 cm chalcedony, then quartz and amethyst (p.733). Amethyst inclusions: Th 204–238 °C primary, 152–200 °C secondary, about 1.4 wt.% NaCl eq. (pp.734–735). Up to 7.53 g SiO2 per 100 g released at the contact; closed-system silica from a halo, about 35 cm for the largest geode (pp.736–737). Cavities from degassing, stated as background citing 2007a (p.736). Interpretation contested by Commin-Fischer et al. 2010 (low T) and Hartmann et al. 2015 (cavity origin). DOI checked against Crossref 2026-10-30."""
+
+[[references]]
+id = "comminfischer2010"
+kind = "article"
+authors = ["Commin-Fischer, A.", "Berger, G.", "Polvé, M.", "Dubois, M.", "Sardini, P.", "Beaufort, D.", "Formoso, M."]
+year = 2010
+title = "Petrography and chemistry of SiO2 filling phases in the amethyst geodes from the Serra Geral Formation deposit, Rio Grande do Sul, Brazil"
+venue = "Journal of South American Earth Sciences 29, 751–760"
+doi = "10.1016/j.jsames.2009.10.002"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["amethyst", "geode-fill", "basalt", "parana", "fluid-inclusions", "geometric-selection", "silica-source"]
+notes = """Read in full 2026-10-29 (PDF the owner supplied). No exterior measurements: geodes are 'commonly elongated, ovoid or rounded cavities with sizes ranging from decimetric to metric' in a macrovesicular level in the central zone of four flows (p.752, citing Gomes 1996); dissolution features at the host contact (p.753). Fill of chalcedony, then colourless quartz, then amethyst in centimetric layers, often only two phases or repeated; amethyst crystals ≥1 cm (pp.752–753). 2D image analysis of 7 geodes: crystal number falls away from the chalcedony substrate, i.e. geometric selection after a single nucleation event (p.754). Fluid inclusions mostly monophase, formation T 'probably below 40–50 °C', salinity 0.9–5.6 (mostly <3) wt.% NaCl eq. (p.755); two-phase Th 66–229 °C attributed to stretching. REE point to a basalt-mesostasis silica source; chalcedony 87Sr/86Sr 0.709–0.714, n=4 (pp.757–758). Scenario: regional hydrothermal event, silica precipitating on cooling and oxidation (p.759). Rejects Proust & Fontaine 2007b's high T and diffusion transfer (pp.755, 758–759). Cavity origin left open (p.759); not evidence for 'ballooning' despite Hartmann et al. 2015 (p.243). DOI checked against Crossref 2026-10-30."""
+
+[[references]]
+id = "rosenstengel2012"
+kind = "article"
+authors = ["Rosenstengel, L. M.", "Hartmann, L. A."]
+year = 2012
+title = "Geochemical stratigraphy of lavas and fault-block structures in the Ametista do Sul geode mining district, Paraná volcanic province, southern Brazil"
+venue = "Ore Geology Reviews 48, 332–348"
+doi = "10.1016/j.oregeorev.2012.05.003"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["lava-flow-structure", "geode-position", "amethyst", "basalt", "parana", "stratigraphy", "alteration"]
+notes = """Read in full 2026-10-29 (PDF the owner supplied). Stratigraphy of 13 flows (6 Pitanga, 7 Paranapanema) from field sections, 86 scintillometer readings and 56 analyses; NW normal faults drop the sequence more than 200 m westward and postdate the geodes (pp.332, 342–343). Only shape statement: 'prolate geodes have cylindrical shapes up to 5 × 1 m' (p.332; no n or method). Geode flows (Veia Alta, Veia do Meio, Veia Baixa) are type I flows, 20–30 m thick, with a massive core lacking columnar joints (pp.334–336). In the Veia Alta (about 30 m) the geode level is the top 2 m of the 25 m massive core, beneath about 1 m of 'cascalho' (10–30 cm hexagonal blocks, the gallery ceiling) and a 2 m amygdaloidal crust with sandstone injections (p.335). Gilg et al. 2003, as quoted: geode layer 2–4 m at 400–440 m a.s.l. (p.335). Over 60 vol.% alteration to smectite and celadonite (p.336). Ballooning with altered-basalt E = 1–2 GPa versus about 50 GPa unaltered comes from simulations; 'no laboratory experiments' (p.337); hypothesis. DOI checked against Crossref 2026-10-30."""
+
+[[references]]
+id = "seilacher2001"
+kind = "article"
+authors = ["Seilacher, A."]
+year = 2001
+title = "Concretion morphologies reflecting diagenetic and epigenetic pathways"
+venue = "Sedimentary Geology 143, 41–57"
+doi = "10.1016/S0037-0738(01)00092-6"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["concretion", "exterior", "shape-classes", "compaction", "diagenesis", "self-organization", "septaria"]
+notes = """Read in full 2026-10-29 (PDF the owner supplied; glyph-coded text decoded). Qualitative morphodynamic essay; no aspect ratios, sizes with n, or orientation data. Ovoid concretions 'are the rule' (p.44, citing Coleman & Raiswell 1995). Spherical in isotropic sand or fresh mud; 'vertically depressed ellipsoids' once compaction reduces vertical permeability; bread-loaf (flattened lower side) or downward-tapering radish concretions around vertical burrows under steep compaction gradients; lens shapes when growth overlaps compaction, with lamination pinching inside the concretion; slickensided coating if compaction came later (p.44). Posidonia Shale limestone beds are stratiform concretions cemented at different compaction stages (pp.44–45). Chert or cone-in-cone cortex forms once the host is impermeable (p.45). Glomerulus (budded) concretions, epigenetic from meteoric water; the budding test failed for lack of visible lamination (p.45). Marleik 'mummy' pancakes with unexplained top/bottom symmetry (p.46). Pyrite: spherical nucleus in isotropic mud, bedding-parallel discs in stiff mud, growth from inside (pp.50–52); cone-in-cone cones up to 5 cm (p.53). Septaria cracks do not reach the surface, so the early core was not rigid, against Astin 1986 (pp.54, 56); orange-peel radial cracking of a chert ball (p.56). Mechanisms are the author's interpretations, often flagged as provisional. DOI checked against Crossref 2026-10-30."""
+
+[[references]]
+id = "rust2003"
+kind = "article"
+authors = ["Rust, A. C.", "Manga, M.", "Cashman, K. V."]
+year = 2003
+title = "Determining flow type, shear rate and shear stress in magmas from bubble shapes and orientations"
+venue = "Journal of Volcanology and Geothermal Research 122, 111–132"
+doi = "10.1016/S0377-0273(02)00487-0"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["vesicle-shape", "bubble-deformation", "capillary-number", "ellipsoid", "shape-relaxation", "obsidian", "host-vesicle", "analogue"]
+notes = """Read in full 2026-10-29 (owner's PDF; Eqs, Tables 1–3, Fig. 1 read from page images). Inverts bubble shape and orientation in obsidian for flow type, shear rate and stress; not a synthesis method. Bubble = ellipsoid l ≥ c ≥ b, undeformed radius a, angle θ to flow (Fig. 1, p.113). Ca = aGμs/Γ (Eq. 1, p.112); for vapour bubbles in melts steady shape depends only on Ca if dilute and surfactant-free (p.113). Table 1 (p.114): pure shear D = 2Ca, l/a = 16Ca², θ = 0; simple shear D = Ca, l/a = 3.45Ca^1/2, θ = π/4 − 0.6Ca or tan⁻¹(0.359Ca^−3/4); at Ca = 10 l/b ≈ 36 (simple) vs 6.4×10⁴ (pure) (p.113). Empirical θ(D) and D(Ca) = (0.65 + e^−1.1Ca)tan⁻¹Ca for 0 < D < 1 (Eqs 2–3, p.114). Relaxation time τ = aμs/Γ: 0.1 s for 100 µm bubble in 100 Pa s basalt, 12 days at 10⁹ Pa s (p.114); (l − a)/(lᵢ − a) = e^(−0.67t/τ); orientation and pointed ends survive relaxation (p.114); basalt interiors relax to spheres, stretched bubbles only within mm of pahoehoe surfaces (p.112). Mayor Island: 333 bubbles, elongation grows with size, all parallel (pure shear); cross-section c = 0.0151b² + 1.37b (µm), a = (lbc)^1/3, Ca = 0.0163a (a in µm) (pp.116–117). Table 3 (p.116): log G = −5.2, −2, −6.6/−6.9 s⁻¹ and σ = 4.9, 60, 36/22 kPa for MI, RM, BGM; Γ = 0.3 N/m. One τ of relaxation lowers apparent G, σ by ~14%; interactions at φ = 0.25 overestimate by <10%; wrong flow type at most ×2 (pp.127–128). Single samples, dilute obsidian only (p.129). For Nodule: a physical shape law for host-vesicle envelopes (size-dependent elongation, common orientation), no coalescence or surface detail. DOI checked against Crossref 2026-10-30."""
+
+[[references]]
+id = "garboczi2002"
+kind = "article"
+authors = ["Garboczi, E. J."]
+year = 2002
+title = "Three-dimensional mathematical analysis of particle shape using X-ray tomography and spherical harmonics: Application to aggregates used in concrete"
+venue = "Cement and Concrete Research 32, 1621–1638"
+doi = "10.1016/S0008-8846(02)00836-0"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["spherical-harmonics", "shape-descriptors", "x-ray-ct", "star-shaped", "fourier-outline", "curvature", "resolution", "particle-shape"]
+notes = """Read in full 2026-10-29 (owner's PDF; units checked on page images). Recipe for describing a compact random particle by a spherical-harmonic expansion r(θ,φ) = Σ aₙₘYₙᵐ of its centre-of-mass radius function, from a CT voxel image (pp.1622–1627); 2D Fourier analogue for outlines, coefficients negligible by j = 20, area converged by N ≈ 10 within 0.1% (pp.1623–1624). Requires star-like shapes; overhangs or resolved pores create a false valley detectable as SH-vs-voxel volume mismatch (p.1626). 120×120 = 14 400 (or 240×240) Gaussian-quadrature points (p.1627). Volume, area, mean/Gaussian curvature, inertia from the expansion (pp.1627–1629, App. B); integrated Gaussian curvature k = 1 as quality check (p.1628). Ellipsoid tests: 21:21:105 and 11:11:55 voxels converge by N ≈ 12; 5:5:25 best at N = 12 with volume 5% and area ≈ 8% off, k > 2% off for N ≥ 14; SH follows the digital, not analytical, shape (pp.1629–1631). Voxel-face area overcounts by 1.39–1.42 (prolate), 1.29 (oblate), 1.5 (sphere) (Table 2, p.1631). CT: concrete 75×75 mm prisms, 0.4 mm voxels, 270³ sub-volume, threshold set to known aggregate fraction, erosion/dilation + flood fill to isolate particles (p.1625). Real particles 9175 and 9061 voxels: inertia within ≈1% for N > 12; k needs 240-point quadrature beyond N ≈ 10 (p.1633). Smallest particle ≈ 5–10 voxels per side (250 µm at 50 µm voxels); voxel ≈ sample size / 512–1024 (p.1634). No random generation or overlap test yet (p.1634). For Nodule: a descriptor for nodule envelopes and photo outlines, not a generator. DOI checked against Crossref 2026-10-30."""
+
+# --- CT data track (tier 2 reading, 2026-10-29) ---------------------------
+
+[[references]]
+id = "kyle2015"
+kind = "article"
+authors = ["Kyle, J. R.", "Ketcham, R. A."]
+year = 2015
+title = "Application of high resolution X-ray computed tomography to mineral deposit origin, evaluation, and processing"
+venue = "Ore Geology Reviews 65, 821–839"
+doi = "10.1016/j.oregeorev.2014.09.034"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["x-ray-ct", "micro-ct", "resolution", "partial-volume", "beam-hardening", "ring-artefacts", "phase-contrast", "segmentation", "fluid-inclusions", "blob3d"]
+notes = """Read in full 2026-10-29 (owner's PDF = article-in-press version, pp. 1–19; pages cited are in-press pages). Review of lab CT for ore geology from the UT Austin facility; no costs given. Effective attenuation, photoelectric ∝ Z^4–5 dominant to ≈50–100 keV, Compton ∝ Z to 5–10 MeV (p.3); XCOM curves with quartz lowest, calcite/fluorite just above (Fig. 2, p.4). μ differences down to 0.1% discriminable only over regions spanning many voxels with low noise; CT number of one mineral varies with zoning, alteration, microcrystallinity, microporosity, beam spectrum, object size (p.6). Pixels per side ≈ detector channels (1024/2048); PSF governs true resolution (p.5). Classes: medical 0.5–2 mm (m–dm objects), high-res 100–200 µm (dm–cm), ultra-high < 10 µm (cm–mm) (p.5); 450 kV images silicates up to ≈30–40 cm (p.6); interior zoom ×2–3 cone beam vs ×10–20 near-parallel beam (p.5); near-parallel beam phase contrast highlights borders of equal-attenuation objects (p.2). Artefacts: beam hardening, rings (removal can erase real tangential arcs), starbursts, partial volume (pp.6–7). UTCT: 225 kV microfocal, 5–30 µm spot, mean 50–80 keV, good for similar densities; 450 kV, 0.4/1.0 mm spot; 2048² flat panel, 200 µm pixels; Xradia to 0.2 µm voxels, ~1 µm true resolution, objects to ≈4 cm (pp.7–8). Datasets up to several GB; touching or low-contrast phase separation still operator-driven (pp.8, 18). Au grains measurable to 1/1000 of scan diameter (p.9); Grasberg Au 7–43 µm (p.10). Fluids differ from hosts by orders of magnitude; multiphase fluid inclusions measurable ≥ 0.1 mm³, distribution mapped < 0.0001 mm³ (pp.16–17). No silica-polymorph examples. DOI checked against Crossref 2026-10-30."""
+
+[[references]]
+id = "richard2019"
+kind = "article"
+authors = ["Richard, A.", "Morlot, C.", "Créon, L.", "Beaudoin, N.", "Balitsky, V. S.", "Pentelei, S.", "Dyja-Person, V.", "Giuliani, G.", "Pignatelli, I.", "Legros, H.", "Sterpenich, J.", "Pironon, J."]
+year = 2019
+title = "Advances in 3D imaging and volumetric reconstruction of fluid and melt inclusions by high resolution X-ray computed tomography"
+venue = "Chemical Geology 508, 3–14"
+doi = "10.1016/j.chemgeo.2018.06.012"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["x-ray-ct", "micro-ct", "fluid-inclusions", "melt-inclusions", "segmentation", "threshold-sensitivity", "resolution", "scan-parameters"]
+notes = """Read in full 2026-10-29 (owner's PDF = article-in-press version, pp. 1–12; pages cited are in-press pages; Table 1 read from page image). Nine samples (olivine, synthetic and natural quartz, demantoid garnet, trapiche emerald, wolframite, feldspar) on Xradia 510 Versa, Nikon XTH 320/225 and Phoenix Nanotom S (pp.2–3, 7–8). Table 1 (p.3): 30–160 kV; voxels 25 µm (3×5×2 cm crystal, 37 min), 7.7 µm (1.4 mm ROI, 75 min), 3.5 µm (11 mm emerald), 0.77–2.06 µm on mm chips or grains (100–280 min); 1200–3141 projections; sample I kV is 100 in Table 1 but 110 in text (p.8). Manual global thresholding, voxel counting (p.7); median 3 px, clusters < 100 voxels removed (p.8). At ~1 µm³ voxels inclusions ≥ ≈5 µm detected (p.8); vapour ≥ ≈2 µm diameter; none seen in inclusions < 10 µm (p.10); phase volumes reliable for > 25 µm (abstract). Oil vs aqueous liquid (0.7–1 vs ≈1 g/cm³) and bitumen not separable (p.10). Validation: φvap 40–45% vs 42% expected (C), 9.8% vs confocal 10 ± 2% (I) (p.11); garnet inclusion 6.2 vol%, φvap 6.3% (p.10). Table 2 (p.10): 5% threshold change shifts φvap 10–41% relative at 25 µm and from 24.0% to 76.2% for one inclusion at 7.7 µm; volumes most sensitive to threshold choice (pp.10–11). Phase-contrast CT suggested (p.10). No costs. DOI checked against Crossref 2026-10-30."""
+
+[[references]]
+id = "mickler2004"
+kind = "article"
+authors = ["Mickler, P. J.", "Ketcham, R. A.", "Colbert, M. W.", "Banner, J. L."]
+year = 2004
+title = "Application of high-resolution X-ray computed tomography in determining the suitability of speleothems for use in paleoclimatic, paleohydrologic reconstructions"
+venue = "Journal of Cave and Karst Studies 66(1), 4–8"
+url = "https://caves.org/pub/journal/PDF/V66/v66n1-Mickler.pdf"
+access = "open"
+licence = "free to read (National Speleological Society); licence not checked; cite only"
+checked = "full-text"
+topics = ["x-ray-ct", "speleothem", "growth-bands", "banding", "scan-parameters", "beam-hardening", "voids", "cutting-plane"]
+notes = """Read in full 2026-10-29 (owner's PDF, journal pp. 4–8; figures viewed as rendered pages). UTCT HRXCT scans of two stalagmites, AH-M (24 × 12 cm, dense clear calcite) and ANY-01 (33 × 20 cm), before sawing (pp. 5–6). UTCT takes objects up to 500 mm in diameter and 1500 mm high; slices down to 0.25 mm on large objects; minimum slice ≈ 1/1000 of diameter, down to 5 µm (p.5). AH-M: 420 kV, 4.7 mA, 1.8 mm focal spot, 3.175 mm brass prefilter against beam hardening, 512-channel CdWO4 array (0.31 mm pitch), 808 views × 32 ms, 160 % offset, 1.0 mm slices, 180 mm field, 512² 16-bit images at 0.35 mm pixels, 239 slices, ≈ 2.25 h. ANY-01: 1000 views, 130 % offset, 2.0 mm slices, 155 mm field, 153 slices, ≈ 1.75 h (p.6). $200–300 per sample; settings tuned for speed, finer possible (p.6). Concentric growth bands visible as density variations; two or more growth axes found and used to choose the cutting plane, confirmed on the slab (Figs. 1–2, pp. 5–7). Dense late drape over a porous core led to ANY-01's rejection (p.7, Fig. 3). Voids are easy to see; water vs air not separated (p.7). Qualitative only: no band thicknesses, contrast or resolution metrics. 'Growth bands in speleothems thin away from the growth axis' (p.4)."""

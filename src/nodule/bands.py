@@ -434,6 +434,32 @@ def measure(
     resolution, `mask` the face at the working size (`scale` working px per
     full px), `noise` and `spacing_px` the quality gate's noise (grey levels)
     and band spacing (full px)."""
+    traced = trace(lum, mask, scale, spacing_px, starts)
+    if len(traced.paths) < MIN_PROFILES:
+        return Bands(None, None, None, None, None, len(traced.paths), 0)
+    return _measure_paths(lum, traced, noise, spacing_px, rng=rng, ladder=ladder)
+
+
+@dataclass(frozen=True)
+class Traced:
+    """Band-following paths of a face (`trace`)."""
+
+    paths: list[tuple[NDArray[np.float64], NDArray[np.float64]]]  # (row, col) full px, arc px
+    unread: list[float]  # px from where a path lost the bands to the face's deepest point
+    face: NDArray[np.bool_]  # the face at the coarse size
+    k: int  # full px per coarse px
+
+
+def trace(
+    lum: NDArray[np.float32],
+    mask: NDArray[np.bool_],
+    scale: float,
+    spacing_px: float,
+    starts: int = STARTS,
+) -> Traced:
+    """Paths from `starts` rim points inward along the band normal (module
+    docstring), each kept if at least `MIN_PROFILE_SPACINGS` long. Arguments
+    as `measure`."""
     k = max(1, int(spacing_px // FIELD_SPACING_PX))
     h, w = lum.shape[0] // k, lum.shape[1] // k
     coarse = lum[: h * k, : w * k].astype(np.float64).reshape(h, k, w, k).mean(axis=(1, 3))
@@ -460,8 +486,20 @@ def measure(
             paths.append((full, arc))
             gap = float(np.hypot(path[-1, 0] - centre[0], path[-1, 1] - centre[1])) * k
             unread.append(gap if strayed else 0.0)
-    if len(paths) < MIN_PROFILES:
-        return Bands(None, None, None, None, None, len(paths), 0)
+    return Traced(paths, unread, face, k)
+
+
+def _measure_paths(
+    lum: NDArray[np.float32],
+    traced: Traced,
+    noise: float,
+    spacing_px: float,
+    *,
+    rng: np.random.Generator,
+    ladder: bool,
+) -> Bands:
+    """`measure` from the traced paths."""
+    paths, unread, face, k = traced.paths, traced.unread, traced.face, traced.k
 
     def read(
         image: NDArray[np.float32] | NDArray[np.float64], step: float, m: int = 1

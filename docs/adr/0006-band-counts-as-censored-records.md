@@ -7,7 +7,8 @@
   read in full: the owner took choices 7f–7h (section 7); no grade changed.
   Amended 2026-10-30 with what was built for C23–C25 and the check
   (section 8), and the owner took choices 7j and 7k (section 7); no grade
-  changed.
+  changed. Amended 2026-10-30 again with round 1's result and choices
+  7l–7o for round 2 (section 9); no grade changed.
 - Date: 2026-10-29
 - Builds on: [ADR 0004](0004-characterization-schema-core-set.md) sections
   1, 4 (C6, C10, C13) and 8. Records the owner's choice of 2026-10-29 to
@@ -479,6 +480,53 @@ First results (2026-10-30; three helpers, ten faces and one control each):
   0.05 cut was picked after looking, and C25 shows quartz layers between
   bands that a core share doesn't, so this is no pass yet. Grade:
   speculative, to be read again after the owner's check.
+
+### 9. Round 1 result and round 2 (choices 7l–7o, 2026-10-30)
+
+The owner checked all 30 (blind 10 first). Agreement with the proposals,
+scored as section 8 says: blind 97/188 items (banded 10/10, C23 8/9, C24
+71/108, C25 8/61); all 302/461 (C23 22/25, C24 197/300, C25 53/106). More
+than a third disagree on C24, C25 and pooled, blind and over the 30, so
+round 1 meets section 6's fallback condition. That result stands as
+scored. The owner kept the proposals' coarse sense of "even bands" on the
+20 shown faces by choice (their note), so shown C25 (45/45) measures the
+convention, not independent agreement. Read after scoring, so description
+only: on 6 of the 8 blind faces with zones on both sides, the two agree on
+84–94 % of the radius about where band material ends and quartz or a cavity
+begins; the disagreement is mostly how finely the banded part is split (the
+owner up to 17 zones, the proposals 2–5), which section 8 never fixed. The
+owner judges C24's colour gradient easily muddled on still photos and the
+faint striations the steadiest cue; they marked shadow unknown on 24 of 75
+zones.
+
+- **7l. Zone scale.** *(Recommended, taken)* A C25 zone covers at least
+  0.05 of the line; fine alternations of bands and plain gaps within a
+  stretch are one zone of bands ("even" or "curdled or mottled"). The fine
+  sequence is what C6 and N(L) record. Alternatives: every visible layer a
+  zone; two levels.
+- **7m. Re-test.** *(Recommended, taken)* A fresh blind 10 from the banded
+  faces nobody has checked, proposed under the new definitions; round 1's
+  answers are kept as they are. Alternatives: re-tag the same 10 (not blind:
+  the owner has seen them and knows the convention); no new blind round.
+- **7n. C24.** *(Owner's choice)* Faint striations only, per third: 3 items
+  per face. Gradient, shadow and iris are dropped from round 2 on.
+- **7o. Scoring C25 along a drawn line.** *(Recommended, taken; the line is
+  the owner's idea)* Each face gets one straight line from the rim (0) to the
+  centre of its largest band set (1), with ticks every 0.1, shown alike to
+  helpers and owner; shares are read off the ticks, and C24's thirds are
+  thirds of it. A face's C25 agrees where the kinds match on at least
+  two-thirds of the line. The computer drafts the line: the centre from
+  where the band-following paths of `nodule.bands` converge, the direction
+  from a spawned RNG stream per face. The owner checks each line before
+  helpers see it and may move the centre or take the next direction only
+  for a stated reason (crack or edge, misses the bands, waterline banding).
+  This scoring applies from round 2 on, never to round 1. A line samples
+  one path, so C25 describes that path, not the whole face. Alternatives:
+  zone by zone, as round 1; the owner clicks each centre.
+
+Open, for the owner: whether section 6's fallback, met by round 1, is taken
+now, or weighed at the end of the re-tagging with round 2 (whose
+descriptors are new) as section 6's timing reads.
 
 ## Alternatives considered
 

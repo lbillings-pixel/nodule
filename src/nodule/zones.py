@@ -169,9 +169,15 @@ def share_gaps(proposed: Mapping[str, Any], checked: Mapping[str, Any]) -> list[
     return [abs(p["share"] - c["share"]) for p, c in pairs if p["kind"] == c["kind"]]
 
 
+# Parts the fallback test is applied to, each alone and all pooled (choice 7j),
+# so C24's 12 items per face can neither trip it alone unseen nor hide the rest.
+TESTED = ("C23", "C24", "C25", "whole")
+
+
 def report(images: Mapping[str, Mapping[str, Row]]) -> str:
     """Agreement of the owner's check with the proposals, blind and shown apart,
-    and the fallback test of ADR 0006 section 6 (more than a third disagree)."""
+    and the fallback test of ADR 0006 section 6: more than a third disagree,
+    in any of `TESTED`."""
     groups: dict[str, list[tuple[str, bool]]] = {"blind": [], "shown": []}
     gaps: list[float] = []
     for e in images.values():
@@ -189,11 +195,13 @@ def report(images: Mapping[str, Mapping[str, Row]]) -> str:
         same = sum(a for _, a in scored)
         lines.append(f"{name:6s} {same}/{len(scored)} items ({', '.join(parts)})")
     for name in ("blind", "all"):
-        scored = groups[name]
-        if scored and sum(not a for _, a in scored) > len(scored) / 3:
-            lines.append(
-                f"FALLBACK: more than a third of the {name} items disagree (ADR 0006, s.6)"
-            )
+        for part in TESTED:
+            scored = [a for k, a in groups[name] if part == "whole" or k == part]
+            if scored and sum(not a for a in scored) > len(scored) / 3:
+                lines.append(
+                    f"FALLBACK: more than a third of the {name} {part} items disagree"
+                    " (ADR 0006, s.6, choice 7j)"
+                )
     if gaps:
         lines.append(
             f"C25 share gap where kinds agree: median {np.median(gaps):.2f}, n {len(gaps)}"

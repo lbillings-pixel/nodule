@@ -6,7 +6,7 @@
   changed (see Consequences). Amended again 2026-10-29 after ten more were
   read in full: the owner took choices 7f–7h (section 7); no grade changed.
   Amended 2026-10-30 with what was built for C23–C25 and the check
-  (section 8); no decision or grade changed.
+  (section 8), and the owner took choice 7j (section 7); no grade changed.
 - Date: 2026-10-29
 - Builds on: [ADR 0004](0004-characterization-schema-core-set.md) sections
   1, 4 (C6, C10, C13) and 8. Records the owner's choice of 2026-10-29 to
@@ -316,7 +316,9 @@ Checked at the end of the re-tagging under this ADR. It is taken if any of:
   than a third of the faces where both are given;
 - the owner's check disagrees with the proposed C23–C25 on more than a third
   of the items over the 30, scored item by item, or on more than a third of
-  the blind 10's items (section 4; choice 7f);
+  the blind 10's items (section 4; choice 7f); each test is applied to C23,
+  C24 and C25 alone as well as to all items pooled, and any one failing
+  counts (choice 7j);
 - N(L) doesn't separate the faces the owner notes as finely banded from the
   rest.
 
@@ -396,6 +398,15 @@ rule, not *L*, censors their counts. Grade: plausible (one check, 8 photos).
   - The candidate pixel floor of section 1 (no finer than 6 px per couplet,
     after [@damci2016]): more conservative, but nearly every photo would sit
     at it.
+
+Choice 7j was put once C23–C25 were built (section 8): C24 gives 12 of
+about 16 items per banded face, so it dominates a pooled test.
+
+- **7j. How the fallback test weighs C23–C25.**
+  - *(Recommended, taken 2026-10-30)* The one-third test on C23, C24 and C25
+    each alone and on all items pooled; any one failing triggers the
+    fallback.
+  - As first written: all items pooled.
 
 ### 8. As built: C23–C25 and the check (2026-10-30)
 

@@ -89,8 +89,17 @@ def test_the_report_flags_the_fallback_on_the_blind_faces() -> None:
     images |= {f"s{i}": {"proposed": PROPOSED, "checked": BANDED} for i in range(20)}
     text = zones.report(images)
     assert "blind  0/10 items" in text
-    assert "FALLBACK: more than a third of the blind items" in text
-    assert "of the all items" not in text  # 320 of 330 agree overall
+    assert "FALLBACK: more than a third of the blind whole items" in text
+    assert "of the all whole items" not in text  # 320 of 330 agree overall
+
+
+def test_one_part_failing_trips_the_fallback_though_the_whole_agrees() -> None:
+    other = BANDED | {"C23_centres": 2}  # C23 wrong on every face, all else right
+    images = {f"s{i}": {"proposed": PROPOSED, "checked": other} for i in range(30)}
+    text = zones.report(images)
+    assert "FALLBACK: more than a third of the all C23 items" in text
+    assert "whole items" not in text  # 1 of 16 items per face disagree
+    assert "C24 items" not in text
 
 
 def test_blind_and_recount_faces_are_fixed_and_separate_streams() -> None:

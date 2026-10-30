@@ -539,9 +539,9 @@ venue = "Physics and Chemistry of Minerals 12(5), 300–306"
 doi = "10.1007/BF00310343"
 access = "closed"
 licence = "publisher copyright; cite only"
-checked = "abstract"
-topics = ["chalcedony", "water", "translucency", "shadow"]
-notes = "Abstract as excerpted by a search engine, 2026-10-17 (the publisher page needs a sign-in): wall-lining chalcedony grades from translucent grey to milky white bands with decreasing total water content and silanol-to-molecular-water ratio, decreasing BET surface and increasing density; chalcedony holds water at open-pore surfaces and at inner surfaces and defect regions. The physical link between banding and milkiness that a mechanistic shadow agate would need."
+checked = "full-text"
+topics = ["chalcedony", "water", "translucency", "density", "fibres", "twisting"]
+notes = """Read in full 2026-10-29 (owner's PDF, text layer; Table 2 and Fig. 1 read from page images). Six geodes, Rio Grande do Sul (p. 300). Wall-lining bands classed by eye as translucent grey Ch-w(t) or milky white Ch-w(m), 'not clearly practicable' in some (p. 300). Table 1 (p. 302): translucent vs milky wall bands, total water 1.20-1.36 vs 0.65-0.72 wt %, SiOH/H2O(mol) 0.7-1.0 vs 0.4-0.5, density 2.575-2.579 vs 2.593-2.601 g/cm³ (±0.010), BET 0.4-1.1 vs 1.9 m²/g: BET rises toward milky (text p. 301; the abstract's wording reads otherwise). Opal-C 2.270 g/cm³. No 0.1 µm pores by TEM or SEM; inner-surface water put at Brazil-twin boundaries (p. 305). Heating ≥400 °C whitens, with higher background toward short wavelengths (Fig. 6, p. 303); hydrothermal runs whiten with X-ray peak narrowing above 250 °C (p. 304). Wall fibres point to the geode centre, c-axes twisted about the fibre axis giving 'rhythmic extinction banding' between crossed nicols, no period given (p. 301). Milky horizontal layers are granular microquartz (p. 300). No crystallite sizes, spacings, optics, iris or viewing-angle effects."""
 
 [[references]]
 id = "raman1955"
@@ -553,9 +553,9 @@ venue = "Proceedings of the Indian Academy of Sciences, Section A 41(1), 1–6"
 doi = "10.1007/BF03050587"
 access = "closed"
 licence = "publisher copyright; cite only"
-checked = "citation"
-topics = ["iris", "diffraction", "fibres"]
-notes = "Citation from Crossref. A search summary attributes iris diffraction to a periodic change of the quartz c-axis orientation along the chalcedony fibres; not read."
+checked = "full-text"
+topics = ["iris", "diffraction", "fibres", "polarisation", "moire", "translucency", "x-ray"]
+notes = """Read in full 2026-10-29 (owner's PDF, publisher text layer; plates I-II viewed, III-IV by text). Sequel to raman1953 and jayaraman1953. Random crystallite orientation diffuses light totally; preferred orientation is a 'sine qua non' for transmission (p. 2). X-ray series: brilliant iridescence = sharp a-axis fibre diagram; 'little transparency' = almost powder-like (pp. 2-3). A ~1 mm plate passes a sharp image only with the polaroid along the fibres (Plate I, p. 1). Iris diffraction appears as diffuse 'elongated streaks', regular only in 'selected regions ... where the spacings are most regular' (p. 4); grating periodic 'along the length of the fibres', by exclusion attributed to periodic c-axis orientation (p. 5). Moiré patterns only in iris regions, seen with a magnifier, change greatly with small tilts (p. 5). Rejects Jones 1952's opal segregation (p. 6). No spacings, angles, sizes or localities. Silent on shadow sectors."""
 
 [[references]]
 id = "jones1952"
@@ -1792,9 +1792,9 @@ venue = "Geochronology 4, 409–433"
 doi = "10.5194/gchron-4-409-2022"
 access = "open"
 licence = "CC-BY-4.0"
-checked = "abstract"
-topics = ["varves", "lamina-counting", "counting-error", "undercounting", "resolution", "bayesian", "analogue"]
-notes = """Held at abstract level: read 2026-10-29 only through a summarising fetch, not the text itself; to be read in full before any claim beyond the abstract. The summary reported: Analogue, read 2026-10-29 through a summarising WebFetch (short verbatim quotes). Cumulative counting uncertainty '−13 % to +7 %', 'indicative of systematic observer under-counting' (abstract); indistinct sequences up to '± 15 %' (§1); errors usually the RMSE of several observers' counts (§1). Laminae 'typically <0.5 mm' (§3.4); thin-section images at 2× and 10× (§3.3). Delineation uncertainty is large 'because of the image quality and pixel resolution used in this study' (§5.1.1); main cause given as 'complex sub-lamina internal structures'; erosion removes laminae. The modelled minimum thickness (0.04 mm) is floored at the smallest measured value (§4.3). Resolution is not varied."""
+checked = "full-text"
+topics = ["varves", "lamina-counting", "counting-error", "undercounting", "overcounting", "uncertain-layers", "bayesian", "analogue"]
+notes = """Analogue, read in full 2026-10-29 (owner's PDF, pypdf; Figs 2, 3, 5–6, 8, A2, A3, A5 viewed on rendered pages; code not opened). Columbine Lake, two cores, laminae 'typically <0.5 mm' (median 0.43–0.47 mm), three inexperienced observers. Each lamina gets a quality code (p. 413): 1–3 by clarity; 4 = one year with sub-laminae or two years, 'assigned a 50 % probability of over-counting' and 0 % under-counting (a functional twin of ½ ± ½, not cited as such); 5 = indistinct zones (8.7–19.6 % of thickness) and 6 = gaps, both filled by an emulator that resamples distinct sections, assuming the same sedimentation (p. 413): unknown, not zero. Gamma priors on over-/under-counting per code; varveR ensembles constrained by equal duration between marker layers (p. 412); Gibbs sampler updates the probabilities to fit a Bacon+Plum radiometric model (pp. 413–414). MOIM posteriors (Fig. 8a): code 1 OC 0.11/UC 0.14, code 2 0.41/0.40, code 3 0.10/0.88. Varve-only counts 250–600 yr short of basal ¹⁴C; MOIM 3137 (2753–3375) varve yr, '−13 % to +7 %', 'indicative of systematic observer under-counting' (abstract). Observer spread 14.5–23.6 % falls to 2.6–7.3 % after integration (p. 423). Missed layers tied to quality code, not to thickness or resolution; pixel resolution named only as inflating delineation uncertainty (p. 422); minimum thickness floored at 0.04 mm (p. 416). No censoring language, no resolution ladder, no common-limit comparison. Some numbers inconsistent (HDR text vs Table 2; percentages)."""
 
 [[references]]
 id = "jamba2025"
@@ -1806,9 +1806,9 @@ venue = "Geochronology 7, 83–111"
 doi = "10.5194/gchron-7-83-2025"
 access = "open"
 licence = "CC-BY-4.0"
-checked = "abstract"
-topics = ["varves", "x-ray-ct", "lamina-counting", "resolution", "two-resolution-test", "analogue"]
-notes = """Held at abstract level: read 2026-10-29 only through a summarising fetch, not the text itself; to be read in full before any claim beyond the abstract. The summary reported: Analogue, read 2026-10-29 through a summarising WebFetch (short verbatim quotes). µCT at 45 µm voxels against SEM thin sections at 1 µm per pixel (§2.2-2.3). Counts 'very similar'; µCT 'slightly higher' (§3.1, abstract), put down to 3D access to laminae off the thin-section plane, thin laminae without a clay cap left uncounted in thin sections, and deformation (§4.1), not to resolution. §4.5: going 'well below' 45 µm 'did not provide additional information'; boundaries of a 0.92 mm lamina visible 'up to 77 µm (∼12 voxels)'; 'a minimum of about 13 voxels per varve'. Fig. 19 not seen; rescan or downsampling not stated. Data cost: 170 GB per 1.5 m core at 45 µm."""
+checked = "full-text"
+topics = ["varves", "x-ray-ct", "lamina-counting", "resolution", "two-resolution-test", "thickness", "analogue"]
+notes = """Analogue, read in full 2026-10-29 (owner's PDF, pypdf; Figs 2–5, 10–19 viewed on rendered pages; Table B1 scanned). Same varves (four Grand Lake cores, opposite halves, matched by marker beds) by SEM thin sections at 1 µm/pixel and µCT at 45 µm voxels (pp. 85–87): counts within −1.4 to +5.6 %, µCT the same or higher (Table 2, p. 88); excess put down to off-plane laminae in 3D (Fig. 13), thin uncapped laminae rejected as events in thin section (Fig. 14, p. 92) and deformation, not resolution. Varves thick (mostly 2–6 mm; thinnest 0.92 mm). Fig. 19 (p. 96) shows one stretch at 45–220 µm voxels, judged by eye only, acquisition not stated: the 0.92 mm lamina's boundaries are sharp 'up to 77 µm (~12 voxels)', hence 'a minimum of about 13 voxels per varve' for sharp boundaries (pp. 94–95); going below 45 µm 'did not provide additional information'. No MTF, blur or partial-volume measure; no grey-value or density contrast between laminae (grey levels for clay caps left to future work, p. 92). Thickness: bias −0.12 to +0.04 mm, limits about ±0.9 mm; best agreement in the thin-section plane; measure in two perpendicular directions (abstract, p. 89). Counting uncertainty only as repeat ranges; no error model. Inconsistencies: Table 4 vs §3.1 on which cores count higher; Eq. 6 'outside' vs reported share inside; Fig. 11 axis units; '450 mm thick' VOIs; 30 µm file size '36 % larger'."""
 
 [[references]]
 id = "vandenbulcke2019"
@@ -1821,9 +1821,9 @@ doi = "10.1093/aob/mcz126"
 url = "https://pmc.ncbi.nlm.nih.gov/articles/PMC6868372/"
 access = "open"
 licence = "OUP standard licence (free in PMC); cite only"
-checked = "abstract"
-topics = ["tree-rings", "x-ray-ct", "resolution", "multiscale", "analogue"]
-notes = """Held at abstract level: read 2026-10-29 only through a summarising fetch, not the text itself; to be read in full before any claim beyond the abstract. The summary reported: Negative result for count against resolution, read 2026-10-29 through a summarising WebFetch. Increment cores at 60 µm down to 4.5 µm; 60 µm is 'in most cases sufficient for TRW measurements, yet lacks detail for further analysis'; coarse scans guide finer ones (multiscale). No comparison of the same samples at different resolutions, no voxels-per-ring rule, no missing or false rings discussed."""
+checked = "full-text"
+topics = ["tree-rings", "x-ray-ct", "resolution", "multiscale", "densitometry", "analogue"]
+notes = """Read in full 2026-10-29 from the owner's PDF, which is the accepted manuscript (page numbers are manuscript pages; Figs 2–6, 8 viewed on rendered pages). A methods showcase: increment cores scanned at voxel sizes 60, 35, 23.7, 13.5, 8.0, 4.5, 4.0 and 0.8 µm (Table 2), each on different samples; 'resolution' means voxel size throughout (only 'true spatial resolution down to 3 µm' for the CoreTOM source, a manufacturer figure). 60 µm 'in most cases sufficient for tree-ring width (TRW) measurements, yet lacks detail for further analysis' (ms p. 9); coarse scans guide finer ones 'focusing for instance on narrower rings' (ms p. 13); at higher resolutions boundaries 'do not only depend on density differences but they can be derived from anatomical features directly' (ms p. 13). No ring counts or widths compared across resolutions or with another method; no voxels-per-ring rule; no missing, false or absent rings; no count uncertainty; no contrast threshold, MTF or profile/spectral method. Only comparison: CT density by calibration vs scanner simulation, R² = 0.9947, slope 0.977, 350–800 kg/m³ (Fig. 8). Halving voxel size gives 8× data (ms p. 12); 4–4.5 µm single-core scans 140–275 GB (Table 2). Abstract says 'down to 4.5 µm' but Table 2 lists 4.0 µm."""
 
 [[references]]
 id = "jayaraman1953"
@@ -1838,6 +1838,20 @@ licence = "publisher copyright; cite only"
 checked = "full-text"
 topics = ["chalcedony", "optics", "diffusion", "polarisation", "fibres", "lamellae", "diffraction", "translucency", "shadow"]
 notes = """Read in full 2026-10-29 (owner's scanned PDF, publisher OCR layer checked against page images; plates viewed). Theory (pp. 442-444): random quartz crystallites diffuse light by birefringent phase differences, transmission I = I0·exp(-π²(μ1-μ2)²Δz/λ²) after Raman's Christiansen theory (exponent decoded from the worked values), so thicker plates and coarser crystallites transmit less and redden; fibres with common a-axis pass light polarised along the fibres and diffuse the transverse component into a brush; laminae with c-axis orientation changing from lamina to lamina diffract, and act as a phase grating if periodic. Observations on five colourless plates 0.15–2 mm thick from the institute museum (no locality): transparency complementary between window light and oblique dark-field light, 'the dark portions now appear bright and vice versa' (p. 445, Figs. 4-5 for banded pieces); diffuse brush parallel to the banding that 'follows the course of banding' (p. 447); an enlargement 'exhibits numerous closely-spaced lamellae which are not visible' at smaller scale, 'a general feature' (p. 448); fine lamellae best seen 'on the boundary between light and darkness' (p. 448); diffraction spectra beside a small source; transmission falls rapidly with tilt of the band planes (p. 448). Lamellae attributed to c-axis orientation changing between successive layers across the fibres (p. 449). Qualitative only: no scales, spacings or angles. Does not describe a shadow effect, sectors or whole-stone viewing."""
+
+[[references]]
+id = "raman1953"
+kind = "article"
+authors = ["Raman, C. V.", "Jayaraman, A."]
+year = 1953
+title = "The structure and optical behaviour of iridescent agate"
+venue = "Proceedings of the Indian Academy of Sciences, Section A 38, 199–206"
+doi = "10.1007/BF03045221"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["iris", "diffraction", "fibres", "polarisation", "tilt", "lighting", "sectors", "translucency", "x-ray"]
+notes = """Read in full 2026-10-29 (owner's scanned PDF, publisher OCR layer; all plates viewed). Two iridescent agate plates, 3 and 2 mm thick, no locality (p. 200). Iris strata 'some 10,000 times in a centimetre' (~1 µm), stated as long known, not measured (p. 199). Iris area a ~1 cm strip parallel to the bands of 'six different gratings' with gaps, colours differing 'when it is viewed obliquely' (p. 202); no angles or spacings measured. Conclusions (p. 203): fibres normal to the bands, c-axis in the band plane, periodic c-axis orientation along each fibre makes the grating; tentative polysynthetic twins (pp. 205-206). Transmitted and diffracted images complementary over all banded areas (p. 200); thinner plate much more transparent; iris areas less transparent and redden light (p. 200). Transmission strongly depends on the angle between rays and band planes, maximal parallel, much weaker for tilt within the band plane (p. 201); polarisation direction turns with the bands (p. 201). Fig. 1: sectors of one strip 'perfectly dark', 'faintly banded', 'quite bright' (p. 200), bounded by radial lines through band corners; lighting not stated, no cause given. X-ray: visible banding goes with preferred orientation, unbanded tip has almost none (p. 204). Moiré patterns in iris strips seen with a magnifier, vanish with polaroid across the bands (p. 205). No reference list."""
 
 [[references]]
 id = "andersen2006"
@@ -1868,15 +1882,57 @@ topics = ["varves", "lamina-counting", "resolution", "x-ray-radiography", "count
 notes = """Analogue, read in full 2026-10-29 (owner's PDF, pypdf; equations and figures checked on rendered pages). Counts every strict local grey maximum and minimum along columns of an X-ray radiograph as laminae, divides by k laminae per varve, and takes the column-to-column variance (Eqs 7–9) as a cumulative error. Resolution rule, asserted without derivation, citation or test: "the smallest lamina thickness should include at least three pixels", so s ≤ (1/3)·t/k; Itrax 60 µm → 180 µm, Avaatech 100 µm → 300 µm thinnest detectable lamina (p. 177). Applied to the average lamina, not the thinnest (Byfjorden 0.75 mm → 0.25 mm pixels, p. 180). Resolution and k are tuned "iteratively … to fit the reference stratigraphic levels with known ages" (p. 177); no ladder of resolutions and no core counted at two resolutions. No uncertain-lamina rule; faint lamination only widens the error (p. 181); thick storm beds count as two years (p. 181). Agreement: Nautajarvi within 2 % of an earlier varve count; Byfjorden storm layers within 1–3 yr; Lake Van ~1000 yr older than Landmann's tephra (varve) ages below 3000 BP, outside its own error bars (p. 181), read by the authors as earlier under-counting. Several internal inconsistencies (Fig. 5 caption swapped; Fig. 4 totals do not match the varve counts)."""
 
 [[references]]
+id = "ojala2002"
+kind = "article"
+authors = ["Ojala, A. E. K.", "Francus, P."]
+year = 2002
+title = "Comparing X-ray densitometry and BSE-image analysis of thin section in varved sediments"
+venue = "Boreas 31, 57–64"
+doi = "10.1111/j.1502-3885.2002.tb01055.x"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["varves", "x-ray-radiography", "image-analysis", "resolution", "analogue"]
+notes = """Analogue, read in full 2026-10-29 (owner's PDF, pypdf; Figs 2, 4, 5 viewed on rendered pages). One 10 cm slab of clastic-organic varves, Lake Nautajärvi, '165 varves from AD 104–268' (p. 59), 0.38–1.14 mm thick (p. 62). X-ray film scanned at 1000 dpi ('a 0.6-mm thick varve contained approximately 24 data points', p. 60), boundaries by DendroScan at the density inflection, checked under a binocular microscope; BSE images of thin sections at ~2.7 µm/pixel (512 px over 1375 µm; computed), one image per varve with the ROI chosen by hand (p. 62). NOT a two-method count comparison: one count, shared by both methods (N = 165 in Table 1). Per-varve grey levels correlate (r = 0.78) only where SEM illumination was stable (r = 0.10 over the whole section; 'image acquisition is probably the most critical step', p. 63). Particle counts above 5 and 20 px differ about 4× in level but co-vary (r = 0.95; Fig. 5, p. 63). Only pixel rule: Russ's 50 px for object shape (p. 63), not for laminae. Single-line thickness misses lateral variation; use parallel lines with confidence limits (p. 63). No counting-error estimate for the section; whole profile 'less than 1%' (p. 59), method not given. Inconsistencies: varve area exceeds two 512² images; Table 1 signs; 5/20 px vs 5/10 µm."""
+
+[[references]]
+id = "ojala2012"
+kind = "article"
+authors = ["Ojala, A. E. K.", "Francus, P.", "Zolitschka, B.", "Besonen, M.", "Lamoureux, S. F."]
+year = 2012
+title = "Characteristics of sedimentary varve chronologies – A review"
+venue = "Quaternary Science Reviews 43, 45–60"
+doi = "10.1016/j.quascirev.2012.04.006"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["varves", "lamina-counting", "counting-error", "undercounting", "overcounting", "review", "analogue"]
+notes = """Analogue, read in full 2026-10-29 (owner's PDF, pypdf; Figs 4, 5, 7 viewed on rendered pages; appendix skimmed). Database of 108 varve records ≥ 100 yr (to June 2011). Errors reported as % deviation from the age-depth model (p. 47); 57 % give a numerical error, 36 % none; quantified errors mostly from replicated counts on multiple cores tied by marker horizons (67 %; pp. 51–52). Typical ±1–3 %, mode 2.0 %, mean 3.08 %, max 15 % (Table 1, p. 49); 'unrealistic' below ±1 % for millennia (p. 52). Cross-dating gives precision, not accuracy (p. 51). Error types after Lamoureux & Bradley 1996: A missed, B extra, C missing from all sections (pp. 53–54). Per-interval 'possible extra or missing varves per 200-year section' as separate −/+ bars (Fig. 4, p. 52). Error not related to mean varve thickness (r² = 0.0016), 'slight increase' below 0.4 mm that depends on counting media (p. 53). Photo/fresh-surface counting suits 'varves thicker than roughly 0.5 mm' (p. 50). Thick varves may hold 'extra' seasonal laminae (p. 53). No pixel or resolution rule, no count-vs-resolution, no lower-bound language. Basis shares sum to 102 %."""
+
+[[references]]
+id = "zolitschka2015"
+kind = "article"
+authors = ["Zolitschka, B.", "Francus, P.", "Ojala, A. E. K.", "Schimmelmann, A."]
+year = 2015
+title = "Varves in lake sediments – a review"
+venue = "Quaternary Science Reviews 117, 1–41"
+doi = "10.1016/j.quascirev.2015.03.019"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["varves", "lamina-counting", "counting-error", "resolution", "imaging-methods", "overcounting", "undercounting", "review", "analogue"]
+notes = """Analogue, read 2026-10-29 (owner's PDF, pypdf; Figs 13–21 viewed on rendered pages). §§1–5 and 7 read in full; §6 (applications) skimmed by keyword; online supplement not seen. A review: every rule is second-hand. Only samples-per-unit rule: µ-XRF should 'perform at least ten measurements across each varve' for 'every seasonal layer' (p. 15, after Marshall et al. 2012), a characterisation rule, per varve; no pixel or voxel rule anywhere (the word 'pixel' does not occur). Varves > 1 mm by eye or lens, < 1 mm need microscale techniques (p. 13); X-ray slabs ≤ 1 cm against tilt blur (p. 15); µ-XRF up to 20 µm; SEM 'three orders of magnitude' finer than light microscopy (p. 14). 'Macroscopically invisible laminations' can show in X-radiographs (p. 14). Counting: ≥ 3 transects, ≥ 2 independent counters (p. 15); error as RMSE of repeat counts, per section between markers (p. 18); errors both negative and positive (p. 17); repeat counts give precision, not accuracy (p. 18). Varves < 0.2 mm (compressed, missed, merged) and > 20 mm (more than 10 seasonal laminae, over-count) both complicate counts (p. 17, after Sprowl 1993); distinctness outweighs thickness (Nautajärvi ±1 % at 0.67 mm vs Steel Lake ±8.4 % at 1.22 mm, p. 18). Ojala et al. 2012: 62 of 108 records give errors 0–±15 %, mean ±3.1 %, realistic ±2 %. A varve has 'at least two or more seasonal laminae' (p. 6); clay cap is the clastic year criterion. No uncertain-lamina rule, no lower-bound or censoring language, no count against resolution; indistinct intervals bridged by interpolated sedimentation rates (pp. 16–17). Stanton et al. 2010: ~270 missing and ~230 superfluous varves in one record (p. 23). 'No accepted protocols of reporting ... uncertainties' (p. 34)."""
+
+[[references]]
 id = "rasmussen2006"
 kind = "article"
-authors = ["Rasmussen, S. O.", "et al. (full list not checked)"]
+authors = ["Rasmussen, S. O.", "Andersen, K. K.", "Svensson, A. M.", "Steffensen, J. P.", "Vinther, B. M.", "Clausen, H. B.", "Siggaard-Andersen, M.-L.", "Johnsen, S. J.", "Larsen, L. B.", "Dahl-Jensen, D.", "Bigler, M.", "Röthlisberger, R.", "Fischer, H.", "Goto-Azuma, K.", "Hansson, M. E.", "Ruth, U."]
 year = 2006
 title = "A new Greenland ice core chronology for the last glacial termination"
-venue = "Journal of Geophysical Research: Atmospheres 111, D06102"
+venue = "Journal of Geophysical Research 111, D06102"
 doi = "10.1029/2005JD006079"
 access = "closed"
-licence = "not checked; cite only (access not checked)"
-checked = "citation"
-topics = ["ice-cores", "lamina-counting", "counting-error", "analogue"]
-notes = "Cited by andersen2006 (pp. 3248-3249) as the source of the GICC05 rule that counts each uncertain annual layer as 0.5 ± 0.5 yr. Title, venue and DOI checked on Crossref 2026-10-29; not read. On the owner's download list."
+licence = "© 2006 AGU (p. 1); cite only"
+checked = "full-text"
+topics = ["ice-cores", "lamina-counting", "counting-error", "resolution", "inter-counter-agreement", "analogue"]
+notes = """Analogue, read in full 2026-10-29 (owner's PDF, pypdf; pp. 3, 8, 11, 12 viewed rendered for Table 1, Fig. 5, the error formulas and Table 3). Origin of the GICC05 uncertain-layer convention: 'From the start it was agreed between the investigators that the uncertain marks should be regarded and counted as "half years"' (¶17, p. 5); 'regarded as 0.5 ± 0.5 year', MCE = sum, 'assuming that the counting errors are correlated' (¶40, p. 11), 'highly conservative' (p. 12); alternatives 9 yr (uncorrelated) and 72 yr (by period) computed and set aside. No 25–75 % probability band here (that wording is andersen2006's). Uncertain marks by criteria: weak or mistimed seasonal indicators; evidence in some series only (type I); shoulders/double peaks possibly two unresolved layers (type II, ~3/4 of YD uncertain marks); data gaps; counter disagreement. Effective resolution = 'the shortest wavelength that can be identified from the data' (Table 1, p. 3; ¶9), 3–25× the sampling step, GRIP values 'from inspection of the data'. YD mean layer < 2× shortest resolvable cycle, so thin layers 'may ... vanish' (¶22); lost layers upper limit 'a few tens of years', ~1 %, not in the MCE (¶38). Finer VS data hold sub-annual peaks and are smoothed (σ = 4 mm, ¶6); [Ca2+] fewer peaks than [NH4+] partly from lower resolution, all NH4+ peaks +7 % (¶17). No resolution ladder. Counters: 3 independent + arbitrator; totals within 1.5 % but ~200 positional differences in 2.4 kyr (¶18); NGRIP up to 5 % (YD) and 10 % (OD) (¶19); two-group bias ≤ 1 % (¶40). Reinterpretation moved counts +1.5 %/+6.6 %, 4–5× the uncertain marks (¶39); rule bias excluded from all errors (abstract, ¶48)."""

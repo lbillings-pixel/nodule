@@ -3,7 +3,8 @@
 - Status: accepted (owner, 2026-10-29, with the recommendations in 7a–7e;
   the reading of 7e found no source that changes them). Amended
   2026-10-29 after three papers were read in full; no decision or grade
-  changed (see Consequences).
+  changed (see Consequences). Amended again 2026-10-29 after ten more were
+  read in full: the owner took choices 7f–7h (section 7); no grade changed.
 - Date: 2026-10-29
 - Builds on: [ADR 0004](0004-characterization-schema-core-set.md) sections
   1, 4 (C6, C10, C13) and 8. Records the owner's choice of 2026-10-29 to
@@ -31,7 +32,13 @@
   photo of a 60 mm face has 0.02 mm pixels, and a light–dark couplet needs at
   least 2 pixels, with blur and JPEG compression often 4 or more. A varve
   rule asks for at least three pixels per lamina, so 6 per couplet
-  [@damci2016], which gives about 0.12 mm. So the finest couplet a good
+  [@damci2016], which gives about 0.12 mm. A field review gives no image
+  pixel rule at all; its one sampling rule, "at least ten measurements
+  across each varve", is for describing layers by µ-XRF, not for seeing them
+  [@zolitschka2015, p. 15]. To see a lamina's boundaries sharply, one CT
+  study needed "a minimum of about 13 voxels per varve" [@jamba2025,
+  pp. 94–95]: a measuring floor about four times Damci's detection floor.
+  So the finest couplet a good
   library photo can show is about 0.04–0.12 mm, two orders of magnitude
   above iris spacing. Library photos have no scale, so even this limit is
   known only in pixels.
@@ -49,21 +56,57 @@
   measurement resolution" can "decrease the number of layers that can be
   recognised", and the GICC05 count enters each uncertain layer as ½ ± ½
   year, so the uncertainty is an interval, not a point [@winstrup2012].
-  The rule is stated in [@andersen2006], which takes it from
-  [@rasmussen2006] (not read): a layer is uncertain where its probability
-  is judged to lie between 25 % and 75 %, and the maximum counting error
-  adds ½ year per uncertain layer. That error assumes "the data resolution
+  The rule comes from [@rasmussen2006], whose counters "agreed" before
+  counting that uncertain marks "should be regarded and counted as 'half
+  years'" (¶17, p. 5): a convention, not derived or tested. Its maximum
+  counting error sums ½ year per uncertain mark, "assuming that the
+  counting errors are correlated", and is called "highly conservative"
+  (¶40, pp. 11–12). [@andersen2006] adds the definition that a layer is
+  uncertain where its probability is judged to lie between 25 % and 75 %
+  (p. 3249; the wording is not in [@rasmussen2006]). Units at the limit are
+  a class of their own there: "shoulders, wide peaks, or double peaks that
+  could represent two thin annual layers not fully resolved" count ½ ± ½,
+  while layers "lost altogether due to insufficient resolution" lie outside
+  the error, put at most at about 1 % (¶23, ¶38) [@rasmussen2006].
+  The error of [@andersen2006] assumes "the data resolution
   is sufficient to resolve annual layers" (p. 3252), so layers below the
   limit lie outside it, as here. The same paper defines a record's
   effective resolution as "the shortest wavelength that can be identified
   from the data" (p. 3248), and finds single-record counts "highly
   dependent on the measurement resolution": coarse records miss thin
   layers, fine ones count events within a year (p. 3251) [@andersen2006].
-  In varves, the three-pixel rule above is asserted without derivation,
-  citation or test, ignores blur, and is applied to the average lamina,
-  not the thinnest [@damci2016, p. 177, 180]. No source found (time-boxed
-  search, 2026-10-29) measures how a count changes over a ladder of
-  resolutions, or explains agate's shadow effect.
+  [@rasmussen2006] gives the same definition first (Table 1, p. 3), at 3–25
+  times the sampling step, set "from inspection of the data"; its finest
+  record is smoothed because it holds sub-annual peaks (¶6).
+- **Counts err both ways, and repeat counts don't show it.** Varves below
+  about 0.2 mm are missed or merged, while thick ones can hold "more than 10
+  seasonal laminae" counted as years; one record had about 270 varves
+  missing and 230 too many [@zolitschka2015, pp. 17, 23]. Varve errors are
+  mostly two-sided percentages from repeat counts across cores, which
+  measure precision, not accuracy, and miss varves absent from every core
+  [@ojala2012, pp. 51, 53–54]. Distinctness matters more than thickness: a
+  lake with 1.22 mm varves has ±8.4 % against ±1 % at 0.67 mm
+  [@zolitschka2015, p. 18]. Where varves are indistinct, one study refuses
+  to count them as zero years and fills them by resampling distinct
+  sections, which assumes the unseen resemble the seen and needs a
+  radiometric age to check against (p. 413) [@arcusa2022]. Observers there
+  differed by 14.5–23.6 % on the same core (Table 2, p. 419).
+- **No count-against-resolution test exists in what was read.** In varves,
+  the three-pixel rule above is asserted without derivation, citation or
+  test, ignores blur, and is applied to the average lamina, not the
+  thinnest [@damci2016, p. 177, 180]. No source found (time-boxed search,
+  2026-10-29) measures how a count changes over a ladder of resolutions, or
+  explains agate's shadow effect. The nearest cases: on the same varves,
+  1 µm SEM pixels and 45 µm CT voxels give counts within −1.4 to +5.6 %
+  (Table 2, p. 88), finer voxels "did not provide additional information",
+  and one lamina is shown at seven voxel sizes without counts (Fig. 19,
+  pp. 94–96) [@jamba2025]; a tree-ring CT study scans at 60 to 4 µm, but
+  each size on different cores, with no counts compared (Table 2)
+  [@vandenbulcke2019]; a varve review finds counting error unrelated to
+  mean varve thickness (r² = 0.0016), with methods chosen to suit the
+  varves (pp. 51, 53) [@ojala2012]. [@ojala2002] compares two imaging
+  methods on one shared count of 165 varves (p. 59, Table 1), not two
+  counts.
 
 The owner chose (2026-10-29) to try recording differently first, with a
 fallback written in that loosens the requirement toward goals 1 and 2 (image
@@ -82,34 +125,63 @@ stone's band number:
   where the view has a scale. *L* is the shortest spacing at which the
   face's rim-to-centre profiles keep power above their noise floor
   (choice 7a), so it shows blur and compression, not only pixel size; it is
-  checked on synthetic faces of known blur.
+  checked on synthetic faces of known blur. *L* is stored with the number
+  of profiles averaged to find it, since averaging raises the signal over
+  the noise; tree-ring CT filters along the rings for that reason
+  [@vandenbulcke2019, ms p. 17] (choice 7h).
 - **Bands finer than *L* are unknown, not zero.** No record may store or
-  imply a count of them.
+  imply a count of them. The *n* above *L* still carries a two-sided error
+  (C6's range), since counts err both ways (Context).
+- **`C6_blank`** (choice 7g): the share of each rim-to-centre profile, and
+  its median over the face, where no band is resolved above the noise
+  floor. Two faces with the same "at least *n*" and very different blank
+  stretches are then not read as alike. A varve study reports its
+  indistinct share of the core (8.7–19.6 %) beside the count
+  [@arcusa2022, p. 413]; nothing is imputed into the blank here (Alternatives).
+  Grade: speculative (no source does this for agate).
 - **`C6_eye`** is stored the same way: "at least *n*", with *L* of the
   photo it was given on. The eye's own limit isn't measured; it is taken to
-  be no finer than the photo's (assumption).
-- **Counts are compared only at a common limit.** Two counts with different
-  *L* are compared after the finer one is recounted at the coarser limit
-  (section 2). Counts are also compared only within one lighting kind,
+  be no finer than the photo's (assumption). The owner recounts about 5
+  faces a week or more later, unprompted, to estimate their own spread
+  (choice 7h); until then `C6_eye` is one look.
+- **Counts are compared only at a common limit and under one counting
+  rule.** Two counts with different *L* are compared after the finer one is
+  recounted at the coarser limit (section 2). A finer method can count
+  fewer under a stricter rule: SEM counted laminae only where topped by a
+  clay cap, so CT counted more [@jamba2025, p. 92]; reinterpreting the same
+  ice-core data moved counts by up to 6.6 %, 4–5 times what the uncertain
+  marks allowed (¶39) [@rasmussen2006]. C6 and `C6_eye` differ in rule as
+  well as in *L*, so `C6_eye` below C6 need not mean a coarser eye.
+  Counts are also compared only within one lighting kind,
   since transmitted light can invert which bands look light (owner's note on
   agate3; ADR 0004 section 1 already records the lighting). In thin
   chalcedony plates, bands dark against a window look bright under oblique
   light on a dark background, "and vice versa" [@jayaraman1953, p. 445,
-  447]: a published case of the owner's note. Thicker plates there were less
-  transparent (p. 447), so a slab's thickness also changes what shows; it
-  isn't in the schema and is listed as a candidate.
+  447]: a published case of the owner's note. Two iridescent plates show the
+  same swap over their whole banded area [@raman1953, p. 200]. Thicker
+  plates were less transparent [@jayaraman1953, p. 447; @raman1953,
+  p. 200], so a slab's thickness also changes what shows; it isn't in the
+  schema and is listed as a candidate. In varve image analysis, uneven
+  illumination alone cut a per-varve grey-level correlation from 0.78 to
+  0.10, and image acquisition is called "probably the most critical step"
+  [@ojala2002, p. 63].
 
 Negative controls: a synthetic face with fine bands below *L* drawn over
 coarse ones must count only the coarse ones and report *L* above the fine
-spacing; the same synthetic stone imaged at two resolutions must give a
-higher-resolution count at least the lower-resolution one, and equal counts
-once both are taken at the coarser *L*. Grade: plausible (the limit is
+spacing; the same synthetic stone imaged at two resolutions, under one
+counting rule, must give a higher-resolution count at least the
+lower-resolution one, and equal counts once both are taken at the coarser
+*L*; a synthetic face with a band-free zone must report that zone's share
+in `C6_blank`, not only a lower *n*. Grade: plausible (the limit is
 standard sampling, and ice-core counting defines a record's resolution the
-same way, as its shortest identifiable wavelength [@andersen2006]; its use
-on agate photos is untested). A pixel floor after [@damci2016] (*L* no
-finer than 6 px per couplet, flagged where the spectrum says finer) is a
-candidate cross-check, not adopted: speculative, since no source compares
-the two.
+same way, as its shortest identifiable wavelength [@andersen2006;
+@rasmussen2006]; its use on agate photos is untested). A pixel floor after
+[@damci2016] (*L* no finer than 6 px per couplet, flagged where the
+spectrum says finer) is a candidate cross-check, not adopted: speculative,
+since no source compares the two. If adopted, it must say whether it is a
+detection floor (Damci's 3 px per lamina) or a measuring floor (about 13
+voxels per lamina [@jamba2025, pp. 94–95]); spacing descriptors need the
+stricter one.
 
 ### 2. Count against limit, N(L)
 
@@ -123,9 +195,16 @@ resolution (section 5) tests whether the curve goes on rising.
 range of *L* and then rises would mark a gap between band scales. That is a
 reading of one source, not a result. A step can also come from counting
 rules or geometry, not band scales (reasoning), so the rule agreement is
-kept beside N(L). A varve study comparing CT with thin sections bears on
-this and is to be read in full before it is cited for more than its
-abstract [@jamba2025].
+kept beside N(L). On varves far coarser than both limits, counts at
+1 µm and 45 µm agree closely [@jamba2025, p. 88]: a flat stretch, as N(L)
+should show where *L* is well below the finest spacing (analogue,
+plausible). Finer data can also add peaks that are not units: ice-core
+counters smooth their finest record because it holds sub-annual peaks
+(¶6) [@rasmussen2006], and varves hold "at least two or more seasonal
+laminae" [@zolitschka2015, p. 6]. Those count as errors only because a year
+is defined; agate bands have no such unit, so a rise of N(L) at fine *L* is
+read as a finer band scale once rule agreement excludes noise (reasoning,
+speculative).
 
 Negative controls: rings of one spacing give a flat N(L) that drops to 0
 once *L* passes the spacing; two drawn scales give two steps; red noise must
@@ -138,7 +217,7 @@ speculative (no source applies count-against-resolution to laminae; choice
 | # | Domain | Descriptor | Source | Negative control | Grade |
 |---|---|---|---|---|---|
 | C23 | B, D | Centre count: separate band centres in the face, by eye, cross-checked against C13 where it is measured | owner's notes; [@marichal2025] (via C13) | One concentric set gives 1; two drawn separate sets give 2 | plausible |
-| C24 | B, E | Fine-banding evidence, per zone (outer, middle, inner): each cue present, absent or unknown: (a) colour gradient within a band, (b) faint striations at the limit, (c) shadow-like bands in radial sectors, (d) iris colours | owner's notes; [@heaney1995; @cartwright2026] for (d) | A synthetic face with no sub-limit bands must give no cue under the same rendering; a cue is never converted into a count | speculative |
+| C24 | B, E | Fine-banding evidence, per zone (outer, middle, inner): each cue present, absent or unknown: (a) colour gradient within a band, (b) faint striations at the limit, (c) shadow-like bands in radial sectors, (d) iris colours | owner's notes; [@raman1953] for (c), as an analogue; [@heaney1995; @cartwright2026; @jones1952; @raman1953; @raman1955] for (d) | A synthetic face with no sub-limit bands must give no cue under the same rendering; a cue is never converted into a count | speculative |
 | C25 | B, F | Zone sequence rim to centre: each zone's kind (even bands, curdled or mottled bands, colour change, coarse quartz, cavity) and its share of the radius | owner's notes; ADR 0004 C17 for the core | A face of one even banded zone gives one zone; C17's core and C25's quartz zone agree | plausible |
 
 C24's cues are signs, not measurements. Cue (c) is the owner's observation;
@@ -151,10 +230,32 @@ in full, doesn't describe it either: on thin colourless plates, light
 scattered by the fibres spreads in a brush that "follows the course of
 banding" (p. 447), and transmission falls quickly as the band planes are
 tilted against the beam (p. 448). A shadow effect could arise from these
-(reasoning, speculative). Its companion paper on iridescent agate (Raman
-and Jayaraman 1953) is on the owner's download list, with [@raman1955] and
-[@graetsch1985] behind it. The owner's idea of reading
-fine-band spacing from shadow banding is listed as a later candidate.
+(reasoning, speculative). The nearest published picture is in its
+companion paper: one iridescent plate whose band strip is "perfectly dark"
+in one segment, "faintly banded" in the next and "quite bright" in the
+third, the segments bounded by lines through the band corners; the
+lighting isn't stated and no cause is given [@raman1953, p. 200, Fig. 1].
+There, transmission changes strongly with the angle between the light and
+the band planes, much less for tilt within them (p. 201), and a 1 mm plate
+passes a sharp image only with a polaroid along the fibres
+[@raman1955, p. 1, Plate I]. So sectors of differently oriented bands
+could differ under one lamp (reasoning, speculative). In Brazilian geodes,
+translucent and milky wall bands differ in water (about 1.3 against
+0.7 wt %) and density, and heat turns translucent chalcedony milky as it
+recrystallises [@graetsch1985, pp. 302–304]; neither source mentions
+viewing angle. The owner's idea of reading fine-band spacing from shadow
+banding is listed as a later candidate.
+
+Cue (d) has two published causes, offered as options since the sources
+disagree: a grating of thin lamellae of alternately higher and lower
+refractive index [@jones1952], or a periodic change in the quartz c-axis
+direction along each fibre, argued by ruling out other causes
+[@raman1953, p. 203; @raman1955, p. 5], which rejects Jones's opal reading
+(p. 6). The strata repeat about every 1 µm, as stated, not measured
+[@raman1953, p. 199]. One iris strip holds "six different gratings" with
+gaps, differing in colour (p. 202), and the diffraction is regular only in
+"selected regions" [@raman1955, p. 4]; no source read turns a colour into a
+spacing without measured angles and a thin plate.
 
 ### 4. Who labels
 
@@ -164,6 +265,16 @@ checks those 30 on the check page and the check overrides the proposal
 (as ADR 0004, 9b; choice 7b). The pre-filled proposals may anchor the
 owner's answers, as the first check may have been (agreement 28–30 of 30);
 the check page shows C24 blank, so that one is answered unprompted.
+
+Blind first (choice 7f): the owner answers 10 of the 30, chosen at random
+with a spawned RNG stream, with the proposals hidden, then the other 20
+as above. Agreement is scored item by item (C23's count, each C24 cue per
+zone, each C25 zone), not per face, and reported separately for the blind
+10 and the shown 20; the gap between the two measures the anchoring. In
+ice-core counting, counters work blind and then reconcile: their totals
+agreed within 1.5 % while about 200 positions differed in 2,400 years
+(¶18) [@rasmussen2006]. Grade: plausible (a standard check against
+anchoring; one source's counters, not agate labels).
 
 ### 5. Cheap captures (data track, owner's stones)
 
@@ -180,11 +291,20 @@ images stay in agatesim's `specimens/` and never enter this repository.
   contrast between bands is structural, yet its shadow can move with the
   light (reasoning, speculative). Fixed sectors point to pigment or band
   boundaries; moving ones are an optical rendering of a structure not yet
-  known.
+  known. Record the lamp's direction against each sector's bands, since
+  tilt across the band planes changes transmission far more than tilt
+  within them [@raman1953, p. 201]. If a polarising filter is at hand,
+  turning it in front of the camera tests for fibre-orientation contrast,
+  which pigment wouldn't show (reasoning from [@raman1955, p. 1]).
 - **Later, need a thin slab** (the owner has none): laser diffraction of
   iris banding, thin sections. CT may not separate bands that are all silica:
-  an assumption, since no source read measures the density contrast between
-  agate bands.
+  an assumption. Bulk samples of translucent and milky wall bands differ in
+  density by about 0.5–1 % (2.575–2.579 against 2.593–2.601 g/cm³, ±0.010)
+  [@graetsch1985, p. 302, Table 1]; no source read gives a density profile
+  across bands, or the contrast a CT boundary needs. CT is also costly:
+  halving the voxel size gives eight times the data [@vandenbulcke2019,
+  ms p. 12], and 45 µm voxels took 170 GB for a 1.5 m core [@jamba2025,
+  p. 94], far above this project's 2 GB flag.
 
 ### 6. Fallback: measure the image, not the stone
 
@@ -193,7 +313,8 @@ Checked at the end of the re-tagging under this ADR. It is taken if any of:
 - the machine count, at the owner's limit, disagrees with `C6_eye` on more
   than a third of the faces where both are given;
 - the owner's check disagrees with the proposed C23–C25 on more than a third
-  of the 30;
+  of the items over the 30, scored item by item, or on more than a third of
+  the blind 10's items (section 4; choice 7f);
 - N(L) doesn't separate the faces the owner notes as finely banded from the
   rest.
 
@@ -237,6 +358,27 @@ is what the core set already does for synthetic cuts).
     assumptions above stand as stated.
   - Accept as is.
 
+Choices 7f–7h were put after ten more papers were read in full; the owner
+took the recommendations (2026-10-29).
+
+- **7f. Blind check.**
+  - *(Recommended, taken)* The owner answers 10 of the 30 with proposals
+    hidden, then the other 20; agreement is scored item by item (sections
+    4 and 6).
+  - All 30 blind.
+  - Keep the check as it was.
+- **7g. Blank share.**
+  - *(Recommended, taken)* Adopt `C6_blank` now (section 1).
+  - List it as a later candidate.
+- **7h. Smaller additions.**
+  - *Taken:* store with *L* the number of profiles averaged; the owner
+    recounts about 5 faces after a delay (section 1).
+  - *Listed as later candidates:* a shoulder or split peak at *L* counts as
+    ½ ± ½ band, after [@rasmussen2006]'s marks for layers not fully
+    resolved (needs a control that one wide band is never split); possible
+    missed and possible extra bands reported separately per zone, after
+    [@ojala2012, Fig. 4].
+
 ## Alternatives considered
 
 - **Keep C6 as a count and note the limit in prose.** Rejected: the record
@@ -245,6 +387,11 @@ is what the core set already does for synthetic cuts).
   eye, and C10 needs the thickness series either way.
 - **Estimate sub-limit bands from cues.** Nothing read supports a
   conversion; listed as a later candidate.
+- **Impute the blank stretches**, as a varve study fills indistinct zones
+  by resampling distinct ones [@arcusa2022, p. 413]. Rejected: that assumes
+  the unseen resemble the seen, while bands below *L* are expected to be a
+  different scale [@heaney1995], and agate has no independent clock to
+  check against (reasoning).
 
 ## Risks
 
@@ -253,15 +400,20 @@ is what the core set already does for synthetic cuts).
   check on synthetic faces of known blur.
 - **Cues are subjective.** C24 rests on one observer's eye under unknown
   lighting; it informs where to scan, not the schema's claims.
-- **Few faces.** C6 stands on 64 faces and `C6_eye` on 11, so the fallback
-  test is coarse.
+- **Few faces.** C6 stands on 72 faces and `C6_eye` on 11, so the fallback
+  test is coarse; the blind 10 are fewer still.
+- **A face is one plane.** CT shows laminae present in the volume and absent
+  from a plane [@jamba2025, Fig. 13], so bands that pinch out or curve away
+  from the cut make a face count a lower bound for a second, geometric
+  reason besides *L* (analogue, plausible).
 
 ## Consequences
 
-- `nodule.bands` gains *L* and N(L); `nodule.tags` stores C6 and `C6_eye` as
-  lower bounds with *L*; the check page gains C23–C25. Timing is measured on
-  10 photos first (current re-tagging takes about 630 s; N(L) adds about one
-  recount per step).
+- `nodule.bands` gains *L*, `C6_blank` and N(L); `nodule.tags` stores C6
+  and `C6_eye` as lower bounds with *L*; the check page gains C23–C25, the
+  blind 10 and the owner's delayed recount. Timing is measured on 10 photos
+  first (current re-tagging of 261 photos takes about 730 s; N(L) adds
+  about one recount per step).
 - ADR 0004's C6 entry is read through this ADR; its other descriptors are
   unchanged.
 - All sources cited are in the catalogue. Choice 7e's search added five,
@@ -273,11 +425,22 @@ is what the core set already does for synthetic cuts).
   [@jayaraman1953], [@andersen2006] and [@damci2016] (reports
   `notes/n1-reading/tier1-*.md`, unreviewed agent output). They change no
   decision or grade. They correct where the ½ ± ½ rule comes from (Andersen
-  et al. take it from [@rasmussen2006], catalogued at citation level), back
-  the lighting rule and the definition of *L* with published cases, widen
-  the photo-limit arithmetic, and add one candidate (the pixel floor). Cue
-  (c) stays speculative.
-- Further downloads for this ADR, by priority, are in
-  `notes/n1-reading/downloads.md` (Rasmussen et al. 2006; Raman and
-  Jayaraman 1953; Ojala and Francus 2002; Ojala et al. 2012; Holten et al.
-  1998 for C11). The band code waits until they are read.
+  et al. take it from [@rasmussen2006]), back the lighting rule and the
+  definition of *L* with published cases, widen the photo-limit arithmetic,
+  and add one candidate (the pixel floor). Cue (c) stays speculative.
+- Read in full next (2026-10-29), from the owner's downloads or fetched
+  open access with the owner's agreement: [@rasmussen2006], [@raman1953],
+  [@raman1955], [@graetsch1985], [@ojala2002], [@ojala2012],
+  [@zolitschka2015] (its applications section skimmed), [@vandenbulcke2019]
+  (the accepted manuscript, so pages are "ms p."), [@jamba2025] and
+  [@arcusa2022] (reports `notes/n1-reading/tier1-*.md`, unreviewed agent
+  output). They change no grade. They show the ½ ± ½ rule is an agreed
+  convention, move the 25–75 % wording to [@andersen2006], find no source
+  for a pixel rule or a count-against-resolution test, give the first
+  density contrast between agate bands, add the nearest published case of
+  cue (c), and set the two causes of cue (d) as options. The owner took
+  choices 7f–7h from them. [@ojala2002] proved not to be the
+  two-resolution count it was listed as.
+- Still to read: Holten et al. 1998 for C11 (not yet downloaded); papers the
+  reports suggest are in `notes/n1-reading/downloads.md`. The band code
+  goes ahead under this ADR.

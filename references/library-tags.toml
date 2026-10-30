@@ -7,8 +7,8 @@
 [meta]
 schema = "ADR 0004"
 sampling = "unknown, compared as centre-seeking"
-photos = 230
-rim_outlines_used = 100
+photos = 261
+rim_outlines_used = 115
 rim_outlines_wrong = "2 of 20 owner-checked helper passes wrong (95% interval 3% to 30%; agatesim ADR 0075)"
 
 [images.2006-10-30buchstutzeachat03]
@@ -5902,6 +5902,1320 @@ C6_low = "unknown"
 C6_high = "unknown"
 C6_rule_gap = "unknown"
 C6_profiles = 24
+C10_persistence = "unknown"
+
+[images.collector-1-b1-1]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "yes"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.9737
+C1_regularity = 0.9996
+C2_circularity = 0.9712
+C3_irregularity = 0.0848
+C3_concavities = 3
+C7_spread = 0.5577
+C8_trend = 0.3338
+C9_ratio = 1.0109
+C11_hurst = 0.357
+C17_core = 0.0275
+C6_count = 7.0
+C6_low = 3.0
+C6_high = 13.0
+C6_rule_gap = 0.1825
+C6_profiles = 24
+C10_persistence = -0.0461
+
+[images.collector-1-b1-2]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "yes"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.9681
+C1_regularity = 0.9996
+C2_circularity = 0.9686
+C3_irregularity = 0.0706
+C3_concavities = 3
+C7_spread = 0.5294
+C8_trend = 0.1185
+C9_ratio = 1.0031
+C11_hurst = 0.3485
+C17_core = 0.1103
+C6_count = 7.0
+C6_low = 3.0
+C6_high = 11.5
+C6_rule_gap = 0.2361
+C6_profiles = 24
+C10_persistence = -0.0801
+
+[images.collector-1-b1-3]
+verdict = "forms"
+forms = [
+    "quartz-geode",
+    "fortification",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "no"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = 0.5856
+C8_trend = 0.9719
+C9_ratio = 1.0167
+C11_hurst = 0.3483
+C17_core = 0.03
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 21
+C10_persistence = -0.0288
+
+[images.collector-1-b1-4]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "no"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.collector-1-b1-5]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "none: implausible"
+outline_check = "unknown"
+outline_by = "unknown"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = 0.6074
+C8_trend = 0.7565
+C9_ratio = 1.0412
+C11_hurst = 0.3429
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 23
+C10_persistence = "unknown"
+
+[images.collector-1-b2-a1]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "none: implausible"
+outline_check = "unknown"
+outline_by = "unknown"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = 0.5833
+C8_trend = 0.8408
+C9_ratio = 0.9867
+C11_hurst = 0.3815
+C17_core = 0.0
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 24
+C10_persistence = -0.1279
+
+[images.collector-1-b2-a2]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "yes"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.8779
+C1_regularity = 0.9976
+C2_circularity = 0.9134
+C3_irregularity = 0.0744
+C3_concavities = 2
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.collector-1-b2-a3]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "polished",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "yes"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.8651
+C1_regularity = 0.9979
+C2_circularity = 0.9181
+C3_irregularity = 0.1005
+C3_concavities = 3
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.collector-1-b2-b1]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "none: no-object"
+outline_check = "unknown"
+outline_by = "unknown"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = 0.5459
+C8_trend = -0.0197
+C9_ratio = 1.0336
+C11_hurst = 0.5069
+C17_core = 0.0152
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 24
+C10_persistence = 0.0133
+
+[images.collector-1-b2-b2]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "none: implausible"
+outline_check = "unknown"
+outline_by = "unknown"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = 0.5957
+C8_trend = 0.9454
+C9_ratio = 0.9915
+C11_hurst = 0.5172
+C17_core = 0.0018
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 17
+C10_persistence = 0.0891
+
+[images.collector-1-b2-b3]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "yes"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.8487
+C1_regularity = 0.9991
+C2_circularity = 0.9104
+C3_irregularity = 0.4724
+C3_concavities = 16
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.collector-1-b2-c1]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "none: cut-off"
+outline_check = "unknown"
+outline_by = "unknown"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = 0.5985
+C8_trend = 0.0886
+C9_ratio = 1.0095
+C11_hurst = 0.3128
+C17_core = 0.1405
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 17
+C10_persistence = 0.2572
+
+[images.collector-1-b2-c2]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "yes"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.8478
+C1_regularity = 0.998
+C2_circularity = 0.912
+C3_irregularity = 0.0223
+C3_concavities = 1
+C7_spread = 0.6114
+C8_trend = 0.5736
+C9_ratio = 1.0034
+C11_hurst = 0.2927
+C17_core = 0.1853
+C6_count = 16.0
+C6_low = 5.0
+C6_high = 26.0
+C6_rule_gap = 0.2
+C6_profiles = 22
+C10_persistence = 0.2441
+
+[images.collector-1-b2-c3]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "yes"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.8979
+C1_regularity = 0.9983
+C2_circularity = 0.9377
+C3_irregularity = 0
+C3_concavities = 0
+C7_spread = 0.5598
+C8_trend = 0.3071
+C9_ratio = 0.9979
+C11_hurst = 0.3097
+C17_core = 0.1397
+C6_count = 15.0
+C6_low = 5.0
+C6_high = 23.0
+C6_rule_gap = 0.2722
+C6_profiles = 22
+C10_persistence = 0.2615
+
+[images.collector-1-b2-d1]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+    "moss",
+]
+features = [
+    "open cavity",
+    "inclusions",
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "yes"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.9404
+C1_regularity = 0.9987
+C2_circularity = 0.9519
+C3_irregularity = 0
+C3_concavities = 0
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.collector-1-b2-d2]
+verdict = "forms"
+forms = [
+    "fortification",
+    "moss",
+]
+features = [
+    "open cavity",
+    "inclusions",
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "yes"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.947
+C1_regularity = 0.999
+C2_circularity = 0.9581
+C3_irregularity = 0
+C3_concavities = 0
+C7_spread = 0.7141
+C8_trend = -0.2096
+C9_ratio = 0.9884
+C11_hurst = 0.3583
+C17_core = 0.0068
+C6_count = 3.5
+C6_low = 1.0
+C6_high = 6.0
+C6_rule_gap = 0.3542
+C6_profiles = 14
+C10_persistence = 0.2243
+
+[images.collector-1-b2-e1]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+    "host rock",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "none: cut-off"
+outline_check = "unknown"
+outline_by = "unknown"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = 0.6876
+C8_trend = -0.3817
+C9_ratio = 0.9916
+C11_hurst = 0.4188
+C17_core = 0.0395
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = 15
+C10_persistence = 0.0621
+
+[images.collector-1-b2-e2]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+    "host rock",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "yes"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = 0.9326
+C1_regularity = 0.9988
+C2_circularity = 0.9522
+C3_irregularity = 0.0719
+C3_concavities = 3
+C7_spread = "unknown"
+C8_trend = 1.5948
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = 0.0
+C6_count = 13.0
+C6_low = 5.0
+C6_high = 21.0
+C6_rule_gap = 0.2404
+C6_profiles = 22
+C10_persistence = 0.0093
+
+[images.collector-1-b2-e3]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+    "open cavity",
+    "host rock",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "yes"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "borderline"
+C1_aspect = 0.9507
+C1_regularity = 0.9975
+C2_circularity = 0.9551
+C3_irregularity = 0.0238
+C3_concavities = 1
+C7_spread = 0.6279
+C8_trend = 0.2291
+C9_ratio = 0.976
+C11_hurst = 0.4457
+C17_core = 0.0556
+C6_count = 10.0
+C6_low = 4.0
+C6_high = 20.5
+C6_rule_gap = 0.25
+C6_profiles = 24
+C10_persistence = 0.0381
+
+[images.collector-1-b2-f1]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "no"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.collector-1-b2-f2]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+]
+features = [
+    "open cavity",
+    "polished",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "none: implausible"
+outline_check = "unknown"
+outline_by = "unknown"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.collector-1-b2-f3]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+]
+features = [
+    "open cavity",
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "none: cut-off"
+outline_check = "unknown"
+outline_by = "unknown"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.collector-1-b2-g1]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "no"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.collector-1-b2-g2]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "yes"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.8447
+C1_regularity = 0.9984
+C2_circularity = 0.9113
+C3_irregularity = 0.0535
+C3_concavities = 2
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.collector-1-b2-g3]
+verdict = "forms"
+forms = [
+    "fortification",
+    "quartz-geode",
+]
+features = [
+    "quartz core",
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "none: cut-off"
+outline_check = "unknown"
+outline_by = "unknown"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.collector-1-b2-h1]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "no"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.collector-1-b2-h2]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+]
+features = [
+    "quartz core",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "none: cut-off"
+outline_check = "unknown"
+outline_by = "unknown"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.collector-1-b2-h3]
+verdict = "forms"
+forms = [
+    "fortification",
+    "eye",
+]
+features = []
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "yes"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "fit"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = 0.2996
+C8_trend = -0.0319
+C9_ratio = 0.9956
+C11_hurst = 0.1325
+C17_core = 0.0
+C6_count = 10.0
+C6_low = 4.0
+C6_high = 17.0
+C6_rule_gap = 0.3
+C6_profiles = 23
+C10_persistence = -0.1396
+
+[images.collector-1-b2-i1]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "no"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = "unknown"
+C1_regularity = "unknown"
+C2_circularity = "unknown"
+C3_irregularity = "unknown"
+C3_concavities = "unknown"
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.collector-1-b2-i2]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "yes"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.9505
+C1_regularity = 0.9987
+C2_circularity = 0.95
+C3_irregularity = 0.3704
+C3_concavities = 13
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
+C10_persistence = "unknown"
+
+[images.collector-1-b2-i3]
+verdict = "forms"
+forms = [
+    "fortification",
+]
+features = [
+    "open cavity",
+]
+view_kind = "unknown"
+finish = "unknown"
+lighting = "unknown"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+C5_width = "unknown"
+C22_count = "unknown"
+rim = "found"
+outline_check = "yes"
+outline_by = "helper"
+labels_by = "unknown"
+C6_eye = "unknown"
+scale = "none"
+shape_gate = "not fit"
+C1_aspect = 0.9397
+C1_regularity = 0.9991
+C2_circularity = 0.9464
+C3_irregularity = 0.2943
+C3_concavities = 9
+C7_spread = "unknown"
+C8_trend = "unknown"
+C9_ratio = "unknown"
+C11_hurst = "unknown"
+C17_core = "unknown"
+C6_count = "unknown"
+C6_low = "unknown"
+C6_high = "unknown"
+C6_rule_gap = "unknown"
+C6_profiles = "unknown"
 C10_persistence = "unknown"
 
 [images.crazy-lace-agate-11-cropped]

@@ -23,7 +23,13 @@ Each usable photo gets one record:
 - C6 and C10 measured here along rim-to-centre profiles (`nodule.bands`) on
   the same photos, with the band spacing and noise agatesim's cache holds:
   inside the judged rim outline, or else inside agatesim's working region
-  (`segment()`), where C10 still counts.
+  (`segment()`), where C10 still counts;
+- with C6, under ADR 0006: the resolving limit L (`C6_L_px`, and `C6_L_share`
+  of the face's inner radius; `C6_profiles` is the number of profiles averaged
+  to find it), so a count reads "at least C6_count bands coarser than L";
+  `C6_blank`; and N(L) as parallel lists, rung 0 first (`N_L_px`, `N_count`,
+  `N_low`, `N_high`, `N_rule_gap`). L describes the photo and counts anywhere
+  it is measured; the rest run rim to centre, so they are outline-bound.
 
 Where the rim outline is missing, unjudged or judged "no", C1-C3 and C6 are
 "unknown" (section 8). The labels' own outline check judged the old
@@ -81,6 +87,13 @@ OUTLINE_BOUND = (
     "C6_low",
     "C6_high",
     "C6_rule_gap",
+    "C6_L_share",
+    "C6_blank",
+    "N_L_px",
+    "N_count",
+    "N_low",
+    "N_high",
+    "N_rule_gap",
 )
 # Band count and persistence measured here: name in the record -> field of `bands.Bands`.
 MEASURED = {
@@ -90,6 +103,17 @@ MEASURED = {
     "C6_rule_gap": "rule_gap",
     "C6_profiles": "profiles",
     "C10_persistence": "persistence",
+    "C6_L_px": "limit_px",
+    "C6_L_share": "limit_share",
+    "C6_blank": "blank",
+}
+# N(L): name in the record -> field of `bands.Rung`.
+LADDER = {
+    "N_L_px": "limit_px",
+    "N_count": "count",
+    "N_low": "low",
+    "N_high": "high",
+    "N_rule_gap": "rule_gap",
 }
 
 HEADER = """\
@@ -101,7 +125,7 @@ HEADER = """\
 
 """
 
-Value = float | int | str | bool | list[str]
+Value = float | int | str | bool | list[str] | list[float]
 
 
 def agatesim_dir() -> Path:
@@ -135,13 +159,17 @@ def imported(entry: dict[str, object] | None, size: int) -> dict[str, Value]:
 
 
 def measured(band: bands.Bands | None) -> dict[str, Value]:
-    """C6 and C10, "unknown" where they could not be judged."""
+    """C6 (with L, C6_blank and N(L)) and C10, "unknown" where they could not
+    be judged."""
     out: dict[str, Value] = {}
     for name, field in MEASURED.items():
         value = getattr(band, field) if band is not None else None
         out[name] = round(float(value), 4) if value is not None else UNKNOWN
     if band is not None:
         out["C6_profiles"] = band.profiles
+    for name, field in LADDER.items():
+        rungs = band.ladder if band is not None else ()
+        out[name] = [round(float(getattr(r, field)), 4) for r in rungs] if rungs else UNKNOWN
     return out
 
 
@@ -215,7 +243,8 @@ def measure_photo(
     """C1-C3 of the photo's rim outline where it was judged "yes" (at
     `rims.RIM_PX`), and C6 and C10 at full resolution where agatesim's cache
     `passes` and holds the band spacing and noise: inside that outline, or else
-    inside agatesim's working region. Also the photo's `rim_tags`."""
+    inside agatesim's working region. N(L) is only climbed where the outline
+    is judged "yes", since it is outline-bound. Also the photo's `rim_tags`."""
     _, rim = finder.find(image_id, data)
     judged = rims.verdict(verdicts, image_id, rim.mask) if rim.found else None
     tag = rim_tags(rim.reason, judged)
@@ -233,8 +262,9 @@ def measure_photo(
         return shape, None, tag
     lum = luminance(load_photo(data, 10**6).rgb)
     scale = mask.shape[1] / lum.shape[1]
+    yes = judged is not None and judged.passed
     band = bands.measure(
-        lum, mask, scale, float(noise), float(spacing), rng=np.random.default_rng(0)
+        lum, mask, scale, float(noise), float(spacing), rng=np.random.default_rng(0), ladder=yes
     )
     return shape, band, tag
 

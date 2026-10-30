@@ -46,6 +46,46 @@ segmentation edges are not counted.
   about −0.25 here. A negative value on a face with low thickness spread (C7)
   may be that error, not alternation.
 
+- **Resolving limit *L*** (ADR 0006 section 1, choice 7a): the finest band
+  period the photo shows, from the power spectrum of the same profiles,
+  averaged over them in quarter-octave period bins. The noise floor is white
+  noise at the quality gate's sigma, read along the same paths with the same
+  bilinear sampling (and, on the ladder, the same blur), so the floor carries
+  what the reading does to noise. *L* is the shortest period whose bin and the
+  next coarser bin both hold `FLOOR_RATIO` times the floor's power. It is a
+  couplet period (light plus dark band), C10's unit, in full pixels and as a
+  share of the face's inner radius, stored with the number of profiles
+  averaged (choice 7h). It reads content: a face without fine bands reports its
+  finest bands, which is still a valid limit for "at least n coarser than L".
+  JPEG blocking or noise correlated between pixels can put power above a white
+  floor and make *L* optimistic (risk, unmeasured).
+- **`C6_blank`** (choice 7g): the share of each rim-to-centre line where the
+  band signal (the profile smoothed to *L*, less rule 2's central moving
+  average) has local power under `FLOOR_RATIO` times the same reading of the
+  noise profile; the median over the face. Where a path stopped because the
+  bands lost their direction, the straight distance from its end to the face's
+  deepest point counts as blank too, since the path stops before a band-free
+  zone wider than `LOST_SPACINGS`; so bands beyond such a zone also count as
+  unresolved. Nothing is imputed into the blank stretches. Sharp band edges
+  put harmonic power at finer periods, so *L* can come out finer than the
+  finest couplet (seen on drawn bands with a sharp onset).
+- **N(L)** (section 2, choice 7c): the face recounted on a ladder of coarser
+  limits. Rung r blurs the photo by `RUNG_BLUR` f (f = sqrt(2)^r), re-reads
+  the same paths every f pixels, and adds fresh white noise of the native
+  profiles' noise spread, as a coarser photo of the same stone would hold its
+  own pixel noise (assumption; without it the blurred floor falls towards zero
+  and window leakage reads as resolved power). *L* and the noise are found
+  again at each rung (the gate's noise times the change in the noise
+  profiles' spread), and the
+  count runs at a band spacing of max(gate spacing, L/2). Rung 0 is C6 as
+  above. The ladder stops once *L* reaches a quarter of the face's diameter;
+  a rung with no bin above the floor is stored as 0 bands at that rung's own
+  limit (blur and sampling) and ends the ladder. Below the native *L* nothing
+  is extrapolated. On two drawn band scales of equal swing, the finer drops out
+  of the count once blur takes its swing below the central share of the spread
+  (`AMPLITUDES`), rungs before *L* passes its period: a step marks where a
+  scale fades under the counting rule, not exactly its period.
+
 Each value is None where too few profiles or bands were found to judge it.
 Every parameter here is `effective`: a choice of measurement, not a property of
 the stone.
@@ -54,7 +94,7 @@ the stone.
 from __future__ import annotations
 
 import math
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 
 import numpy as np
 from agatesim import _scipy as agatesim_scipy  # pyright: ignore[reportPrivateUsage]
@@ -80,6 +120,18 @@ MIN_PROFILES = 8  # effective: profiles needed for C6
 MIN_SERIES = 5  # effective: widths a series needs to enter C10
 MIN_PERSISTENCE_WIDTHS = 40  # effective: widths needed for C10
 SHUFFLES = 50  # effective: shuffled copies for C10's baseline
+MIN_PERIOD_PX = 2.0  # sampling: the shortest period a profile can hold (Nyquist)
+BIN_STEP = 2.0**0.25  # effective: quarter-octave period bins
+MIN_CYCLES = 2.0  # effective: a period is read only where a profile holds this many
+FLOOR_RATIO = 2.0  # effective: power over the noise floor that counts as resolved
+HALF_POWER = 5.34  # a Gaussian of sigma s halves the power of period ~5.34 s
+RUNG_STEP = math.sqrt(2.0)  # effective: ladder step (ADR 0006 section 2)
+RUNG_BLUR = 1.0  # effective: blur sigma per unit of a rung's sampling step; at 0.5,
+# bands just under the rung's Nyquist period folded into false coarse bands (tried)
+STOP_SHARE = 0.25  # effective: the ladder stops once L reaches this share of the diameter
+MAX_RUNGS = 16  # effective: a guard; the stop above ends the ladder first
+SHRINK_SIGMAS = 2.0  # effective: a rung's blur runs on the photo block-averaged by
+# sigma / this, so wide blurs stay quick
 
 
 @dataclass(frozen=True)
@@ -93,9 +145,21 @@ class Bands:
     persistence: float | None  # C10: pooled lag-1, less its shuffled baseline
     profiles: int
     widths: int
+    limit_px: float | None = None  # L: finest resolved couplet period, full px
+    limit_share: float | None = None  # L over the face's inner radius
+    blank: float | None = None  # C6_blank: median share of a profile with no resolved band
+    ladder: tuple[Rung, ...] = ()  # N(L), rung 0 first
 
-    def to_json(self) -> dict[str, float | int | None]:
-        return {k: round(v, 4) if isinstance(v, float) else v for k, v in asdict(self).items()}
+
+@dataclass(frozen=True)
+class Rung:
+    """The face counted at one limit of the ladder."""
+
+    limit_px: float  # L at this rung (or the rung's own limit where nothing is resolved)
+    count: float  # median rule-1 count at central parameters
+    low: float
+    high: float
+    rule_gap: float
 
 
 @dataclass(frozen=True)
@@ -200,6 +264,84 @@ def persistence(series: list[NDArray[np.float64]], rng: np.random.Generator) -> 
     return num / den - baseline / SHUFFLES
 
 
+def spectrum(
+    profiles: list[NDArray[np.float64]], step: float
+) -> tuple[NDArray[np.float64], NDArray[np.int64]]:
+    """Mean power per period bin over `profiles` (sampled every `step` full px):
+    each profile less its straight-line trend, Hann-windowed, scaled so white
+    noise of variance s^2 gives s^2 in every bin. Bin b holds periods from
+    MIN_PERIOD_PX * BIN_STEP^b; also the number of frequencies in each bin."""
+    bins = int(math.log(1e6) / math.log(BIN_STEP))
+    total = np.zeros(bins)
+    n_in = np.zeros(bins, dtype=np.int64)
+    for x in profiles:
+        n = x.size
+        if n < 8:
+            continue
+        k = np.arange(n, dtype=np.float64)
+        x = x - np.polyval(np.polyfit(k, x, 1), k)
+        w = np.hanning(n)
+        power = np.abs(np.fft.rfft(x * w))[1:] ** 2 / float(np.sum(w * w))
+        period = n / np.arange(1, power.size + 1) * step
+        keep = (period >= MIN_PERIOD_PX * step) & (period <= n * step / MIN_CYCLES)
+        b = np.floor(np.log(period[keep] / MIN_PERIOD_PX) / math.log(BIN_STEP)).astype(np.int64)
+        b = np.clip(b, 0, bins - 1)
+        np.add.at(total, b, power[keep])
+        np.add.at(n_in, b, 1)
+    return total / np.maximum(n_in, 1), n_in
+
+
+def resolving_limit(
+    signal: list[NDArray[np.float64]], noise: list[NDArray[np.float64]], step: float
+) -> float | None:
+    """L: the centre period (full px) of the shortest bin that holds
+    `FLOOR_RATIO` times the noise profiles' power. (Asking the next coarser bin
+    to pass too was tried: it missed a narrow band scale whose power sits in
+    one bin.)"""
+    power, n_in = spectrum(signal, step)
+    floor, _ = spectrum(noise, step)
+    above = np.nonzero((n_in > 0) & (power >= FLOOR_RATIO * np.maximum(floor, 1e-12)))[0]
+    if above.size == 0:
+        return None
+    return MIN_PERIOD_PX * BIN_STEP ** (float(above[0]) + 0.5)
+
+
+def blank_share(
+    profile: NDArray[np.float64],
+    noise: NDArray[np.float64],
+    limit: float,
+    spacing: float,
+    unread: float = 0.0,
+) -> float:
+    """Share of a rim-to-centre line with no band above the floor. Along
+    `profile` (one sample per full px), band signal is the profile smoothed to
+    `limit` less the central moving average; its local power over one couplet
+    is compared with `FLOOR_RATIO` times the mean of the same on the noise
+    profile. `unread` px past the profile's end, towards the centre, count as
+    blank."""
+
+    def local(x: NDArray[np.float64]) -> NDArray[np.float64]:
+        smooth = agatesim_scipy.gaussian(x, limit / HALF_POWER)
+        rest = smooth - moving_average(x, CENTRAL[2] * spacing)
+        return agatesim_scipy.gaussian(rest * rest, 2 * spacing)
+
+    floor = float(np.mean(local(noise)))
+    blank = float(np.sum(local(profile) < FLOOR_RATIO * floor))
+    return (blank + unread) / (profile.size + unread)
+
+
+def blurred(image: NDArray[np.float64], sigma: float) -> tuple[NDArray[np.float64], int]:
+    """`image` blurred by `sigma` full px, at 1/m of its size: block means of m
+    by m pixels (their variance (m^2 - 1)/12 counted in the blur), then a
+    Gaussian for the rest. Returns the image and m."""
+    m = max(1, int(sigma // SHRINK_SIGMAS))
+    if m > 1:
+        h, w = image.shape[0] // m, image.shape[1] // m
+        image = image[: h * m, : w * m].reshape(h, m, w, m).mean(axis=(1, 3))
+    rest = math.sqrt(max(sigma**2 - (m**2 - 1) / 12, 0.0)) / m
+    return agatesim_scipy.gaussian(image, rest), m
+
+
 def direction_field(
     lum: NDArray[np.float64], spacing: float
 ) -> tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.float64]]:
@@ -220,8 +362,9 @@ def streamline(
     inside: NDArray[np.bool_],
     start: tuple[int, int],
     spacing: float,
-) -> NDArray[np.float64]:
-    """Path (n, 2) of (row, column) from `start` inward along the band normal."""
+) -> tuple[NDArray[np.float64], bool]:
+    """Path (n, 2) of (row, column) from `start` inward along the band normal,
+    and whether it stopped because the bands lost their direction."""
     nr, nc, coherence = field
     h, w = depth.shape
     gr = float(np.asarray(np.gradient(depth, axis=0), dtype=np.float64)[start[0], start[1]])
@@ -230,6 +373,7 @@ def streamline(
     prev: tuple[float, float] | None = None
     path = [(r, c)]
     best, best_at, lost, last_clear = float(depth[start]), 0, 0.0, 0
+    strayed = False
     for _ in range(int(3 * depth.max() / STEP_PX) + 1):
         i, j = round(r), round(c)
         if coherence[i, j] >= MIN_COHERENCE:
@@ -242,8 +386,10 @@ def streamline(
             dr, dc = prev
             lost += STEP_PX
             if lost > LOST_SPACINGS * spacing:
+                strayed = True
                 break
         else:
+            strayed = True
             break
         r, c = r + STEP_PX * dr, c + STEP_PX * dc
         i, j = round(r), round(c)
@@ -255,7 +401,7 @@ def streamline(
             best, best_at = float(depth[i, j]), len(path) - 1
         elif best - depth[i, j] > PAST_SPACINGS * spacing:
             break
-    return np.asarray(path[: min(best_at, last_clear) + 1], dtype=np.float64)
+    return np.asarray(path[: min(best_at, last_clear) + 1], dtype=np.float64), strayed
 
 
 def rim_starts(
@@ -281,11 +427,13 @@ def measure(
     *,
     rng: np.random.Generator,
     starts: int = STARTS,
+    ladder: bool = True,
 ) -> Bands:
-    """C6 and C10 of a face. Arguments as `agatesim.specimen.shape.measure`:
-    `lum` is brightness at full resolution, `mask` the face at the working size
-    (`scale` working px per full px), `noise` and `spacing_px` the quality
-    gate's noise (grey levels) and band spacing (full px)."""
+    """C6 and C10 of a face, with L, C6_blank and (if `ladder`) N(L).
+    Arguments as `agatesim.specimen.shape.measure`: `lum` is brightness at full
+    resolution, `mask` the face at the working size (`scale` working px per
+    full px), `noise` and `spacing_px` the quality gate's noise (grey levels)
+    and band spacing (full px)."""
     k = max(1, int(spacing_px // FIELD_SPACING_PX))
     h, w = lum.shape[0] // k, lum.shape[1] // k
     coarse = lum[: h * k, : w * k].astype(np.float64).reshape(h, k, w, k).mean(axis=(1, 3))
@@ -299,26 +447,86 @@ def measure(
     inner = agatesim_scipy.erode(face, max(1, math.ceil(MARGIN_SPACINGS * spacing)))
     depth = agatesim_scipy.distance_to_false(inner, 1.0)
     field = direction_field(coarse, spacing)
-    counts: list[Count] = []
+    paths: list[tuple[NDArray[np.float64], NDArray[np.float64]]] = []
+    unread: list[float] = []  # px from where a path lost the bands to the centre
+    centre = np.unravel_index(int(np.argmax(np.where(inner, depth, -1.0))), depth.shape)
     for start in rim_starts(inner, depth, starts):
-        path = streamline(field, depth, inner, start, spacing)
+        path, strayed = streamline(field, depth, inner, start, spacing)
         if path.shape[0] < 2:
             continue
-        # Resample at one full pixel along the path, and read full-resolution brightness.
         full = (path + 0.5) * k - 0.5
         arc = np.concatenate([[0.0], np.cumsum(np.hypot(*np.diff(full, axis=0).T))])
-        if arc[-1] < MIN_PROFILE_SPACINGS * spacing_px:
-            continue
-        s = np.arange(0.0, arc[-1], 1.0)
-        fr, fc = np.interp(s, arc, full[:, 0]), np.interp(s, arc, full[:, 1])
-        profile = agatesim_scipy.bilinear(lum, fr, fc).astype(np.float64)
-        counts.append(count(profile, noise, spacing_px))
-    if len(counts) < MIN_PROFILES:
-        return Bands(None, None, None, None, None, len(counts), 0)
-    series = [c.widths for c in counts]
+        if arc[-1] >= MIN_PROFILE_SPACINGS * spacing_px:
+            paths.append((full, arc))
+            gap = float(np.hypot(path[-1, 0] - centre[0], path[-1, 1] - centre[1])) * k
+            unread.append(gap if strayed else 0.0)
+    if len(paths) < MIN_PROFILES:
+        return Bands(None, None, None, None, None, len(paths), 0)
+
+    def read(
+        image: NDArray[np.float32] | NDArray[np.float64], step: float, m: int = 1
+    ) -> list[NDArray[np.float64]]:
+        """Brightness along every path, one sample per `step` full px, from an
+        image at 1/m of full size."""
+        out: list[NDArray[np.float64]] = []
+        for full, arc in paths:
+            s = np.arange(0.0, arc[-1], step)
+            fr, fc = np.interp(s, arc, full[:, 0]), np.interp(s, arc, full[:, 1])
+            if m > 1:
+                fr, fc = (fr + 0.5) / m - 0.5, (fc + 0.5) / m - 0.5
+            out.append(agatesim_scipy.bilinear(image, fr, fc).astype(np.float64))
+        return out
 
     def median(values: list[float]) -> float:
         return float(np.median(values))
+
+    def rung(limit: float, cs: list[Count]) -> Rung:
+        return Rung(
+            limit_px=limit,
+            count=median([c.rule1 for c in cs]),
+            low=median([c.low for c in cs]),
+            high=median([c.high for c in cs]),
+            rule_gap=median([abs(c.rule1 - c.rule2) / max(c.rule1, c.rule2, 1) for c in cs]),
+        )
+
+    image = lum.astype(np.float64)
+    # A stream of its own, so C10's shuffles below draw what they drew before.
+    stream = rng.spawn(1)[0]
+    white = stream.normal(0.0, max(noise, 1e-6), lum.shape)
+
+    def fresh(profiles: list[NDArray[np.float64]], sigma: float) -> list[NDArray[np.float64]]:
+        return [p + stream.normal(0.0, sigma, p.size) for p in profiles]
+
+    profiles, noise_profiles = read(lum, 1.0), read(white, 1.0)
+    counts = [count(p, noise, spacing_px) for p in profiles]
+    series = [c.widths for c in counts]
+    radius = float(agatesim_scipy.distance_to_false(face, 1.0).max()) * k
+    limit = resolving_limit(profiles, noise_profiles, 1.0)
+    blank = None
+    rungs: list[Rung] = []
+    if limit is not None:
+        at = max(spacing_px, limit / 2)
+        lines = zip(profiles, noise_profiles, unread, strict=True)
+        blank = median([blank_share(p, q, limit, at, u) for p, q, u in lines])
+        rungs.append(rung(limit, counts))
+        spread = float(np.std(np.concatenate(noise_profiles)))
+        last = limit
+        for r in range(1, MAX_RUNGS if ladder else 1):
+            if last >= STOP_SHARE * 2 * radius:
+                break
+            f = RUNG_STEP**r
+            sigma = RUNG_BLUR * f
+            (small, m), (small_white, _) = blurred(image, sigma), blurred(white, sigma)
+            signal = fresh(read(small, f, m), spread)
+            floor = fresh(read(small_white, f, m), spread)
+            found = resolving_limit(signal, floor, f)
+            if found is None:
+                rungs.append(Rung(max(MIN_PERIOD_PX * f, HALF_POWER * sigma), 0.0, 0.0, 0.0, 0.0))
+                break
+            rung_noise = noise * float(np.std(np.concatenate(floor))) / max(spread, 1e-12)
+            at = max(spacing_px, found / 2) / f
+            rungs.append(rung(found, [count(p, rung_noise, at) for p in signal]))
+            last = found
 
     return Bands(
         count=median([c.rule1 for c in counts]),
@@ -328,4 +536,8 @@ def measure(
         persistence=persistence(series, rng),
         profiles=len(counts),
         widths=sum(int(w.size) for w in series),
+        limit_px=limit,
+        limit_share=limit / radius if limit is not None and radius > 0 else None,
+        blank=blank,
+        ladder=tuple(rungs),
     )

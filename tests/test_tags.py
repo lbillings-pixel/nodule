@@ -10,12 +10,24 @@ from agatesim.library import Label
 from agatesim.shapes import VERSION
 
 from nodule import rims, tags
-from nodule.bands import Bands
+from nodule.bands import Bands, Rung
 from nodule.outline import Outline
 
 LABEL = Label(verdict="forms", forms=["fortification"], features=["quartz core"])
 SHAPE = Outline(aspect=0.8, regularity=0.97, circularity=0.9, irregularity=0.1, concavities=1)
-BAND = Bands(14.0, 12.0, 15.0, 0.0714, None, 20, 300)
+BAND = Bands(
+    14.0,
+    12.0,
+    15.0,
+    0.0714,
+    None,
+    20,
+    300,
+    limit_px=14.67,
+    limit_share=0.0544,
+    blank=0.0,
+    ladder=(Rung(14.67, 14.0, 12.0, 15.0, 0.0714), Rung(42.72, 0.0, 0.0, 0.0, 0.0)),
+)
 YES = tags.rim_tags(None, rims.Verdict(True, True, "helper", "held"))
 
 
@@ -57,6 +69,9 @@ def test_a_record_has_every_field_and_no_gap_when_nothing_is_measured() -> None:
     assert full["C1_aspect"] == 0.8
     assert full["C6_count"] == 14.0
     assert full["C6_profiles"] == 20
+    assert full["C6_L_px"] == 14.67
+    assert full["N_L_px"] == [14.67, 42.72]
+    assert full["N_count"] == [14.0, 0.0]
     assert full["C10_persistence"] == tags.UNKNOWN  # too few widths to judge
     assert all(empty[k] == tags.UNKNOWN for k in empty if k.startswith("C"))
     assert empty["view_kind"] == empty["finish"] == empty["lighting"] == tags.UNKNOWN

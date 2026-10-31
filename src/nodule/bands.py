@@ -64,27 +64,28 @@ segmentation edges are not counted.
   average) has local power under `FLOOR_RATIO` times the same reading of the
   noise profile; the median over the face. Where a path stopped because the
   bands lost their direction, the straight distance from its end to the face's
-  deepest point counts as blank too, since the path stops before a band-free
-  zone wider than `LOST_SPACINGS`; so bands beyond such a zone also count as
-  unresolved. Nothing is imputed into the blank stretches. Sharp band edges
-  put harmonic power at finer periods, so *L* can come out finer than the
-  finest couplet (seen on drawn bands with a sharp onset).
+  deepest point counts as blank too (assumption, approved by the owner
+  2026-10-31), since the path stops before a band-free zone wider than
+  `LOST_SPACINGS`; so bands beyond such a zone also count as unresolved.
+  Nothing is imputed into the blank stretches. Sharp band edges put harmonic
+  power at finer periods, so *L* can come out finer than the finest couplet
+  (seen on drawn bands with a sharp onset).
 - **N(L)** (section 2, choice 7c): the face recounted on a ladder of coarser
   limits. Rung r blurs the photo by `RUNG_BLUR` f (f = sqrt(2)^r), re-reads
   the same paths every f pixels, and adds fresh white noise of the native
   profiles' noise spread, as a coarser photo of the same stone would hold its
-  own pixel noise (assumption; without it the blurred floor falls towards zero
-  and window leakage reads as resolved power). *L* and the noise are found
-  again at each rung (the gate's noise times the change in the noise
-  profiles' spread), and the
-  count runs at a band spacing of max(gate spacing, L/2). Rung 0 is C6 as
-  above. The ladder stops once *L* reaches a quarter of the face's diameter;
-  a rung with no bin above the floor is stored as 0 bands at that rung's own
-  limit (blur and sampling) and ends the ladder. Below the native *L* nothing
-  is extrapolated. On two drawn band scales of equal swing, the finer drops out
-  of the count once blur takes its swing below the central share of the spread
-  (`AMPLITUDES`), rungs before *L* passes its period: a step marks where a
-  scale fades under the counting rule, not exactly its period.
+  own pixel noise (assumption, approved by the owner 2026-10-31; without it
+  the blurred floor falls towards zero and window leakage reads as resolved
+  power). *L* and the noise are found again at each rung (the gate's noise
+  times the change in the noise profiles' spread), and the count runs at a
+  band spacing of max(gate spacing, L/2). Rung 0 is C6 as above. The ladder
+  stops once *L* reaches a quarter of the face's diameter; a rung with no bin
+  above the floor is stored as 0 bands at that rung's own limit (blur and
+  sampling) and ends the ladder. Below the native *L* nothing is
+  extrapolated. On two drawn band scales of equal swing, the finer drops out
+  of the count once blur takes its swing below the central share of the
+  spread (`AMPLITUDES`), rungs before *L* passes its period: a step marks
+  where a scale fades under the counting rule, not exactly its period.
 
 Each value is None where too few profiles or bands were found to judge it.
 Every parameter here is `effective`: a choice of measurement, not a property of

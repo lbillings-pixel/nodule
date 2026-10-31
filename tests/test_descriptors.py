@@ -56,6 +56,9 @@ def test_banded_cut_is_measured(central: PhotoCut) -> None:
     for name in ("C15_curv", "C15_curv_high"):
         assert out[name] is None or isinstance(out[name], float), name
     assert out["C15_corners"] is None or isinstance(out["C15_corners"], int)
+    assert out["C14_density"] is None or isinstance(out["C14_density"], float)
+    for name in ("C14_ends", "C14_junctions"):
+        assert out[name] is None or isinstance(out[name], int), name
 
 
 def test_measurement_repeats_with_its_seed(central: PhotoCut) -> None:
@@ -72,5 +75,5 @@ def test_negative_control_bandless_cut_gives_no_bands(central: PhotoCut) -> None
     assert out["C6_count"] in (None, 0.0)
     for name in ("C7_spread", "C8_trend", "C9_ratio", "C10_persistence", "C11_hurst", "C16_order"):
         assert out[name] is None, name
-    for name in ("C15_curv", "C15_curv_high", "C15_corners"):
+    for name in ("C15_curv", "C15_curv_high", "C15_corners", "C14_density", "C14_ends"):
         assert out[name] is None, name

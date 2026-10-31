@@ -2178,3 +2178,321 @@ licence = "free to read (National Speleological Society); licence not checked; c
 checked = "full-text"
 topics = ["x-ray-ct", "speleothem", "growth-bands", "banding", "scan-parameters", "beam-hardening", "voids", "cutting-plane"]
 notes = """Read in full 2026-10-29 (owner's PDF, journal pp. 4–8; figures viewed as rendered pages). UTCT HRXCT scans of two stalagmites, AH-M (24 × 12 cm, dense clear calcite) and ANY-01 (33 × 20 cm), before sawing (pp. 5–6). UTCT takes objects up to 500 mm in diameter and 1500 mm high; slices down to 0.25 mm on large objects; minimum slice ≈ 1/1000 of diameter, down to 5 µm (p.5). AH-M: 420 kV, 4.7 mA, 1.8 mm focal spot, 3.175 mm brass prefilter against beam hardening, 512-channel CdWO4 array (0.31 mm pitch), 808 views × 32 ms, 160 % offset, 1.0 mm slices, 180 mm field, 512² 16-bit images at 0.35 mm pixels, 239 slices, ≈ 2.25 h. ANY-01: 1000 views, 130 % offset, 2.0 mm slices, 155 mm field, 153 slices, ≈ 1.75 h (p.6). $200–300 per sample; settings tuned for speed, finer possible (p.6). Concentric growth bands visible as density variations; two or more growth axes found and used to choose the cutting plane, confirmed on the slab (Figs. 1–2, pp. 5–7). Dense late drape over a porous core led to ANY-01's rejection (p.7, Fig. 3). Voids are easy to see; water vs air not separated (p.7). Qualitative only: no band thicknesses, contrast or resolution metrics. 'Growth bands in speleothems thin away from the growth axis' (p.4)."""
+
+# N2 reading for ADR 0005 (representation), read in full 2026-10-31.
+
+[[references]]
+id = "calcagno2008"
+kind = "article"
+authors = ["Calcagno, P.", "Chilès, J.-P.", "Courrioux, G.", "Guillen, A."]
+year = 2008
+title = "Geological modelling from field data and geological knowledge Part I. Modelling method coupling 3D potential-field interpolation and geological rules"
+venue = "Physics of the Earth and Planetary Interiors 171(1–4), 147–157"
+doi = "10.1016/j.pepi.2008.06.013"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["implicit-modelling", "potential-field", "cokriging", "covariance", "faults", "fault-network", "stratigraphic-series", "onlap", "unconformity", "intrusion", "representation"]
+notes = """Read in full 2026-10-31 from the publisher PDF supplied by the owner (11 pages = pp.147–157, all figures viewed; issue numbers 1–4 not printed in the PDF). 3D restatement of Lajaunie 1997: zero increments between interface points (M = points − interfaces) and polarised unit normals as 3 partial derivatives; polarity = younging, or outside-to-inside for intrusions (pp.148–149). Without gradient data the estimate is null (p.149). Polynomial drift, anisotropic stationary covariance; quadratic drift for ellipsoid-like bodies (p.149). Unique neighbourhood for continuity; dual form: one solve of L+M+N equations, then 2(L+M+N) operations per point; ~1 s for 400 data, ~1 min for 3000 (non-optimised solver, single 3 GHz core); critical beyond a few thousand (p.149); remedies: local neighbourhoods with damping, covariance tapering (p.155). No sample variogram of T; finite-range cubic covariance preferred over infinite-range and Gaussian; sill from gradient variance; better: fit gradient variograms (sums of 2–3 anisotropic cubics); cross-validation (pp.149–150). Marching-cubes variant from a coarse grid (p.149). Faults: own potential field, side test; infinite fault = 0/1 step drift with fitted jump; finite fault = ±1 drift decaying to 0 over an ellipsoid; networks with stop-on relations; each interface needs a point in every fault block (pp.150–152, Figs 3–5); faults assigned per series (p.154). Geological pile: series (one field each), chronology, Onlap/Erode rules; Intrusion = inward Erode + Onlap (pp.153–155, Figs 7, 10); partition algorithm not detailed (p.154). Uncorrelated formation thicknesses cannot share one field (p.155). For Nodule: implicit source with coarse-grid sampling (option C); closed nested band shells via quadratic drift and inward polarity; onlap for levelled layers; data-count limit for dense trace sets; drift faults give sharp steps but need offset and per-block data."""
+
+[[references]]
+id = "caumon2009"
+kind = "article"
+authors = ["Caumon, G.", "Collon-Drouaillet, P.", "Le Carlier de Veslud, C.", "Viseur, S.", "Sausse, J."]
+year = 2009
+title = "Surface-based 3D modeling of geological structures"
+venue = "Mathematical Geosciences 41(8), 927–945"
+doi = "10.1007/s11004-009-9244-2"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["explicit-modelling", "triangulated-surfaces", "boundary-representation", "topology", "faults", "fault-network", "mesh-quality", "discrete-smooth-interpolation", "sealed-model", "implicit-modelling", "representation"]
+notes = """Read in full 2026-10-31 from the publisher PDF supplied by the owner (19 pages = journal pp.927–945; all figure pages viewed; electronic supplementary material and linked 3D model not seen). Teaching-aid guide to building structural models (faults, horizons) as triangulated surfaces in Gocad, focus on quality control; no timings, memory or quantitative comparisons; m–km scale (pp.927–929). Frame (macro-topology, logical borders) vs lattice (mesh) (pp.932–933). Rules: surfaces orientable, not self-intersecting; surfaces cross only if one cut by the other (relaxed Mäntylä rule, Mallet 2002); rock-unit non-intersection (overlap invalid, Fig.2A); free border rule: only faults may end freely, where displacement is zero (Fig.2D–F) (pp.932–933). Geometric QC: Allan diagrams, cut-off lines, thickness, curvature, unfolding, restoration (pp.933–934). Resolution: minimal resolution carrying needed complexity, misfit within data uncertainty, not tied to data density; TINs give adaptive resolution; quadtree surfaces need special handling at faults (pp.934–935). Mesh quality: maximise minimum angle, Delaunay via edge flips; automatic repair can be slow (pp.935–936). Direct triangulation honours noise, density follows points, convex-hull border artefacts (pp.937–938). DSI: node xyz minimise roughness + constraint misfit; hard/soft constraints, Border on Surface, Thickness; saddle artefacts (pp.938–939). Fault connectivity 'most consequential step'; contacts need separate sealing (p.940). Cut-then-interpolate horizons: small fault gaps make artificial ramps, cuts over-refine meshes; data near faults attract surface across them (pp.941–942). Implicit surfaces (potential field, GeoChron) directly enforce validity rules at higher memory cost and ease updating, asserted not measured (p.942). For Nodule: implicit band level sets avoid the crossing/sealing burden; explicit surfaces are a candidate exception for a few fractures (free borders, sharp tips), with sealing/gap checks as negative controls."""
+
+[[references]]
+id = "delavarga2019"
+kind = "article"
+authors = ["de la Varga, M.", "Schaaf, A.", "Wellmann, F."]
+year = 2019
+title = "GemPy 1.0: open-source stochastic geological modeling and inversion"
+venue = "Geoscientific Model Development 12, 1–32"
+doi = "10.5194/gmd-12-1-2019"
+access = "open"
+licence = "CC BY 4.0"
+checked = "full-text"
+topics = ["implicit-modelling", "potential-field", "cokriging", "scalar-field", "stratigraphic-series", "unconformity", "faults", "uncertainty", "gpu", "representation"]
+notes = """Read in full 2026-10-31 (open-access PDF; listings are images, matrix equations reconstructed). Implicit potential-field method (Lajaunie 1997) by universal cokriging in Theano (C/CUDA, autodiff) (pp.1–10). Scalar field Z(x) evaluable at any point; isosurfaces are layers; layers in one field cannot cross (pp.3, 5). Interface points share a value (Eq.2) and gradients set spacing; at least one gradient needed (p.4). Kriging variance has no physical meaning; dual form used (pp.5, 26); right-hand side m data × n points (p.26). Cubic covariance with range a, C0, small nugget; choice arbitrary (p.26). Only rectilinear grids in 1.0, but field computed in continuous space so any mesh possible; lithology block by comparing Z to interface values; marching cubes for surfaces (p.5). Series = independent fields ordered in a sequential pile; younger series overlie older beyond an unconformity; only unconformities and infinite faults implemented (p.5). Faults as extra drift term per fault block; younger faults offset older recursively; Boolean relation matrix; drifts keep isosurfaces continuous, constant integer offset, overly smooth near faults (p.6). No timings/memory/hardware reported; 'milliseconds per scalar field' interactively, time rises steeply with data count and resolution (p.11); Theano optimisation ~10× (p.10); arrays can be split across GPUs (p.20). Gravity, topology and entropy computed on voxel models (pp.11–15). Z-only perturbation due to computational limits (p.15); 20 000 adaptive-Metropolis iterations, convergence incomplete (pp.17–18, 27). For Nodule: supports implicit band fields; drift faults too smooth for sharp fractures."""
+
+[[references]]
+id = "donner2005"
+kind = "article"
+authors = ["Donner, C.", "Jensen, H. W."]
+year = 2005
+title = "Light diffusion in multi-layered translucent materials"
+venue = "ACM Transactions on Graphics 24(3), 1032–1039 (Proceedings of SIGGRAPH 2005)"
+doi = "10.1145/1073204.1073308"
+url = "https://cseweb.ucsd.edu/~henrik/papers/layered/layered.pdf"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["subsurface-scattering", "bssrdf", "diffusion-approximation", "multipole", "layered-materials", "kubelka-munk", "translucency", "rendering", "thin-slab-transmission"]
+notes = """Read in full 2026-10-31 from the authors' copy (cseweb.ucsd.edu/~henrik/papers/layered/layered.pdf; 8 PDF pages, pdfTeX 2005-05-04, no printed page numbers; PDF pages cited, probably journal p. 1031+n, layout not checked). Multipole: infinite dipole array mirrored about extrapolated boundaries at both faces of a slab of thickness d, truncated to 2n+1 dipoles; gives reflectance R(r) and transmittance T(r) (Eqs. 11–13, PDF pp.2–3); different top/bottom indices via Eq. 16 (PDF p.3). Vs MC (mfp 1 mm): slabs 2/10/20 mfp total R 51.6/83.4/89.0% (multipole 49.8/83.8/89.0, dipole 90.2 each), T 49.8/13.8/6.0% (multipole 48.1/13.8/5.9, dipole 26.5/3.0/0.7) (Table 1, PDF p.3). Layers combined by convolving profiles; inter-reflections summed in Fourier space as Kubelka's formulas T12 = T1T2/(1−R2R1), R12 = R1 + T1R2T1/(1−R2R1), recursive for N layers; valid when each layer is at least a few mfp and interaction is multiple scattering (Eqs. 17–22, PDF p.4). Two-layer totals within 3–4 points of MC; profiles diverge far from source (Table 2, Fig. 3, PDF p.4). Rough surface via Torrance–Sparrow average diffuse reflectance (Eqs. 23–26, PDF pp.4–5). Profiles tabulated by DFT; 'only valid for planar slabs'; R/T blend by normals for thin curved geometry; small complex geometry needs MC photon tracing or a multi-grid diffusion solver; texture via albedo map blurred by the profile (PDF p.5). 2.8 GHz P4: renders 1–5 min, preprocessing <1–5 s with 1000 dipole pairs; resolution, spp, memory not given (PDF p.5). Backlit parchment ~1 mm ≈ 4 mfp: T dipole 3.3%, multipole 22.6%, MC 21.5% (PDF pp.5–6). Skin 3-layer parameters from Tuchin 2000 (Table 3, PDF p.6). No single-scattering term. Internal structures named future work (PDF p.6). For Nodule: fits bands parallel to a face and backlit thin slabs, and gives MC test values; does not cover bands meeting the face steeply, inclusions or weakly scattering bands."""
+
+[[references]]
+id = "dorsey1999"
+kind = "article"
+authors = ["Dorsey, J.", "Edelman, A.", "Jensen, H. W.", "Legakis, J.", "Pedersen, H. K."]
+year = 1999
+title = "Modeling and rendering of weathered stone"
+venue = "Proceedings of SIGGRAPH 99 (Computer Graphics Proceedings, Annual Conference Series), 225–234"
+doi = "10.1145/311535.311560"
+url = "https://groups.csail.mit.edu/graphics/pubs/stone.pdf"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["subsurface-scattering", "participating-media", "photon-mapping", "volume-representation", "surface-aligned-volume", "procedural-texture", "weathering", "rendering", "stone"]
+notes = """Read in full 2026-10-31 from the MIT graphics group copy (groups.csail.mit.edu/graphics/pubs/stone.pdf; 10 PDF pages, no printed page numbers; pages cited are PDF pages, probably proceedings p. 224+n, unchecked). Slab = surface-aligned trilinear volume (8 corners, local u,v,w; neighbours share 4 corners; bilinear-patch boundaries) fitted interactively by extruding a quad mesh of a simplified object along averaged normals (pp.1,4). Density from signed distance at voxel corners (p.4). Base stone from procedural solid textures ('quarry'): Worley-like cellular granite, Perlin-turbulence marble veins, sandstone bedding as turbulence-distorted parallel planes (p.4); renderer samples these 'at high resolution' directly (p.3). Full volume rejected: changes lie in a narrow band near the surface (p.1); a complete high-resolution voxel representation for rendering 'would be quite costly', so voxels only modify the base material, changes being low frequency (p.6); axis-aligned voxels impractical for large models (p.9). Weathering (Darcy front, dissolution, convective diffusion, probabilistic erosion) is phenomenological; parameter values unreported (pp.4–5,9). Rendering: Monte Carlo participating medium with volume photon map (indirect only), ray-marched free paths, two-lobe Schlick/Henyey–Greenstein phase function, Fresnel with roughness factor; layered-transport models rejected because stone grains 'are not oriented in layers' (pp.2,6). No optical coefficients reported. Costs: sims on quad 250 MHz R10000, renders on dual 400 MHz PII, 1024 px, 4 spp; sphinx 2.2M triangles, 281 slabs of 32³ voxels, sim ~24 h, render 31 min fresh / ~80 min weathered (slab lookup ×1–10); column 100k triangles, 240 slabs of 32³, 30 min, sim ~4 h; Diana 1.3M triangles, 21 min, sim ~3 h (pp.7–8). No memory figures. Fractures and multiresolution slabs are future work (p.9). For Nodule: a precedent for implicit/procedural fine material plus coarse voxel modifiers only where a simulator runs."""
+
+[[references]]
+id = "frisken2000"
+kind = "article"
+authors = ["Frisken, S. F.", "Perry, R. N.", "Rockwood, A. P.", "Jones, T. R."]
+year = 2000
+title = "Adaptively sampled distance fields: a general representation of shape for computer graphics"
+venue = "Proceedings of SIGGRAPH 2000, 249–254"
+doi = "10.1145/344779.344899"
+# copy read: MERL technical report TR2000-15 on merl.com (exact URL not recorded here; add as url)
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["distance-fields", "adaptive-sampling", "octree", "implicit-surfaces", "csg", "ray-casting", "level-of-detail", "representation"]
+notes = """Read in full 2026-10-31 from MERL TR2000-15 (2 cover + 6 paper pages, no printed page numbers; PDF pages cited; text identity with the ACM version not checked). ADF = distance field sampled adaptively by local field variation, stored in a hierarchy, with a reconstruction method (PDF pp.3–4). Instance: octree, 8 corner values per cell, trilinear reconstruction and analytic cell gradient; C1 discontinuities at cell boundaries not visible (PDF pp.4–6). Subdivide only where bilinear/trilinear interpolation fails, unlike 3-colour trees that refine all boundary cells: 2D 'R' 1713 vs 23,573 cells (PDF pp.4–5); >20:1 typical in 2D (PDF p.8). Table 1 sphere r=0.4: tolerance 6.25e-5/3.13e-5/1.56e-6 (as printed) -> triangles 32,768/131,072/2,097,152 vs ADF cells 16,201/44,681/131,913 and samples 24,809/67,405/164,847 (PDF p.5). Generation from any procedure h(x), differentiability not required; bottom-up coalescing or top-down subdivision with a 19-point error predicate (PDF p.5). CSG by min/max; carving is local regeneration within the tool's bounding box (PDF p.6). Ray casting with linear zero-crossing per leaf, crack-free by matching entry/exit values; volume rendering with distance-based colour and position-based noise (PDF pp.6–7). LOD by level truncation or stored cell error (PDF p.7). No timings, hardware or byte counts given. For Nodule: a pattern for caching implicit functions adaptively; cache a smooth band coordinate rather than banded values; the fixed-point predicate can miss thin features."""
+
+[[references]]
+id = "gravouil2002"
+kind = "article"
+authors = ["Gravouil, A.", "Moës, N.", "Belytschko, T."]
+year = 2002
+title = "Non-planar 3D crack growth by the extended finite element and level sets—Part II: Level set update"
+venue = "International Journal for Numerical Methods in Engineering 53(11), 2569–2586"
+doi = "10.1002/nme.430"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["level-sets", "signed-distance", "fracture", "crack-growth", "hamilton-jacobi", "reinitialisation", "velocity-extension", "narrow-band", "x-fem", "representation"]
+notes = """Read in full 2026-10-31 from the publisher PDF supplied by the owner (18 pages = journal pp.2569–2586; all figure/table/equation pages viewed rendered). Level set update for the two-level-set 3D crack of moes2002, on unstructured tets, no remeshing (pp.2569–2570). phi, psi assumed signed distances, Lipschitz; crack {phi=0, psi<0}, front {phi=0, psi=0}, psi>0 off crack (Eqs.1–3, p.2571); orthogonality grad phi . grad psi = 0 so the front is defined and a crack frame exists (Eq.4, p.2571); phi not defined for psi>0, extension ahead of front non-unique (p.2571, Fig.2). Update only in a subdomain/tube near the crack (Fig.3). Frame n_psi, n_phi, e_t (Eqs.5–7, p.2572). Initial level sets may be formulas, e.g. phi=z, psi=x^2/a^2+y^2/b^2-1 (Eqs.9–10); reinitialisation to |grad|=1 by HJ in fictitious time, 3–4 iterations, O(N), zero set kept (Eq.12, p.2573, citing Peng 1999). Velocity extended along both normals (Eqs.15–17); V_phi ramped by H(psi) psi/(V_psi dt) so the old crack is frozen; kinks (V_psi < eps|V|) excluded (Eq.18, p.2575). Seven-step scheme with re-orthogonalisation of psi (Table I, Eq.20, pp.2575–2576). C0 kinks at element faces; Barth–Sethian positive scheme, obtuse tets hurt; smoothed sign with dl = smallest element; RK2, CFL dt = min h/|V|, several level-set steps per mechanics step (pp.2577–2578). Paris law C=1, m=1 (p.2578). Circle test error 0.027–0.361% (Table II, p.2579); beam 2553 nodes/13393 tets, lens 1767/8895, penny 1747/8847; fronts split and cut through without special treatment (pp.2580–2583). Update ~10% of total time; small cracks need finer level-set mesh (pp.2583–2584). No seconds or memory. For Nodule: analogue only; grid needed only for growth; a static fracture can be closed-form phi/psi with no reinitialisation."""
+
+[[references]]
+id = "grose2021"
+kind = "article"
+authors = ["Grose, L.", "Ailleres, L.", "Laurent, G.", "Jessell, M."]
+year = 2021
+title = "LoopStructural 1.0: time-aware geological modelling"
+venue = "Geoscientific Model Development 14, 3915–3937"
+doi = "10.5194/gmd-14-3915-2021"
+access = "open"
+licence = "CC BY 4.0"
+checked = "full-text"
+topics = ["implicit-modelling", "discrete-interpolation", "finite-difference", "rbf", "structural-frames", "faults", "folds", "unconformity", "time-aware", "representation"]
+notes = """Read in full 2026-10-31 (open-access PDF; in-text figure numbers run one ahead of captions). Implicit functions queried anywhere for value or gradient (p.3915); evaluate_model/evaluate_feature_value/gradient at arbitrary xyz (pp.3924–3925); features may be analytical functions (pp.3923–3924). Signed-distance vs potential-field framing; conformable horizons as isovalues of one field (pp.3917, 3919). PLI on 5-tet split of Cartesian cubes, FDI trilinear with second-derivative regularisation; sparse least squares A·x=b solved by CG, iterative for memory (pp.3918–3919, 3932–3934). SurfE RBF/co-kriging (p.3919). Defaults nelements 100 000, buffer 0.2, weights 1 (Table 1, p.3925); regularisation weight dominates geometry, no rule for choosing it (p.3926). Angular unconformity = two fields, mask (pp.3919, 3923). Fault frame of three orthogonal fields; displacement δ = D0·D1·D2 of frame coordinates (Eq.6); faults added backwards in time, data restored before interpolating faulted field; co-kriging drifts give only a global best-fit displacement (pp.3920–3921, 3928–3930); profiles conceptual, not fitted (p.3931). Fold frames with Fourier-fitted rotation angles (p.3922). Flinders: faults 50 000 and stratigraphy 500 000 FDI elements, pyamg; i7 laptop, 32 GB RAM; map2loop ~1 min, model ~8 min, rendering on 200×200×100 grid 3 min (p.3928); total ~10 min; complexity set by support resolution, not data count (p.3931). No GPU, no probabilistic interface (p.3931). For Nodule: displacement-operator model for fractures cutting bands; discrete supports cost like grids at fine resolution."""
+
+[[references]]
+id = "hart1996"
+kind = "article"
+authors = ["Hart, J. C."]
+year = 1996
+title = "Sphere tracing: a geometric method for the antialiased ray tracing of implicit surfaces"
+venue = "The Visual Computer 12(10), 527–545"
+doi = "10.1007/s003710050084"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["sphere-tracing", "implicit-surfaces", "distance-fields", "lipschitz", "csg", "blending", "deformation", "noise", "antialiasing", "ray-tracing", "rendering", "representation"]
+notes = """Read in full 2026-10-31 from the publisher PDF (owner's download; journal pp.527–545; equations, figures and Table 2 checked on rendered pages; no hardware stated anywhere). Signed distance bound |f| <= d(x, f^-1(0)); Theorem 1: f/lambda is a bound if lambda >= Lip f; Lip(sum) <= sum, Lip(composition) <= product (pp.529–530). Fig.1: step t += f(r(t)) until f < eps or t > D (yonder sphere) (p.531). Theorem 2: linear convergence to the first root; quadratic only if steepest at the root (p.531). CSG: union = min, complement = -f, intersection = max is only a bound (Theorem 3), subtraction likewise (pp.531–532). Soft-object blend Lip 3/(2R) per key point (Eq.36; Theorem 5's printed form looks misprinted for n>1) (p.542); pseudonorm blend >= 70% of true distance (p.537). Transforms need Lip of the inverse; twist not Lipschitz globally, sqrt(4+(pi/a')^2) in the unit cylinder (pp.543–544). Noise: Lip 3; fractal beta=1 3n, beta=2 <= 6 (pp.539, 544). Halving the distance doubles the steps (Fig.12, p.539); 100:100:1 scaled-sphere bound as low as 1% of the true distance (p.539). Silhouettes cost >100 iterations vs ~10 elsewhere (p.537); rays parallel to a plane stall without convexity (p.535). Table 2: convexity 69%, triangle inequality+convexity 40%, bounding spheres 21%; noise renders (1 octave; 6-octave 1/f^2; 6-octave 1/f) 4:37, 33:52, 2:06:56 at 256^2 (p.538); octree of local Lipschitz constants gave no gain on simple scenes (p.538). Cone antialiasing via inner cover f+r_p and coverage alpha (Eq.19), nominal cost, but needs accurate distances; abandoned for noise (pp.535–538). Surfaces only (first hit); volumes only cited (Stander & Hart 1994). For Nodule: a Lipschitz bound per Solid suffices; noise amplitude/scale sets the step cost; thin fractures interact with eps; bands as filtered solid texture at the hit."""
+
+[[references]]
+id = "henrion2010"
+kind = "article"
+authors = ["Henrion, V.", "Caumon, G.", "Cherpeau, N."]
+year = 2010
+title = "ODSIM: An Object-Distance Simulation Method for Conditioning Complex Natural Structures"
+venue = "Mathematical Geosciences 42(8), 911–924"
+doi = "10.1007/s11004-010-9299-0"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["implicit-modelling", "distance-field", "euclidean-distance-transform", "skeleton", "medial-axis", "gaussian-random-field", "truncation", "conditioning", "gibbs-sampler", "geostatistics", "band-coordinate", "representation"]
+notes = """Read in full 2026-10-31 from the publisher PDF supplied by the owner (14 pages = journal pp.911–924; all figure pages viewed; no supplement). ODSIM: binary body = {D(p) <= phi(p)} where D = Euclidean distance to a skeleton object (lines, planes, points, sphere, centrelines, medial axis) and phi = spatially correlated random threshold (Eqs.1–5, pp.914–915; Fig.1 p.913). D by Saito–Toriwaki EDT on a Cartesian grid, rasterised skeleton, six passes, linear complexity (p.915); metric may be anisotropic/tensor (pp.915, 919). phi by SGS or turning bands/spectral (pp.915–916); pdf sets size, variogram range sets sinuosity, direction sets orientation; variogram model type never named (p.916; Fig.2). Parameters from training image: histogram/variogram of medial-axis-to-boundary distance (Fig.3, pp.916–918). Hard data as inequalities on phi, Eq.6 (p.917), Gibbs sampler (Freulon & de Fouquet 1993) + simple kriging; 100 wells x 40 obs, ~25 iterations, <1 min on 2.8 GHz/2 GB PC (pp.917–918); then conditional SGS (p.919). Soft data: local mean, anisotropic distance (Fig.5, p.919). Failure: detached fragments with short range vs distance field, no direct cure, morphological filtering costs proportion (Figs.2, 6; pp.919–920); conditioning not exact when data lie beyond threshold range (Fig.8, p.922). Dolomite example 150x100x60 grid, untimed (pp.920–921). Evidence visual only; no shape metric, no memory figures. For Nodule (inference): wall distance minus phi is ODSIM's construction; level sets never cross, but fold/invert/form islands where |grad phi| >= 1, so bound phi's Lipschitz constant below 1; medial-surface kinks persist; grid-free version needs analytic D and world-coordinate noise. Analogue only, not agate evidence."""
+
+[[references]]
+id = "jensen2001"
+kind = "article"
+authors = ["Jensen, H. W.", "Marschner, S. R.", "Levoy, M.", "Hanrahan, P."]
+year = 2001
+title = "A practical model for subsurface light transport"
+venue = "Proceedings of SIGGRAPH 2001 (Computer Graphics Proceedings, Annual Conference Series), 511–518"
+doi = "10.1145/383259.383319"
+url = "https://cseweb.ucsd.edu/~henrik/papers/bssrdf/"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["subsurface-scattering", "bssrdf", "diffusion-approximation", "dipole", "optical-properties", "translucency", "rendering", "marble"]
+notes = """Read in full 2026-10-31 from the authors' preprint copy (cseweb.ucsd.edu/~henrik/papers/bssrdf/; 'To appear' version, 8 PDF pages; pages cited are PDF pages, probably proceedings p. 510+n, unchecked). BSSRDF = dipole diffusion term (real source 1/σ′_t below surface, virtual source z_r+4AD above; σ_tr = √(3σ_aσ′_t), D = 1/3σ′_t) + single-scattering term extended from Hanrahan & Krueger's flat homogeneous slab (pp.2–4). Parameters σ_a, σ′_s, η, optional phase function (p.4). Derived only for 'semi-infinite homogeneous media'; arbitrary geometry and texture are heuristics: dipole reused where locally flat, minimum distance 1/σ′_t on curved surfaces, texture only at the surface with diffusion parameters taken at x_i; 'volumetric texture variation would require a full participating media simulation' (pp.5–6). Measurement: beam + HDR camera (1 ms–4 s exposures, ~10⁵ range), fit constrained by total diffuse reflectance; marble σ′_s = 2.19/2.62/3.00 mm⁻¹, σ_a = 0.0021/0.0041/0.0071 mm⁻¹ (RGB), R_d 0.83/0.79/0.75, η = 1.5; MC confirms (pp.5). Renders on dual 800 MHz PIII, 1024 px, 4 spp: marble bust 1.3M triangles BRDF 2 min, BSSRDF 5 min, full MC 1250 min (synthetic albedo-0.5 coefficients); milk 2/4 min; face 7/17 min; photon mapping of Dorsey et al. 1999 ~12 min scaled but needs a full 3D material description (pp.6–8). Multiple layers named future work; one layer approximates skin (p.7). No hierarchical evaluation in this paper. For Nodule: needs only a surface and per-point parameters, so fits an implicit representation, but cannot show bands below a polished face or transmission through a thin slab."""
+
+[[references]]
+id = "lagae2010"
+kind = "article"
+authors = ["Lagae, A.", "Lefebvre, S.", "Cook, R.", "DeRose, T.", "Drettakis, G.", "Ebert, D. S.", "Lewis, J. P.", "Perlin, K.", "Zwicker, M."]
+year = 2010
+title = "A survey of procedural noise functions"
+venue = "Computer Graphics Forum 29(8), 2579–2600"
+doi = "10.1111/j.1467-8659.2010.01827.x"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["procedural-noise", "perlin-noise", "gabor-noise", "wavelet-noise", "sparse-convolution", "anti-aliasing", "spectral-control", "solid-texture", "resolution-independence"]
+notes = """Copy used: authors' version on co-author J.P. Lewis's site (scribblethink.org); 20-page layout, header 'pp. 1–20'. Read in full 2026-10-31; pages are manuscript pages (ms pp. 1–20) of the authors' layout, not journal pages. Noise = stationary Gaussian process controlled by its power spectrum; phase random (ms pp. 2–3). Procedural advantages (compact, multi-resolution, non-periodic, constant-time random access) are 'only potential' (ms pp. 3–4). Classes: lattice gradient (Perlin: permutation hashing, 12 gradients, quintic; ms p. 4), explicit (wavelet, anisotropic; stored tiles; ms pp. 5–6), sparse convolution (Poisson impulses, per-cell RNG seeded from cell coordinates; Gabor kernel; ms pp. 6–8). Octave sum Σ wᵢN(2ⁱx) (ms p. 10); marble C(x+N(x)) (ms p. 9). Slicing band-pass solid noise on a surface is not band-pass (slice-projection; ms pp. 5, 12). Frequency clamping needs narrowly band-pass noise; Perlin only weakly band-pass; Gabor allows analytic anisotropic filtering (ms p. 13). Filtering after non-linear maps (thresholds, colour ramps) unsolved in general (ms pp. 13, 17). Table 1 (ms p. 17): storage Perlin O(N), sparse conv. O(1), wavelet/anisotropic O(N^d), better gradient O(dN), Gabor O(1); non-periodic only sparse conv. and Gabor; speed ordinal and 'subjective', no benchmark (ms pp. 16–17). Open: non-stationary and non-Gaussian noise, phase, filtering (ms pp. 16–17). For Nodule: world-coordinate band-pass noise with octave clamping for previews; no measured costs."""
+
+[[references]]
+id = "lajaunie1997"
+kind = "article"
+authors = ["Lajaunie, C.", "Courrioux, G.", "Manuel, L."]
+year = 1997
+title = "Foliation fields and 3D cartography in geology: principles of a method based on potential interpolation"
+venue = "Mathematical Geology 29(4), 571–584"
+doi = "10.1007/BF02775087"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["implicit-modelling", "potential-field", "cokriging", "dual-kriging", "covariance", "orientation-data", "geological-interfaces", "representation"]
+notes = """Read in full 2026-10-31 from the publisher PDF supplied by the owner (scan; 14 pages = pp.571–584; equations, Figs 1–5 and Appendix read from rendered page images). Interfaces = iso-values of one differentiable 'conventional potential' (not a geological potential), so they are smooth and never intersect; any monotone transform gives the same family (p.574, Fig.1 concentric circles). Data: gradients (polarity + modulus), tangents <grad Z, tau> = 0, and zero increments between points of one interface (Card(Jk)-1 per interface); increments vanish from the estimate but force one iso-curve through each set (p.575). Cross-covariances are derivatives of an isotropic C(r), twice differentiable with C'(0)=0; polynomial drift, constant drift drops out; valid for IRF-k (pp.576–577). Dual kriging Eq.1 (p.577); system [[K,F^t],[F,0]] solved once in a unique neighbourhood (pp.583–584). Kernels: Gaussian (unstable, add a nugget) and r^4 log r IRF-2 spline with no scale parameter (p.578). 2D synthetic tests only: 8 unit gradients, interfaces of 3 and 2 points, 20x10 domain (p.579). Range below data spacing returns the drift; constant drift + short range gives bull's-eyes/closed domes (Fig.2 p.580); a=5 with linear or quadratic drift fits; spline similar (p.579). Gradient modulus (random 0.4–1.6) changes iso-line spacing only (p.579, Figs 3–4 p.581). Tangent data help but tangents alone give a constant field (p.581, Fig.5). Major drawback: corners and faults need special modifications; covariance estimation open (p.582). No 3D results, timings or memory. For Nodule: a pure implicit band field; needs polarised gradients (e.g. cavity-wall normals) since cut traces give only tangents; one field cannot represent crossing or truncated bands."""
+
+[[references]]
+id = "laurent2013"
+kind = "article"
+authors = ["Laurent, G.", "Caumon, G.", "Bouziat, A.", "Jessell, M."]
+year = 2013
+title = "A parametric method to model 3D displacements around faults with volumetric vector fields"
+venue = "Tectonophysics 590, 83–93"
+doi = "10.1016/j.tecto.2013.01.015"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["faults", "fault-operator", "displacement-field", "structural-frames", "kinematics", "time-integration", "fault-drag", "tip-line", "reverse-time-restoration", "representation"]
+notes = """Read in full 2026-10-31 from the publisher PDF supplied by the owner (11 pages = journal pp.83–93; all figures and equations viewed; no supplement). Near-field fault displacement as a volumetric vector field; far-field out of scope; simple patterns only (single max, elliptical isolines, slip on an axis); volume compensation assumed, not enforced (pp.84–86). Fault frame g0 (signed distance), g1 (striae isolines), g2 (orthogonal), normalised so D=sqrt(g0^2+g1^2+g2^2)=1 at near-field boundary; tip line g0=0, D=1 (Eq.1, p.86). Direction u=k grad g0 x grad g1/(|grad g0||grad g1|), k=sign g0; on-fault points use neighbours (Eq.2, pp.86–87). Partition gamma_h=1-gamma_f (Eqs.3–4, p.87). |v|=vmax gamma rho; rho=p0(g0)[p1(r)g1^2+p2(r)g2^2]/(g1^2+g2^2), r=sqrt(g1^2+g2^2) (Eqs.5–10, p.87); spline profiles, bell p1,p2 zero at +-1, p0 zero at |g0|=1 (Fig.4, p.88). Forward Euler on object points X<-X+tau|v|u; claims no self-intersection 'with appropriate fields and time steps', no proof (p.87; text cites Eq.4 for Eq.5). Planar frame analytic; curved frames interpolated with orthogonality constraints (pp.87–88, Fig.7). Data-driven vs process-oriented far-field (pp.88–89). Listric: integrate until (x-x0).V/|V|=|v| (Eq.11, Fig.9, pp.90–91). Reverse-time: youngest fault first, restore older fault sticks (Fig.11, p.92). Independent faults only (pp.92–93). No timings or memory. Text inconsistency: g1 called slip direction (pp.84,87) but grad g1 orthogonal to slip (p.88, Eq.2). For Nodule: analytic fracture frame allows a mesh-free inverse map (backward flow) before band evaluation; tip zero via profiles; opening not modelled. Likely precursor of LoopStructural fault operator (grose2021)."""
+
+[[references]]
+id = "lei2017"
+kind = "review"
+authors = ["Lei, Q.", "Latham, J.-P.", "Tsang, C.-F."]
+year = 2017
+title = "The use of discrete fracture networks for modelling coupled geomechanical and hydrological behaviour of fractured rocks"
+venue = "Computers and Geotechnics 85, 151–176"
+doi = "10.1016/j.compgeo.2016.12.024"
+url = "https://hdl.handle.net/10044/1/43585"
+access = "open"
+# Elsevier's metadata, not re-checked. The catalogue header asks for SPDX ids ("CC-BY-4.0").
+licence = "CC BY 4.0"
+checked = "full-text"
+topics = ["fractures", "discrete-fracture-network", "stochastic-geometry", "power-law", "fractal", "stereology", "trace-statistics", "percolation", "fracture-mechanics", "representation", "validation"]
+notes = """Read in full 2026-10-31 from Imperial Spiral (hdl 10044/1/43585): publisher's typeset version of record (masthead, CrossMark, journal pp.151–176 in running heads, Elsevier PDF metadata), not a manuscript; journal pages cited (= PDF p. + 150). Review, no new computations or costs. DFN = explicit list of fractures with orientation, size, position, shape, aperture and topology (p.152). Mapped DFNs keep curvature/topology but are 2D (pp.152–153). Stochastic: lines/discs/polygons with independent attributes; Fisher etc. orientation sets; sizes exponential/lognormal/gamma/power law; P_ij density (P10,P20,P30) and intensity (P10,P21,P32); trace truncation/censoring bias; 3D statistics from 1D/2D by stereology, formulas only by citation [81–85,123] (p.153). Poisson (Baecher) DFN shows significant discrepancies vs real networks; fixes: clustering, attribute correlation, termination at pre-existing fractures, stress shadows (p.154). Power law n(l,L)=alpha L^D l^-a, D in [1,2]/[2,3], a in [1,inf]/[2,inf] (2D/3D); traces give D 1.5–2, a 1.3–3.5; l_min set by grain size or resolution; l_min << L << l_max; a=D+1 self-similar with scale-invariant connectivity; large fractures inhibit small ones nearby (p.154); sequential nucleation-growth-arrest (Davy 2013) and random-walk curved DFNs (pp.154–155). Monte Carlo realisations; condition 3D DFN on 2D wall traces (pp.155–156). LEFM-grown DFNs: flaws, stress, K_I, subcritical growth; 10 cm x 10 cm example (Fig.5a); large computational time (pp.156–157, Table 1). Pruning dead ends/small fractures biases results when a>D+1 (p.158). Representations: interface elements; homogenised blocks (crack tensor, REV-sensitive); explicit large + homogenised small; softened grid cells, judged apt for mineral-filled veins; XFEM; block DEM/DDA; particle smooth-joint (embedded); FEMDEM ELFEN (conforming; ill-posed elements at small intersection angles) vs Y-code (joint elements everywhere, no remeshing) (pp.158–164, Table 2 p.166). Mechanical percolation 6.5 m/m2 vs geometric 4.0–5.5 m/m2 (Fig.7, p.160); REV may not exist (p.164). HM: few critically oriented long fractures carry flow; keep dead ends, curvature, length-aperture correlation (pp.165–169). Validation by comparing simulated 2D traces with outcrop/wall traces plus hydraulic tests (pp.156,169–170). For Nodule (analogue only): fractures as an explicit ordered list of per-fracture implicit objects; filled vs open fractures may need volumetric vs surface treatment; conforming meshes fragile; cut-face P20/P21 with convex-window censoring."""
+
+[[references]]
+id = "mallet2004"
+kind = "article"
+authors = ["Mallet, J.-L."]
+year = 2004
+title = "Space–time mathematical framework for sedimentary geology"
+venue = "Mathematical Geology 36(1), 1–32"
+doi = "10.1023/B:MATG.0000016228.75495.7c"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["geochron", "implicit-modelling", "curvilinear-coordinates", "stratigraphy", "isochrons", "faults", "parametrization", "strain", "upscaling", "representation"]
+notes = """Read in full 2026-10-31 from the publisher PDF (32 pp.; PDF page = printed page; text layer + page images of all 9 figures and key equations). Theory paper: no implementation, examples, numbers or timings; implementation 'beyond the scope' (pp.3, 21); first implementation only acknowledged (p.31). GeoChron (after Wheeler 1958) maps present-day x to u(x)=(u,v,t): paleogeographic coords + deposition time; horizons become horizontal planes, faults vanish (pp.1, 4-7, eq.6). Times need only be ordered (p.5); map non-unique up to monotone F(t), rotation/translation of (u,v) (eq.7, p.7). Erosion: image domain = 'holostrome', inverse x(u) only there (p.8). IPG-lines = constant (u,v) (p.9). Frame from gradients, Jacobian (grad u x grad v).grad t > 0 required everywhere (eqs.18, 25, pp.11-12). Sedimentation velocity = 1/|grad t|, 'apparent' unless no compaction and real times (eqs.31-32, p.15); decompaction (eq.34, p.16); thickness-time conversion (eq.35). Strain E = (g - g0)/2, only invariants (dilatation eq.43, principal strains eqs.44-47) are parametrization-free (pp.18-20); proposed as attributes linked to fracturing (p.20); IPG field choice = restoration style (p.21). Intrinsic constraints: piecewise continuity with discontinuities only at faults/unconformities (pp.21-22); IPG (eq.48); iso-time t=t_i on horizons (eq.49); flexural slip |grad_H u|~|grad_H v|~1, orthogonal (eqs.53, 59, pp.24-25); IPG and flexural slip not to be combined (p.25). Properties phi(x)=phibar(u(x)) on a regular grid in depositional space, interpolated by geostatistics or DSI, grid-independent, never needs x(u) (pp.25-28). Upscaling via boxes in depositional space (pp.28-30; typo p.29). No tetrahedral meshes or solver for u(x) in this paper. For Nodule: analogue only; supports bands as level sets of an ordering coordinate t(x) with a 1D band profile, thickness via 1/|grad t|, and displaced fractures as discontinuities of t; breaks for closed curved depositional surfaces (u,v) and at medial-axis collisions of inward fronts."""
+
+[[references]]
+id = "moes2002"
+kind = "article"
+authors = ["Moës, N.", "Gravouil, A.", "Belytschko, T."]
+year = 2002
+title = "Non-planar 3D crack growth by the extended finite element and level sets—Part I: Mechanical model"
+venue = "International Journal for Numerical Methods in Engineering 53(11), 2549–2568"
+doi = "10.1002/nme.429"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["x-fem", "level-sets", "signed-distance", "fracture", "crack-representation", "discontinuity", "enrichment", "mesh-independent", "implicit-modelling", "representation"]
+notes = """Read in full 2026-10-31 from the publisher PDF supplied by the owner (20 pages = journal pp.2549–2568; all figure and equation pages viewed rendered; pypdf text garbles Greek/maths). X-FEM for arbitrary non-planar 3D cracks, mesh-independent (pp.2549–2550). Crack = two signed distance functions: phi = signed distance to a smooth extension of the crack sheet (Eq.1, p.2551–2552; as printed phi<0 on the side n+ points to); psi approximately orthogonal (grad phi . grad psi ~ 0); crack = {phi=0, psi<0}, front = {phi=0, psi=0} (p.2552, Fig.1). Needed only near the crack (p.2551). Nodal interpolation with FE shape functions is 'not necessary nor always most convenient'; functions may be used directly (p.2552); C0 tets give piecewise-linear crack (p.2552). Enrichment: H(phi) for fully cut supports, branch functions in r=sqrt(phi^2+psi^2), theta=atan(phi/psi) at the front, so the jump sits exactly on phi=0, psi<0 (Eqs.7–9, p.2553). Near-aligned cuts ill-condition; snap level set to zero at node, tol 1e-2 (pp.2554–2555, Fig.3). Local frame e1=grad psi, e2=grad phi, e3=e1 x e2, nodal-smoothed (Eq.17, p.2556). SIFs by interaction integral (pp.2557–2559, App. A). Front extracted as psi=0 on the triangulated phi=0 set in the narrow band (p.2560, Fig.8). Examples: lens crack 145000 dof, R/20, errors 2%/10% vs 0.3%/5% conforming at R/500 (p.2561); elliptical 130000 dof, a/10 (p.2562); part with 161925 tets (p.2565). No times or memory. Linear elastic, small displacement, smooth fronts only (p.2553). For Nodule: analogue only; static fracture as on-demand (phi, psi) with sign/distance/tip mask needs no mesh; complements reverse-time offset operators (supplies side, frame, tip distance) but models mechanics, not displacement of pre-existing layers."""
+
+[[references]]
+id = "museth2013"
+kind = "article"
+authors = ["Museth, K."]
+year = 2013
+title = "VDB: High-resolution sparse volumes with dynamic topology"
+venue = "ACM Transactions on Graphics 32(3), article 27, 22 pp."
+doi = "10.1145/2487228.2487235"
+# copy read: author-hosted PDF on museth.org (exact URL not recorded here; add as url)
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["sparse-volumes", "vdb", "level-sets", "narrow-band", "b-plus-tree", "csg", "out-of-core", "memory-footprint", "representation"]
+notes = """Read in full 2026-10-31 (author's copy with journal pages 27:1–27:22; Table II read from page image). Sparse grid as shallow B+tree of dense blocks: hash/map root, internal 32³ and 16³, leaf 8³ ([Hash,5,4,3]); bit masks for topology, tiles for constant regions; values at non-overlapping levels (pp.27:3–27:8). O(1) average random access; cached bottom-up Accessor (pp.27:9–27:11). Table II (4096³ Enright/8×, 51.0 M/263.4 M active voxels, band 10): cached lookup 1 unit for all VDB configs, top-down 10 for [6,5,4,3], octree 50, DT-Grid 22/25; memory [Hash,5,4,3] 420/2,257 MB, octree 390/2,048, DT-Grid 253/1,182, tiled [10,3] 8,723/10,492 (p.27:15). Hardware: dual quad-core Xeon W5590, 48 GB (p.27:14). Table III: Enright step at 4096³ DT-Grid 154 s, VDB 39.1 s, 8 threads 4.39 s (p.27:17). Table IV at 4096³: VDB 420.2 MB in-core, 29.8 MB partly out-of-core (read-only) (p.27:18); ≈8.6 B per active voxel by my division. Fig. 4: 228 M voxels in 1 GB 'versus the 14TB' dense (p.27:6; dense basis unstated). CSG union at 4096³ 0.01 s vs 1.34 s DT-Grid (p.27:19). Not suited to multiresolution or mipmaps; insert not thread safe; GPU only mentioned (pp.27:19–27:21). Benchmarks are narrow bands only; for Nodule, dense banded interiors would fill every leaf and gain nothing; useful for surfaces, masks and CSG."""
+
+[[references]]
+id = "pasko1995"
+kind = "article"
+authors = ["Pasko, A.", "Adzhiev, V.", "Sourin, A.", "Savchenko, V."]
+year = 1995
+title = "Function representation in geometric modeling: concepts, implementation and applications"
+venue = "The Visual Computer 11(8), 429–446"
+doi = "10.1007/BF02464333"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["function-representation", "implicit-modeling", "r-functions", "csg", "blending", "offsetting", "point-membership", "space-time", "solid-noise"]
+notes = """Copy used: authors' HyperFun project site (hyperfun.org/TVC95.pdf), via Internet Archive snapshot; scan without text layer. Read in full 2026-10-31 from page images (scan). F-rep: object = {f(X) ≥ 0}, f real and at least C⁰; f>0 inside, 0 boundary, <0 outside, but operations can create interior zeros; objects not regularized (p.431). R-function union/intersection with parameter α (Eq.2); α=1 max/min, C¹-discontinuous where f₁=f₂ (Eq.3); α=0 f₁+f₂±√(f₁²+f₂²), C¹-discontinuous only where both are 0 (Eq.4); Cᵐ form ×(f₁²+f₂²)^(m/2) (Eq.5); subtraction f₁&(−f₂) (p.432). Blending F = R + a₀/(1+(f₁/a₁)²+(f₂/a₂)²) assumes the distance property (Eqs 6–8, p.434). Offsets: f+C, along gradient, constant radius (p.434). Bijective/affine mappings, projection, Cartesian product, 4D space-time objects, metamorphosis between two sections (pp.435–437). Point membership three-valued, correct only without interior zeros; R-operations match three-valued, not Boolean, logic (p.437). Voxel arrays become F-rep by trilinear interpolation (p.438). Solid noise used for noisy shapes and fur (pp.442–443). Ray casting 200×200 image 20–90 s, double precision, SGI Indigo²; R-union of 10 000 spheres boundary error 0.2·10⁻¹⁵; evaluation 'time-consuming'; B-rep→F-rep conversion open (p.444). No attribute model beyond a colour-mapping coordinate type (p.440). For Nodule: supports implicit specimen representation; distance-like fields needed for uniform nested offsets."""
+
+[[references]]
+id = "peachey1985"
+kind = "article"
+authors = ["Peachey, D. R."]
+year = 1985
+title = "Solid texturing of complex surfaces"
+venue = "Computer Graphics 19(3) (Proceedings of SIGGRAPH '85), 279–286"
+doi = "10.1145/325334.325246"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["solid-texture", "procedural-texture", "texture-tables", "memory", "aliasing", "wood", "marble", "bombing", "representation"]
+notes = """Read in full 2026-10-31 from the ACM DL backfile scan (owner download; 8 pages = printed pp.279–286; text layer + rendered pages, all figures viewed). Solid texture p(x,y,z) defined over a volume, evaluated at surface points; object/scene/transformed coordinates; periodic extension (p.280). Wood as coaxial light/dark cylinders, 'excessively regular' but convincing, vs 2D veneer artefacts (pp.280–281, Figs 1–2). Solid textures remove parameterisation aliasing (sphere poles) but perspective aliasing remains; no filtering of solid functions given (p.281). Complex intersecting patches need no mapping (pp.281–282). Digitized vs synthetic; tables trade storage for speed; 512^3 x 1 byte = 134 million bytes, so procedures often preferable (p.282). Bombing: 200 spheres in a 128^3 periodic cube stored as a small table; complex bombs as small 3D tables used only nearby (pp.282–283). Marble: dozens of random veins with sinusoid-perturbed paths and radii, baked to a 128^3 1-bit table, trilinear lookup (pp.283–284). Projection functions R(X,Y,Z)=p(X,Y); wood rings are a projection of concentric circles; knots would need full 3D (p.284). Granite = three projections summed with 8-bit wraparound (p.284). Costs (PORTRAY ray tracer, relative only): 2D table 18% less CPU than procedural cylinders (12% incl. table synthesis); projection image <50% (p.285). Baking per-patch 2D tables with high-rate sampling and weighted-average filtering (p.285). Notes Perlin's independent invention (p.280). For Nodule: states the procedural-vs-3D-table memory trade-off; bombs + local tables and coarse trilinear tables are hybrid precedents; banding as a function of a smooth coordinate (rings); no band antialiasing method; visual likeness is not mechanism evidence."""
+
+[[references]]
+id = "perlin1985"
+kind = "article"
+authors = ["Perlin, K."]
+year = 1985
+title = "An image synthesizer"
+venue = "Computer Graphics 19(3) (Proceedings of SIGGRAPH '85), 287–296"
+doi = "10.1145/325334.325247"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["solid-texture", "procedural-texture", "noise", "turbulence", "fbm", "marble", "aliasing", "implicit-surfaces", "representation"]
+notes = """Read in full 2026-10-31 from the ACM DL backfile scan (owner download, file named 325165.325247.pdf; title page confirms 'An Image Synthesizer', Ken Perlin, NYU, SIGGRAPH '85 Vol 19 No 3, pp.287–296, ACM 0-89791-166-0/85/007/0287; no DOI printed). Pixel Stream Editor: per-pixel interpreted language over named-variable images (pp.287, 289). Space functions and solid texture: shape/texture independent, tiny database; texture mapping = table lookup composed with 3D->2D projection (p.289). Noise(): scalar of 3-vector, statistically rotation- and translation-invariant, narrow band-pass; published simplest version only approximately band-limited and isotropic (p.289). Construction: hash of integer lattice point -> value d + gradient [a,b,c]; noise = d at lattice points; elsewhere cubic interpolation of the linear-function coefficients in x, then y, then z, evaluated at the point (p.289). Dnoise = gradient; 1/f sum Noise(p*2^i)/2^i; equal-amplitude Dnoise per octave for 1/f normals (p.292). Antialiasing only by stopping octaves at pixel frequency (pp.292, 296); no filtering of banded colour maps. Pointwise, order-free, parallel evaluation (p.292). Marble = marble_color(sin(x + turbulence(p))) (p.292, vase p.294); corona = colour(radius + turbulence) (pp.292–293, p.295). Turbulence = sum |Noise(p/scale)*scale| down to pixel size; abs gives gradient creases at all scales; simplification of unpublished swirl model (p.296). Waves from ~20 point sources, 1/f frequencies (pp.292–293). Costs: Gould SEL minicomputer (printed 'SEL 3287'), interpreted, flame ~10 min/frame, marble vase ~20 min, design loop 15 s–1 min (pp.289, 293). Stochastic shapes as isosurfaces of space functions (p.296). For Nodule: precedent for bands as a 1D profile of a noise-perturbed smooth coordinate (form only, not mechanism); hashed table-free noise vs agatesim's stored SmoothNoise3; band antialiasing must be added."""
+
+[[references]]
+id = "wellmann2018"
+kind = "review"
+authors = ["Wellmann, F.", "Caumon, G."]
+year = 2018
+title = "3-D structural geological models: concepts, methods, and uncertainties"
+venue = "Advances in Geophysics 59, 1–121"
+doi = "10.1016/bs.agph.2018.09.001"
+url = "https://hal.science/hal-01921494"
+access = "open"
+licence = "CC-BY-NC-ND-4.0 (authors' manuscript on HAL); publisher version copyright"
+checked = "full-text"
+topics = ["implicit-modelling", "explicit-modelling", "representation", "uncertainty", "faults", "geological-realism", "review"]
+notes = """Read in full 2026-10-31 (three helper notes) from the authors' manuscript, HAL hal-01921494v1, CC BY-NC-ND 4.0, 95 PDF pages, not the journal layout; PDF pages cited. Part 1 read in full 2026-10-31 from the HAL authors' preprint (PDF pages cited; printed manuscript page = PDF page − 1; no journal pagination): "geologic realism" is the purposeful selection of geological knowledge for a given scale and aim, not maximal detail (PDF pp. 5, 15), with consistency examples of non-crossing conformal layers, thickness constraints and continuity across faults, and with faults, reverse faults, overturned folds and domes forcing full-3D explicit or implicit methods (PDF pp. 7–8, Fig. 2). Two viewpoints on interface detection, data-driven (geophysics, inversion, non-unique) and geomodel-driven (observations inseparable from knowledge, conceptual → mathematical model → parameterisation → geometry), are linked by geological knowledge and joint inversion (PDF pp. 8–15, Fig. 3); a geological model "is only" interpolation functions plus parameters, which must be transparent to allow automatic updates for uncertainty work, and the chosen representation decides which data can be used (PDF pp. 13–14). Inputs reduce to labelled interface points, orientations, interval and trend data, with cross-sections valid inputs whose reliability depends on distance to observation and interpreter skill (PDF pp. 13, 15–17, Fig. 4). Uncertainty enters at four levels (conceptual model, model structure, parameters, input points; PDF p. 19, Fig. 5), classified as Mann's Types 1–3 and mapped by Wellmann et al. 2010b to data, interpolation and structural existence (PDF pp. 19–20); many models still fit after conditioning (PDF p. 19). Suggested distributions: normal for gradual contacts, uniform for unseen contacts but not in high dimensions, von Mises–Fisher for orientations (PDF pp. 22–23); interpretation bias and expert elicitation are discussed (PDF pp. 22–24). Section 3 (PDF pp. 25-41; manuscript prints page numbers = PDF − 1) casts all geomodel representations as basis expansions m(x) = Σ m_k φ_k(x), with regions handled either by conformal bases (Eq. 2, hard truncation) or by indicator multiplication (Eq. 3, soft truncation, no conformal mesh, XFEM-like), and geometry pushed into intermediate coordinates u(x) = [u, v, t] so that a coarse geometry basis and a finer property basis are decoupled (Fig. 6d, Eqs. 7-8, pp. 26-29); a regular grid "can … smear petrophysical contrasts" (p. 26). Explicit surfaces (maps, pillars, TIN/DSI, NURBS) need data projection, cannot hold several elevations per (x, y) in map form, need manual patching when data are not projectable to a plane, and tend to cross or gap when built independently (pp. 33-38); implicit fields are "in general better posed" (p. 33). Implicit interpolators are meshless RBF/dual kriging (dense (I+L)² system, "blobby" away from data; anisotropic distances or sparse MLS as fixes) or mesh-based roughness-regularised least squares on conformal tetrahedral meshes (smooth vs kink hinges by weights) (p. 39); several conformable horizons share one field as relative time t(x), and wrong horizon values create local minima that "imply closed bedding surfaces" (p. 39). Faults are built first; then a conformal mesh, a field per fault block truncated by faults, or one-sided discontinuous drift terms tapering to zero at tips and away from the fault (p. 40); epigenic overprints use truncation plus a latent variable such as distance to fractures (p. 32). No timings or memory figures are given in this section. Part 3 (PDF pp. 42–71; manuscript pages print one lower, no journal pages): models are θ = f(x; Φ, m, α, κ, τ/β, Ω) and UQ means choosing which parts to randomise (Eq. 15, PDF pp. 42–43); ensembles come from perturbing inputs and re-interpolating (needs automatic, i.e. implicit, methods; independent sampling gives unrealistic undulation, PDF p. 44), surface p-fields perturbed in contact order (PDF pp. 45–47), mild 3D space warping (PDF p. 47), adding a smooth correlated field ε (zero at data, scaled by 1/‖∇s‖, computed in depositional space to keep fault slip) to an implicit field (Fig. 12, PDF pp. 47–49), or marked-point-process fault networks and event-order sampling (PDF pp. 49–50). Implicit perturbation does not control level-set connectivity and can create closed iso-surfaces (PDF p. 49; Table 1 "arbitrary topology", PDF p. 63). Ensembles are summarised by class probability P_C = (1/n) Σ 1_C (Eq. 17), Shannon entropy H = −Σ P_C log2 P_C with H_max = log2 k (Eqs. 18–19, gridded only for display) and Lindsay's V = 1 − P_Ĉ (Eq. 20) (PDF pp. 53–54), and compared by distance vs misfit functions, topology graphs, PCA over geodiversity metrics, city-block distance, Bayesian likelihoods or ABC (PDF pp. 56–57); Cherpeau 2012 ran MCMC over a fault generator's random numbers with fault existence folded into size (PDF p. 59). Discussion: Table 1 compares extrusion/explicit/implicit (memory, topology, data, conformity, discontinuities; PDF p. 63); implicit methods struggle with thickness variation and many unconformities (PDF p. 63); scenarios may matter more than realizations, Bayes over scenarios Eqs. 23–24 (PDF pp. 66, 70); outlook names geological realism, 3D uncertainty visualisation, efficiency and scale management as open problems, with no costs reported (PDF p. 68)."""

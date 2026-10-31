@@ -18,10 +18,11 @@ library photo picked at random (its `Look`):
   `nodule.tags` measures the photos, after the quality gate finds the noise
   and band spacing of the photo-like cut. `measure_cut` keeps its blurred
   image to itself, so C6 and C10 read a second blurred copy, at the same blur
-  and noise level but its own noise draw. As for the photos, C6, C10, C12 and
-  C14-C16 are measured only where the shape gate passes the face. C12 (from
-  C6's profiles), C14 (`nodule.defects`), C15 (`nodule.curvature`) and C16
-  (`nodule.orientation`) read the same image as C6 and C10.
+  and noise level but its own noise draw. As for the photos, C6, C10 and
+  C12-C16 are measured only where the shape gate passes the face. C12 (from
+  C6's profiles), C13 (`nodule.concentric`), C14 (`nodule.defects`), C15
+  (`nodule.curvature`) and C16 (`nodule.orientation`) read the same image as
+  C6 and C10.
 
 **The image is a stand-in, not a rendering.** Chalcedony takes agatesim's
 colour from its translucency and staining (`render.chalcedony_colour`),
@@ -65,7 +66,7 @@ from agatesim.specimen.segment import trace_outline
 from agatesim.volume.slicing import Plane, random_cuts
 from numpy.typing import NDArray
 
-from nodule import bands, curvature, defects, orientation
+from nodule import bands, concentric, curvature, defects, orientation
 from nodule.specimen import Specimen, SpecimenCut, load_preset
 from nodule.tags import GATE_PASSES, IMPORTED, agatesim_dir
 
@@ -77,6 +78,13 @@ FROM_BANDS = {"C6_count": "count", "C10_persistence": "persistence"}
 FROM_CONTINUITY = {  # C12 by `nodule.bands`, from C6's profiles
     "C12_corr": "continuity",
     "C12_near": "continuity_near",
+}
+FROM_RINGS = {  # C13 by `nodule.concentric`, on the same image
+    "C13_sets": "sets",
+    "C13_depth": "depth",
+    "C13_drift": "drift",
+    "C13_complete": "complete",
+    "C13_wedges": "wedges",
 }
 FROM_ORDER = {  # C16 by `nodule.orientation`, on the same image as C6 and C10
     "C16_coherence": "coherence",
@@ -98,6 +106,7 @@ FROM_DEFECTS = {  # C14 by `nodule.defects`, on the same image
 }
 LATER = (
     *FROM_CONTINUITY,
+    *FROM_RINGS,
     *FROM_ORDER,
     *FROM_CURVE,
     *FROM_DEFECTS,
@@ -143,7 +152,7 @@ def photo_cut(specimen: Specimen, plane: Plane, look: Look, most: int = MOST_PX)
 
 
 def measure(pc: PhotoCut, look: Look, rng: np.random.Generator) -> dict[str, object]:
-    """C6-C12 and C14-C17 of a cut made to look like `look`'s photo, with
+    """C6-C17 of a cut made to look like `look`'s photo, with
     `measure_cut`'s record of the blur (module docstring). Values are None
     where they could not be judged; `bands` is False where the gate found no
     bands, before or after the blur."""
@@ -169,9 +178,11 @@ def measure(pc: PhotoCut, look: Look, rng: np.random.Generator) -> dict[str, obj
     o = orientation.measure(lum, mask, 1.0, q.band_spacing_px)
     c = curvature.measure(lum, mask, 1.0, q.band_spacing_px)
     d = defects.measure(lum, mask, 1.0, q.band_spacing_px)
+    r = concentric.measure(lum, mask, 1.0, q.band_spacing_px)
     pairs = (
         (b, FROM_BANDS),
         (b, FROM_CONTINUITY),
+        (r, FROM_RINGS),
         (o, FROM_ORDER),
         (c, FROM_CURVE),
         (d, FROM_DEFECTS),

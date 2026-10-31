@@ -106,6 +106,7 @@ from numpy.typing import NDArray
 STARTS = 24  # effective: profiles per face, started evenly round the rim
 FIELD_SPACING_PX = 4.0  # effective: the direction field is read at a scale where a band
 # spacing is at least this many pixels, so large photos stay quick
+OUTLINE_PX = 2  # effective: coarse px at a face's outline that mix stone and background
 STEP_PX = 1.0  # effective: streamline step, field pixels
 LOST_SPACINGS = 4.0  # effective: stop after this long without a clear band direction
 # (wide even bands have none inside them, so the path coasts straight on through them)
@@ -344,13 +345,27 @@ def blurred(image: NDArray[np.float64], sigma: float) -> tuple[NDArray[np.float6
 
 
 def direction_field(
-    lum: NDArray[np.float64], spacing: float
+    lum: NDArray[np.float64], spacing: float, face: NDArray[np.bool_] | None = None
 ) -> tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.float64]]:
     """Unit band normal (row, column parts) and coherence at each pixel, from
-    the structure tensor integrated over one band spacing."""
-    smooth = agatesim_scipy.gaussian(lum, max(1.0, 0.25 * spacing))
+    the structure tensor integrated over one band spacing. Given a `face`, the
+    smoothing averages over the face only (normalized convolution), less its
+    outer `OUTLINE_PX` px, and gradients outside that core are left out, so
+    the step from stone to background adds no direction."""
+    pre = max(1.0, 0.25 * spacing)
+    if face is None:
+        smooth = agatesim_scipy.gaussian(lum, pre)
+        keep = None
+    else:
+        core = agatesim_scipy.erode(face, OUTLINE_PX)
+        weight = core.astype(np.float64)
+        total = agatesim_scipy.gaussian(lum * weight, pre)
+        smooth = np.where(face, total / np.maximum(agatesim_scipy.gaussian(weight, pre), 1e-12), 0)
+        keep = agatesim_scipy.erode(core, 1)  # central differences reach one pixel
     gy = np.asarray(np.gradient(smooth, axis=0), dtype=np.float64)
     gx = np.asarray(np.gradient(smooth, axis=1), dtype=np.float64)
+    if keep is not None:
+        gy, gx = gy * keep, gx * keep
     jxx, jyy, jxy = (agatesim_scipy.gaussian(g, spacing) for g in (gx * gx, gy * gy, gx * gy))
     theta = 0.5 * np.arctan2(2 * jxy, jxx - jyy)
     coherence = np.hypot(jxx - jyy, 2 * jxy) / np.maximum(jxx + jyy, 1e-12)
@@ -451,6 +466,22 @@ class Traced:
     k: int  # full px per coarse px
 
 
+def coarse_face(
+    lum: NDArray[np.float32], mask: NDArray[np.bool_], scale: float, spacing_px: float
+) -> tuple[NDArray[np.float64], NDArray[np.bool_], int]:
+    """`lum` block-averaged by k full px so a band spacing spans about
+    `FIELD_SPACING_PX` coarse px, the working `mask` read at each coarse
+    pixel's centre, and k. Arguments as `measure`."""
+    k = max(1, int(spacing_px // FIELD_SPACING_PX))
+    h, w = lum.shape[0] // k, lum.shape[1] // k
+    coarse = lum[: h * k, : w * k].astype(np.float64).reshape(h, k, w, k).mean(axis=(1, 3))
+    centres_r: NDArray[np.float64] = (np.arange(h, dtype=np.float64) + 0.5) * (k * scale)
+    centres_c: NDArray[np.float64] = (np.arange(w, dtype=np.float64) + 0.5) * (k * scale)
+    rows = np.clip(centres_r.astype(np.int64), 0, mask.shape[0] - 1)
+    cols = np.clip(centres_c.astype(np.int64), 0, mask.shape[1] - 1)
+    return coarse, mask[np.ix_(rows, cols)], k
+
+
 def trace(
     lum: NDArray[np.float32],
     mask: NDArray[np.bool_],
@@ -461,15 +492,7 @@ def trace(
     """Paths from `starts` rim points inward along the band normal (module
     docstring), each kept if at least `MIN_PROFILE_SPACINGS` long. Arguments
     as `measure`."""
-    k = max(1, int(spacing_px // FIELD_SPACING_PX))
-    h, w = lum.shape[0] // k, lum.shape[1] // k
-    coarse = lum[: h * k, : w * k].astype(np.float64).reshape(h, k, w, k).mean(axis=(1, 3))
-    # The working mask, read at each coarse pixel's centre.
-    centres_r: NDArray[np.float64] = (np.arange(h, dtype=np.float64) + 0.5) * (k * scale)
-    centres_c: NDArray[np.float64] = (np.arange(w, dtype=np.float64) + 0.5) * (k * scale)
-    rows = np.clip(centres_r.astype(np.int64), 0, mask.shape[0] - 1)
-    cols = np.clip(centres_c.astype(np.int64), 0, mask.shape[1] - 1)
-    face = mask[np.ix_(rows, cols)]
+    coarse, face, k = coarse_face(lum, mask, scale, spacing_px)
     spacing = spacing_px / k
     inner = agatesim_scipy.erode(face, max(1, math.ceil(MARGIN_SPACINGS * spacing)))
     depth = agatesim_scipy.distance_to_false(inner, 1.0)

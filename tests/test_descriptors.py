@@ -49,6 +49,10 @@ def test_banded_cut_is_measured(central: PhotoCut) -> None:
     assert isinstance(count, float)
     assert count >= 3
     assert out["C17_core"] == 0.0  # the preset has no quartz core
+    for name in ("C16_coherence", "C16_order", "C16_corr", "C16_parallel", "C16_banded"):
+        assert out[name] is None or isinstance(out[name], float), name
+    assert isinstance(out["C16_coherence"], float)
+    assert isinstance(out["C16_corr_censored"], bool)
 
 
 def test_measurement_repeats_with_its_seed(central: PhotoCut) -> None:
@@ -63,5 +67,5 @@ def test_negative_control_bandless_cut_gives_no_bands(central: PhotoCut) -> None
     out = measure(pc, LOOK, np.random.default_rng(0))
     assert out["level"] == "not fit"  # the gate rejects the face
     assert out["C6_count"] in (None, 0.0)
-    for name in ("C7_spread", "C8_trend", "C9_ratio", "C10_persistence", "C11_hurst"):
+    for name in ("C7_spread", "C8_trend", "C9_ratio", "C10_persistence", "C11_hurst", "C16_order"):
         assert out[name] is None, name

@@ -296,6 +296,21 @@ def test_round_2_control_answers_are_checked() -> None:
     assert "a cue on a face without fine bands" in zones.control_problems("one-set", cue)[0]
 
 
+def test_controls_of_the_rest_of_round_2_skip_an_unproposed_c23() -> None:
+    # Choice 7p: C23 is left unknown, so only C25 and the cues are checked.
+    zones_right = [
+        {"kind": "even bands", "share": 0.5},
+        {"kind": "coarse quartz", "share": 0.3},
+        {"kind": "cavity", "share": 0.2},
+    ]
+    right = ROUND2 | {"C23_centres": zones.UNKNOWN, "C25_zones": zones_right}
+    assert zones.control_problems("zones", right) == []
+    wrong = right | {"C25_zones": [{"kind": "even bands", "share": 1.0}]}
+    assert zones.control_problems("zones", wrong) == ["zones: C25 kinds ['even bands']"]
+    round1 = BANDED | {"C23_centres": zones.UNKNOWN, "C25_zones": zones_right}
+    assert zones.control_problems("zones", round1) == ["zones: C23 'unknown', not 1"]
+
+
 def along(picture: np.ndarray, name: str, t: float) -> np.ndarray:
     """The control picture's colour at `t` along its line (0 rim, 1 centre)."""
     (x0, y0), (x1, y1) = zones.control_line(name)

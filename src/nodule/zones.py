@@ -520,7 +520,8 @@ def control_problems(name: str, row: Mapping[str, Any]) -> list[str]:
     if row.get("banded") != "yes":
         out.append(f"{name}: banded {row.get('banded')!r}, not yes")
         return out
-    if row["C23_centres"] != want["C23_centres"]:
+    skipped = round_of(row) == 2 and row["C23_centres"] == UNKNOWN  # not proposed (7p)
+    if row["C23_centres"] != want["C23_centres"] and not skipped:
         out.append(f"{name}: C23 {row['C23_centres']!r}, not {want['C23_centres']}")
     got = [z["kind"] for z in row["C25_zones"]]
     if got != [z["kind"] for z in want["C25_zones"]]:

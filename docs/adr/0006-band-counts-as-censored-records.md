@@ -624,6 +624,20 @@ re-tagging with round 2 and the other two tests, as section 6's timing
 reads (owner, 2026-10-30). Round 2's rules are fixed here before any of its
 photos is seen, so it is no retry until a pass.
 
+The rest of the pool (7p, 2026-10-31). The owner checked a line on all 153
+faces of the pool: 109 lines (56 with a direction passed over, 41 with an
+outline traced), 27 with no banded face and 17 with no rim in view. The 99
+lines not in the blind 10 went to six helpers, split by stream 5 of seed 6
+(16–17 faces each), one control each under a neutral name (each control
+twice), with section 9's definitions word for word and C23 and the C24 items
+left unknown. A control answer that leaves C23 unknown in round 2 is checked
+on C25 and the striation items only (assumption: 7p proposes no C23); all six
+were as they must be. The 99 C25 proposals are stored as proposals,
+plausible by round 2's blind C25 agreement (8/10), not checked. Description
+only: even bands appear on 98 of the 99 lines, plain stretches on 48, coarse
+quartz on 41, curdled or mottled bands on 16 and a cavity on 14; helpers
+marked 14 high confidence, 60 medium and 25 low.
+
 ## Alternatives considered
 
 - **Keep C6 as a count and note the limit in prose.** Rejected: the record

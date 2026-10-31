@@ -124,6 +124,8 @@ from agatesim.specimen.shape import MARGIN_SPACINGS
 from numpy.typing import NDArray
 
 STARTS = 24  # effective: profiles per face, started evenly round the rim
+COUPLET_SPACINGS = 2.0  # gate band spacings per light-dark couplet: the gate's spacing is
+# one band (2026-10-31: cosine rings of period 20 px and 40 px give 9.98 px and 19.5 px)
 FIELD_SPACING_PX = 4.0  # effective: the direction field is read at a scale where a band
 # spacing is at least this many pixels, so large photos stay quick
 OUTLINE_PX = 2  # effective: coarse px at a face's outline that mix stone and background

@@ -12,7 +12,7 @@ from agatesim.specimen.quality import MIN_COHERENCE
 from agatesim.specimen.shape import MARGIN_SPACINGS
 from numpy.typing import NDArray
 
-from nodule.bands import coarse_face, direction_field
+from nodule.bands import COUPLET_SPACINGS, coarse_face, direction_field
 from nodule.curvature import Curvature, even_face, measure, turn_rate
 from nodule.orientation import doubled
 
@@ -69,7 +69,8 @@ def face(
 
 def run(n: int, spacing: float, kind: str, seed: int = 0) -> Curvature:
     lum, mask = face(n, spacing, kind, seed)
-    return measure(lum, mask, 1.0, spacing)
+    # `spacing` is the couplet period; the gate reports one band, half of it.
+    return measure(lum, mask, 1.0, spacing / COUPLET_SPACINGS)
 
 
 def ring_kappa_r(n: int, spacing: float, kind: str) -> NDArray[np.float64]:
@@ -152,6 +153,6 @@ def test_negative_control_outline_step_adds_no_curvature_or_corner() -> None:
     # oriented step, but too little of the face is banded to be judged.
     for noise in (0.0, 0.1):
         lum, mask = face(400, 10.0, "even", noise=noise)
-        c = measure(lum, mask, 1.0, 10.0)
+        c = measure(lum, mask, 1.0, 10.0 / COUPLET_SPACINGS)
         assert c.banded < 0.25, noise
         assert c.corners in (None, 0), noise

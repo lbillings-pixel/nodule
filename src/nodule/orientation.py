@@ -3,7 +3,7 @@
 All four parts read the band direction of `nodule.bands.direction_field`
 (the structure tensor [@bigun1987], method only: its paper is cited, not read),
 on the coarse copy of the face that the band profiles use
-(`bands.coarse_face`: about `bands.FIELD_SPACING_PX` px per band spacing), so
+(`bands.coarse_face`: about `bands.FIELD_SPACING_PX` px per couplet), so
 a face gives the same values at any resolution that shows its bands. Gradients
 next to the outline are left out, so the step from stone to background adds no
 direction, and only pixels at least `MARGIN_SPACINGS` inside the outline are
@@ -37,6 +37,10 @@ place as having no clear band direction.
   fortification angle can pass where they run straight that far. Pixels whose
   segment leaves the judged face are not judged.
 
+Units: here a *spacing* is one light-dark couplet, `bands.COUPLET_SPACINGS`
+(2) times the quality gate's band spacing, which is one band (`measure`
+converts). The tests and the values below were measured in that unit.
+
 Grade (ADR 0004): plausible; the methods are borrowed from an analogue
 (block-copolymer stripes). Every parameter here is `effective`.
 """
@@ -52,7 +56,7 @@ from agatesim.specimen.quality import MIN_COHERENCE
 from agatesim.specimen.shape import MARGIN_SPACINGS
 from numpy.typing import NDArray
 
-from nodule.bands import coarse_face, direction_field
+from nodule.bands import COUPLET_SPACINGS, coarse_face, direction_field
 
 PARALLEL_LENGTH = 0.25  # effective: segment length, face diameters
 PARALLEL_TURN_DEG = 10.0  # effective: most turn from the centre to any sample, degrees
@@ -140,9 +144,11 @@ def measure(
 ) -> Order:
     """C16 of a face. Arguments as `nodule.bands.measure`: `lum` is brightness
     at full resolution, `mask` the face at the working size (`scale` working px
-    per full px), `spacing_px` the quality gate's band spacing (full px)."""
-    coarse, face, k = coarse_face(lum, mask, scale, spacing_px)
-    spacing = spacing_px / k
+    per full px), `spacing_px` the quality gate's band spacing (full px, one
+    band; read here as a couplet of `COUPLET_SPACINGS` bands)."""
+    period_px = COUPLET_SPACINGS * spacing_px
+    coarse, face, k = coarse_face(lum, mask, scale, period_px)
+    spacing = period_px / k
     inner = agatesim_scipy.erode(face, max(1, math.ceil(MARGIN_SPACINGS * spacing)))
     if not inner.any():
         return Order(None, None, None, False, None, 0.0)

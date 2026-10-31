@@ -7,6 +7,7 @@ import pytest
 from agatesim.specimen.quality import MIN_COHERENCE
 from numpy.typing import NDArray
 
+from nodule.bands import COUPLET_SPACINGS
 from nodule.orientation import Order, measure
 
 
@@ -39,7 +40,8 @@ def face(
 
 def run(n: int, spacing: float, kind: str, seed: int = 0) -> Order:
     lum, mask = face(n, spacing, kind, seed)
-    return measure(lum, mask, 1.0, spacing)
+    # `spacing` is the couplet period; the gate reports one band, half of it.
+    return measure(lum, mask, 1.0, spacing / COUPLET_SPACINGS)
 
 
 def test_concentric_rings_have_no_global_order_and_no_parallel_share() -> None:
@@ -94,7 +96,8 @@ def test_negative_control_outline_step_adds_no_direction() -> None:
         lum, mask = face(400, 10.0, "even", noise=noise)
         level = lum.copy()
         level[~mask] = 128.0
-        a, b = measure(lum, mask, 1.0, 10.0), measure(level, mask, 1.0, 10.0)
+        gate = 10.0 / COUPLET_SPACINGS
+        a, b = measure(lum, mask, 1.0, gate), measure(level, mask, 1.0, gate)
         assert a.banded == pytest.approx(b.banded, abs=0.005), noise
         assert a.coherence == pytest.approx(b.coherence, abs=0.005), noise
     assert a.banded < 0.25  # pyright: ignore[reportPossiblyUnbound]

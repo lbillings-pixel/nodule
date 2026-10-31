@@ -295,3 +295,22 @@ def test_spawning_the_noise_stream_leaves_the_shuffles_alone():
     a, b = np.random.default_rng(0), np.random.default_rng(0)
     a.spawn(1)[0].normal(size=1000)
     assert a.permutation(50).tolist() == b.permutation(50).tolist()
+
+
+def test_the_gate_spacing_is_one_band_half_a_couplet():
+    # C14-C16 read the gate's spacing times COUPLET_SPACINGS as a couplet.
+    from agatesim.specimen.quality import assess
+    from agatesim.specimen.segment import trace_outline
+
+    n = 600
+    y, x = np.mgrid[0:n, 0:n] - n / 2 + 0.5
+    r = np.hypot(x, y)
+    mask = r < 270
+    lum = (
+        128 + 40 * np.cos(2 * math.pi * r / PERIOD) + np.random.default_rng(0).normal(0, 2, r.shape)
+    )
+    lum[~mask] = 20
+    rgb = np.repeat(np.clip(lum, 0, 255).astype(np.uint8)[..., None], 3, axis=-1)
+    q = assess(rgb, mask, trace_outline(mask))
+    assert q.band_spacing_px is not None
+    assert q.band_spacing_px * bands.COUPLET_SPACINGS == pytest.approx(PERIOD, rel=0.1)

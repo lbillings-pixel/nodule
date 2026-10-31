@@ -2,7 +2,7 @@
 
 Both parts read the band direction of `nodule.bands.direction_field` on the
 coarse copy of the face that C16 and the band profiles use
-(`bands.coarse_face`), resampled so one band spacing spans exactly
+(`bands.coarse_face`), resampled so one spacing (couplet) spans exactly
 `FIELD_SPACING_PX` px: block-averaging by whole pixels leaves 4-8 px per
 spacing, and at corners the curvature's upper quantile moved with that by up
 to a half (2026-10-31: zig-zag, 0.093 at 5 px, 0.143 at 4 px), while at
@@ -19,7 +19,7 @@ a pixel is *banded* where its coherence reaches agatesim's `MIN_COHERENCE`.
   the doubled direction exp(2i theta) of the banded pixels is smoothed over
   `SMOOTH_SPACINGS` first (in place of their contour smoothing), which also
   takes out most of the 3-5 degree ripple that block-averaging leaves in the
-  direction. kappa is given times the band spacing (dimensionless): 0 for
+  direction. kappa is given times the spacing (dimensionless): 0 for
   straight bands, spacing / r on a ring of radius r. Unsigned: a photo does
   not say which side of a band is the inside. Reported over the banded pixels
   as the median and the 90th percentile; equally spaced bands make that close
@@ -40,6 +40,10 @@ a pixel is *banded* where its coherence reaches agatesim's `MIN_COHERENCE`.
   scraps of corner up to 4 spacings long (2026-10-31, five seeds at two
   resolutions); corner lines of a zig-zag run 19-33.
 
+Units: here a *spacing* is one light-dark couplet, `bands.COUPLET_SPACINGS`
+(2) times the quality gate's band spacing, which is one band (`measure`
+converts). The tests and the values below were measured in that unit.
+
 Grade (ADR 0004): plausible; the curvature method is borrowed from an
 analogue (convection stripes) and the corner rule is this project's own.
 Every parameter here is `effective`.
@@ -56,7 +60,7 @@ from agatesim.specimen.quality import MIN_COHERENCE
 from agatesim.specimen.shape import MARGIN_SPACINGS
 from numpy.typing import NDArray
 
-from nodule.bands import FIELD_SPACING_PX, coarse_face, direction_field
+from nodule.bands import COUPLET_SPACINGS, FIELD_SPACING_PX, coarse_face, direction_field
 from nodule.orientation import doubled
 
 SMOOTH_SPACINGS = 1.0  # effective: the doubled direction is smoothed over this before kappa
@@ -202,8 +206,9 @@ def measure(
     lum: NDArray[np.float32], mask: NDArray[np.bool_], scale: float, spacing_px: float
 ) -> Curvature:
     """C15 of a face. Arguments as `nodule.orientation.measure`."""
-    coarse, face, k = coarse_face(lum, mask, scale, spacing_px)
-    coarse, face, spacing = even_face(coarse, face, spacing_px / k)
+    period_px = COUPLET_SPACINGS * spacing_px
+    coarse, face, k = coarse_face(lum, mask, scale, period_px)
+    coarse, face, spacing = even_face(coarse, face, period_px / k)
     inner = agatesim_scipy.erode(face, max(1, math.ceil(MARGIN_SPACINGS * spacing)))
     if not inner.any():
         return Curvature(None, None, None, 0.0)

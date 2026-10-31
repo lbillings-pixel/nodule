@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 from numpy.typing import NDArray
 
+from nodule.bands import COUPLET_SPACINGS
 from nodule.defects import Defects, classify, groom, measure, thin
 
 
@@ -41,7 +42,8 @@ def face(
 
 def run(n: int, spacing: float, kind: str, seed: int = 0) -> Defects:
     lum, mask = face(n, spacing, kind, seed)
-    return measure(lum, mask, 1.0, spacing)
+    # `spacing` is the couplet period; the gate reports one band, half of it.
+    return measure(lum, mask, 1.0, spacing / COUPLET_SPACINGS)
 
 
 def test_thinning_and_classes_on_a_tee() -> None:

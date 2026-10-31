@@ -3,7 +3,7 @@
 Band terminations (a band that ends) and junctions (a band that splits or two
 that join), counted on the skeletons of both band phases as Murphy et al.
 [@murphy2015] do for block-copolymer stripes, and given per band spacing
-squared of the judged face.
+squared of the judged face (per period squared, as ADR 0004 asks).
 
 The face is the coarse copy C15 reads (`bands.coarse_face`, resampled by
 `curvature.even_face` to exactly `FIELD_SPACING_PX` px per spacing). It is
@@ -36,6 +36,10 @@ squared at both 16 and 32 px; an even face with pixel noise only, about 0.7.
 Restricting the count to the banded area (C16) does not separate that even face:
 its noise reads as 25-37% banded and keeps about 0.7.
 
+Units: here a *spacing* is one light-dark couplet, `bands.COUPLET_SPACINGS`
+(2) times the quality gate's band spacing, which is one band (`measure`
+converts). The tests and the values below were measured in that unit.
+
 Grade (ADR 0004): plausible; the method is borrowed from an analogue
 (block-copolymer stripes). Every parameter here is `effective`.
 """
@@ -50,7 +54,7 @@ from agatesim import _scipy as agatesim_scipy  # pyright: ignore[reportPrivateUs
 from agatesim.specimen.shape import MARGIN_SPACINGS
 from numpy.typing import NDArray
 
-from nodule.bands import OUTLINE_PX, coarse_face
+from nodule.bands import COUPLET_SPACINGS, OUTLINE_PX, coarse_face
 from nodule.curvature import even_face
 
 FINE_SPACINGS = 0.25  # effective: band-pass, fine Gaussian sigma, spacings
@@ -243,8 +247,9 @@ def measure(
     lum: NDArray[np.float32], mask: NDArray[np.bool_], scale: float, spacing_px: float
 ) -> Defects:
     """C14 of a face. Arguments as `nodule.orientation.measure`."""
-    coarse, face, k = coarse_face(lum, mask, scale, spacing_px)
-    coarse, face, spacing = even_face(coarse, face, spacing_px / k)
+    period_px = COUPLET_SPACINGS * spacing_px
+    coarse, face, k = coarse_face(lum, mask, scale, period_px)
+    coarse, face, spacing = even_face(coarse, face, period_px / k)
     signal = upsample(band_pass(coarse, face, spacing), UPSAMPLE)
     fine = upsample(face.astype(np.float64), UPSAMPLE) >= 0.5
     spacing *= UPSAMPLE

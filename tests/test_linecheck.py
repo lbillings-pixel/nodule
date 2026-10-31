@@ -129,6 +129,19 @@ def test_a_face_with_no_bands_gives_way_to_the_next(
     assert zones.load(checker.path)[before[0]]["line"] == {"banded": "no"}
 
 
+def test_every_checked_line_of_the_pool_is_drawn_for_the_helpers(
+    served: tuple[str, linecheck.LineChecker], tmp_path: Path
+) -> None:
+    # Choice 7p: lines past the blind 10 are drawn too.
+    base, checker = served
+    late, out = checker.sample[11], tmp_path / "ticked"
+    assert post(base + "/save", {"id": late, "values": {"centre": None, "draw": 0}})[0] == 200
+    # Negative control: a held-out face gets no picture.
+    held = checker.sample[0]
+    assert post(base + "/save", {"id": held, "values": {"banded": "no"}})[0] == 200
+    assert [p.stem for p in linecheck.write_ticked(checker, out)] == [late]
+
+
 def test_a_traced_outline_replaces_a_wrong_face(
     served: tuple[str, linecheck.LineChecker],
 ) -> None:

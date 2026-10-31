@@ -582,6 +582,15 @@ scoring, so description only:
 Section 6's fallback is still weighed at the end of the re-tagging, as the
 owner chose.
 
+- **7p. The rest of round 2's pool.** *(Recommended, taken 2026-10-30)*
+  Helpers propose only C25, along lines the owner checks
+  (`linecheck --all`); C23 and the C24 items are stored as unknown unless the
+  owner labels them. Only C25 held up blind, so proposing the other two would
+  add labels known to be weak. These C25 labels stay proposals (graded by
+  round 2's blind agreement, plausible), not checked. Alternatives: propose
+  all of C23–C25 and let section 6 decide at the end; pause the re-tag for
+  N2.
+
 Fault and fix (2026-10-30). On the first pass the owner held out six faces
 as "no banded face" because a clicked centre made the line vanish. Each was
 a face with no rim judged "yes" and no band paths, so its face was

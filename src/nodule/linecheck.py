@@ -18,9 +18,10 @@ whose rim lies outside the photo (likewise). The page shows the face's edge in c
 it does not follow the stone, the owner traces the stone's edge and that
 outline becomes the face. The server, not the page, works out the rim;
 saves are checked (`zones.line_problems`) and written beside the labels in
-references/band-zone-labels.toml. Done when `zones.BLIND` faces have a line.
+references/band-zone-labels.toml. Done when `zones.BLIND` faces have a line,
+or with `--all` every drafted face (the rest of the re-tag, choice 7p).
 
-`--ticked` draws the checked lines of round 2's sample into
+`--ticked` draws the checked lines of round 2's pool into
 runs/zone-lines/ticked/ for the helpers, and the control faces with their
 fixed lines (`zones.control_line`) into runs/zone-controls/ticked/. Nothing
 leaves the PC.
@@ -194,9 +195,11 @@ class LineChecker:
         path: Path = zones.ZONES_TOML,
         pictures: Path = OUT_DIR,
         view_labels: Path = labels.LABELS_TOML,
+        needed: int = zones.BLIND,
     ) -> None:
         self.path = path
         self.pictures = pictures
+        self.needed = needed
         self.images = zones.load(path)
         self.views = labels.load(view_labels)
         drafts = pictures / DRAFTS
@@ -214,7 +217,7 @@ class LineChecker:
                 for k in self.sample
             ],
             "reasons": zones.LINE_REASONS,
-            "needed": zones.BLIND,
+            "needed": self.needed,
         }
 
     def face(self, image_id: str) -> tuple[NDArray[np.bool_], float, tuple[int, int]]:
@@ -345,12 +348,12 @@ class LineChecker:
 
 
 def write_ticked(checker: LineChecker, out: Path) -> list[Path]:
-    """The checked lines of round 2's sample drawn on their pictures."""
+    """The checked lines of round 2's pool drawn on their pictures."""
     out.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
-    for k in zones.round2_sample(checker.views, checker.images):
+    for k in checker.sample:
         line = checker.images.get(k, {}).get("line")
-        if line is None:
+        if line is None or zones.held_out(line):
             continue
         with Image.open(checker.pictures / f"{k}.png") as img:
             ticked(img, line["rim"], line["centre"]).save(out / f"{k}.png")
@@ -373,6 +376,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="check round 2's drawn lines (ADR 0006, s.9)")
     parser.add_argument("--draft", type=int, nargs="?", const=DRAFT, help="draft the first N")
     parser.add_argument("--ticked", action="store_true", help="draw the checked lines")
+    parser.add_argument("--all", action="store_true", help="check every drafted face (7p)")
     parser.add_argument("--port", type=int, default=PORT)
     parser.add_argument("--no-open", action="store_true", help="do not open the browser")
     args = parser.parse_args(argv)
@@ -389,6 +393,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"drafted {len(drafts)} in {time.perf_counter() - start:.0f} s, peak {peak:.0f} MiB")
         return 0
     checker = LineChecker()
+    if args.all:
+        checker.needed = len(checker.sample)
     if args.ticked:
         written = write_ticked(checker, OUT_DIR / "ticked")
         print(f"drew {len(written)} checked lines into {OUT_DIR / 'ticked'}")

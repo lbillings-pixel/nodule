@@ -186,11 +186,17 @@ the nodule.
 
 | Check | Rejects (negative control) |
 |---|---|
-| Band coordinate increases inward everywhere except at the medial surface (no folds, no islands) | a wobble whose slope exceeds 1 |
+| Band coordinate increases away from the nearest growth surface (the wall or an inclusion such as a tube) everywhere except at medial surfaces (no folds, no islands)¹ | a wobble whose slope exceeds 1 |
 | Fracture offset is zero at the tip line | a fracture with constant slip ending inside the nodule |
 | Fracture map is one-to-one (no rock moved onto other rock) | a slip profile steep enough to overlap; sufficient condition τ·‖∇v‖ < 1 per step (*plausible*, [inference]) |
 | Band thickness has no steps at grid-cell spacing | the same coordinate read by trilinear interpolation |
 | A preview and a full-resolution cut agree where their pixels coincide | noise defined on the pixel grid instead of in world coordinates |
+
+¹ Amended 2026-10-31 (owner). The first wording measured "inward" from the
+wall alone. Bands also grow outward from each tube, so in the N2 slice that
+wording reported about 200 folds in 1600 point pairs that are not folds
+(`nodule.specimen_checks`). Each new inclusion type that bands grow from
+joins the growth surface.
 
 ### 5. Smaller choices (recommendations the owner took)
 

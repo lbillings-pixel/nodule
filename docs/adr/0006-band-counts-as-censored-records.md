@@ -638,6 +638,27 @@ only: even bands appear on 98 of the 99 lines, plain stretches on 48, coarse
 quartz on 41, curdled or mottled bands on 16 and a cavity on 14; helpers
 marked 14 high confidence, 60 medium and 25 low.
 
+- **7q. The rest of the re-tag.** *(Recommended, taken 2026-10-31)* In
+  order: (1) the friend's 31 (agatesim ADR 0073), which had no view labels,
+  are labelled as a second batch under ADR 0004's choice 9b, helpers
+  proposing and the owner checking every one (`nodule.check --batch 2`);
+  (2) the faces outside round 2's pool that are not exteriors
+  (`zones.rest_faces`: the first batch's 15 broken surfaces and one unknown
+  view, and the second batch's faces) get lines checked by the owner
+  (`linecheck --rest`, "no banded face" being one click) and helper C25
+  proposals as in 7p; (3) the 31 exteriors are stored as showing no banded
+  face, after the owner looks over a contact sheet for any that do (a window
+  or a chip); (4) section 6 is weighed. Round 1's check sample and round 2's
+  pool are drawn from the first batch only (`labels.batch`), so the new
+  labels leave both as they were. Alternatives: leave the friend's photos out
+  of C23–C25; store the exteriors without the sheet.
+
+Batch 2's proposals (2026-10-31): two helpers, split by stone (16 and 15),
+the definitions of ADR 0004 section 1 and its C4, C5 and C22 rows. All 31
+are proposed as polished cut faces in reflected light; the rim outline is
+proposed as following the rim on 15. Stored as proposals until the owner's
+check.
+
 ## Alternatives considered
 
 - **Keep C6 as a count and note the limit in prose.** Rejected: the record

@@ -187,17 +187,35 @@ def round2_pool(
     view_labels: Mapping[str, Mapping[str, labels.Row]], images: Mapping[str, Mapping[str, Row]]
 ) -> list[str]:
     """Round 2's candidates in their fixed order (choice 7m): photos whose view
-    can show a banded face (`POOL_VIEWS`), outside the round 1 check sample
-    and with no round 1 labels, shuffled by stream `POOL_STREAM`."""
+    can show a banded face (`POOL_VIEWS`), of the first labelling batch,
+    outside the round 1 check sample and with no round 1 labels, shuffled by
+    stream `POOL_STREAM`."""
     sample = set(labels.check_sample(view_labels))
     pool = sorted(
         k
         for k, e in view_labels.items()
         if labels.chosen(e)[0].get("view_kind") in POOL_VIEWS
+        and labels.batch(k) == 1
         and k not in sample
         and all(round_of(r) == 2 for n, r in images.get(k, {}).items() if n != "line")
     )
     return [str(i) for i in stream(POOL_STREAM).permutation(pool)]
+
+
+def rest_faces(
+    view_labels: Mapping[str, Mapping[str, labels.Row]], images: Mapping[str, Mapping[str, Row]]
+) -> list[str]:
+    """The rest of the re-tag's faces (choice 7q), in id order: every
+    labelled photo outside round 1's check sample and round 2's pool, with no
+    round 1 labels, whose view is not an exterior (an exterior shows no face)."""
+    done = set(labels.check_sample(view_labels)) | set(round2_pool(view_labels, images))
+    return sorted(
+        k
+        for k, e in view_labels.items()
+        if k not in done
+        and labels.chosen(e)[0].get("view_kind", labels.UNKNOWN) != "exterior"
+        and all(round_of(r) == 2 for n, r in images.get(k, {}).items() if n != "line")
+    )
 
 
 def round2_sample(

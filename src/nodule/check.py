@@ -2,13 +2,14 @@
 
 `python -m nodule.check` serves a page on this PC only (127.0.0.1) and opens it
 in the browser. It shows each photo of the fixed check sample
-(`labels.check_sample`) as its outline-check picture, with Claude's proposed
+(`labels.check_sample`), or with `--batch N` every photo of a later batch
+(`labels.LATER`), as its outline-check picture, with Claude's proposed
 labels filled in; the owner confirms or corrects them, may add a rough band
 count by eye, and saves. Each save is checked (`labels.problems`) and written to
 `references/library-view-labels.toml` as the photo's `checked` table. The page
 does not show the measured band count, so the eye count is not led by it.
 
-Pictures come from `runs/outline-check/` (`python -m nodule.overlay`): Commons
+Pictures come from `runs/outline-check/` (`python -m nodule.overlay`): library
 photos only, never the owner's specimens. Nothing leaves the PC.
 """
 
@@ -36,11 +37,14 @@ PORT = 8765
 class Checker:
     """The sample and the labels file, with saves taken one at a time."""
 
-    def __init__(self, path: Path = labels.LABELS_TOML, pictures: Path = OUT_DIR) -> None:
+    def __init__(
+        self, path: Path = labels.LABELS_TOML, pictures: Path = OUT_DIR, batch: int = 1
+    ) -> None:
         self.path = path
         self.pictures = pictures
         self.images = labels.load(path)
-        self.sample = [k for k in labels.check_sample(self.images) if "proposed" in self.images[k]]
+        ids = labels.check_sample(self.images) if batch == 1 else sorted(self.images)
+        self.sample = [k for k in ids if labels.batch(k) == batch and "proposed" in self.images[k]]
         self.lock = threading.Lock()
 
     page = PAGE
@@ -145,9 +149,15 @@ def handler(checker: Page) -> type[BaseHTTPRequestHandler]:
 
 
 def report(images: dict[str, dict[str, labels.Row]]) -> str:
-    """How often the owner left each proposal as it was."""
-    lines = [f"{name:12s} {same}/{n}" for name, (same, n) in labels.agreement(images).items()]
-    return "agreement with the proposals on checked photos:\n" + "\n".join(lines)
+    """How often the owner left each proposal as it was, batch by batch."""
+    out: list[str] = []
+    for n in sorted({labels.batch(k) for k in images}):
+        found = labels.agreement({k: e for k, e in images.items() if labels.batch(k) == n})
+        lines = [f"{name:12s} {same}/{of}" for name, (same, of) in found.items()]
+        out.append(
+            f"agreement with the proposals on checked photos, batch {n}:\n" + "\n".join(lines)
+        )
+    return "\n".join(out)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -155,8 +165,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--port", type=int, default=PORT)
     parser.add_argument("--no-open", action="store_true", help="do not open the browser")
     parser.add_argument("--report", action="store_true", help="print agreement and stop")
+    parser.add_argument(
+        "--batch", type=int, default=1, help="1: the check sample; a later batch: all of it"
+    )
     args = parser.parse_args(argv)
-    checker = Checker()
+    checker = Checker(batch=args.batch)
     if args.report:
         print(report(checker.images))
         return 0

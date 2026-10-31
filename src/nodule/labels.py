@@ -5,10 +5,11 @@ View kind, finish, lighting, C4 (exterior surface), C5 (rind), C22 (fracture
 traces) and the outline check ("does the drawn outline follow the stone's
 rim?") cannot be measured from the photo, so they are labelled. Per choice 9b,
 Claude proposes them for every usable photo with helper agents, looking at the
-outline-check pictures (Commons photos only), and the owner checks a fixed
+outline-check pictures (never the owner's specimens), and the owner checks a fixed
 random sample (`CHECK_SAMPLE`) on the check page (`nodule.check`). An owner's
 check overrides the proposal; agreement between the two on the sample says how
-far the remaining proposals can be trusted.
+far the remaining proposals can be trusted. Photos added to the library later
+come in later batches (`LATER`), which the owner checks in full.
 
 The owner may also give a rough band count by eye (`C6_eye`): light bands
 crossed from the rim to the centre, as C6 counts them. It is a comparison with
@@ -74,6 +75,10 @@ FIELDS = (*CHOICES, *NUMBERS)
 # Fields one side only gives.
 PROPOSED_ONLY = {"confidence": ("high", "medium", "low")}
 EYE_COUNT = (0, 1000)
+# Photos labelled after the first batch (the 230 usable Commons photos), by id
+# prefix (agatesim ADR 0073 names tier-2 photos by their alias): batch 2 is the
+# friend's 31, every one checked by the owner rather than a sample.
+LATER: dict[str, int] = {"collector-1-": 2}
 
 Value = str | int | float
 Row = dict[str, Value]
@@ -118,9 +123,15 @@ def problems(row: Mapping[str, object], checked: bool = False) -> list[str]:
     return out
 
 
+def batch(image_id: str) -> int:
+    """The labelling batch a photo came in: 1 for the first, else from `LATER`."""
+    return next((n for prefix, n in LATER.items() if image_id.startswith(prefix)), 1)
+
+
 def check_sample(ids: Iterable[str], size: int = CHECK_SAMPLE) -> list[str]:
-    """The fixed random sample the owner checks."""
-    pool = sorted(ids)
+    """The fixed random sample the owner checks, drawn from the first batch
+    only, so photos labelled later leave it as it was."""
+    pool = sorted(i for i in ids if batch(i) == 1)
     picked = np.random.default_rng(0).choice(pool, size=min(size, len(pool)), replace=False)
     return sorted(str(i) for i in picked)
 

@@ -14,8 +14,9 @@ at (`rims.RIM_PX`):
   unknown without a check), and the concavity count.
 
 Pictures go to `runs/outline-check/` (gitignored), named by agatesim library
-id, as plain PNG with no metadata. They are made from the library's Commons
-photos, never from the owner's specimens.
+id, as plain PNG with no metadata. They are made from the library's photos
+(Commons, and tier-2 photos used by permission, agatesim ADR 0073), never from
+the owner's specimens.
 """
 
 from __future__ import annotations
@@ -34,6 +35,7 @@ from PIL import Image, ImageDraw
 
 from nodule import outline, rims
 from nodule._scipy import hull_2d
+from nodule.labels import batch
 from nodule.tags import ROOT, agatesim_dir, image_path
 
 OUT_DIR = ROOT / "runs" / "outline-check"
@@ -108,6 +110,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="draw outline-check pictures (ADR 0004)")
     parser.add_argument("--sample", type=int, help="draw only this many photos, chosen at random")
     parser.add_argument("--out", type=Path, default=OUT_DIR, help="folder for the pictures")
+    parser.add_argument("--batch", type=int, help="draw only this labelling batch's photos")
     args = parser.parse_args(argv)
     agatesim = agatesim_dir()
     refs = agatesim / "references"
@@ -117,6 +120,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     library = load_library(refs / "library.toml")
     labels = load_labels(refs / "library-labels.toml")
     ids = sorted(k for k, v in labels.items() if v.verdict != "unusable")
+    if args.batch is not None:
+        ids = [k for k in ids if batch(k) == args.batch]
     if args.sample is not None:
         ids = sorted(np.random.default_rng(0).choice(ids, size=args.sample, replace=False).tolist())
     args.out.mkdir(parents=True, exist_ok=True)

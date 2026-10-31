@@ -277,6 +277,12 @@ carry over, but none of them is read as a cause:
     (Commons photos only), and the owner checks a random sample of about 30.
   - The owner tags all of them.
   - Measured descriptors only for now, labels later.
+
+  Photos added later form later batches (2026-10-31, ADR 0006 choice 7q):
+  helpers propose and the owner checks every photo of the batch; the first
+  batch's check sample stays as drawn. Batch 2 is the friend's 31 tier-2
+  photos (agatesim ADR 0073), which helpers may view by the friend's
+  permission.
 - **9c. Core-set size.** All 22 as listed *(recommended)*, or a smaller first
   cut (C1–C3, C7–C11, C17, C20).
 

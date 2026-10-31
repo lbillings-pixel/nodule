@@ -197,6 +197,11 @@ def test_round_2_draws_a_fixed_pool_outside_round_1() -> None:
     assert not first & set(pool)
     assert all(views[k]["proposed"]["view_kind"] == "cut face" for k in pool)
     assert pool == zones.round2_pool(dict(reversed(views.items())), images)
+    # Cut faces labelled in a later batch leave the pool as it was.
+    later: dict[str, dict[str, labels.Row]] = {
+        f"collector-1-b2-{i}": {"proposed": {"view_kind": "cut face"}} for i in range(9)
+    }
+    assert zones.round2_pool(views | later, images) == pool
     picked = zones.round2_sample(views, images)
     assert picked == pool[: zones.BLIND]
     # A face the owner marks not banded at the line check gives way to the next.
@@ -207,6 +212,25 @@ def test_round_2_draws_a_fixed_pool_outside_round_1() -> None:
     assert pool[1] in zones.round2_pool(views, images)
     images[pool[2]] = {"proposed": PROPOSED}
     assert pool[2] not in zones.round2_pool(views, images)
+
+
+def test_the_rest_of_the_re_tag_is_every_face_outside_both_rounds() -> None:
+    kinds = ("cut face", "broken surface", "exterior", labels.UNKNOWN)
+    views: dict[str, dict[str, labels.Row]] = {
+        f"p{i:03d}": {"proposed": {"view_kind": kinds[i % 4]}} for i in range(120)
+    }
+    views |= {f"collector-1-b2-{i}": {"proposed": {"view_kind": kinds[i % 3]}} for i in range(6)}
+    images: dict[str, dict[str, Any]] = {}
+    rest = zones.rest_faces(views, images)
+    done = set(labels.check_sample(views)) | set(zones.round2_pool(views, images))
+    assert not done & set(rest)
+    # Every face that is neither done nor an exterior, the later batch's cut faces included.
+    assert set(rest) == {
+        k for k in views if k not in done and views[k]["proposed"]["view_kind"] != "exterior"
+    }
+    assert {"collector-1-b2-0", "collector-1-b2-1"} <= set(rest)
+    assert "collector-1-b2-2" not in rest
+    assert rest == sorted(rest)
 
 
 @pytest.mark.parametrize(

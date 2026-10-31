@@ -102,6 +102,10 @@ def test_the_check_sample_is_fixed_and_bounded() -> None:
     assert labels.check_sample(ids) == labels.check_sample(reversed(ids))
     assert len(labels.check_sample(ids)) == labels.CHECK_SAMPLE
     assert labels.check_sample(ids[:5]) == sorted(ids[:5])
+    # Photos labelled in a later batch leave the sample as it was.
+    later = [f"collector-1-b2-{i}" for i in range(31)]
+    assert [labels.batch(i) for i in (ids[0], later[0])] == [1, 2]
+    assert labels.check_sample(ids + later) == labels.check_sample(ids)
 
 
 def test_labels_fill_the_record_but_their_old_outline_check_is_left_out() -> None:
@@ -133,6 +137,18 @@ def test_the_labels_file_round_trips(tmp_path: Path) -> None:
         "a": {"proposed": PROPOSED, "checked": CUT_FACE},
         "b": {"proposed": PROPOSED},
     }
+
+
+def test_a_later_batch_is_checked_in_full(tmp_path: Path) -> None:
+    path = tmp_path / "labels.toml"
+    first = {f"photo-{i:03d}": {"proposed": PROPOSED} for i in range(60)}
+    later = {f"collector-1-b2-{i}": {"proposed": PROPOSED} for i in range(31)}
+    labels.save(first | later, path)
+    assert check.Checker(path).sample == labels.check_sample(first)
+    assert check.Checker(path, batch=2).sample == sorted(later)
+    text = check.report(labels.load(path))
+    assert "batch 1:" in text
+    assert "batch 2:" in text
 
 
 def serve(tmp_path: Path) -> tuple[str, check.Checker, check.ThreadingHTTPServer]:

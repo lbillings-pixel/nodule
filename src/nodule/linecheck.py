@@ -19,7 +19,11 @@ it does not follow the stone, the owner traces the stone's edge and that
 outline becomes the face. The server, not the page, works out the rim;
 saves are checked (`zones.line_problems`) and written beside the labels in
 references/band-zone-labels.toml. Done when `zones.BLIND` faces have a line,
-or with `--all` every drafted face (the rest of the re-tag, choice 7p).
+or with `--all` every drafted face (the rest of the pool, choice 7p).
+
+With `--rest`, each of these works on the faces outside round 2's pool
+instead (`zones.rest_faces`, choice 7q), every one of them, in id order.
+Drafts are added beside those already stored.
 
 `--ticked` draws the checked lines of round 2's pool into
 runs/zone-lines/ticked/ for the helpers, and the control faces with their
@@ -94,13 +98,18 @@ def draft_face(
 
 
 def draft(ids: Sequence[str], out: Path = OUT_DIR) -> dict[str, dict[str, Any]]:
-    """Draft and store the lines of `ids` (module docstring)."""
+    """Draft and store the lines of `ids` (module docstring), beside the
+    drafts already stored."""
     agatesim = agatesim_dir()
     refs = agatesim / "references"
     library = load_library(refs / "library.toml")
     cache = json.loads((refs / "models" / "shapes.json").read_text("utf-8"))
     finder, verdicts = rims.Finder(agatesim), rims.load()
     out.mkdir(parents=True, exist_ok=True)
+    stored = out / DRAFTS
+    before: dict[str, dict[str, Any]] = (
+        json.loads(stored.read_text("utf-8")) if stored.exists() else {}
+    )
     drafts: dict[str, dict[str, Any]] = {}
     for n, image_id in enumerate(ids):
         progress.report(n / max(len(ids), 1), "drafting lines")
@@ -109,7 +118,7 @@ def draft(ids: Sequence[str], out: Path = OUT_DIR) -> dict[str, dict[str, Any]]:
         Image.fromarray(rgb).save(out / f"{image_id}.png")  # plain PNG: no metadata
         np.savez_compressed(out / f"{image_id}.npz", face=face, k=k, shape=rgb.shape[:2])
         drafts[image_id] = found
-    (out / DRAFTS).write_text(json.dumps(drafts, indent=1), "utf-8")
+    stored.write_text(json.dumps(before | drafts, indent=1), "utf-8")
     return drafts
 
 
@@ -196,6 +205,7 @@ class LineChecker:
         pictures: Path = OUT_DIR,
         view_labels: Path = labels.LABELS_TOML,
         needed: int = zones.BLIND,
+        rest: bool = False,
     ) -> None:
         self.path = path
         self.pictures = pictures
@@ -206,7 +216,8 @@ class LineChecker:
         self.drafts: dict[str, dict[str, Any]] = (
             json.loads(drafts.read_text("utf-8")) if drafts.exists() else {}
         )
-        self.sample = [k for k in zones.round2_pool(self.views, self.images) if k in self.drafts]
+        faces = zones.rest_faces if rest else zones.round2_pool
+        self.sample = [k for k in faces(self.views, self.images) if k in self.drafts]
         self.faces: dict[str, tuple[NDArray[np.bool_], float, tuple[int, int]]] = {}
         self.lock = threading.Lock()
 
@@ -348,7 +359,7 @@ class LineChecker:
 
 
 def write_ticked(checker: LineChecker, out: Path) -> list[Path]:
-    """The checked lines of round 2's pool drawn on their pictures."""
+    """The checked lines of the checker's faces drawn on their pictures."""
     out.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
     for k in checker.sample:
@@ -377,12 +388,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--draft", type=int, nargs="?", const=DRAFT, help="draft the first N")
     parser.add_argument("--ticked", action="store_true", help="draw the checked lines")
     parser.add_argument("--all", action="store_true", help="check every drafted face (7p)")
+    parser.add_argument(
+        "--rest", action="store_true", help="the faces outside round 2's pool (7q), all of them"
+    )
     parser.add_argument("--port", type=int, default=PORT)
     parser.add_argument("--no-open", action="store_true", help="do not open the browser")
     args = parser.parse_args(argv)
     if args.draft is not None:
         images, views = zones.load(), labels.load(labels.LABELS_TOML)
-        ids = zones.round2_pool(views, images)[: args.draft]
+        faces = zones.rest_faces if args.rest else zones.round2_pool
+        ids = faces(views, images)[: args.draft]
         tracemalloc.start()
         start = time.perf_counter()
         drafts = draft(ids)
@@ -392,8 +407,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"{k[:40]:40s} {d['source']:13s}{support}")
         print(f"drafted {len(drafts)} in {time.perf_counter() - start:.0f} s, peak {peak:.0f} MiB")
         return 0
-    checker = LineChecker()
-    if args.all:
+    checker = LineChecker(rest=args.rest)
+    if args.all or args.rest:
         checker.needed = len(checker.sample)
     if args.ticked:
         written = write_ticked(checker, OUT_DIR / "ticked")

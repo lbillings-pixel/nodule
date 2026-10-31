@@ -659,6 +659,11 @@ are proposed as polished cut faces in reflected light; the rim outline is
 proposed as following the rim on 15. Stored as proposals until the owner's
 check.
 
+The owner checked all 31 (2026-10-31): every label stood except the finish,
+sawn on all 31 where helpers proposed polished. The owner gave `C6_eye` on
+all 31. All 31 stay cut faces, so all join the rest faces (47 with the first
+batch's 16), whose lines were drafted in 141 s (peak 395 MiB).
+
 ## Alternatives considered
 
 - **Keep C6 as a count and note the limit in prose.** Rejected: the record

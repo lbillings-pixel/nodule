@@ -2277,6 +2277,19 @@ outline = "yes"
 confidence = "medium"
 note = "outline excludes the exterior piece below; outer orange layer, rind type unclear; possibly same face as b1-2 rotated"
 
+[images.collector-1-b1-1.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "yes"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
+
 [images.collector-1-b1-2.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2290,6 +2303,19 @@ C22_offset = "unknown"
 outline = "yes"
 confidence = "medium"
 note = "possibly same face as b1-1 rotated; top half of b1-4"
+
+[images.collector-1-b1-2.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "yes"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
 
 [images.collector-1-b1-3.proposed]
 view_kind = "cut face"
@@ -2305,6 +2331,19 @@ outline = "no"
 confidence = "high"
 note = "outline takes in an exterior piece at lower left; same face as b1-4 lower half"
 
+[images.collector-1-b1-3.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
+
 [images.collector-1-b1-4.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2318,6 +2357,19 @@ C22_offset = "unknown"
 outline = "no"
 confidence = "high"
 note = "two faces in one photo; outline merges both halves"
+
+[images.collector-1-b1-4.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
 
 [images.collector-1-b1-5.proposed]
 view_kind = "cut face"
@@ -2333,6 +2385,19 @@ outline = "no"
 confidence = "medium"
 note = "six pieces in one photo; no outline drawn"
 
+[images.collector-1-b1-5.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = "unknown"
+C6_eye = "unknown"
+
 [images.collector-1-b2-a1.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2346,6 +2411,19 @@ C22_offset = "unknown"
 outline = "no"
 confidence = "medium"
 note = "two halves in one photo; no outline drawn; orange fibrous outer layer about 0.06 of width, type unclear"
+
+[images.collector-1-b2-a1.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
 
 [images.collector-1-b2-a2.proposed]
 view_kind = "cut face"
@@ -2361,6 +2439,19 @@ outline = "yes"
 confidence = "medium"
 note = "same face as b2-a1 lower half; orange fibrous outer layer about 0.06 of width, type unclear"
 
+[images.collector-1-b2-a2.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "yes"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
+
 [images.collector-1-b2-a3.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2374,6 +2465,19 @@ C22_offset = "unknown"
 outline = "yes"
 confidence = "medium"
 note = "same face as b2-a1 upper half; outline excludes exterior piece below"
+
+[images.collector-1-b2-a3.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "yes"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
 
 [images.collector-1-b2-b1.proposed]
 view_kind = "cut face"
@@ -2389,6 +2493,19 @@ outline = "no"
 confidence = "medium"
 note = "two halves in one photo; no outline drawn; a few fine lines in inner bands may be fractures"
 
+[images.collector-1-b2-b1.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = "unknown"
+C6_eye = "unknown"
+
 [images.collector-1-b2-b2.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2402,6 +2519,19 @@ C22_offset = "unknown"
 outline = "no"
 confidence = "medium"
 note = "no outline drawn; same face as b2-b1 upper half; fine lines in inner bands may be fractures"
+
+[images.collector-1-b2-b2.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = "unknown"
+C6_eye = "unknown"
 
 [images.collector-1-b2-b3.proposed]
 view_kind = "cut face"
@@ -2417,6 +2547,19 @@ outline = "yes"
 confidence = "medium"
 note = "outline cuts slightly inside the rim in places; possibly same face as b2-b1 lower half"
 
+[images.collector-1-b2-b3.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "yes"
+C5_width = "unknown"
+C22_count = "unknown"
+C6_eye = "unknown"
+
 [images.collector-1-b2-c1.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2430,6 +2573,19 @@ C22_offset = "unknown"
 outline = "no"
 confidence = "medium"
 note = "two halves, top one cut off by frame; no outline drawn; thin dark outer skin, type unclear"
+
+[images.collector-1-b2-c1.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
 
 [images.collector-1-b2-c2.proposed]
 view_kind = "cut face"
@@ -2445,6 +2601,19 @@ outline = "yes"
 confidence = "high"
 note = "same face as b2-c1 lower half; thin dark outer skin, type unclear"
 
+[images.collector-1-b2-c2.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "yes"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
+
 [images.collector-1-b2-c3.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2458,6 +2627,19 @@ C22_offset = "unknown"
 outline = "yes"
 confidence = "high"
 note = "possibly same face as b2-c1 upper half"
+
+[images.collector-1-b2-c3.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "yes"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
 
 [images.collector-1-b2-d1.proposed]
 view_kind = "cut face"
@@ -2473,6 +2655,19 @@ outline = "yes"
 confidence = "medium"
 note = "outer zone with rosettes read as spherulitic; fine radial lines may be fractures; possibly counterpart of b2-d2"
 
+[images.collector-1-b2-d1.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "spherulitic shell"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "yes"
+C5_width = 0.06
+C22_count = "unknown"
+C6_eye = "unknown"
+
 [images.collector-1-b2-d2.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2486,6 +2681,19 @@ C22_offset = "unknown"
 outline = "yes"
 confidence = "medium"
 note = "outer zone with rosettes read as spherulitic; fine radial lines may be fractures; possibly counterpart of b2-d1"
+
+[images.collector-1-b2-d2.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "spherulitic shell"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "yes"
+C5_width = 0.06
+C22_count = "unknown"
+C6_eye = "unknown"
 
 [images.collector-1-b2-e1.proposed]
 view_kind = "cut face"
@@ -2501,6 +2709,19 @@ outline = "no"
 confidence = "low"
 note = "two halves in one photo; count spans both faces; no outline drawn; thin dark-brown rind of unclear type"
 
+[images.collector-1-b2-e1.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "no"
+C5_width = "unknown"
+C22_count = 4
+C6_eye = "unknown"
+
 [images.collector-1-b2-e2.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2514,6 +2735,19 @@ C22_offset = "no"
 outline = "yes"
 confidence = "medium"
 note = "thin dark-brown rind (~0.02 of width) of unclear type; hairline fractures, fill not resolvable; possibly the lower face in e1"
+
+[images.collector-1-b2-e2.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "yes"
+C5_width = "unknown"
+C22_count = 3
+C6_eye = "unknown"
 
 [images.collector-1-b2-e3.proposed]
 view_kind = "cut face"
@@ -2529,6 +2763,19 @@ outline = "yes"
 confidence = "medium"
 note = "thin dark-brown rind (~0.02 of width) of unclear type; hairline fractures, fill not resolvable; likely the other half of e2"
 
+[images.collector-1-b2-e3.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "no"
+outline = "yes"
+C5_width = "unknown"
+C22_count = 3
+C6_eye = "unknown"
+
 [images.collector-1-b2-f1.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2542,6 +2789,19 @@ C22_offset = "unknown"
 outline = "no"
 confidence = "medium"
 note = "outline wraps both halves as one shape; rough brown crust of unclear type"
+
+[images.collector-1-b2-f1.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 1
+C6_eye = "unknown"
 
 [images.collector-1-b2-f2.proposed]
 view_kind = "cut face"
@@ -2557,6 +2817,19 @@ outline = "no"
 confidence = "medium"
 note = "no outline drawn; likely same face as f1 left half"
 
+[images.collector-1-b2-f2.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
+
 [images.collector-1-b2-f3.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2570,6 +2843,19 @@ C22_offset = "unknown"
 outline = "no"
 confidence = "low"
 note = "no outline drawn; likely same face as f1 right half; one straight trace near the eyes may be a fracture"
+
+[images.collector-1-b2-f3.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 1
+C6_eye = "unknown"
 
 [images.collector-1-b2-g1.proposed]
 view_kind = "cut face"
@@ -2585,6 +2871,19 @@ outline = "no"
 confidence = "medium"
 note = "outline wraps both halves as one shape; thin dark rind of unclear type"
 
+[images.collector-1-b2-g1.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
+
 [images.collector-1-b2-g2.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2598,6 +2897,19 @@ C22_offset = "unknown"
 outline = "yes"
 confidence = "medium"
 note = "thin dark rind of unclear type; possibly the lower face in g1"
+
+[images.collector-1-b2-g2.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "yes"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
 
 [images.collector-1-b2-g3.proposed]
 view_kind = "cut face"
@@ -2613,6 +2925,19 @@ outline = "no"
 confidence = "medium"
 note = "no outline drawn; possibly same face as g2"
 
+[images.collector-1-b2-g3.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
+
 [images.collector-1-b2-h1.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2626,6 +2951,19 @@ C22_offset = "unknown"
 outline = "no"
 confidence = "low"
 note = "outline wraps both halves as one shape; grey patches at the edge may be adhering host"
+
+[images.collector-1-b2-h1.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = "unknown"
+C6_eye = "unknown"
 
 [images.collector-1-b2-h2.proposed]
 view_kind = "cut face"
@@ -2641,6 +2979,19 @@ outline = "no"
 confidence = "medium"
 note = "no outline drawn; possibly same face as h1 top half; grey glittery patches on the edge may be adhering host"
 
+[images.collector-1-b2-h2.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
+
 [images.collector-1-b2-h3.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2654,6 +3005,19 @@ C22_offset = "unknown"
 outline = "yes"
 confidence = "low"
 note = "outline cuts across a few rim notches; one thin dark trace crossing bands may be a fracture or channel; possibly h1 lower half"
+
+[images.collector-1-b2-h3.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "unknown"
+C22_offset = "unknown"
+outline = "yes"
+C5_width = "unknown"
+C22_count = 1
+C6_eye = "unknown"
 
 [images.collector-1-b2-i1.proposed]
 view_kind = "cut face"
@@ -2669,6 +3033,19 @@ outline = "no"
 confidence = "medium"
 note = "outline wraps both halves as one shape; thin reddish-brown rind of unclear type"
 
+[images.collector-1-b2-i1.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "no"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
+
 [images.collector-1-b2-i2.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2683,6 +3060,19 @@ outline = "yes"
 confidence = "medium"
 note = "short white marks look like surface scratches, not fractures"
 
+[images.collector-1-b2-i2.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "yes"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
+
 [images.collector-1-b2-i3.proposed]
 view_kind = "cut face"
 finish = "polished"
@@ -2696,6 +3086,19 @@ C22_offset = "unknown"
 outline = "yes"
 confidence = "medium"
 note = "likely the other half of i2; short white marks look like surface scratches"
+
+[images.collector-1-b2-i3.checked]
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
+C4_surface = "unknown"
+C5_rind = "unknown"
+C22_fill = "none"
+C22_offset = "unknown"
+outline = "yes"
+C5_width = "unknown"
+C22_count = 0
+C6_eye = "unknown"
 
 [images.crazy-lace-agate-11-cropped.proposed]
 view_kind = "cut face"

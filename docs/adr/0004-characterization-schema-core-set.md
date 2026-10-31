@@ -105,13 +105,22 @@ photos": *plausible* where the method is borrowed from an analogue,
 | C13 | B, D | Concentricity and completeness: drift of successive band centres over the spacing; share of 360° present; count of wedging bands | [@marichal2025; @gillert2023] | Parallel stripes, or two separate concentric sets, fail or report two centres; random closed blobs give no nesting order | plausible |
 | C14 | B, D | Defect density: band terminations and junctions per period² | [@murphy2015] | Perfect concentric bands give 0; thresholded noise of the same period gives a high density | plausible |
 | C15 | B, I | Curvature: distribution of band-contour curvature times median spacing; count of sharp corners (fortification angles) | [@riecke2006] | Straight stripes give 0; a circle gives 1/r; a roughened circle gives 1/r after smoothing | plausible |
-| C16 | I | Orientation order: structure-tensor coherence, Herman's order parameter, correlation length relative to face size; share of banded area with straight parallel bands | [@bigun1987] (method, citation only); [@murphy2015] | Isotropic noise gives coherence ≈ 0 and no profile is extracted; concentric rings give a parallel share ≈ 0, stripes ≈ 1 | plausible |
+| C16 | I | Orientation order: structure-tensor coherence, Herman's order parameter, correlation length relative to face size; share of banded area with straight parallel bands | [@bigun1987] (method, citation only); [@murphy2015] | Isotropic noise with power at the band spacing gives coherence below agatesim's `MIN_COHERENCE` (0.3), and most of the face is not banded¹; concentric rings give a parallel share ≈ 0, stripes ≈ 1 | plausible |
 | C17 | D, G | Core and cavity area shares: coarse-quartz core, open cavity (core share from agatesim). Area share of this face only, not a volume fraction | [@cruzorive2017] | A face with no core gives 0; centre cuts of a phantom must not be reported as its volume fraction | plausible |
 | C18 | C | Inclusion area share and profile count per face area, by class (moss, tube, stick, plume), with profile aspect ratios. Not converted to 3D number or size | [@higgins2000; @cruzorive2017] | Fortification-only faces give ≈ 0 (false-alarm rate) | plausible |
 | C19 | D | Band topology: connected pieces and closed rings of the light and dark phases over a threshold sweep | [@riecke2006] | Concentric rings of known count give that count exactly; noise gives many small pieces | plausible |
 | C20 | B, D | Eye fraction (per photo set): share of faces showing the innermost zone. Under random cuts it estimates the ratio of inner to outer mean width; under other models it is descriptive only | [@coleman1992] | Random cuts of a phantom with core radius 0.3 R show the core in ≈ 30%; a centre-seeking set (≈ 100%) is flagged non-random, not read as a large core | plausible |
 | C21 | E | Colour: chroma spread, band-to-band colour contrast and number of colour classes, after lighting flattening. `effective`; lighting unknown | none (assumption) | A greyscale image gives chroma 0; a uniform tint changes mean hue but not contrast | speculative |
 | C22 | H | Fracture traces: count per face, open or filled, and whether bands are offset across them | none (assumption) | An unfractured synthetic face gives 0 | speculative |
+
+¹ Amended 2026-10-31 (owner). The first wording asked for "coherence ≈ 0 and
+no profile is extracted". At the scale the bands are read (one band spacing),
+noise always shows some local direction: band-scale noise gave coherence
+0.19-0.21 against 0.96-1.0 for bands, with 14-20% of the face over 0.3
+(`tests/test_orientation.py`). The band-profile tracer of C6 found 3-8
+profiles on such noise, 8 being the least it needs to count, so on that noise
+it can sometimes count. It is noted for C6 to be checked against; for
+photos and cuts the shape gate screens faces before C6 is measured.
 
 Composition (G) has no core descriptor: from photos it is always unknown
 (ADR 0003, 6b). Texture (F) and hierarchy (J) need a scale or a second

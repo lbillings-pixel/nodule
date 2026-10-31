@@ -298,6 +298,7 @@ source = { editable = "." }
 dependencies = [
     { name = "agatesim" },
     { name = "numpy" },
+    { name = "pydantic" },
     { name = "scipy" },
     { name = "tomli-w" },
 ]
@@ -320,6 +321,7 @@ requires-dist = [
     { name = "agatesim", git = "https://github.com/lbillings-pixel/agatesim?rev=adfe007ecba88802a48235183c4a9fdfad8d3168" },
     { name = "agatesim", extras = ["gpu"], marker = "extra == 'gpu'", git = "https://github.com/lbillings-pixel/agatesim?rev=adfe007ecba88802a48235183c4a9fdfad8d3168" },
     { name = "numpy", specifier = ">=2.5.4" },
+    { name = "pydantic", specifier = ">=2.14.1" },
     { name = "scipy", specifier = ">=1.18.1" },
     { name = "tomli-w", specifier = ">=1.2.0" },
 ]

@@ -1,0 +1,35 @@
+# The N2 vertical slice (ADR 0005): one simple nodule, end to end.
+# A lobed exterior, wall-parallel bands from agatesim's growth model with a
+# slope-capped wobble, one inclusion type (two filaments, lined as tubes), and
+# one flat fracture that ends inside the stone, its offset falling to zero at
+# the tip line. Every value is effective (ADR 0002): chosen to show each part,
+# not calibrated against stones.
+
+[volume]
+name = "n2-slice"
+seed = 3
+
+[volume.solid]
+preset = "nodule-irregular"  # overlapping spheres (agatesim)
+size_mm = 50
+filaments = [
+  { start_mm = [-4, 3, 12], end_mm = [-4, 3, 0], radius_mm = 0.4 },
+  { start_mm = [6, -2, 12], end_mm = [6, -2, 3], radius_mm = 0.3 },
+]
+
+[volume.model]
+kind = "procedural-growth"
+growth_mm = 30
+band_period = 0.015
+wobble_mm = 0.2
+wobble_scale_mm = 4.0
+wobble_max_slope = 0.5  # cap below 1: bands cannot fold (ADR 0005 section 3)
+
+[[fractures]]
+centre_mm = [2, 0, -6]
+normal = [1.0, 0.2, 0.3]
+slip_direction = [0, 0, 1]
+slip_mm = 1.5
+radius_along_mm = 18
+radius_across_mm = 14
+drag_mm = 8

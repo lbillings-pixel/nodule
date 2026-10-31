@@ -8,7 +8,9 @@
   Amended 2026-10-30 with what was built for C23–C25 and the check
   (section 8), and the owner took choices 7j and 7k (section 7); no grade
   changed. Amended 2026-10-30 again with round 1's result and choices
-  7l–7o for round 2 (section 9); no grade changed.
+  7l–7o for round 2 (section 9); no grade changed. Amended 2026-10-31 with
+  the rest of the re-tag (section 9, choices 7p and 7q) and section 6
+  weighed: the fallback is taken (section 10).
 - Date: 2026-10-29
 - Builds on: [ADR 0004](0004-characterization-schema-core-set.md) sections
   1, 4 (C6, C10, C13) and 8. Records the owner's choice of 2026-10-29 to
@@ -661,8 +663,9 @@ proposed as following the rim on 15. Stored as proposals until the owner's
 check.
 
 The owner checked all 31 (2026-10-31): every label stood except the finish,
-sawn on all 31 where helpers proposed polished. The owner gave `C6_eye` on
-all 31. All 31 stay cut faces, so all join the rest faces (47 with the first
+sawn on all 31 where helpers proposed polished. The owner left `C6_eye`
+blank (unknown) on all 31 (first written here as given; corrected in
+section 10). All 31 stay cut faces, so all join the rest faces (47 with the first
 batch's 16), whose lines were drafted in 141 s (peak 395 MiB).
 
 The rest faces' lines (2026-10-31): the owner checked all 47: 44 lines (19
@@ -686,6 +689,56 @@ stay unknown. The owner looked over all 31 and saw no cut face among them,
 so none moves to the rest faces. Alternative not taken: lines and C25 on
 banded exteriors, mixing surfaces with sections.
 
+### 10. Section 6 weighed: the fallback is taken (2026-10-31)
+
+Weighed at the end of the re-tag (7q step 4) on the records as stored; no
+rule was changed after the results were seen.
+
+- **Machine count against `C6_eye`.** `C6_eye` is given on 10 faces, all
+  among round 1's 30 (the owner left the second batch's 31 blank); C6 is
+  unknown on 3 of them, so both stand on 7. Section 6 gives no number for
+  "disagrees"; a face disagrees here where `C6_eye` lies outside C6's range
+  (`C6_low` to `C6_high`, its two-sided error of section 1), at the photo's
+  *L*, the eye's limit taken as no finer (section 1, assumption). 6 of 7
+  disagree (Wilson 95 %: 0.49–0.97). On four the owner counts far more
+  (13 against 1–5, 25 against 2–9, 12 against 2–11, 27 against 4–19); a
+  coarser limit only lowers the machine's count (N(L)), so these four
+  disagree at any limit, 4 of 7 at least. On two the owner counts none
+  where the machine finds 1–3 and 1–5.5 (one a broken surface the owner
+  notes as wisps, "no banding"). One agrees (2 against 1–3.5). Of the 7,
+  one is an exterior and two are broken surfaces; without the exterior,
+  5 of 6 disagree. More than a third: the test is met.
+- **C23–C25 against the owner's check.** Round 1 met it (section 9). Round
+  2's blind 10: C23 (6/10 agree) and C24 (17/30) disagree on more than a
+  third and meet it; C25 (8/10) passes. Met.
+- **N(L) and the faces noted as finely banded.** N(L) stands on 13 of the
+  30. The owner's notes name sub-resolution or shadow banding on 8 of them
+  (2 hedged: "very subtle evidence", "some evidence") and neither on 5. Count gained over
+  the two finest rungs: 0–1 on the 8 (median 1), 0–1.5 on the 5 (median 1).
+  C6 at *L*: 3–10.5 (median 5) against 2–5 (median 3). Section 6 set no
+  measure for "separates", so this is description, not a score: the groups
+  overlap almost wholly, and with the other two tests met it cannot change
+  the outcome.
+
+The owner took the fallback as written (2026-10-31), since any one test
+suffices and two are met. What follows:
+
+- C6, `C6_eye`, `C6_blank`, *L*, N(L) and C23–C25 stay in the records as
+  they are, read as descriptors of the photo at its *L*, not of the stone.
+  None is evidence of a stone's band number, band scales or zone sequence;
+  sections 1–3's readings of them as such are withdrawn, while their
+  definitions and controls stand.
+- Whether bands look right is tested as section 6 says: synthetic stones
+  rendered at each photo's resolution and lighting, compared with the
+  library by image statistics at set level (C7–C16 and the profile
+  spectrum), plus the owner's blind real-or-synthetic judgement, with
+  obvious fakes as the negative control. That needs N2's renderer, so N2
+  (ADR 0005 and the 3D vertical slice) comes next. Goal 3 is loosened as
+  section 6 says. Grade: plausible, as section 6 gives it.
+- The captures of section 5 and the delayed recount (7h) are not needed by
+  the fallback. They stay options for the data track; the recount would
+  still measure the owner's own spread, which test 1 leaves unknown.
+
 ## Alternatives considered
 
 - **Keep C6 as a count and note the limit in prose.** Rejected: the record
@@ -707,8 +760,8 @@ banded exteriors, mixing surfaces with sections.
   check on synthetic faces of known blur.
 - **Cues are subjective.** C24 rests on one observer's eye under unknown
   lighting; it informs where to scan, not the schema's claims.
-- **Few faces.** C6 stands on 72 faces and `C6_eye` on 11, so the fallback
-  test is coarse; the blind 10 are fewer still.
+- **Few faces.** C6 stands on 72 faces and `C6_eye` on 10 (both on 7), so
+  the fallback test is coarse; the blind 10 are fewer still.
 - **A face is one plane.** CT shows laminae present in the volume and absent
   from a plane [@jamba2025, Fig. 13], so bands that pinch out or curve away
   from the cut make a face count a lower bound for a second, geometric

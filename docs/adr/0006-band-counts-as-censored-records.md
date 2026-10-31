@@ -648,7 +648,8 @@ marked 14 high confidence, 60 medium and 25 low.
   (`linecheck --rest`, "no banded face" being one click) and helper C25
   proposals as in 7p; (3) the 31 exteriors are stored as showing no banded
   face, after the owner looks over a contact sheet for any that do (a window
-  or a chip); (4) section 6 is weighed. Round 1's check sample and round 2's
+  or a chip; changed below: exteriors get no record); (4) section 6 is
+  weighed. Round 1's check sample and round 2's
   pool are drawn from the first batch only (`labels.batch`), so the new
   labels leave both as they were. Alternatives: leave the friend's photos out
   of C23–C25; store the exteriors without the sheet.
@@ -663,6 +664,27 @@ The owner checked all 31 (2026-10-31): every label stood except the finish,
 sawn on all 31 where helpers proposed polished. The owner gave `C6_eye` on
 all 31. All 31 stay cut faces, so all join the rest faces (47 with the first
 batch's 16), whose lines were drafted in 141 s (peak 395 MiB).
+
+The rest faces' lines (2026-10-31): the owner checked all 47: 44 lines (19
+with an outline traced), 2 with no banded face and 1 with no rim in view,
+all three among the first batch's 16. The 44 went to three helpers, split by
+stream 6 of seed 6 (16, 16 and 15 pictures), one control each, with 7p's
+brief word for word; all three controls were as they must be. The 44 C25
+proposals are stored as proposals, plausible as in 7p. Description only:
+even bands on 43 of the 44, coarse quartz on 16, curdled or mottled bands
+on 12, a cavity on 12 (all in the friend's photos) and plain stretches on
+15; helpers marked 8 high confidence, 28 medium and 8 low.
+
+Step (3) changed (owner, 2026-10-31). The contact sheet showed that the
+exteriors are mostly not unbanded: about two-thirds show bands on their
+outer surface (mostly Lake Superior agates, whose weathered skin shows the
+banding). So exteriors get no C23–C25 record, rather than "no banded face":
+zones are read along a line on a plane face, and on a curved outer surface
+the line's shares are distorted and its "rim" is only the silhouette, the
+same reason ADR 0004 keeps projections and sections apart. Their zone labels
+stay unknown. The owner looked over all 31 and saw no cut face among them,
+so none moves to the rest faces. Alternative not taken: lines and C25 on
+banded exteriors, mixing surfaces with sections.
 
 ## Alternatives considered
 

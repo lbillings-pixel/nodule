@@ -1741,6 +1741,408 @@ C25_zones = [
 confidence = "low"
 note = "A thin white tufted border sits at the rim, then pale grey-blue grading to yellow with no clear bands to about 0.5. Orange-red bands follow to about 0.68, a pinkish-white crystal ring to about 0.86, even orange to about 0.95, and a small slit-like hollow at the end."
 
+[images.agate-12-30746153687.line]
+rim = [
+    0.271,
+    0.0487,
+]
+centre = [
+    0.6023,
+    0.4972,
+]
+source = "deepest point"
+draw = 0
+
+[images.agate-12-30746153687.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 1.0 },
+]
+confidence = "high"
+note = "After a thin rough outer edge the line crosses repeated white and pink bands throughout, with fainter pink bands in the last fifth."
+
+[images.agate-14-30746154167.line]
+rim = [
+    0.107,
+    0.7945,
+]
+centre = [
+    0.5785,
+    0.5933,
+]
+outline = [
+    [
+        0.4868,
+        0.0229,
+    ],
+    [
+        0.4379,
+        0.079,
+    ],
+    [
+        0.4049,
+        0.1337,
+    ],
+    [
+        0.3745,
+        0.18,
+    ],
+    [
+        0.3573,
+        0.2221,
+    ],
+    [
+        0.3375,
+        0.2544,
+    ],
+    [
+        0.3216,
+        0.288,
+    ],
+    [
+        0.311,
+        0.3217,
+    ],
+    [
+        0.2912,
+        0.3624,
+    ],
+    [
+        0.2688,
+        0.41,
+    ],
+    [
+        0.2476,
+        0.4535,
+    ],
+    [
+        0.2225,
+        0.4746,
+    ],
+    [
+        0.1815,
+        0.5026,
+    ],
+    [
+        0.1445,
+        0.5279,
+    ],
+    [
+        0.1062,
+        0.5587,
+    ],
+    [
+        0.06,
+        0.5994,
+    ],
+    [
+        0.0216,
+        0.6471,
+    ],
+    [
+        0.0137,
+        0.6751,
+    ],
+    [
+        0.0613,
+        0.7382,
+    ],
+    [
+        0.1392,
+        0.8336,
+    ],
+    [
+        0.2674,
+        0.922,
+    ],
+    [
+        0.3401,
+        0.9374,
+    ],
+    [
+        0.3956,
+        0.9514,
+    ],
+    [
+        0.4683,
+        0.9528,
+    ],
+    [
+        0.5344,
+        0.9711,
+    ],
+    [
+        0.6586,
+        0.9893,
+    ],
+    [
+        0.7458,
+        0.9696,
+    ],
+    [
+        0.7709,
+        0.9668,
+    ],
+    [
+        0.8185,
+        0.9444,
+    ],
+    [
+        0.8594,
+        0.9037,
+    ],
+    [
+        0.9123,
+        0.842,
+    ],
+    [
+        0.989,
+        0.6821,
+    ],
+    [
+        0.9678,
+        0.5166,
+    ],
+    [
+        0.9282,
+        0.4353,
+    ],
+    [
+        0.8872,
+        0.3806,
+    ],
+    [
+        0.8343,
+        0.3329,
+    ],
+    [
+        0.7828,
+        0.2684,
+    ],
+    [
+        0.7379,
+        0.2375,
+    ],
+    [
+        0.689,
+        0.2011,
+    ],
+    [
+        0.607,
+        0.1323,
+    ],
+    [
+        0.5383,
+        0.0931,
+    ],
+    [
+        0.4921,
+        0.0229,
+    ],
+]
+source = "deepest point"
+draw = 0
+
+[images.agate-14-30746154167.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.38 },
+    { kind = "coarse quartz", share = 0.62 },
+]
+confidence = "medium"
+note = "Fine pink, white and lilac bands run from the rim to about 0.38; the rest of the line crosses pale translucent coarse crystals."
+
+[images.agate-16-30746154767.line]
+rim = [
+    0.8734,
+    0.3611,
+]
+centre = [
+    0.568,
+    0.6277,
+]
+outline = [
+    [
+        0.5082,
+        0.2708,
+    ],
+    [
+        0.3025,
+        0.4979,
+    ],
+    [
+        0.25,
+        0.6115,
+    ],
+    [
+        0.2006,
+        0.7452,
+    ],
+    [
+        0.2397,
+        0.807,
+    ],
+    [
+        0.2737,
+        0.8185,
+    ],
+    [
+        0.3128,
+        0.8329,
+    ],
+    [
+        0.3488,
+        0.8645,
+    ],
+    [
+        0.3817,
+        0.8847,
+    ],
+    [
+        0.4228,
+        0.9005,
+    ],
+    [
+        0.4372,
+        0.9292,
+    ],
+    [
+        0.4712,
+        0.9637,
+    ],
+    [
+        0.5175,
+        0.9839,
+    ],
+    [
+        0.5669,
+        0.9738,
+    ],
+    [
+        0.6461,
+        0.9451,
+    ],
+    [
+        0.7202,
+        0.9192,
+    ],
+    [
+        0.8333,
+        0.9292,
+    ],
+    [
+        0.891,
+        0.8861,
+    ],
+    [
+        0.9887,
+        0.5382,
+    ],
+    [
+        0.9681,
+        0.3815,
+    ],
+    [
+        0.5124,
+        0.2765,
+    ],
+]
+source = "deepest point"
+draw = 7
+reasons = [
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+]
+
+[images.agate-16-30746154767.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "plain: no visible bands", share = 0.15 },
+    { kind = "even bands", share = 0.85 },
+]
+confidence = "medium"
+note = "From the rim to about 0.15 the line crosses pale cream-orange stone with no clear bands; from there to the centre it crosses regular orange-pink bands separated by thin white lines."
+
+[images.agate-17-30746155127.line]
+rim = [
+    0.6653,
+    0.0088,
+]
+centre = [
+    0.5249,
+    0.5268,
+]
+source = "deepest point"
+draw = 0
+
+[images.agate-17-30746155127.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.48 },
+    { kind = "plain: no visible bands", share = 0.22 },
+    { kind = "even bands", share = 0.3 },
+]
+confidence = "low"
+note = "Fine white bands in pink translucent material run to about 0.48, a fairly even pink-orange stretch follows to about 0.7, then white and bluish-grey bands to the end."
+
+[images.agate-19-30746155707.line]
+rim = [
+    0.0303,
+    0.7316,
+]
+centre = [
+    0.7929,
+    0.7094,
+]
+source = "paths"
+draw = 5
+reasons = [
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+]
+
+[images.agate-19-30746155707.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.55 },
+    { kind = "plain: no visible bands", share = 0.45 },
+]
+confidence = "low"
+note = "Fine white and pale pink bands, overprinted with red speckles from about 0.15 to 0.45 and crossed by an orange band near 0.45, run to about 0.55; the inner part is even pink with fine red speckles and at most faint broad shading."
+
 [images.agate-2-31731816833.proposed]
 banded = "yes"
 C23_centres = 1
@@ -1788,6 +2190,43 @@ C24_inner_shadow = "absent"
 C24_inner_iris = "absent"
 note = "Note that as a general principle usually when I mark \"absent\" for all \"inner\" categories that's when an \"inner\" region seems to be entirely (or almost entirely) filled with either a cavity or a quartz center/core."
 blind = false
+
+[images.agate-21-30746156187.line]
+rim = [
+    0.0765,
+    0.6786,
+]
+centre = [
+    0.796,
+    0.5558,
+]
+source = "paths"
+draw = 9
+reasons = [
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+]
+
+[images.agate-21-30746156187.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.48 },
+    { kind = "plain: no visible bands", share = 0.52 },
+]
+confidence = "medium"
+note = "Fine white and pale pink bands with a few thin red lines run from the rim to about 0.48; the inner half is even, translucent pink with no visible bands."
 
 [images.agate-24-51867236448.line]
 rim = [
@@ -3206,6 +3645,9 @@ C25_zones = [
 confidence = "medium"
 note = "A crusty orange rim and mottled orange, grey and purple patches fill the outer third. Purple-red then fine orange bands follow, ending in a plain dark blue-black centre."
 
+[images.agate-chalcedony-quartz-sio2-27633474479.line]
+rim_in_view = "no"
+
 [images.agate-d-bruyere.line]
 rim = [
     0.4437,
@@ -3561,6 +4003,249 @@ note = "Fine brown bands from the rim to a black line near 0.38, then white, gre
 
 [images.agate-detail-agat-lake-superior-usa-minnesota-cropped.line]
 rim_in_view = "no"
+
+[images.agate-east-of-the-black-hills-south-dakota-usa-21.line]
+rim = [
+    0.5591,
+    0.5251,
+]
+centre = [
+    0.784,
+    0.6157,
+]
+outline = [
+    [
+        0.6811,
+        0.2369,
+    ],
+    [
+        0.8179,
+        0.3852,
+    ],
+    [
+        0.8807,
+        0.4667,
+    ],
+    [
+        0.9331,
+        0.5466,
+    ],
+    [
+        0.9887,
+        0.6835,
+    ],
+    [
+        0.9846,
+        0.7536,
+    ],
+    [
+        0.8344,
+        0.8139,
+    ],
+    [
+        0.8066,
+        0.8269,
+    ],
+    [
+        0.7953,
+        0.8514,
+    ],
+    [
+        0.7963,
+        0.9198,
+    ],
+    [
+        0.7613,
+        0.9084,
+    ],
+    [
+        0.7335,
+        0.9051,
+    ],
+    [
+        0.7017,
+        0.8905,
+    ],
+    [
+        0.678,
+        0.8546,
+    ],
+    [
+        0.642,
+        0.8448,
+    ],
+    [
+        0.6029,
+        0.8595,
+    ],
+    [
+        0.5813,
+        0.866,
+    ],
+    [
+        0.5669,
+        0.8579,
+    ],
+    [
+        0.5504,
+        0.8334,
+    ],
+    [
+        0.5298,
+        0.8139,
+    ],
+    [
+        0.5093,
+        0.7976,
+    ],
+    [
+        0.4907,
+        0.8008,
+    ],
+    [
+        0.4774,
+        0.7845,
+    ],
+    [
+        0.465,
+        0.7796,
+    ],
+    [
+        0.4558,
+        0.7764,
+    ],
+    [
+        0.4177,
+        0.7699,
+    ],
+    [
+        0.3837,
+        0.765,
+    ],
+    [
+        0.357,
+        0.7764,
+    ],
+    [
+        0.3529,
+        0.7976,
+    ],
+    [
+        0.358,
+        0.8139,
+    ],
+    [
+        0.3426,
+        0.7992,
+    ],
+    [
+        0.32,
+        0.7796,
+    ],
+    [
+        0.3179,
+        0.7633,
+    ],
+    [
+        0.287,
+        0.6541,
+    ],
+    [
+        0.285,
+        0.6069,
+    ],
+    [
+        0.2983,
+        0.5873,
+    ],
+    [
+        0.3488,
+        0.602,
+    ],
+    [
+        0.3652,
+        0.5759,
+    ],
+    [
+        0.4218,
+        0.5645,
+    ],
+    [
+        0.4794,
+        0.5596,
+    ],
+    [
+        0.5041,
+        0.5971,
+    ],
+    [
+        0.5216,
+        0.5987,
+    ],
+    [
+        0.5638,
+        0.5156,
+    ],
+    [
+        0.5977,
+        0.5026,
+    ],
+    [
+        0.6358,
+        0.5075,
+    ],
+    [
+        0.6811,
+        0.4814,
+    ],
+    [
+        0.6852,
+        0.4423,
+    ],
+    [
+        0.6656,
+        0.3999,
+    ],
+    [
+        0.6512,
+        0.3738,
+    ],
+    [
+        0.641,
+        0.3461,
+    ],
+    [
+        0.6327,
+        0.3184,
+    ],
+    [
+        0.6358,
+        0.294,
+    ],
+    [
+        0.677,
+        0.2483,
+    ],
+]
+source = "deepest point"
+draw = 1
+reasons = [
+    "misses the bands",
+]
+
+[images.agate-east-of-the-black-hills-south-dakota-usa-21.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.1 },
+    { kind = "curdled or mottled bands", share = 0.9 },
+]
+confidence = "low"
+note = "Thin white and red bands at the start, then red, orange and lavender banding with blotchy, speckled texture around small orbicular shapes to the end."
 
 [images.agate-east-of-the-black-hills-south-dakota-usa-6.proposed]
 banded = "yes"
@@ -6341,6 +7026,213 @@ C24_inner_iris = "absent"
 note = "This is probably best ranked as an \"exterior\" although the nodule's outer husk has eroded away. Even so you can still see banding, so I'm tagging."
 blind = false
 
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-12-34651139191.line]
+rim = [
+    0.3531,
+    0.0448,
+]
+centre = [
+    0.5164,
+    0.4928,
+]
+outline = [
+    [
+        0.4105,
+        0.0267,
+    ],
+    [
+        0.1626,
+        0.1109,
+    ],
+    [
+        0.1008,
+        0.1559,
+    ],
+    [
+        0.0833,
+        0.1907,
+    ],
+    [
+        0.0628,
+        0.2314,
+    ],
+    [
+        0.0473,
+        0.3025,
+    ],
+    [
+        0.0309,
+        0.3925,
+    ],
+    [
+        0.036,
+        0.4797,
+    ],
+    [
+        0.0504,
+        0.5276,
+    ],
+    [
+        0.0802,
+        0.6045,
+    ],
+    [
+        0.0957,
+        0.6481,
+    ],
+    [
+        0.1389,
+        0.741,
+    ],
+    [
+        0.1698,
+        0.7787,
+    ],
+    [
+        0.1872,
+        0.8005,
+    ],
+    [
+        0.2438,
+        0.8296,
+    ],
+    [
+        0.3261,
+        0.8455,
+    ],
+    [
+        0.3683,
+        0.8644,
+    ],
+    [
+        0.393,
+        0.8993,
+    ],
+    [
+        0.4424,
+        0.9268,
+    ],
+    [
+        0.5381,
+        0.9631,
+    ],
+    [
+        0.644,
+        0.9617,
+    ],
+    [
+        0.7624,
+        0.9268,
+    ],
+    [
+        0.8663,
+        0.8775,
+    ],
+    [
+        0.9064,
+        0.8586,
+    ],
+    [
+        0.9403,
+        0.8325,
+    ],
+    [
+        0.9486,
+        0.7816,
+    ],
+    [
+        0.9383,
+        0.6858,
+    ],
+    [
+        0.9465,
+        0.6292,
+    ],
+    [
+        0.9465,
+        0.5522,
+    ],
+    [
+        0.9393,
+        0.4971,
+    ],
+    [
+        0.9054,
+        0.4317,
+    ],
+    [
+        0.8817,
+        0.3809,
+    ],
+    [
+        0.8447,
+        0.3519,
+    ],
+    [
+        0.8097,
+        0.3301,
+    ],
+    [
+        0.785,
+        0.3011,
+    ],
+    [
+        0.7819,
+        0.2052,
+    ],
+    [
+        0.7613,
+        0.1501,
+    ],
+    [
+        0.7233,
+        0.0978,
+    ],
+    [
+        0.6852,
+        0.0717,
+    ],
+    [
+        0.6338,
+        0.0659,
+    ],
+    [
+        0.5947,
+        0.0746,
+    ],
+    [
+        0.5288,
+        0.0659,
+    ],
+    [
+        0.499,
+        0.0571,
+    ],
+    [
+        0.4126,
+        0.0238,
+    ],
+]
+source = "deepest point"
+draw = 2
+reasons = [
+    "misses the bands",
+    "misses the bands",
+]
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-12-34651139191.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 1.0 },
+]
+confidence = "high"
+note = "After a thin pale translucent rim, the line crosses closely spaced white and orange bands all the way to the end."
+
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-13-34621074542.line]
 rim = [
     0.0769,
@@ -6370,6 +7262,191 @@ C25_zones = [
 ]
 confidence = "medium"
 note = "Even pale blue-grey covers the outer stretch to about 0.22, then a narrow set of white and lavender bands. The rest is smooth pinkish-brown with no visible bands, crossed by cracks and reflections."
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-14-34743267776.line]
+rim = [
+    0.6067,
+    0.9036,
+]
+centre = [
+    0.4975,
+    0.484,
+]
+outline = [
+    [
+        0.2102,
+        0.7803,
+    ],
+    [
+        0.3419,
+        0.8841,
+    ],
+    [
+        0.4649,
+        0.9093,
+    ],
+    [
+        0.5464,
+        0.9093,
+    ],
+    [
+        0.6355,
+        0.9051,
+    ],
+    [
+        0.6995,
+        0.8939,
+    ],
+    [
+        0.7886,
+        0.7831,
+    ],
+    [
+        0.8501,
+        0.7649,
+    ],
+    [
+        0.8864,
+        0.7607,
+    ],
+    [
+        0.9379,
+        0.6905,
+    ],
+    [
+        0.9617,
+        0.584,
+    ],
+    [
+        0.9429,
+        0.4465,
+    ],
+    [
+        0.9554,
+        0.3638,
+    ],
+    [
+        0.9329,
+        0.2852,
+    ],
+    [
+        0.8676,
+        0.1828,
+    ],
+    [
+        0.8124,
+        0.1071,
+    ],
+    [
+        0.7447,
+        0.0776,
+    ],
+    [
+        0.6681,
+        0.0875,
+    ],
+    [
+        0.6067,
+        0.0748,
+    ],
+    [
+        0.5853,
+        0.0636,
+    ],
+    [
+        0.5439,
+        0.065,
+    ],
+    [
+        0.5138,
+        0.0664,
+    ],
+    [
+        0.4787,
+        0.0468,
+    ],
+    [
+        0.421,
+        0.0468,
+    ],
+    [
+        0.3833,
+        0.0454,
+    ],
+    [
+        0.3394,
+        0.0622,
+    ],
+    [
+        0.3143,
+        0.0706,
+    ],
+    [
+        0.2779,
+        0.1015,
+    ],
+    [
+        0.2604,
+        0.1015,
+    ],
+    [
+        0.2202,
+        0.1211,
+    ],
+    [
+        0.1613,
+        0.1436,
+    ],
+    [
+        0.0973,
+        0.2039,
+    ],
+    [
+        0.0835,
+        0.2361,
+    ],
+    [
+        0.0672,
+        0.2544,
+    ],
+    [
+        0.032,
+        0.3806,
+    ],
+    [
+        0.0596,
+        0.4689,
+    ],
+    [
+        0.0998,
+        0.5854,
+    ],
+    [
+        0.1525,
+        0.7074,
+    ],
+    [
+        0.2102,
+        0.7817,
+    ],
+]
+source = "deepest point"
+draw = 0
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-14-34743267776.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "plain: no visible bands", share = 0.2 },
+    { kind = "even bands", share = 0.48 },
+    { kind = "plain: no visible bands", share = 0.32 },
+]
+confidence = "medium"
+note = "A brownish translucent rim zone with no clear bands to about 0.2, then crisp white, grey and brown bands to about 0.68; the line ends across the even red-brown centre patch."
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-4-33974568193.line]
 rim = [
@@ -6468,6 +7545,171 @@ C25_zones = [
 ]
 confidence = "medium"
 note = "White and orange bands, including an eye-like set, cover the line from the rim to about 0.8. The end crosses translucent orange-brown material with no visible bands."
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-7-34743298056.line]
+rim = [
+    0.093,
+    0.6571,
+]
+centre = [
+    0.508,
+    0.3807,
+]
+outline = [
+    [
+        0.2932,
+        0.0314,
+    ],
+    [
+        0.3885,
+        0.0117,
+    ],
+    [
+        0.5645,
+        0.0243,
+    ],
+    [
+        0.6995,
+        0.0314,
+    ],
+    [
+        0.8154,
+        0.1071,
+    ],
+    [
+        0.8799,
+        0.1856,
+    ],
+    [
+        0.9283,
+        0.3315,
+    ],
+    [
+        0.9166,
+        0.4199,
+    ],
+    [
+        0.8975,
+        0.4633,
+    ],
+    [
+        0.8623,
+        0.518,
+    ],
+    [
+        0.8066,
+        0.6022,
+    ],
+    [
+        0.8007,
+        0.6457,
+    ],
+    [
+        0.8095,
+        0.6948,
+    ],
+    [
+        0.8124,
+        0.7957,
+    ],
+    [
+        0.7787,
+        0.8532,
+    ],
+    [
+        0.7318,
+        0.8981,
+    ],
+    [
+        0.6878,
+        0.9107,
+    ],
+    [
+        0.4971,
+        0.9472,
+    ],
+    [
+        0.3885,
+        0.9781,
+    ],
+    [
+        0.2639,
+        0.9963,
+    ],
+    [
+        0.2375,
+        0.9837,
+    ],
+    [
+        0.1671,
+        0.8925,
+    ],
+    [
+        0.1142,
+        0.7649,
+    ],
+    [
+        0.1172,
+        0.7242,
+    ],
+    [
+        0.0893,
+        0.6457,
+    ],
+    [
+        0.057,
+        0.5783,
+    ],
+    [
+        0.101,
+        0.4998,
+    ],
+    [
+        0.1186,
+        0.4213,
+    ],
+    [
+        0.126,
+        0.3792,
+    ],
+    [
+        0.1421,
+        0.2964,
+    ],
+    [
+        0.1685,
+        0.2165,
+    ],
+    [
+        0.2125,
+        0.0959,
+    ],
+    [
+        0.2903,
+        0.0328,
+    ],
+]
+source = "deepest point"
+draw = 2
+reasons = [
+    "misses the bands",
+    "misses the bands",
+]
+
+[images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-7-34743298056.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "plain: no visible bands", share = 0.2 },
+    { kind = "even bands", share = 0.47 },
+    { kind = "plain: no visible bands", share = 0.33 },
+]
+confidence = "medium"
+note = "Even translucent red near the rim to about 0.2, then grey and white bands ending in a thick white band near 0.67, then even dark red with no bands seen to the end."
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-9-34651173151.proposed]
 banded = "yes"
@@ -9619,6 +10861,32 @@ C25_zones = [
 confidence = "medium"
 note = "Dark rim bands, then white sparkly crystalline quartz with grey points to about 0.42, then a smooth milky white strip to about 0.68. Then straight grey, white and brown horizontal bands to the end."
 
+[images.agate-sio2-25505269264.line]
+rim = [
+    0.8349,
+    0.6505,
+]
+centre = [
+    0.5039,
+    0.4385,
+]
+source = "deepest point"
+draw = 0
+
+[images.agate-sio2-25505269264.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.88 },
+    { kind = "plain: no visible bands", share = 0.12 },
+]
+confidence = "medium"
+note = "Fine white and blue-grey bands run from the rim side to about 0.88; the last stretch lies in the even grey core."
+
 [images.agate-sio2-from-brazil-50583624161.proposed]
 banded = "no"
 C23_centres = "unknown"
@@ -11126,6 +12394,9 @@ note = "Red-orange rim bands to about 0.3, then an orange stretch with dotted, s
 [images.banded-agate-from-mexico-cropped.line]
 rim_in_view = "no"
 
+[images.beach-agate-with-sagenite-from-central-oregon-coast-near-newport-and-yachats-ore.line]
+banded = "no"
+
 [images.berschweiler-agate-near-trier-germany-31942571364.line]
 rim = [
     0.4937,
@@ -12119,6 +13390,3062 @@ C25_zones = [
 ]
 confidence = "medium"
 note = "White and red-brown rim bands to about 0.08, then a frothy, mottled brown band to about 0.16 and a white grainy, crystalline-looking strip to about 0.21. After that, regular brown, white and dark concentric bands to a white centre with faint rings."
+
+[images.collector-1-b1-1.line]
+rim = [
+    0.3562,
+    0.1789,
+]
+centre = [
+    0.5226,
+    0.5549,
+]
+source = "paths"
+draw = 0
+
+[images.collector-1-b1-1.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.5 },
+    { kind = "coarse quartz", share = 0.05 },
+    { kind = "cavity", share = 0.45 },
+]
+confidence = "medium"
+note = "Orange rim then lavender, blue, grey and white bands to about 0.5, a thin white crystalline lining, then the open hollow with a sparkly crystal-coated floor."
+
+[images.collector-1-b1-2.line]
+rim = [
+    0.1379,
+    0.55,
+]
+centre = [
+    0.4905,
+    0.4722,
+]
+source = "paths"
+draw = 0
+
+[images.collector-1-b1-2.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.55 },
+    { kind = "coarse quartz", share = 0.05 },
+    { kind = "cavity", share = 0.4 },
+]
+confidence = "medium"
+note = "Orange, white, grey, black and blue bands run from the rim to about 0.55; a thin white crystal lining follows, and the line ends over the open hollow, with grey-white crystals visible on its floor."
+
+[images.collector-1-b1-3.line]
+rim = [
+    0.6633,
+    0.7735,
+]
+centre = [
+    0.487,
+    0.5194,
+]
+source = "paths"
+draw = 0
+
+[images.collector-1-b1-3.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.47 },
+    { kind = "coarse quartz", share = 0.1 },
+    { kind = "cavity", share = 0.43 },
+]
+confidence = "medium"
+note = "Blue, grey and white bands from the orange rim to about 0.47, a white crystalline quartz lining to about 0.57, then the open hollow with a sparkly crystal-coated floor."
+
+[images.collector-1-b1-4.line]
+rim = [
+    0.4086,
+    0.0853,
+]
+centre = [
+    0.4979,
+    0.2847,
+]
+outline = [
+    [
+        0.3915,
+        0.0861,
+    ],
+    [
+        0.2569,
+        0.1716,
+    ],
+    [
+        0.227,
+        0.2642,
+    ],
+    [
+        0.2214,
+        0.3119,
+    ],
+    [
+        0.2326,
+        0.3455,
+    ],
+    [
+        0.2662,
+        0.41,
+    ],
+    [
+        0.3261,
+        0.4493,
+    ],
+    [
+        0.3953,
+        0.4816,
+    ],
+    [
+        0.4607,
+        0.4942,
+    ],
+    [
+        0.515,
+        0.4886,
+    ],
+    [
+        0.5486,
+        0.49,
+    ],
+    [
+        0.5954,
+        0.4788,
+    ],
+    [
+        0.6459,
+        0.4605,
+    ],
+    [
+        0.6945,
+        0.4381,
+    ],
+    [
+        0.7263,
+        0.4016,
+    ],
+    [
+        0.7506,
+        0.3624,
+    ],
+    [
+        0.7637,
+        0.3273,
+    ],
+    [
+        0.7693,
+        0.3063,
+    ],
+    [
+        0.7693,
+        0.2445,
+    ],
+    [
+        0.7525,
+        0.1955,
+    ],
+    [
+        0.7225,
+        0.1548,
+    ],
+    [
+        0.6646,
+        0.1169,
+    ],
+    [
+        0.6029,
+        0.0861,
+    ],
+    [
+        0.5243,
+        0.0804,
+    ],
+    [
+        0.4607,
+        0.079,
+    ],
+    [
+        0.4028,
+        0.0861,
+    ],
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b1-4.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.68 },
+    { kind = "coarse quartz", share = 0.05 },
+    { kind = "cavity", share = 0.27 },
+]
+confidence = "high"
+note = "Fine orange rim bands give way to white, grey and blue bands up to about 0.68, where a thin white crystal crust lines a dark open hollow that runs to the end."
+
+[images.collector-1-b1-5.line]
+rim = [
+    0.3802,
+    0.5158,
+]
+centre = [
+    0.5053,
+    0.5857,
+]
+source = "paths"
+draw = 0
+
+[images.collector-1-b1-5.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "plain: no visible bands", share = 0.15 },
+    { kind = "even bands", share = 0.47 },
+    { kind = "coarse quartz", share = 0.38 },
+]
+confidence = "medium"
+note = "A thin, fairly uniform orange outer skin covers the first 0.15; grey, blue and white bands follow to about 0.62, and the rest of the line lies on sparkling white crystals lining the central hollow."
+
+[images.collector-1-b2-a1.line]
+rim = [
+    0.2652,
+    0.1315,
+]
+centre = [
+    0.4827,
+    0.2783,
+]
+outline = [
+    [
+        0.4407,
+        0.0384,
+    ],
+    [
+        0.351,
+        0.058,
+    ],
+    [
+        0.3173,
+        0.0762,
+    ],
+    [
+        0.3029,
+        0.0945,
+    ],
+    [
+        0.2853,
+        0.1113,
+    ],
+    [
+        0.2628,
+        0.1337,
+    ],
+    [
+        0.2404,
+        0.1506,
+    ],
+    [
+        0.226,
+        0.1758,
+    ],
+    [
+        0.218,
+        0.2081,
+    ],
+    [
+        0.2051,
+        0.2291,
+    ],
+    [
+        0.2035,
+        0.2642,
+    ],
+    [
+        0.2084,
+        0.2936,
+    ],
+    [
+        0.2116,
+        0.3175,
+    ],
+    [
+        0.2292,
+        0.3581,
+    ],
+    [
+        0.2484,
+        0.4016,
+    ],
+    [
+        0.2757,
+        0.4507,
+    ],
+    [
+        0.3141,
+        0.4746,
+    ],
+    [
+        0.3446,
+        0.4886,
+    ],
+    [
+        0.3622,
+        0.4998,
+    ],
+    [
+        0.4055,
+        0.5082,
+    ],
+    [
+        0.4407,
+        0.511,
+    ],
+    [
+        0.4696,
+        0.5152,
+    ],
+    [
+        0.5128,
+        0.518,
+    ],
+    [
+        0.5609,
+        0.5138,
+    ],
+    [
+        0.6202,
+        0.5082,
+    ],
+    [
+        0.6474,
+        0.4956,
+    ],
+    [
+        0.6875,
+        0.4802,
+    ],
+    [
+        0.7115,
+        0.4661,
+    ],
+    [
+        0.7484,
+        0.4437,
+    ],
+    [
+        0.7708,
+        0.4128,
+    ],
+    [
+        0.7965,
+        0.3694,
+    ],
+    [
+        0.8029,
+        0.3119,
+    ],
+    [
+        0.7869,
+        0.2544,
+    ],
+    [
+        0.7724,
+        0.1983,
+    ],
+    [
+        0.742,
+        0.1674,
+    ],
+    [
+        0.7067,
+        0.1323,
+    ],
+    [
+        0.6843,
+        0.1043,
+    ],
+    [
+        0.6426,
+        0.0889,
+    ],
+    [
+        0.601,
+        0.065,
+    ],
+    [
+        0.5737,
+        0.0552,
+    ],
+    [
+        0.5417,
+        0.0482,
+    ],
+    [
+        0.4952,
+        0.0384,
+    ],
+    [
+        0.4471,
+        0.037,
+    ],
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-a1.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "curdled or mottled bands", share = 0.1 },
+    { kind = "even bands", share = 0.9 },
+]
+confidence = "medium"
+note = "A fuzzy, mottled orange rim layer to about 0.1, then regular brown, olive, blue and white bands to the dark blue centre."
+
+[images.collector-1-b2-a2.line]
+rim = [
+    0.1112,
+    0.3515,
+]
+centre = [
+    0.5229,
+    0.4575,
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-a2.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "curdled or mottled bands", share = 0.15 },
+    { kind = "even bands", share = 0.85 },
+]
+confidence = "high"
+note = "A fuzzy yellow rim crust and a grey granular sparkly zone cover the first 0.15; then regular blue, white and dark grey bands run to the end just above a small crystal-lined hollow."
+
+[images.collector-1-b2-a3.line]
+rim = [
+    0.3126,
+    0.1852,
+]
+centre = [
+    0.466,
+    0.4819,
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-a3.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "curdled or mottled bands", share = 0.2 },
+    { kind = "even bands", share = 0.8 },
+]
+confidence = "high"
+note = "A fuzzy orange-yellow rim crust and a grey, granular, sparkly wavy zone cover the first fifth; regular blue, green and grey bands follow to the centre."
+
+[images.collector-1-b2-b1.line]
+rim = [
+    0.5778,
+    0.4668,
+]
+centre = [
+    0.4516,
+    0.2571,
+]
+outline = [
+    [
+        0.3864,
+        0.0257,
+    ],
+    [
+        0.3544,
+        0.0384,
+    ],
+    [
+        0.3256,
+        0.0482,
+    ],
+    [
+        0.2983,
+        0.0594,
+    ],
+    [
+        0.2551,
+        0.0847,
+    ],
+    [
+        0.2247,
+        0.1071,
+    ],
+    [
+        0.2007,
+        0.1281,
+    ],
+    [
+        0.1751,
+        0.1562,
+    ],
+    [
+        0.1575,
+        0.1912,
+    ],
+    [
+        0.1511,
+        0.2305,
+    ],
+    [
+        0.1559,
+        0.2796,
+    ],
+    [
+        0.1655,
+        0.3175,
+    ],
+    [
+        0.1799,
+        0.361,
+    ],
+    [
+        0.2007,
+        0.3932,
+    ],
+    [
+        0.2359,
+        0.4269,
+    ],
+    [
+        0.2759,
+        0.4493,
+    ],
+    [
+        0.3064,
+        0.4675,
+    ],
+    [
+        0.3784,
+        0.483,
+    ],
+    [
+        0.4376,
+        0.4914,
+    ],
+    [
+        0.5256,
+        0.4858,
+    ],
+    [
+        0.5832,
+        0.4647,
+    ],
+    [
+        0.6408,
+        0.4521,
+    ],
+    [
+        0.6808,
+        0.4311,
+    ],
+    [
+        0.7209,
+        0.3988,
+    ],
+    [
+        0.7577,
+        0.3666,
+    ],
+    [
+        0.7945,
+        0.3175,
+    ],
+    [
+        0.8121,
+        0.2628,
+    ],
+    [
+        0.8057,
+        0.2151,
+    ],
+    [
+        0.7849,
+        0.1702,
+    ],
+    [
+        0.7545,
+        0.1281,
+    ],
+    [
+        0.7145,
+        0.0973,
+    ],
+    [
+        0.684,
+        0.0776,
+    ],
+    [
+        0.644,
+        0.0566,
+    ],
+    [
+        0.5976,
+        0.0398,
+    ],
+    [
+        0.5656,
+        0.0286,
+    ],
+    [
+        0.5096,
+        0.0229,
+    ],
+    [
+        0.396,
+        0.0272,
+    ],
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-b1.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "curdled or mottled bands", share = 0.27 },
+    { kind = "even bands", share = 0.65 },
+    { kind = "cavity", share = 0.08 },
+]
+confidence = "medium"
+note = "A mottled orange-yellow outer zone to about 0.27, regular dark and pale blue bands to about 0.92, then the small sparkly hollow at the end."
+
+[images.collector-1-b2-b2.line]
+rim = [
+    0.4106,
+    0.8563,
+]
+centre = [
+    0.5107,
+    0.6336,
+]
+source = "paths"
+draw = 0
+
+[images.collector-1-b2-b2.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "curdled or mottled bands", share = 0.3 },
+    { kind = "even bands", share = 0.7 },
+]
+confidence = "medium"
+note = "A mottled orange-yellow outer zone with wavy, clotted texture runs to about 0.3; regular brown, black and blue bands follow to the end below the small central hollow."
+
+[images.collector-1-b2-b3.line]
+rim = [
+    0.7858,
+    0.6645,
+]
+centre = [
+    0.5073,
+    0.5565,
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-b3.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "curdled or mottled bands", share = 0.25 },
+    { kind = "even bands", share = 0.75 },
+]
+confidence = "medium"
+note = "The outer quarter is yellow with fine bands broken by orange blotches; from about 0.25 the line crosses dark, white and blue regular bands to the edge of a small crystal-lined hollow at the end."
+
+[images.collector-1-b2-c1.line]
+rim = [
+    0.7393,
+    0.5385,
+]
+centre = [
+    0.4645,
+    0.7414,
+]
+outline = [
+    [
+        0.5215,
+        0.4886,
+    ],
+    [
+        0.4185,
+        0.4942,
+    ],
+    [
+        0.3724,
+        0.5068,
+    ],
+    [
+        0.3232,
+        0.525,
+    ],
+    [
+        0.2786,
+        0.5475,
+    ],
+    [
+        0.2448,
+        0.5699,
+    ],
+    [
+        0.2217,
+        0.6148,
+    ],
+    [
+        0.2048,
+        0.6429,
+    ],
+    [
+        0.194,
+        0.7004,
+    ],
+    [
+        0.1909,
+        0.7495,
+    ],
+    [
+        0.194,
+        0.8084,
+    ],
+    [
+        0.2155,
+        0.8603,
+    ],
+    [
+        0.254,
+        0.9051,
+    ],
+    [
+        0.2817,
+        0.9374,
+    ],
+    [
+        0.3339,
+        0.9654,
+    ],
+    [
+        0.4277,
+        0.9921,
+    ],
+    [
+        0.4754,
+        0.9949,
+    ],
+    [
+        0.4954,
+        0.9977,
+    ],
+    [
+        0.5154,
+        0.9865,
+    ],
+    [
+        0.5246,
+        0.9949,
+    ],
+    [
+        0.5446,
+        0.9949,
+    ],
+    [
+        0.5646,
+        0.9935,
+    ],
+    [
+        0.5861,
+        0.9851,
+    ],
+    [
+        0.6123,
+        0.9837,
+    ],
+    [
+        0.6399,
+        0.9711,
+    ],
+    [
+        0.6599,
+        0.957,
+    ],
+    [
+        0.6938,
+        0.9416,
+    ],
+    [
+        0.7214,
+        0.9206,
+    ],
+    [
+        0.7553,
+        0.8883,
+    ],
+    [
+        0.7876,
+        0.8504,
+    ],
+    [
+        0.8122,
+        0.8084,
+    ],
+    [
+        0.826,
+        0.7565,
+    ],
+    [
+        0.8245,
+        0.7382,
+    ],
+    [
+        0.8322,
+        0.713,
+    ],
+    [
+        0.8291,
+        0.6541,
+    ],
+    [
+        0.8183,
+        0.6148,
+    ],
+    [
+        0.7952,
+        0.5769,
+    ],
+    [
+        0.7645,
+        0.5489,
+    ],
+    [
+        0.7353,
+        0.5363,
+    ],
+    [
+        0.7076,
+        0.5208,
+    ],
+    [
+        0.6599,
+        0.5054,
+    ],
+    [
+        0.6307,
+        0.5012,
+    ],
+    [
+        0.6092,
+        0.497,
+    ],
+    [
+        0.5923,
+        0.4998,
+    ],
+    [
+        0.5723,
+        0.4942,
+    ],
+    [
+        0.5508,
+        0.4858,
+    ],
+    [
+        0.5262,
+        0.4886,
+    ],
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-c1.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.56 },
+    { kind = "coarse quartz", share = 0.44 },
+]
+confidence = "high"
+note = "Fine yellow, orange, grey and red-brown bands run to about 0.56; the rest is white radiating crystalline quartz, with a red patch at the very end."
+
+[images.collector-1-b2-c2.line]
+rim = [
+    0.9422,
+    0.5646,
+]
+centre = [
+    0.4545,
+    0.6527,
+]
+source = "paths"
+draw = 0
+
+[images.collector-1-b2-c2.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.5 },
+    { kind = "coarse quartz", share = 0.5 },
+]
+confidence = "high"
+note = "Yellow, orange and dark grey bands with a red-brown inner band run from the rim to about 0.50; the inner half is grey-white coarse crystalline quartz with radiating texture."
+
+[images.collector-1-b2-c3.line]
+rim = [
+    0.1632,
+    0.682,
+]
+centre = [
+    0.5826,
+    0.6164,
+]
+source = "paths"
+draw = 0
+
+[images.collector-1-b2-c3.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.5 },
+    { kind = "coarse quartz", share = 0.5 },
+]
+confidence = "high"
+note = "Yellow, orange and grey-green bands with a red-brown inner band run from the rim to about 0.50; the inner half is white-grey coarse crystalline quartz with a red-orange stain near 0.75 to 0.90."
+
+[images.collector-1-b2-d1.line]
+rim = [
+    0.1075,
+    0.6648,
+]
+centre = [
+    0.4927,
+    0.4821,
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-d1.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "curdled or mottled bands", share = 0.29 },
+    { kind = "even bands", share = 0.38 },
+    { kind = "cavity", share = 0.33 },
+]
+confidence = "low"
+note = "A brown rind and blue-grey layer with dark spots and faint streaks fill the outer 0.29; yellow and red bands with a pink lining follow to about 0.67, and the line ends over the hollow on a dark grey sparkling crystalline mass that lies below the polished face (it could instead be read as coarse quartz)."
+
+[images.collector-1-b2-d2.line]
+rim = [
+    0.7622,
+    0.8339,
+]
+centre = [
+    0.4791,
+    0.4902,
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-d2.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "curdled or mottled bands", share = 0.26 },
+    { kind = "even bands", share = 0.46 },
+    { kind = "cavity", share = 0.28 },
+]
+confidence = "medium"
+note = "A brown rough rind and blue-grey layer with dark streaks and spots fill the outer 0.26; yellow, red and pinkish bands follow to about 0.72, ending in a thin crystal lining, and the rest of the line crosses the dark open hollow."
+
+[images.collector-1-b2-e1.line]
+rim = [
+    0.4302,
+    0.513,
+]
+centre = [
+    0.5046,
+    0.7532,
+]
+outline = [
+    [
+        0.5363,
+        0.5096,
+    ],
+    [
+        0.4052,
+        0.5138,
+    ],
+    [
+        0.3499,
+        0.5265,
+    ],
+    [
+        0.3215,
+        0.5447,
+    ],
+    [
+        0.2678,
+        0.5727,
+    ],
+    [
+        0.2346,
+        0.6078,
+    ],
+    [
+        0.2078,
+        0.6457,
+    ],
+    [
+        0.1951,
+        0.7046,
+    ],
+    [
+        0.1967,
+        0.7593,
+    ],
+    [
+        0.1967,
+        0.814,
+    ],
+    [
+        0.2062,
+        0.8392,
+    ],
+    [
+        0.233,
+        0.8757,
+    ],
+    [
+        0.2599,
+        0.9164,
+    ],
+    [
+        0.2867,
+        0.9486,
+    ],
+    [
+        0.3405,
+        0.9823,
+    ],
+    [
+        0.3831,
+        0.9977,
+    ],
+    [
+        0.6248,
+        0.9963,
+    ],
+    [
+        0.6453,
+        0.9823,
+    ],
+    [
+        0.6943,
+        0.9472,
+    ],
+    [
+        0.737,
+        0.9051,
+    ],
+    [
+        0.767,
+        0.8645,
+    ],
+    [
+        0.7922,
+        0.8084,
+    ],
+    [
+        0.7986,
+        0.7424,
+    ],
+    [
+        0.7733,
+        0.6807,
+    ],
+    [
+        0.7354,
+        0.6176,
+    ],
+    [
+        0.6801,
+        0.5615,
+    ],
+    [
+        0.6248,
+        0.5293,
+    ],
+    [
+        0.5458,
+        0.5082,
+    ],
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-e1.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.66 },
+    { kind = "coarse quartz", share = 0.12 },
+    { kind = "cavity", share = 0.22 },
+]
+confidence = "medium"
+note = "Yellow, red and orange bands from the rim to the bright orange band at about 0.66, then purple crystalline quartz lining to about 0.78 and the dark open hollow to the end."
+
+[images.collector-1-b2-e2.line]
+rim = [
+    0.0298,
+    0.6584,
+]
+centre = [
+    0.3174,
+    0.5196,
+]
+source = "paths"
+draw = 0
+
+[images.collector-1-b2-e2.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 1.0 },
+]
+confidence = "medium"
+note = "Yellow, orange, red and olive bands run from the brownish rind to the bright orange band at the edge of the hollow, with a paler pinkish stretch near 0.45 still finely banded."
+
+[images.collector-1-b2-e3.line]
+rim = [
+    0.8418,
+    0.5617,
+]
+centre = [
+    0.4787,
+    0.5934,
+]
+source = "paths"
+draw = 0
+
+[images.collector-1-b2-e3.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.57 },
+    { kind = "coarse quartz", share = 0.13 },
+    { kind = "cavity", share = 0.3 },
+]
+confidence = "medium"
+note = "Red, orange, yellow and grey-green bands run from the rim to about 0.57; a grey crystal lining follows to about 0.70, and the line ends over the open central hollow, where reddish-lilac crystals are seen below the face."
+
+[images.collector-1-b2-f1.line]
+rim = [
+    0.0678,
+    0.5591,
+]
+centre = [
+    0.2797,
+    0.5446,
+]
+outline = [
+    [
+        0.2581,
+        0.2347,
+    ],
+    [
+        0.2255,
+        0.2473,
+    ],
+    [
+        0.1876,
+        0.2698,
+    ],
+    [
+        0.1634,
+        0.2894,
+    ],
+    [
+        0.1371,
+        0.3273,
+    ],
+    [
+        0.1182,
+        0.3553,
+    ],
+    [
+        0.0982,
+        0.3974,
+    ],
+    [
+        0.0803,
+        0.4423,
+    ],
+    [
+        0.0719,
+        0.4816,
+    ],
+    [
+        0.0677,
+        0.5391,
+    ],
+    [
+        0.0698,
+        0.6078,
+    ],
+    [
+        0.075,
+        0.6485,
+    ],
+    [
+        0.094,
+        0.6976,
+    ],
+    [
+        0.114,
+        0.7354,
+    ],
+    [
+        0.136,
+        0.7565,
+    ],
+    [
+        0.1634,
+        0.7831,
+    ],
+    [
+        0.1981,
+        0.807,
+    ],
+    [
+        0.2244,
+        0.8238,
+    ],
+    [
+        0.2865,
+        0.835,
+    ],
+    [
+        0.3454,
+        0.8238,
+    ],
+    [
+        0.399,
+        0.7929,
+    ],
+    [
+        0.4411,
+        0.7452,
+    ],
+    [
+        0.4716,
+        0.7004,
+    ],
+    [
+        0.4874,
+        0.6344,
+    ],
+    [
+        0.4926,
+        0.5854,
+    ],
+    [
+        0.4916,
+        0.4984,
+    ],
+    [
+        0.4748,
+        0.41,
+    ],
+    [
+        0.4464,
+        0.3652,
+    ],
+    [
+        0.4222,
+        0.3259,
+    ],
+    [
+        0.3874,
+        0.2824,
+    ],
+    [
+        0.3485,
+        0.26,
+    ],
+    [
+        0.2928,
+        0.2389,
+    ],
+    [
+        0.2654,
+        0.2347,
+    ],
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-f1.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.54 },
+    { kind = "coarse quartz", share = 0.18 },
+    { kind = "even bands", share = 0.28 },
+]
+confidence = "medium"
+note = "Orange and yellow rim bands give way to grey-blue bands up to about 0.54; the line then crosses pale sparkly crystalline quartz to about 0.72 and ends in grey-blue bands at the edge of the yellow ovals."
+
+[images.collector-1-b2-f2.line]
+rim = [
+    0.8071,
+    0.5857,
+]
+centre = [
+    0.4884,
+    0.5071,
+]
+outline = [
+    [
+        0.5189,
+        0.0847,
+    ],
+    [
+        0.4558,
+        0.0889,
+    ],
+    [
+        0.4095,
+        0.0931,
+    ],
+    [
+        0.3738,
+        0.1029,
+    ],
+    [
+        0.3443,
+        0.1225,
+    ],
+    [
+        0.318,
+        0.1408,
+    ],
+    [
+        0.2854,
+        0.166,
+    ],
+    [
+        0.2423,
+        0.1969,
+    ],
+    [
+        0.2307,
+        0.2235,
+    ],
+    [
+        0.2118,
+        0.2445,
+    ],
+    [
+        0.1949,
+        0.2684,
+    ],
+    [
+        0.1855,
+        0.2992,
+    ],
+    [
+        0.1729,
+        0.3273,
+    ],
+    [
+        0.1581,
+        0.3694,
+    ],
+    [
+        0.1466,
+        0.4227,
+    ],
+    [
+        0.1402,
+        0.5447,
+    ],
+    [
+        0.1381,
+        0.5783,
+    ],
+    [
+        0.1581,
+        0.6485,
+    ],
+    [
+        0.1813,
+        0.7018,
+    ],
+    [
+        0.2191,
+        0.7635,
+    ],
+    [
+        0.257,
+        0.8084,
+    ],
+    [
+        0.3149,
+        0.8631,
+    ],
+    [
+        0.3601,
+        0.8911,
+    ],
+    [
+        0.398,
+        0.9135,
+    ],
+    [
+        0.4737,
+        0.9318,
+    ],
+    [
+        0.5484,
+        0.9262,
+    ],
+    [
+        0.6094,
+        0.9023,
+    ],
+    [
+        0.6651,
+        0.8673,
+    ],
+    [
+        0.7146,
+        0.8042,
+    ],
+    [
+        0.7535,
+        0.7368,
+    ],
+    [
+        0.7861,
+        0.6807,
+    ],
+    [
+        0.8051,
+        0.605,
+    ],
+    [
+        0.8145,
+        0.5124,
+    ],
+    [
+        0.8103,
+        0.3974,
+    ],
+    [
+        0.7914,
+        0.3175,
+    ],
+    [
+        0.7651,
+        0.26,
+    ],
+    [
+        0.7388,
+        0.2011,
+    ],
+    [
+        0.6936,
+        0.1534,
+    ],
+    [
+        0.6567,
+        0.1309,
+    ],
+    [
+        0.6168,
+        0.1085,
+    ],
+    [
+        0.582,
+        0.1015,
+    ],
+    [
+        0.56,
+        0.0931,
+    ],
+    [
+        0.5421,
+        0.0917,
+    ],
+    [
+        0.5221,
+        0.0847,
+    ],
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-f2.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.4 },
+    { kind = "coarse quartz", share = 0.05 },
+    { kind = "cavity", share = 0.06 },
+    { kind = "coarse quartz", share = 0.11 },
+    { kind = "even bands", share = 0.2 },
+    { kind = "plain: no visible bands", share = 0.18 },
+]
+confidence = "medium"
+note = "Orange and yellow bands, then grey-blue bands, run to about 0.40; a white crystal lining, a dark open hollow and blue sugary crystals follow to about 0.62. Grey bands continue to about 0.82, and the last stretch is fairly even orange next to the yellow core."
+
+[images.collector-1-b2-f3.line]
+rim = [
+    0.1955,
+    0.5714,
+]
+centre = [
+    0.5291,
+    0.4696,
+]
+outline = [
+    [
+        0.5063,
+        0.0482,
+    ],
+    [
+        0.459,
+        0.0538,
+    ],
+    [
+        0.4148,
+        0.0748,
+    ],
+    [
+        0.3727,
+        0.0945,
+    ],
+    [
+        0.3401,
+        0.1169,
+    ],
+    [
+        0.3075,
+        0.1506,
+    ],
+    [
+        0.2875,
+        0.187,
+    ],
+    [
+        0.2738,
+        0.1969,
+    ],
+    [
+        0.2581,
+        0.2165,
+    ],
+    [
+        0.237,
+        0.2403,
+    ],
+    [
+        0.2202,
+        0.2698,
+    ],
+    [
+        0.2086,
+        0.2964,
+    ],
+    [
+        0.1949,
+        0.3343,
+    ],
+    [
+        0.1813,
+        0.396,
+    ],
+    [
+        0.1823,
+        0.4479,
+    ],
+    [
+        0.1834,
+        0.504,
+    ],
+    [
+        0.1918,
+        0.5601,
+    ],
+    [
+        0.2212,
+        0.6513,
+    ],
+    [
+        0.2423,
+        0.7046,
+    ],
+    [
+        0.2738,
+        0.7424,
+    ],
+    [
+        0.3043,
+        0.7943,
+    ],
+    [
+        0.3222,
+        0.8056,
+    ],
+    [
+        0.3675,
+        0.8448,
+    ],
+    [
+        0.3853,
+        0.8659,
+    ],
+    [
+        0.4274,
+        0.8813,
+    ],
+    [
+        0.4716,
+        0.8827,
+    ],
+    [
+        0.5137,
+        0.9023,
+    ],
+    [
+        0.5536,
+        0.9107,
+    ],
+    [
+        0.5747,
+        0.9023,
+    ],
+    [
+        0.5789,
+        0.9079,
+    ],
+    [
+        0.602,
+        0.8981,
+    ],
+    [
+        0.6105,
+        0.9065,
+    ],
+    [
+        0.6389,
+        0.9037,
+    ],
+    [
+        0.6515,
+        0.8883,
+    ],
+    [
+        0.6651,
+        0.8799,
+    ],
+    [
+        0.6809,
+        0.8743,
+    ],
+    [
+        0.7009,
+        0.8588,
+    ],
+    [
+        0.723,
+        0.8378,
+    ],
+    [
+        0.7451,
+        0.8112,
+    ],
+    [
+        0.7514,
+        0.7873,
+    ],
+    [
+        0.7724,
+        0.7761,
+    ],
+    [
+        0.7914,
+        0.7537,
+    ],
+    [
+        0.7903,
+        0.7326,
+    ],
+    [
+        0.8008,
+        0.7228,
+    ],
+    [
+        0.8145,
+        0.7004,
+    ],
+    [
+        0.8261,
+        0.6709,
+    ],
+    [
+        0.8471,
+        0.5727,
+    ],
+    [
+        0.8524,
+        0.4816,
+    ],
+    [
+        0.8398,
+        0.3666,
+    ],
+    [
+        0.8145,
+        0.2922,
+    ],
+    [
+        0.7872,
+        0.2151,
+    ],
+    [
+        0.7461,
+        0.1492,
+    ],
+    [
+        0.7051,
+        0.1015,
+    ],
+    [
+        0.6588,
+        0.0748,
+    ],
+    [
+        0.6283,
+        0.0594,
+    ],
+    [
+        0.5789,
+        0.0538,
+    ],
+    [
+        0.5442,
+        0.0468,
+    ],
+    [
+        0.5084,
+        0.051,
+    ],
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-f3.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "curdled or mottled bands", share = 0.1 },
+    { kind = "even bands", share = 0.4 },
+    { kind = "plain: no visible bands", share = 0.5 },
+]
+confidence = "low"
+note = "A pinkish, blotchy layer at the rim gives way at about 0.10 to orange and yellow bands, then grey-blue bands to about 0.50; the inner half is blue-grey to brownish-grey translucent stone with streaky texture but no clear bands, up to the orange oval."
+
+[images.collector-1-b2-g1.line]
+rim = [
+    0.6534,
+    0.5729,
+]
+centre = [
+    0.4668,
+    0.7166,
+]
+outline = [
+    [
+        0.4018,
+        0.4998,
+    ],
+    [
+        0.351,
+        0.5152,
+    ],
+    [
+        0.3072,
+        0.5349,
+    ],
+    [
+        0.2668,
+        0.5629,
+    ],
+    [
+        0.2353,
+        0.598,
+    ],
+    [
+        0.2125,
+        0.626,
+    ],
+    [
+        0.2002,
+        0.6751,
+    ],
+    [
+        0.209,
+        0.7382,
+    ],
+    [
+        0.223,
+        0.7901,
+    ],
+    [
+        0.2458,
+        0.8336,
+    ],
+    [
+        0.3072,
+        0.8855,
+    ],
+    [
+        0.3633,
+        0.9065,
+    ],
+    [
+        0.472,
+        0.9374,
+    ],
+    [
+        0.5316,
+        0.9374,
+    ],
+    [
+        0.5964,
+        0.9388,
+    ],
+    [
+        0.6578,
+        0.9304,
+    ],
+    [
+        0.7069,
+        0.9009,
+    ],
+    [
+        0.7577,
+        0.8574,
+    ],
+    [
+        0.7893,
+        0.7915,
+    ],
+    [
+        0.7823,
+        0.7256,
+    ],
+    [
+        0.763,
+        0.6751,
+    ],
+    [
+        0.7209,
+        0.626,
+    ],
+    [
+        0.6718,
+        0.5882,
+    ],
+    [
+        0.6227,
+        0.5475,
+    ],
+    [
+        0.5456,
+        0.518,
+    ],
+    [
+        0.472,
+        0.5026,
+    ],
+    [
+        0.4036,
+        0.4942,
+    ],
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-g1.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.44 },
+    { kind = "coarse quartz", share = 0.12 },
+    { kind = "even bands", share = 0.44 },
+]
+confidence = "medium"
+note = "Yellow, grey-green and orange bands run to about 0.44, then the line crosses the dark purple-grey crystal lining at the tip of the hollow to about 0.56, then grey, orange and red bands to the end above the white crystal fan."
+
+[images.collector-1-b2-g2.line]
+rim = [
+    0.9415,
+    0.5333,
+]
+centre = [
+    0.5171,
+    0.4977,
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-g2.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.1 },
+    { kind = "plain: no visible bands", share = 0.2 },
+    { kind = "even bands", share = 0.7 },
+]
+confidence = "medium"
+note = "Yellow rim bands to 0.1, an even olive stretch to about 0.3, then orange, red, brown and olive bands to the end below the hollow."
+
+[images.collector-1-b2-g3.line]
+rim = [
+    0.7282,
+    0.3948,
+]
+centre = [
+    0.4668,
+    0.5753,
+]
+outline = [
+    [
+        0.3703,
+        0.295,
+    ],
+    [
+        0.2581,
+        0.3329,
+    ],
+    [
+        0.2037,
+        0.3736,
+    ],
+    [
+        0.1581,
+        0.4199,
+    ],
+    [
+        0.1266,
+        0.4521,
+    ],
+    [
+        0.1231,
+        0.5924,
+    ],
+    [
+        0.1196,
+        0.6358,
+    ],
+    [
+        0.1669,
+        0.6976,
+    ],
+    [
+        0.2072,
+        0.7466,
+    ],
+    [
+        0.2581,
+        0.8056,
+    ],
+    [
+        0.3107,
+        0.8126,
+    ],
+    [
+        0.3913,
+        0.8392,
+    ],
+    [
+        0.4685,
+        0.8631,
+    ],
+    [
+        0.5368,
+        0.8687,
+    ],
+    [
+        0.649,
+        0.8645,
+    ],
+    [
+        0.6964,
+        0.8574,
+    ],
+    [
+        0.7525,
+        0.8406,
+    ],
+    [
+        0.8103,
+        0.8013,
+    ],
+    [
+        0.8542,
+        0.741,
+    ],
+    [
+        0.8857,
+        0.6863,
+    ],
+    [
+        0.8927,
+        0.6358,
+    ],
+    [
+        0.8682,
+        0.5461,
+    ],
+    [
+        0.8331,
+        0.4872,
+    ],
+    [
+        0.777,
+        0.4311,
+    ],
+    [
+        0.7121,
+        0.3834,
+    ],
+    [
+        0.649,
+        0.3483,
+    ],
+    [
+        0.5736,
+        0.3217,
+    ],
+    [
+        0.5211,
+        0.3105,
+    ],
+    [
+        0.4474,
+        0.2992,
+    ],
+    [
+        0.3685,
+        0.295,
+    ],
+]
+source = "deepest point"
+draw = 3
+reasons = [
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+]
+
+[images.collector-1-b2-g3.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.1 },
+    { kind = "plain: no visible bands", share = 0.15 },
+    { kind = "even bands", share = 0.17 },
+    { kind = "cavity", share = 0.08 },
+    { kind = "even bands", share = 0.5 },
+]
+confidence = "low"
+note = "Yellow rim bands to 0.1, an even olive stretch to about 0.25, orange and brown bands to about 0.42, the narrow crystal-lined tail of the hollow to about 0.5, then brown, red and olive bands to the end."
+
+[images.collector-1-b2-h1.line]
+rim = [
+    0.5387,
+    0.4525,
+]
+centre = [
+    0.4957,
+    0.2441,
+]
+outline = [
+    [
+        0.465,
+        0.0328,
+    ],
+    [
+        0.2966,
+        0.0762,
+    ],
+    [
+        0.2142,
+        0.1422,
+    ],
+    [
+        0.1687,
+        0.2095,
+    ],
+    [
+        0.1494,
+        0.295,
+    ],
+    [
+        0.1704,
+        0.3638,
+    ],
+    [
+        0.1985,
+        0.4002,
+    ],
+    [
+        0.237,
+        0.4479,
+    ],
+    [
+        0.2879,
+        0.4591,
+    ],
+    [
+        0.3405,
+        0.4689,
+    ],
+    [
+        0.3913,
+        0.4633,
+    ],
+    [
+        0.4211,
+        0.4675,
+    ],
+    [
+        0.4667,
+        0.4661,
+    ],
+    [
+        0.5053,
+        0.4661,
+    ],
+    [
+        0.5351,
+        0.4507,
+    ],
+    [
+        0.5666,
+        0.4689,
+    ],
+    [
+        0.614,
+        0.4703,
+    ],
+    [
+        0.6981,
+        0.4647,
+    ],
+    [
+        0.7139,
+        0.4591,
+    ],
+    [
+        0.7262,
+        0.4381,
+    ],
+    [
+        0.7507,
+        0.4409,
+    ],
+    [
+        0.7963,
+        0.3904,
+    ],
+    [
+        0.7945,
+        0.3497,
+    ],
+    [
+        0.8138,
+        0.3455,
+    ],
+    [
+        0.8366,
+        0.3315,
+    ],
+    [
+        0.8787,
+        0.26,
+    ],
+    [
+        0.8805,
+        0.2109,
+    ],
+    [
+        0.8524,
+        0.1828,
+    ],
+    [
+        0.8138,
+        0.1688,
+    ],
+    [
+        0.8103,
+        0.1478,
+    ],
+    [
+        0.7998,
+        0.1253,
+    ],
+    [
+        0.763,
+        0.1043,
+    ],
+    [
+        0.7437,
+        0.0987,
+    ],
+    [
+        0.7069,
+        0.0804,
+    ],
+    [
+        0.6806,
+        0.0678,
+    ],
+    [
+        0.642,
+        0.051,
+    ],
+    [
+        0.5964,
+        0.0384,
+    ],
+    [
+        0.5579,
+        0.0356,
+    ],
+    [
+        0.5228,
+        0.0356,
+    ],
+    [
+        0.4737,
+        0.0356,
+    ],
+]
+source = "deepest point"
+draw = 1
+reasons = [
+    "misses the bands",
+]
+
+[images.collector-1-b2-h1.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "coarse quartz", share = 0.08 },
+    { kind = "even bands", share = 0.92 },
+]
+confidence = "medium"
+note = "The line starts on a small purple, frosted round spot at the rim, then crosses fine yellow bands, pink and purple bands, and fainter pink-orange bands up to the end below the purple crystal patch. Faint banding persists in the orange stretch past 0.6."
+
+[images.collector-1-b2-h2.line]
+rim = [
+    0.0943,
+    0.4521,
+]
+centre = [
+    0.4613,
+    0.5072,
+]
+outline = [
+    [
+        0.3931,
+        0.072,
+    ],
+    [
+        0.4912,
+        0.079,
+    ],
+    [
+        0.5351,
+        0.0847,
+    ],
+    [
+        0.5877,
+        0.0875,
+    ],
+    [
+        0.6122,
+        0.1253,
+    ],
+    [
+        0.6631,
+        0.145,
+    ],
+    [
+        0.6911,
+        0.1337,
+    ],
+    [
+        0.7174,
+        0.1408,
+    ],
+    [
+        0.7455,
+        0.1506,
+    ],
+    [
+        0.7753,
+        0.1632,
+    ],
+    [
+        0.7875,
+        0.1912,
+    ],
+    [
+        0.8103,
+        0.2179,
+    ],
+    [
+        0.8384,
+        0.2165,
+    ],
+    [
+        0.8401,
+        0.2796,
+    ],
+    [
+        0.8436,
+        0.3175,
+    ],
+    [
+        0.8559,
+        0.3694,
+    ],
+    [
+        0.8436,
+        0.403,
+    ],
+    [
+        0.8208,
+        0.4353,
+    ],
+    [
+        0.8454,
+        0.4732,
+    ],
+    [
+        0.8331,
+        0.5082,
+    ],
+    [
+        0.8261,
+        0.5419,
+    ],
+    [
+        0.8454,
+        0.5727,
+    ],
+    [
+        0.8401,
+        0.5896,
+    ],
+    [
+        0.8138,
+        0.5994,
+    ],
+    [
+        0.8401,
+        0.6415,
+    ],
+    [
+        0.8331,
+        0.6681,
+    ],
+    [
+        0.8384,
+        0.6821,
+    ],
+    [
+        0.8314,
+        0.6919,
+    ],
+    [
+        0.8244,
+        0.7102,
+    ],
+    [
+        0.8173,
+        0.7284,
+    ],
+    [
+        0.7998,
+        0.7523,
+    ],
+    [
+        0.791,
+        0.7789,
+    ],
+    [
+        0.7718,
+        0.7873,
+    ],
+    [
+        0.7595,
+        0.807,
+    ],
+    [
+        0.7718,
+        0.8154,
+    ],
+    [
+        0.7542,
+        0.821,
+    ],
+    [
+        0.7157,
+        0.828,
+    ],
+    [
+        0.6806,
+        0.8364,
+    ],
+    [
+        0.6613,
+        0.8518,
+    ],
+    [
+        0.642,
+        0.8588,
+    ],
+    [
+        0.6157,
+        0.8631,
+    ],
+    [
+        0.5859,
+        0.8757,
+    ],
+    [
+        0.5631,
+        0.8799,
+    ],
+    [
+        0.5438,
+        0.8743,
+    ],
+    [
+        0.5246,
+        0.8785,
+    ],
+    [
+        0.5018,
+        0.8799,
+    ],
+    [
+        0.4807,
+        0.8771,
+    ],
+    [
+        0.4632,
+        0.8841,
+    ],
+    [
+        0.4422,
+        0.8799,
+    ],
+    [
+        0.4106,
+        0.8841,
+    ],
+    [
+        0.379,
+        0.8785,
+    ],
+    [
+        0.3422,
+        0.8687,
+    ],
+    [
+        0.3142,
+        0.8504,
+    ],
+    [
+        0.2791,
+        0.8336,
+    ],
+    [
+        0.2335,
+        0.8126,
+    ],
+    [
+        0.2107,
+        0.7873,
+    ],
+    [
+        0.195,
+        0.7663,
+    ],
+    [
+        0.2072,
+        0.7354,
+    ],
+    [
+        0.1827,
+        0.7186,
+    ],
+    [
+        0.1441,
+        0.713,
+    ],
+    [
+        0.1371,
+        0.6751,
+    ],
+    [
+        0.1213,
+        0.6653,
+    ],
+    [
+        0.1091,
+        0.6681,
+    ],
+    [
+        0.1231,
+        0.6443,
+    ],
+    [
+        0.1231,
+        0.6246,
+    ],
+    [
+        0.1143,
+        0.6022,
+    ],
+    [
+        0.095,
+        0.6022,
+    ],
+    [
+        0.0828,
+        0.5433,
+    ],
+    [
+        0.081,
+        0.525,
+    ],
+    [
+        0.0757,
+        0.4844,
+    ],
+    [
+        0.0722,
+        0.4563,
+    ],
+    [
+        0.095,
+        0.4521,
+    ],
+    [
+        0.1073,
+        0.4339,
+    ],
+    [
+        0.1003,
+        0.4199,
+    ],
+    [
+        0.088,
+        0.4142,
+    ],
+    [
+        0.0898,
+        0.403,
+    ],
+    [
+        0.102,
+        0.3904,
+    ],
+    [
+        0.088,
+        0.3848,
+    ],
+    [
+        0.088,
+        0.375,
+    ],
+    [
+        0.1038,
+        0.3638,
+    ],
+    [
+        0.0898,
+        0.3581,
+    ],
+    [
+        0.1108,
+        0.3511,
+    ],
+    [
+        0.1073,
+        0.3301,
+    ],
+    [
+        0.1213,
+        0.3133,
+    ],
+    [
+        0.1441,
+        0.2782,
+    ],
+    [
+        0.2283,
+        0.1772,
+    ],
+    [
+        0.3002,
+        0.1365,
+    ],
+    [
+        0.3913,
+        0.072,
+    ],
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-h2.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.62 },
+    { kind = "curdled or mottled bands", share = 0.18 },
+    { kind = "even bands", share = 0.2 },
+]
+confidence = "low"
+note = "Fine yellow bands, then red, orange and purple bands, run to about 0.62 including a faintly banded orange stretch; a diffuse purplish-grey smudge without sharp bands covers 0.62 to 0.80, and faint fine yellow-orange bands return near the centre."
+
+[images.collector-1-b2-h3.line]
+rim = [
+    0.278,
+    0.3414,
+]
+centre = [
+    0.3878,
+    0.5347,
+]
+source = "paths"
+draw = 0
+
+[images.collector-1-b2-h3.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.68 },
+    { kind = "plain: no visible bands", share = 0.32 },
+]
+confidence = "medium"
+note = "Fine yellow rim bands, then pink, orange and purple bands to about 0.68; the last third is a round, even tan-yellow patch with no bands seen."
+
+[images.collector-1-b2-i1.line]
+rim = [
+    0.3819,
+    0.892,
+]
+centre = [
+    0.4957,
+    0.7066,
+]
+outline = [
+    [
+        0.4895,
+        0.4914,
+    ],
+    [
+        0.4492,
+        0.4942,
+    ],
+    [
+        0.4001,
+        0.4984,
+    ],
+    [
+        0.3264,
+        0.5194,
+    ],
+    [
+        0.2809,
+        0.5447,
+    ],
+    [
+        0.2388,
+        0.605,
+    ],
+    [
+        0.2195,
+        0.6288,
+    ],
+    [
+        0.209,
+        0.6611,
+    ],
+    [
+        0.209,
+        0.7046,
+    ],
+    [
+        0.2107,
+        0.7368,
+    ],
+    [
+        0.223,
+        0.7677,
+    ],
+    [
+        0.23,
+        0.7957,
+    ],
+    [
+        0.2493,
+        0.814,
+    ],
+    [
+        0.2721,
+        0.8336,
+    ],
+    [
+        0.2896,
+        0.8434,
+    ],
+    [
+        0.3019,
+        0.8546,
+    ],
+    [
+        0.3545,
+        0.8757,
+    ],
+    [
+        0.3738,
+        0.8883,
+    ],
+    [
+        0.4211,
+        0.9107,
+    ],
+    [
+        0.4404,
+        0.9065,
+    ],
+    [
+        0.4632,
+        0.9121,
+    ],
+    [
+        0.5105,
+        0.922,
+    ],
+    [
+        0.5386,
+        0.9234,
+    ],
+    [
+        0.5772,
+        0.9135,
+    ],
+    [
+        0.6245,
+        0.9065,
+    ],
+    [
+        0.642,
+        0.8883,
+    ],
+    [
+        0.6771,
+        0.8743,
+    ],
+    [
+        0.7069,
+        0.8504,
+    ],
+    [
+        0.7121,
+        0.8308,
+    ],
+    [
+        0.7384,
+        0.8098,
+    ],
+    [
+        0.7525,
+        0.7761,
+    ],
+    [
+        0.7595,
+        0.7579,
+    ],
+    [
+        0.7647,
+        0.7312,
+    ],
+    [
+        0.7507,
+        0.6962,
+    ],
+    [
+        0.756,
+        0.6709,
+    ],
+    [
+        0.7542,
+        0.6499,
+    ],
+    [
+        0.7367,
+        0.6358,
+    ],
+    [
+        0.7297,
+        0.612,
+    ],
+    [
+        0.7121,
+        0.591,
+    ],
+    [
+        0.7069,
+        0.5741,
+    ],
+    [
+        0.6841,
+        0.5601,
+    ],
+    [
+        0.656,
+        0.5419,
+    ],
+    [
+        0.6315,
+        0.5265,
+    ],
+    [
+        0.607,
+        0.5236,
+    ],
+    [
+        0.5789,
+        0.5096,
+    ],
+    [
+        0.5526,
+        0.4956,
+    ],
+    [
+        0.5035,
+        0.4886,
+    ],
+    [
+        0.4912,
+        0.4914,
+    ],
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-i1.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "curdled or mottled bands", share = 0.1 },
+    { kind = "even bands", share = 0.9 },
+]
+confidence = "low"
+note = "The first tenth is red-orange with dark specks and blotches; then orange-yellow, grey and blue regular bands run to the end, faint grey bands in the last stretch."
+
+[images.collector-1-b2-i2.line]
+rim = [
+    0.3196,
+    0.7999,
+]
+centre = [
+    0.522,
+    0.4977,
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-i2.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 1.0 },
+]
+confidence = "medium"
+note = "From the orange rim the line crosses brownish-grey bands, yellow-grey and blue bands, then fine faint grey bands to the end beside the small central hollow."
+
+[images.collector-1-b2-i3.line]
+rim = [
+    0.5823,
+    0.8772,
+]
+centre = [
+    0.5244,
+    0.5045,
+]
+source = "deepest point"
+draw = 0
+
+[images.collector-1-b2-i3.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.9 },
+    { kind = "cavity", share = 0.1 },
+]
+confidence = "medium"
+note = "Orange rim bands, then grey, yellow-green and blue bands, fading to fine faint grey bands near the centre; the last tenth runs along a dark, sparkly-lined slit hollow."
 
 [images.crazy-lace-agate-11-cropped.line]
 rim_in_view = "no"
@@ -13197,6 +17524,35 @@ banded = "no"
 [images.gaillac-museum-d-histoire-naturelle-115.line]
 rim_in_view = "no"
 
+[images.gdcn0024070-50192449478.line]
+rim = [
+    0.8859,
+    0.5832,
+]
+centre = [
+    0.6387,
+    0.4703,
+]
+source = "deepest point"
+draw = 2
+reasons = [
+    "misses the bands",
+    "misses the bands",
+]
+
+[images.gdcn0024070-50192449478.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "plain: no visible bands", share = 1.0 },
+]
+confidence = "medium"
+note = "The line crosses milky white-grey chalcedony of fairly even colour with no bands visible at this resolution."
+
 [images.geneva-natural-history-museum-agate.line]
 rim = [
     0.7204,
@@ -13534,6 +17890,33 @@ C25_zones = [
 confidence = "medium"
 note = "Dark blue with faint band lines runs from the rim to about 0.3, then whitish fibrous material without bands to about 0.55. A brownish-yellow and blue band ring follows, then sparkling crystalline quartz lining the open hollow, which the line enters near 0.9."
 
+[images.holley-blue-agate-linn-county-oregon-usa-7.line]
+rim = [
+    0.5953,
+    0.0641,
+]
+centre = [
+    0.5023,
+    0.4297,
+]
+source = "deepest point"
+draw = 0
+
+[images.holley-blue-agate-linn-county-oregon-usa-7.proposed]
+round = 2
+banded = "yes"
+C23_centres = "unknown"
+C24_outer_striations = "unknown"
+C24_middle_striations = "unknown"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "plain: no visible bands", share = 0.42 },
+    { kind = "even bands", share = 0.5 },
+    { kind = "coarse quartz", share = 0.08 },
+]
+confidence = "medium"
+note = "The outer 0.42 is translucent purple with white patches and no visible bands; fine grey-white bands run from there to about 0.92, and the line ends on granular whitish crystals with rusty spots."
+
 [images.image.proposed]
 banded = "yes"
 C23_centres = 1
@@ -13583,6 +17966,9 @@ C24_inner_striations = "present"
 C24_inner_shadow = "unknown"
 C24_inner_iris = "absent"
 blind = true
+
+[images.image-2.line]
+banded = "no"
 
 [images.image-3.line]
 rim = [

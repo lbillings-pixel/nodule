@@ -562,6 +562,26 @@ owner's check is saved, as all ten faces are blind. The check page serves
 them with `python -m nodule.zonecheck --round2`: the ticked pictures, nothing
 filled in, C24 as the three striation items, every save stored as round 2.
 
+Round 2 result (2026-10-30, the owner's blind check of all ten, scored as
+fixed above): 41/60 items (banded 10/10, C23 6/10, C24 17/30, C25 8/10;
+median share of the line where C25 kinds match 0.74). More than a third
+disagree on C23 (4 of 10) and C24 (13 of 30); C25 (2 of 10) and the whole
+(19 of 60, one short of the cut) do not. Ten faces is few: 8/10 is consistent
+with a true agreement rate from about 0.49 to 0.94 (Wilson 95 %). Read after
+scoring, so description only:
+
+- C25: where the two differ, the owner puts a cavity at the centre where the
+  helpers saw coarse quartz or plain (two faces), and splits a thin curdled
+  or mottled outer zone (0.06–0.25) from the even bands on four.
+- C23: on all four disagreements the helpers count more centres than the
+  owner (2 vs 1, 6 vs 1, 7 vs 3; 6 vs unknown).
+- C24: the owner marks striations present on 23 of 30 thirds, the helpers on
+  13 (8 unknown). Fine bands are nearly universal in agate (section
+  "Context"), so a cue present almost everywhere may carry little.
+
+Section 6's fallback is still weighed at the end of the re-tagging, as the
+owner chose.
+
 Fault and fix (2026-10-30). On the first pass the owner held out six faces
 as "no banded face" because a clicked centre made the line vanish. Each was
 a face with no rim judged "yes" and no band paths, so its face was

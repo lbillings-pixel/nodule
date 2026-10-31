@@ -7,22 +7,31 @@ import pytest
 from numpy.typing import NDArray
 
 from nodule.bands import COUPLET_SPACINGS
-from nodule.defects import Defects, classify, groom, measure, thin
+from nodule.defects import Defects, classify, groom, link_ends, measure, thin, unbridge
 
 
 def face(
     n: int, spacing: float, kind: str, seed: int = 0, noise: float = 1.5
 ) -> tuple[NDArray[np.float32], NDArray[np.bool_]]:
     """A round face n px across on a dark ground, with grey noise (levels):
-    concentric rings, straight stripes, stripes with one band inserted at the
-    centre (a dislocation: one band ends, and the two beside it join beyond
-    it), or isotropic noise with power at the band spacing."""
+    concentric rings, straight stripes, stripes with one couplet inserted at
+    the centre (a dislocation), a middle-grey band that pinches out between
+    two light ones, or isotropic noise with power at the band spacing."""
     y, x = np.mgrid[:n, :n].astype(np.float64)
     c = (n - 1) / 2
     yy, xx = y - c, x - c
     mask = np.hypot(yy, xx) < 0.45 * n
     rng = np.random.default_rng(seed)
-    if kind == "noise":
+    if kind == "pinch":
+        # Bands of half a spacing, light and dark in turn; the light band at
+        # the centre holds a middle-grey band that narrows to nothing at
+        # y = 0, so above it light, grey, light and below one light band.
+        b = spacing / 2
+        grey = b * np.clip(-yy / (3 * b), 0.0, 1.0)  # its width
+        u = np.abs(xx) - grey / 2
+        lum = np.where(np.floor(u / b) % 2 == 0, 168.0, 88.0)
+        lum = np.where(u < 0, 128.0, lum)
+    elif kind == "noise":
         f = np.fft.fft2(rng.normal(size=(n, n)))
         fy, fx = np.meshgrid(np.fft.fftfreq(n), np.fft.fftfreq(n), indexing="ij")
         f *= np.exp(-0.5 * ((np.hypot(fy, fx) - 1 / spacing) / (0.15 / spacing)) ** 2)
@@ -78,16 +87,55 @@ def test_perfect_bands_have_no_defects(kind: str) -> None:
         assert d.density == 0.0, (kind, n)
 
 
-def test_one_dislocation_is_one_end_and_one_junction() -> None:
+def test_one_dislocation_is_two_ends() -> None:
+    # One couplet inserted: read through edges, its light band and its dark
+    # band both end, and the bands beside them, of opposite tone, never join.
+    # A split by sign reads one end and one junction; the density is the same.
     for n, spacing in ((400, 16.0), (800, 32.0), (500, 10.0)):
         for seed in (0, 1):
             d = run(n, spacing, "dislocation", seed)
-            assert (d.terminations, d.junctions) == (1, 1), (n, seed)
+            assert (d.terminations, d.junctions) == (2, 0), (n, seed)
+
+
+def test_a_band_that_pinches_out_is_one_end_and_one_junction() -> None:
+    # A middle-grey band between light ones ends: the light bands beside it join.
+    for n, spacing in ((400, 16.0), (800, 32.0)):
+        d = run(n, spacing, "pinch")
+        assert (d.terminations, d.junctions) == (1, 1), n
+
+
+def test_bridges_go_and_true_junctions_stay() -> None:
+    # Two lines joined by short rungs (bands meeting through gaps in a dashed
+    # edge), and a tee whose arms are all long.
+    m = np.zeros((60, 120), dtype=np.bool_)
+    m[20, 5:115] = True
+    m[28, 5:115] = True
+    for c in (30, 60, 90):
+        m[21:28, c] = True
+    out = unbridge(m, 12.0, 4.0)
+    assert not out[22:27, [30, 60, 90]].any()
+    _, junction = classify(out)
+    assert not junction.any()
+    tee = np.zeros((60, 60), dtype=np.bool_)
+    tee[10, 5:55] = True
+    tee[11:50, 30] = True
+    _, junction = classify(unbridge(tee, 12.0, 4.0))
+    assert junction.any()
+
+
+def test_edge_ends_join_across_short_gaps_only() -> None:
+    e = np.zeros((40, 100), dtype=np.bool_)
+    e[20, 5:40] = True
+    e[20, 44:70] = True  # a gap of 4 px: joined
+    e[20, 80:95] = True  # a gap of 10 px: left open
+    out = link_ends(e, 6.0)
+    assert out[20, 40:44].all()
+    assert not out[20, 71:79].any()
 
 
 @pytest.mark.parametrize("seed", [0, 1, 2, 3, 4])
 def test_negative_control_thresholded_noise_has_many_defects(seed: int) -> None:
-    # 2026-10-31: 0.89-0.97 per spacing squared at both resolutions.
+    # 2026-10-31: 0.76-0.93 per spacing squared at both resolutions.
     for n, spacing in ((400, 16.0), (800, 32.0)):
         d = run(n, spacing, "noise", seed)
         assert d.density is not None

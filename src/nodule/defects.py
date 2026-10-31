@@ -1,21 +1,32 @@
 """C14, defect density of a face's bands (ADR 0004, N2 step 3b step 2).
 
 Band terminations (a band that ends) and junctions (a band that splits or two
-that join), counted on the skeletons of both band phases as Murphy et al.
-[@murphy2015] do for block-copolymer stripes, and given per band spacing
-squared of the judged face (per period squared, as ADR 0004 asks).
+that join), counted on band skeletons as Murphy et al. [@murphy2015] do for
+block-copolymer stripes, and given per band spacing squared of the judged
+face (per period squared, as ADR 0004 asks).
 
-The face is the coarse copy C15 reads (`bands.coarse_face`, resampled by
-`curvature.even_face` to exactly `FIELD_SPACING_PX` px per spacing). It is
-band-passed there (a Gaussian of `FINE_SPACINGS` less one of
-`BROAD_SPACINGS`, both averaged over the face only, so the outline adds no
-step), then resampled `UPSAMPLE` times finer, so a band (half a spacing) is
-about 6 px wide: Murphy et al. find skeleton centres biased for lines
-narrower than about 7 px. The sign of the band-passed face splits it into
-light and dark bands; each is thinned to a one-pixel skeleton (Zhang and Suen's
-two-sub-pass thinning [@zhang1984], method only: its paper is cited, not
-read).
+The bands are those C13 reads (`nodule.concentric`): the pieces of the judged
+face between the edges of `nodule.edges`, whatever their grey level. Murphy
+et al. split a two-phase image by sign and thin both phases; a middle-grey
+band then merges with a light or a dark one, depending on the width of the
+local mean, and the counts swung with it (14-271 junctions on three specimen
+cuts). Read through edges, a band that pinches out between two of the same
+tone is one end and one junction, as in a split by sign; one light-dark
+couplet inserted is two ends (both its bands end, and the bands beside them,
+of opposite tone, never join), where a split by sign reads one end and one
+junction: the density is the same.
 
+- Edges stop short where the contrast fades (at a band's tip, between bands
+  too thin to resolve). Each edge end is joined by a straight line to the
+  nearest pixel of another edge piece within `LINK_SPACINGS`, so the bands
+  either side stay apart; an end with none so near stays open.
+- Pixels of a piece that touch another piece across a diagonal step of an
+  edge are dropped, so thinning cannot join them. The pieces are enlarged
+  `UPSAMPLE` times (each pixel repeated), so a band is about 10 px wide:
+  Murphy et al. find skeleton centres biased for lines narrower than about
+  7 px. They are thinned to one-pixel skeletons (Zhang and Suen's
+  two-sub-pass thinning [@zhang1984], method only: its paper is cited, not
+  read).
 - **terminations**: skeleton ends (one neighbour, or two touching ones).
 - **junctions**: skeleton pixels where three or more branches meet (crossing
   number of three or more), joined into one where they touch.
@@ -24,24 +35,43 @@ read).
   and the junction is judged again. A skeleton piece with no junction that
   spans less than that is a dot (Murphy et al. count dots separately); dots are
   left out, so the centre of a set of rings adds nothing.
-- Only defects at least `MARGIN_SPACINGS` inside the outline are counted
-  (Murphy et al. leave out features touching the image edge), and the area is
-  that judged face. A face with no bands still has a sign everywhere: its
-  texture gives defects too, so C14 is read with C16's banded share.
+- Bridges, this project's own rule: a branch from one junction to another
+  shorter than `BRIDGE_WIDTHS` band widths is two bands meeting through a gap
+  in the edge between them (a dashed edge between thin bands gives a ladder
+  of them), and is removed, then the skeleton is groomed again.
+- Only defects at least `BORDER_SPACINGS` inside the judged face (itself
+  `MARGIN_SPACINGS` inside the outline) are counted, as the judged face's
+  edge cuts every band that reaches it (Murphy et al. leave out features
+  touching the image edge); the area is that inner face.
 
 Measured 2026-10-31 (test faces at 10, 16 and 32 px per spacing): perfect rings
-and stripes 0; stripes with one band inserted, one termination and one
-junction; isotropic noise with power at the band spacing 0.89-0.97 per spacing
-squared at both 16 and 32 px; an even face with pixel noise only, about 0.7.
-Restricting the count to the banded area (C16) does not separate that even face:
-its noise reads as 25-37% banded and keeps about 0.7.
+and stripes 0; one couplet inserted, two terminations; a middle-grey band that
+pinches out between light ones, one termination and one junction; isotropic
+noise with power at the band spacing 0.76-0.93 per spacing squared at both 16
+and 32 px. An even face with pixel noise only reads about 1.0-1.2: on flat
+ground the edges follow the noise (`nodule.edges`, limit), so C14 is read
+with C16's banded share until a noise gate is added there.
+
+On three random cuts of the `n2-slice` preset made to look like library
+photos (`nodule.descriptors`, seed 0): 0.10, 0.07 and 0.002, mostly
+terminations. Not stable over the parameters: on the first cut the edge
+smoothing (0.08-0.2 spacings) moves it 0.03-0.28, `LINK_SPACINGS` (0.35-0.75)
+0.04-0.33, `EDGE_PX` (9-16) 0.04-0.11, `BRIDGE_WIDTHS` (2-4) 0.07-0.15;
+hysteresis and `UPSAMPLE` (1-3) move it by 0.02 at most. The cause is one
+spacing for the whole face, where the outer bands are about half as wide as
+the face's typical band: their edges break into dashes that the parameters
+close or leave open. So C14 is compared only set against set, measured the
+same way on both sides, until the edges follow the local band width
+(owner's choice, 2026-10-31). 0.9-3.4 s and 85-136 MB traced per cut of
+1000-1500 px.
 
 Units: here a *spacing* is one light-dark couplet, `bands.COUPLET_SPACINGS`
-(2) times the quality gate's band spacing, which is one band (`measure`
-converts). The tests and the values below were measured in that unit.
+(2) times the quality gate's band spacing, which is one band (`edge_face`
+converts).
 
-Grade (ADR 0004): plausible; the method is borrowed from an analogue
-(block-copolymer stripes). Every parameter here is `effective`.
+Grade (ADR 0004): plausible; the method is borrowed from analogues
+(block-copolymer stripes, tree-ring edges). The bridge and linking rules are
+this project's own. Every parameter here is `effective`.
 """
 
 from __future__ import annotations
@@ -54,13 +84,13 @@ from agatesim import _scipy as agatesim_scipy  # pyright: ignore[reportPrivateUs
 from agatesim.specimen.shape import MARGIN_SPACINGS
 from numpy.typing import NDArray
 
-from nodule.bands import COUPLET_SPACINGS, OUTLINE_PX, coarse_face
-from nodule.curvature import even_face
+from nodule.edges import edge_face
 
-FINE_SPACINGS = 0.25  # effective: band-pass, fine Gaussian sigma, spacings
-BROAD_SPACINGS = 1.0  # effective: band-pass, local-mean Gaussian sigma, spacings
-UPSAMPLE = 3  # effective: px per coarse px for the skeletons (12 px per spacing)
+UPSAMPLE = 2  # effective: px per edge-map px for the skeletons (24 px per spacing)
+LINK_SPACINGS = 0.5  # effective: an edge end joins another edge piece this near, spacings
 SPUR_WIDTHS = 1.5  # effective: spur and dot length, band widths (half a spacing) [@murphy2015]
+BRIDGE_WIDTHS = 3.0  # effective: least junction-to-junction branch, band widths
+BORDER_SPACINGS = 0.5  # effective: ends are counted this far inside the judged face
 MIN_SPACINGS2 = 4.0  # effective: least judged area, spacings squared
 
 # The eight neighbours in ring order (N, NE, E, SE, S, SW, W, NW), as offsets.
@@ -74,31 +104,6 @@ class Defects:
     density: float | None  # (terminations + junctions) per spacing squared
     terminations: int | None
     junctions: int | None
-
-
-def band_pass(
-    coarse: NDArray[np.float64], face: NDArray[np.bool_], spacing: float
-) -> NDArray[np.float64]:
-    """The face less its local mean, smoothed a little (module docstring);
-    both Gaussians average over the face's core only."""
-    core = agatesim_scipy.erode(face, OUTLINE_PX)
-    weight = core.astype(np.float64)
-
-    def mean(sigma: float) -> NDArray[np.float64]:
-        total = agatesim_scipy.gaussian(coarse * weight, sigma)
-        return total / np.maximum(agatesim_scipy.gaussian(weight, sigma), 1e-12)
-
-    out = mean(max(1.0, FINE_SPACINGS * spacing)) - mean(BROAD_SPACINGS * spacing)
-    return np.where(face, out, 0.0)
-
-
-def upsample(field: NDArray[np.float64], factor: int) -> NDArray[np.float64]:
-    """`field` resampled `factor` times finer (bilinear, pixel centres kept)."""
-    h, w = field.shape
-    rows = (np.arange(h * factor, dtype=np.float64) + 0.5) / factor - 0.5
-    cols = (np.arange(w * factor, dtype=np.float64) + 0.5) / factor - 0.5
-    rr, cc = np.meshgrid(rows, cols, indexing="ij")
-    return agatesim_scipy.bilinear(field, rr, cc)
 
 
 def _tables() -> tuple[NDArray[np.bool_], NDArray[np.bool_], NDArray[np.int8], NDArray[np.int8]]:
@@ -243,23 +248,99 @@ def count(skeleton: NDArray[np.bool_], judged: NDArray[np.bool_], dot_px: float)
     return int(keep.sum()), int(np.count_nonzero(joined))
 
 
+def link_ends(edges: NDArray[np.bool_], most: float) -> NDArray[np.bool_]:
+    """`edges` thinned, each end joined by a straight line to the nearest
+    pixel of another edge piece within `most` px (module docstring). The
+    pieces are those before any line is drawn."""
+    out = thin(edges)
+    ends, _ = classify(out)
+    at = np.argwhere(ends)
+    reach = max(1, math.floor(most))
+    dr, dc = np.mgrid[-reach : reach + 1, -reach : reach + 1]
+    dist = np.hypot(dr, dc).ravel()
+    order = np.argsort(dist, kind="stable")
+    order = order[(dist[order] > 0) & (dist[order] <= most)]
+    steps = np.stack([dr.ravel()[order], dc.ravel()[order]], axis=1)  # nearest first
+    if at.size == 0 or steps.size == 0:
+        return out
+    labels = np.pad(agatesim_scipy.label(out, eight_connected=True), reach)
+    own = labels[at[:, 0] + reach, at[:, 1] + reach]
+    near = labels[
+        at[:, 0, None] + reach + steps[None, :, 0], at[:, 1, None] + reach + steps[None, :, 1]
+    ]
+    other = (near > 0) & (near != own[:, None])
+    found = other.any(axis=1)
+    first = other.argmax(axis=1)
+    h, w = out.shape
+    for i in np.flatnonzero(found):
+        r, c, k = int(at[i, 0]), int(at[i, 1]), int(first[i])
+        tr, tc = r + int(steps[k, 0]), c + int(steps[k, 1])
+        n = 2 * math.ceil(float(dist[order][k])) + 2
+        t = np.linspace(0.0, 1.0, n)
+        rr = np.clip(np.round(r + t * (tr - r)).astype(np.intp), 0, h - 1)
+        cc = np.clip(np.round(c + t * (tc - c)).astype(np.intp), 0, w - 1)
+        out[rr, cc] = True
+    return out
+
+
+def separate(labels: NDArray[np.int32]) -> NDArray[np.bool_]:
+    """The labelled pieces less the pixels that touch another piece (8
+    neighbours), so thinning cannot join two bands across a diagonal step
+    of the edge between them."""
+    h, w = labels.shape
+    padded = np.pad(labels, 1)
+    clash = np.zeros(labels.shape, dtype=np.bool_)
+    for dr, dc in RING:
+        n = padded[1 + dr : 1 + dr + h, 1 + dc : 1 + dc + w]
+        clash |= (n != 0) & (n != labels)
+    return (labels != 0) & ~clash
+
+
+def unbridge(skeleton: NDArray[np.bool_], most: float, spur_px: float) -> NDArray[np.bool_]:
+    """`skeleton` less its bridges: branches shorter than `most` px from
+    one junction to another (module docstring), regroomed, until none is
+    left."""
+    out = skeleton.copy()
+    h, w = out.shape
+    while True:
+        _, junction = classify(out)
+        if not junction.any():
+            return out
+        hub = agatesim_scipy.dilate(junction, 1) & out
+        groups = np.pad(agatesim_scipy.label(hub, eight_connected=True), 1)
+        branches = agatesim_scipy.label(out & ~hub, eight_connected=True)
+        sizes = np.bincount(branches.ravel())
+        pairs: list[NDArray[np.int64]] = []
+        for dr, dc in RING:  # (branch, junction group) pairs that touch
+            g = groups[1 + dr : 1 + dr + h, 1 + dc : 1 + dc + w]
+            both = (branches > 0) & (g > 0)
+            pairs.append(branches[both].astype(np.int64) * (int(groups.max()) + 1) + g[both])
+        touching = np.unique(np.concatenate(pairs)) // (int(groups.max()) + 1)
+        ids, hubs = np.unique(touching, return_counts=True)
+        short = ids[(hubs >= 2) & (sizes[ids] < most)]
+        if short.size == 0:
+            return out
+        out &= ~np.isin(branches, short)
+        out = groom(thin(out), spur_px)
+
+
 def measure(
     lum: NDArray[np.float32], mask: NDArray[np.bool_], scale: float, spacing_px: float
 ) -> Defects:
     """C14 of a face. Arguments as `nodule.orientation.measure`."""
-    period_px = COUPLET_SPACINGS * spacing_px
-    coarse, face, k = coarse_face(lum, mask, scale, period_px)
-    coarse, face, spacing = even_face(coarse, face, period_px / k)
-    signal = upsample(band_pass(coarse, face, spacing), UPSAMPLE)
-    fine = upsample(face.astype(np.float64), UPSAMPLE) >= 0.5
-    spacing *= UPSAMPLE
-    judged = agatesim_scipy.erode(fine, max(1, math.ceil(MARGIN_SPACINGS * spacing)))
-    area = judged.sum() / spacing**2
+    ef = edge_face(lum, mask, scale, spacing_px)
+    spacing = ef.spacing
+    judged = agatesim_scipy.erode(ef.face, max(1, math.ceil(MARGIN_SPACINGS * spacing)))
+    inner = agatesim_scipy.erode(judged, max(1, math.ceil(BORDER_SPACINGS * spacing)))
+    area = inner.sum() / spacing**2
     if area < MIN_SPACINGS2:
         return Defects(None, None, None)
-    spur = SPUR_WIDTHS * 0.5 * spacing
-    ends = joins = 0
-    for phase in (fine & (signal > 0), fine & (signal <= 0)):
-        e, j = count(groom(thin(phase), spur), judged, spur)
-        ends, joins = ends + e, joins + j
+    edges = link_ends(ef.edges, LINK_SPACINGS * spacing)
+    bands = separate(agatesim_scipy.label(judged & ~edges, eight_connected=False))
+    bands = bands.repeat(UPSAMPLE, axis=0).repeat(UPSAMPLE, axis=1)
+    inner = inner.repeat(UPSAMPLE, axis=0).repeat(UPSAMPLE, axis=1)
+    width = 0.5 * spacing * UPSAMPLE  # one band
+    spur = SPUR_WIDTHS * width
+    skeleton = unbridge(groom(thin(bands), spur), BRIDGE_WIDTHS * width, spur)
+    ends, joins = count(skeleton, inner, spur)
     return Defects(float((ends + joins) / area), ends, joins)

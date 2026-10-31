@@ -5,8 +5,9 @@ edges; here the edges are found the same way at pixel precision (Canny's
 method, cited through Marichal et al., not read). Each grey step between two
 bands is an edge, whatever the bands' grey levels, so a band of a middle grey
 between a light and a dark one stays a band of its own. A split by sign about
-the local mean (`nodule.defects`) merges it with one of them, depending on the
-width of that mean.
+the local mean (the first drafts of C13 and C14) merges it with one of them,
+depending on the width of that mean. C13 (`nodule.concentric`) and C14
+(`nodule.defects`) read the bands between these edges.
 
 - The face is block-averaged and resampled (linear) so one light-dark couplet
   spans exactly `EDGE_PX` px; a band is then about 6 px wide.

@@ -13,7 +13,8 @@ like `nodule.zonecheck`, in the pool's order. It shows each line as the
 helpers will see it (`ticked`: ticks every 0.1, 0 at the rim, 1 at the
 centre). The owner accepts it, clicks the centre where the draft is off,
 takes the next direction for a stated reason, or marks "no banded face" (the
-pool's next then stands in). The page shows the face's edge in cyan; where
+pool's next then stands in), or "rim not in view" for a banded close-up
+whose rim lies outside the photo (likewise). The page shows the face's edge in cyan; where
 it does not follow the stone, the owner traces the stone's edge and that
 outline becomes the face. The server, not the page, works out the rim;
 saves are checked (`zones.line_problems`) and written beside the labels in
@@ -316,8 +317,9 @@ class LineChecker:
     def save(self, image_id: str, values: dict[str, Any]) -> list[str]:
         """Write the owner's line for one face; what was wrong, if refused."""
         note = values.get("note", "")
-        if values.get("banded") == "no":
-            line: dict[str, Any] = {"banded": "no"}
+        held = next((f for f, v in zones.HELD_OUT if values.get(f) == v), None)
+        if held is not None:
+            line: dict[str, Any] = {held: "no"}
             if image_id not in self.sample:
                 return [f"{image_id!r} is not drafted in round 2's pool"]
         else:

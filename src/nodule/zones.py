@@ -90,6 +90,7 @@ POOL_VIEWS = ("cut face", "slab in transmitted light")  # views that can show a 
 LINE_REASONS = ("crack or edge", "misses the bands", "waterline banding")
 LINE_SOURCES = ("paths", "deepest point", "owner")
 MIN_OUTLINE = 3  # corners of an outline the owner traced where the face was wrong
+HELD_OUT = (("banded", "no"), ("rim_in_view", "no"))  # line check outcomes with no line
 
 Row = dict[str, Any]
 
@@ -204,11 +205,17 @@ def round2_sample(
     images: Mapping[str, Mapping[str, Row]],
     size: int = BLIND,
 ) -> list[str]:
-    """The first `size` of the pool the owner has not marked not banded at the
-    line check: the blind faces of round 2."""
+    """The first `size` of the pool the owner has not held out at the line
+    check (no banded face, or no rim in view): the blind faces of round 2."""
     pool = round2_pool(view_labels, images)
-    kept = [k for k in pool if images.get(k, {}).get("line", {}).get("banded") != "no"]
+    kept = [k for k in pool if not held_out(images.get(k, {}).get("line", {}))]
     return kept[:size]
+
+
+def held_out(line: Mapping[str, object]) -> bool:
+    """Whether the owner's line check gave this face no line, so that the
+    pool's next stands in."""
+    return any(line.get(field) == value for field, value in HELD_OUT)
 
 
 def is_point(p: object) -> bool:
@@ -225,23 +232,26 @@ def is_point(p: object) -> bool:
 
 def line_problems(line: Mapping[str, object]) -> list[str]:
     """What is wrong with the owner's checked line of one face: either
-    `banded = "no"` (the face shows no banded face; the pool's next stands
-    in), or rim and centre as [x, y] fractions of the picture, the centre's
-    source, the direction draw and one reason (`LINE_REASONS`) per draw
-    passed over (choice 7o). `outline`, where the computer's face was wrong,
-    is the stone's edge as the owner traced it ([x, y] fractions in order);
-    the rim end then comes from it."""
+    `banded = "no"` (the face shows no banded face) or `rim_in_view = "no"`
+    (banded, but the stone's rim lies outside the photo, so no rim-to-centre
+    line exists), where the pool's next stands in; or rim and centre as
+    [x, y] fractions of the picture, the centre's source, the direction draw
+    and one reason (`LINE_REASONS`) per draw passed over (choice 7o).
+    `outline`, where the computer's face was wrong, is the stone's edge as
+    the owner traced it ([x, y] fractions in order); the rim end then comes
+    from it."""
+    held = next((field for field, _ in HELD_OUT if field in line), None)
     allowed = (
-        {"banded", "note"}
-        if "banded" in line
+        {held, "note"}
+        if held is not None
         else {"rim", "centre", "source", "draw", "reasons", "outline", "note"}
     )
     out = [f"line {k}: not a field" for k in line if k not in allowed]
     if not isinstance(line.get("note", ""), str):
         out.append("line note: not text")
-    if "banded" in line:
-        if line["banded"] != "no":
-            out.append(f"line banded: {line['banded']!r}; only no is stored")
+    if held is not None:
+        if line[held] != "no":
+            out.append(f"line {held}: {line[held]!r}; only no is stored")
         return out
     for end in ("rim", "centre"):
         p = line.get(end)

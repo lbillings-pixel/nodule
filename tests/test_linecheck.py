@@ -176,3 +176,20 @@ def test_the_page_picture_shows_the_face_edge(
     tracing = cyan("draw=0&trace=1&o=0.1,0.1,0.9,0.1")
     assert tracing[16, 40:120].all()  # the outline so far
     assert not tracing[SIZE // 2, 10:25].any()  # and not the computer's edge
+
+
+def test_a_face_with_no_rim_in_view_gives_way_too(
+    served: tuple[str, linecheck.LineChecker],
+) -> None:
+    base, checker = served
+    before = zones.round2_sample(checker.views, checker.images)
+    assert post(base + "/save", {"id": before[1], "values": {"rim_in_view": "no"}})[0] == 200
+    after = zones.round2_sample(checker.views, zones.load(checker.path))
+    assert after == [before[0], *checker.sample[2 : zones.BLIND + 1]]
+    stored = zones.load(checker.path)[before[1]]["line"]
+    assert stored == {"rim_in_view": "no"}  # held out, but not stored as unbanded
+    assert "banded" not in stored
+    # Negative controls: only "no" is stored, and a held-out face carries no line.
+    assert zones.line_problems({"rim_in_view": "yes"}) != []
+    assert zones.line_problems({"rim_in_view": "no", "rim": [0.1, 0.1]}) != []
+    assert not zones.held_out({"rim": [0.1, 0.1], "centre": [0.5, 0.5]})

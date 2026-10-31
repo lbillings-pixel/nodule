@@ -566,6 +566,16 @@ records were cleared, so the blind 10 is again the pool's first ten (two of
 them still to check). The other twelve lines stand as the owner accepted
 them, though where a face was partly wrong their rim end stops at its edge.
 
+On the second pass the owner traced dryhead's outline. Agate-creek turned
+out to be a close-up whose banded face runs off every side of the photo, so
+no rim is in view and no rim-to-centre line exists. The owner chose a third
+outcome (over taking the photo's edge as the rim, or "no banded face"):
+`rim_in_view = "no"`. The face is held out like an unbanded one and the
+pool's next stands in, but it is not recorded as unbanded. The rule is
+stated before the helpers see any face; it keeps close-ups out of round 2.
+The blind 10 is now complete. Saving also finishes an outline still being
+traced, and clicks on the photo's very edge are clamped into it.
+
 Section 6's fallback, met by round 1, is weighed at the end of the
 re-tagging with round 2 and the other two tests, as section 6's timing
 reads (owner, 2026-10-30). Round 2's rules are fixed here before any of its

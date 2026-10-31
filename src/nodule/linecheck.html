@@ -70,6 +70,8 @@ ul { margin: 0; padding-left: 18px; }
       <ul>
         <li>Centre off? <b>Click the centre</b> on the photo. With several centres, click the
           one of the largest band set.</li>
+        <li>Banded, but a close-up with the stone's rim outside the photo? <b>Rim not in
+          view</b>: like "No banded face", the pool's next face stands in.</li>
         <li>Direction bad? Choose why, then <b>Next direction</b>. Only these reasons count.</li>
         <li>The <b>cyan edge</b> is the stone as the computer sees it; centres and rim ends
           must lie inside it. Where it does not follow the stone, <b>Trace the outline</b>:
@@ -97,6 +99,7 @@ ul { margin: 0; padding-left: 18px; }
     <div class="actions">
       <button type="submit" class="primary" id="accept">Save this line</button>
       <button type="button" class="small" id="nobands">No banded face</button>
+      <button type="button" class="small" id="norim">Rim not in view</button>
     </div>
     <div class="actions">
       <button type="button" class="small" id="prev">◀ Previous</button>
@@ -126,15 +129,18 @@ function needed() {
   for (const r of rows) {
     if (kept >= DATA.needed) break;
     out.add(r.id);
-    if (!(r.line && r.line.banded === "no")) kept++;
+    if (!heldOut(r.line)) kept++;
   }
   return out;
 }
 
+// A face the owner gave no line: no banded face, or no rim in view.
+function heldOut(line) { return !!line && (line.banded === "no" || line.rim_in_view === "no"); }
+
 function fresh() { return { centre: null, draw: 0, reasons: [], outline: null, tracing: false }; }
 
 function fromLine(line) {
-  if (!line || line.banded) return fresh();
+  if (!line || heldOut(line)) return fresh();
   return { centre: line.source === "owner" ? line.centre : null, draw: line.draw,
     reasons: line.reasons || [], outline: line.outline || null, tracing: false };
 }
@@ -177,7 +183,7 @@ function load() {
   state = fromLine(r.line);
   $("note").value = (r.line && r.line.note) || "";
   $("status").textContent = r.line
-    ? (r.line.banded ? "Saved as no banded face." : "Saved; save again to change it.") : "";
+    ? (heldOut(r.line) ? (r.line.banded ? "Saved as no banded face." : "Saved as rim not in view.") : "Saved; save again to change it.") : "";
   $("status").className = "";
   picture();
   marks();
@@ -191,7 +197,7 @@ function marks() {
   $("dots").replaceChildren(...rows.map((r, i) => {
     const b = document.createElement("button");
     b.type = "button"; b.textContent = i + 1; b.title = r.id;
-    b.className = (r.line ? (r.line.banded ? "no " : "done ") : "") + (need.has(r.id) ? "" : "spare ")
+    b.className = (r.line ? (heldOut(r.line) ? "no " : "done ") : "") + (need.has(r.id) ? "" : "spare ")
       + (i === here ? "here" : "");
     b.onclick = () => { here = i; load(); };
     return b;
@@ -203,7 +209,8 @@ $("photo").onload = () => { $("drawing").textContent = ""; };
 $("photo").onclick = e => {
   const box = $("photo").getBoundingClientRect();
   const x = (e.clientX - box.left) / box.width, y = (e.clientY - box.top) / box.height;
-  const at = [Math.round(x * 1e4) / 1e4, Math.round(y * 1e4) / 1e4];
+  const frac = v => Math.min(1, Math.max(0, Math.round(v * 1e4) / 1e4));  // a click on the very edge
+  const at = [frac(x), frac(y)];
   if (state.tracing) state.outline.push(at); else state.centre = at;
   picture();
 };
@@ -232,7 +239,7 @@ async function send(values) {
     bad("Could not save: is the terminal still running?");
     return;
   }
-  rows[here].line = values.banded ? values : { ...values,
+  rows[here].line = heldOut(values) ? values : { ...values,
     source: values.centre ? "owner" : values.outline ? "deepest point" : rows[here].draft.source };
   const need = needed();
   const next = rows.findIndex(r => need.has(r.id) && !r.line);
@@ -245,12 +252,16 @@ function bad(text) { $("status").textContent = text; $("status").className = "ba
 
 $("form").addEventListener("submit", e => {
   e.preventDefault();
-  if (state.tracing) { bad("Finish the outline first (Done), or clear it."); return; }
+  if (state.tracing && state.outline.length < 3) {
+    bad("An outline needs at least 3 points: add more, or clear it."); return;
+  }
+  if (state.tracing) { state.tracing = false; picture(); }  // saving finishes the outline
   const values = { centre: state.centre, draw: state.draw, reasons: state.reasons };
   if (state.outline) values.outline = state.outline;
   send(values);
 });
 $("nobands").onclick = () => send({ banded: "no" });
+$("norim").onclick = () => send({ rim_in_view: "no" });
 $("prev").onclick = () => { here = (here - 1 + rows.length) % rows.length; load(); };
 $("next").onclick = () => { here = (here + 1) % rows.length; load(); };
 load();

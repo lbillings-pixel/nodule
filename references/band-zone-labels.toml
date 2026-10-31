@@ -3,7 +3,9 @@
 # helper agents viewing the outline-check pictures (and the owner's notes on
 # the check sample); "checked" is the owner's, from `python -m nodule.zonecheck`,
 # and overrides it; "recount" is the owner's later eye count (choice 7h).
-# Appearance only: never evidence for a formation mechanism (ADR 0002).
+# Rows with round = 2 follow section 9; "line" is the owner's checked
+# rim-to-centre line of a round 2 face (choice 7o). Appearance only: never
+# evidence for a formation mechanism (ADR 0002).
 
 [meta]
 schema = "ADR 0006, section 3"
@@ -56,6 +58,29 @@ C24_inner_iris = "absent"
 note = "This is the first Claude-labeled image I've seen of the present iteration/stage, and I'm just noting here that your consideration of what constitutes \"even bands\" is very different from what I've been using, especially in my initial tagging of an unlabeled set of 10. For the purposes of this present exercise, in which I'm reviewing a large number of your tags/labels, I think it's probably for the best that we stick with your much simpler and less complicated working concept of what \"even bands\" means."
 blind = false
 
+[images.achat-1.line]
+rim = [
+    0.3592,
+    0.0751,
+]
+centre = [
+    0.5484,
+    0.4586,
+]
+source = "owner"
+draw = 9
+reasons = [
+    "crack or edge",
+    "crack or edge",
+    "crack or edge",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "crack or edge",
+]
+
 [images.achat-2.proposed]
 banded = "yes"
 C23_centres = 1
@@ -101,6 +126,18 @@ C24_inner_shadow = "absent"
 C24_inner_iris = "absent"
 note = "There appears to be a second, much smaller banding center below the one you identified. All my tags/reviews above, though, are referring to the banding center you identified."
 blind = false
+
+[images.achatscheibe.line]
+rim = [
+    0.7164,
+    0.3617,
+]
+centre = [
+    0.5381,
+    0.6574,
+]
+source = "deepest point"
+draw = 0
 
 [images.achaty-zajecov-3.proposed]
 banded = "yes"
@@ -208,6 +245,23 @@ C24_inner_striations = "present"
 C24_inner_shadow = "absent"
 C24_inner_iris = "absent"
 blind = true
+
+[images.agat-bobonong-botswana.line]
+rim = [
+    0.9376,
+    0.3273,
+]
+centre = [
+    0.428,
+    0.4236,
+]
+source = "owner"
+draw = 3
+reasons = [
+    "crack or edge",
+    "crack or edge",
+    "crack or edge",
+]
 
 [images.agat-lake-superior-lake-superior-agate-minnesota-usa.proposed]
 banded = "yes"
@@ -353,6 +407,36 @@ C24_inner_iris = "absent"
 note = "So, technically I think this is a \"broken surface\" but it does display a banded face, albeit a somewhat \"lumpy\" or slightly misshapen one due to the natural surface of the rock and/or the broken surface. So I'm still tagging."
 blind = false
 
+[images.agate-filled-geode-brazil-1-31912507804.line]
+rim = [
+    0.285,
+    0.8996,
+]
+centre = [
+    0.4934,
+    0.5138,
+]
+source = "owner"
+draw = 1
+reasons = [
+    "crack or edge",
+]
+
+[images.agate-filled-geode-condor-agate-argentina-31941551193.line]
+rim = [
+    0.2191,
+    0.1006,
+]
+centre = [
+    0.287,
+    0.4887,
+]
+source = "owner"
+draw = 1
+reasons = [
+    "crack or edge",
+]
+
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-11.proposed]
 banded = "yes"
 C23_centres = 3
@@ -432,6 +516,22 @@ C24_inner_striations = "unknown"
 C24_inner_shadow = "unknown"
 C24_inner_iris = "unknown"
 blind = false
+
+[images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-8.line]
+rim = [
+    0.0944,
+    0.1958,
+]
+centre = [
+    0.3795,
+    0.3091,
+]
+source = "owner"
+draw = 2
+reasons = [
+    "misses the bands",
+    "misses the bands",
+]
 
 [images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-6.proposed]
 banded = "yes"
@@ -572,6 +672,25 @@ C24_inner_shadow = "absent"
 C24_inner_iris = "absent"
 blind = true
 
+[images.agate-rio-grande-do-sul-caillois-donation-mnhn-n10.line]
+rim = [
+    0.1106,
+    0.3097,
+]
+centre = [
+    0.3907,
+    0.483,
+]
+source = "owner"
+draw = 5
+reasons = [
+    "crack or edge",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+]
+
 [images.agate-sio2-from-brazil-50583624161.proposed]
 banded = "no"
 C23_centres = "unknown"
@@ -652,6 +771,21 @@ C24_inner_shadow = "absent"
 C24_inner_iris = "absent"
 note = "For the \"inner\" section of C24, I'm evaluating the qualities of the clumpy waterline banding, in case that was unclear."
 blind = false
+
+[images.agate1-hg.line]
+rim = [
+    0.7081,
+    0.1971,
+]
+centre = [
+    0.4989,
+    0.5208,
+]
+source = "owner"
+draw = 1
+reasons = [
+    "crack or edge",
+]
 
 [images.agate3-hg-cropped.proposed]
 banded = "yes"
@@ -873,6 +1007,38 @@ C24_inner_shadow = "absent"
 C24_inner_iris = "absent"
 blind = true
 
+[images.dugway-geode-juab-county-utah-usa-1-34540239846.line]
+rim = [
+    0.5781,
+    0.9835,
+]
+centre = [
+    0.5,
+    0.49,
+]
+source = "owner"
+draw = 5
+reasons = [
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+]
+note = "I'm making two extra entries to replace the two previous hold-outs, images 8 and 9."
+
+[images.estonian-museum-of-natural-history-specimen-no-174692-photo-g286-g286-68-1-jpg.line]
+rim = [
+    0.8772,
+    0.7526,
+]
+centre = [
+    0.4506,
+    0.5147,
+]
+source = "owner"
+draw = 0
+
 [images.estonian-museum-of-natural-history-specimen-no-176133-photo-g244-g244-9-1-jpg.proposed]
 banded = "yes"
 C23_centres = 3
@@ -1053,6 +1219,23 @@ C24_inner_striations = "present"
 C24_inner_shadow = "absent"
 C24_inner_iris = "absent"
 blind = true
+
+[images.iris-agate-from-agatized-petrified-wood-stinking-water-oregon-usa-detail-from-or.line]
+rim = [
+    0.7969,
+    0.0672,
+]
+centre = [
+    0.6887,
+    0.4295,
+]
+source = "deepest point"
+draw = 3
+reasons = [
+    "misses the bands",
+    "misses the bands",
+    "misses the bands",
+]
 
 [images.laguna-agate-chihuahua-mexico-2-32661870051.proposed]
 banded = "yes"
@@ -1263,6 +1446,18 @@ C24_inner_striations = "unknown"
 C24_inner_shadow = "unknown"
 C24_inner_iris = "unknown"
 blind = false
+
+[images.quartz-agate-le-vaisseau-bresil-dation-caillois.line]
+rim = [
+    0.3305,
+    0.6373,
+]
+centre = [
+    0.382,
+    0.4719,
+]
+source = "deepest point"
+draw = 0
 
 [images.quartz-agateplate-bluegrey.proposed]
 banded = "yes"

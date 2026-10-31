@@ -71,6 +71,9 @@ ul { margin: 0; padding-left: 18px; }
         <li>Centre off? <b>Click the centre</b> on the photo. With several centres, click the
           one of the largest band set.</li>
         <li>Direction bad? Choose why, then <b>Next direction</b>. Only these reasons count.</li>
+        <li>The <b>cyan edge</b> is the stone as the computer sees it; centres and rim ends
+          must lie inside it. Where it does not follow the stone, <b>Trace the outline</b>:
+          click round the stone's edge, then <b>Done</b>. Your outline then replaces it.</li>
       </ul>
     </div>
     <div class="actions">
@@ -78,6 +81,12 @@ ul { margin: 0; padding-left: 18px; }
       <button type="button" class="small" id="nextdraw">Next direction</button>
     </div>
     <div class="hint" id="state"></div>
+    <div class="actions">
+      <button type="button" class="small" id="trace">Trace the outline</button>
+      <button type="button" class="small" id="undo">Undo point</button>
+      <button type="button" class="small" id="done">Done</button>
+      <button type="button" class="small" id="untrace">Clear outline</button>
+    </div>
     <div class="actions">
       <button type="button" class="small" id="reset">Back to the draft</button>
     </div>
@@ -103,9 +112,11 @@ const $ = id => document.getElementById(id);
 const rows = DATA.rows;
 const SOURCES = { "paths": "drafted from where the band paths meet",
   "deepest point": "the computer found no centre: this is the stone's deepest point",
+  "outline": "the deepest point of your outline",
   "owner": "your centre" };
 let here = 0;
-let state = null;  // { centre: [x, y] | null (the draft's), draw, reasons }
+// { centre: [x, y] | null (the draft's), draw, reasons, outline: [[x, y], ...] | null, tracing }
+let state = null;
 
 for (const r of DATA.reasons) $("reason").add(new Option(r, r));
 
@@ -120,23 +131,45 @@ function needed() {
   return out;
 }
 
+function fresh() { return { centre: null, draw: 0, reasons: [], outline: null, tracing: false }; }
+
 function fromLine(line) {
-  if (!line || line.banded) return { centre: null, draw: 0, reasons: [] };
+  if (!line || line.banded) return fresh();
   return { centre: line.source === "owner" ? line.centre : null, draw: line.draw,
-    reasons: line.reasons || [] };
+    reasons: line.reasons || [], outline: line.outline || null, tracing: false };
 }
 
 function picture() {
   const r = rows[here];
   const q = new URLSearchParams({ draw: state.draw });
   if (state.centre) { q.set("x", state.centre[0]); q.set("y", state.centre[1]); }
+  if (state.outline) q.set("o", state.outline.flat().join(","));
+  if (state.tracing) q.set("trace", "1");
   $("drawing").textContent = "Drawing…";
   $("photo").src = "/img/" + encodeURIComponent(r.id) + ".png?" + q;
-  const source = state.centre ? "owner" : r.draft.source;
+  checkLine(r.id, q);
+  const source = state.centre ? "owner" : state.outline ? "outline" : r.draft.source;
   $("source").textContent = "Centre: " + SOURCES[source] + ".";
-  $("state").textContent = state.draw
-    ? "Direction " + (state.draw + 1) + "; passed over: " + state.reasons.join(", ") + "."
-    : "First direction.";
+  $("state").textContent = state.tracing
+    ? "Tracing: click round the stone's edge (" + state.outline.length + " points), then Done."
+    : (state.draw
+      ? "Direction " + (state.draw + 1) + "; passed over: " + state.reasons.join(", ") + "."
+      : "First direction.") + (state.outline ? " Face: your outline." : "");
+  for (const id of ["undo", "done"]) $(id).disabled = !state.tracing;
+  $("trace").disabled = state.tracing;
+  $("untrace").disabled = !state.outline;
+}
+
+// Why the server drew no line, if it did not: shown, never silently dropped.
+async function checkLine(id, q) {
+  try {
+    const reply = await fetch("/problems/" + encodeURIComponent(id) + "?" + q);
+    const got = await reply.json();
+    if (got.problems.length) bad("No line: " + got.problems.join("; ") + ".");
+    else if ($("status").className === "bad") { $("status").textContent = ""; $("status").className = ""; }
+  } catch (err) {
+    bad("Could not reach the server: is the terminal still running?");
+  }
 }
 
 function load() {
@@ -170,13 +203,21 @@ $("photo").onload = () => { $("drawing").textContent = ""; };
 $("photo").onclick = e => {
   const box = $("photo").getBoundingClientRect();
   const x = (e.clientX - box.left) / box.width, y = (e.clientY - box.top) / box.height;
-  state.centre = [Math.round(x * 1e4) / 1e4, Math.round(y * 1e4) / 1e4];
+  const at = [Math.round(x * 1e4) / 1e4, Math.round(y * 1e4) / 1e4];
+  if (state.tracing) state.outline.push(at); else state.centre = at;
   picture();
 };
+$("trace").onclick = () => { state.outline = []; state.tracing = true; picture(); };
+$("undo").onclick = () => { state.outline.pop(); picture(); };
+$("done").onclick = () => {
+  if (state.outline.length < 3) { bad("An outline needs at least 3 points."); return; }
+  state.tracing = false; picture();
+};
+$("untrace").onclick = () => { state.outline = null; state.tracing = false; picture(); };
 $("nextdraw").onclick = () => {
   state.reasons = [...state.reasons, $("reason").value]; state.draw++; picture();
 };
-$("reset").onclick = () => { state = { centre: null, draw: 0, reasons: [] }; picture(); };
+$("reset").onclick = () => { state = fresh(); picture(); };
 
 async function send(values) {
   const note = $("note").value.trim();
@@ -191,8 +232,8 @@ async function send(values) {
     bad("Could not save: is the terminal still running?");
     return;
   }
-  rows[here].line = values.banded ? values
-    : { ...values, source: values.centre ? "owner" : rows[here].draft.source };
+  rows[here].line = values.banded ? values : { ...values,
+    source: values.centre ? "owner" : values.outline ? "deepest point" : rows[here].draft.source };
   const need = needed();
   const next = rows.findIndex(r => need.has(r.id) && !r.line);
   if (next >= 0) here = next;
@@ -204,7 +245,10 @@ function bad(text) { $("status").textContent = text; $("status").className = "ba
 
 $("form").addEventListener("submit", e => {
   e.preventDefault();
-  send({ centre: state.centre, draw: state.draw, reasons: state.reasons });
+  if (state.tracing) { bad("Finish the outline first (Done), or clear it."); return; }
+  const values = { centre: state.centre, draw: state.draw, reasons: state.reasons };
+  if (state.outline) values.outline = state.outline;
+  send(values);
 });
 $("nobands").onclick = () => send({ banded: "no" });
 $("prev").onclick = () => { here = (here - 1 + rows.length) % rows.length; load(); };

@@ -13,7 +13,9 @@ like `nodule.zonecheck`, in the pool's order. It shows each line as the
 helpers will see it (`ticked`: ticks every 0.1, 0 at the rim, 1 at the
 centre). The owner accepts it, clicks the centre where the draft is off,
 takes the next direction for a stated reason, or marks "no banded face" (the
-pool's next then stands in). The server, not the page, works out the rim;
+pool's next then stands in). The page shows the face's edge in cyan; where
+it does not follow the stone, the owner traces the stone's edge and that
+outline becomes the face. The server, not the page, works out the rim;
 saves are checked (`zones.line_problems`) and written beside the labels in
 references/band-zone-labels.toml. Done when `zones.BLIND` faces have a line.
 
@@ -55,7 +57,7 @@ OUT_DIR = ROOT / "runs" / "zone-lines"
 DRAFTS = "drafts.json"
 DRAFT = 20  # faces drafted by default: the blind 10 and room for faces marked not banded
 PICTURE_PX = 10**6  # the pictures' size, as for `bands`: lines are fractions, so any size holds
-YELLOW, BLACK = (255, 230, 0), (0, 0, 0)
+YELLOW, BLACK, CYAN = (255, 230, 0), (0, 0, 0), (0, 230, 255)
 
 
 def draft_face(
@@ -134,6 +136,51 @@ def ticked(img: Image.Image, rim: Sequence[float], centre: Sequence[float]) -> I
     return img
 
 
+def traced(outline: Sequence[Sequence[float]], shape: tuple[int, int]) -> NDArray[np.bool_]:
+    """The face inside an outline ([x, y] fractions of the picture, in
+    order) on a grid of `shape` (rows, cols)."""
+    h, w = shape
+    img = Image.new("1", (w, h), 0)
+    ImageDraw.Draw(img).polygon([(x * w - 0.5, y * h - 0.5) for x, y in outline], 1, 1)
+    return np.asarray(img, dtype=bool)
+
+
+def edged(img: Image.Image, face: NDArray[np.bool_]) -> Image.Image:
+    """The picture with the face's edge drawn in cyan, for the owner only."""
+    img = img.convert("RGB")
+    mask = np.asarray(Image.fromarray(face).resize(img.size, Image.Resampling.NEAREST))
+    inner = mask.copy()
+    for _ in range(max(2, round(math.hypot(*img.size) / 600))):  # the edge's width in px
+        inner[1:-1, 1:-1] &= inner[:-2, 1:-1] & inner[2:, 1:-1] & inner[1:-1, :-2] & inner[1:-1, 2:]
+        inner[[0, -1]], inner[:, [0, -1]] = False, False
+    out = np.asarray(img).copy()
+    out[mask & ~inner] = CYAN
+    return Image.fromarray(out)
+
+
+def tracing(img: Image.Image, points: Sequence[Sequence[float]]) -> Image.Image:
+    """The picture with an outline still being traced: its corners and sides."""
+    img = img.convert("RGB")
+    w, h = img.size
+    width = max(2, round(math.hypot(w, h) / 600))
+    xy = [(x * w, y * h) for x, y in points]
+    pen = ImageDraw.Draw(img)
+    if len(xy) > 1:
+        pen.line(xy, CYAN, width)
+    for x, y in xy:
+        pen.ellipse((x - 2 * width, y - 2 * width, x + 2 * width, y + 2 * width), CYAN, BLACK)
+    return img
+
+
+def outline_of(query: Mapping[str, list[str]]) -> list[list[float]] | None:
+    """The outline in a picture request (`o=x1,y1,x2,y2,...`); None if none."""
+    o = query.get("o", [""])[0]
+    if not o:
+        return None
+    v = [float(t) for t in o.split(",")]
+    return [[v[i], v[i + 1]] for i in range(0, len(v) - 1, 2)]
+
+
 class LineChecker:
     """Round 2's pool, its drafted lines and the C23-C25 labels file."""
 
@@ -174,16 +221,41 @@ class LineChecker:
                 self.faces[image_id] = (f["face"], float(f["k"]), shape)
         return self.faces[image_id]
 
-    def line(self, image_id: str, centre: object, draw: object) -> tuple[dict[str, Any], list[str]]:
-        """The line from `centre` ([x, y] fractions; None: the draft's) at the
-        `draw`th direction, and what is wrong with the request."""
+    def outlined(
+        self, image_id: str, outline: object
+    ) -> tuple[NDArray[np.bool_], float, tuple[int, int], list[str]]:
+        """The face to draw on: the owner's traced outline where given, else
+        the computer's; and what is wrong with the outline."""
+        face, k, shape = self.face(image_id)
+        if outline is None:
+            return face, k, shape, []
+        found = [p for p in zones.line_problems({"outline": outline}) if "outline" in p]
+        if found:
+            return face, k, shape, found
+        mask = traced(cast("list[list[float]]", outline), face.shape)
+        if not mask.any():
+            return face, k, shape, ["the traced outline encloses no part of the picture"]
+        return mask, k, shape, []
+
+    def line(
+        self, image_id: str, centre: object, draw: object, outline: object = None
+    ) -> tuple[dict[str, Any], list[str]]:
+        """The line from `centre` ([x, y] fractions; None: the draft's, or the
+        deepest point of the owner's outline) at the `draw`th direction, the
+        rim end on the edge of the face (the owner's `outline` where traced),
+        and what is wrong with the request."""
         if image_id not in self.sample:
             return {}, [f"{image_id!r} is not drafted in round 2's pool"]
         if type(draw) is not int or draw < 0:
             return {}, [f"draw: {draw!r} is not a whole number from 0"]
-        face, k, (h, w) = self.face(image_id)
+        face, k, (h, w), found = self.outlined(image_id, outline)
+        if found:
+            return {}, found
         source = "owner"
-        if centre is None:
+        if centre is None and outline is not None:
+            r, c = zoneline.deepest_point(face, k)
+            centre, source = [(c + 0.5) / w, (r + 0.5) / h], "deepest point"
+        elif centre is None:
             centre, source = self.drafts[image_id]["centre"], self.drafts[image_id]["source"]
         xy = cast("list[object]", centre) if isinstance(centre, list) else []
         if len(xy) != 2 or not all(type(v) in (int, float) for v in xy):
@@ -191,29 +263,52 @@ class LineChecker:
         x, y = (float(cast("float", v)) for v in xy)
         px = (y * h - 0.5, x * w - 0.5)
         if not zoneline.inside(face, k, np.array(px)):
-            return {}, ["the centre must lie inside the stone's outline"]
+            where = "your traced outline" if outline is not None else "the cyan edge"
+            return {}, [f"the centre must lie inside the stone's outline ({where})"]
         rim = zoneline.rim_point(face, k, px, zoneline.direction(image_id, draw))
         rim_frac = [round((rim[1] + 0.5) / w, 4), round((rim[0] + 0.5) / h, 4)]
-        line = {"rim": rim_frac, "centre": [round(x, 4), round(y, 4)]}
+        line: dict[str, Any] = {"rim": rim_frac, "centre": [round(x, 4), round(y, 4)]}
+        if outline is not None:
+            points = cast("list[list[float]]", outline)
+            line["outline"] = [[round(float(v), 4) for v in p] for p in points]
         return line | {"source": source, "draw": draw}, []
 
+    def asked(self, query: Mapping[str, list[str]]) -> tuple[int, object, object, bool]:
+        """A picture request: `?draw=n&x=..&y=..&o=..&trace=1` (no x, y: the
+        default centre; o: the owner's outline; trace: still being traced)."""
+        draw = int(query.get("draw", ["0"])[0])
+        x, y = query.get("x"), query.get("y")
+        centre = [float(x[0]), float(y[0])] if x and y else None
+        return draw, centre, outline_of(query), query.get("trace") == ["1"]
+
     def render(self, name: str, query: Mapping[str, list[str]]) -> bytes | None:
-        """The picture with the line asked for (`?draw=n&x=..&y=..`; no x, y:
-        the draft's centre), as PNG; None if there is no such picture."""
+        """The picture with the line asked for and the face's edge in cyan
+        (while tracing, the outline so far instead), as PNG; None if there
+        is no such picture."""
         if name not in self.sample:
             return None
         try:
-            draw = int(query.get("draw", ["0"])[0])
-            x, y = query.get("x"), query.get("y")
-            centre = [float(x[0]), float(y[0])] if x and y else None
+            draw, centre, outline, still = self.asked(query)
         except ValueError:
             return None
-        line, found = self.line(name, centre, draw)
         with Image.open(self.pictures / f"{name}.png") as img:
-            out = ticked(img, line["rim"], line["centre"]) if not found else img.convert("RGB")
+            if still:
+                out = tracing(img, cast("list[list[float]]", outline or []))
+            else:
+                line, found = self.line(name, centre, draw, outline)
+                face, *_ = self.outlined(name, outline)
+                out = edged(ticked(img, line["rim"], line["centre"]) if not found else img, face)
         buf = io.BytesIO()
         out.save(buf, "PNG")
         return buf.getvalue()
+
+    def problems(self, name: str, query: Mapping[str, list[str]]) -> list[str]:
+        """Why the picture asked for carries no line (none if it does)."""
+        try:
+            draw, centre, outline, still = self.asked(query)
+        except ValueError:
+            return ["the request could not be read"]
+        return [] if still else self.line(name, centre, draw, outline)[1]
 
     def picture(self, name: str) -> Path | None:
         return None  # pictures come from `render`
@@ -227,7 +322,9 @@ class LineChecker:
                 return [f"{image_id!r} is not drafted in round 2's pool"]
         else:
             reasons = values.get("reasons", [])
-            line, found = self.line(image_id, values.get("centre"), values.get("draw", 0))
+            line, found = self.line(
+                image_id, values.get("centre"), values.get("draw", 0), values.get("outline")
+            )
             if found:
                 return found
             if reasons:

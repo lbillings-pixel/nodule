@@ -118,3 +118,61 @@ def test_a_face_with_no_bands_gives_way_to_the_next(
     after = zones.round2_sample(checker.views, zones.load(checker.path))
     assert after == checker.sample[1 : zones.BLIND + 1]
     assert zones.load(checker.path)[before[0]]["line"] == {"banded": "no"}
+
+
+def test_a_traced_outline_replaces_a_wrong_face(
+    served: tuple[str, linecheck.LineChecker],
+) -> None:
+    base, checker = served
+    a, b = checker.sample[:2]
+    corner = [[0.04, 0.04], [0.26, 0.04], [0.26, 0.26], [0.04, 0.26]]  # off the computer's disc
+    q = "draw=0&x=0.15&y=0.15"
+    o = "o=" + ",".join(str(v) for p in corner for v in p)
+    # Negative control: off the computer's face, the click is refused and the page told why.
+    with urllib.request.urlopen(f"{base}/problems/{a}?{q}") as reply:
+        assert "cyan edge" in json.loads(reply.read())["problems"][0]
+    with urllib.request.urlopen(f"{base}/problems/{a}?{q}&{o}") as reply:
+        assert json.loads(reply.read())["problems"] == []
+    values: dict[str, Any] = {"centre": [0.15, 0.15], "draw": 0, "outline": corner}
+    assert post(base + "/save", {"id": a, "values": values})[0] == 200
+    line = zones.load(checker.path)[a]["line"]
+    assert line["outline"] == corner
+    assert zones.line_problems(line) == []
+    x, y = line["rim"]
+    assert 0.03 < x < 0.27  # the rim end lies on the traced square
+    assert 0.03 < y < 0.27
+    assert min(x - 0.04, 0.26 - x, y - 0.04, 0.26 - y) < 0.02
+    # With no centre clicked, the centre is the deepest point of the outline.
+    assert post(base + "/save", {"id": b, "values": {"draw": 0, "outline": corner}})[0] == 200
+    line = zones.load(checker.path)[b]["line"]
+    assert line["source"] == "deepest point"
+    assert all(abs(v - 0.15) < 0.02 for v in line["centre"])
+    # Negative controls: an outline of two points; a centre outside the traced outline.
+    status, got = post(base + "/save", {"id": b, "values": {"draw": 0, "outline": corner[:2]}})
+    assert status == 400
+    assert "at least 3" in got["problems"][0]
+    values = {"centre": [0.5, 0.5], "draw": 0, "outline": corner}
+    status, got = post(base + "/save", {"id": b, "values": values})
+    assert status == 400
+    assert "traced outline" in got["problems"][0]
+
+
+def test_the_page_picture_shows_the_face_edge(
+    served: tuple[str, linecheck.LineChecker],
+) -> None:
+    base, checker = served
+    first = checker.sample[0]
+
+    def cyan(query: str) -> np.ndarray:
+        with urllib.request.urlopen(f"{base}/img/{first}.png?{query}") as reply:
+            out = np.asarray(Image.open(io.BytesIO(reply.read())).convert("RGB")).astype(int)
+        return (abs(out - linecheck.CYAN) < 30).all(axis=-1)
+
+    edge = cyan("draw=0")
+    assert edge[SIZE // 2, 10:25].any()  # the disc's edge, 0.4 out from the middle
+    assert not edge[SIZE // 2, 40:120].any()  # nothing inside the face
+    assert not edge[:8, :8].any()  # nor outside it
+    assert cyan("draw=0&x=0.02&y=0.02")[SIZE // 2, 10:25].any()  # shown even with no line
+    tracing = cyan("draw=0&trace=1&o=0.1,0.1,0.9,0.1")
+    assert tracing[16, 40:120].all()  # the outline so far
+    assert not tracing[SIZE // 2, 10:25].any()  # and not the computer's edge

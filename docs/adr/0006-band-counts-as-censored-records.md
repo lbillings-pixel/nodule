@@ -548,6 +548,24 @@ drawn exactly as helpers will see it, and the server, not the page, works
 out the rim end from the face and refuses a centre off the stone. The
 checked lines are then drawn for the helpers (`--ticked`).
 
+Fault and fix (2026-10-30). On the first pass the owner held out six faces
+as "no banded face" because a clicked centre made the line vanish. Each was
+a face with no rim judged "yes" and no band paths, so its face was
+agatesim's working region, and on these photos that region was wrong: a
+speck of background or a museum label (four faces), or a stone with half its
+banding left out (two). Clicks off it were refused, but the page showed no
+reason. Left in, the six would have been stored as unbanded (all are plainly
+banded) and the blind 10 would have kept only faces the computer segments
+well. The owner chose (over a rim click, or fixing agatesim's segmentation)
+that the page shows the face's edge in cyan, says why a line is refused, and
+lets the owner trace the stone's outline where the edge is wrong. The traced
+outline is stored with the line (`outline`, [x, y] fractions) and becomes
+the face for the rim end; with no centre clicked, the centre is its deepest
+point. The direction is still drawn from the face's own stream. The six
+records were cleared, so the blind 10 is again the pool's first ten (two of
+them still to check). The other twelve lines stand as the owner accepted
+them, though where a face was partly wrong their rim end stops at its edge.
+
 Section 6's fallback, met by round 1, is weighed at the end of the
 re-tagging with round 2 and the other two tests, as section 6's timing
 reads (owner, 2026-10-30). Round 2's rules are fixed here before any of its

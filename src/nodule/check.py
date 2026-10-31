@@ -105,6 +105,12 @@ def handler(checker: Page) -> type[BaseHTTPRequestHandler]:
                 self.send(HTTPStatus.OK, page.encode("utf-8"), "text/html; charset=utf-8")
                 return
             url = urlsplit(self.path)
+            asked = getattr(checker, "problems", None)  # why a drawing was refused
+            if url.path.startswith("/problems/") and asked is not None:
+                found = asked(unquote(url.path.removeprefix("/problems/")), parse_qs(url.query))
+                body = json.dumps({"problems": found}).encode("utf-8")
+                self.send(HTTPStatus.OK, body, "application/json")
+                return
             name = unquote(url.path.removeprefix("/img/").removesuffix(".png"))
             render = getattr(checker, "render", None)  # a check that draws its pictures
             if url.path.startswith("/img/") and render is not None:

@@ -89,6 +89,7 @@ POOL_STREAM = 3  # child of SEED's streams that orders round 2's pool (choice 7m
 POOL_VIEWS = ("cut face", "slab in transmitted light")  # views that can show a banded face
 LINE_REASONS = ("crack or edge", "misses the bands", "waterline banding")
 LINE_SOURCES = ("paths", "deepest point", "owner")
+MIN_OUTLINE = 3  # corners of an outline the owner traced where the face was wrong
 
 Row = dict[str, Any]
 
@@ -210,16 +211,30 @@ def round2_sample(
     return kept[:size]
 
 
+def is_point(p: object) -> bool:
+    """Whether `p` is [x, y], each a fraction of the picture from 0 to 1."""
+    return (
+        isinstance(p, list)
+        and len(cast("list[object]", p)) == 2
+        and all(
+            isinstance(v, int | float) and not isinstance(v, bool) and 0 <= v <= 1
+            for v in cast("list[object]", p)
+        )
+    )
+
+
 def line_problems(line: Mapping[str, object]) -> list[str]:
     """What is wrong with the owner's checked line of one face: either
     `banded = "no"` (the face shows no banded face; the pool's next stands
     in), or rim and centre as [x, y] fractions of the picture, the centre's
     source, the direction draw and one reason (`LINE_REASONS`) per draw
-    passed over (choice 7o)."""
+    passed over (choice 7o). `outline`, where the computer's face was wrong,
+    is the stone's edge as the owner traced it ([x, y] fractions in order);
+    the rim end then comes from it."""
     allowed = (
         {"banded", "note"}
         if "banded" in line
-        else {"rim", "centre", "source", "draw", "reasons", "note"}
+        else {"rim", "centre", "source", "draw", "reasons", "outline", "note"}
     )
     out = [f"line {k}: not a field" for k in line if k not in allowed]
     if not isinstance(line.get("note", ""), str):
@@ -230,15 +245,16 @@ def line_problems(line: Mapping[str, object]) -> list[str]:
         return out
     for end in ("rim", "centre"):
         p = line.get(end)
-        if not (
-            isinstance(p, list)
-            and len(cast("list[object]", p)) == 2
-            and all(
-                isinstance(v, int | float) and not isinstance(v, bool) and 0 <= v <= 1
-                for v in cast("list[object]", p)
-            )
-        ):
+        if not is_point(p):
             out.append(f"line {end}: {p!r} is not [x, y], each from 0 to 1")
+    if "outline" in line:
+        o = line["outline"]
+        if not (
+            isinstance(o, list)
+            and len(cast("list[object]", o)) >= MIN_OUTLINE
+            and all(is_point(p) for p in cast("list[object]", o))
+        ):
+            out.append(f"line outline: at least {MIN_OUTLINE} points [x, y], each from 0 to 1")
     if line.get("source") not in LINE_SOURCES:
         out.append(f"line source: {line.get('source')!r} is not one of {', '.join(LINE_SOURCES)}")
     draw, reasons = line.get("draw"), line.get("reasons", [])

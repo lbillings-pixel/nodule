@@ -81,7 +81,7 @@ body.recount .recount, body.zones .zonesonly { display: flex; }
 <main>
   <section id="picture">
     <img id="photo" alt="">
-    <div class="hint"><b>Green</b>: the outline found for the stone. <b>Yellow</b> dot: the machine's
+    <div class="hint" id="pichint"><b>Green</b>: the outline found for the stone. <b>Yellow</b> dot: the machine's
       centre (not a band centre). Click the picture to open it full size.</div>
     <div class="hint" id="name"></div>
   </section>
@@ -115,11 +115,11 @@ body.recount .recount, body.zones .zonesonly { display: flex; }
             <tbody></tbody></table>
           <div class="actions"><button type="button" class="small" id="addzone">+ add a zone</button>
             <span class="hint" id="sum"></span></div>
-          <span class="hint">List zones from the rim inwards. Share = the zone's part of the rim-to-centre
+          <span class="hint" id="zonehint">List zones from the rim inwards. Share = the zone's part of the rim-to-centre
             distance; shares add up to 1. No zones means unknown.</span><span class="was"></span></fieldset>
 
         <h2>C24 Signs of bands too fine to see</h2>
-        <span class="hint">For the outer, middle and inner third of the way from rim to centre: is each
+        <span class="hint" id="cuehint">For the outer, middle and inner third of the way from rim to centre: is each
           sign present, absent, or can't you tell? Always blank to start.</span>
         <table id="cues"></table>
       </div>
@@ -150,6 +150,17 @@ if (RECOUNT) {
     $("closed").textContent = "The recount opens on " + DATA.opens + ", a week after your first counts. Saving is off until then.";
     $("closed").style.display = "block";
   }
+}
+
+if (DATA.round === 2) {
+  $("title").textContent = "Band zones, round 2";
+  $("pichint").innerHTML = "<b>Yellow</b>: the line you checked, 0 at the rim, 1 at the centre, a tick"
+    + " every 0.1. Click the picture to open it full size.";
+  $("zonehint").textContent = "List zones along the yellow line from 0 (the rim) inwards. Share = the"
+    + " zone's part of the line, read off the ticks; each at least 0.05; shares add up to 1. Fine bands"
+    + " with plain gaps between them are one zone of bands. No zones means unknown.";
+  $("cuehint").textContent = "For the outer, middle and inner third of the yellow line: are faint"
+    + " striations present, absent, or can't you tell? Always blank to start.";
 }
 
 // The C24 grid: thirds down, cues across.

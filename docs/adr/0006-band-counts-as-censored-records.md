@@ -554,6 +554,14 @@ gives the same shares, as each set is an ellipse), so the zones control reads
 0.5, 0.3 and 0.2 along it. A round 2 control answer is checked for its three
 striation items.
 
+Round 2 proposals (2026-10-30): three helpers, the blind 10 split 4/3/3 by
+stream 4 of seed 6, one control each, every picture under a neutral name,
+given the definitions above word for word. All three controls were labelled
+as they must be. The proposals' contents are not summarised here until the
+owner's check is saved, as all ten faces are blind. The check page serves
+them with `python -m nodule.zonecheck --round2`: the ticked pictures, nothing
+filled in, C24 as the three striation items, every save stored as round 2.
+
 Fault and fix (2026-10-30). On the first pass the owner held out six faces
 as "no banded face" because a clicked centre made the line vanish. Each was
 a face with no rim judged "yes" and no band paths, so its face was

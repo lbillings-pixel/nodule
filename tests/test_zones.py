@@ -377,6 +377,30 @@ def test_blind_faces_come_first_hide_proposals_and_must_be_done_first(tmp_path: 
         server.server_close()
 
 
+def test_round_2_serves_its_blind_10_with_striations_only(tmp_path: Path) -> None:
+    views_path, path = tmp_path / "views.toml", tmp_path / "zones.toml"
+    views: dict[str, dict[str, labels.Row]] = {
+        f"p{i:03d}": {"proposed": {"view_kind": "cut face"}} for i in range(120)
+    }
+    labels.save(views, views_path)
+    picked = zones.round2_sample(views, {})
+    proposed = ROUND2 | {"confidence": "medium"}
+    # The last face has no proposal yet, so it is not served.
+    zones.save({k: {"proposed": proposed} for k in picked[:-1]}, path)
+    checker = ZoneChecker(path, tmp_path, views_path, round2=True)
+    assert checker.sample == picked[:-1]
+    assert all(r["blind"] and r["proposed"] is None for r in checker.rows())
+    assert checker.data()["cues"] == {"striations": zones.CUES["striations"]}
+    answer = {k: v for k, v in ROUND2.items() if k != "round"}
+    assert checker.save(picked[0], answer) == []
+    assert zones.load(path)[picked[0]]["checked"] == ROUND2 | {"blind": True}
+    # Negative control: a round 1 answer (twelve cues, zone under 0.05) is refused.
+    old = BANDED | {
+        "C25_zones": [{"kind": "even bands", "share": 0.97}, {"kind": "cavity", "share": 0.03}]
+    }
+    assert checker.save(picked[1], old)
+
+
 def test_the_recount_opens_after_a_week_and_hides_the_first_count(tmp_path: Path) -> None:
     base, checker, server = serve(tmp_path, recount=True, today=date(2026, 11, 1))
     try:

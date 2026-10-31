@@ -9,7 +9,12 @@ every face, so they are answered unprompted. Saves are checked
 
 `--recount` serves the delayed eye recount instead (choice 7h): `zones.RECOUNT`
 faces the owner gave a band count on, from `zones.RECOUNT_FROM`, without the
-earlier count. Nothing leaves the PC.
+earlier count.
+
+`--round2` serves round 2 (section 9) instead: the blind 10 of
+`zones.round2_sample` with their checked lines drawn (`linecheck --ticked`),
+all blind, C24 as faint striations per third of the line, and every save
+stored with `round = 2` so round 2's rules apply. Nothing leaves the PC.
 """
 
 from __future__ import annotations
@@ -25,6 +30,7 @@ from typing import Any
 
 from nodule import labels, zones
 from nodule.check import HOST, handler
+from nodule.linecheck import OUT_DIR as LINE_DIR
 from nodule.overlay import OUT_DIR
 
 PORT = 8766
@@ -42,16 +48,22 @@ class ZoneChecker:
         view_labels: Path = labels.LABELS_TOML,
         recount: bool = False,
         today: date | None = None,
+        round2: bool = False,
     ) -> None:
         self.path = path
         self.pictures = pictures
         self.recount = recount
+        self.round2 = round2
         self.today = today or date.today()
         self.images = zones.load(path)
         views = labels.load(view_labels)
         sample = labels.check_sample(views)
         self.blind = zones.blind_sample(sample)
-        if recount:
+        if round2:
+            have = zones.round2_sample(views, self.images)
+            self.sample = [k for k in have if "proposed" in self.images.get(k, {})]
+            self.blind = list(self.sample)
+        elif recount:
             self.sample = zones.recount_sample(views)
         else:
             have = [k for k in sample if "proposed" in self.images.get(k, {})]
@@ -67,8 +79,9 @@ class ZoneChecker:
             "opens": zones.RECOUNT_FROM.isoformat(),
             "rows": self.rows(),
             "kinds": zones.ZONE_KINDS,
+            "round": 2 if self.round2 else 1,
             "thirds": zones.THIRDS,
-            "cues": zones.CUES,
+            "cues": {"striations": zones.CUES["striations"]} if self.round2 else zones.CUES,
             "cue_values": zones.CUE_VALUES,
         }
 
@@ -107,6 +120,8 @@ class ZoneChecker:
             if left:
                 return [f"answer the blind faces first ({len(left)} left)"]
         values = {k: v for k, v in values.items() if not (k == "note" and v == "")}
+        if self.round2:
+            values = {"round": 2, **values}
         values["blind"] = image_id in self.blind
         found = zones.problems(values, checked=True)
         if found:
@@ -143,8 +158,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--port", type=int, default=PORT)
     parser.add_argument("--no-open", action="store_true", help="do not open the browser")
     parser.add_argument("--recount", action="store_true", help="the delayed eye recount (7h)")
+    parser.add_argument("--round2", action="store_true", help="round 2's blind 10 (s.9)")
     args = parser.parse_args(argv)
-    checker = ZoneChecker(recount=args.recount)
+    if args.round2:
+        checker = ZoneChecker(pictures=LINE_DIR / "ticked", round2=True)
+    else:
+        checker = ZoneChecker(recount=args.recount)
     if not checker.sample:
         print(f"nothing to check: no proposals in {checker.path}")
         return 1

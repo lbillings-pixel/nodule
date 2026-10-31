@@ -81,6 +81,20 @@ reasons = [
     "crack or edge",
 ]
 
+[images.achat-1.proposed]
+round = 2
+banded = "yes"
+C23_centres = 1
+C24_outer_striations = "unknown"
+C24_middle_striations = "absent"
+C24_inner_striations = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.35 },
+    { kind = "coarse quartz", share = 0.65 },
+]
+confidence = "medium"
+note = "Blue-grey and white bands from the rim to about 0.35, then white crystalline quartz grading into brownish crystals at the centre."
+
 [images.achat-2.proposed]
 banded = "yes"
 C23_centres = 1
@@ -138,6 +152,21 @@ centre = [
 ]
 source = "deepest point"
 draw = 0
+
+[images.achatscheibe.proposed]
+round = 2
+banded = "yes"
+C23_centres = 2
+C24_outer_striations = "present"
+C24_middle_striations = "unknown"
+C24_inner_striations = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.43 },
+    { kind = "coarse quartz", share = 0.2 },
+    { kind = "curdled or mottled bands", share = 0.37 },
+]
+confidence = "low"
+note = "Brown and amber bands from the rim to about 0.43, then white crystalline quartz, then the line runs along a diffuse, fuzzy-edged dark brown inner ring to its dark core."
 
 [images.achaty-zajecov-3.proposed]
 banded = "yes"
@@ -262,6 +291,21 @@ reasons = [
     "crack or edge",
     "crack or edge",
 ]
+
+[images.agat-bobonong-botswana.proposed]
+round = 2
+banded = "yes"
+C23_centres = 1
+C24_outer_striations = "unknown"
+C24_middle_striations = "present"
+C24_inner_striations = "present"
+C25_zones = [
+    { kind = "plain: no visible bands", share = 0.17 },
+    { kind = "even bands", share = 0.68 },
+    { kind = "plain: no visible bands", share = 0.15 },
+]
+confidence = "medium"
+note = "Past a thin rim skin, a dark grey plain stretch, then many white and grey fortification bands that fold into a chevron, ending in the dark grey core."
 
 [images.agat-lake-superior-lake-superior-agate-minnesota-usa.proposed]
 banded = "yes"
@@ -425,6 +469,21 @@ reasons = [
     "crack or edge",
 ]
 
+[images.agate-filled-geode-brazil-1-31912507804.proposed]
+round = 2
+banded = "yes"
+C23_centres = 1
+C24_outer_striations = "present"
+C24_middle_striations = "absent"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.33 },
+    { kind = "plain: no visible bands", share = 0.54 },
+    { kind = "coarse quartz", share = 0.13 },
+]
+confidence = "medium"
+note = "Brown outer bands, then white-and-dark fortification bands, then a wide, even dark-brown interior crossed by a grey vein, ending in a white crystalline quartz pocket at the centre."
+
 [images.agate-filled-geode-condor-agate-argentina-31941551193.line]
 rim = [
     0.2191,
@@ -439,6 +498,20 @@ draw = 1
 reasons = [
     "crack or edge",
 ]
+
+[images.agate-filled-geode-condor-agate-argentina-31941551193.proposed]
+round = 2
+banded = "yes"
+C23_centres = 1
+C24_outer_striations = "present"
+C24_middle_striations = "present"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.93 },
+    { kind = "cavity", share = 0.07 },
+]
+confidence = "medium"
+note = "Pale blue-grey bands near the rim give way to a bright orange band and then brownish-yellow concentric bands. The line ends in a small drusy triangular cavity at the centre."
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-11.proposed]
 banded = "yes"
@@ -1029,6 +1102,21 @@ reasons = [
     "crack or edge",
 ]
 
+[images.agate-quartz-lined-geode-dryhead-montana-usa-1-32755917835.proposed]
+round = 2
+banded = "yes"
+C23_centres = 6
+C24_outer_striations = "present"
+C24_middle_striations = "present"
+C24_inner_striations = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.55 },
+    { kind = "plain: no visible bands", share = 0.3 },
+    { kind = "coarse quartz", share = 0.15 },
+]
+confidence = "medium"
+note = "Red, orange, pink and white fortification bands from the rim to about 0.55, then pale pinkish unbanded fill. The end of the line reaches the white crystalline quartz that lines the central drusy cavity."
+
 [images.agate-rio-grande-do-sul-caillois-donation-mnhn-n10.line]
 rim = [
     0.1106,
@@ -1047,6 +1135,21 @@ reasons = [
     "misses the bands",
     "misses the bands",
 ]
+
+[images.agate-rio-grande-do-sul-caillois-donation-mnhn-n10.proposed]
+round = 2
+banded = "yes"
+C23_centres = 7
+C24_outer_striations = "present"
+C24_middle_striations = "absent"
+C24_inner_striations = "unknown"
+C25_zones = [
+    { kind = "even bands", share = 0.15 },
+    { kind = "coarse quartz", share = 0.57 },
+    { kind = "even bands", share = 0.28 },
+]
+confidence = "medium"
+note = "A thin dark-blue banded rim, then a broad stretch of crystalline quartz (yellowish crystals, then white quartz with dark inclusions). The line ends inside a dark concentric eye; other centres lie in the dark lobes and two small eyes to the right."
 
 [images.agate-sio2-from-brazil-50583624161.proposed]
 banded = "no"
@@ -1143,6 +1246,20 @@ draw = 1
 reasons = [
     "crack or edge",
 ]
+
+[images.agate1-hg.proposed]
+round = 2
+banded = "yes"
+C23_centres = 1
+C24_outer_striations = "present"
+C24_middle_striations = "unknown"
+C24_inner_striations = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.82 },
+    { kind = "plain: no visible bands", share = 0.18 },
+]
+confidence = "medium"
+note = "Red and orange concentric bands with two white bands near 0.55 and 0.8; inside the innermost white band the core is uniform dark red to the end."
 
 [images.agate3-hg-cropped.proposed]
 banded = "yes"
@@ -1396,6 +1513,20 @@ centre = [
 source = "owner"
 draw = 0
 
+[images.estonian-museum-of-natural-history-specimen-no-174692-photo-g286-g286-68-1-jpg.proposed]
+round = 2
+banded = "yes"
+C23_centres = 1
+C24_outer_striations = "present"
+C24_middle_striations = "present"
+C24_inner_striations = "present"
+C25_zones = [
+    { kind = "even bands", share = 0.8 },
+    { kind = "plain: no visible bands", share = 0.2 },
+]
+confidence = "high"
+note = "Regular concentric bands, grey-brown outside and pinkish-white inside, run from the rim to about 0.8. The last stretch crosses the plain reddish-brown elongated core."
+
 [images.estonian-museum-of-natural-history-specimen-no-176133-photo-g244-g244-9-1-jpg.proposed]
 banded = "yes"
 C23_centres = 3
@@ -1593,6 +1724,20 @@ reasons = [
     "misses the bands",
     "misses the bands",
 ]
+
+[images.iris-agate-from-agatized-petrified-wood-stinking-water-oregon-usa-detail-from-or.proposed]
+round = 2
+banded = "yes"
+C23_centres = 6
+C24_outer_striations = "unknown"
+C24_middle_striations = "absent"
+C24_inner_striations = "absent"
+C25_zones = [
+    { kind = "even bands", share = 0.15 },
+    { kind = "plain: no visible bands", share = 0.85 },
+]
+confidence = "low"
+note = "Backlit slice with several hemispherical band sets around a central hole; the line starts in a dark, blurred banded area near the right-hand set and then crosses clear grey chalcedony with no bands, ending at the hole's edge."
 
 [images.laguna-agate-chihuahua-mexico-2-32661870051.proposed]
 banded = "yes"

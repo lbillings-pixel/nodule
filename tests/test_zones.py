@@ -289,6 +289,35 @@ def test_control_answers_are_checked() -> None:
     assert zones.control_problems("zones", right)  # misses the quartz and cavity zones
 
 
+def test_round_2_control_answers_are_checked() -> None:
+    right = ROUND2 | {"C25_zones": [{"kind": "even bands", "share": 1.0}]}
+    assert zones.control_problems("one-set", right) == []
+    cue = right | {"C24_inner_striations": "present"}
+    assert "a cue on a face without fine bands" in zones.control_problems("one-set", cue)[0]
+
+
+def along(picture: np.ndarray, name: str, t: float) -> np.ndarray:
+    """The control picture's colour at `t` along its line (0 rim, 1 centre)."""
+    (x0, y0), (x1, y1) = zones.control_line(name)
+    h, w = picture.shape[:2]
+    x, y = x0 + t * (x1 - x0), y0 + t * (y1 - y0)
+    return picture[int(y * h), int(x * w)].astype(float)
+
+
+def test_the_control_lines_run_from_the_rim_with_exact_shares() -> None:
+    for name in zones.CONTROLS:
+        picture = zones.render_control(name, 1024)
+        assert np.array_equal(along(picture, name, -0.02), zones.BACKGROUND), name
+        assert not np.array_equal(along(picture, name, 0.02), zones.BACKGROUND), name
+    # Negative control on each side of every boundary: bands are bluish (B >= R),
+    # quartz warm (R > B), the cavity dark.
+    picture = zones.render_control("zones", 1024)
+    (r45, _, b45), (r55, _, b55) = along(picture, "zones", 0.45), along(picture, "zones", 0.55)
+    assert r45 <= b45
+    assert r55 > b55
+    assert along(picture, "zones", 0.75).mean() > 100 > along(picture, "zones", 0.85).mean()
+
+
 # The check page.
 
 SAMPLE = [f"p{i:02d}" for i in range(30)]

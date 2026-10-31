@@ -21,7 +21,9 @@ saves are checked (`zones.line_problems`) and written beside the labels in
 references/band-zone-labels.toml. Done when `zones.BLIND` faces have a line.
 
 `--ticked` draws the checked lines of round 2's sample into
-runs/zone-lines/ticked/ for the helpers. Nothing leaves the PC.
+runs/zone-lines/ticked/ for the helpers, and the control faces with their
+fixed lines (`zones.control_line`) into runs/zone-controls/ticked/. Nothing
+leaves the PC.
 """
 
 from __future__ import annotations
@@ -356,6 +358,17 @@ def write_ticked(checker: LineChecker, out: Path) -> list[Path]:
     return written
 
 
+def write_ticked_controls(out: Path = zones.CONTROL_DIR / "ticked") -> list[Path]:
+    """The control faces with their lines drawn on, as the real faces'."""
+    out.mkdir(parents=True, exist_ok=True)
+    written: list[Path] = []
+    for name in zones.CONTROLS:
+        img = Image.fromarray(zones.render_control(name))
+        ticked(img, *zones.control_line(name)).save(out / f"{name}.png")
+        written.append(out / f"{name}.png")
+    return written
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="check round 2's drawn lines (ADR 0006, s.9)")
     parser.add_argument("--draft", type=int, nargs="?", const=DRAFT, help="draft the first N")
@@ -379,6 +392,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.ticked:
         written = write_ticked(checker, OUT_DIR / "ticked")
         print(f"drew {len(written)} checked lines into {OUT_DIR / 'ticked'}")
+        controls = write_ticked_controls()
+        print(f"drew {len(controls)} control lines into {controls[0].parent}")
         return 0
     if not checker.sample:
         print(f"nothing to check: no drafts in {OUT_DIR}; run with --draft first")

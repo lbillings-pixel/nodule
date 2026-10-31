@@ -452,6 +452,14 @@ CONTROLS: dict[str, Row] = {
         ],
     },
 }
+# Round 2's line on each control: from a set's centre and its semi-axes (world
+# coordinates, as `render_control`), out at a fixed angle (degrees, y down).
+# The two-sets line runs from the left set's centre away from the waist.
+CONTROL_LINES: dict[str, tuple[tuple[float, float], tuple[float, float], float]] = {
+    "one-set": ((0.0, 0.0), (0.85, 0.7), 35.0),
+    "two-sets": ((-0.42, 0.0), (0.5, 0.6), 160.0),
+    "zones": ((0.0, 0.0), (0.85, 0.7), 250.0),
+}
 COUPLETS = 12  # light-dark band pairs from rim to centre in each control set
 BACKGROUND = np.array([46, 44, 42], float)
 MILKY = np.array([226, 226, 230], float)
@@ -494,6 +502,17 @@ def write_controls(out_dir: Path = CONTROL_DIR, size: int = 1024) -> list[Path]:
     return paths
 
 
+def control_line(name: str) -> tuple[tuple[float, float], tuple[float, float]]:
+    """Rim and centre ([x, y] fractions of the picture) of a control's line.
+    Along it the distance `d` of `render_control` falls linearly from 1 to 0,
+    so the shares read off its ticks are those of `CONTROLS`."""
+    (cx, cy), (a, b), angle = CONTROL_LINES[name]
+    u, v = np.cos(np.radians(angle)), np.sin(np.radians(angle))
+    r = 1 / float(np.hypot(u / a, v / b))  # where d = 1 along the ray
+    rim = ((cx + r * u + 1) / 2, (cy + r * v + 1) / 2)
+    return rim, ((cx + 1) / 2, (cy + 1) / 2)
+
+
 def control_problems(name: str, row: Mapping[str, Any]) -> list[str]:
     """Where a labeller's answer on a control face misses what it must give."""
     want = CONTROLS[name]
@@ -511,7 +530,8 @@ def control_problems(name: str, row: Mapping[str, Any]) -> list[str]:
         for a, b in zip(row["C25_zones"], want["C25_zones"], strict=True)
     ):
         out.append(f"{name}: C25 shares off by more than 0.1")
-    cues = [n for n in CUE_FIELDS if row[n] == "present"]
+    cue_fields = ROUND2_CUE_FIELDS if round_of(row) == 2 else CUE_FIELDS
+    cues = [n for n in cue_fields if row[n] == "present"]
     if cues:
         out.append(f"{name}: a cue on a face without fine bands: {', '.join(cues)}")
     return out

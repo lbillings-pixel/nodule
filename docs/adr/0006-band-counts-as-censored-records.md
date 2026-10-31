@@ -546,7 +546,13 @@ The line check (`nodule.linecheck`): drafts go to runs/zone-lines/ (photo at
 1 MP as plain PNG, never committed); a page on this PC only shows each line
 drawn exactly as helpers will see it, and the server, not the page, works
 out the rim end from the face and refuses a centre off the stone. The
-checked lines are then drawn for the helpers (`--ticked`).
+checked lines are then drawn for the helpers (`--ticked`). The three
+control faces (section 8) get lines too, so helpers read them as they read
+the real faces: each runs from a set's centre (the left set of the two) out
+to its rim at a fixed angle (`zones.CONTROL_LINES`, an assumption: any angle
+gives the same shares, as each set is an ellipse), so the zones control reads
+0.5, 0.3 and 0.2 along it. A round 2 control answer is checked for its three
+striation items.
 
 Fault and fix (2026-10-30). On the first pass the owner held out six faces
 as "no banded face" because a clicked centre made the line vanish. Each was

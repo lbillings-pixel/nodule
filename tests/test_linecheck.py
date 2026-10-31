@@ -39,6 +39,15 @@ def test_the_line_is_drawn_with_ticks() -> None:
     assert np.asarray(img).max() == 90  # the picture itself is untouched
 
 
+def test_the_controls_get_their_lines(tmp_path: Path) -> None:
+    written = linecheck.write_ticked_controls(tmp_path)
+    assert [p.stem for p in written] == list(zones.CONTROLS)
+    for path in written:
+        with Image.open(path) as img:
+            out = np.asarray(img)
+        assert ((out[..., 0] > 200) & (out[..., 1] > 200) & (out[..., 2] < 80)).any(), path
+
+
 @pytest.fixture
 def served(tmp_path: Path) -> Iterator[tuple[str, linecheck.LineChecker]]:
     views, path, pictures = tmp_path / "views.toml", tmp_path / "zones.toml", tmp_path / "lines"

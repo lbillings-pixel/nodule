@@ -6,6 +6,7 @@ from __future__ import annotations
 import math
 
 import numpy as np
+import pytest
 from numpy.typing import NDArray
 
 from nodule import bands
@@ -122,6 +123,77 @@ def test_persistence_needs_enough_widths():
 
 
 # Resolving limit L, C6_blank and N(L) (ADR 0006 sections 1 and 2).
+
+
+def thick_rings(kind: str, seed: int, sigma: float = 0.35, sectors: int = 24):
+    """Rings of random thickness (log-SD `sigma`) about the centre of a disc
+    of radius 270: the same thicknesses at every angle ("same"), or drawn
+    afresh in each of `sectors` sectors centred on the profiles' starts
+    ("sectors"); grey noise 3."""
+    size, nb = 600, 60
+    y, x = np.mgrid[0:size, 0:size] - size / 2 + 0.5
+    r, th = np.hypot(x, y), np.arctan2(y, x)
+    rng = np.random.default_rng(seed)
+    step = 2 * math.pi / sectors
+    sector = np.floor(((th + math.pi + step / 2) % (2 * math.pi)) / step).astype(np.int64)
+    phase = np.zeros_like(r)
+    widths = SPACING * np.exp(sigma * rng.normal(size=nb))
+    for s in range(sectors):
+        if kind == "sectors":
+            widths = SPACING * np.exp(sigma * rng.normal(size=nb))
+        edges = np.concatenate([[0.0], np.cumsum(widths)])
+        at = sector == s
+        phase[at] = np.interp(r[at], edges, math.pi * np.arange(nb + 1))
+    lum = 128 + 40 * np.cos(phase) + np.random.default_rng(seed + 9).normal(0, 3, r.shape)
+    return lum.astype(np.float32), r < 270.0
+
+
+def continuity_of(kind: str, seed: int, sigma: float = 0.35) -> bands.Bands:
+    lum, mask = thick_rings(kind, seed, sigma)
+    return bands.measure(lum, mask, 1.0, 3.0, SPACING, rng=np.random.default_rng(0), ladder=False)
+
+
+@pytest.mark.parametrize("seed", [0, 1, 2])
+def test_rings_of_one_thickness_series_all_round_give_continuity_near_one(seed: int):
+    b = continuity_of("same", seed)
+    assert b.pairs == math.comb(bands.STARTS, 2)
+    assert b.continuity is not None
+    assert b.continuity > 0.95
+    assert b.continuity_near is not None
+    assert b.continuity_near > 0.95
+
+
+@pytest.mark.parametrize("seed", [0, 1, 2])
+def test_negative_control_independent_series_per_profile_give_continuity_near_zero(seed: int):
+    b = continuity_of("sectors", seed)
+    assert b.continuity is not None
+    assert abs(b.continuity) < 0.1
+    assert b.continuity_near is not None
+    assert abs(b.continuity_near) < 0.15
+
+
+def test_even_rings_leave_only_placement_error_to_correlate():
+    b = continuity_of("same", 0, sigma=0.0)
+    assert b.continuity is not None
+    assert abs(b.continuity) < 0.2
+
+
+def test_continuity_needs_enough_shared_widths():
+    short = [np.array([5.0, 6.0, 7.0, 8.0])] * 3  # fewer than MIN_SERIES widths each
+    assert bands.continuity(short, [0.0, 2.0, 4.0]) == (None, None, 0)
+
+
+def test_continuity_neighbours_are_close_in_angle():
+    rng = np.random.default_rng(0)
+    base = np.exp(rng.normal(0, 0.3, 20))
+    other = np.exp(rng.normal(0, 0.3, 20))
+    step = 2 * math.pi / bands.STARTS
+    # Profiles 0 and 1 are neighbours and alike; profile 2, opposite, is not.
+    whole, near, pairs = bands.continuity([base, base, other], [0.0, step, math.pi])
+    assert pairs == 3
+    assert near == pytest.approx(1.0)
+    assert whole is not None
+    assert whole < 0.5
 
 
 def disc(size: int = 600):

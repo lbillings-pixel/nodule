@@ -1,4 +1,5 @@
-"""Band count and persistence along rim-to-centre profiles (ADR 0004, C6 and C10).
+"""Band count, persistence and continuity along rim-to-centre profiles
+(ADR 0004, C6, C10 and C12).
 
 agatesim's profiles (`agatesim.specimen.shape`) are short straight lines that
 reach a few band spacings each way; they serve band shape but cannot count the
@@ -45,6 +46,25 @@ segmentation edges are not counted.
   signs, which pulls lag-1 towards −0.5: evenly drawn bands with noise give
   about −0.25 here. A negative value on a face with low thickness spread (C7)
   may be that error, not alternation.
+- **C12, continuity round the face** [@baker2008; @marichal2025]: how far
+  the thickness series of profiles at different angles agree, as Baker et al.
+  replicate a lamina series along several transects. Bands are matched by
+  their order from the margin (band k on one profile is band k on another),
+  as Marichal et al. assume rings are "roughly concentric" and that each ray
+  crosses a ring once. Each pair of profiles is compared over the widths both
+  hold (at least `MIN_SERIES`) by the Pearson correlation of the detrended
+  log thickness taken for C10, so a shared rim-to-centre trend (C8) does not
+  read as continuity. Reported: the median over all pairs, the median over
+  neighbouring profiles (starts at most `NEAR_GAPS` start gaps apart in
+  angle), and the number of pairs. A band missed or added on one profile
+  shifts the order from there inward and lowers the value: C12 reads both
+  how far thickness carries round the face and how cleanly bands are picked.
+  Measured 2026-10-31 (drawn faces, 24 profiles): concentric rings of random
+  thickness (log-SD 0.35, the same at every angle) give 0.998-0.999; the same
+  rings with independent thicknesses in each of 24 sectors give -0.02 to 0.00
+  (neighbours -0.07 to 0.04); even rings give about 0.08, as only the error in
+  placing each band is left to correlate, so C12 is read beside C7 (thickness
+  spread).
 
 - **Resolving limit *L*** (ADR 0006 section 1, choice 7a): the finest band
   period the photo shows, from the power spectrum of the same profiles,
@@ -121,6 +141,7 @@ CENTRAL = (0.5, 0.5, 8.0)  # effective: the middle of each sweep
 MIN_PROFILES = 8  # effective: profiles needed for C6
 MIN_SERIES = 5  # effective: widths a series needs to enter C10
 MIN_PERSISTENCE_WIDTHS = 40  # effective: widths needed for C10
+NEAR_GAPS = 1.5  # effective: C12's neighbours, in gaps between starts round the rim
 SHUFFLES = 50  # effective: shuffled copies for C10's baseline
 MIN_PERIOD_PX = 2.0  # sampling: the shortest period a profile can hold (Nyquist)
 BIN_STEP = 2.0**0.25  # effective: quarter-octave period bins
@@ -151,6 +172,9 @@ class Bands:
     limit_share: float | None = None  # L over the face's inner radius
     blank: float | None = None  # C6_blank: median share of a profile with no resolved band
     ladder: tuple[Rung, ...] = ()  # N(L), rung 0 first
+    continuity: float | None = None  # C12: median correlation over all pairs of profiles
+    continuity_near: float | None = None  # C12: the same over neighbouring profiles
+    pairs: int = 0  # C12: pairs of profiles compared
 
 
 @dataclass(frozen=True)
@@ -239,12 +263,17 @@ def count(profile: NDArray[np.float64], noise: float, spacing: float) -> Count:
     )
 
 
+def detrended(w: NDArray[np.float64]) -> NDArray[np.float64]:
+    """Log thickness less its straight-line trend against band number."""
+    x = np.log(w)
+    k = np.arange(x.size, dtype=np.float64)
+    return np.asarray(x - np.polyval(np.polyfit(k, x, 1), k), dtype=np.float64)
+
+
 def _lag1_terms(series: list[NDArray[np.float64]]) -> tuple[float, float]:
     num = den = 0.0
     for w in series:
-        x = np.log(w)
-        k = np.arange(x.size, dtype=np.float64)
-        x = x - np.polyval(np.polyfit(k, x, 1), k)
+        x = detrended(w)
         num += float(np.dot(x[:-1], x[1:]))
         den += float(np.dot(x, x))
     return num, den
@@ -264,6 +293,37 @@ def persistence(series: list[NDArray[np.float64]], rng: np.random.Generator) -> 
         n, d = _lag1_terms([rng.permutation(w) for w in series])
         baseline += n / d if d > 0 else 0.0
     return num / den - baseline / SHUFFLES
+
+
+def continuity(
+    series: list[NDArray[np.float64]], angles: list[float], starts: int = STARTS
+) -> tuple[float | None, float | None, int]:
+    """C12 (module docstring): the median correlation over all pairs of
+    profiles, over neighbouring ones (None where none qualify), and the number
+    of pairs. `angles` are the profiles' start angles in radians, and `starts`
+    the number of starts round the rim."""
+    near_gap = NEAR_GAPS * 2 * math.pi / max(starts, 1)
+    every: list[float] = []
+    near: list[float] = []
+    for i in range(len(series)):
+        for j in range(i + 1, len(series)):
+            n = min(series[i].size, series[j].size)
+            if n < MIN_SERIES:
+                continue
+            a, b = series[i][:n], series[j][:n]
+            if not (bool(np.all(a > 0)) and bool(np.all(b > 0))):
+                continue
+            x, y = detrended(a), detrended(b)
+            sx, sy = float(np.linalg.norm(x)), float(np.linalg.norm(y))
+            if sx <= 1e-9 * math.sqrt(n) or sy <= 1e-9 * math.sqrt(n):
+                continue
+            r = float(np.dot(x, y)) / (sx * sy)
+            every.append(r)
+            gap = abs(angles[i] - angles[j]) % (2 * math.pi)
+            if min(gap, 2 * math.pi - gap) <= near_gap:
+                near.append(r)
+    whole = float(np.median(every)) if every else None
+    return whole, (float(np.median(near)) if near else None), len(every)
 
 
 def spectrum(
@@ -464,6 +524,8 @@ class Traced:
     unread: list[float]  # px from where a path lost the bands to the face's deepest point
     face: NDArray[np.bool_]  # the face at the coarse size
     k: int  # full px per coarse px
+    angles: list[float]  # each path's start, radians about the face's deepest point
+    starts: int  # starts tried round the rim
 
 
 def coarse_face(
@@ -499,6 +561,7 @@ def trace(
     field = direction_field(coarse, spacing)
     paths: list[tuple[NDArray[np.float64], NDArray[np.float64]]] = []
     unread: list[float] = []  # px from where a path lost the bands to the centre
+    angles: list[float] = []
     centre = np.unravel_index(int(np.argmax(np.where(inner, depth, -1.0))), depth.shape)
     for start in rim_starts(inner, depth, starts):
         path, strayed = streamline(field, depth, inner, start, spacing)
@@ -510,7 +573,8 @@ def trace(
             paths.append((full, arc))
             gap = float(np.hypot(path[-1, 0] - centre[0], path[-1, 1] - centre[1])) * k
             unread.append(gap if strayed else 0.0)
-    return Traced(paths, unread, face, k)
+            angles.append(math.atan2(start[0] - centre[0], start[1] - centre[1]))
+    return Traced(paths, unread, face, k, angles, starts)
 
 
 def _measure_paths(
@@ -563,6 +627,7 @@ def _measure_paths(
     counts = [count(p, noise, spacing_px) for p in profiles]
     series = [c.widths for c in counts]
     radius = float(agatesim_scipy.distance_to_false(face, 1.0).max()) * k
+    whole, near, pairs = continuity(series, traced.angles, traced.starts)
     limit = resolving_limit(profiles, noise_profiles, 1.0)
     blank = None
     rungs: list[Rung] = []
@@ -602,4 +667,7 @@ def _measure_paths(
         limit_share=limit / radius if limit is not None and radius > 0 else None,
         blank=blank,
         ladder=tuple(rungs),
+        continuity=whole,
+        continuity_near=near,
+        pairs=pairs,
     )

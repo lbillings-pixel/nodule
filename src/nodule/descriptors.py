@@ -18,9 +18,10 @@ library photo picked at random (its `Look`):
   `nodule.tags` measures the photos, after the quality gate finds the noise
   and band spacing of the photo-like cut. `measure_cut` keeps its blurred
   image to itself, so C6 and C10 read a second blurred copy, at the same blur
-  and noise level but its own noise draw. As for the photos, C6, C10 and C16
-  are measured only where the shape gate passes the face. C16 (`nodule.orientation`) reads the
-  same image as C6 and C10.
+  and noise level but its own noise draw. As for the photos, C6, C10, C15 and
+  C16 are measured only where the shape gate passes the face. C15
+  (`nodule.curvature`) and C16 (`nodule.orientation`) read the same image as
+  C6 and C10.
 
 **The image is a stand-in, not a rendering.** Chalcedony takes agatesim's
 colour from its translucency and staining (`render.chalcedony_colour`),
@@ -64,7 +65,7 @@ from agatesim.specimen.segment import trace_outline
 from agatesim.volume.slicing import Plane, random_cuts
 from numpy.typing import NDArray
 
-from nodule import bands, orientation
+from nodule import bands, curvature, orientation
 from nodule.specimen import Specimen, SpecimenCut, load_preset
 from nodule.tags import GATE_PASSES, IMPORTED, agatesim_dir
 
@@ -80,6 +81,11 @@ FROM_ORDER = {  # C16 by `nodule.orientation`, on the same image as C6 and C10
     "C16_corr_censored": "censored",
     "C16_parallel": "parallel",
     "C16_banded": "banded",
+}
+FROM_CURVE = {  # C15 by `nodule.curvature`, on the same image
+    "C15_curv": "median",
+    "C15_curv_high": "high",
+    "C15_corners": "corners",
 }
 
 
@@ -122,7 +128,7 @@ def photo_cut(specimen: Specimen, plane: Plane, look: Look, most: int = MOST_PX)
 
 
 def measure(pc: PhotoCut, look: Look, rng: np.random.Generator) -> dict[str, object]:
-    """C6-C11 and C17 of a cut made to look like `look`'s photo, with
+    """C6-C11 and C15-C17 of a cut made to look like `look`'s photo, with
     `measure_cut`'s record of the blur (module docstring). Values are None
     where they could not be judged; `bands` is False where the gate found no
     bands, before or after the blur."""
@@ -133,7 +139,7 @@ def measure(pc: PhotoCut, look: Look, rng: np.random.Generator) -> dict[str, obj
     out: dict[str, object] = {k: entry.get(k) for k in ("photo", "level", "bands", "matched")}
     out |= {"sigma_px": entry.get("sigma_px"), "spacing_px": entry.get("spacing_px")}
     out |= {name: entry.get(there) for name, there in FROM_SHAPE.items()}
-    out |= {name: None for name in (*FROM_BANDS, *FROM_ORDER)}
+    out |= {name: None for name in (*FROM_BANDS, *FROM_ORDER, *FROM_CURVE)}
     sigma = entry.get("sigma_px")
     if not entry.get("bands") or not isinstance(sigma, int | float):
         return out
@@ -146,10 +152,11 @@ def measure(pc: PhotoCut, look: Look, rng: np.random.Generator) -> dict[str, obj
     lum = luminance(seen)
     b = bands.measure(lum, mask, 1.0, q.noise, q.band_spacing_px, rng=band_rng, ladder=False)
     o = orientation.measure(lum, mask, 1.0, q.band_spacing_px)
-    for source, names in ((b, FROM_BANDS), (o, FROM_ORDER)):
+    c = curvature.measure(lum, mask, 1.0, q.band_spacing_px)
+    for source, names in ((b, FROM_BANDS), (o, FROM_ORDER), (c, FROM_CURVE)):
         for name, field in names.items():
             value = getattr(source, field)
-            if isinstance(value, bool) or value is None:
+            if isinstance(value, bool | int) or value is None:
                 out[name] = value
             else:
                 out[name] = round(float(value), 4)
@@ -224,9 +231,11 @@ def main(argv: list[str] | None = None) -> None:
     elapsed = time.perf_counter() - t0
     peak = tracemalloc.get_traced_memory()[1]
     tracemalloc.stop()
-    names = [*FROM_SHAPE, *FROM_BANDS, *FROM_ORDER]
+    names = [*FROM_SHAPE, *FROM_BANDS, *FROM_ORDER, *FROM_CURVE]
     for r in rows:
-        values = " ".join(f"{n if n in FROM_ORDER else n.split('_')[0]}={r[n]}" for n in names)
+        values = " ".join(
+            f"{n if n in (*FROM_ORDER, *FROM_CURVE) else n.split('_')[0]}={r[n]}" for n in names
+        )
         print(f"cut {r['cut']} {r['pixels']} px, {r['level']}, bands={r['bands']}: {values}")
     library = spreads(entries, ("fit", "borderline"))
     print("descriptor: cuts median | library 10th / median / 90th percentile")
@@ -236,7 +245,7 @@ def main(argv: list[str] | None = None) -> None:
         print(f"  {name}: {_median([r[name] for r in rows])} | {span}")
     for name in FROM_BANDS:
         print(f"  {name}: {_median([r[name] for r in rows])} | see references/library-tags.toml")
-    for name in FROM_ORDER:
+    for name in (*FROM_ORDER, *FROM_CURVE):
         if name != "C16_corr_censored":  # library: after the tag rebuild of step 2
             print(f"  {name}: {_median([r[name] for r in rows])} | library not yet measured")
     print(f"{args.cuts} cuts: {elapsed:.1f} s; peak traced memory {peak / 1e6:.0f} MB")

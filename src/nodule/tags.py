@@ -29,10 +29,16 @@ Each usable photo gets one record:
   to find it), so a count reads "at least C6_count bands coarser than L";
   `C6_blank`; and N(L) as parallel lists, rung 0 first (`N_L_px`, `N_count`,
   `N_low`, `N_high`, `N_rule_gap`). L describes the photo and counts anywhere
-  it is measured; the rest run rim to centre, so they are outline-bound.
+  it is measured; the rest run rim to centre, so they are outline-bound;
+- C12-C16 (`face_measure`; C12 from C6's profiles) on the same image, region,
+  noise and band spacing as C6 and C10. C12 matches bands by their order from
+  the margin, and C13 needs the rings that close round the face and leaves
+  out bands the region's edge cuts, so both are outline-bound. C14-C16 read
+  local band edges and directions and count wherever they are measured, as
+  C10 does.
 
-Where the rim outline is missing, unjudged or judged "no", C1-C3 and C6 are
-"unknown" (section 8). The labels' own outline check judged the old
+Where the rim outline is missing, unjudged or judged "no", C1-C3, C6, C12 and
+C13 are "unknown" (section 8). The labels' own outline check judged the old
 `segment()` outline, so it no longer applies. `--relabel` applies new labels
 to the tag file without measuring again.
 
@@ -48,6 +54,7 @@ import time
 import tomllib
 import tracemalloc
 from collections.abc import Sequence
+from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
@@ -59,8 +66,9 @@ from agatesim.shapes import WORKING_PX
 from agatesim.specimen.photo import load_photo
 from agatesim.specimen.quality import luminance
 from agatesim.specimen.segment import segment
+from numpy.typing import NDArray
 
-from nodule import bands, labels, outline, rims
+from nodule import bands, concentric, curvature, defects, labels, orientation, outline, rims
 
 ROOT = Path(__file__).resolve().parents[2]
 TAGS_TOML = ROOT / "references" / "library-tags.toml"
@@ -94,6 +102,13 @@ OUTLINE_BOUND = (
     "N_low",
     "N_high",
     "N_rule_gap",
+    "C12_corr",
+    "C12_near",
+    "C13_sets",
+    "C13_depth",
+    "C13_drift",
+    "C13_complete",
+    "C13_wedges",
 )
 # Band count and persistence measured here: name in the record -> field of `bands.Bands`.
 MEASURED = {
@@ -116,6 +131,38 @@ LADDER = {
     "N_rule_gap": "rule_gap",
 }
 
+# C12-C16 (ADR 0004 rows; N2 step 3b, step 2): name in the record -> field of
+# the measuring module's result. `nodule.descriptors` reports the same names.
+FROM_CONTINUITY = {  # C12 by `nodule.bands`, from C6's profiles
+    "C12_corr": "continuity",
+    "C12_near": "continuity_near",
+}
+FROM_RINGS = {  # C13 by `nodule.concentric`
+    "C13_sets": "sets",
+    "C13_depth": "depth",
+    "C13_drift": "drift",
+    "C13_complete": "complete",
+    "C13_wedges": "wedges",
+}
+FROM_ORDER = {  # C16 by `nodule.orientation`
+    "C16_coherence": "coherence",
+    "C16_order": "order",
+    "C16_corr": "correlation",
+    "C16_corr_censored": "censored",
+    "C16_parallel": "parallel",
+    "C16_banded": "banded",
+}
+FROM_CURVE = {  # C15 by `nodule.curvature`
+    "C15_curv": "median",
+    "C15_curv_high": "high",
+    "C15_corners": "corners",
+}
+FROM_DEFECTS = {  # C14 by `nodule.defects`
+    "C14_density": "density",
+    "C14_ends": "terminations",
+    "C14_junctions": "junctions",
+}
+
 HEADER = """\
 # Reference library tags under the characterization schema (ADR 0004).
 # Written by `python -m nodule.tags`; do not edit by hand. Keyed by agatesim
@@ -126,6 +173,53 @@ HEADER = """\
 """
 
 Value = float | int | str | bool | list[str] | list[float]
+
+
+@dataclass(frozen=True)
+class Face:
+    """C13-C16 of one face, read on the same image and region as C6 and C10."""
+
+    rings: concentric.Concentric
+    order: orientation.Order
+    curve: curvature.Curvature
+    defects: defects.Defects
+
+
+def face_measure(
+    lum: NDArray[np.float32], mask: NDArray[np.bool_], scale: float, noise: float, spacing_px: float
+) -> Face:
+    """C13-C16 with the conventions of `bands.measure`: `lum` at full
+    resolution, `mask` at `scale` working px per full px, `noise` and
+    `spacing_px` (full px, one band) the quality gate's."""
+    return Face(
+        concentric.measure(lum, mask, scale, noise, spacing_px),
+        orientation.measure(lum, mask, scale, spacing_px),
+        curvature.measure(lum, mask, scale, spacing_px),
+        defects.measure(lum, mask, scale, noise, spacing_px),
+    )
+
+
+def tagged(value: object) -> Value:
+    """A measured value as written: None as "unknown", counts and flags as
+    they are, other numbers to 4 places."""
+    if value is None:
+        return UNKNOWN
+    if isinstance(value, bool | int):
+        return value
+    return round(float(value), 4)  # pyright: ignore[reportArgumentType]
+
+
+def face_values(band: bands.Bands | None, face: Face | None) -> dict[str, Value]:
+    """C12 from `band`, C13-C16 from `face`; "unknown" where not measured."""
+    out: dict[str, Value] = {}
+    for name, field in FROM_CONTINUITY.items():
+        out[name] = tagged(getattr(band, field) if band is not None else None)
+    parts = ((FROM_RINGS, "rings"), (FROM_ORDER, "order"), (FROM_CURVE, "curve"))
+    for names, part in (*parts, (FROM_DEFECTS, "defects")):
+        source = getattr(face, part) if face is not None else None
+        for name, field in names.items():
+            out[name] = tagged(getattr(source, field) if source is not None else None)
+    return out
 
 
 def agatesim_dir() -> Path:
@@ -180,9 +274,11 @@ def record(
     size: int,
     band: bands.Bands | None = None,
     rim: dict[str, Value] | None = None,
+    face: Face | None = None,
 ) -> dict[str, Value]:
-    """One photo's tags; `rim` from `rim_tags`. The outline-bound values count
-    only where the rim outline was judged "yes"."""
+    """One photo's tags; `rim` from `rim_tags`, `face` from `face_measure`.
+    The outline-bound values count only where the rim outline was judged
+    "yes"."""
     rec: dict[str, Value] = {
         "verdict": label.verdict,
         "forms": list(label.forms),
@@ -205,7 +301,7 @@ def record(
             "C3_irregularity": round(shape.irregularity, 4),
             "C3_concavities": shape.concavities,
         }
-    rec |= imported(entry, size) | measured(band)
+    rec |= imported(entry, size) | measured(band) | face_values(band, face)
     if rec["outline_check"] != "yes":
         rec |= {name: UNKNOWN for name in OUTLINE_BOUND}
     return rec
@@ -239,12 +335,13 @@ def measure_photo(
     image_id: str,
     data: bytes,
     entry: dict[str, object] | None,
-) -> tuple[outline.Outline | None, bands.Bands | None, dict[str, Value]]:
+) -> tuple[outline.Outline | None, bands.Bands | None, Face | None, dict[str, Value]]:
     """C1-C3 of the photo's rim outline where it was judged "yes" (at
-    `rims.RIM_PX`), and C6 and C10 at full resolution where agatesim's cache
-    `passes` and holds the band spacing and noise: inside that outline, or else
-    inside agatesim's working region. N(L) is only climbed where the outline
-    is judged "yes", since it is outline-bound. Also the photo's `rim_tags`."""
+    `rims.RIM_PX`), and C6, C10 and C12-C16 at full resolution where
+    agatesim's cache `passes` and holds the band spacing and noise: inside
+    that outline, or else inside agatesim's working region. N(L) is only
+    climbed where the outline is judged "yes", since it is outline-bound. Also
+    the photo's `rim_tags`."""
     _, rim = finder.find(image_id, data)
     judged = rims.verdict(verdicts, image_id, rim.mask) if rim.found else None
     tag = rim_tags(rim.reason, judged)
@@ -253,20 +350,21 @@ def measure_photo(
     else:
         mask, shape = segment(load_photo(data, WORKING_PX).rgb).mask, None
     if not mask.any():
-        return shape, None, tag
+        return shape, None, None, tag
     spacing = entry.get("spacing_px") if entry is not None else None
     noise = entry.get("noise") if entry is not None else None
     if not passes(entry, len(data)) or not isinstance(spacing, int | float):
-        return shape, None, tag
+        return shape, None, None, tag
     if not isinstance(noise, int | float):
-        return shape, None, tag
+        return shape, None, None, tag
     lum = luminance(load_photo(data, 10**6).rgb)
     scale = mask.shape[1] / lum.shape[1]
     yes = judged is not None and judged.passed
     band = bands.measure(
         lum, mask, scale, float(noise), float(spacing), rng=np.random.default_rng(0), ladder=yes
     )
-    return shape, band, tag
+    face = face_measure(lum, mask, scale, float(noise), float(spacing))
+    return shape, band, face, tag
 
 
 def write(records: dict[str, dict[str, Value]], path: Path = TAGS_TOML) -> None:
@@ -309,8 +407,8 @@ def tag_library(
         start = time.perf_counter()
         data = path.read_bytes()
         entry = cache.get(image_id)
-        shape, band, rim = measure_photo(finder, verdicts, image_id, data, entry)
-        rec = record(carried[image_id], shape, entry, len(data), band, rim)
+        shape, band, face, rim = measure_photo(finder, verdicts, image_id, data, entry)
+        rec = record(carried[image_id], shape, entry, len(data), band, rim, face)
         records[image_id] = labelled(rec, view.get(image_id))
         seconds.append(time.perf_counter() - start)
     return records, seconds

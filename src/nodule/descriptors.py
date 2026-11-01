@@ -66,51 +66,33 @@ from agatesim.specimen.segment import trace_outline
 from agatesim.volume.slicing import Plane, random_cuts
 from numpy.typing import NDArray
 
-from nodule import bands, concentric, curvature, defects, orientation
+from nodule import bands
 from nodule.specimen import Specimen, SpecimenCut, load_preset
-from nodule.tags import GATE_PASSES, IMPORTED, agatesim_dir
+from nodule.tags import (
+    FROM_CONTINUITY,
+    FROM_CURVE,
+    FROM_DEFECTS,
+    FROM_ORDER,
+    FROM_RINGS,
+    GATE_PASSES,
+    IMPORTED,
+    agatesim_dir,
+    face_measure,
+)
 
 PROBE_PX = PROBE_RESOLUTION  # pixels across the first look at a cut
 MOST_PX = 2048  # most pixels across a measured cut (cost: see `main`)
-# The descriptors reported, with where they come from.
+# The descriptors reported, with where they come from (C12-C16 as the library
+# tags name them, read on the same image as C6 and C10).
 FROM_SHAPE = dict(IMPORTED)  # C7-C9, C11 and C17, named as in the library tags
 FROM_BANDS = {"C6_count": "count", "C10_persistence": "persistence"}
-FROM_CONTINUITY = {  # C12 by `nodule.bands`, from C6's profiles
-    "C12_corr": "continuity",
-    "C12_near": "continuity_near",
-}
-FROM_RINGS = {  # C13 by `nodule.concentric`, on the same image
-    "C13_sets": "sets",
-    "C13_depth": "depth",
-    "C13_drift": "drift",
-    "C13_complete": "complete",
-    "C13_wedges": "wedges",
-}
-FROM_ORDER = {  # C16 by `nodule.orientation`, on the same image as C6 and C10
-    "C16_coherence": "coherence",
-    "C16_order": "order",
-    "C16_corr": "correlation",
-    "C16_corr_censored": "censored",
-    "C16_parallel": "parallel",
-    "C16_banded": "banded",
-}
-FROM_CURVE = {  # C15 by `nodule.curvature`, on the same image
-    "C15_curv": "median",
-    "C15_curv_high": "high",
-    "C15_corners": "corners",
-}
-FROM_DEFECTS = {  # C14 by `nodule.defects`, on the same image
-    "C14_density": "density",
-    "C14_ends": "terminations",
-    "C14_junctions": "junctions",
-}
 LATER = (
     *FROM_CONTINUITY,
     *FROM_RINGS,
     *FROM_ORDER,
     *FROM_CURVE,
     *FROM_DEFECTS,
-)  # in the library after step 2's tag rebuild
+)  # C12-C16
 
 
 def stand_in_rgb(cut: SpecimenCut) -> NDArray[np.uint8]:
@@ -175,17 +157,14 @@ def measure(pc: PhotoCut, look: Look, rng: np.random.Generator) -> dict[str, obj
         return out
     lum = luminance(seen)
     b = bands.measure(lum, mask, 1.0, q.noise, q.band_spacing_px, rng=band_rng, ladder=False)
-    o = orientation.measure(lum, mask, 1.0, q.band_spacing_px)
-    c = curvature.measure(lum, mask, 1.0, q.band_spacing_px)
-    d = defects.measure(lum, mask, 1.0, q.noise, q.band_spacing_px)
-    r = concentric.measure(lum, mask, 1.0, q.noise, q.band_spacing_px)
+    f = face_measure(lum, mask, 1.0, q.noise, q.band_spacing_px)
     pairs = (
         (b, FROM_BANDS),
         (b, FROM_CONTINUITY),
-        (r, FROM_RINGS),
-        (o, FROM_ORDER),
-        (c, FROM_CURVE),
-        (d, FROM_DEFECTS),
+        (f.rings, FROM_RINGS),
+        (f.order, FROM_ORDER),
+        (f.curve, FROM_CURVE),
+        (f.defects, FROM_DEFECTS),
     )
     for source, names in pairs:
         for name, field in names.items():

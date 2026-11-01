@@ -131,6 +131,19 @@
   form with `effective` loading. Goethite's blue edge is `effective`
   (*speculative*), because the measured k does not rise in the blue.
 - White-band scattering: choice 7a.
+- Hematite n, k: the five datasets Go et al. retained [@go2022] by
+  default, with Bedidi and Cervelle's lower blue k [@bedidi1993] kept as an
+  option.¹
+
+¹ Amended 2026-11-01 (owner). The table is `nodule.render.materials`
+(`OpticsTable`). It reads per-step band fields recorded by
+`nodule.render.record`, and refuses open cavities, hollow crystals and
+dendrites until there are materials for them. The two hematite sources
+differ about threefold in k at 450 nm (Go: ochre-brown bands; Bedidi:
+olive-ochre). The owner chose Go as the default. Scattering is a stand-in
+until 7a. In the same change the sRGB output was found to write 450 nm as
+red. It now maps 450/550/650 nm to B/G/R, each taken as the matching sRGB
+primary (an approximation).
 
 ### 4. Checks (each with its negative control)
 

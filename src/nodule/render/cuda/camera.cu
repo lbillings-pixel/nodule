@@ -3,7 +3,7 @@
 // Orthographic camera on the +n side looking along -n; one path per (pixel, sample), box-filtered
 // jitter. The path enters through the smooth face with weight T(0)/n^2 (radiance leaving a denser
 // medium: L/n^2 is invariant) and walks by null-collision + Kutz spectral tracking, per-material
-// Henyey-Greenstein g. The slab under the face is D mm deep (inf allowed), smooth, air and black
+// two-lobe Henyey-Greenstein phase function per channel (common.cuh). The slab under the face is D mm deep (inf allowed), smooth, air and black
 // below.
 // Lights:
 //   0 DIRECTIONAL: irradiance E (perpendicular to the beam) from polar angle th, azimuth ph.
@@ -17,6 +17,7 @@
 //   1 no fracture backward map; 2 no ratio tracking (Tr = 1); 4 homogeneous material 0, no
 //   geometry; 8 omit 1/n^2 at the camera exit; 16 no bottom-mirror NEE term; 32 dome counts
 //   scattered light only (drops the ghost: the dome seen unscattered in the back face).
+//   64 no per-channel phase reweighting (control for the two-lobe check).
 
 struct Cam { float s0, t0, pix; int nx, ny, spp; unsigned int seed; float n_in, D;
              int light; float lth, lph, E, Ld; float mubar; int nmat; int nprof; float dt;
@@ -51,7 +52,7 @@ __device__ void ratio(const Scene& S, const Cam& C, const unsigned short* prof, 
 }
 
 extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const unsigned short* prof,
-                                  const float* mua, const float* mus, const float* gm,
+                                  const float* mua, const float* mus, const float* ph,
                                   float* img, unsigned long long* stats) {
     const Scene& S = *Sp; const Cam& C = *Cp;
     long long id = (long long)blockIdx.x * blockDim.x + threadIdx.x;
@@ -96,12 +97,11 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const unsigned
         if (spectral_step(w, mua, mus, m, C.mubar, r)) {
             ++real;
             if (C.light == 0 && (C.order == 0 || real == C.order)) {
-                float g = gm[m];
-                float ph = hgpdf(g, lx * dx + ly * dy + lz * dz);   // omega_t . (-d), omega_t = -l
+                float cl = lx * dx + ly * dy + lz * dz;             // omega_t . (-d), omega_t = -l
                 float d0 = -((x - S.o[0]) * S.n[0] + (y - S.o[1]) * S.n[1] + (z - S.o[2]) * S.n[2]);
                 float T[3];
                 ratio(S, C, prof, mua, mus, x, y, z, lx, ly, lz, d0 / ct, T, r);
-                for (int c = 0; c < 3; ++c) acc[c] += w[c] * ph * Ein * T[c];
+                for (int c = 0; c < 3; ++c) acc[c] += w[c] * phase_pdf(ph, m, c, cl) * Ein * T[c];
                 if (isfinite(C.D) && Rb > 0.f && !(C.flags & 16) && r.next() < 0.25f) {
                     // mirror path: refract in, reflect off the bottom, arrive along
                     // omega_r = ct n - st a. Shadow legs: down along m = -omega_r, then up along l.
@@ -109,12 +109,13 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const unsigned
                     float L1 = (C.D - d0) / ct, T1[3], T2[3];
                     ratio(S, C, prof, mua, mus, x, y, z, mx, my, mz, L1, T1, r);
                     ratio(S, C, prof, mua, mus, x + mx * L1, y + my * L1, z + mz * L1, lx, ly, lz, C.D / ct, T2, r);
-                    float ph2 = hgpdf(g, mx * dx + my * dy + mz * dz);     // omega_r . (-d)
-                    for (int c = 0; c < 3; ++c) acc[c] += w[c] * ph2 * Ein * Rb * 4.f * T1[c] * T2[c];
+                    float cm = mx * dx + my * dy + mz * dz;                // omega_r . (-d)
+                    for (int c = 0; c < 3; ++c)
+                        acc[c] += w[c] * phase_pdf(ph, m, c, cm) * Ein * Rb * 4.f * T1[c] * T2[c];
                 }
             }
             if (C.order != 0 && real >= C.order) break;
-            hg(gm[m], dx, dy, dz, r);
+            scatter(ph, m, w, dx, dy, dz, r, !(C.flags & 64));
         }
         if (!roulette(w, w0, r)) break;
         if (events > 200000) break;

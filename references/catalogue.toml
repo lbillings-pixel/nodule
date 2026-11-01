@@ -689,6 +689,20 @@ sections_read = ["2 (scattering approximations; Rayleigh–Gans–Debye and the 
 topics = ["scattering", "translucency", "crystallite-size", "birefringence", "optical-properties"]
 notes = """Read 2026-11-01 by a helper agent (journal PDF from irsm.cas.cz; pp. 151–154 read; equations partly lost in text extraction, Eq. 24 legible). Rayleigh–Gans–Debye large-sphere limit 'Qsca = 2x²(m – 1)²' (Eq. 24), valid only if 'Qsca << 1' (Eq. 25) (p. 154). Apetz and van Bruggen treat a single-phase polycrystal as a virtual 50 vol% composite of spherical grains with 'Δn = (2/3) Δnmax' (orientationally averaged birefringence); valid for alumina at 600 nm for grain diameters about 1–25 µm (safety factor 10) or 0.2–50 µm (factor 2) (p. 154). [inference, helper] With φ = 0.5 this gives γ = 3π² r Δn²/λ₀², the λ² form; for quartz Δn_eff = 0.0061 and Q ≈ 0.06 at r = 2.5 µm, so the large-sphere form holds for about 0.2–5 µm grains, and below about 0.2 µm the small-sphere branch applies."""
 
+
+[[references]]
+id = "bohren1983"
+kind = "book"
+authors = ["Bohren, C. F.", "Huffman, D. R."]
+year = 1983
+title = "Absorption and Scattering of Light by Small Particles"
+venue = "Wiley, New York (DOI is the 1998 Wiley printing, confirmed via Crossref)"
+doi = "10.1002/9783527618156"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "citation"
+topics = ["scattering", "optical-properties"]
+notes = "Cited as the source of the standard Mie algorithm (BHMIE: logarithmic derivative by downward recurrence, Riccati-Bessel functions) used in nodule.render.mie. Not read; the code is checked numerically instead (tests/test_mie.py: direct Bessel-function evaluation, Rayleigh limit, extinction paradox, Apetz Eq. 11 in the RGD limit)."
 [[references]]
 id = "apetz2003"
 kind = "article"

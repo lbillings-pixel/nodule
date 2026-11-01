@@ -44,33 +44,66 @@ class Flag(IntFlag):
     NO_EXIT_N2 = 8
     NO_MIRROR = 16
     SCATTERED_ONLY = 32  # dome: drop light that escapes without a real collision
+    NO_PHASE_WEIGHT = 64  # skip the per-channel phase-function weight (control)
 
 
 @dataclass(frozen=True)
 class Materials:
     mua: F32  # (m, 3) absorption per mm at 450, 550, 650 nm
     mus: F32  # (m, 3) scattering per mm
-    g: F32  # (m,) Henyey-Greenstein asymmetry
+    g: F32  # (m, 3) Henyey-Greenstein asymmetry of lobe a (the grain part)
     profile: NDArray[np.uint16]  # band material (from 0) per growth-time step
     dt: float  # growth-time step of `profile`
+    f: F32  # (m, 3) share of mus in lobe b (pores and other near-isotropic scatterers)
+    gb: F32  # (m, 3) asymmetry of lobe b
 
     @classmethod
     def of(cls, mua: ArrayLike, mus: ArrayLike, g: ArrayLike,
-           profile: ArrayLike = (0,), dt: float = 1.0) -> Materials:  # fmt: skip
+           profile: ArrayLike = (0,), dt: float = 1.0,
+           f: ArrayLike | None = None, gb: ArrayLike | None = None) -> Materials:  # fmt: skip
+        """g, f, gb: (m,) for one value per material or (m, 3) per channel. Without f the
+        phase function is one HG lobe (f = 0)."""
+        mua32 = np.atleast_2d(np.asarray(mua, np.float32))
+        mus32 = np.atleast_2d(np.asarray(mus, np.float32))
+        if mua32.shape != mus32.shape or mua32.shape[1] != 3:
+            raise ValueError("mua, mus must be (m, 3)")
+
+        def per_channel(v: ArrayLike | None, name: str) -> F32:
+            a = np.zeros(len(mua32), np.float32) if v is None else np.asarray(v, np.float32)
+            if a.ndim <= 1:
+                a = np.atleast_1d(a)[:, None].repeat(3, 1)
+            if a.shape != mua32.shape:
+                raise ValueError(f"{name} must be (m,) or (m, 3) like mua")
+            return np.ascontiguousarray(a)
+
         m = cls(
-            mua=np.atleast_2d(np.asarray(mua, np.float32)),
-            mus=np.atleast_2d(np.asarray(mus, np.float32)),
-            g=np.atleast_1d(np.asarray(g, np.float32)),
-            profile=np.atleast_1d(np.asarray(profile, np.uint16)),
-            dt=dt,
-        )
-        if m.mua.shape != m.mus.shape or m.mua.shape[1] != 3 or len(m.g) != len(m.mua):
-            raise ValueError("mua, mus must be (m, 3) and g (m,)")
+            mua=mua32, mus=mus32, g=per_channel(g, "g"),
+            profile=np.atleast_1d(np.asarray(profile, np.uint16)), dt=dt,
+            f=per_channel(f, "f"), gb=per_channel(gb, "gb"),
+        )  # fmt: skip
         if (m.mua < 0).any() or (m.mus < 0).any():
             raise ValueError("coefficients must be non-negative")
+        if (m.f < 0).any() or (m.f > 1).any():
+            raise ValueError("lobe share f must lie in [0, 1]")
+        if (np.abs(m.g) >= 1).any() or (np.abs(m.gb) >= 1).any():
+            raise ValueError("asymmetry must lie in (-1, 1)")
         if len(m.g) > 1 and int(m.profile.max()) + 2 >= len(m.g):
             raise ValueError("profile names a band material beyond the table (2 + id)")
         return m
+
+    def phase_table(self) -> F32:
+        """(m, 3 channels, {g_a, f, g_b}) as the kernel reads it (common.cuh phase_pdf)."""
+        return np.ascontiguousarray(np.stack([self.g, self.f, self.gb], axis=-1))
+
+    def phase(self, c: ArrayLike) -> F32:
+        """Phase density per steradian, (m, 3) per scattering cosine c (scalar)."""
+        cc = float(np.asarray(c))
+
+        def hg(g: F32) -> NDArray[np.float64]:
+            g64 = g.astype(np.float64)
+            return (1 - g64**2) / (4 * math.pi * ((1 - g64) ** 2 + 2 * g64 * (1 - cc)) ** 1.5)
+
+        return ((1 - self.f) * hg(self.g) + self.f * hg(self.gb)).astype(np.float32)
 
 
 @dataclass(frozen=True)
@@ -152,7 +185,7 @@ def render(
     collision order (single scattering check)."""
     cp = _gpu.cupy()
     mua, mus = cp.asarray(materials.mua), cp.asarray(materials.mus)
-    gm, prof = cp.asarray(materials.g), cp.asarray(materials.profile)
+    ph, prof = cp.asarray(materials.phase_table()), cp.asarray(materials.profile)
     mb = float((materials.mua + materials.mus).max()) if mubar is None else mubar
     paths = view.nx * view.ny * spp
     if paths >= 2**63:
@@ -173,7 +206,7 @@ def render(
     _gpu.synchronize()
     t0 = time.perf_counter()
     k(((paths + block - 1) // block,), (block,),
-      (scene.struct, cam, prof, mua, mus, gm, img, stats))  # fmt: skip
+      (scene.struct, cam, prof, mua, mus, ph, img, stats))  # fmt: skip
     _gpu.synchronize()
     sec = time.perf_counter() - t0
     out = img.get().astype(np.float64)

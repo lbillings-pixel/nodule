@@ -39,13 +39,17 @@ __device__ float fresnel(float ci, float n1, float n2) {
 }
 
 // Henyey-Greenstein sampling (Wang 1995 Eq. 3.22) and density per steradian.
+// The cosine is formed as 1 - (1 - ct): with s = 1 - g + 2 g xi and t = (1 - g^2)/s,
+// 1 - ct = (1 - g)(1 - xi)(t + 1 - g)/s exactly, which keeps float32 accurate up to g ~ 0.999
+// (the textbook (1 + g^2 - t^2)/2g cancels badly there; Apetz grains reach g 0.998).
 __device__ void hg(float g, float& ux, float& uy, float& uz, Rng& r) {
-    float ct;
-    if (fabsf(g) < 1e-6f) ct = 2.f * r.next() - 1.f;
-    else { float t = (1.f - g * g) / (1.f - g + 2.f * g * r.next());
-           ct = (1.f + g * g - t * t) / (2.f * g); }
-    ct = fminf(1.f, fmaxf(-1.f, ct));
-    float st = sqrtf(1.f - ct * ct), ph = 6.28318531f * r.next();
+    float ct, omc;
+    float xi = r.next();
+    if (fabsf(g) < 1e-6f) { ct = 2.f * xi - 1.f; omc = 2.f - 2.f * xi; }
+    else { float s = 1.f - g + 2.f * g * xi, t = (1.f - g * g) / s;
+           omc = (1.f - g) * (1.f - xi) * (t + 1.f - g) / s;
+           omc = fminf(2.f, fmaxf(0.f, omc)); ct = 1.f - omc; }
+    float st = sqrtf(omc * (2.f - omc)), ph = 6.28318531f * r.next();
     float cp = cosf(ph), sp = sinf(ph);
     // copysignf here once lost the sign at normal incidence (Rd 25% low): keep the explicit test
     if (fabsf(uz) > 0.99999f) { ux = st * cp; uy = st * sp; uz = uz > 0.f ? ct : -ct; return; }
@@ -58,7 +62,44 @@ __device__ void hg(float g, float& ux, float& uy, float& uz, Rng& r) {
     ux = nx * q; uy = ny * q; uz = nz * q;
 }
 __device__ __forceinline__ float hgpdf(float g, float c) {
-    float d = 1.f + g * g - 2.f * g * c; return (1.f - g * g) / (12.5663706f * d * sqrtf(d));
+    float d = (1.f - g) * (1.f - g) + 2.f * g * (1.f - c);   // = 1 + g^2 - 2gc, without cancellation
+    return (1.f - g * g) / (12.5663706f * d * sqrtf(d));
+}
+
+// Two-lobe phase function per material and channel (ADR 0007 7a C): ph[9m + 3c + {0,1,2}] =
+// {g_a, f, g_b}, p_c(cos) = (1 - f) HG(g_a) + f HG(g_b). Lobe a is the grain part, lobe b the
+// pores and other near-isotropic scatterers.
+__device__ __forceinline__ float phase_pdf(const float* ph, int m, int c, float cs) {
+    const float* q = ph + 9 * m + 3 * c;
+    return (1.f - q[1]) * hgpdf(q[0], cs) + q[1] * hgpdf(q[2], cs);
+}
+// Scatter at a real collision: sample one channel's phase function (channel chosen by |w|),
+// then reweight every channel by p_c / p_mix, p_mix = sum_c pi_c p_c (the one-sample mixture
+// estimator; unbiased, and the weights stay bounded by 1/pi_c). When all channels share one
+// lobe the ratio is 1 and this is plain HG sampling.
+__device__ void scatter(const float* ph, int m, float* w, float& ux, float& uy, float& uz, Rng& r,
+                        bool reweight = true) {
+    const float* q0 = ph + 9 * m;
+    bool same = true;                                      // every channel has the same lobes
+    for (int k = 3; k < 9; ++k) same = same && q0[k] == q0[k % 3];
+    if (same) {                                            // weight ratio 1; a single lobe draws
+        float g = q0[0];                                   // exactly as plain HG sampling did
+        if (q0[1] > 0.f && r.next() < q0[1]) g = q0[2];
+        hg(g, ux, uy, uz, r);
+        return;
+    }
+    float a0 = fabsf(w[0]), a1 = fabsf(w[1]), a2 = fabsf(w[2]), sa = a0 + a1 + a2;
+    if (!(sa > 0.f)) { a0 = a1 = a2 = 1.f; sa = 3.f; }
+    float u = r.next() * sa;
+    int c = u < a0 ? 0 : (u < a0 + a1 ? 1 : 2);
+    const float* q = q0 + 3 * c;
+    float g = r.next() < q[1] ? q[2] : q[0];
+    float ox = ux, oy = uy, oz = uz;
+    hg(g, ux, uy, uz, r);
+    float cs = ox * ux + oy * uy + oz * uz;
+    float p[3], pm = 0.f, pi[3] = {a0 / sa, a1 / sa, a2 / sa};
+    for (int k = 0; k < 3; ++k) { p[k] = phase_pdf(ph, m, k, cs); pm += pi[k] * p[k]; }
+    if (reweight) for (int k = 0; k < 3; ++k) w[k] *= p[k] / pm;   // off: a check's control
 }
 
 // Kutz et al. 2017 spectral tracking at a tentative collision, three channels sharing one path.

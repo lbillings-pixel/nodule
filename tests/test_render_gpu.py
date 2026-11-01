@@ -242,6 +242,60 @@ def test_control_no_ratio_tracking_fails(flat) -> None:
     assert m > 1.5 * reference.single_scatter_halfspace(1.54, 0.5, 2.0, 0.8, 45.0)  # proto 2.1x
 
 
+# --- two-lobe phase function per channel (ADR 0007 7a C) -----------------------------------
+
+
+def mean_rgb(dev, m: Materials, light: Light, *, spp: int, seed: int, flags: int = 0, **kw):
+    im = render(dev, FLAT_VIEW, m, light, spp=spp, seed=seed, flags=Flag.HOMOGENEOUS | flags,
+                **kw).image.reshape(-1, 3)  # fmt: skip
+    return im.mean(0), im.std(0, ddof=1) / math.sqrt(len(im))
+
+
+def ss_mix(f: float, ga: float, gb: float) -> float:
+    return sum(w * reference.single_scatter_halfspace(1.54, 0.3, 3.0, g, 40.0)
+               for w, g in ((1 - f, ga), (f, gb)))  # fmt: skip
+
+
+def test_two_lobe_single_scattering_is_the_mixture(flat) -> None:
+    m = Materials.of([[0.3] * 3], [[3.0] * 3], [0.9], f=[0.3], gb=[0.0])
+    mu, se = mean_rgb(flat, m, Light("directional", theta_deg=40.0), spp=256, seed=41, order=1)
+    want = ss_mix(0.3, 0.9, 0.0)
+    assert abs(z(mu[0], se[0], want)) < 3  # measured -1.5
+    # control: one lobe with the mean cosine (the merge the two lobes replace) is far off
+    assert abs(z(ss_mix(0.0, 0.63, 0.0), se[0], want)) > 100  # measured -517
+
+
+LOBES: dict[str, Any] = dict(
+    mua=[[0.2, 0.1, 0.05]], mus=[[8.0, 4.0, 12.0]], g=[[0.95, 0.8, 0.99]],
+    f=[[0.5, 0.2, 0.05]], gb=[[0.0, 0.3, 0.0]],
+)  # fmt: skip
+
+
+def one_channel(c: int) -> Materials:
+    """Material whose three channels all carry channel c's coefficients and lobes."""
+    one: dict[str, Any] = {k: [[v[0][c]] * 3] for k, v in LOBES.items()}
+    return Materials.of(**one)
+
+
+@pytest.fixture(scope="module")
+def lobe_singles(flat):
+    return [mean_rgb(flat, one_channel(c), DOME, spp=1024, seed=52 + c, depth_mm=1.0)
+            for c in range(3)]  # fmt: skip
+
+
+@pytest.mark.parametrize(
+    ("flags", "lo", "hi"), [(0, 0.0, 3.0), (Flag.NO_PHASE_WEIGHT, 20.0, math.inf)]
+)
+def test_per_channel_lobes_match_one_channel_runs(flat, lobe_singles, flags, lo, hi) -> None:
+    """Three channels with different lobes share one path; each must equal its own
+    single-channel run. Control: without the p_c / p_mix weight the channels drift
+    (prototype of this check: |z| 26-130)."""
+    mu, se = mean_rgb(flat, Materials.of(**LOBES), DOME, spp=1024, seed=51, flags=flags,
+                      depth_mm=1.0)  # fmt: skip
+    for c, (m1, s1) in enumerate(lobe_singles):
+        assert lo <= abs(z(mu[c], se[c], m1[0], s1[0])) < hi, c
+
+
 THIN: dict[str, Any] = dict(depth_mm=2.0, mua=0.05, mus=0.5, g=0.9)
 
 

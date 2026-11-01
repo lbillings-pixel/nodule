@@ -142,6 +142,31 @@ def test_materials_validation() -> None:
         Materials.of([[0.1, 0.1]], [[1, 1]], [0.9])
     with pytest.raises(ValueError, match="non-negative"):
         Materials.of([[-0.1, 0.1, 0.1]], [[1, 1, 1]], [0.9])
+    assert m.g.shape == m.f.shape == m.gb.shape == (1, 3)
+    assert (m.f == 0).all()
+    with pytest.raises(ValueError, match=r"\[0, 1\]"):
+        Materials.of([[0.1] * 3], [[1] * 3], [0.9], f=[1.5])
+    with pytest.raises(ValueError, match="asymmetry"):
+        Materials.of([[0.1] * 3], [[1] * 3], [0.9], gb=[[0.0, 1.0, 0.0]])
+    with pytest.raises(ValueError, match=r"\(m,\) or \(m, 3\)"):
+        Materials.of([[0.1] * 3], [[1] * 3], [[0.9, 0.9]])
+
+
+def test_two_lobe_phase_is_a_density() -> None:
+    m = Materials.of([[0.0] * 3], [[1.0] * 3], [[0.998, 0.9, 0.5]], f=[[0.1, 0.5, 0.9]],
+                     gb=[[0.0, 0.3, -0.2]])  # fmt: skip
+    # integrate 2 pi p(c) dc on a grid fine enough for the g = 0.998 peak (width ~ 1e-6 in c)
+    c = 1 - np.geomspace(1e-9, 2.0, 20001)
+    vals = np.stack([m.phase(ci)[0] for ci in c])
+    total = -2 * math.pi * np.trapezoid(vals, c, axis=0)
+    assert np.allclose(total, 1.0, rtol=2e-3)
+    # control: the two lobes summed without their weights f, 1 - f integrate to 2
+    ma, mb = (Materials.of(m.mua, m.mus, g) for g in (m.g, m.gb))
+    both = np.stack([ma.phase(ci)[0] + mb.phase(ci)[0] for ci in c])
+    assert not np.allclose(-2 * math.pi * np.trapezoid(both, c, axis=0), 1.0, rtol=0.5)
+    mean_cos = -2 * math.pi * np.trapezoid(vals * c[:, None], c, axis=0)
+    want = (1 - m.f[0]) * m.g[0] + m.f[0] * m.gb[0]  # the mixture's mean cosine
+    assert np.allclose(mean_cos, want, atol=2e-3)
 
 
 def test_srgb_endpoints_and_orientation() -> None:

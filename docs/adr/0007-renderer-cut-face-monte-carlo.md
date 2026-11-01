@@ -130,7 +130,7 @@
   fraction per band [@bedidi1993; @go2022; @scheinost1998], `physical`
   form with `effective` loading. Goethite's blue edge is `effective`
   (*speculative*), because the measured k does not rise in the blue.
-- White-band scattering: choice 7a.
+- White-band scattering: choice 7a.²
 - Hematite n, k: the five datasets Go et al. retained [@go2022] by
   default, with Bedidi and Cervelle's lower blue k [@bedidi1993] kept as an
   option.¹
@@ -145,15 +145,50 @@ until 7a. In the same change the sRGB output was found to write 450 nm as
 red. It now maps 450/550/650 nm to B/G/R, each taken as the matching sRGB
 primary (an approximation).
 
+² Amended 2026-11-01 (7a C built). Each band has a grain part and a pore
+part, and the renderer keeps them as **two Henyey-Greenstein lobes per
+channel** instead of one lobe with their mean cosine. The choice text
+said "mixed per point". A merged lobe keeps the transport coefficient,
+so dome-lit faces barely change (mean 1% on the n2-slice). But it spreads
+the grains' nearly straight-ahead scattering (g ≈ 0.998) over a g ≈ 0.9
+lobe, and it puts about 3.5 times less light straight back in single
+scattering (tests/test_render_gpu.py, *verified*). That is the difference
+between reflected and transmitted light which 7a is about, and L3 will
+show it. Cost: two phase evaluations per real collision; dome renders
+take the same time. Three channels share one path, so the kernel samples
+one channel's phase function and reweights each channel by p_c / p_mix
+(an unbiased one-sample mixture). A check matches one-channel runs
+(|z| < 3); its control, without the weight, fails (|z| 26–130).
+- *Grain part:* Apetz's virtual composite (half the volume as spheres of
+  radius r, Δn = (2/3) Δn_max = 0.0061 for quartz) [@apetz2003]. It is
+  evaluated with the full Mie series [@bohren1983] rather than Apetz's
+  Eq. 11. For Lorenzi's 0.3 µm grains, Eq. 11 lies outside the size range
+  Pabst gives as safe [@pabst2013], and it comes out 20–40% too high (computed
+  here). The Mie code reproduces Eq. 11 within 1.2% where Eq. 11
+  holds, the Rayleigh limit, and a direct Bessel-function evaluation
+  (tests/test_mie.py). Radius runs log-linearly with agatesim's
+  translucency from 0.15 µm (clear) to 2.5 µm (milky), the radii of
+  Lorenzi's blue-band and white-band grains [@lorenzi2022].
+- *Pore part:* air-filled spheres of radius 0.1 µm, volume fraction
+  0.1% × (1 − translucency), plus 0.2% × impurity for agatesim's WHITE
+  pigment. BLUE stays Rayleigh-shaped in the same lobe.
+- Every radius, index and fraction is `effective` and *speculative*, to be
+  tuned at the set-level comparison. Coupling both parts to translucency
+  is an assumption. Under the 45° point lamp the grain lobe gives
+  coloured sparkle (renders, 64 samples); the disc lamp (L2) is the
+  planned fix (7b).
+
 ### 4. Checks (each with its negative control)
 
 Kept from the prototype as tests (sections above): MCML slab and
 half-space, exact H, furnace, majorant invariance, band phantom; specimen
 classification against `Specimen.evaluate`; reciprocity, single
-scattering, directional-against-dome; preview against full render. Their
+scattering, directional-against-dome; preview against full render; two-lobe
+single scattering and per-channel lobes (amendment ²). Their
 controls, all of which fail as required: a non-bounding majorant in
 unweighted tracking; no backward map; grid-only edges; no 1/n² at the
-exit; no ratio tracking; no mirror term; a cut shifted 1 mm. GPU tests
+exit; no ratio tracking; no mirror term; a cut shifted 1 mm; no phase
+weight. GPU tests
 run locally (CI has no GPU) and skip in CI. CI runs the parts that do not
 need a GPU.
 

@@ -12,7 +12,7 @@ from typing import cast
 
 import numpy as np
 from numpy.typing import NDArray
-from scipy import ndimage
+from scipy import ndimage, special
 from scipy.spatial import ConvexHull, KDTree
 
 
@@ -39,3 +39,19 @@ def hole_free_patches(mask: NDArray[np.bool_]) -> int:
         int(cast("NDArray[np.bool_]", ndimage.binary_fill_holes(p)).sum() == p.sum())
         for p in patches
     )
+
+
+def riccati_bessel(
+    n: NDArray[np.int_], x: float
+) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
+    """x j_n(x) and x y_n(x) for orders n at a real argument (the Mie series)."""
+    j = np.asarray(special.spherical_jn(n, x), dtype=np.float64)
+    y = np.asarray(special.spherical_yn(n, x), dtype=np.float64)
+    return x * j, x * y
+
+
+def spherical_bessel(n: NDArray[np.int_], z: complex, derivative: bool = False,
+                     kind: str = "j") -> NDArray[np.complex128]:  # fmt: skip
+    """j_n(z) or y_n(z) (or their derivatives) at a complex argument; for tests."""
+    f = special.spherical_jn if kind == "j" else special.spherical_yn
+    return np.asarray(f(n, z, derivative=derivative), dtype=np.complex128)

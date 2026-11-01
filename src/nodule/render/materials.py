@@ -18,10 +18,15 @@ are `physical` within their sources; everything else is *speculative* until the
 set-level comparison (ADR 0006 s.10). Renders are procedural and are never
 evidence for what agate bands are made of.
 
-Scattering is a STAND-IN until ADR 0007 choice 7a (grain + pores per band,
-roadmap N2 step 4 item 2) replaces `stand_in_scattering`: log-interpolated
-between the prototype's clear and milky values (notes/n2-proto/RESULTS.md),
-which look too milky and soft-edged.
+Scattering follows ADR 0007 choice 7a C: two parts per band, kept as two
+Henyey-Greenstein lobes (camera.Materials, lobes a and b). The grain part is
+Apetz's virtual composite through the Mie series (mie.grain_part) [@apetz2003];
+the pore part is air-filled spheres (mie.pore_part). agatesim's translucency
+(1 clear .. 0 milky) sets both: the grain radius runs log-linearly from Lorenzi's
+blue-band to white-band grains [@lorenzi2022], and the pore fraction rises
+linearly toward milky. Coupling translucency to both parts is an ASSUMPTION, and
+every radius and fraction is `effective`, to be tuned by render-and-compare.
+Nothing here claims which part makes agate's white bands white (ADR 0007 s.5).
 """
 
 from __future__ import annotations
@@ -29,16 +34,17 @@ from __future__ import annotations
 import math
 from collections.abc import Sequence
 from dataclasses import dataclass, field
-from typing import Literal
+from typing import Literal, NamedTuple
 
 import numpy as np
 from agatesim.fields import Phase, Pigment
-from numpy.typing import NDArray
+from numpy.typing import ArrayLike, NDArray
 
 from nodule.render.camera import N_CHALCEDONY, Materials
+from nodule.render.mie import grain_part, pore_part
 from nodule.render.record import FIELDS, STEPS, BandRecord
 
-__all__ = ["STEPS", "BandRecord", "OpticsTable", "rayleigh_absorption"]
+__all__ = ["STEPS", "BandRecord", "Optics", "OpticsTable", "rayleigh_absorption"]
 
 WAVELENGTH_NM = np.array([450.0, 550.0, 650.0])  # the renderer's channels (ADR 0007 s.2)
 
@@ -85,7 +91,21 @@ def rayleigh_absorption(n: Sequence[float], k: Sequence[float], phi: float,
 
 # --- the table ------------------------------------------------------------------------------
 
-Optics = tuple[F64, F64, float]  # mua (3,), mus (3,), g
+
+class Optics(NamedTuple):
+    """One material per channel: absorption, total scattering, and the two lobes
+    (asymmetry g of lobe a, share f of mus in lobe b, asymmetry gb of lobe b)."""
+
+    mua: F64
+    mus: F64
+    g: F64
+    f: F64
+    gb: F64
+
+    @classmethod
+    def one_lobe(cls, mua: ArrayLike, mus: ArrayLike, g: float) -> Optics:
+        return cls(np.asarray(mua, float) * np.ones(3), np.asarray(mus, float) * np.ones(3),
+                   np.full(3, g), np.zeros(3), np.zeros(3))  # fmt: skip
 
 
 @dataclass(frozen=True)
@@ -96,26 +116,37 @@ class OpticsTable:
     # Host rock (material 0) and tube cores (material 1): the prototype's stand-ins, a dull
     # grey-brown rock and a dark green Fe-silicate core (agatesim reports tube cores as
     # celadonite-like).
-    host: Optics = field(default=(np.array([1.6, 1.0, 0.6]), np.full(3, 15.0), 0.8))
-    tube_core: Optics = field(default=(np.array([2.5, 0.8, 1.8]), np.full(3, 10.0), 0.8))
+    host: Optics = field(default=Optics.one_lobe([1.6, 1.0, 0.6], 15.0, 0.8))
+    tube_core: Optics = field(default=Optics.one_lobe([2.5, 0.8, 1.8], 10.0, 0.8))
     # Clean chalcedony absorbs little: bounded by Lorenzi's total-transmittance loss of
     # ~0.13 per mm, which includes backscatter [@lorenzi2022]; 0.01 sits under the bound.
     matrix_mua: float = 0.01
-    # STAND-IN scattering (until 7a): translucency 1 (clear) .. 0 (milky), log-interpolated.
-    mus_clear: float = 1.5
-    mus_milky: float = 20.0
-    g_band: float = 0.9
-    quartz_mus: float = 0.05  # macrocrystalline quartz: nearly clear
+    # 7a C, grain part: crystallite radius (um) at translucency 1 (clear) and 0 (milky),
+    # log-interpolated. The ends are Lorenzi's grain sizes, ~300 nm in blue bands and
+    # ~5 um in white bands, halved to radii [@lorenzi2022].
+    grain_r_clear_um: float = 0.15
+    grain_r_milky_um: float = 2.5
+    # 7a C, pore part: radius (um), index, and volume fraction at translucency 0, falling
+    # linearly to none at 1. Air (dry pores) is assumed from milky bands' larger BET
+    # surface [@graetsch1985]; water-filled pores (1.33) scatter ~5x less. The radius sits
+    # in the 0.02-0.3 um range the reading notes give for chalcedony pores; the fraction
+    # is Apetz's "whitish" 0.1% [@apetz2003]. All *speculative*.
+    pore_r_um: float = 0.1
+    pore_n: float = 1.0
+    pore_milky: float = 1e-3
+    quartz_mus: float = 0.05  # macrocrystalline quartz: nearly clear (one lobe)
+    quartz_g: float = 0.9
     # Pigment loading: volume fraction at impurity 1 for the iron oxides (impurity scales it
     # linearly, an assumption), and mu_a at 550 nm at impurity 1 for the shape-only pigments.
     phi_iron_oxide: float = 3e-4
     mua550_shape: float = 3.0
     # Agatesim's unnamed IRON stain runs ochre to deep red as impurity rises (agatesim
     # render.STAIN): assumed a goethite-hematite mixture with hematite share = impurity.
-    # BLUE and WHITE pigments are scattering, not pigment (agatesim ADR 0050): extra mu_s at
-    # impurity 1, Rayleigh-shaped (lambda^-4, g 0) for blue and flat (g 0.5) for white.
+    # BLUE and WHITE pigments are scattering, not pigment (agatesim ADR 0050), both in lobe
+    # b: BLUE as Rayleigh scatterers (mu_s at 550 nm at impurity 1, lambda^-4, g 0), WHITE
+    # as extra pores of the pore part's kind (volume fraction at impurity 1).
     mus_blue550: float = 2.0
-    mus_white: float = 20.0
+    pore_white: float = 2e-3
 
     def _hematite(self, phi: float) -> F64:
         n, k = HEMATITE_NK[self.hematite]
@@ -136,34 +167,39 @@ class OpticsTable:
             return x * self.mua550_shape * np.asarray(SHAPE[p], float)
         return np.zeros(3)  # BLUE, WHITE: scattering only
 
-    def stand_in_scattering(self, translucency: float) -> tuple[F64, float]:
+    def grain_radius(self, translucency: float) -> float:
         a = min(max(float(translucency), 0.0), 1.0)
-        mus = math.exp(a * math.log(self.mus_clear) + (1 - a) * math.log(self.mus_milky))
-        return np.full(3, mus), self.g_band
+        lo, hi = math.log(self.grain_r_milky_um), math.log(self.grain_r_clear_um)
+        return math.exp(a * hi + (1 - a) * lo)
+
+    def scattering(self, pigment: int, impurity: float, translucency: float) -> Optics:
+        """Scattering of a chalcedony deposit (mua left 0). Lobe a: the grains. Lobe b:
+        the pores plus any BLUE scatterers, their g weighted by mu_s within the lobe (exact
+        for the mean cosine; everything in lobe b is near-isotropic, g < ~0.6)."""
+        a = min(max(float(translucency), 0.0), 1.0)
+        mus_a, g_a = grain_part(self.grain_radius(a), WAVELENGTH_NM, N_CHALCEDONY)
+        phi = (1 - a) * self.pore_milky
+        if pigment == Pigment.WHITE:
+            phi += max(float(impurity), 0.0) * self.pore_white
+        mus_p, g_p = pore_part(self.pore_r_um, phi, self.pore_n, WAVELENGTH_NM, N_CHALCEDONY)
+        mus_bl = np.zeros(3)
+        if pigment == Pigment.BLUE:
+            mus_bl = max(float(impurity), 0.0) * self.mus_blue550 * (550.0 / WAVELENGTH_NM) ** 4
+        mus_b = mus_p + mus_bl
+        gb = np.divide(mus_p * g_p, mus_b, out=np.zeros(3), where=mus_b > 0)
+        mus = mus_a + mus_b
+        return Optics(np.zeros(3), mus, g_a, mus_b / mus, gb)
 
     def band(self, phase: int, pigment: int, impurity: float, translucency: float) -> Optics:
         """Optics of one growth step's deposit."""
         if Phase(phase) is Phase.QUARTZ:
             # agatesim stains quartz by impurity as iron (render._quartz); same here.
             mua = self.matrix_mua + self.pigment_mua(Pigment.IRON, impurity)
-            return mua, np.full(3, self.quartz_mus), self.g_band
+            return Optics.one_lobe(mua, self.quartz_mus, self.quartz_g)
         if Phase(phase) is not Phase.CHALCEDONY:
             raise ValueError(f"no optics for phase {Phase(phase).name} in a band")
-        mus, g = self.stand_in_scattering(translucency)
         mua = self.matrix_mua + self.pigment_mua(pigment, impurity)
-        extra, g_extra = np.zeros(3), 0.0
-        if pigment == Pigment.BLUE:
-            extra, g_extra = impurity * self.mus_blue550 * (550.0 / WAVELENGTH_NM) ** 4, 0.0
-        elif pigment == Pigment.WHITE:
-            extra, g_extra = np.full(3, impurity * self.mus_white), 0.5
-        if extra.any():
-            # Two scatterers in one Henyey-Greenstein lobe: g weighted by mu_s (assumption;
-            # exact for the mean cosine, not the shape). Per channel, then averaged, since the
-            # kernel takes one g per material.
-            tot = mus + extra
-            g = float(np.mean((mus * g + extra * g_extra) / tot))
-            mus = tot
-        return mua, mus, g
+        return self.scattering(pigment, impurity, translucency)._replace(mua=mua)
 
     def materials(self, record: BandRecord) -> Materials:
         """The camera's material table for a record: 0 host, 1 tube core, then one
@@ -175,6 +211,6 @@ class OpticsTable:
             self.band(int(p), int(pg), float(x), float(tr)) for p, pg, x, tr in uniq
         ]
         return Materials.of(
-            mua=[r[0] for r in rows], mus=[r[1] for r in rows], g=[r[2] for r in rows],
-            profile=prof.ravel(), dt=1.0 / STEPS,
+            mua=[r.mua for r in rows], mus=[r.mus for r in rows], g=[r.g for r in rows],
+            profile=prof.ravel(), dt=1.0 / STEPS, f=[r.f for r in rows], gb=[r.gb for r in rows],
         )  # fmt: skip

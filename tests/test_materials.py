@@ -129,18 +129,41 @@ def test_table_responds_to_the_fields_as_stated() -> None:
     chal, iron = Phase.CHALCEDONY, Pigment.IRON
     lo, hi = tab.band(chal, iron, 0.1, 0.5), tab.band(chal, iron, 0.8, 0.5)
     assert (hi[0] > lo[0]).all()  # more stain absorbs more
-    clear, milky = tab.band(chal, iron, 0.1, 1.0), tab.band(chal, iron, 0.1, 0.0)
-    assert clear[1][0] == pytest.approx(tab.mus_clear)
-    assert milky[1][0] == pytest.approx(tab.mus_milky)
-    red = tab.band(chal, Pigment.HEMATITE, 1.0, 0.5)[0]
+    red = tab.band(chal, Pigment.HEMATITE, 1.0, 0.5).mua
     assert red[0] > red[1] > red[2]  # absorbs blue most: red
-    yellow = tab.band(chal, Pigment.GOETHITE, 1.0, 0.5)[0]
+    yellow = tab.band(chal, Pigment.GOETHITE, 1.0, 0.5).mua
     assert yellow[0] > 2 * yellow[1]  # the effective blue edge makes it yellow
-    blue = tab.band(chal, Pigment.BLUE, 1.0, 0.5)
-    assert blue[1][0] > blue[1][2]
-    assert blue[2] < tab.g_band
     with pytest.raises(ValueError, match="VOID"):
         tab.band(Phase.VOID, iron, 0.0, 0.0)
+
+
+def test_scattering_parts_follow_translucency_and_pigment() -> None:
+    """ADR 0007 7a C: grains in lobe a, pores (and BLUE) in lobe b."""
+    tab = OpticsTable()
+    chal, iron = Phase.CHALCEDONY, Pigment.IRON
+    assert tab.grain_radius(1.0) == pytest.approx(tab.grain_r_clear_um)
+    assert tab.grain_radius(0.0) == pytest.approx(tab.grain_r_milky_um)
+    clear, milky = tab.band(chal, iron, 0.1, 1.0), tab.band(chal, iron, 0.1, 0.0)
+    assert (clear.f == 0).all()  # no pores at the clear end
+    assert (clear.mus < 1.0).all()  # 0.15 um grains: 0.28-0.69 per mm
+    assert (milky.mus > 5 * clear.mus).all()
+    assert (milky.g > 0.996).all()  # coarse grains scatter almost straight ahead
+    assert (milky.f > 0).all()
+    assert (milky.gb < 0.6).all()  # pores: near-isotropic lobe
+    # transport mus' = mus_a (1 - g) + mus_b (1 - gb): pores dominate in milky bands
+    grain_t = milky.mus * (1 - milky.f) * (1 - milky.g)
+    pore_t = milky.mus * milky.f * (1 - milky.gb)
+    assert (pore_t > 10 * grain_t).all()
+    white = [tab.band(chal, Pigment.WHITE, x, 1.0).f for x in (0.0, 0.5, 1.0)]
+    assert (white[0] == 0).all()
+    assert (white[1] < white[2]).all()
+    blue = tab.band(chal, Pigment.BLUE, 1.0, 1.0)
+    assert blue.mus[0] > blue.mus[2]
+    assert (blue.gb == 0).all()
+    assert (blue.f > 0.5).all()
+    quartz = tab.band(Phase.QUARTZ, iron, 0.0, 0.0)
+    assert (quartz.f == 0).all()
+    assert (quartz.g == tab.quartz_g).all()
 
 
 def test_materials_validation_catches_a_profile_beyond_the_table() -> None:
@@ -176,11 +199,11 @@ def test_profile_reproduces_the_specimen_at_random_points(specimen_grid) -> None
     assert ok.sum() > 1000
     k = np.floor(f.t_smooth[ok].astype(np.float32) / np.float32(m.dt)).astype(int)
     pig = np.full(ok.sum(), Pigment.IRON) if f.pigment is None else f.pigment[ok]
-    want = np.array([np.r_[r[0], r[1], r[2]] for r in (
+    want = np.array([np.r_[*r] for r in (
         tab.band(int(p), int(g), float(x), float(tr))
         for p, g, x, tr in zip(f.phase[ok], pig, f.impurity[ok], f.translucency[ok], strict=True)
     )])  # fmt: skip
-    table = np.c_[m.mua, m.mus, m.g]
+    table = np.c_[m.mua, m.mus, m.g, m.f, m.gb]
 
     def agree(shift: int) -> float:
         got = table[2 + m.profile[np.clip(k + shift, 0, STEPS - 1)]]

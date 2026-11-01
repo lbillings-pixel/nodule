@@ -120,6 +120,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.5209
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.484
+C16_order = 0.3601
+C16_corr = 0.0883
+C16_corr_censored = false
+C16_parallel = 0.0098
+C16_banded = 0.7509
+C15_curv = 0.0655
+C15_curv_high = 0.2073
+C15_corners = 8
+C14_density = 0.7867
+C14_ends = 1474
+C14_junctions = 79
 
 [images.2006-10-30buchstutzeachat07-o]
 verdict = "forms"
@@ -170,6 +189,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.558
+C16_order = 0.6125
+C16_corr = 0.422
+C16_corr_censored = false
+C16_parallel = 0.0592
+C16_banded = 0.848
+C15_curv = 0.0637
+C15_curv_high = 0.1703
+C15_corners = 1
+C14_density = 0.6946
+C14_ends = 417
+C14_junctions = 28
 
 [images.achat-1]
 verdict = "forms"
@@ -222,6 +260,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.5694
+C16_order = 0.2252
+C16_corr = 0.1042
+C16_corr_censored = false
+C16_parallel = 0.0033
+C16_banded = 0.8127
+C15_curv = 0.0818
+C15_curv_high = 0.2271
+C15_corners = 5
+C14_density = 0.5734
+C14_ends = 473
+C14_junctions = 34
 
 [images.achat-2]
 verdict = "forms"
@@ -355,6 +412,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.0717
+C12_near = -0.1243
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 2
+C16_coherence = 0.6195
+C16_order = 0.2188
+C16_corr = 0.1268
+C16_corr_censored = false
+C16_parallel = 0.0103
+C16_banded = 0.8825
+C15_curv = 0.0675
+C15_curv_high = 0.1817
+C15_corners = 10
+C14_density = 0.496
+C14_ends = 1226
+C14_junctions = 99
 
 [images.achat-rasovka]
 verdict = "forms"
@@ -407,6 +483,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.achatscheibe]
 verdict = "forms"
@@ -456,6 +551,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.achaty-zajecov-2]
 verdict = "forms"
@@ -583,6 +697,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.7278
+C12_near = -0.7278
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.6028
+C16_order = 0.5849
+C16_corr = 0.3399
+C16_corr_censored = false
+C16_parallel = 0.3355
+C16_banded = 0.8902
+C15_curv = 0.0581
+C15_curv_high = 0.2058
+C15_corners = 3
+C14_density = 0.5353
+C14_ends = 240
+C14_junctions = 13
 
 [images.achaty-zajecov-3]
 verdict = "forms"
@@ -635,6 +768,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.6172
+C16_order = 0.6203
+C16_corr = 0.4917
+C16_corr_censored = false
+C16_parallel = 0.3649
+C16_banded = 0.8699
+C15_curv = 0.0539
+C15_curv_high = 0.202
+C15_corners = 2
+C14_density = 0.5616
+C14_ends = 510
+C14_junctions = 20
 
 [images.agat-3d-bobonong-botswana]
 verdict = "forms"
@@ -757,6 +909,25 @@ N_rule_gap = [
     0.0,
     1.0,
 ]
+C12_corr = 0.2035
+C12_near = -0.1217
+C13_sets = 0
+C13_depth = 2
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.8298
+C16_order = 0.3644
+C16_corr = 0.2303
+C16_corr_censored = false
+C16_parallel = 0.1156
+C16_banded = 0.966
+C15_curv = 0.0734
+C15_curv_high = 0.2237
+C15_corners = 0
+C14_density = 0.3115
+C14_ends = 256
+C14_junctions = 10
 
 [images.agat-bobonong-botswana]
 verdict = "forms"
@@ -871,6 +1042,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.0843
+C12_near = -0.2463
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 2
+C16_coherence = 0.6051
+C16_order = 0.5237
+C16_corr = 0.166
+C16_corr_censored = false
+C16_parallel = 0.0189
+C16_banded = 0.8601
+C15_curv = 0.0634
+C15_curv_high = 0.1815
+C15_corners = 3
+C14_density = 0.6608
+C14_ends = 1152
+C14_junctions = 63
 
 [images.agat-lake-superior-agat-z-jez-gornego-minnesota-usa]
 verdict = "forms"
@@ -919,6 +1109,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agat-lake-superior-agat-z-jez-gornego-minnesota-usa-cropped]
 verdict = "forms"
@@ -967,6 +1176,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.5014
+C16_order = 0.4447
+C16_corr = 0.3008
+C16_corr_censored = false
+C16_parallel = 0.3835
+C16_banded = 0.8146
+C15_curv = 0.0563
+C15_curv_high = 0.2113
+C15_corners = 0
+C14_density = 0.8341
+C14_ends = 39
+C14_junctions = 3
 
 [images.agat-lake-superior-duluth-minnesota-usa]
 verdict = "forms"
@@ -1016,6 +1244,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agat-lake-superior-dwie-poowki-minnesota-usa]
 verdict = "forms"
@@ -1065,6 +1312,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.6513
+C16_order = 0.6201
+C16_corr = 0.343
+C16_corr_censored = false
+C16_parallel = 0.523
+C16_banded = 0.8978
+C15_curv = 0.033
+C15_curv_high = 0.1495
+C15_corners = 2
+C14_density = 0.4827
+C14_ends = 418
+C14_junctions = 15
 
 [images.agat-lake-superior-dwie-poowki-minnesota-usa-cropped]
 verdict = "forms"
@@ -1112,6 +1378,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.9206
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = false
+C16_parallel = "unknown"
+C16_banded = 1.0
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agat-lake-superior-lake-superior-agate-minnesota-usa]
 verdict = "forms"
@@ -1221,6 +1506,25 @@ N_rule_gap = [
     0.5,
     0.0,
 ]
+C12_corr = 0.1869
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 2
+C16_coherence = 0.512
+C16_order = 0.5054
+C16_corr = 0.2139
+C16_corr_censored = false
+C16_parallel = 0.0182
+C16_banded = 0.7673
+C15_curv = 0.0528
+C15_curv_high = 0.151
+C15_corners = 3
+C14_density = 0.8353
+C14_ends = 2286
+C14_junctions = 124
 
 [images.agat-lake-superior-minnesota-stany-zjednoczone-ameryki-ponocnej-usa]
 verdict = "forms"
@@ -1341,6 +1645,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = 0.2043
+C12_near = 0.0424
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 3
+C16_coherence = 0.7897
+C16_order = 0.8775
+C16_corr = 0.498
+C16_corr_censored = true
+C16_parallel = 0.6381
+C16_banded = 0.9605
+C15_curv = 0.0186
+C15_curv_high = 0.0884
+C15_corners = 1
+C14_density = 0.5275
+C14_ends = 697
+C14_junctions = 38
 
 [images.agat-lake-superior-stan-minnesota-usa]
 verdict = "forms"
@@ -1458,6 +1781,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = 0.1018
+C12_near = 0.3848
+C13_sets = 0
+C13_depth = 1
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.788
+C16_order = 0.5311
+C16_corr = 0.2532
+C16_corr_censored = false
+C16_parallel = 0.2056
+C16_banded = 0.9566
+C15_curv = 0.0404
+C15_curv_high = 0.1687
+C15_corners = 6
+C14_density = 0.3792
+C14_ends = 571
+C14_junctions = 27
 
 [images.agat-lake-superior-stan-minnesota-usa-cropped]
 verdict = "forms"
@@ -1505,6 +1847,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agat-lake-superior-usa-minnesota]
 verdict = "forms"
@@ -1556,6 +1917,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agat-ognisty-calvillo-aguascalientes-meksyk]
 verdict = "forms"
@@ -1677,6 +2057,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = 0.0782
+C12_near = -0.046
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.5159
+C16_order = 0.1674
+C16_corr = 0.067
+C16_corr_censored = false
+C16_parallel = 0.0071
+C16_banded = 0.8013
+C15_curv = 0.1074
+C15_curv_high = 0.2971
+C15_corners = 6
+C14_density = 0.5487
+C14_ends = 670
+C14_junctions = 38
 
 [images.agat-ojo-de-laguna-chihuahua-meksyk]
 verdict = "forms"
@@ -1728,6 +2127,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.4652
+C16_order = 0.3419
+C16_corr = 0.1665
+C16_corr_censored = false
+C16_parallel = 0.2568
+C16_banded = 0.645
+C15_curv = 0.0705
+C15_curv_high = 0.2752
+C15_corners = 0
+C14_density = 0.7864
+C14_ends = 102
+C14_junctions = 8
 
 [images.agat-ojo-de-laguna-chihuahua-meksyk-cropped]
 verdict = "forms"
@@ -1778,6 +2196,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.4917
+C16_order = 0.1475
+C16_corr = 0.1003
+C16_corr_censored = false
+C16_parallel = 0.1914
+C16_banded = 0.6905
+C15_curv = 0.0717
+C15_curv_high = 0.2428
+C15_corners = 1
+C14_density = 0.652
+C14_ends = 299
+C14_junctions = 17
 
 [images.agat-winogronowy-agate-grape-san-rafael-swell-emery-county-utah-usa]
 verdict = "forms"
@@ -1828,6 +2265,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.5928
+C16_order = 0.8556
+C16_corr = 0.4958
+C16_corr_censored = true
+C16_parallel = 0.4463
+C16_banded = 0.9851
+C15_curv = 0.1111
+C15_curv_high = 0.1928
+C15_corners = 0
+C14_density = 0.5314
+C14_ends = 5
+C14_junctions = 0
 
 [images.agat-winogronowy-agate-grape-san-rafael-swell-emery-county-utah-usa-cropped]
 verdict = "forms"
@@ -1878,6 +2334,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agat-z-geoda-rancho-gregoria-meksyk]
 verdict = "forms"
@@ -1928,6 +2403,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.6585
+C16_order = 0.4888
+C16_corr = 0.2381
+C16_corr_censored = false
+C16_parallel = 0.0055
+C16_banded = 0.9182
+C15_curv = 0.0655
+C15_curv_high = 0.1689
+C15_corners = 6
+C14_density = 0.4785
+C14_ends = 1260
+C14_junctions = 71
 
 [images.agat-ze-stalaktytami-agate-creek-queensland-australia]
 verdict = "forms"
@@ -2047,6 +2541,25 @@ N_rule_gap = [
     1.0,
     1.0,
 ]
+C12_corr = -0.8125
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.4233
+C16_order = 0.1487
+C16_corr = 0.1017
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.6806
+C15_curv = 0.0779
+C15_curv_high = 0.2256
+C15_corners = 3
+C14_density = 0.819
+C14_ends = 884
+C14_junctions = 61
 
 [images.agat-ze-stalaktytami-agate-creek-queensland-australia-cropped]
 verdict = "forms"
@@ -2094,6 +2607,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.6252
+C16_order = 0.9503
+C16_corr = 0.495
+C16_corr_censored = true
+C16_parallel = 0.5022
+C16_banded = 0.9077
+C15_curv = 0.0308
+C15_curv_high = 0.0882
+C15_corners = 0
+C14_density = 0.6388
+C14_ends = 80
+C14_junctions = 8
 
 [images.agate-005b-6mm]
 verdict = "forms"
@@ -2142,6 +2674,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-1-29790070266]
 verdict = "forms"
@@ -2193,6 +2744,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-11-30746153457]
 verdict = "forms"
@@ -2242,6 +2812,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-12-30746153687]
 verdict = "forms"
@@ -2362,6 +2951,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.0571
+C12_near = -0.4249
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.572
+C16_order = 0.324
+C16_corr = 0.1091
+C16_corr_censored = false
+C16_parallel = 0.0267
+C16_banded = 0.8329
+C15_curv = 0.0629
+C15_curv_high = 0.2086
+C15_corners = 11
+C14_density = 0.7643
+C14_ends = 1414
+C14_junctions = 56
 
 [images.agate-14-30746154167]
 verdict = "forms"
@@ -2411,6 +3019,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.4261
+C16_order = 0.056
+C16_corr = 0.1324
+C16_corr_censored = false
+C16_parallel = 0.0187
+C16_banded = 0.6204
+C15_curv = 0.0436
+C15_curv_high = 0.1398
+C15_corners = 4
+C14_density = 0.8549
+C14_ends = 3163
+C14_junctions = 178
 
 [images.agate-16-30746154767]
 verdict = "forms"
@@ -2460,6 +3087,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.4305
+C16_order = 0.3349
+C16_corr = 0.2581
+C16_corr_censored = false
+C16_parallel = 0.0617
+C16_banded = 0.6857
+C15_curv = 0.0458
+C15_curv_high = 0.1488
+C15_corners = 5
+C14_density = 0.8061
+C14_ends = 1559
+C14_junctions = 83
 
 [images.agate-17-30746155127]
 verdict = "forms"
@@ -2509,6 +3155,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-19-30746155707]
 verdict = "forms"
@@ -2638,6 +3303,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.0551
+C12_near = 0.31
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.5713
+C16_order = 0.4301
+C16_corr = 0.1626
+C16_corr_censored = false
+C16_parallel = 0.0158
+C16_banded = 0.886
+C15_curv = 0.0594
+C15_curv_high = 0.1721
+C15_corners = 6
+C14_density = 0.7125
+C14_ends = 1081
+C14_junctions = 55
 
 [images.agate-2-31731816833]
 verdict = "forms"
@@ -2690,6 +3374,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-21-30746156187]
 verdict = "forms"
@@ -2809,6 +3512,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.0014
+C12_near = -0.2357
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 6
+C16_coherence = 0.4796
+C16_order = 0.3643
+C16_corr = 0.0967
+C16_corr_censored = false
+C16_parallel = 0.0118
+C16_banded = 0.771
+C15_curv = 0.0595
+C15_curv_high = 0.1678
+C15_corners = 13
+C14_density = 0.8297
+C14_ends = 3043
+C14_junctions = 182
 
 [images.agate-22-30746156427]
 verdict = "forms"
@@ -2926,6 +3648,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = 0.1587
+C12_near = 0.2377
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 4
+C16_coherence = 0.494
+C16_order = 0.3651
+C16_corr = 0.1366
+C16_corr_censored = false
+C16_parallel = 0.0225
+C16_banded = 0.7997
+C15_curv = 0.0578
+C15_curv_high = 0.1744
+C15_corners = 8
+C14_density = 0.8784
+C14_ends = 2577
+C14_junctions = 165
 
 [images.agate-23-48609868172]
 verdict = "forms"
@@ -3055,6 +3796,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.2901
+C12_near = -0.0743
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.5633
+C16_order = 0.173
+C16_corr = 0.0893
+C16_corr_censored = false
+C16_parallel = 0.0394
+C16_banded = 0.8177
+C15_curv = 0.0714
+C15_curv_high = 0.2252
+C15_corners = 8
+C14_density = 0.5898
+C14_ends = 1167
+C14_junctions = 69
 
 [images.agate-24-51867236448]
 verdict = "forms"
@@ -3105,6 +3865,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-7-32755748235]
 verdict = "forms"
@@ -3155,6 +3934,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.8295
+C16_order = 0.0732
+C16_corr = 0.1766
+C16_corr_censored = false
+C16_parallel = 0.0093
+C16_banded = 0.9712
+C15_curv = 0.0543
+C15_curv_high = 0.1738
+C15_corners = 6
+C14_density = 0.3624
+C14_ends = 1160
+C14_junctions = 61
 
 [images.agate-9-32408237080]
 verdict = "forms"
@@ -3203,6 +4001,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.7092
+C16_order = 0.3944
+C16_corr = 0.1966
+C16_corr_censored = false
+C16_parallel = 0.0629
+C16_banded = 0.9096
+C15_curv = 0.031
+C15_curv_high = 0.1047
+C15_corners = 5
+C14_density = 0.5055
+C14_ends = 2848
+C14_junctions = 109
 
 [images.agate-adrasman-city-tajikistan-32755918215]
 verdict = "forms"
@@ -3253,6 +4070,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-agate-creek-queensland-australia]
 verdict = "forms"
@@ -3374,6 +4210,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.3677
+C12_near = -0.5739
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.6383
+C16_order = 0.187
+C16_corr = 0.0946
+C16_corr_censored = false
+C16_parallel = 0.0171
+C16_banded = 0.9109
+C15_curv = 0.0782
+C15_curv_high = 0.2253
+C15_corners = 6
+C14_density = 0.4814
+C14_ends = 954
+C14_junctions = 56
 
 [images.agate-agate-creek-queensland-australia-cropped]
 verdict = "forms"
@@ -3425,6 +4280,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.6036
+C16_order = 0.3491
+C16_corr = 0.1127
+C16_corr_censored = false
+C16_parallel = 0.0138
+C16_banded = 0.8496
+C15_curv = 0.0663
+C15_curv_high = 0.2294
+C15_corners = 2
+C14_density = 0.6292
+C14_ends = 735
+C14_junctions = 41
 
 [images.agate-amethyste-quartz]
 verdict = "forms"
@@ -3476,6 +4350,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-borden-formation-lower-mississippian-eastern-kentucky-usa-11-32632652021]
 verdict = "forms"
@@ -3529,6 +4422,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.5766
+C16_order = 0.6278
+C16_corr = 0.4478
+C16_corr_censored = false
+C16_parallel = 0.0649
+C16_banded = 0.866
+C15_curv = 0.0989
+C15_curv_high = 0.2645
+C15_corners = 0
+C14_density = 0.7143
+C14_ends = 98
+C14_junctions = 10
 
 [images.agate-borden-formation-lower-mississippian-eastern-kentucky-usa-6-32632652621]
 verdict = "forms"
@@ -3578,6 +4490,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-borden-formation-lower-mississippian-eastern-kentucky-usa-8-32756316565]
 verdict = "forms"
@@ -3629,6 +4560,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-chalcedony-quartz-sio2-27633474479]
 verdict = "forms"
@@ -3680,6 +4630,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-d-bruyere]
 verdict = "forms"
@@ -3729,6 +4698,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-detail-agat-lake-superior-usa-minnesota-cropped]
 verdict = "forms"
@@ -3780,6 +4768,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = false
+C16_parallel = "unknown"
+C16_banded = 0.0
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-east-of-the-black-hills-south-dakota-usa-21]
 verdict = "forms"
@@ -3830,6 +4837,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-east-of-the-black-hills-south-dakota-usa-29]
 verdict = "forms"
@@ -3881,6 +4907,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-east-of-the-black-hills-south-dakota-usa-6]
 verdict = "forms"
@@ -3931,6 +4976,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-filled-geode-brazil-1-31912507804]
 verdict = "forms"
@@ -3981,6 +5045,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.6902
+C16_order = 0.1886
+C16_corr = 0.1176
+C16_corr_censored = false
+C16_parallel = 0.0012
+C16_banded = 0.908
+C15_curv = 0.0743
+C15_curv_high = 0.2052
+C15_corners = 12
+C14_density = 0.2487
+C14_ends = 514
+C14_junctions = 42
 
 [images.agate-filled-geode-brazil-2-32714553426]
 verdict = "forms"
@@ -4032,6 +5115,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.7186
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = false
+C16_parallel = "unknown"
+C16_banded = 1.0
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-filled-geode-condor-agate-argentina-31941551193]
 verdict = "forms"
@@ -4082,6 +5184,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.6573
+C16_order = 0.1891
+C16_corr = 0.1961
+C16_corr_censored = false
+C16_parallel = 0.0254
+C16_banded = 0.9013
+C15_curv = 0.0746
+C15_curv_high = 0.1837
+C15_corners = 2
+C14_density = 0.388
+C14_ends = 291
+C14_junctions = 19
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m]
 verdict = "forms"
@@ -4209,6 +5330,25 @@ N_rule_gap = [
     0.0,
     0.0,
 ]
+C12_corr = 0.2427
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.4351
+C16_order = 0.3049
+C16_corr = 0.0761
+C16_corr_censored = false
+C16_parallel = 0.0002
+C16_banded = 0.6844
+C15_curv = 0.0688
+C15_curv_high = 0.2032
+C15_corners = 8
+C14_density = 0.5898
+C14_ends = 1607
+C14_junctions = 115
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-10]
 verdict = "forms"
@@ -4263,6 +5403,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.3179
+C16_order = 0.1634
+C16_corr = 0.1091
+C16_corr_censored = false
+C16_parallel = 0.2578
+C16_banded = 0.4891
+C15_curv = 0.061
+C15_curv_high = 0.1606
+C15_corners = 0
+C14_density = 1.0305
+C14_ends = 411
+C14_junctions = 35
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-11]
 verdict = "forms"
@@ -4395,6 +5554,25 @@ N_rule_gap = [
     0.5,
     0.0,
 ]
+C12_corr = 0.0671
+C12_near = -0.3352
+C13_sets = 0
+C13_depth = 1
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 5
+C16_coherence = 0.6041
+C16_order = 0.4961
+C16_corr = 0.1634
+C16_corr_censored = false
+C16_parallel = 0.0473
+C16_banded = 0.8585
+C15_curv = 0.0503
+C15_curv_high = 0.1441
+C15_corners = 5
+C14_density = 0.794
+C14_ends = 2931
+C14_junctions = 208
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-12]
 verdict = "forms"
@@ -4447,6 +5625,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.568
+C16_order = 0.6906
+C16_corr = 0.4969
+C16_corr_censored = true
+C16_parallel = 0.0305
+C16_banded = 0.8754
+C15_curv = 0.0496
+C15_curv_high = 0.1399
+C15_corners = 6
+C14_density = 0.6015
+C14_ends = 937
+C14_junctions = 52
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-13]
 verdict = "forms"
@@ -4567,6 +5764,25 @@ N_rule_gap = [
     1.0,
     1.0,
 ]
+C12_corr = -0.165
+C12_near = 0.2993
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.465
+C16_order = 0.0749
+C16_corr = 0.0967
+C16_corr_censored = false
+C16_parallel = 0.0055
+C16_banded = 0.7484
+C15_curv = 0.0747
+C15_curv_high = 0.2191
+C15_corners = 4
+C14_density = 0.5045
+C14_ends = 753
+C14_junctions = 60
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-14]
 verdict = "forms"
@@ -4676,6 +5892,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = 0.0216
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 14
+C16_coherence = 0.5679
+C16_order = 0.7668
+C16_corr = 0.4997
+C16_corr_censored = true
+C16_parallel = 0.3674
+C16_banded = 0.8814
+C15_curv = 0.0199
+C15_curv_high = 0.0803
+C15_corners = 13
+C14_density = 0.8359
+C14_ends = 13497
+C14_junctions = 611
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-15]
 verdict = "forms"
@@ -4730,6 +5965,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-2]
 verdict = "forms"
@@ -4858,6 +6112,25 @@ N_rule_gap = [
     0.0,
     0.0,
 ]
+C12_corr = 0.9138
+C12_near = 0.9871
+C13_sets = 0
+C13_depth = 1
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.7377
+C16_order = 0.2354
+C16_corr = 0.1554
+C16_corr_censored = false
+C16_parallel = 0.0071
+C16_banded = 0.963
+C15_curv = 0.106
+C15_curv_high = 0.2719
+C15_corners = 3
+C14_density = 0.4971
+C14_ends = 252
+C14_junctions = 21
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-3]
 verdict = "forms"
@@ -4906,6 +6179,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.7727
+C16_order = 0.1845
+C16_corr = 0.1271
+C16_corr_censored = false
+C16_parallel = 0.0384
+C16_banded = 0.9706
+C15_curv = 0.1148
+C15_curv_high = 0.2903
+C15_corners = 3
+C14_density = 0.377
+C14_ends = 276
+C14_junctions = 9
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-4]
 verdict = "forms"
@@ -4955,6 +6247,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.7752
+C16_order = 0.2176
+C16_corr = 0.1119
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.9339
+C15_curv = 0.0822
+C15_curv_high = 0.2299
+C15_corners = 9
+C14_density = 0.3061
+C14_ends = 816
+C14_junctions = 43
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-5]
 verdict = "forms"
@@ -5009,6 +6320,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.7922
+C16_order = 0.3937
+C16_corr = 0.1729
+C16_corr_censored = false
+C16_parallel = 0.035
+C16_banded = 0.9647
+C15_curv = 0.0542
+C15_curv_high = 0.1763
+C15_corners = 5
+C14_density = 0.5246
+C14_ends = 954
+C14_junctions = 49
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-6]
 verdict = "forms"
@@ -5062,6 +6392,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-7]
 verdict = "forms"
@@ -5113,6 +6462,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.8128
+C16_order = 0.7142
+C16_corr = 0.4957
+C16_corr_censored = true
+C16_parallel = 0.1248
+C16_banded = 0.9763
+C15_curv = 0.0974
+C15_curv_high = 0.2265
+C15_corners = 0
+C14_density = 0.336
+C14_ends = 61
+C14_junctions = 0
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-8]
 verdict = "forms"
@@ -5226,6 +6594,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.1192
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 1
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 15
+C16_coherence = 0.4427
+C16_order = 0.1572
+C16_corr = 0.0382
+C16_corr_censored = false
+C16_parallel = 0.0481
+C16_banded = 0.6382
+C15_curv = 0.0625
+C15_curv_high = 0.2053
+C15_corners = 25
+C14_density = 0.6852
+C14_ends = 4582
+C14_junctions = 252
 
 [images.agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-9]
 verdict = "forms"
@@ -5349,6 +6736,25 @@ N_rule_gap = [
     0.5,
     0.0,
 ]
+C12_corr = 0.014
+C12_near = -0.0983
+C13_sets = 0
+C13_depth = 2
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 3
+C16_coherence = 0.5601
+C16_order = 0.3383
+C16_corr = 0.1389
+C16_corr_censored = false
+C16_parallel = 0.0545
+C16_banded = 0.7409
+C15_curv = 0.0591
+C15_curv_high = 0.1832
+C15_corners = 7
+C14_density = 0.5266
+C14_ends = 1451
+C14_junctions = 94
 
 [images.agate-free-texture-2732496325]
 verdict = "forms"
@@ -5398,6 +6804,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-from-poczki-gorne-rn3]
 verdict = "forms"
@@ -5514,6 +6939,25 @@ N_rule_gap = [
     1.0,
     1.0,
 ]
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.5969
+C16_order = 0.3208
+C16_corr = 0.1148
+C16_corr_censored = false
+C16_parallel = 0.0397
+C16_banded = 0.8455
+C15_curv = 0.0834
+C15_curv_high = 0.2853
+C15_corners = 3
+C14_density = 0.4016
+C14_ends = 211
+C14_junctions = 16
 
 [images.agate-geode-a]
 verdict = "forms"
@@ -5633,6 +7077,25 @@ N_rule_gap = [
     0.5,
     0.0,
 ]
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 1
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 5
+C16_coherence = 0.726
+C16_order = 0.0623
+C16_corr = 0.1894
+C16_corr_censored = false
+C16_parallel = 0.0162
+C16_banded = 0.9772
+C15_curv = 0.1267
+C15_curv_high = 0.2742
+C15_corners = 0
+C14_density = 0.4737
+C14_ends = 181
+C14_junctions = 7
 
 [images.agate-geol-water-level]
 verdict = "forms"
@@ -5682,6 +7145,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-india-minerals-gallery-natural-history-museum-london-sw7-flickr-edk7]
 verdict = "forms"
@@ -5804,6 +7286,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = 0.2577
+C12_near = 0.2773
+C13_sets = 0
+C13_depth = 1
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.6422
+C16_order = 0.3091
+C16_corr = 0.0791
+C16_corr_censored = false
+C16_parallel = 0.0139
+C16_banded = 0.8569
+C15_curv = 0.0634
+C15_curv_high = 0.2013
+C15_corners = 15
+C14_density = 0.303
+C14_ends = 1445
+C14_junctions = 97
 
 [images.agate-lined-geode-black-rock-desert-gerlach-nevada-usa-33974978773]
 verdict = "forms"
@@ -5856,6 +7357,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.6279
+C16_order = 0.1276
+C16_corr = 0.1055
+C16_corr_censored = false
+C16_parallel = 0.0448
+C16_banded = 0.9006
+C15_curv = 0.0791
+C15_curv_high = 0.2562
+C15_corners = 5
+C14_density = 0.5448
+C14_ends = 423
+C14_junctions = 31
 
 [images.agate-madagascar-1-32755917455]
 verdict = "forms"
@@ -5903,6 +7423,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-nodule-lake-superior-agate-1-23248724760]
 verdict = "forms"
@@ -5953,6 +7492,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.2751
+C16_order = 0.7414
+C16_corr = 0.4986
+C16_corr_censored = true
+C16_parallel = 0.0233
+C16_banded = 0.3648
+C15_curv = 0.0382
+C15_curv_high = 0.0797
+C15_corners = 0
+C14_density = 1.0184
+C14_ends = 53
+C14_junctions = 5
 
 [images.agate-nodule-lake-superior-agate-2-23518382156]
 verdict = "forms"
@@ -6082,6 +7640,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.0604
+C12_near = 0.0803
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 8
+C16_coherence = 0.5596
+C16_order = 0.1533
+C16_corr = 0.061
+C16_corr_censored = false
+C16_parallel = 0.0048
+C16_banded = 0.8305
+C15_curv = 0.0705
+C15_curv_high = 0.2115
+C15_corners = 19
+C14_density = 0.6196
+C14_ends = 3699
+C14_junctions = 214
 
 [images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins]
 verdict = "forms"
@@ -6131,6 +7708,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.5361
+C16_order = 0.4667
+C16_corr = 0.1165
+C16_corr_censored = false
+C16_parallel = 0.2459
+C16_banded = 0.7826
+C15_curv = 0.0479
+C15_curv_high = 0.1753
+C15_corners = 5
+C14_density = 0.6436
+C14_ends = 683
+C14_junctions = 25
 
 [images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-2]
 verdict = "forms"
@@ -6255,6 +7851,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = 0.0168
+C12_near = -0.1521
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 2
+C16_coherence = 0.558
+C16_order = 0.325
+C16_corr = 0.1685
+C16_corr_censored = false
+C16_parallel = 0.1109
+C16_banded = 0.8434
+C15_curv = 0.0695
+C15_curv_high = 0.22
+C15_corners = 2
+C14_density = 0.7134
+C14_ends = 483
+C14_junctions = 26
 
 [images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-3]
 verdict = "forms"
@@ -6379,6 +7994,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.0811
+C12_near = 0.4498
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 2
+C16_coherence = 0.5357
+C16_order = 0.3238
+C16_corr = 0.1178
+C16_corr_censored = false
+C16_parallel = 0.0317
+C16_banded = 0.7928
+C15_curv = 0.0633
+C15_curv_high = 0.1749
+C15_corners = 11
+C14_density = 0.6614
+C14_ends = 1785
+C14_junctions = 115
 
 [images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-4]
 verdict = "forms"
@@ -6428,6 +8062,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-5]
 verdict = "forms"
@@ -6552,6 +8205,25 @@ N_rule_gap = [
     0.0,
     0.0,
 ]
+C12_corr = -0.08
+C12_near = 0.0859
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 8
+C16_coherence = 0.6531
+C16_order = 0.2735
+C16_corr = 0.1407
+C16_corr_censored = false
+C16_parallel = 0.0477
+C16_banded = 0.9198
+C15_curv = 0.0614
+C15_curv_high = 0.1934
+C15_corners = 9
+C14_density = 0.8829
+C14_ends = 2600
+C14_junctions = 132
 
 [images.agate-nodule-lake-superior-agate-floor-of-lake-superior-offshore-keweenaw-penins-6]
 verdict = "forms"
@@ -6671,6 +8343,25 @@ N_rule_gap = [
     0.0,
     1.0,
 ]
+C12_corr = 0.1168
+C12_near = 0.0718
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 2
+C16_coherence = 0.7044
+C16_order = 0.5089
+C16_corr = 0.2131
+C16_corr_censored = false
+C16_parallel = 0.0489
+C16_banded = 0.9356
+C15_curv = 0.0539
+C15_curv_high = 0.1836
+C15_corners = 8
+C14_density = 0.7495
+C14_ends = 1311
+C14_junctions = 60
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-10-34651169521]
 verdict = "forms"
@@ -6799,6 +8490,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = 0.153
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.5909
+C16_order = 0.4905
+C16_corr = 0.0959
+C16_corr_censored = false
+C16_parallel = 0.0058
+C16_banded = 0.866
+C15_curv = 0.1151
+C15_curv_high = 0.2797
+C15_corners = 4
+C14_density = 0.4187
+C14_ends = 314
+C14_junctions = 28
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-11-34783586145]
 verdict = "forms"
@@ -6848,6 +8558,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-12-34651139191]
 verdict = "forms"
@@ -6895,6 +8624,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.5909
+C16_order = 0.7567
+C16_corr = 0.4814
+C16_corr_censored = true
+C16_parallel = 0.7685
+C16_banded = 0.8618
+C15_curv = 0.0357
+C15_curv_high = 0.2404
+C15_corners = 0
+C14_density = 0.5283
+C14_ends = 27
+C14_junctions = 0
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-13-34621074542]
 verdict = "forms"
@@ -6943,6 +8691,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-14-34743267776]
 verdict = "forms"
@@ -6991,6 +8758,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.7491
+C16_order = 0.2882
+C16_corr = 0.1805
+C16_corr_censored = false
+C16_parallel = 0.1428
+C16_banded = 0.9456
+C15_curv = 0.1185
+C15_curv_high = 0.375
+C15_corners = 1
+C14_density = 0.304
+C14_ends = 41
+C14_junctions = 1
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-15-34397930990]
 verdict = "forms"
@@ -7115,6 +8901,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = 0.0376
+C12_near = 0.0607
+C13_sets = 0
+C13_depth = 1
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 2
+C16_coherence = 0.7315
+C16_order = 0.3197
+C16_corr = 0.1553
+C16_corr_censored = false
+C16_parallel = 0.0174
+C16_banded = 0.905
+C15_curv = 0.0701
+C15_curv_high = 0.1739
+C15_corners = 4
+C14_density = 0.3012
+C14_ends = 783
+C14_junctions = 48
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-16-34783567065]
 verdict = "forms"
@@ -7164,6 +8969,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.7778
+C16_order = 0.4443
+C16_corr = 0.1997
+C16_corr_censored = false
+C16_parallel = 0.1
+C16_banded = 0.9374
+C15_curv = 0.038
+C15_curv_high = 0.1426
+C15_corners = 5
+C14_density = 0.438
+C14_ends = 1378
+C14_junctions = 80
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-17-34743255036]
 verdict = "forms"
@@ -7214,6 +9038,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.2629
+C16_order = 0.8315
+C16_corr = 0.4968
+C16_corr_censored = true
+C16_parallel = 0.1562
+C16_banded = 0.3879
+C15_curv = 0.0437
+C15_curv_high = 0.0946
+C15_corners = 0
+C14_density = 0.7215
+C14_ends = 108
+C14_junctions = 8
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-3-34397979740]
 verdict = "forms"
@@ -7263,6 +9106,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.2407
+C16_order = 0.9781
+C16_corr = 0.4859
+C16_corr_censored = true
+C16_parallel = 1.0
+C16_banded = 0.3052
+C15_curv = 0.0279
+C15_curv_high = 0.0787
+C15_corners = 0
+C14_density = 0.7818
+C14_ends = 89
+C14_junctions = 6
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-4-33974568193]
 verdict = "forms"
@@ -7396,6 +9258,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = 0.0071
+C12_near = 0.6403
+C13_sets = 0
+C13_depth = 2
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 2
+C16_coherence = 0.6917
+C16_order = 0.3363
+C16_corr = 0.1515
+C16_corr_censored = false
+C16_parallel = 0.2199
+C16_banded = 0.9003
+C15_curv = 0.0556
+C15_curv_high = 0.2138
+C15_corners = 6
+C14_density = 0.4098
+C14_ends = 990
+C14_junctions = 49
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-5-34651181261]
 verdict = "forms"
@@ -7446,6 +9327,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-6-34651179201]
 verdict = "forms"
@@ -7495,6 +9395,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-7-34743298056]
 verdict = "forms"
@@ -7542,6 +9461,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-8-34651174951]
 verdict = "forms"
@@ -7591,6 +9529,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-nodule-lake-superior-agate-jo-daviess-county-illinois-usa-9-34651173151]
 verdict = "forms"
@@ -7725,6 +9682,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = 0.0899
+C12_near = 0.188
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 2
+C16_coherence = 0.8488
+C16_order = 0.2399
+C16_corr = 0.216
+C16_corr_censored = false
+C16_parallel = 0.0573
+C16_banded = 0.9746
+C15_curv = 0.0406
+C15_curv_high = 0.1259
+C15_corners = 3
+C14_density = 0.3878
+C14_ends = 1281
+C14_junctions = 56
 
 [images.agate-nowy-kosicol-poland-31912720284]
 verdict = "forms"
@@ -7775,6 +9751,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-panoramio-brandon-menth]
 verdict = "forms"
@@ -7889,6 +9884,25 @@ N_rule_gap = [
     1.0,
     1.0,
 ]
+C12_corr = -0.141
+C12_near = -0.6984
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.6436
+C16_order = 0.4957
+C16_corr = 0.2344
+C16_corr_censored = false
+C16_parallel = 0.1333
+C16_banded = 0.9064
+C15_curv = 0.072
+C15_curv_high = 0.2075
+C15_corners = 1
+C14_density = 0.5793
+C14_ends = 263
+C14_junctions = 15
 
 [images.agate-panoramio-brandon-menth-1]
 verdict = "forms"
@@ -7938,6 +9952,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-quartz-filled-geode-1-32164187660]
 verdict = "forms"
@@ -7990,6 +10023,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.4162
+C16_order = 0.3413
+C16_corr = 0.1441
+C16_corr_censored = false
+C16_parallel = 0.0788
+C16_banded = 0.6861
+C15_curv = 0.0767
+C15_curv_high = 0.2634
+C15_corners = 1
+C14_density = 0.7914
+C14_ends = 145
+C14_junctions = 10
 
 [images.agate-quartz-lined-geode-4-32632020771]
 verdict = "forms"
@@ -8041,6 +10093,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.6606
+C16_order = 0.2553
+C16_corr = 0.1727
+C16_corr_censored = false
+C16_parallel = 0.0051
+C16_banded = 0.8046
+C15_curv = 0.0532
+C15_curv_high = 0.1647
+C15_corners = 8
+C14_density = 0.6136
+C14_ends = 1078
+C14_junctions = 53
 
 [images.agate-quartz-lined-geode-5-32375570960]
 verdict = "forms"
@@ -8092,6 +10163,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.3124
+C16_order = 0.3413
+C16_corr = 0.0828
+C16_corr_censored = false
+C16_parallel = 0.0467
+C16_banded = 0.4447
+C15_curv = 0.0574
+C15_curv_high = 0.1502
+C15_corners = 2
+C14_density = 0.8172
+C14_ends = 725
+C14_junctions = 59
 
 [images.agate-quartz-lined-geode-dryhead-montana-usa-1-32755917835]
 verdict = "forms"
@@ -8145,6 +10235,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-quartz-lined-geode-dryhead-montana-usa-2-31912720794]
 verdict = "forms"
@@ -8197,6 +10306,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-quartz-lined-geode-dryhead-montana-usa-3-31971016393]
 verdict = "forms"
@@ -8248,6 +10376,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-rio-grande-do-sul-caillois-donation-mnhn-n10]
 verdict = "forms"
@@ -8301,6 +10448,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.5741
+C16_order = 0.0646
+C16_corr = 0.0885
+C16_corr_censored = false
+C16_parallel = 0.0063
+C16_banded = 0.7701
+C15_curv = 0.0773
+C15_curv_high = 0.2449
+C15_corners = 3
+C14_density = 0.4711
+C14_ends = 730
+C14_junctions = 52
 
 [images.agate-rio-grande-do-sul-caillois-donation-mnhn-n14]
 verdict = "forms"
@@ -8353,6 +10519,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-rio-grande-do-sul-caillois-donation-mnhn-n20]
 verdict = "forms"
@@ -8403,6 +10588,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.62
+C16_order = 0.9812
+C16_corr = 0.4975
+C16_corr_censored = true
+C16_parallel = 1.0
+C16_banded = 0.9802
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-rio-grande-do-sul-caillois-donation-mnhn-n25]
 verdict = "forms"
@@ -8453,6 +10657,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-sio2-25505269264]
 verdict = "forms"
@@ -8567,6 +10790,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = 0.6953
+C12_near = 0.7163
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.5473
+C16_order = 0.5981
+C16_corr = 0.165
+C16_corr_censored = false
+C16_parallel = 0.0654
+C16_banded = 0.8059
+C15_curv = 0.0716
+C15_curv_high = 0.2008
+C15_corners = 3
+C14_density = 0.701
+C14_ends = 481
+C14_junctions = 26
 
 [images.agate-sio2-from-brazil-50583624161]
 verdict = "forms"
@@ -8681,6 +10923,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.0819
+C12_near = 0.1536
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.455
+C16_order = 0.3792
+C16_corr = 0.0863
+C16_corr_censored = false
+C16_parallel = 0.0076
+C16_banded = 0.7388
+C15_curv = 0.0703
+C15_curv_high = 0.2104
+C15_corners = 9
+C14_density = 0.7501
+C14_ends = 1547
+C14_junctions = 86
 
 [images.agate-tertiary-agate-bay-king-george-island-south-shetland-islands-1]
 verdict = "forms"
@@ -8730,6 +10991,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-wave-hill-australia-5-32755915795]
 verdict = "forms"
@@ -8779,6 +11059,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate-with-uruguay-type-banding-om1-077a]
 verdict = "forms"
@@ -8828,6 +11127,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.8788
+C16_order = 0.992
+C16_corr = 0.4935
+C16_corr_censored = true
+C16_parallel = 0.8028
+C16_banded = 1.0
+C15_curv = 0.0191
+C15_curv_high = 0.0479
+C15_corners = 0
+C14_density = 0.2065
+C14_ends = 32
+C14_junctions = 1
 
 [images.agate-with-uruguay-type-banding-om1-078a]
 verdict = "forms"
@@ -8947,6 +11265,25 @@ N_rule_gap = [
     0.0,
     0.0,
 ]
+C12_corr = -0.5891
+C12_near = 0.6044
+C13_sets = 0
+C13_depth = 1
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.8128
+C16_order = 0.6561
+C16_corr = 0.4967
+C16_corr_censored = true
+C16_parallel = 0.3292
+C16_banded = 0.9719
+C15_curv = 0.0351
+C15_curv_high = 0.1379
+C15_corners = 1
+C14_density = 0.3848
+C14_ends = 315
+C14_junctions = 32
 
 [images.agate1-hg]
 verdict = "forms"
@@ -9064,6 +11401,25 @@ N_rule_gap = [
     0.0,
     0.0,
 ]
+C12_corr = 0.6229
+C12_near = 0.959
+C13_sets = 0
+C13_depth = 1
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 2
+C16_coherence = 0.8727
+C16_order = 0.3258
+C16_corr = 0.2145
+C16_corr_censored = false
+C16_parallel = 0.0356
+C16_banded = 0.9885
+C15_curv = 0.0741
+C15_curv_high = 0.1664
+C15_corners = 3
+C14_density = 0.1751
+C14_ends = 167
+C14_junctions = 13
 
 [images.agate3-hg]
 verdict = "forms"
@@ -9181,6 +11537,25 @@ N_rule_gap = [
     0.0,
     0.0,
 ]
+C12_corr = -0.587
+C12_near = -0.6775
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.7524
+C16_order = 0.3618
+C16_corr = 0.2244
+C16_corr_censored = false
+C16_parallel = 0.0169
+C16_banded = 0.9313
+C15_curv = 0.0885
+C15_curv_high = 0.2023
+C15_corners = 2
+C14_density = 0.2261
+C14_ends = 154
+C14_junctions = 15
 
 [images.agate3-hg-cropped]
 verdict = "forms"
@@ -9232,6 +11607,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.71
+C16_order = 0.6165
+C16_corr = 0.3426
+C16_corr_censored = false
+C16_parallel = 0.292
+C16_banded = 0.9196
+C15_curv = 0.1045
+C15_curv_high = 0.2679
+C15_corners = 0
+C14_density = 0.4581
+C14_ends = 19
+C14_junctions = 1
 
 [images.agate4-hg]
 verdict = "forms"
@@ -9279,6 +11673,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.agate5-hg]
 verdict = "forms"
@@ -9404,6 +11817,25 @@ N_rule_gap = [
     0.75,
     0.0,
 ]
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.8323
+C16_order = 0.0571
+C16_corr = 0.1905
+C16_corr_censored = false
+C16_parallel = 0.0055
+C16_banded = 0.9754
+C15_curv = 0.1013
+C15_curv_high = 0.2215
+C15_corners = 1
+C14_density = 0.3637
+C14_ends = 243
+C14_junctions = 10
 
 [images.agate7-hg]
 verdict = "forms"
@@ -9453,6 +11885,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.5589
+C16_order = 0.1757
+C16_corr = 0.0884
+C16_corr_censored = false
+C16_parallel = 0.1553
+C16_banded = 0.7598
+C15_curv = 0.0438
+C15_curv_high = 0.145
+C15_corners = 6
+C14_density = 0.6095
+C14_ends = 1291
+C14_junctions = 58
 
 [images.agate8-hg]
 verdict = "forms"
@@ -9500,6 +11951,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.6824
+C16_order = 0.1393
+C16_corr = 0.128
+C16_corr_censored = false
+C16_parallel = 0.0047
+C16_banded = 0.909
+C15_curv = 0.049
+C15_curv_high = 0.1776
+C15_corners = 16
+C14_density = 0.5448
+C14_ends = 4384
+C14_junctions = 256
 
 [images.amethyst-bergkristall-achat-scheibe-aus-schlottwitz-sachsen]
 verdict = "forms"
@@ -9620,6 +12090,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.0107
+C12_near = 0.3019
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 3
+C16_coherence = 0.6285
+C16_order = 0.4995
+C16_corr = 0.17
+C16_corr_censored = false
+C16_parallel = 0.0061
+C16_banded = 0.8768
+C15_curv = 0.0515
+C15_curv_high = 0.177
+C15_corners = 11
+C14_density = 0.6041
+C14_ends = 2374
+C14_junctions = 116
 
 [images.apache-flame-agate-chihuahua-mexico-33716719924]
 verdict = "forms"
@@ -9668,6 +12157,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.7833
+C16_order = 0.2116
+C16_corr = 0.1548
+C16_corr_censored = false
+C16_parallel = 0.0124
+C16_banded = 0.926
+C15_curv = 0.0546
+C15_curv_high = 0.1559
+C15_corners = 8
+C14_density = 0.3643
+C14_ends = 1275
+C14_junctions = 59
 
 [images.banded-agate-artigas-or-rio-grande-do-sul-caillois-donation-mnhn-n01]
 verdict = "forms"
@@ -9719,6 +12227,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.banded-agate-artigas-or-rio-grande-do-sul-caillois-donation-mnhn-n02]
 verdict = "forms"
@@ -9770,6 +12297,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.banded-agate-from-mexico-cropped]
 verdict = "forms"
@@ -9819,6 +12365,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.6941
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = false
+C16_parallel = "unknown"
+C16_banded = 1.0
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.beach-agate-with-sagenite-from-central-oregon-coast-near-newport-and-yachats-ore]
 verdict = "forms"
@@ -9869,6 +12434,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.4228
+C16_order = 0.5375
+C16_corr = 0.1564
+C16_corr_censored = false
+C16_parallel = 0.2046
+C16_banded = 0.694
+C15_curv = 0.0678
+C15_curv_high = 0.2117
+C15_corners = 1
+C14_density = 0.511
+C14_ends = 89
+C14_junctions = 9
 
 [images.berschweiler-agate-near-trier-germany-31942571364]
 verdict = "forms"
@@ -9919,6 +12503,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.7495
+C16_order = 0.6788
+C16_corr = 0.4977
+C16_corr_censored = true
+C16_parallel = 0.1166
+C16_banded = 0.8992
+C15_curv = 0.0517
+C15_curv_high = 0.1471
+C15_corners = 2
+C14_density = 0.4305
+C14_ends = 302
+C14_junctions = 12
 
 [images.blue-lace-agate-geode]
 verdict = "forms"
@@ -10034,6 +12637,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.5536
+C16_order = 0.1487
+C16_corr = 0.121
+C16_corr_censored = false
+C16_parallel = 0.0395
+C16_banded = 0.7672
+C15_curv = 0.0769
+C15_curv_high = 0.1786
+C15_corners = 4
+C14_density = 0.7277
+C14_ends = 1100
+C14_junctions = 66
 
 [images.brazilian-agate-section]
 verdict = "forms"
@@ -10149,6 +12771,25 @@ N_rule_gap = [
     0.0,
     0.0,
 ]
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 1
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.778
+C16_order = 0.7474
+C16_corr = 0.4994
+C16_corr_censored = true
+C16_parallel = 0.1845
+C16_banded = 0.9816
+C15_curv = 0.0542
+C15_curv_high = 0.1676
+C15_corners = 0
+C14_density = 0.4767
+C14_ends = 371
+C14_junctions = 11
 
 [images.brazilian-agate-section-detail]
 verdict = "forms"
@@ -10199,6 +12840,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.center-detail-quartz-uruguay-dation-caillois-cropped]
 verdict = "forms"
@@ -10246,6 +12906,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.8428
+C16_order = 0.0301
+C16_corr = 0.1894
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.9751
+C15_curv = 0.2187
+C15_curv_high = 0.4151
+C15_corners = 0
+C14_density = 0.0
+C14_ends = 0
+C14_junctions = 0
 
 [images.collector-1-b1-1]
 verdict = "forms"
@@ -10257,19 +12936,19 @@ features = [
     "open cavity",
     "quartz core",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "found"
 outline_check = "yes"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "borderline"
@@ -10367,6 +13046,25 @@ N_rule_gap = [
     0.25,
     0.0,
 ]
+C12_corr = -0.0809
+C12_near = 0.4825
+C13_sets = 0
+C13_depth = 2
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.8638
+C16_order = 0.0488
+C16_corr = 0.2042
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.9857
+C15_curv = 0.0731
+C15_curv_high = 0.1581
+C15_corners = 1
+C14_density = 0.2798
+C14_ends = 314
+C14_junctions = 17
 
 [images.collector-1-b1-2]
 verdict = "forms"
@@ -10378,19 +13076,19 @@ features = [
     "quartz core",
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "found"
 outline_check = "yes"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "borderline"
@@ -10488,6 +13186,25 @@ N_rule_gap = [
     0.0,
     0.0,
 ]
+C12_corr = 0.1411
+C12_near = 0.3297
+C13_sets = 0
+C13_depth = 3
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.8471
+C16_order = 0.044
+C16_corr = 0.2026
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.9779
+C15_curv = 0.0837
+C15_curv_high = 0.1612
+C15_corners = 1
+C14_density = 0.2765
+C14_ends = 229
+C14_junctions = 15
 
 [images.collector-1-b1-3]
 verdict = "forms"
@@ -10499,19 +13216,19 @@ features = [
     "quartz core",
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "found"
 outline_check = "no"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "borderline"
@@ -10539,6 +13256,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.7513
+C16_order = 0.0791
+C16_corr = 0.1911
+C16_corr_censored = false
+C16_parallel = 0.0001
+C16_banded = 0.9286
+C15_curv = 0.0699
+C15_curv_high = 0.1453
+C15_corners = 2
+C14_density = 0.4921
+C14_ends = 701
+C14_junctions = 30
 
 [images.collector-1-b1-4]
 verdict = "forms"
@@ -10550,19 +13286,19 @@ features = [
     "quartz core",
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "found"
 outline_check = "no"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "not fit"
@@ -10590,6 +13326,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.collector-1-b1-5]
 verdict = "forms"
@@ -10601,9 +13356,9 @@ features = [
     "quartz core",
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
 C22_fill = "unknown"
@@ -10613,7 +13368,7 @@ C22_count = "unknown"
 rim = "none: implausible"
 outline_check = "unknown"
 outline_by = "unknown"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "borderline"
@@ -10641,6 +13396,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.793
+C16_order = 0.1277
+C16_corr = 0.1954
+C16_corr_censored = false
+C16_parallel = 0.0022
+C16_banded = 0.9832
+C15_curv = 0.1586
+C15_curv_high = 0.2906
+C15_corners = 0
+C14_density = 0.4734
+C14_ends = 101
+C14_junctions = 3
 
 [images.collector-1-b2-a1]
 verdict = "forms"
@@ -10650,19 +13424,19 @@ forms = [
 features = [
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "none: implausible"
 outline_check = "unknown"
 outline_by = "unknown"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "borderline"
@@ -10690,6 +13464,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.885
+C16_order = 0.1974
+C16_corr = 0.1981
+C16_corr_censored = false
+C16_parallel = 0.0051
+C16_banded = 0.9934
+C15_curv = 0.0722
+C15_curv_high = 0.1915
+C15_corners = 2
+C14_density = 0.1434
+C14_ends = 214
+C14_junctions = 7
 
 [images.collector-1-b2-a2]
 verdict = "forms"
@@ -10699,19 +13492,19 @@ forms = [
 features = [
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "found"
 outline_check = "yes"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "not fit"
@@ -10739,6 +13532,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.collector-1-b2-a3]
 verdict = "forms"
@@ -10748,19 +13560,19 @@ forms = [
 features = [
     "polished",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "found"
 outline_check = "yes"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "not fit"
@@ -10788,6 +13600,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.collector-1-b2-b1]
 verdict = "forms"
@@ -10797,9 +13628,9 @@ forms = [
 features = [
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
 C22_fill = "unknown"
@@ -10809,7 +13640,7 @@ C22_count = "unknown"
 rim = "none: no-object"
 outline_check = "unknown"
 outline_by = "unknown"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "borderline"
@@ -10837,6 +13668,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.8746
+C16_order = 0.314
+C16_corr = 0.2081
+C16_corr_censored = false
+C16_parallel = 0.0205
+C16_banded = 0.9935
+C15_curv = 0.0806
+C15_curv_high = 0.2254
+C15_corners = 2
+C14_density = 0.297
+C14_ends = 207
+C14_junctions = 6
 
 [images.collector-1-b2-b2]
 verdict = "forms"
@@ -10846,9 +13696,9 @@ forms = [
 features = [
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
 C22_fill = "unknown"
@@ -10858,7 +13708,7 @@ C22_count = "unknown"
 rim = "none: implausible"
 outline_check = "unknown"
 outline_by = "unknown"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "borderline"
@@ -10886,6 +13736,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.7296
+C16_order = 0.2294
+C16_corr = 0.1931
+C16_corr_censored = false
+C16_parallel = 0.0046
+C16_banded = 0.9405
+C15_curv = 0.0525
+C15_curv_high = 0.145
+C15_corners = 3
+C14_density = 0.5174
+C14_ends = 1506
+C14_junctions = 67
 
 [images.collector-1-b2-b3]
 verdict = "forms"
@@ -10895,9 +13764,9 @@ forms = [
 features = [
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
 C22_fill = "unknown"
@@ -10907,7 +13776,7 @@ C22_count = "unknown"
 rim = "found"
 outline_check = "yes"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "not fit"
@@ -10935,6 +13804,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.collector-1-b2-c1]
 verdict = "forms"
@@ -10945,19 +13833,19 @@ forms = [
 features = [
     "quartz core",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "none: cut-off"
 outline_check = "unknown"
 outline_by = "unknown"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "borderline"
@@ -10985,6 +13873,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.7642
+C16_order = 0.0434
+C16_corr = 0.1134
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.9205
+C15_curv = 0.0551
+C15_curv_high = 0.1464
+C15_corners = 22
+C14_density = 0.4183
+C14_ends = 4222
+C14_junctions = 193
 
 [images.collector-1-b2-c2]
 verdict = "forms"
@@ -10995,19 +13902,19 @@ forms = [
 features = [
     "quartz core",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "found"
 outline_check = "yes"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "borderline"
@@ -11115,6 +14022,25 @@ N_rule_gap = [
     0.0,
     0.0,
 ]
+C12_corr = 0.2978
+C12_near = 0.7047
+C13_sets = 1
+C13_depth = 4
+C13_drift = 0.077
+C13_complete = 0.5873
+C13_wedges = 3
+C16_coherence = 0.7954
+C16_order = 0.1576
+C16_corr = 0.196
+C16_corr_censored = false
+C16_parallel = 0.0001
+C16_banded = 0.9289
+C15_curv = 0.0523
+C15_curv_high = 0.1388
+C15_corners = 15
+C14_density = 0.4201
+C14_ends = 2425
+C14_junctions = 110
 
 [images.collector-1-b2-c3]
 verdict = "forms"
@@ -11125,19 +14051,19 @@ forms = [
 features = [
     "quartz core",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "found"
 outline_check = "yes"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "borderline"
@@ -11240,6 +14166,25 @@ N_rule_gap = [
     0.0,
     0.0,
 ]
+C12_corr = 0.1827
+C12_near = 0.2715
+C13_sets = 1
+C13_depth = 4
+C13_drift = 0.114
+C13_complete = 0.4153
+C13_wedges = 6
+C16_coherence = 0.7818
+C16_order = 0.0959
+C16_corr = 0.187
+C16_corr_censored = false
+C16_parallel = 0.0001
+C16_banded = 0.931
+C15_curv = 0.0546
+C15_curv_high = 0.1435
+C15_corners = 12
+C14_density = 0.4768
+C14_ends = 2609
+C14_junctions = 93
 
 [images.collector-1-b2-d1]
 verdict = "forms"
@@ -11253,19 +14198,19 @@ features = [
     "inclusions",
     "host rock",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
-C5_rind = "unknown"
+C5_rind = "spherulitic shell"
 C22_fill = "unknown"
 C22_offset = "unknown"
-C5_width = "unknown"
+C5_width = 0.06
 C22_count = "unknown"
 rim = "found"
 outline_check = "yes"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "not fit"
@@ -11293,6 +14238,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.collector-1-b2-d2]
 verdict = "forms"
@@ -11305,19 +14269,19 @@ features = [
     "inclusions",
     "host rock",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
-C5_rind = "unknown"
+C5_rind = "spherulitic shell"
 C22_fill = "unknown"
 C22_offset = "unknown"
-C5_width = "unknown"
+C5_width = 0.06
 C22_count = "unknown"
 rim = "found"
 outline_check = "yes"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "borderline"
@@ -11425,6 +14389,25 @@ N_rule_gap = [
     0.0,
     0.0,
 ]
+C12_corr = -0.2388
+C12_near = -0.3928
+C13_sets = 0
+C13_depth = 1
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 15
+C16_coherence = 0.667
+C16_order = 0.0372
+C16_corr = 0.1657
+C16_corr_censored = false
+C16_parallel = 0.0009
+C16_banded = 0.8602
+C15_curv = 0.0535
+C15_curv_high = 0.1715
+C15_corners = 14
+C14_density = 0.5593
+C14_ends = 4453
+C14_junctions = 225
 
 [images.collector-1-b2-e1]
 verdict = "forms"
@@ -11437,19 +14420,19 @@ features = [
     "host rock",
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
 C22_fill = "unknown"
-C22_offset = "unknown"
+C22_offset = "no"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 4
 rim = "none: cut-off"
 outline_check = "unknown"
 outline_by = "unknown"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "borderline"
@@ -11477,6 +14460,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.743
+C16_order = 0.073
+C16_corr = 0.1093
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.9327
+C15_curv = 0.066
+C15_curv_high = 0.182
+C15_corners = 11
+C14_density = 0.4536
+C14_ends = 1741
+C14_junctions = 91
 
 [images.collector-1-b2-e2]
 verdict = "forms"
@@ -11489,19 +14491,19 @@ features = [
     "host rock",
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
 C22_fill = "unknown"
-C22_offset = "unknown"
+C22_offset = "no"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 3
 rim = "found"
 outline_check = "yes"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "fit"
@@ -11609,6 +14611,25 @@ N_rule_gap = [
     0.0,
     0.0,
 ]
+C12_corr = -0.0592
+C12_near = -0.0537
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 6
+C16_coherence = 0.7775
+C16_order = 0.093
+C16_corr = 0.1793
+C16_corr_censored = false
+C16_parallel = 0.0012
+C16_banded = 0.9409
+C15_curv = 0.0549
+C15_curv_high = 0.1674
+C15_corners = 9
+C14_density = 0.4917
+C14_ends = 3015
+C14_junctions = 163
 
 [images.collector-1-b2-e3]
 verdict = "forms"
@@ -11621,19 +14642,19 @@ features = [
     "open cavity",
     "host rock",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
 C22_fill = "unknown"
-C22_offset = "unknown"
+C22_offset = "no"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 3
 rim = "found"
 outline_check = "yes"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "borderline"
@@ -11736,6 +14757,25 @@ N_rule_gap = [
     0.5,
     0.0,
 ]
+C12_corr = 0.0151
+C12_near = 0.2224
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.7706
+C16_order = 0.1441
+C16_corr = 0.1961
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.9349
+C15_curv = 0.0573
+C15_curv_high = 0.1656
+C15_corners = 5
+C14_density = 0.4564
+C14_ends = 1485
+C14_junctions = 75
 
 [images.collector-1-b2-f1]
 verdict = "forms"
@@ -11747,19 +14787,19 @@ features = [
     "open cavity",
     "quartz core",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
 C22_fill = "unknown"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 1
 rim = "found"
 outline_check = "no"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "not fit"
@@ -11787,6 +14827,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.collector-1-b2-f2]
 verdict = "forms"
@@ -11799,19 +14858,19 @@ features = [
     "polished",
     "quartz core",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "none: implausible"
 outline_check = "unknown"
 outline_by = "unknown"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "not fit"
@@ -11839,6 +14898,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.collector-1-b2-f3]
 verdict = "forms"
@@ -11850,19 +14928,19 @@ features = [
     "open cavity",
     "quartz core",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
 C22_fill = "unknown"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 1
 rim = "none: cut-off"
 outline_check = "unknown"
 outline_by = "unknown"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "not fit"
@@ -11890,6 +14968,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.collector-1-b2-g1]
 verdict = "forms"
@@ -11901,19 +14998,19 @@ features = [
     "quartz core",
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "found"
 outline_check = "no"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "not fit"
@@ -11941,6 +15038,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.collector-1-b2-g2]
 verdict = "forms"
@@ -11952,19 +15068,19 @@ features = [
     "quartz core",
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "found"
 outline_check = "yes"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "not fit"
@@ -11992,6 +15108,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.collector-1-b2-g3]
 verdict = "forms"
@@ -12003,19 +15138,19 @@ features = [
     "quartz core",
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "none: cut-off"
 outline_check = "unknown"
 outline_by = "unknown"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "not fit"
@@ -12043,6 +15178,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.collector-1-b2-h1]
 verdict = "forms"
@@ -12053,9 +15207,9 @@ forms = [
 features = [
     "quartz core",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
 C22_fill = "unknown"
@@ -12065,7 +15219,7 @@ C22_count = "unknown"
 rim = "found"
 outline_check = "no"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "not fit"
@@ -12093,6 +15247,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.collector-1-b2-h2]
 verdict = "forms"
@@ -12103,19 +15276,19 @@ forms = [
 features = [
     "quartz core",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "none: cut-off"
 outline_check = "unknown"
 outline_by = "unknown"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "not fit"
@@ -12143,6 +15316,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.collector-1-b2-h3]
 verdict = "forms"
@@ -12151,19 +15343,19 @@ forms = [
     "eye",
 ]
 features = []
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
 C22_fill = "unknown"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 1
 rim = "found"
 outline_check = "yes"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "fit"
@@ -12266,6 +15458,25 @@ N_rule_gap = [
     0.5,
     0.0,
 ]
+C12_corr = 0.0397
+C12_near = -0.0559
+C13_sets = 0
+C13_depth = 1
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 4
+C16_coherence = 0.765
+C16_order = 0.1556
+C16_corr = 0.12
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.9551
+C15_curv = 0.0701
+C15_curv_high = 0.1933
+C15_corners = 16
+C14_density = 0.619
+C14_ends = 3866
+C14_junctions = 142
 
 [images.collector-1-b2-i1]
 verdict = "forms"
@@ -12275,19 +15486,19 @@ forms = [
 features = [
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "found"
 outline_check = "no"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "not fit"
@@ -12315,6 +15526,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.collector-1-b2-i2]
 verdict = "forms"
@@ -12324,19 +15554,19 @@ forms = [
 features = [
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "found"
 outline_check = "yes"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "not fit"
@@ -12364,6 +15594,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.collector-1-b2-i3]
 verdict = "forms"
@@ -12373,19 +15622,19 @@ forms = [
 features = [
     "open cavity",
 ]
-view_kind = "unknown"
-finish = "unknown"
-lighting = "unknown"
+view_kind = "cut face"
+finish = "sawn"
+lighting = "reflected"
 C4_surface = "unknown"
 C5_rind = "unknown"
-C22_fill = "unknown"
+C22_fill = "none"
 C22_offset = "unknown"
 C5_width = "unknown"
-C22_count = "unknown"
+C22_count = 0
 rim = "found"
 outline_check = "yes"
 outline_by = "helper"
-labels_by = "unknown"
+labels_by = "owner, checked"
 C6_eye = "unknown"
 scale = "none"
 shape_gate = "not fit"
@@ -12413,6 +15662,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.crazy-lace-agate-11-cropped]
 verdict = "forms"
@@ -12462,6 +15730,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.4541
+C16_order = 0.4768
+C16_corr = 0.2321
+C16_corr_censored = false
+C16_parallel = 0.1566
+C16_banded = 0.7568
+C15_curv = 0.1031
+C15_curv_high = 0.3009
+C15_corners = 0
+C14_density = 0.5106
+C14_ends = 25
+C14_junctions = 2
 
 [images.crazy-lace-agate-3-cropped]
 verdict = "forms"
@@ -12511,6 +15798,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.5462
+C16_order = 0.1823
+C16_corr = 0.0772
+C16_corr_censored = false
+C16_parallel = 0.0018
+C16_banded = 0.8436
+C15_curv = 0.115
+C15_curv_high = 0.3392
+C15_corners = 6
+C14_density = 0.6809
+C14_ends = 583
+C14_junctions = 37
 
 [images.czech025]
 verdict = "forms"
@@ -12565,6 +15871,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.dendritic-agate-cropped]
 verdict = "forms"
@@ -12612,6 +15937,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.4825
+C16_order = 0.8322
+C16_corr = 0.2781
+C16_corr_censored = false
+C16_parallel = 0.5
+C16_banded = 0.8605
+C15_curv = 0.0464
+C15_curv_high = 0.1043
+C15_corners = 0
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.dendritic-agate-with-three-dendrite-occurances]
 verdict = "forms"
@@ -12734,6 +16078,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = 0.0084
+C12_near = 0.0084
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.5073
+C16_order = 0.2974
+C16_corr = 0.1542
+C16_corr_censored = false
+C16_parallel = 0.0297
+C16_banded = 0.7647
+C15_curv = 0.0803
+C15_curv_high = 0.2037
+C15_corners = 0
+C14_density = 0.4286
+C14_ends = 244
+C14_junctions = 17
 
 [images.detail-agat-lake-superior-duluth-minnesota-usa-cropped]
 verdict = "forms"
@@ -12784,6 +16147,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.4679
+C16_order = 0.2979
+C16_corr = 0.2409
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.8094
+C15_curv = 0.2604
+C15_curv_high = 0.4575
+C15_corners = 0
+C14_density = 0.8825
+C14_ends = 11
+C14_junctions = 0
 
 [images.detail-agat-lake-superior-stan-minnesota-usa-cropped]
 verdict = "forms"
@@ -12831,6 +16213,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.detail-agat-ognisty-calvillo-aguascalientes-meksyk-cropped]
 verdict = "forms"
@@ -12882,6 +16283,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.details-agat-lake-superior-agat-z-jez-gornego-minnesota-usa-cropped]
 verdict = "forms"
@@ -12929,6 +16349,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.4775
+C16_order = 0.6718
+C16_corr = 0.496
+C16_corr_censored = true
+C16_parallel = 0.2088
+C16_banded = 0.7514
+C15_curv = 0.0563
+C15_curv_high = 0.1833
+C15_corners = 0
+C14_density = 0.6471
+C14_ends = 87
+C14_junctions = 1
 
 [images.details-agat-lake-superior-stan-minnesota-usa-cropped]
 verdict = "forms"
@@ -12976,6 +16415,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.dugway-geode-juab-county-utah-usa-1-34540239846]
 verdict = "forms"
@@ -13103,6 +16561,25 @@ N_rule_gap = [
     0.75,
     0.0,
 ]
+C12_corr = 0.0993
+C12_near = -0.0787
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.5055
+C16_order = 0.1056
+C16_corr = 0.0922
+C16_corr_censored = false
+C16_parallel = 0.0034
+C16_banded = 0.7878
+C15_curv = 0.0646
+C15_curv_high = 0.2039
+C15_corners = 10
+C14_density = 0.8052
+C14_ends = 2276
+C14_junctions = 138
 
 [images.dugway-geode-juab-county-utah-usa-2-34581522545]
 verdict = "forms"
@@ -13155,6 +16632,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.6413
+C16_order = 0.1907
+C16_corr = 0.128
+C16_corr_censored = false
+C16_parallel = 0.0037
+C16_banded = 0.892
+C15_curv = 0.0914
+C15_curv_high = 0.2478
+C15_corners = 4
+C14_density = 0.4485
+C14_ends = 275
+C14_junctions = 9
 
 [images.earth-and-man-agate]
 verdict = "forms"
@@ -13206,6 +16702,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.6957
+C16_order = 0.8497
+C16_corr = 0.4939
+C16_corr_censored = true
+C16_parallel = 0.7416
+C16_banded = 1.0
+C15_curv = 0.0987
+C15_curv_high = 0.139
+C15_corners = 0
+C14_density = 1.1158
+C14_ends = 17
+C14_junctions = 1
 
 [images.estonian-museum-of-natural-history-specimen-no-174648-photo-g286-g286-24-jpg]
 verdict = "forms"
@@ -13256,6 +16771,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.467
+C16_order = 0.2643
+C16_corr = 0.2107
+C16_corr_censored = false
+C16_parallel = 0.1235
+C16_banded = 0.7584
+C15_curv = 0.0788
+C15_curv_high = 0.2311
+C15_corners = 0
+C14_density = 0.8858
+C14_ends = 54
+C14_junctions = 1
 
 [images.estonian-museum-of-natural-history-specimen-no-174649-photo-g286-g286-25-1-jpg]
 verdict = "forms"
@@ -13383,6 +16917,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = 0.3194
+C12_near = 0.6809
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.7502
+C16_order = 0.5983
+C16_corr = 0.4051
+C16_corr_censored = false
+C16_parallel = 0.2794
+C16_banded = 0.9657
+C15_curv = 0.032
+C15_curv_high = 0.1412
+C15_corners = 2
+C14_density = 0.563
+C14_ends = 958
+C14_junctions = 44
 
 [images.estonian-museum-of-natural-history-specimen-no-174692-photo-g286-g286-68-1-jpg]
 verdict = "forms"
@@ -13433,6 +16986,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.estonian-museum-of-natural-history-specimen-no-176133-photo-g244-g244-9-1-jpg]
 verdict = "forms"
@@ -13484,6 +17056,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.estonian-museum-of-natural-history-specimen-no-178064-photo-g229-g229-427-jpg]
 verdict = "forms"
@@ -13613,6 +17204,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.7868
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.4023
+C16_order = 0.2103
+C16_corr = 0.1287
+C16_corr_censored = false
+C16_parallel = 0.0042
+C16_banded = 0.6883
+C15_curv = 0.0817
+C15_curv_high = 0.2049
+C15_corners = 1
+C14_density = 0.6158
+C14_ends = 336
+C14_junctions = 10
 
 [images.estonian-museum-of-natural-history-specimen-no-178073-photo-g229-g229-436-jpg]
 verdict = "forms"
@@ -13743,6 +17353,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.1831
+C12_near = -0.8802
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.5044
+C16_order = 0.1043
+C16_corr = 0.1015
+C16_corr_censored = false
+C16_parallel = 0.0025
+C16_banded = 0.8048
+C15_curv = 0.0839
+C15_curv_high = 0.2543
+C15_corners = 3
+C14_density = 0.5748
+C14_ends = 497
+C14_junctions = 27
 
 [images.eye-agate-texas-usa-32775594145]
 verdict = "forms"
@@ -13796,6 +17425,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.feuerachat-fireagate-from-brazil-tumble-polished-stone]
 verdict = "forms"
@@ -13848,6 +17496,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.fire-agate]
 verdict = "forms"
@@ -13898,6 +17565,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.7143
+C16_order = 0.2057
+C16_corr = 0.1946
+C16_corr_censored = false
+C16_parallel = 0.0252
+C16_banded = 0.913
+C15_curv = 0.0719
+C15_curv_high = 0.1565
+C15_corners = 1
+C14_density = 0.4328
+C14_ends = 319
+C14_junctions = 19
 
 [images.gaillac-museum-d-histoire-naturelle-115]
 verdict = "forms"
@@ -13945,6 +17631,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = false
+C16_parallel = "unknown"
+C16_banded = 0.0
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.gdcn0024070-50192449478]
 verdict = "forms"
@@ -14057,6 +17762,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.6634
+C16_order = 0.8089
+C16_corr = 0.4993
+C16_corr_censored = true
+C16_parallel = 0.0842
+C16_banded = 0.8947
+C15_curv = 0.0646
+C15_curv_high = 0.1389
+C15_corners = 1
+C14_density = 0.4695
+C14_ends = 170
+C14_junctions = 23
 
 [images.geneva-natural-history-museum-agate]
 verdict = "forms"
@@ -14108,6 +17832,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.gestein-mit-verschiedenen-mineralen-mineralogia]
 verdict = "forms"
@@ -14158,6 +17901,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.high-grade-slaughter-mountain-arizona-fire-agate-rough]
 verdict = "forms"
@@ -14208,6 +17970,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.4741
+C16_order = 0.4172
+C16_corr = 0.106
+C16_corr_censored = false
+C16_parallel = 0.0193
+C16_banded = 0.7263
+C15_curv = 0.0767
+C15_curv_high = 0.2339
+C15_corners = 3
+C14_density = 0.4779
+C14_ends = 401
+C14_junctions = 25
 
 [images.hildesheim-roemer-und-pelizaeus-museum-achat]
 verdict = "forms"
@@ -14259,6 +18040,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.holley-blue-agate-linn-county-oregon-usa-7]
 verdict = "forms"
@@ -14370,6 +18170,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.1993
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.4296
+C16_order = 0.2425
+C16_corr = 0.0903
+C16_corr_censored = false
+C16_parallel = 0.0011
+C16_banded = 0.6966
+C15_curv = 0.0704
+C15_curv_high = 0.183
+C15_corners = 5
+C14_density = 0.9047
+C14_ends = 1471
+C14_junctions = 92
 
 [images.image]
 verdict = "forms"
@@ -14484,6 +18303,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.1462
+C12_near = 0.8117
+C13_sets = 0
+C13_depth = 1
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.7441
+C16_order = 0.6988
+C16_corr = 0.4993
+C16_corr_censored = true
+C16_parallel = 0.1268
+C16_banded = 0.8959
+C15_curv = 0.0431
+C15_curv_high = 0.1175
+C15_corners = 2
+C14_density = 0.4818
+C14_ends = 766
+C14_junctions = 45
 
 [images.image-2]
 verdict = "forms"
@@ -14595,6 +18433,25 @@ N_rule_gap = [
     0.5,
     0.0,
 ]
+C12_corr = 0.2176
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.4882
+C16_order = 0.0758
+C16_corr = 0.166
+C16_corr_censored = false
+C16_parallel = 0.0584
+C16_banded = 0.72
+C15_curv = 0.0696
+C15_curv_high = 0.1871
+C15_corners = 3
+C14_density = 0.8312
+C14_ends = 740
+C14_junctions = 51
 
 [images.image-3]
 verdict = "forms"
@@ -14647,6 +18504,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.4364
+C16_order = 0.8896
+C16_corr = 0.4933
+C16_corr_censored = true
+C16_parallel = 0.76
+C16_banded = 0.7824
+C15_curv = 0.0534
+C15_curv_high = 0.1428
+C15_corners = 0
+C14_density = 1.0962
+C14_ends = 28
+C14_junctions = 0
 
 [images.image-4]
 verdict = "forms"
@@ -14699,6 +18575,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.imgp2020360-50580579282]
 verdict = "forms"
@@ -14748,6 +18643,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.imgp2020361-50579722543]
 verdict = "forms"
@@ -14865,6 +18779,25 @@ N_rule_gap = [
     0.5,
     0.0,
 ]
+C12_corr = 0.4061
+C12_near = 0.4061
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 1
+C16_coherence = 0.5402
+C16_order = 0.5372
+C16_corr = 0.2033
+C16_corr_censored = false
+C16_parallel = 0.0303
+C16_banded = 0.7788
+C15_curv = 0.0763
+C15_curv_high = 0.197
+C15_corners = 1
+C14_density = 0.636
+C14_ends = 331
+C14_junctions = 18
 
 [images.imgp2020363-50579723983]
 verdict = "forms"
@@ -14915,6 +18848,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.imgp2020364-50580451931]
 verdict = "forms"
@@ -14964,6 +18916,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.5283
+C16_order = 0.4976
+C16_corr = 0.1778
+C16_corr_censored = false
+C16_parallel = 0.1381
+C16_banded = 0.7633
+C15_curv = 0.0716
+C15_curv_high = 0.1965
+C15_corners = 2
+C14_density = 0.6108
+C14_ends = 445
+C14_junctions = 31
 
 [images.imgp2020365-50579721383]
 verdict = "forms"
@@ -15013,6 +18984,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.5461
+C16_order = 0.2926
+C16_corr = 0.0891
+C16_corr_censored = false
+C16_parallel = 0.0723
+C16_banded = 0.7866
+C15_curv = 0.0812
+C15_curv_high = 0.2172
+C15_corners = 10
+C14_density = 0.5903
+C14_ends = 750
+C14_junctions = 51
 
 [images.iris-agate-from-agatized-petrified-wood-stinking-water-oregon-detail-from-oregon]
 verdict = "forms"
@@ -15061,6 +19051,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.7553
+C16_order = 0.4349
+C16_corr = 0.3192
+C16_corr_censored = false
+C16_parallel = 0.2076
+C16_banded = 0.9487
+C15_curv = 0.0865
+C15_curv_high = 0.1373
+C15_corners = 0
+C14_density = 0.6214
+C14_ends = 45
+C14_junctions = 3
 
 [images.iris-agate-from-agatized-petrified-wood-stinking-water-oregon-usa-detail-from-or]
 verdict = "forms"
@@ -15109,6 +19118,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.laguna-agate-chihuahua-mexico-2-32661870051]
 verdict = "forms"
@@ -15161,6 +19189,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.laguna-agate-chihuahua-mexico-3-32785167565]
 verdict = "forms"
@@ -15212,6 +19259,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.malawi-agate-malawi-southeastern-africa-32734668126]
 verdict = "forms"
@@ -15260,6 +19326,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.mexico004]
 verdict = "forms"
@@ -15309,6 +19394,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.mineral-181-hg]
 verdict = "forms"
@@ -15435,6 +19539,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.0426
+C12_near = 0.3966
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 4
+C16_coherence = 0.5727
+C16_order = 0.0619
+C16_corr = 0.0978
+C16_corr_censored = false
+C16_parallel = 0.0003
+C16_banded = 0.8068
+C15_curv = 0.0623
+C15_curv_high = 0.1816
+C15_corners = 8
+C14_density = 0.7913
+C14_ends = 2138
+C14_junctions = 109
 
 [images.montana-moss-agate]
 verdict = "forms"
@@ -15485,6 +19608,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.786
+C16_order = 0.9605
+C16_corr = 0.4875
+C16_corr_censored = true
+C16_parallel = 0.8307
+C16_banded = 0.98
+C15_curv = 0.0123
+C15_curv_high = 0.0556
+C15_corners = 0
+C14_density = 0.1542
+C14_ends = 8
+C14_junctions = 3
 
 [images.moosachat-hg]
 verdict = "forms"
@@ -15534,6 +19676,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.4331
+C16_order = 0.0811
+C16_corr = 0.0581
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.6767
+C15_curv = 0.0612
+C15_curv_high = 0.216
+C15_corners = 11
+C14_density = 0.7495
+C14_ends = 2171
+C14_junctions = 143
 
 [images.moss-agate-1]
 verdict = "forms"
@@ -15581,6 +19742,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.314
+C16_order = 0.3334
+C16_corr = 0.1215
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.515
+C15_curv = 0.056
+C15_curv_high = 0.1705
+C15_corners = 1
+C14_density = 0.8085
+C14_ends = 458
+C14_junctions = 40
 
 [images.moss-agate-detail-cropped]
 verdict = "forms"
@@ -15628,6 +19808,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.3575
+C16_order = 0.1383
+C16_corr = 0.0682
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.6049
+C15_curv = 0.0773
+C15_curv_high = 0.2197
+C15_corners = 0
+C14_density = 0.7127
+C14_ends = 674
+C14_junctions = 54
 
 [images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-1]
 verdict = "forms"
@@ -15675,6 +19874,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-10]
 verdict = "forms"
@@ -15722,6 +19940,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-2]
 verdict = "forms"
@@ -15769,6 +20006,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.37
+C16_order = 0.3151
+C16_corr = 0.2054
+C16_corr_censored = false
+C16_parallel = 0.0591
+C16_banded = 0.5697
+C15_curv = 0.0544
+C15_curv_high = 0.1788
+C15_corners = 0
+C14_density = 0.2782
+C14_ends = 20
+C14_junctions = 3
 
 [images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-3]
 verdict = "forms"
@@ -15816,6 +20072,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.3871
+C16_order = 0.7195
+C16_corr = 0.4968
+C16_corr_censored = true
+C16_parallel = 0.2731
+C16_banded = 0.5375
+C15_curv = 0.0446
+C15_curv_high = 0.2064
+C15_corners = 0
+C14_density = 0.2729
+C14_ends = 61
+C14_junctions = 2
 
 [images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-4]
 verdict = "forms"
@@ -15866,6 +20141,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.3904
+C16_order = 0.6956
+C16_corr = 0.4935
+C16_corr_censored = true
+C16_parallel = 0.3088
+C16_banded = 0.4813
+C15_curv = 0.0503
+C15_curv_high = 0.1599
+C15_corners = 0
+C14_density = 0.427
+C14_ends = 92
+C14_junctions = 15
 
 [images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-5]
 verdict = "forms"
@@ -15913,6 +20207,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.3186
+C16_order = 0.3879
+C16_corr = 0.1656
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.4679
+C15_curv = 0.0962
+C15_curv_high = 0.2984
+C15_corners = 0
+C14_density = 0.2978
+C14_ends = 25
+C14_junctions = 4
 
 [images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-6]
 verdict = "forms"
@@ -15960,6 +20273,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-7]
 verdict = "forms"
@@ -16007,6 +20339,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.2877
+C16_order = 0.219
+C16_corr = 0.1081
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.4343
+C15_curv = 0.0877
+C15_curv_high = 0.375
+C15_corners = 0
+C14_density = 0.3437
+C14_ends = 42
+C14_junctions = 3
 
 [images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-8]
 verdict = "forms"
@@ -16054,6 +20405,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.338
+C16_order = 0.0491
+C16_corr = 0.1441
+C16_corr_censored = false
+C16_parallel = 0.0638
+C16_banded = 0.4588
+C15_curv = 0.1328
+C15_curv_high = 0.2942
+C15_corners = 0
+C14_density = 0.2234
+C14_ends = 20
+C14_junctions = 1
 
 [images.moss-agate-gravel-bar-along-the-yellowstone-river-montana-usa-9]
 verdict = "forms"
@@ -16101,6 +20471,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.museo-de-la-plata-agata]
 verdict = "forms"
@@ -16215,6 +20604,25 @@ N_rule_gap = [
     0.5,
     0.0,
 ]
+C12_corr = -0.1225
+C12_near = -0.0825
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 3
+C16_coherence = 0.7217
+C16_order = 0.0319
+C16_corr = 0.1409
+C16_corr_censored = false
+C16_parallel = 0.0142
+C16_banded = 0.9224
+C15_curv = 0.0467
+C15_curv_high = 0.1607
+C15_corners = 16
+C14_density = 0.7657
+C14_ends = 3737
+C14_junctions = 180
 
 [images.museo-de-la-plata-agata-cropped]
 verdict = "forms"
@@ -16264,6 +20672,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.museo-di-mineralogia-trasperenze-quarzo-agata-02]
 verdict = "forms"
@@ -16312,6 +20739,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.museum-mineralogia-munchen-06]
 verdict = "forms"
@@ -16429,6 +20875,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = -0.0505
+C12_near = 0.3537
+C13_sets = 0
+C13_depth = 1
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 7
+C16_coherence = 0.4129
+C16_order = 0.0662
+C16_corr = 0.0481
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.7011
+C15_curv = 0.1031
+C15_curv_high = 0.2567
+C15_corners = 10
+C14_density = 0.513
+C14_ends = 1070
+C14_junctions = 92
 
 [images.museum-of-the-history-of-the-mirozdanie-agate-2026-03-p03]
 verdict = "forms"
@@ -16481,6 +20946,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.nellie-blue-flint-upper-mercer-flint-middle-pennsylvanian-eastern-ohio-usa-60]
 verdict = "forms"
@@ -16532,6 +21016,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.oregon001]
 verdict = "forms"
@@ -16582,6 +21085,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.oregon002]
 verdict = "forms"
@@ -16632,6 +21154,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.oregon003]
 verdict = "forms"
@@ -16683,6 +21224,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.oregon004]
 verdict = "forms"
@@ -16731,6 +21291,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.panoramio-diego-viveros-13]
 verdict = "forms"
@@ -16781,6 +21360,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.panoramio-diego-viveros-6]
 verdict = "forms"
@@ -16831,6 +21429,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.polished-agate-macro-3]
 verdict = "forms"
@@ -16950,6 +21567,25 @@ N_rule_gap = [
     0.0,
     0.0,
 ]
+C12_corr = -0.0306
+C12_near = 0.0583
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.8226
+C16_order = 0.105
+C16_corr = 0.1435
+C16_corr_censored = false
+C16_parallel = 0.1108
+C16_banded = 0.9798
+C15_curv = 0.0616
+C15_curv_high = 0.2061
+C15_corners = 6
+C14_density = 0.41
+C14_ends = 777
+C14_junctions = 50
 
 [images.precious-stone-agate-blue-semi-precious-stone]
 verdict = "forms"
@@ -17001,6 +21637,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.pyrolusite-in-moss-agate-geodil-number-41]
 verdict = "forms"
@@ -17051,6 +21706,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.quartz-agate-le-vaisseau-bresil-dation-caillois]
 verdict = "forms"
@@ -17164,6 +21838,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = 0.2453
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.5078
+C16_order = 0.6072
+C16_corr = 0.2663
+C16_corr_censored = false
+C16_parallel = 0.0659
+C16_banded = 0.7816
+C15_curv = 0.0643
+C15_curv_high = 0.1874
+C15_corners = 2
+C14_density = 0.6133
+C14_ends = 317
+C14_junctions = 33
 
 [images.quartz-agateplate-bluegrey]
 verdict = "forms"
@@ -17213,6 +21906,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.838
+C16_order = 0.5044
+C16_corr = 0.2541
+C16_corr_censored = false
+C16_parallel = 0.1235
+C16_banded = 0.9596
+C15_curv = 0.0409
+C15_curv_high = 0.141
+C15_corners = 5
+C14_density = 0.4406
+C14_ends = 789
+C14_junctions = 34
 
 [images.quartz-agateplate-redbrown-white]
 verdict = "forms"
@@ -17262,6 +21974,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.787
+C16_order = 0.8409
+C16_corr = 0.4971
+C16_corr_censored = true
+C16_parallel = 0.4345
+C16_banded = 0.9153
+C15_curv = 0.0281
+C15_curv_high = 0.1054
+C15_corners = 2
+C14_density = 0.5014
+C14_ends = 460
+C14_junctions = 33
 
 [images.quartz-uruguay-dation-caillois]
 verdict = "forms"
@@ -17389,6 +22120,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = 0.6739
+C12_near = 0.947
+C13_sets = 1
+C13_depth = 13
+C13_drift = 0.0554
+C13_complete = 0.9306
+C13_wedges = 1
+C16_coherence = 0.5722
+C16_order = 0.1182
+C16_corr = 0.1292
+C16_corr_censored = false
+C16_parallel = 0.0002
+C16_banded = 0.7279
+C15_curv = 0.1003
+C15_curv_high = 0.2065
+C15_corners = 2
+C14_density = 0.3969
+C14_ends = 452
+C14_junctions = 26
 
 [images.quarz-achatmandel]
 verdict = "forms"
@@ -17438,6 +22188,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.quarz-augenachat]
 verdict = "forms"
@@ -17545,6 +22314,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 1
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.4171
+C16_order = 0.1416
+C16_corr = 0.0685
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.6432
+C15_curv = 0.0793
+C15_curv_high = 0.2434
+C15_corners = 6
+C14_density = 0.8384
+C14_ends = 1776
+C14_junctions = 116
 
 [images.quarz-augenachat-cropped]
 verdict = "forms"
@@ -17592,6 +22380,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.4287
+C16_order = 0.2998
+C16_corr = 0.0952
+C16_corr_censored = false
+C16_parallel = 0.0017
+C16_banded = 0.6543
+C15_curv = 0.0939
+C15_curv_high = 0.2383
+C15_corners = 0
+C14_density = 0.9064
+C14_ends = 908
+C14_junctions = 51
 
 [images.richardson-ranch-thunder-egg-with-plume-from-plume-beds-richardson-ranch-madras-]
 verdict = "forms"
@@ -17639,6 +22446,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.9187
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = false
+C16_parallel = "unknown"
+C16_banded = 1.0
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.sagenitic-fire-agate-01]
 verdict = "forms"
@@ -17692,6 +22518,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.scotland007]
 verdict = "forms"
@@ -17811,6 +22656,25 @@ N_rule_gap = [
     0.5,
     0.0,
 ]
+C12_corr = 0.0699
+C12_near = -0.2499
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 19
+C16_coherence = 0.6213
+C16_order = 0.3478
+C16_corr = 0.1306
+C16_corr_censored = false
+C16_parallel = 0.0791
+C16_banded = 0.8569
+C15_curv = 0.0455
+C15_curv_high = 0.1709
+C15_corners = 17
+C14_density = 0.7432
+C14_ends = 3254
+C14_junctions = 150
 
 [images.sliced-agate-geode-with-crystals-2]
 verdict = "forms"
@@ -17862,6 +22726,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.teepee-canyon-agate-custer-south-dakota-usa-26560771781]
 verdict = "forms"
@@ -17913,6 +22796,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.3695
+C16_order = 0.3868
+C16_corr = 0.1902
+C16_corr_censored = false
+C16_parallel = 0.0688
+C16_banded = 0.5969
+C15_curv = 0.0497
+C15_curv_high = 0.1296
+C15_corners = 1
+C14_density = 0.9021
+C14_ends = 400
+C14_junctions = 17
 
 [images.turnov-muzeum-ceskeho-raje-mineralogicka-expozice-3]
 verdict = "forms"
@@ -17962,6 +22864,25 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = "unknown"
+C16_order = "unknown"
+C16_corr = "unknown"
+C16_corr_censored = "unknown"
+C16_parallel = "unknown"
+C16_banded = "unknown"
+C15_curv = "unknown"
+C15_curv_high = "unknown"
+C15_corners = "unknown"
+C14_density = "unknown"
+C14_ends = "unknown"
+C14_junctions = "unknown"
 
 [images.unknown-polished-rock-macro-1]
 verdict = "forms"
@@ -18082,6 +23003,25 @@ N_rule_gap = [
     1.0,
     0.0,
 ]
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = 0
+C13_depth = 0
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = 0
+C16_coherence = 0.6976
+C16_order = 0.7552
+C16_corr = 0.4989
+C16_corr_censored = true
+C16_parallel = 0.3106
+C16_banded = 0.9009
+C15_curv = 0.0503
+C15_curv_high = 0.1521
+C15_corners = 1
+C14_density = 0.288
+C14_ends = 97
+C14_junctions = 10
 
 [images.winogronowy-agat-agate-grape-san-rafael-swell-emery-county-utah-usa]
 verdict = "forms"
@@ -18131,3 +23071,22 @@ N_count = "unknown"
 N_low = "unknown"
 N_high = "unknown"
 N_rule_gap = "unknown"
+C12_corr = "unknown"
+C12_near = "unknown"
+C13_sets = "unknown"
+C13_depth = "unknown"
+C13_drift = "unknown"
+C13_complete = "unknown"
+C13_wedges = "unknown"
+C16_coherence = 0.2822
+C16_order = 0.6257
+C16_corr = 0.2794
+C16_corr_censored = false
+C16_parallel = 0.0
+C16_banded = 0.4283
+C15_curv = 0.1005
+C15_curv_high = 0.1814
+C15_corners = 0
+C14_density = 0.9715
+C14_ends = 71
+C14_junctions = 5

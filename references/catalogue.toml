@@ -572,6 +572,95 @@ sections_read = ["abstract", "occurrence", "quality factors", "lines per inch", 
 topics = ["iris", "diffraction", "micro-banding", "fibres"]
 notes = """Read 2026-10-17, pp. 578-584 of the scanned PDF (text layers decoded locally). Iris colour is diffraction by a grating whose lines are the edges of thin lamellae of alternately higher and lower refractive index. Observed fineness ranges from about 15,000 to 400 lines per inch (about 1.7-64 µm); the figured specimen has about 10,000 (2.5 µm). The lines are always at right angles to the chalcedony needles and continue across neighbouring crystal groups; iris occurs in colourless, pure, low-porosity chalcedony, often in layers next to the quartz centre and with turtleback (spherulitic) growth, never in opal bands. The thin layers have the higher index and are more quartz-like, which rules out more opal in them (though the abstract suggests opal segregation). The author's opinion: the lines formed while the crystals grew, by rhythmic crystallisation like that of some organic melts, not in the manner of ordinary bands. Pages after 584 not read."""
 
+[[references]]
+id = "white1961"
+kind = "article"
+authors = ["White, J. F.", "Corwin, J. F."]
+year = 1961
+title = "Synthesis and origin of chalcedony"
+venue = "American Mineralogist 46, 112–119"
+url = "https://msaweb.org/AmMin/AM46/AM46_112.pdf"
+access = "open"
+licence = "MSA; free to read, cite only"
+checked = "full-text"
+topics = ["chalcedony", "refractive-index", "birefringence", "water", "porosity", "scattering", "colour", "optical-properties"]
+notes = """Read 2026-11-01 by a helper agent (MSA archive PDF msaweb.org/AmMin/AM46/AM46_112.pdf; read in full, 8 PDF pp. = printed pp. 112–119). Chalcedony defined as quartz structure 'with refractive indices less than those of quartz', after Pelto 1956 (p. 112). Table I (p. 114): natural chalcedony 1.530 (Winchell 1951) and 1.533–1.539; heat-treated 1.470 and 1.528 (Pelto 1956); quartz ω 1.544, ε 1.553. Synthetic chalcedony n1/n2 1.48/1.49 to 1.54/1.55, 'mostly in the range 1.51 to 1.52'; birefringence 'about that of quartz', some biaxial with 2V ~25° (p. 113). Cites Folk & Weaver 1952: water-filled holes about 0.02–0.30 µm account for the low indices and brown colour, index varying with hole abundance; and Pelto 1956: brown colour from holes that preferentially scatter blue light (pp. 113–114). Heating loses water and lowers the index (p. 114). The pore statements are second-hand (primaries not read) and conflict with graetsch1985, which found no 0.1 µm pores by TEM (p. 305)."""
+
+[[references]]
+id = "ghosh1999"
+kind = "article"
+authors = ["Ghosh, G."]
+year = 1999
+title = "Dispersion-equation coefficients for the refractive index and birefringence of calcite and quartz crystals"
+venue = "Optics Communications 163(1–3), 95–102"
+doi = "10.1016/S0030-4018(99)00091-7"
+url = "https://refractiveindex.info/?shelf=main&book=SiO2&page=Ghosh-o"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "sections"
+sections_read = ["dispersion-equation coefficients for quartz only, via the refractiveindex.info data pages SiO2/Ghosh-o and Ghosh-e (paper not opened)"]
+topics = ["quartz", "refractive-index", "birefringence", "dispersion", "optical-properties"]
+notes = """Read 2026-11-01 by a helper agent (coefficients taken from the refractiveindex.info pages SiO2/Ghosh-o and Ghosh-e; the paper itself was not opened, so no page references; bibliographic details checked on Crossref). Form n² − 1 = A + B₁λ²/(λ² − C₁) + B₂λ²/(λ² − C₂), λ in µm, C₂ = 100. Ordinary ray: A 0.28604141, B₁ 1.07044083, C₁ 0.0100585997, B₂ 1.10202242. Extraordinary ray: A 0.28851804, B₁ 1.09509924, C₁ 0.0102101864, B₂ 1.15662475. Computed by the helper from these (not values printed in the paper): n_o/n_e 1.5525/1.5619 at 450 nm, 1.5459/1.5551 at 550 nm, 1.5442/1.5533 at 589 nm, 1.5420/1.5511 at 650 nm; Δn 0.0094/0.0092/0.0090 at 450/550/650 nm. For α-quartz single crystal, not chalcedony."""
+
+[[references]]
+id = "shigley1985"
+kind = "article"
+authors = ["Shigley, J. E.", "Koivula, J. I."]
+year = 1985
+title = "Amethystine chalcedony"
+venue = "Gems & Gemology 21(4), 219–223"
+doi = "10.5741/GEMS.21.4.219"
+url = "https://cms.gia.edu/dam/jcr:5a1bc992-5141-437a-9784-8388a3421a4f/Amethystine-Chalcedony.pdf"
+access = "open"
+licence = "publisher copyright (GIA); free to read; cite only"
+checked = "full-text"
+topics = ["chalcedony", "translucency", "refractive-index", "birefringence", "crystallite-size", "iron", "colour", "optical-properties"]
+notes = """Read 2026-11-01 by a helper agent (GIA PDF at cms.gia.edu; read in full, 5 pp. = printed pp. 219–223; DOI checked on Crossref). Purple chalcedony from Arizona: 'tightly packed microcrystalline (typically five micrometers across) grains of quartz in random arrangement'; 'In thin pieces (less than 1 mm), the chalcedony is semitranslucent to translucent with a reddish cast, but almost all thicker pieces are opaque' (p. 220). Fe 0.2–0.4 wt% as Fe₂O₃; hematite/goethite spherules up to 0.1 mm; Mn-oxide dendrites noted (p. 221). Data box (p. 222): RI spot 1.54; on a flat surface 1.535–1.539 (birefringence 0.004); SG 2.60–2.61; spectrum 'Increasing absorption toward the ultraviolet, with a superimposed broad absorption band centered about 540 nm' (0.59 mm slice, Fig. 5, no absorbance scale). Gives no attenuation coefficients."""
+
+[[references]]
+id = "sherman1985"
+kind = "article"
+authors = ["Sherman, D. M.", "Waite, T. D."]
+year = 1985
+title = "Electronic spectra of Fe3+ oxides and oxide hydroxides in the near IR to near UV"
+venue = "American Mineralogist 70, 1262–1269"
+url = "http://www.minsocam.org/ammin/AM70/AM70_1262.pdf"
+access = "open"
+licence = "MSA; free to read, cite only"
+checked = "full-text"
+topics = ["hematite", "goethite", "iron", "pigment", "colour", "optical-properties"]
+notes = """Read 2026-11-01 by a helper agent (MSA archive PDF minsocam.org/ammin/AM70/AM70_1262.pdf; read in full, 8 PDF pp. = printed pp. 1262–1269). Fe³⁺ oxide and oxide-hydroxide spectra: weak bands near 900 nm (⁶A₁→⁴T₁) and 640 nm (⁶A₁→⁴T₂); 'Additional spectral bands at wavelengths shorter than 600 nm ... give only a steep absorption edge' (p. 1265). Pair excitation at 480–550 nm: at 550 nm 'strong, reasonably well-defined' in hematite, at 480–500 nm and 'much weaker' in goethite and the others; the 430 nm band is 'very strong' in hematite but 'only a perceptible shoulder' in the others (pp. 1265–1266). Hematite 'is deep red while the latter are pale yellow to brown' because of stronger Fe–Fe magnetic coupling (p. 1267). Colour comes from magnetically intensified ligand-field and pair transitions, not LMCT (abstract; p. 1268). Gives band positions only (Kubelka–Munk remission), no absolute absorption coefficients."""
+
+[[references]]
+id = "go2022"
+kind = "article"
+authors = ["Go, S.", "Lyapustin, A.", "Schuster, G. L.", "Choi, M.", "Ginoux, P.", "Chin, M.", "Kalashnikova, O.", "Dubovik, O.", "Kim, J.", "da Silva, A.", "Holben, B.", "Reid, J. S."]
+year = 2022
+title = "Inferring iron-oxide species content in atmospheric mineral dust from DSCOVR EPIC observations"
+venue = "Atmospheric Chemistry and Physics 22(2), 1395–1423"
+doi = "10.5194/acp-22-1395-2022"
+access = "open"
+licence = "CC-BY-4.0"
+checked = "sections"
+sections_read = ["1 Introduction", "2.3 (iron-oxide refractive indices)", "Table 1 (xlsx)", "Fig. 3 (image)"]
+topics = ["hematite", "goethite", "iron", "pigment", "refractive-index", "optical-properties"]
+notes = """Read 2026-11-01 by a helper agent (open article at the DOI; author list and licence confirmed on Crossref 2026-11-01). §1: 'The hematite imaginary index (0.2 at 700 nm to 0.8 at 460 nm) is generally about 3 times higher than that of goethite (∼ 0.1) (Bedidi and Cervelle, 1993) in the red–near infrared ... At 350–450 nm, the imaginary index of hematite peaks at 1.0–1.2, whereas it changes little for goethite, remaining at ∼ 0.1'; both exceed other soil minerals by >100× below 1 µm. §2.3: 13 hematite datasets, 'highly variable'; nos. 1, 2 (Chen & Cahan 1981), 6 (Querry 1985), 12 (Vernon 1962), 13 (Scanza 2015) retained; goethite data 'much more scarce', only Bedidi & Cervelle 1993 for 0.45–0.75 µm. Fig. 3, the helper's reading of the retained set (not printed values): hematite n ≈ 2.9–3.3 over 450–650 nm; k ≈ 0.9–1.3 at 450 nm, 0.45–0.65 at 550 nm, 0.15–0.25 at 650 nm; spread between datasets about ±30% in k."""
+
+[[references]]
+id = "pabst2013"
+kind = "article"
+authors = ["Pabst, W.", "Hostaša, J."]
+year = 2013
+title = "A closed-form expression approximating the Mie solution for the real-in-line transmission of ceramics with spherical inclusions or pores"
+venue = "Ceramics–Silikáty 57(2), 151–161"
+url = "https://www.irsm.cas.cz/materialy/cs_content/2013/Pabst_CS_2013_0000.pdf"
+access = "open"
+licence = "open access (licence not checked); cite only"
+checked = "sections"
+sections_read = ["2 (scattering approximations; Rayleigh–Gans–Debye and the Apetz–van Bruggen passage), pp. 151–154"]
+topics = ["scattering", "translucency", "crystallite-size", "birefringence", "optical-properties"]
+notes = """Read 2026-11-01 by a helper agent (journal PDF from irsm.cas.cz; pp. 151–154 read; equations partly lost in text extraction, Eq. 24 legible). Rayleigh–Gans–Debye large-sphere limit 'Qsca = 2x²(m – 1)²' (Eq. 24), valid only if 'Qsca << 1' (Eq. 25) (p. 154). Apetz and van Bruggen treat a single-phase polycrystal as a virtual 50 vol% composite of spherical grains with 'Δn = (2/3) Δnmax' (orientationally averaged birefringence); valid for alumina at 600 nm for grain diameters about 1–25 µm (safety factor 10) or 0.2–50 µm (factor 2) (p. 154). [inference, helper] With φ = 0.5 this gives γ = 3π² r Δn²/λ₀², the λ² form; for quartz Δn_eff = 0.0061 and Q ≈ 0.06 at r = 2.5 µm, so the large-sphere form holds for about 0.2–5 µm grains, and below about 0.2 µm the small-sphere branch applies."""
+
 # --- Crystal growth ----------------------------------------------------------
 
 [[references]]
@@ -1847,10 +1936,9 @@ doi = "10.1007/s00269-022-01208-3"
 url = "https://boa.unimib.it/retrieve/6bf6f8b6-159c-46d9-abf4-7f348ee48919/"
 access = "open"
 licence = "CC-BY-4.0"
-checked = "sections"
-sections_read = ["Abstract", "Introduction", "Discussion (absorption and scattering, pp. 5-6)", "Conclusions"]
+checked = "full-text"
 topics = ["agate", "banding", "scattering", "translucency", "crystallite-size", "colour", "shadow"]
-notes = """Read 2026-10-29 (pypdf, Milano-Bicocca repository copy). White and purple-blue bands have the same Fe and OH content; the colour difference is structural: grains 'about 5 µm' (white) against '300 nm' (blue), 'resulting in an accentuated scattering component for the white bands' (abstract). Colour is set by the 'diffuse to in-line transmission ratio' (p. 5); Mie scattering makes coarse-grained bands 'milkier and opaquer' (p. 6); loss γ = 3π²Δn²r/λ after Apetz and Van Bruggen 2003. Says the causes of agate colour by scattering 'are still unclear' (p. 1). No mention of shadow effects or angle dependence; cited only for the translucency contrast between bands that a shadow effect would need."""
+notes = """Read 2026-10-29 (pypdf, Milano-Bicocca repository copy). White and purple-blue bands have the same Fe and OH content; the colour difference is structural: grains 'about 5 µm' (white) against '300 nm' (blue), 'resulting in an accentuated scattering component for the white bands' (abstract). Colour is set by the 'diffuse to in-line transmission ratio' (p. 5); Mie scattering makes coarse-grained bands 'milkier and opaquer' (p. 6); loss γ = 3π²Δn²r/λ after Apetz and Van Bruggen 2003. Says the causes of agate colour by scattering 'are still unclear' (p. 1). No mention of shadow effects or angle dependence; cited only for the translucency contrast between bands that a shadow effect would need. Re-read in full 2026-11-01 by a helper agent (same repository copy; Fig. 4a read from the page image): RI 1.53 at 589 nm, density 2.56–2.59 g/cm³ (p. 3). Fig. 4a (p. 5; slab 'about 1 mm thick', blue and white bands): from the note's reading of the in-line curve, not values printed in the paper, μ_t ≈ 2.3 / 1.7 / 1.4 mm⁻¹ at 450 / 550 / 650 nm after Fresnel correction (acceptance angle not given). [inference] The printed γ = 3π²Δn²r/λ is dimensionally inconsistent and should read λ², pending Apetz & van Bruggen 2003 (not yet obtained)."""
 
 [[references]]
 id = "winstrup2012"
@@ -2583,3 +2671,115 @@ licence = "CC-BY-NC-ND-4.0 (authors' manuscript on HAL); publisher version copyr
 checked = "full-text"
 topics = ["implicit-modelling", "explicit-modelling", "representation", "uncertainty", "faults", "geological-realism", "review"]
 notes = """Read in full 2026-10-31 (three helper notes) from the authors' manuscript, HAL hal-01921494v1, CC BY-NC-ND 4.0, 95 PDF pages, not the journal layout; PDF pages cited. Part 1 read in full 2026-10-31 from the HAL authors' preprint (PDF pages cited; printed manuscript page = PDF page − 1; no journal pagination): "geologic realism" is the purposeful selection of geological knowledge for a given scale and aim, not maximal detail (PDF pp. 5, 15), with consistency examples of non-crossing conformal layers, thickness constraints and continuity across faults, and with faults, reverse faults, overturned folds and domes forcing full-3D explicit or implicit methods (PDF pp. 7–8, Fig. 2). Two viewpoints on interface detection, data-driven (geophysics, inversion, non-unique) and geomodel-driven (observations inseparable from knowledge, conceptual → mathematical model → parameterisation → geometry), are linked by geological knowledge and joint inversion (PDF pp. 8–15, Fig. 3); a geological model "is only" interpolation functions plus parameters, which must be transparent to allow automatic updates for uncertainty work, and the chosen representation decides which data can be used (PDF pp. 13–14). Inputs reduce to labelled interface points, orientations, interval and trend data, with cross-sections valid inputs whose reliability depends on distance to observation and interpreter skill (PDF pp. 13, 15–17, Fig. 4). Uncertainty enters at four levels (conceptual model, model structure, parameters, input points; PDF p. 19, Fig. 5), classified as Mann's Types 1–3 and mapped by Wellmann et al. 2010b to data, interpolation and structural existence (PDF pp. 19–20); many models still fit after conditioning (PDF p. 19). Suggested distributions: normal for gradual contacts, uniform for unseen contacts but not in high dimensions, von Mises–Fisher for orientations (PDF pp. 22–23); interpretation bias and expert elicitation are discussed (PDF pp. 22–24). Section 3 (PDF pp. 25-41; manuscript prints page numbers = PDF − 1) casts all geomodel representations as basis expansions m(x) = Σ m_k φ_k(x), with regions handled either by conformal bases (Eq. 2, hard truncation) or by indicator multiplication (Eq. 3, soft truncation, no conformal mesh, XFEM-like), and geometry pushed into intermediate coordinates u(x) = [u, v, t] so that a coarse geometry basis and a finer property basis are decoupled (Fig. 6d, Eqs. 7-8, pp. 26-29); a regular grid "can … smear petrophysical contrasts" (p. 26). Explicit surfaces (maps, pillars, TIN/DSI, NURBS) need data projection, cannot hold several elevations per (x, y) in map form, need manual patching when data are not projectable to a plane, and tend to cross or gap when built independently (pp. 33-38); implicit fields are "in general better posed" (p. 33). Implicit interpolators are meshless RBF/dual kriging (dense (I+L)² system, "blobby" away from data; anisotropic distances or sparse MLS as fixes) or mesh-based roughness-regularised least squares on conformal tetrahedral meshes (smooth vs kink hinges by weights) (p. 39); several conformable horizons share one field as relative time t(x), and wrong horizon values create local minima that "imply closed bedding surfaces" (p. 39). Faults are built first; then a conformal mesh, a field per fault block truncated by faults, or one-sided discontinuous drift terms tapering to zero at tips and away from the fault (p. 40); epigenic overprints use truncation plus a latent variable such as distance to fractures (p. 32). No timings or memory figures are given in this section. Part 3 (PDF pp. 42–71; manuscript pages print one lower, no journal pages): models are θ = f(x; Φ, m, α, κ, τ/β, Ω) and UQ means choosing which parts to randomise (Eq. 15, PDF pp. 42–43); ensembles come from perturbing inputs and re-interpolating (needs automatic, i.e. implicit, methods; independent sampling gives unrealistic undulation, PDF p. 44), surface p-fields perturbed in contact order (PDF pp. 45–47), mild 3D space warping (PDF p. 47), adding a smooth correlated field ε (zero at data, scaled by 1/‖∇s‖, computed in depositional space to keep fault slip) to an implicit field (Fig. 12, PDF pp. 47–49), or marked-point-process fault networks and event-order sampling (PDF pp. 49–50). Implicit perturbation does not control level-set connectivity and can create closed iso-surfaces (PDF p. 49; Table 1 "arbitrary topology", PDF p. 63). Ensembles are summarised by class probability P_C = (1/n) Σ 1_C (Eq. 17), Shannon entropy H = −Σ P_C log2 P_C with H_max = log2 k (Eqs. 18–19, gridded only for display) and Lindsay's V = 1 − P_Ĉ (Eq. 20) (PDF pp. 53–54), and compared by distance vs misfit functions, topology graphs, PCA over geodiversity metrics, city-block distance, Bayesian likelihoods or ABC (PDF pp. 56–57); Cherpeau 2012 ran MCMC over a fault generator's random numbers with fault existence folded into size (PDF p. 59). Discussion: Table 1 compares extrusion/explicit/implicit (memory, topology, data, conformity, discontinuities; PDF p. 63); implicit methods struggle with thickness variation and many unconformities (PDF p. 63); scenarios may matter more than realizations, Bayes over scenarios Eqs. 23–24 (PDF pp. 66, 70); outlook names geological realism, 3D uncertainty visualisation, efficiency and scale management as open problems, with no costs reported (PDF p. 68)."""
+
+# --- Renderer methods (N2 reading, 2026-11-01) -------------------------------
+
+[[references]]
+id = "novak2018"
+kind = "review"
+authors = ["Novák, J.", "Georgiev, I.", "Hanika, J.", "Jarosz, W."]
+year = 2018
+title = "Monte Carlo methods for volumetric light transport simulation"
+venue = "Computer Graphics Forum 37(2), 551–576 (Eurographics 2018 State of the Art Report)"
+doi = "10.1111/cgf.13383"
+url = "https://cs.dartmouth.edu/~wjarosz/publications/novak18monte.pdf"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "sections"
+sections_read = ["3.2", "3.4", "4 (free-path sampling)", "5 (transmittance estimation)", "6.5 (chromatic media)", "8 (acceleration)", "9 (open problems)"]
+topics = ["rendering", "participating-media", "monte-carlo", "delta-tracking", "ratio-tracking", "majorants", "spectral-rendering", "procedural-texture", "review"]
+notes = """Read 2026-11-01 by a helper agent (authors' copy cs.dartmouth.edu/~wjarosz/publications/novak18monte.pdf, 26 PDF pp.; PDF pages cited; DOI checked on Crossref). Path-tracing estimator needs distance sampling and transmittance evaluation (Eq. 13, p.4). Ray marching is biased, even jittered, 'particularly objectionable when the medium contains thin features' (p.6). Null-collision methods 'can handle arbitrary, e.g. procedurally generated, heterogeneity' but the sample PDF is unknown, blocking MIS (pp.6–7); add no more fictitious matter than needed, find a tight majorant (p.7). Weighted delta tracking allows μ̄ < μt at a variance cost (Eqs. 26–33, p.8); delta tracking needs bounded μt (Table 2, p.8). Transmittance: MC of τ then exp(−τ) biased (p.10); track-length Eq. 45, ratio Eq. 49, residual ratio Eq. 50, next-flight Eqs. 51–52 (pp.11–13; Fig. 5 guidance). Chromatic media: per-channel tracking is noisy and wasteful; spectral tracking Eq. 63 (pp.15–16). Majorants stored coarser than the volume (p.22); anisotropic and correlated media open (p.22)."""
+
+[[references]]
+id = "novak2014"
+kind = "article"
+authors = ["Novák, J.", "Selle, A.", "Jarosz, W."]
+year = 2014
+title = "Residual ratio tracking for estimating attenuation in participating media"
+venue = "ACM Transactions on Graphics 33(6), 179 (SIGGRAPH Asia 2014)"
+doi = "10.1145/2661229.2661292"
+url = "https://cs.dartmouth.edu/~wjarosz/publications/novak14residual.pdf"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "sections"
+sections_read = ["3.1", "3.2", "4", "5", "6", "7"]
+topics = ["rendering", "participating-media", "monte-carlo", "ratio-tracking", "delta-tracking", "majorants", "vdb"]
+notes = """Read 2026-11-01 by a helper agent (authors' copy cs.dartmouth.edu/~wjarosz/publications/novak14residual.pdf, 11 PDF pp.; PDF pages cited; DOI checked on Crossref). Ratio tracking Eq. 3 and Alg. 2: multiply T by (1 − μ(x)/μ̄) at each tentative collision, expected cost μ̄d (p.4). Residual tracking T = Tc·Tr with an analytic control μc (Eq. 4, p.5). Ratio-tracking variance falls as majorants loosen, delta tracking's does not; 'We thus always start with ratio tracking and switch to delta tracking only if the transmittance drops below 0.1%' (p.7). Best μc ≈ mean extinction along the ray (p.8); μc = μmax gives 'significantly higher variance than μc = μmin' (p.9). Super-voxels set to '10× the size of the smallest representable detail', 3D DDA between them (pp.8–9). Coloured extinction: one residual ratio tracker with the maximum residual majorant over channels, ~6× lower variance for transmittance, ~2.3× with multiple scattering vs delta tracking (p.9). Requires strictly bounding majorants (p.9)."""
+
+[[references]]
+id = "kutz2017"
+kind = "article"
+authors = ["Kutz, P.", "Habel, R.", "Li, Y. K.", "Novák, J."]
+year = 2017
+title = "Spectral and decomposition tracking for rendering heterogeneous volumes"
+venue = "ACM Transactions on Graphics 36(4), 111 (SIGGRAPH 2017)"
+doi = "10.1145/3072959.3073665"
+url = "https://www.yiningkarlli.com/projects/specdecomptracking/SDTracking.pdf"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "sections"
+sections_read = ["3.4", "4.3", "5 (spectral tracking)", "6", "7"]
+topics = ["rendering", "participating-media", "monte-carlo", "delta-tracking", "majorants", "spectral-rendering", "procedural-texture"]
+notes = """Read 2026-11-01 by a helper agent (copy at yiningkarlli.com, 16 PDF pp.; PDF pages cited; supplement with proofs not read; DOI checked on Crossref). Weighted delta tracking Eqs. 12–16 (p.5); a non-bounding μ̄ keeps the mean but 'the statistical error is higher' (Fig. 4). Spectral tracking: one tracker for all wavelengths with vector weights, μ̄ bounding μt over all wavelengths; history-aware average probabilities (Eqs. 30–33) keep mean throughput 1 and maximum Nλ (pp.10–11, Alg. 4). Achromatic control plus chromatic residual (p.11). Explosion at 8 spp: +25–30% lookups/time but 2.7–3.4× lower variance; μ̄ × 0.4 gives 'many positive and negative fireflies' (pp.12–13). Translucent dragon: smooth dielectric boundary around a coloured procedural medium, no acceleration structure, global min/max found by random sampling in a pre-pass, 40 spp, 133 → 88 core-seconds (p.14, Fig. 15). Same tracker for free paths and transmittance keeps MIS exact (p.14). Octree depth 8–10 best for clouds (p.13)."""
+
+[[references]]
+id = "walter2007"
+kind = "article"
+authors = ["Walter, B.", "Marschner, S. R.", "Li, H.", "Torrance, K. E."]
+year = 2007
+title = "Microfacet models for refraction through rough surfaces"
+venue = "Eurographics Symposium on Rendering 2007, 195–206"
+doi = "10.2312/EGWR/EGSR07/195-206"
+url = "https://www.graphics.cornell.edu/~bjw/microfacetbsdf.pdf"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "sections"
+sections_read = ["4", "5", "6"]
+topics = ["rendering", "microfacets", "fresnel", "refractive-index", "brdf"]
+notes = """Read 2026-11-01 by a helper agent (authors' copy graphics.cornell.edu/~bjw/microfacetbsdf.pdf, 13 PDF pp. including the erratum to Eq. 40; PDF pages cited; DOI checked on DataCite). Smooth boundary: transmission 'easily modeled using Snell's law' (p.1). Refraction half-vector Eq. 16, Jacobian Eq. 17; BTDF not reciprocal, track radiance/η² (p.5). Rough BSDF: reflection Eq. 20, refraction Eq. 21 (pp.5–6). Exact unpolarised dielectric Fresnel Eq. 22, 'typically small at normal incidence (e.g., 0.04 for glass with ηt = 1.5)' (p.6). Smith G = G1·G1 (Eq. 23); Beckmann Eqs. 25–29, GGX Eqs. 33–36 (pp.6–7). Sampling weight Eq. 41 can reach 'hundreds to millions' at grazing incidence; widening α by (1.2 − 0.2√|i·n|) caps it near 4 (pp.7–8). Fitted GGX α on soda-lime glass (n = 1.51 assumed; Fig. 12, p.9): 0.394 ground, 0.454 frosted, 0.553 etched, 0.027 antiglare; GGX fits ground glass 'much closer than the Beckmann fit'. Glass, not chalcedony."""
+
+[[references]]
+id = "miller2019"
+kind = "article"
+authors = ["Miller, B.", "Georgiev, I.", "Jarosz, W."]
+year = 2019
+title = "A null-scattering path integral formulation of light transport"
+venue = "ACM Transactions on Graphics 38(4), 44 (SIGGRAPH 2019)"
+doi = "10.1145/3306346.3323025"
+url = "https://cs.dartmouth.edu/~wjarosz/publications/miller19null.pdf"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "sections"
+sections_read = ["1", "3.2", "5 (5.1–5.3)", "7"]
+topics = ["rendering", "participating-media", "monte-carlo", "ratio-tracking", "spectral-rendering", "multiple-importance-sampling"]
+notes = """Read 2026-11-01 by a helper agent (authors' copy cs.dartmouth.edu/~wjarosz/publications/miller19null.pdf, revision 4 of 2021, 13 PDF pp.; PDF pages cited; the Sec. 4 derivation not read; DOI checked on Crossref). Null vertices enter the path integral, so delta- and ratio-tracking path PDFs become analytic and MIS-combinable (Secs. 3.2, 5.1–5.2, pp.4–7); ratio tracking = sampling a null subpath (Eq. 43, p.7). Chromatic media (Sec. 5.3, p.8): bounding all channels 'eliminates the color noise, but the dense sampling can significantly increase the computational cost when one channel has medium density significantly higher than the rest'; spectral MIS (Alg. 1) samples by one random channel and combines channels by the balance heuristic. Connecting vertices 'through a refractive boundary' named as a hard analogue (p.7, citing Walter et al. 2009). Fig. 1: spectral + NEE MIS RMSE 0.032 vs 0.045 for independent tracking at about equal time."""
+
+[[references]]
+id = "pharr2023"
+kind = "book"
+authors = ["Pharr, M.", "Jakob, W.", "Humphreys, G."]
+year = 2023
+title = "Physically Based Rendering: From Theory to Implementation (4th edition)"
+venue = "MIT Press"
+url = "https://pbr-book.org/4ed/"
+access = "open"
+licence = "authors' copyright; free to read online; cite only"
+checked = "sections"
+sections_read = ["11.4 (media and majorants)", "14.2.1–14.2.2 (volume path tracing)", "15.1 (GPU rendering)"]
+topics = ["rendering", "participating-media", "monte-carlo", "majorants", "spectral-rendering", "gpu", "microfacets"]
+notes = """Read 2026-11-01 by a helper agent (online edition pbr-book.org/4ed, web sections as pages; text, not peer-reviewed papers). Media return per-ray majorant segments; one global majorant suits homogeneous media, else 'distinct local majorants' (11.4.1). μt = 1 almost everywhere with 100 in a small region under a global majorant of 100: '99% of the sampled distances will be null-scattering events' (11.4.3). Coarse MajorantGrid of per-cell maxima traversed by 3D DDA; 'good performance with grid resolutions that span roughly 64 through 256 voxels on a side', similar on CPU and GPU (Fig. 11.19, 11.4.3). VolPathIntegrator handles chromatic media by spectral MIS over the sampled wavelengths and uses ratio tracking for shadow rays (14.2.2); against the simple integrator at 256 spp it gives '1,288 times lower MSE' (14.2.1). GPU (15.1): RTX 3090 vs 32-core CPU about 10× FLOPS and bandwidth; megakernels 'suffer greatly from execution divergence', including 'scattering in participating media', hence a wavefront design. Also noted, from 9.6 (not read in detail): Trowbridge–Reitz treated as smooth when α < 1e-3."""
+
+[[references]]
+id = "wang1992"
+kind = "book"
+authors = ["Wang, L.", "Jacques, S. L."]
+year = 1992
+title = "Monte Carlo modeling of light transport in multi-layered tissues in standard C"
+venue = "Technical report, University of Texas M. D. Anderson Cancer Center"
+url = "https://omlc.org/software/mc/mcml/MCman.pdf"
+access = "open"
+licence = "free to read (omlc.org); licence not checked; cite only"
+checked = "sections"
+sections_read = ["Ch. 6.1 (validation tables), PDF pp. 57–58"]
+topics = ["monte-carlo", "participating-media", "subsurface-scattering", "validation", "translucency"]
+notes = """Read 2026-11-01 by a helper agent (MCML manual at omlc.org/software/mc/mcml/MCman.pdf, 183 PDF pp.; Ch. 6.1, PDF pp. 57–58 only). Not peer-reviewed: technical manual. The peer-reviewed version, Wang, Jacques & Zheng 1995, Computer Methods and Programs in Biomedicine 47, 131–146, doi:10.1016/0169-2607(95)01640-F, is not read and not catalogued. Table 6.1 (p.57): slab with matched index n = 1, μa = 10 cm⁻¹, μs = 90 cm⁻¹, g = 0.75, d = 0.02 cm: van de Hulst 1980 Rd = 0.09739, Tt = 0.66096; MCML 0.09734 ± 0.00035 and 0.66096 ± 0.00020; unscattered part exp(−2) ≈ 0.13534 (p.58). Table 6.2 (p.58): semi-infinite medium, n = 1.5 (mismatched), μa = 10, μs = 90 cm⁻¹, g = 0: Giovanelli 1955 Rd = 0.2600; MCML 0.25907 ± 0.00170. Rd excludes the specular reflection. The reference values are secondary (van de Hulst, Giovanelli), quoted through this manual."""

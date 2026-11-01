@@ -63,7 +63,9 @@ the face's typical band: their edges break into dashes that the parameters
 close or leave open. So C14 is compared only set against set, measured the
 same way on both sides, until the edges follow the local band width
 (owner's choice, 2026-10-31). 0.9-3.4 s and 85-136 MB traced per cut of
-1000-1500 px.
+1000-1500 px. On four library photos (1100-1950 px, band spacings 6-14
+px) 0.9-7.3 s, after dots were found in one pass (92 s before on the
+finest, with the same counts).
 
 Units: here a *spacing* is one light-dark couplet, `bands.COUPLET_SPACINGS`
 (2) times the quality gate's band spacing, which is one band (`edge_face`
@@ -233,14 +235,22 @@ def count(skeleton: NDArray[np.bool_], judged: NDArray[np.bool_], dot_px: float)
     labels = agatesim_scipy.label(skeleton, eight_connected=True)
     has_junction = np.zeros(int(labels.max()) + 1, dtype=np.bool_)
     has_junction[labels[junction]] = True
-    dots: set[int] = set()
-    for i in np.unique(labels[ends]):
-        if has_junction[i]:
-            continue
-        rows, cols = np.nonzero(labels == i)
-        if max(np.ptp(rows), np.ptp(cols)) < dot_px:
-            dots.add(int(i))
-    keep = ends & judged & ~np.isin(labels, list(dots))
+    # Each piece's span in rows and columns, in one pass over the skeleton.
+    n = has_junction.size
+    rows, cols = np.nonzero(labels)
+    of = labels[rows, cols]
+    h, w = skeleton.shape
+    low_r, low_c = np.full(n, h, dtype=np.intp), np.full(n, w, dtype=np.intp)
+    high_r, high_c = np.full(n, -1, dtype=np.intp), np.full(n, -1, dtype=np.intp)
+    np.minimum.at(low_r, of, rows)
+    np.minimum.at(low_c, of, cols)
+    np.maximum.at(high_r, of, rows)
+    np.maximum.at(high_c, of, cols)
+    span = np.maximum(high_r - low_r, high_c - low_c)
+    dot = np.zeros(n, dtype=np.bool_)
+    with_ends = np.unique(labels[ends])
+    dot[with_ends] = ~has_junction[with_ends] & (span[with_ends] < dot_px)
+    keep = ends & judged & ~dot[labels]
     groups = agatesim_scipy.label(
         agatesim_scipy.dilate(junction, 1) & skeleton, eight_connected=True
     )

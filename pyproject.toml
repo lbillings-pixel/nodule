@@ -22,7 +22,7 @@ gpu = [
 
 [tool.uv.sources]
 # agatesim is used as a library, pinned to a commit (ADR 0002).
-agatesim = { git = "https://github.com/lbillings-pixel/agatesim", rev = "02f803c9f7134e7110fa2bfb197c9c31898e855f" }
+agatesim = { git = "https://github.com/lbillings-pixel/agatesim", rev = "2f92fb7c6e02c1b64446c25a0d0fbc1137d4ac15" }
 
 [build-system]
 requires = ["hatchling>=1.32.4"]

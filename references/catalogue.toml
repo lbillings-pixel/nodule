@@ -497,6 +497,34 @@ checked = "full-text"
 topics = ["sedimentary", "iron", "trace-elements", "fortification"]
 notes = """Read in full 2026-10-26 (PDF the owner supplied; ADR 0072). Fortification agates in Permian red shale and siltstone (Phosphoria Formation). LA-ICP-MS: chalcedony Al 376 ppm (103–809), Fe 483 ppm (26–1580); quartz Al 6.5, Fe 7.2 ppm (Table 2). Fe sits in hematite: needles in the outermost layer, fine particles 'distributed… along the SiO2 crystallization front' giving the red colour, and large random particles in the inner chalcedony (pp.680–81). Interpreted: Fe 'rejected from the silica during crystallization, moved with the crystallization front' (p.686), inferred from the oxides' placement. Yet 'no correlation of trace elements with the agate banding is detectable' (p.688). Chalcedony grades smoothly into quartz by grain size; quartz back to chalcedony is abrupt (p.677). δ18O gives about 20–120 °C (pp.685–86). Crystallisation 'started rapidly from a non-crystalline medium such as silica gel or a direct deposit of amorphous silica' (p.688). Silica source (hydrothermal or host rock) unresolved."""
 
+[[references]]
+id = "graetsch1994"
+kind = "review"
+authors = ["Graetsch, H."]
+year = 1994
+title = "Structural characteristics of opaline and microcrystalline silica minerals"
+venue = "Reviews in Mineralogy 29 (Silica: Physical Behavior, Geochemistry and Materials Applications), 209–232"
+doi = "10.1515/9781501509698-011"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["chalcedony", "moganite", "opal", "water", "refractive-index", "density", "microstructure", "agate"]
+notes = """Read in full 2026-11-01 by a helper agent (owner-supplied scan, EasyOCR). Whole chapter pp. 209–232 (two-page spreads); values checked on the page image; DOI found and checked on Crossref 2026-11-01. Table 1 (p. 210) gives water in wt%: chalcedony 0.5–2, quartzine 0.5–1, moganite 1.5–3, microquartz <0.4, opal-CT 3–10, opal-AG 4–8. Fig. 3 (p. 213, read from the plot, ±0.005 in n, ±0.02 g/cm³) plots mean n and density against water: chalcedony n ≈1.543→1.533 and density ≈2.64→2.55 over 0.5–2 wt%; moganite ≈1.525–1.53; opals ≈1.43–1.46. Water causes the low n and density (p. 217). Agate microquartz bands are <0.02 mm with 0.1–0.3 wt% water (p. 217). Silanol water 0.2–0.9 and molecular water 0.5–1.4 wt%, the molecular water mostly liquid in pores (p. 219). Brazil twinning and moganite lamellae (pp. 214–216). Has no optical scattering data."""
+
+[[references]]
+id = "hantsch2005"
+kind = "article"
+authors = ["Hantsch, U.", "Winkler, B.", "Pickard, C. J.", "Gale, J. D.", "Warren, M. C.", "Milman, V.", "Mauri, F."]
+year = 2005
+title = "Theoretical investigation of moganite"
+venue = "European Journal of Mineralogy 17(1), 21–30"
+doi = "10.1127/0935-1221/2005/0017-0021"
+access = "closed"
+licence = "publisher copyright (Schweizerbart); cite only"
+checked = "full-text"
+topics = ["moganite", "quartz", "refractive-index", "density"]
+notes = """Read in full 2026-11-01 by a helper agent (owner-supplied PDF, 10 pp.; DOI checked on Crossref 2026-11-01). Read as a stand-in for Flörke et al. 1984, still unread. DFT (GGA-PBE) study of monoclinic and orthorhombic moganite vs quartz: energies equal within error; Brazil-twin structure; cell 1.2% larger than quartz; more compressible (B ≈ 21 GPa DFT, 32 GPa measured on a mix). It makes no refractive-index or birefringence prediction. It quotes measured RI '1.524 to 1.531' across samples and density 2.52–2.58 g/cm³ (p.22, citing Miehe & Grätsch 1992); X-ray density 2.617 (Table 2). Natural moganite carries ~4 wt% volatiles (Flörke 1984). Purest samples ~83% moganite."""
+
 # --- Forms beyond the first list: lace, fire -------------------------------------
 
 [[references]]
@@ -584,7 +612,7 @@ access = "open"
 licence = "MSA; free to read, cite only"
 checked = "full-text"
 topics = ["chalcedony", "refractive-index", "birefringence", "water", "porosity", "scattering", "colour", "optical-properties"]
-notes = """Read 2026-11-01 by a helper agent (MSA archive PDF msaweb.org/AmMin/AM46/AM46_112.pdf; read in full, 8 PDF pp. = printed pp. 112–119). Chalcedony defined as quartz structure 'with refractive indices less than those of quartz', after Pelto 1956 (p. 112). Table I (p. 114): natural chalcedony 1.530 (Winchell 1951) and 1.533–1.539; heat-treated 1.470 and 1.528 (Pelto 1956); quartz ω 1.544, ε 1.553. Synthetic chalcedony n1/n2 1.48/1.49 to 1.54/1.55, 'mostly in the range 1.51 to 1.52'; birefringence 'about that of quartz', some biaxial with 2V ~25° (p. 113). Cites Folk & Weaver 1952: water-filled holes about 0.02–0.30 µm account for the low indices and brown colour, index varying with hole abundance; and Pelto 1956: brown colour from holes that preferentially scatter blue light (pp. 113–114). Heating loses water and lowers the index (p. 114). The pore statements are second-hand (primaries not read) and conflict with graetsch1985, which found no 0.1 µm pores by TEM (p. 305)."""
+notes = """Read 2026-11-01 by a helper agent (MSA archive PDF msaweb.org/AmMin/AM46/AM46_112.pdf; read in full, 8 PDF pp. = printed pp. 112–119). Chalcedony defined as quartz structure 'with refractive indices less than those of quartz', after Pelto 1956 (p. 112). Table I (p. 114): natural chalcedony 1.530 (Winchell 1951) and 1.533–1.539; heat-treated 1.470 and 1.528 (Pelto 1956); quartz ω 1.544, ε 1.553. Synthetic chalcedony n1/n2 1.48/1.49 to 1.54/1.55, 'mostly in the range 1.51 to 1.52'; birefringence 'about that of quartz', some biaxial with 2V ~25° (p. 113). Cites Folk & Weaver 1952: water-filled holes about 0.02–0.30 µm account for the low indices and brown colour, index varying with hole abundance; and Pelto 1956: brown colour from holes that preferentially scatter blue light (pp. 113–114). Heating loses water and lowers the index (p. 114). Primaries since read: Folk & Weaver's own text gives cavities ~0.1 µm by electron microscope (folk1952 pp. 498, 502); the 0.02–0.30 µm range does not appear there (pelto1956 p. 33 repeats it). graetsch1985 found no 0.1 µm pores by TEM (p. 305)."""
 
 [[references]]
 id = "ghosh1999"
@@ -660,6 +688,90 @@ checked = "sections"
 sections_read = ["2 (scattering approximations; Rayleigh–Gans–Debye and the Apetz–van Bruggen passage), pp. 151–154"]
 topics = ["scattering", "translucency", "crystallite-size", "birefringence", "optical-properties"]
 notes = """Read 2026-11-01 by a helper agent (journal PDF from irsm.cas.cz; pp. 151–154 read; equations partly lost in text extraction, Eq. 24 legible). Rayleigh–Gans–Debye large-sphere limit 'Qsca = 2x²(m – 1)²' (Eq. 24), valid only if 'Qsca << 1' (Eq. 25) (p. 154). Apetz and van Bruggen treat a single-phase polycrystal as a virtual 50 vol% composite of spherical grains with 'Δn = (2/3) Δnmax' (orientationally averaged birefringence); valid for alumina at 600 nm for grain diameters about 1–25 µm (safety factor 10) or 0.2–50 µm (factor 2) (p. 154). [inference, helper] With φ = 0.5 this gives γ = 3π² r Δn²/λ₀², the λ² form; for quartz Δn_eff = 0.0061 and Q ≈ 0.06 at r = 2.5 µm, so the large-sphere form holds for about 0.2–5 µm grains, and below about 0.2 µm the small-sphere branch applies."""
+
+[[references]]
+id = "apetz2003"
+kind = "article"
+authors = ["Apetz, R.", "van Bruggen, M. P. B."]
+year = 2003
+title = "Transparent alumina: a light-scattering model"
+venue = "Journal of the American Ceramic Society 86(3), 480–486"
+doi = "10.1111/j.1151-2916.2003.tb03325.x"
+access = "closed"
+licence = "publisher copyright (American Ceramic Society/Wiley); cite only"
+checked = "full-text"
+topics = ["scattering", "translucency", "crystallite-size", "birefringence", "porosity", "optical-properties", "rendering"]
+notes = """Read in full 2026-11-01 by a helper agent (owner-supplied PDF, 7 pp.; DOI checked on Crossref 2026-11-01). RGD model for birefringent polycrystals: grains as spheres of radius r (2r = mean grain size G = 1.225× apparent SEM size, p.481) in a matrix, volume fraction 1/2; Δn = (2/3)Δn_max (orientation average; Al2O3 fit 0.0050 vs 0.0053). Eq.11 γ = 3π²rΔn²/λ0² (λ0 squared; lorenzi2022 prints λ), Eq.12 RIT = (1−Rs)exp(−γd) (p.483). Validity 'diameters <10 µm' for Al2O3; data fit G = 0.3–8 µm (p.485). Phase function (1+cos²β)P(u), sphere form factor (Eq.13). Grain boundaries do not backscatter (R ≤ 5e-6; p.482); only pores do: <100 nm ~50% back, >200 nm ≥5% back; 0.1% porosity of 75 nm pores gives 22% backscatter, 'whitish' (p.486). Spectrometer in-line apertures (3–5°) admit scattered light (p.481). Alumina, not chalcedony."""
+
+[[references]]
+id = "bedidi1993"
+kind = "article"
+authors = ["Bedidi, A.", "Cervelle, B."]
+year = 1993
+title = "Light scattering by spherical particles with hematite and goethitelike optical properties: effect of water impregnation"
+venue = "Journal of Geophysical Research 98(B7), 11941–11952"
+doi = "10.1029/93JB00188"
+access = "closed"
+licence = "publisher copyright (AGU); cite only"
+checked = "full-text"
+topics = ["hematite", "goethite", "iron", "pigment", "refractive-index", "scattering", "optical-properties"]
+notes = """Read in full 2026-11-01 by a helper agent (owner-supplied PDF, 12 pp., scanned with OCR; Fig. 3 read from the page image; DOI checked on Crossref 2026-11-01). Ordinary-ray n,k of hematite (400–700 nm) and goethite (460–700 nm) from crystal reflectance in air and oil (Koenigsberger), as figures only (Fig.3, p.11,943). Read from the figure (helper's reading, ±0.005): hematite n 3.26/3.255/3.03, k 0.31/0.215/0.185 at 460/550/650 nm (k ~3× below other compilations in the blue); goethite n 2.42–2.18, k 0.07–0.13 with no rise toward the blue, so it cannot explain the yellow colour. Mie results in air/water: small particles (≤0.1 µm) have low albedo (hematite w 0.03→0.6, goethite 0.005→0.76 from 0.01 to 0.1 µm); large ones are strongly forward-scattering (Tables 1–2)."""
+
+[[references]]
+id = "scheinost1998"
+kind = "article"
+authors = ["Scheinost, A. C.", "Chavernas, A.", "Barrón, V.", "Torrent, J."]
+year = 1998
+title = "Use and limitations of second-derivative diffuse reflectance spectroscopy in the visible to near-infrared range to identify and quantify Fe oxide minerals in soils"
+venue = "Clays and Clay Minerals 46(5), 528–536"
+doi = "10.1346/CCMN.1998.0460506"
+access = "closed"
+licence = "publisher copyright (Clay Minerals Society); cite only"
+checked = "full-text"
+topics = ["hematite", "goethite", "iron", "pigment", "spectroscopy", "kubelka-munk", "colour"]
+notes = """Read in full 2026-11-01 by a helper agent (owner-supplied PDF, 9 pp.; DOI checked on Crossref 2026-11-01). Crystal-field band positions (second-derivative minima of K-M remission) for 176 Fe oxides, Table 2 p.531: hematite EPT 531 nm (521–565), 4T2 682, 4T1 877 (848–906), (4E;4A1) 423; goethite EPT 488 (479–493), 4T2 665, 4T1 953, 413. The EPT 'determines the position of the absorption edge which ... is closely related to the hue' (p.530). Goethite, maghemite and schwertmannite cannot be told apart. Detection limit ~0.5–5 g/kg; amplitude calibrations for goethite and hematite contents (p.534). Magnetite IVCT ~1500 nm (p.533). Positions only, no absolute coefficients."""
+
+[[references]]
+id = "bishop2008"
+kind = "article"
+authors = ["Bishop, J. L.", "Lane, M. D.", "Dyar, M. D.", "Brown, A. J."]
+year = 2008
+title = "Reflectance and emission spectroscopy study of four groups of phyllosilicates: smectites, kaolinite-serpentines, chlorites and micas"
+venue = "Clay Minerals 43(1), 35–54"
+doi = "10.1180/claymin.2008.043.1.03"
+access = "closed"
+licence = "publisher copyright (Mineralogical Society); cite only"
+checked = "full-text"
+topics = ["celadonite", "pigment", "spectroscopy", "colour", "optical-properties"]
+notes = """Read in full 2026-11-01 by a helper agent (owner-supplied PDF, 20 pp.; pp. 51–54 are reference lists, skimmed; Fig. 6 read from the low-resolution embedded image; DOI checked on Crossref 2026-11-01). VNIR–MIR spectra of 11 phyllosilicates incl. celadonite JB727 (Mojave, altered basalt; Fe2O3 12.0, FeO 1.4 wt%; minor cristobalite, stilbite; <45 µm powder; Tables 1–2, p.39). The text gives no visible band assignment for celadonite. From Fig.6 (p.43, the helper's reading, ±0.02) the powder reflectance peaks at ~0.41 at 550 nm, has a minimum ~0.27 at 740–760 nm and is ~0.16 below 380 nm. Glauconite peaks at 0.165 at 540 nm. OH bands 2.257/2.302/2.348 µm (Table 3). Gives a spectral shape only, no absolute coefficients."""
+
+[[references]]
+id = "pelto1956"
+kind = "article"
+authors = ["Pelto, C. R."]
+year = 1956
+title = "A study of chalcedony"
+venue = "American Journal of Science 254(1), 32–50"
+doi = "10.2475/ajs.254.1.32"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["chalcedony", "agate", "porosity", "scattering", "refractive-index", "water", "colour", "biaxiality"]
+notes = """Read in full 2026-11-01 by a helper agent (owner-supplied scan, EasyOCR; all 19 pp.; p. 44 checked on the image; DOI checked on Crossref 2026-11-01). Brown colour in transmission is Tyndall/Rayleigh scattering by pores: small pores scatter blue, large ones white (pp. 35–36). Long-fibred agate is rarely brown (p. 35), and agate scatters essentially white while chert scatters blue (p. 41). In banded agate, low-index bands contain light-scattering pores (p. 40). Agate ω 1.535 falls below 1.528 after 500 °C; water loss 0.06/0.84/1.10 wt% at 300/500/700 °C (p. 44). Heated grains reach n 1.470–1.528 and develop 1–2 µm bubbles (p. 45). Iris agate 2V 20–30° (p. 40). Quotes Folk & Weaver's pores as 0.02–0.30 µm (p. 33), a range not in folk1952."""
+
+[[references]]
+id = "folk1952"
+kind = "article"
+authors = ["Folk, R. L.", "Weaver, C. E."]
+year = 1952
+title = "A study of the texture and composition of chert"
+venue = "American Journal of Science 250(7), 498–510"
+doi = "10.2475/ajs.250.7.498"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["chert", "chalcedony", "porosity", "water", "refractive-index", "density", "scattering", "microstructure"]
+notes = """Read in full 2026-11-01 by a helper agent (owner-supplied scan, EasyOCR; pp. 498–510 plus plates 1–4; pp. 504–505 checked on the image; DOI checked on Crossref 2026-11-01). Electron-microscope replicas show water-filled spherical cavities, 'very nearly 0.1 micron', in chalcedonic quartz (pp. 498, 502). Light-microscope dots reach 1–2 µm (p. 501). Bubble zones look brown in transmission and 'milky white' in reflected light (p. 501), alternating with clear zones (p. 503). n_ω: novaculite 1.544; chalcedony 1.544 where clear and 1.540 where bubbly (p. 505). Density: novaculite 2.6424 ± 0.0021, bubbly chalcedony 2.6103 ± 0.0037 (p. 504); [inference, helper] ≈2 vol% pores. Microcrystalline grains 3–5 µm (p. 500). Finds no opal."""
 
 # --- Crystal growth ----------------------------------------------------------
 
@@ -1938,7 +2050,7 @@ access = "open"
 licence = "CC-BY-4.0"
 checked = "full-text"
 topics = ["agate", "banding", "scattering", "translucency", "crystallite-size", "colour", "shadow"]
-notes = """Read 2026-10-29 (pypdf, Milano-Bicocca repository copy). White and purple-blue bands have the same Fe and OH content; the colour difference is structural: grains 'about 5 µm' (white) against '300 nm' (blue), 'resulting in an accentuated scattering component for the white bands' (abstract). Colour is set by the 'diffuse to in-line transmission ratio' (p. 5); Mie scattering makes coarse-grained bands 'milkier and opaquer' (p. 6); loss γ = 3π²Δn²r/λ after Apetz and Van Bruggen 2003. Says the causes of agate colour by scattering 'are still unclear' (p. 1). No mention of shadow effects or angle dependence; cited only for the translucency contrast between bands that a shadow effect would need. Re-read in full 2026-11-01 by a helper agent (same repository copy; Fig. 4a read from the page image): RI 1.53 at 589 nm, density 2.56–2.59 g/cm³ (p. 3). Fig. 4a (p. 5; slab 'about 1 mm thick', blue and white bands): from the note's reading of the in-line curve, not values printed in the paper, μ_t ≈ 2.3 / 1.7 / 1.4 mm⁻¹ at 450 / 550 / 650 nm after Fresnel correction (acceptance angle not given). [inference] The printed γ = 3π²Δn²r/λ is dimensionally inconsistent and should read λ², pending Apetz & van Bruggen 2003 (not yet obtained)."""
+notes = """Read 2026-10-29 (pypdf, Milano-Bicocca repository copy). White and purple-blue bands have the same Fe and OH content; the colour difference is structural: grains 'about 5 µm' (white) against '300 nm' (blue), 'resulting in an accentuated scattering component for the white bands' (abstract). Colour is set by the 'diffuse to in-line transmission ratio' (p. 5); Mie scattering makes coarse-grained bands 'milkier and opaquer' (p. 6); loss γ = 3π²Δn²r/λ after Apetz and Van Bruggen 2003. Says the causes of agate colour by scattering 'are still unclear' (p. 1). No mention of shadow effects or angle dependence; cited only for the translucency contrast between bands that a shadow effect would need. Re-read in full 2026-11-01 by a helper agent (same repository copy; Fig. 4a read from the page image): RI 1.53 at 589 nm, density 2.56–2.59 g/cm³ (p. 3). Fig. 4a (p. 5; slab 'about 1 mm thick', blue and white bands): from the note's reading of the in-line curve, not values printed in the paper, μ_t ≈ 2.3 / 1.7 / 1.4 mm⁻¹ at 450 / 550 / 650 nm after Fresnel correction (acceptance angle not given). The printed λ is a typo: Apetz & van Bruggen 2003 Eq. 11 (p. 483) gives γ = 3π²rΔn²/λ₀², r = sphere radius (apetz2003)."""
 
 [[references]]
 id = "winstrup2012"
@@ -2782,4 +2894,32 @@ licence = "free to read (omlc.org); licence not checked; cite only"
 checked = "sections"
 sections_read = ["Ch. 6.1 (validation tables), PDF pp. 57–58"]
 topics = ["monte-carlo", "participating-media", "subsurface-scattering", "validation", "translucency"]
-notes = """Read 2026-11-01 by a helper agent (MCML manual at omlc.org/software/mc/mcml/MCman.pdf, 183 PDF pp.; Ch. 6.1, PDF pp. 57–58 only). Not peer-reviewed: technical manual. The peer-reviewed version, Wang, Jacques & Zheng 1995, Computer Methods and Programs in Biomedicine 47, 131–146, doi:10.1016/0169-2607(95)01640-F, is not read and not catalogued. Table 6.1 (p.57): slab with matched index n = 1, μa = 10 cm⁻¹, μs = 90 cm⁻¹, g = 0.75, d = 0.02 cm: van de Hulst 1980 Rd = 0.09739, Tt = 0.66096; MCML 0.09734 ± 0.00035 and 0.66096 ± 0.00020; unscattered part exp(−2) ≈ 0.13534 (p.58). Table 6.2 (p.58): semi-infinite medium, n = 1.5 (mismatched), μa = 10, μs = 90 cm⁻¹, g = 0: Giovanelli 1955 Rd = 0.2600; MCML 0.25907 ± 0.00170. Rd excludes the specular reflection. The reference values are secondary (van de Hulst, Giovanelli), quoted through this manual."""
+notes = """Read 2026-11-01 by a helper agent (MCML manual at omlc.org/software/mc/mcml/MCman.pdf, 183 PDF pp.; Ch. 6.1, PDF pp. 57–58 only). Not peer-reviewed: technical manual. The peer-reviewed version is wang1995a (Wang, Jacques & Zheng 1995, read in full); its Tables 1–2 (p.143) confirm the validation values below. Table 6.1 (p.57): slab with matched index n = 1, μa = 10 cm⁻¹, μs = 90 cm⁻¹, g = 0.75, d = 0.02 cm: van de Hulst 1980 Rd = 0.09739, Tt = 0.66096; MCML 0.09734 ± 0.00035 and 0.66096 ± 0.00020; unscattered part exp(−2) ≈ 0.13534 (p.58). Table 6.2 (p.58): semi-infinite medium, n = 1.5 (mismatched), μa = 10, μs = 90 cm⁻¹, g = 0: Giovanelli 1955 Rd = 0.2600; MCML 0.25907 ± 0.00170. Rd excludes the specular reflection. The reference values are secondary (van de Hulst, Giovanelli), quoted through this manual."""
+
+[[references]]
+id = "wang1995a"
+kind = "article"
+authors = ["Wang, L.", "Jacques, S. L.", "Zheng, L."]
+year = 1995
+title = "MCML—Monte Carlo modeling of light transport in multi-layered tissues"
+venue = "Computer Methods and Programs in Biomedicine 47(2), 131–146"
+doi = "10.1016/0169-2607(95)01640-F"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["monte-carlo", "participating-media", "subsurface-scattering", "validation", "translucency"]
+notes = """Read in full 2026-11-01 by a helper agent (owner-supplied PDF; tables and key equations checked on page images; printed pages cited; DOI checked on Crossref 2026-11-01). Peer-reviewed version of the MCML manual (wang1992). Implicit capture with weights; W = 1 − Rsp at entry (Eqs. 3.2, 3.6); step Σµt,i s_i = −ln ξ across layers (Eq. 3.16); HG sampling Eq. 3.22; unpolarised Fresnel Eq. 3.30 with TIR; all-or-none or partial reflection, the latter lower variance (p.139); roulette W_th = 0.0001, m = 10 (Eq. 3.36, p.140). Table 1 (p.143): slab n = 1, μa 10, μs 90 cm⁻¹, g 0.75, d 0.02 cm: van de Hulst Rd 0.09739, Tt 0.66096; MCML 0.09734 ± 0.00035, 0.66096 ± 0.00020; Prahl 0.09711 ± 0.00033, 0.66159 ± 0.00049; unscattered exp(−2) = 0.13534. Table 2 (p.143): semi-infinite, n = 1.5, g 0: Giovanelli Rd 0.2600; MCML 0.25907 ± 0.00170; Prahl 0.26079 ± 0.00079. Values match the manual. Fig. 3 caption gives g = 0 where the text gives 0.75. Diffusion depth check δ = 0.57 cm (p.145)."""
+
+[[references]]
+id = "woodcock1965"
+kind = "article"
+authors = ["Woodcock, E. R.", "Murphy, T.", "Hemmings, P. J.", "Longworth, T. C."]
+year = 1965
+title = "Techniques used in the GEM code for Monte Carlo neutronics calculations in reactors and other systems of complex geometry"
+venue = "Proceedings of the Conference on the Application of Computing Methods to Reactor Problems, ANL-7050, Argonne National Laboratory, 557–579"
+url = "https://www.osti.gov/biblio/4621207"
+access = "open"
+licence = "free to read (OSTI); licence not checked; cite only"
+checked = "full-text"
+topics = ["monte-carlo", "participating-media", "delta-tracking"]
+notes = """Read in full 2026-11-01 by a helper agent (owner-supplied PDF; reactor-specific sections skimmed; printed pp. 557–579). Not peer-reviewed: conference paper in a laboratory report volume; kind "article" is the closest allowed. The paper has no DOI of its own, so none is given; the volume is OSTI 4621207 (report ANL-7050, CONF-650501; volume DOI 10.2172/4621207, checked on Crossref and OSTI 2026-11-01). Origin of delta (Woodcock) tracking, Sec. 9.2 (p.570): add 'a cross section for a fictitious reaction in which the neutron experiences no change' so every material in a region has the same mean free path; collision points are found 'independently of any internal boundaries'; a random test decides real or fictitious. No formula or proof given. Regular tracking between regions (p.566); analog simulation (p.558). Discussion (pp.577–579): put a material with an extended high cross section (control rod) in its own region; motivation is avoiding boundary-crossing computations. Novák 2018 pp.6–7 describes it faithfully."""

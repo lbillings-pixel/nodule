@@ -312,7 +312,13 @@ tests/test_render_gpu.py (*verified*), each with a control:
   whatever its bands, fractures and tube: mean 0.9989 (z −1.3), with no
   structure beyond noise. Control: the absorbing stand-in fails (z −732).
 
-The slab depth is `effective`: 3 mm, an assumption for a display slab.
+The slab depth is `effective`: 3 mm by default (owner), an assumption
+for a display slab. It is set per run (`depth_mm`) and cheap to vary.
+Across 1, 3, 6 and 10 mm on the n2-slice, the grid fill takes 3.0, 4.4,
+6.6 and 9.2 s and 6–18 MB, and each light renders in 2.0–6.6 s (536 × 488
+pixels, 256 samples). The grid must be filled at least as deep as the
+slab. A deeper slab would read the grid's clamped last layer, so
+`render` refuses it (tested, with the grid's own depth as the control).
 
 First look (procedural; ADR 0002 forbids reading it as evidence about
 agate). On the n2-slice, with OpticsTable defaults, as a 3 mm slab,

@@ -8,6 +8,7 @@ MAX_FRACTURES fractures.
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from typing import Any
 
@@ -41,6 +42,9 @@ class SceneArrays:
     tubes: F32  # (ntube, 7) ends a, b, radius
     fractures: F32  # (nfrac, 17) centre, frame rows, slip, radii, drag, steps
     grid: F32  # (nw, nt, ns)
+    # deepest slab (mm) the grid serves: its nodes reach this depth plus the fracture-slip
+    # pad (`tgrid.grid_axes`); inf for the homogeneous scene, which never reads the grid
+    covers_mm: float = math.inf
 
 
 def pack(specimen: Specimen, grid: GrowthGrid, filled: F32 | None = None) -> SceneArrays:
@@ -70,6 +74,7 @@ def pack(specimen: Specimen, grid: GrowthGrid, filled: F32 | None = None) -> Sce
         tubes=tubes,
         fractures=fractures,
         grid=grid.filled() if filled is None else filled,
+        covers_mm=float(grid.w[-1]) - (specimen.max_slip_mm + grid.spacing_mm),
     )
 
 
@@ -90,6 +95,7 @@ class DeviceScene:
 
     struct: Any  # cupy uint8 array holding the struct bytes
     arrays: dict[str, Any]
+    covers_mm: float = math.inf  # SceneArrays.covers_mm
 
 
 def upload(scene: SceneArrays) -> DeviceScene:
@@ -105,4 +111,4 @@ def upload(scene: SceneArrays) -> DeviceScene:
                        ("grid", "grid")):  # fmt: skip
         h[field] = arrays[key].data.ptr
     struct = cp.asarray(np.frombuffer(h.tobytes(), np.uint8))
-    return DeviceScene(struct=struct, arrays=arrays)
+    return DeviceScene(struct=struct, arrays=arrays, covers_mm=scene.covers_mm)

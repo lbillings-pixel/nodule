@@ -267,6 +267,9 @@ def render(
     collision order (single scattering check)."""
     if light.kind == "back" and not math.isfinite(depth_mm):
         raise ValueError("the back light needs a finite slab (depth_mm)")
+    if not flags & Flag.HOMOGENEOUS and depth_mm > scene.covers_mm + 1e-6:
+        raise ValueError(f"a {depth_mm} mm slab is deeper than the growth grid covers "
+                         f"({scene.covers_mm:.2f} mm): fill the grid deeper")  # fmt: skip
     cp = _gpu.cupy()
     kept_mus = materials.kept()[0].astype(np.float32)
     mua, mus = cp.asarray(materials.mua), cp.asarray(kept_mus)

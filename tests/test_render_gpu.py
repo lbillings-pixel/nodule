@@ -550,3 +550,14 @@ def test_two_sided_furnace_on_the_specimen(specimen_scene) -> None:
     # control: the stand-in that absorbs must fail it
     lossy = two_sided(dev, view, STAND_IN, 81)
     assert z(float(lossy.mean()), noise / math.sqrt(a.size), 1.0) < -10
+
+
+def test_slab_deeper_than_the_grid_is_refused(specimen_scene) -> None:
+    """The grid clamps depth, so a slab below it would silently repeat its last layer."""
+    _, grid, dev, _ = specimen_scene
+    assert dev.covers_mm >= DEPTH - 1e-6
+    view = View(float(grid.s[0]), float(grid.t[0]), 1.0, 4, 4)
+    render(dev, view, STAND_IN, BACK, spp=1, depth_mm=DEPTH)  # control: the grid's own depth
+    for depth in (DEPTH + 0.5, math.inf):
+        with pytest.raises(ValueError, match="deeper than the growth grid"):
+            render(dev, view, STAND_IN, DOME, spp=1, depth_mm=depth)

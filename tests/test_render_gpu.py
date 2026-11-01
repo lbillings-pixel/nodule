@@ -392,6 +392,67 @@ def test_small_disc_is_the_directional_light(flat, theta, lo, hi) -> None:
     assert lo <= abs(z(m, se, *want)) < hi
 
 
+# --- forward-peak truncation (ADR 0007 amendment 4) ----------------------------------------
+
+# A milky band from OpticsTable (chalcedony, translucency 0, rounded): grains g ~ 0.998.
+MILKY: dict[str, Any] = dict(
+    mua=[[0.01] * 3], mus=[[17.8, 11.84, 8.37]], g=[[0.9984, 0.9978, 0.997]],
+    f=[[0.233, 0.227, 0.216]], gb=[[0.557, 0.437, 0.337]],
+)  # fmt: skip
+
+
+def milky(dev, light: Light, cut: float, *, spp: int, seed: int, flags: int = 0):
+    return mean_rgb(dev, Materials.of(**MILKY, cut_deg=cut), light, spp=spp, seed=seed,
+                    flags=flags, depth_mm=3.0)  # fmt: skip
+
+
+@pytest.fixture(scope="module")
+def milky_dome(flat):
+    return milky(flat, DOME, 0.0, spp=4096, seed=71)
+
+
+@pytest.mark.parametrize(
+    ("cut", "lo", "hi"), [(2.0, 0.0, 3.0), (4.0, 0.0, 3.0), (30.0, 10.0, math.inf)]
+)
+def test_truncation_keeps_the_dome_reflectance(flat, milky_dome, cut, lo, hi) -> None:
+    """Under the dome a 2 deg cut changes nothing measurable (n2-slice materials: <= 0.13%,
+    and pixel by pixel within noise). Control: a 30 deg cut is visibly darker (-4%)."""
+    mu, se = milky(flat, DOME, cut, spp=4096, seed=72)
+    for c in range(3):
+        assert lo <= abs(z(mu[c], se[c], milky_dome[0][c], milky_dome[1][c])) < hi, c
+
+
+@pytest.fixture(scope="module")
+def milky_disc(flat):
+    return milky(flat, L2, 2.0, spp=4096, seed=73)
+
+
+@pytest.mark.parametrize(
+    ("cut", "lo", "hi"), [(0.0, 0.0, 3.0), (4.0, 0.0, 3.0), (30.0, 10.0, math.inf)]
+)
+def test_truncation_under_the_disc(flat, milky_disc, cut, lo, hi) -> None:
+    """Under L2 the 2 deg cut agrees with the full phase function (whose own estimate
+    carries the sparkle the cut removes). Control: a 30 deg cut does not."""
+    mu, se = milky(flat, L2, cut, spp=4096, seed=74)
+    zs = [abs(z(mu[c], se[c], milky_disc[0][c], milky_disc[1][c])) for c in range(3)]
+    assert lo <= max(zs) < hi, zs
+
+
+@pytest.mark.parametrize("flags", [Flag.NEE_ONLY, Flag.PHASE_ONLY])
+def test_truncated_strategies_agree(flat, milky_disc, flags) -> None:
+    """Light and phase sampling agree with the MIS blend when the lobes are truncated:
+    the draws (kept part only) match the densities NEE and the MIS weights use."""
+    mu, se = milky(flat, L2, 2.0, spp=4096, seed=75, flags=flags)
+    for c in range(3):
+        assert abs(z(mu[c], se[c], milky_disc[0][c], milky_disc[1][c])) < 3, c
+
+
+def test_control_untruncated_draws_fail(flat, milky_disc) -> None:
+    mu, se = milky(flat, L2, 2.0, spp=4096, seed=76, flags=Flag.UNTRUNCATED_DRAWS)
+    zs = [abs(z(mu[c], se[c], milky_disc[0][c], milky_disc[1][c])) for c in range(3)]
+    assert max(zs) > 10, zs
+
+
 # --- preview against full render on the specimen -------------------------------------------
 
 # EFFECTIVE stand-ins for plumbing only, not agate optics (ADR 0007 section 3 will set them):

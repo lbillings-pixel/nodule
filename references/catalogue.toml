@@ -2937,3 +2937,32 @@ licence = "free to read (OSTI); licence not checked; cite only"
 checked = "full-text"
 topics = ["monte-carlo", "participating-media", "delta-tracking"]
 notes = """Read in full 2026-11-01 by a helper agent (owner-supplied PDF; reactor-specific sections skimmed; printed pp. 557–579). Not peer-reviewed: conference paper in a laboratory report volume; kind "article" is the closest allowed. The paper has no DOI of its own, so none is given; the volume is OSTI 4621207 (report ANL-7050, CONF-650501; volume DOI 10.2172/4621207, checked on Crossref and OSTI 2026-11-01). Origin of delta (Woodcock) tracking, Sec. 9.2 (p.570): add 'a cross section for a fictitious reaction in which the neutron experiences no change' so every material in a region has the same mean free path; collision points are found 'independently of any internal boundaries'; a random test decides real or fictitious. No formula or proof given. Regular tracking between regions (p.566); analog simulation (p.558). Discussion (pp.577–579): put a material with an extended high cross section (control rod) in its own region; motivation is avoiding boundary-crossing computations. Novák 2018 pp.6–7 describes it faithfully."""
+
+[[references]]
+id = "buras2011"
+kind = "article"
+authors = ["Buras, R.", "Mayer, B."]
+year = 2011
+title = "Efficient unbiased variance reduction techniques for Monte Carlo simulations of radiative transfer in cloudy atmospheres: The solution"
+venue = "Journal of Quantitative Spectroscopy and Radiative Transfer 112(3), 434–447"
+doi = "10.1016/j.jqsrt.2010.10.005"
+url = "https://elib.dlr.de/65843/"
+access = "open"
+licence = "author's personal copy; cite only"
+checked = "full-text"
+topics = ["rendering", "monte-carlo", "participating-media", "variance-reduction", "phase-function-truncation"]
+notes = """Read in full 2026-11-01 by a helper agent (notes/n2-reading/buras2011.md). Spikes of the local estimate with strongly peaked phase functions (Fig. 3b). DELTA comparator: scattering with mu > 0.99 (~8.1 deg) counted as no scattering, mu_s rescaled (p. 441). Satellite (reflection) view: mean bias +0.10%, per pixel up to 1.4% near inhomogeneous cloud; circum-solar view: -42% (Table 1, p. 442; Fig. 14c). VROOM methods (DDIS etc.) are unbiased, ~4x slower than DELTA in the reflection view."""
+
+[[references]]
+id = "radkevich2018"
+kind = "article"
+authors = ["Radkevich, A."]
+year = 2018
+title = "Modified geometric truncation of the scattering phase function"
+venue = "Journal of Quantitative Spectroscopy and Radiative Transfer 217, 155–169"
+doi = "10.1016/j.jqsrt.2018.05.029"
+access = "open"
+licence = "NASA NTRS accepted manuscript; cite only"
+checked = "full-text"
+topics = ["rendering", "monte-carlo", "phase-function-truncation", "radiance-error"]
+notes = """Read in full 2026-11-01 by a helper agent (notes/n2-reading/radkevich2018.md). Geometric truncation (Iwabuchi and Suzuki 2009): exact outside a cone, constant inside chosen to keep g. Cloud tests with a 3 deg cut: radiance errors within 4%, Monte Carlo time 68-95% of untruncated. Proposes a cut at the first inflection of d ln P / d Theta."""

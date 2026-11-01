@@ -231,7 +231,44 @@ right" (ADR 0002).
   forward scattering gives under a point light, at about the same cost.
 - L3 *backlit slab* (transmitted light). This needs a thin-slab geometry
   and an open back. It is the light where Lorenzi's data apply and where
-  the owner's notes report bands swapping light and dark (ADR 0006).
+  the owner's notes report bands swapping light and dark (ADR 0006).⁴
+
+⁴ Amended 2026-11-01 (L2 built; owner chose the truncation). **The disc
+alone does not remove the sparkle.** L2 is `Light("disc")`. Each real
+collision draws one direction in the cone (next-event estimation), and a
+path leaving the face inside the cone also counts (phase sampling). The
+balance heuristic blends the two. Its checks are in
+tests/test_render_gpu.py, each with a control:
+- the two strategies agree with each other and with the blend;
+- a 90° disc at the zenith equals the dome;
+- a 0.25° disc equals the directional light.
+
+On the n2-slice (64 samples), 0.1% of pixels still had noise 49× the mean
+(dome: 1×). The cause is that grain lobes up to g ≈ 0.998 are far narrower
+than the disc seen from inside (about 1.3–1.6°). The fix the owner chose is
+**truncation**. Scattering by less than a cut angle counts as no
+scattering. μ_s keeps only the share beyond the cut, and the phase function
+is exact outside it (`Materials.cut_deg`). This is the rule of Buras and
+Mayer's DELTA comparator at 8.1°, which was biased +0.10% on average and
+up to 1.4% per pixel in reflection views, but −42% looking toward the
+light [@buras2011]. Radkevich reports errors within 4% at a 3° cut for a
+variant that fills the cone [@radkevich2018].
+
+Measured here (*verified* as numbers; the cut is `effective`):
+- Bias: under the dome, ≤ 0.13% on n2-slice band materials for cuts up to
+  4°, and pixel by pixel within noise. Larger cuts show it: −0.3% at 10°,
+  −1.6% at 20° and −4% at 30° (the control). Under L2, cuts of 0.5–4°
+  agree within about 0.3%.
+- Noise at the 99.9th percentile under L2, in multiples of the mean: 49
+  (no cut), 13 (1°), 4.1 (2°), 1.5 (4°).
+- Speed: unchanged, 1.15 M paths/s (about 3.7 min for 1 Mpx at 256
+  samples).
+
+`L2_CUT_DEG` = 4° is used with L2 only. Dome and diffuse renders are clean
+without a cut and keep the full phase function. L3 looks toward its light,
+which is where truncation fails in Buras and Mayer. L3 therefore needs its
+own check before any cut is used with it. Still to read: Wiscombe 1977
+and Iwabuchi and Suzuki 2009 (blocked; notes/n2-reading/downloads.md).
 
 **7c. Growth-time grid spacing.** Recommendation: **0.2 mm now**, with
 exact values stored near creases later if render-and-compare shows

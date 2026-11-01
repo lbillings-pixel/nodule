@@ -42,9 +42,11 @@ __device__ float fresnel(float ci, float n1, float n2) {
 // The cosine is formed as 1 - (1 - ct): with s = 1 - g + 2 g xi and t = (1 - g^2)/s,
 // 1 - ct = (1 - g)(1 - xi)(t + 1 - g)/s exactly, which keeps float32 accurate up to g ~ 0.999
 // (the textbook (1 + g^2 - t^2)/2g cancels badly there; Apetz grains reach g 0.998).
-__device__ void hg(float g, float& ux, float& uy, float& uz, Rng& r) {
+// xmax < 1 draws from the lobe truncated to 1 - cos > omc_cut, xmax = P(1 - cos > omc_cut)
+// (small xi is backward, xi -> 1 forward). Returns 1 - cos of the drawn direction.
+__device__ float hg(float g, float& ux, float& uy, float& uz, Rng& r, float xmax = 1.f) {
     float ct, omc;
-    float xi = r.next();
+    float xi = r.next() * xmax;
     if (fabsf(g) < 1e-6f) { ct = 2.f * xi - 1.f; omc = 2.f - 2.f * xi; }
     else { float s = 1.f - g + 2.f * g * xi, t = (1.f - g * g) / s;
            omc = (1.f - g) * (1.f - xi) * (t + 1.f - g) / s;
@@ -52,7 +54,7 @@ __device__ void hg(float g, float& ux, float& uy, float& uz, Rng& r) {
     float st = sqrtf(omc * (2.f - omc)), ph = 6.28318531f * r.next();
     float cp = cosf(ph), sp = sinf(ph);
     // copysignf here once lost the sign at normal incidence (Rd 25% low): keep the explicit test
-    if (fabsf(uz) > 0.99999f) { ux = st * cp; uy = st * sp; uz = uz > 0.f ? ct : -ct; return; }
+    if (fabsf(uz) > 0.99999f) { ux = st * cp; uy = st * sp; uz = uz > 0.f ? ct : -ct; return omc; }
     float den = sqrtf(1.f - uz * uz);
     float nx = st * (ux * uz * cp - uy * sp) / den + ux * ct;
     float ny = st * (uy * uz * cp + ux * sp) / den + uy * ct;
@@ -60,23 +62,34 @@ __device__ void hg(float g, float& ux, float& uy, float& uz, Rng& r) {
     // renormalise: float32 drift over hundreds of scatters otherwise ends in NaN
     float q = rsqrtf(nx * nx + ny * ny + nz * nz);
     ux = nx * q; uy = ny * q; uz = nz * q;
+    return omc;
 }
-__device__ __forceinline__ float hgpdf(float g, float c) {
-    float d = (1.f - g) * (1.f - g) + 2.f * g * (1.f - c);   // = 1 + g^2 - 2gc, without cancellation
+__device__ __forceinline__ float hgpdf_omc(float g, float omc) {   // HG density at 1 - cos = omc
+    float d = (1.f - g) * (1.f - g) + 2.f * g * omc;           // = 1 + g^2 - 2gc, without cancellation
     return (1.f - g * g) / (12.5663706f * d * sqrtf(d));
 }
+__device__ __forceinline__ float hgpdf(float g, float c) { return hgpdf_omc(g, 1.f - c); }
 
-// Two-lobe phase function per material and channel (ADR 0007 7a C): ph[9m + 3c + {0,1,2}] =
-// {g_a, f, g_b}, p_c(cos) = (1 - f) HG(g_a) + f HG(g_b). Lobe a is the grain part, lobe b the
-// pores and other near-isotropic scatterers.
+// Two-lobe phase function per material and channel (ADR 0007 7a C), with the forward peak
+// truncated (amendment 4): ph[PH_M m + PH_C c + k], k = {g_a, f, g_b, x_a, x_b, omc_cut}.
+// p_c = (1 - f) HG_a / x_a + f HG_b / x_b where 1 - cos > omc_cut, 0 inside the cut; x = the
+// share of each lobe outside the cut (1, and omc_cut 0, when nothing is truncated); f and mu_s
+// already count only the kept parts (host side, Materials.truncated). Lobe a is the grain
+// part, lobe b the pores and other near-isotropic scatterers.
+#define PH_C 6
+#define PH_M 18
+__device__ __forceinline__ float phase_pdf_omc(const float* ph, int m, int c, float omc) {
+    const float* q = ph + PH_M * m + PH_C * c;
+    if (omc <= q[5] && q[5] > 0.f) return 0.f;
+    return (1.f - q[1]) * hgpdf_omc(q[0], omc) / q[3] + q[1] * hgpdf_omc(q[2], omc) / q[4];
+}
 __device__ __forceinline__ float phase_pdf(const float* ph, int m, int c, float cs) {
-    const float* q = ph + 9 * m + 3 * c;
-    return (1.f - q[1]) * hgpdf(q[0], cs) + q[1] * hgpdf(q[2], cs);
+    return phase_pdf_omc(ph, m, c, 1.f - cs);
 }
 __device__ __forceinline__ bool same_lobes(const float* ph, int m) {   // all channels alike
-    const float* q0 = ph + 9 * m;
+    const float* q0 = ph + PH_M * m;
     bool same = true;
-    for (int k = 3; k < 9; ++k) same = same && q0[k] == q0[k % 3];
+    for (int k = PH_C; k < PH_M; ++k) same = same && q0[k] == q0[k % PH_C];
     return same;
 }
 // Density per steradian with which `scatter` (below) draws a new direction at cosine cs from
@@ -92,29 +105,30 @@ __device__ float sample_pdf(const float* ph, int m, const float* w, float cs) {
 // then reweight every channel by p_c / p_mix, p_mix = sum_c pi_c p_c (the one-sample mixture
 // estimator; unbiased, and the weights stay bounded by 1/pi_c). When all channels share one
 // lobe the ratio is 1 and this is plain HG sampling. If pdf is given it receives the density
-// of the drawn direction (sample_pdf).
+// of the drawn direction (sample_pdf). full = true draws from the whole lobes even when they
+// are truncated (a control: the draws then disagree with the densities).
 __device__ void scatter(const float* ph, int m, float* w, float& ux, float& uy, float& uz, Rng& r,
-                        bool reweight = true, float* pdf = nullptr) {
-    const float* q0 = ph + 9 * m;
+                        bool reweight = true, float* pdf = nullptr, bool full = false) {
+    const float* q0 = ph + PH_M * m;
     if (same_lobes(ph, m)) {                               // weight ratio 1; a single lobe draws
-        float g = q0[0];                                   // exactly as plain HG sampling did
-        if (q0[1] > 0.f && r.next() < q0[1]) g = q0[2];
-        float ox = ux, oy = uy, oz = uz;
-        hg(g, ux, uy, uz, r);
-        if (pdf) *pdf = phase_pdf(ph, m, 0, ox * ux + oy * uy + oz * uz);
+        float g = q0[0], x = q0[3];                        // exactly as plain HG sampling did
+        if (q0[1] > 0.f && r.next() < q0[1]) { g = q0[2]; x = q0[4]; }
+        float omc = hg(g, ux, uy, uz, r, full ? 1.f : x);
+        if (pdf) *pdf = phase_pdf_omc(ph, m, 0, fmaxf(omc, q0[5] * 1.000001f));
         return;
     }
     float a0 = fabsf(w[0]), a1 = fabsf(w[1]), a2 = fabsf(w[2]), sa = a0 + a1 + a2;
     if (!(sa > 0.f)) { a0 = a1 = a2 = 1.f; sa = 3.f; }
     float u = r.next() * sa;
     int c = u < a0 ? 0 : (u < a0 + a1 ? 1 : 2);
-    const float* q = q0 + 3 * c;
-    float g = r.next() < q[1] ? q[2] : q[0];
-    float ox = ux, oy = uy, oz = uz;
-    hg(g, ux, uy, uz, r);
-    float cs = ox * ux + oy * uy + oz * uz;
+    const float* q = q0 + PH_C * c;
+    bool b = r.next() < q[1];
+    // the drawn 1 - cos (not one recomputed from the vectors) keys the densities, so a draw
+    // just outside the cut never reads as inside it
+    float omc = hg(b ? q[2] : q[0], ux, uy, uz, r, full ? 1.f : (b ? q[4] : q[3]));
+    omc = fmaxf(omc, q[5] * 1.000001f);
     float p[3], pm = 0.f, pi[3] = {a0 / sa, a1 / sa, a2 / sa};
-    for (int k = 0; k < 3; ++k) { p[k] = phase_pdf(ph, m, k, cs); pm += pi[k] * p[k]; }
+    for (int k = 0; k < 3; ++k) { p[k] = phase_pdf_omc(ph, m, k, omc); pm += pi[k] * p[k]; }
     if (pdf) *pdf = pm;
     if (reweight) for (int k = 0; k < 3; ++k) w[k] *= p[k] / pm;   // off: a check's control
 }

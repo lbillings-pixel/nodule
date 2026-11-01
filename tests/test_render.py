@@ -11,7 +11,7 @@ from agatesim.volume.config import SliceConfig
 from agatesim.volume.fractures import FLAT
 
 from nodule.render import reference, scene, tgrid
-from nodule.render.camera import Light, Materials, View, srgb
+from nodule.render.camera import Light, Materials, View, hg_density, hg_kept, srgb
 from nodule.specimen import Specimen, load_preset
 
 CUT = SliceConfig(tilt_deg=90.0, azimuth_deg=270.0, offset_mm=0.0)
@@ -199,6 +199,37 @@ def test_two_lobe_phase_is_a_density() -> None:
     mean_cos = -2 * math.pi * np.trapezoid(vals * c[:, None], c, axis=0)
     want = (1 - m.f[0]) * m.g[0] + m.f[0] * m.gb[0]  # the mixture's mean cosine
     assert np.allclose(mean_cos, want, atol=2e-3)
+
+
+@pytest.mark.parametrize("cut_deg", [0.5, 2.0, 10.0])
+def test_hg_kept_share_matches_quadrature(cut_deg: float) -> None:
+    """P(1 - cos > cut) of an HG lobe, closed form against 2 pi * the density integrated.
+    Control: the isotropic share 1 - omc/2 is far off for a sharp lobe."""
+    omc_cut = 1 - math.cos(math.radians(cut_deg))
+    g = np.array([0.0, -0.3, 0.5, 0.9, 0.998])
+    omc = np.geomspace(omc_cut, 2.0, 200001)
+    num = 2 * math.pi * np.trapezoid(hg_density(g[:, None], omc[None, :]), omc, axis=1)
+    assert np.allclose(hg_kept(g, omc_cut), num, rtol=1e-6)
+    assert abs((1 - omc_cut / 2) / hg_kept(0.998, omc_cut) - 1) > 1.0  # control
+
+
+def test_truncated_phase_is_a_density_outside_the_cut() -> None:
+    m = Materials.of([[0.0] * 3], [[2.0] * 3], [[0.998, 0.9, 0.5]], f=[[0.1, 0.5, 0.9]],
+                     gb=[[0.0, 0.3, -0.2]], cut_deg=2.0)  # fmt: skip
+    omc_cut = m.omc_cut
+    assert (m.phase(1 - 0.5 * omc_cut) == 0).all()  # nothing scatters within the cut
+    c = 1 - np.geomspace(omc_cut * (1 + 1e-9), 2.0, 20001)
+    vals = np.stack([m.phase(ci)[0] for ci in c])
+    assert np.allclose(-2 * math.pi * np.trapezoid(vals, c, axis=0), 1.0, rtol=2e-3)
+    mus, _, xa, xb = m.kept()
+    assert np.allclose(mus[0], 2.0 * ((1 - m.f[0]) * xa[0] + m.f[0] * xb[0]))
+    assert mus[0, 0] < 0.3 * 2.0  # the g 0.998 lobe is mostly within 2 deg
+    # untruncated: the same numbers as before (bit for bit in the kernel's table)
+    full = dataclasses.replace(m, cut_deg=0.0)
+    table = full.phase_table()
+    assert (table[..., 3:5] == 1).all()
+    assert (table[..., 5] == 0).all()
+    assert (full.kept()[0].astype(np.float32) == full.mus).all()
 
 
 def test_srgb_endpoints_and_orientation() -> None:

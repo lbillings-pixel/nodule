@@ -30,6 +30,9 @@ from nodule.render import _gpu
 from nodule.render.scene import DeviceScene
 from nodule.render.tgrid import GrowthGrid
 
+# ADR 0007 amendment 4: forward-peak cut for renders under the L2 disc lamp (effective). Dome
+# and other diffuse-light renders show no sparkle and use the full phase function (0).
+L2_CUT_DEG = 4.0
 N_CHALCEDONY = 1.54  # physical: bulk chalcedony 1.53-1.539 [@lorenzi2022; @white1961]
 F32 = NDArray[np.float32]
 F64 = NDArray[np.float64]
@@ -48,6 +51,7 @@ class Flag(IntFlag):
     NEE_ONLY = 128  # disc: light sampling alone, weight 1 (a check)
     PHASE_ONLY = 256  # disc: phase sampling alone, weight 1 (a check)
     NO_MIS_WEIGHT = 512  # disc: both strategies at weight 1 (control: light counted twice)
+    UNTRUNCATED_DRAWS = 1024  # draw from the whole lobes despite cut_deg (control)
 
 
 @dataclass(frozen=True)
@@ -59,13 +63,18 @@ class Materials:
     dt: float  # growth-time step of `profile`
     f: F32  # (m, 3) share of mus in lobe b (pores and other near-isotropic scatterers)
     gb: F32  # (m, 3) asymmetry of lobe b
+    # Forward-peak truncation (ADR 0007 amendment 4): scattering by less than cut_deg is
+    # counted as no scattering. `effective`; 0 renders the full phase function.
+    cut_deg: float = 0.0
 
     @classmethod
     def of(cls, mua: ArrayLike, mus: ArrayLike, g: ArrayLike,
            profile: ArrayLike = (0,), dt: float = 1.0,
-           f: ArrayLike | None = None, gb: ArrayLike | None = None) -> Materials:  # fmt: skip
+           f: ArrayLike | None = None, gb: ArrayLike | None = None,
+           cut_deg: float = 0.0) -> Materials:  # fmt: skip
         """g, f, gb: (m,) for one value per material or (m, 3) per channel. Without f the
-        phase function is one HG lobe (f = 0)."""
+        phase function is one HG lobe (f = 0). mus, f, g, gb describe the full phase
+        function; `cut_deg` truncates it (see `kept`)."""
         mua32 = np.atleast_2d(np.asarray(mua, np.float32))
         mus32 = np.atleast_2d(np.asarray(mus, np.float32))
         if mua32.shape != mus32.shape or mua32.shape[1] != 3:
@@ -82,7 +91,7 @@ class Materials:
         m = cls(
             mua=mua32, mus=mus32, g=per_channel(g, "g"),
             profile=np.atleast_1d(np.asarray(profile, np.uint16)), dt=dt,
-            f=per_channel(f, "f"), gb=per_channel(gb, "gb"),
+            f=per_channel(f, "f"), gb=per_channel(gb, "gb"), cut_deg=float(cut_deg),
         )  # fmt: skip
         if (m.mua < 0).any() or (m.mus < 0).any():
             raise ValueError("coefficients must be non-negative")
@@ -92,21 +101,59 @@ class Materials:
             raise ValueError("asymmetry must lie in (-1, 1)")
         if len(m.g) > 1 and int(m.profile.max()) + 2 >= len(m.g):
             raise ValueError("profile names a band material beyond the table (2 + id)")
+        if not 0.0 <= m.cut_deg < 90.0:
+            raise ValueError("cut_deg must lie in [0, 90)")
         return m
 
+    @property
+    def omc_cut(self) -> float:
+        """1 - cos(cut_deg), accurate for small angles."""
+        return 2.0 * math.sin(math.radians(self.cut_deg) / 2.0) ** 2
+
+    def kept(self) -> tuple[F64, F64, F64, F64]:
+        """(mus, f, x_a, x_b) after truncation: x = share of each lobe scattering by more
+        than cut_deg; mus keeps only those shares, f is lobe b's part of what is kept. The
+        kernel draws each lobe within its kept part and divides its density by x."""
+        xa, xb = hg_kept(self.g, self.omc_cut), hg_kept(self.gb, self.omc_cut)
+        f64 = self.f.astype(np.float64)
+        share = (1 - f64) * xa + f64 * xb
+        fk = np.divide(f64 * xb, share, out=np.zeros_like(share), where=share > 0)
+        return self.mus * share, fk, xa, xb
+
     def phase_table(self) -> F32:
-        """(m, 3 channels, {g_a, f, g_b}) as the kernel reads it (common.cuh phase_pdf)."""
-        return np.ascontiguousarray(np.stack([self.g, self.f, self.gb], axis=-1))
+        """(m, 3 channels, {g_a, f, g_b, x_a, x_b, omc_cut}) as the kernel reads it
+        (common.cuh phase_pdf_omc), f and x after truncation."""
+        _, fk, xa, xb = self.kept()
+        cut = np.full_like(xa, self.omc_cut)
+        return np.ascontiguousarray(np.stack([self.g, fk, self.gb, xa, xb, cut], -1), np.float32)
 
     def phase(self, c: ArrayLike) -> F32:
-        """Phase density per steradian, (m, 3) per scattering cosine c (scalar)."""
-        cc = float(np.asarray(c))
+        """Phase density per steradian, (m, 3) per scattering cosine c (scalar), of the
+        kept (truncated) phase function: 0 within cut_deg of forward."""
+        omc = 1.0 - float(np.asarray(c))
+        _, fk, xa, xb = self.kept()
+        if self.cut_deg > 0 and omc <= self.omc_cut:
+            return np.zeros_like(self.g)
+        return ((1 - fk) * hg_density(self.g, omc) / xa
+                + fk * hg_density(self.gb, omc) / xb).astype(np.float32)  # fmt: skip
 
-        def hg(g: F32) -> NDArray[np.float64]:
-            g64 = g.astype(np.float64)
-            return (1 - g64**2) / (4 * math.pi * ((1 - g64) ** 2 + 2 * g64 * (1 - cc)) ** 1.5)
 
-        return ((1 - self.f) * hg(self.g) + self.f * hg(self.gb)).astype(np.float32)
+def hg_density(g: ArrayLike, omc: ArrayLike) -> F64:
+    """Henyey-Greenstein density per steradian at 1 - cos = omc."""
+    g64 = np.asarray(g, np.float64)
+    om = np.asarray(omc, np.float64)
+    return (1 - g64**2) / (4 * math.pi * ((1 - g64) ** 2 + 2 * g64 * om) ** 1.5)
+
+
+def hg_kept(g: ArrayLike, omc_cut: float) -> F64:
+    """Share of a Henyey-Greenstein lobe scattering by more than the cut, P(1 - cos >
+    omc_cut), from the inverse of the sampling map in common.cuh hg (Wang 1995 Eq. 3.22):
+    xi = ((1 - g^2) / sqrt(1 + g^2 - 2 g cos) - (1 - g)) / 2g; isotropic 1 - omc_cut / 2."""
+    g64 = np.asarray(g, np.float64)
+    safe = np.where(np.abs(g64) < 1e-9, 0.5, g64)  # placeholder where the isotropic form is used
+    d = (1 - safe) ** 2 + 2 * safe * omc_cut
+    x = ((1 - safe**2) / np.sqrt(d) - (1 - safe)) / (2 * safe)
+    return np.clip(np.where(np.abs(g64) < 1e-9, 1 - omc_cut / 2, x), 1e-12, 1.0)
 
 
 LIGHT_KIND = {"directional": 0, "dome": 1, "disc": 2}
@@ -217,9 +264,10 @@ def render(
     mubar: global majorant (default max mu_t). order > 0 keeps only that real-
     collision order (single scattering check)."""
     cp = _gpu.cupy()
-    mua, mus = cp.asarray(materials.mua), cp.asarray(materials.mus)
+    kept_mus = materials.kept()[0].astype(np.float32)
+    mua, mus = cp.asarray(materials.mua), cp.asarray(kept_mus)
     ph, prof = cp.asarray(materials.phase_table()), cp.asarray(materials.profile)
-    mb = float((materials.mua + materials.mus).max()) if mubar is None else mubar
+    mb = float((materials.mua + kept_mus).max()) if mubar is None else mubar
     paths = view.nx * view.ny * spp
     if paths >= 2**63:
         raise ValueError("too many paths")

@@ -29,6 +29,7 @@
 //   64 no per-channel phase reweighting (control for the two-lobe check).
 //   DISC only: 128 NEE only (weight 1); 256 phase sampling only (weight 1); 512 both
 //   strategies at weight 1 (control: counts the light twice).
+//   1024 draw scattering from the whole lobes although they are truncated (control).
 
 struct Cam { float s0, t0, pix; int nx, ny, spp; unsigned int seed; float n_in, D;
              int light; float lth, lph, E, Ld; float mubar; int nmat; int nprof; float dt;
@@ -180,7 +181,8 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const unsigned
                 }
             }
             if (C.order != 0 && real >= C.order) break;
-            scatter(ph, m, w, dx, dy, dz, r, !(C.flags & 64), hits ? &lastpp : nullptr);
+            scatter(ph, m, w, dx, dy, dz, r, !(C.flags & 64), hits ? &lastpp : nullptr,
+                    C.flags & 1024);
             ntop = nbot = 0;
         }
         if (!roulette(w, w0, r)) break;

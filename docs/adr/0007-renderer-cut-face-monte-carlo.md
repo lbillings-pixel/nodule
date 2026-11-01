@@ -3,7 +3,8 @@
 - Status: accepted (owner, 2026-11-01). Section 1 records earlier choices
   from the same day. In section 6 the owner took the recommendations for
   7a (C), 7c (0.2 mm) and 7d (majorant grid first). For 7b they chose all
-  three lights now, not L1 + L2 first.
+  three lights now, not L1 + L2 first. Amendment ³ defers the majorant
+  grid (owner).
 - Date: 2026-11-01
 - Builds on: [ADR 0003](0003-scope-a-3d-specimen-simulator.md) section 3
   (the renderer as its own concern), [ADR 0005](0005-representation-implicit-hybrid.md)
@@ -251,7 +252,21 @@ needed.**
   [@novak2014]) should cut that several-fold, and shadow rays most of all
   ([inference]; to be measured).
 - Target: 1 Mpx, 256 samples per pixel, under 3 minutes for L2
-  (*speculative* until built).
+  (*speculative* until built).³
+
+³ Amended 2026-11-01 (owner): **the majorant grid is deferred**, and the
+disc lamp comes first. The several-fold estimate above was made with the
+prototype's stand-in materials (milky 20 per mm, clear 2). The 7a table
+spreads less: band materials 2.0–13.4 per mm, host rock 16.6. On the
+n2-slice (0.2 mm grid, top 3 mm), 47% of tentative collisions are null
+(measured, 8 samples per pixel). The bound per cell, from the t range of
+its grid nodes, would cut tentative collisions only 1.46× (0.4 mm cells),
+1.28× (1 mm) or 1.17× (2 mm) [inference: computed from the grid, before
+the fractures' 1.5 mm slip widens each cell's bound and before the cost of
+walking the cells]. The 45° directional light already runs at
+1.29 M paths per second, about 3.3 minutes for the target image. The grid
+is built only if L2, once measured, misses the target by more than the
+grid could recover.
 
 ## Alternatives considered
 
@@ -287,5 +302,5 @@ needed.**
 - References added: none beyond those catalogued in c90c497 and 62a5ebf.
 - Next after acceptance: materials from agatesim fields (section 3), the
   7a scattering model, the three 7b lights (L3 with its slab geometry),
-  the 7d majorant grid. Then the
+  the 7d majorant grid (deferred, amendment ³). Then the
   set-level comparison with the owner (ADR 0006 section 10).

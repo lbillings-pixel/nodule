@@ -55,3 +55,8 @@ def spherical_bessel(n: NDArray[np.int_], z: complex, derivative: bool = False,
     """j_n(z) or y_n(z) (or their derivatives) at a complex argument; for tests."""
     f = special.spherical_jn if kind == "j" else special.spherical_yn
     return np.asarray(f(n, z, derivative=derivative), dtype=np.complex128)
+
+
+def normal_cdf(z: NDArray[np.float64]) -> NDArray[np.float64]:
+    """The standard normal distribution function, elementwise (NaN stays NaN)."""
+    return np.asarray(special.ndtr(z), dtype=np.float64)

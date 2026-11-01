@@ -4,7 +4,8 @@
   choices; in section 7 the owner took the recommendations for 7a (staged),
   7b (tune on all photos, parameters listed first) and 7c (cut faces of every
   finish). Amendment ¹ (owner) rereads the power-by-size runs as verdict
-  stability and adds the crossing shift.
+  stability and adds the crossing shift. Amendment ² (owner) scores the
+  descriptors in blocks, so no value can hide.
 - Date: 2026-11-01
 - Builds on: [ADR 0006](0006-band-counts-as-censored-records.md) section 10
   (the fallback: band realism is tested by rendering synthetic stones at each
@@ -110,7 +111,7 @@ judged only in the blind test (section 5).
   photo, taken over the descriptors both faces have (descriptors are
   missing where a gate fails, as for photos). The score is the mean distance
   to its k = 5 nearest photos. Photos are scored leave-one-out, giving the
-  reference distribution.
+  reference distribution.²
 - **Verdict.** The stone lies within the spread if its median cut's joint
   score is at or below the 95th percentile of the photos' leave-one-out
   scores. A random real photo fails that 5 % of the time by construction.
@@ -322,3 +323,58 @@ the noisy threshold adds spurious fails. So:
   the cuts lack (infinite).
 - Grade: *speculative*, as for section 3 (reasoning checked on synthetic
   tables, not taken from a source).
+
+² Amended 2026-11-01 (owner chose block scores). The crossing shift of
+amendment ¹ found that the joint score of section 3 could not see C7, C9,
+C10, C11, C12 or C13 alone: shifted by 20 interquartile ranges on one of
+them, three stand-in cuts stayed within. Values go missing in blocks, as
+gates fail (only 26 of the 103 reflected photos have all; 35 have the shape
+and image values but none from the band profiles). A cut found its 5
+nearest photos among those lacking the shifted value, so that value was
+never compared. Scored against only the photos that have it, each crossed
+at a finite shift (C7 5.7, C11 4.8, C12 3.2, C13 depth 1.2 interquartile
+ranges, upward). Section 3's joint score is replaced by:
+
+- **Blocks** by measuring module: shape (C7, C8, C9, C11), persistence
+  (C10), continuity (C12), rings (C13), image (C14-C16, which fail
+  together) and spectrum (C26).
+- **Block score.** Within a block, a photo is a neighbour only if it has
+  every value of the block the face has. The score is the mean squared
+  scaled difference to the `K` = 5 nearest such photos, photos
+  leave-one-out.
+- **Tail share.** Each block score becomes *p*, its upper tail share under
+  a normal fitted (median, interquartile range) to the cube roots of the
+  photos' block scores (`effective`). A rank was tried first. It stops at
+  the most extreme photo, so with six blocks the photos' 95th percentile
+  sat at the ceiling and a fake 2 standard deviations off passed. A
+  log-normal was tried next. Ties among whole-number values (C13) give exact
+  zeros, whose logs blew up the fitted spread, and rings could again never
+  cross. Cube roots (Wilson-Hilferty) keep zeros finite.
+- **Joint score:** -log10 of 1 - (1 - min *p*) ** *m* over the face's *m*
+  scored blocks (Sidak), so that more blocks are not less typical by chance.
+  It assumes the blocks independent and is conservative where they are
+  correlated. The verdict of section 3 is unchanged: the median cut against
+  the photos' 95th percentile.
+- **Block presence.** The share of faces with each block, cuts beside all
+  photos of the stratum (gate failures included), is reported, since how
+  often the gates pass is itself a finding.
+
+Checks (tests/test_compare.py; synthetic tables with whole blocks missing):
+a cut set 5 interquartile ranges off on rings alone, beside photos 70 % of
+which lack rings, fails. Under the old score it passed (the negative
+control). Cuts with every block, against photos missing half, stay within.
+N1: 0.05 synthetic, 0.068 on the 103 reflected photos, 0.067 on the 15
+slabs. The amendment ¹ figures were for the old score. Under this one, a
+fake shifted on all values is rejected in about 93 % of resamples at 2
+standard deviations, 63 % at 1.5 and 25 % at 1.2 (120 photos). It
+rejects less than the old score on such broad shifts, because the worst
+block counts, not the sum over all 25. On the real library with three
+stand-in cuts, every value now crosses at a finite shift: 1.1-1.8
+interquartile ranges for C10, 3.6-8.9 for C12, 5.5-8.9 for shape, 12-15
+for C13, and 1.1-1.8 for all values together.
+
+The bar is wide because about five library photos are themselves extreme in
+one block, most in the image block. Their 95th-percentile joint score is
+15. They are listed by `python -m nodule.compare` runs (ids only).
+Whether they are measurement artefacts, such as detail crops, is an open
+check for the owner. Grade: *speculative*, as for section 3.

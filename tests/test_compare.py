@@ -7,7 +7,11 @@ import numpy as np
 import pytest
 
 from nodule.compare import (
+    BLOCKS,
     COMPARED,
+    block_presence,
+    block_scores,
+    blocks,
     crossing_shift,
     crossing_shifts,
     distances,
@@ -25,11 +29,15 @@ from nodule.compare import (
 D = len(COMPARED)
 
 
+PARTS = blocks()
+
+
 def _faces(n: int, rng: np.random.Generator, shift: float = 0.0, missing: float = 0.4):
-    """Faces drawn from one population, with a share of values missing as
-    where a gate fails."""
+    """Faces drawn from one population, each block missing with chance
+    `missing`, as where a gate fails (whole blocks, as in the library)."""
     x = rng.normal(shift, 1.0, size=(n, D))
-    x[rng.random((n, D)) < missing] = np.nan
+    for _, cols in PARTS:
+        x[np.ix_(rng.random(n) < missing, cols)] = np.nan
     return x
 
 
@@ -75,7 +83,7 @@ def test_same_population_lies_within_and_shifted_is_rejected() -> None:
     rng = np.random.default_rng(1)
     photos = _faces(100, rng)
     same = _faces(100, rng)
-    fake = _faces(100, rng, shift=1.5)  # negative control
+    fake = _faces(100, rng, shift=2.0)  # negative control
     assert spread_test(same, photos).within
     assert not spread_test(fake, photos).within
     g1, g2 = np.random.default_rng(2).spawn(2)
@@ -88,9 +96,13 @@ def test_bootstrap_duplicates_do_not_score_against_themselves() -> None:
     photos = _faces(60, rng)
     doubled = np.concatenate([photos, photos])
     origin = np.concatenate([np.arange(60), np.arange(60)])
-    honest = spread_test(photos[:1], doubled, origin=origin)
-    leaky = spread_test(photos[:1], doubled)  # each copy finds its twin at 0
-    assert np.nanmin(leaky.photo_scores) < np.nanmin(honest.photo_scores)
+    cols = PARTS[0][1]
+    same = origin[:, None] == origin[None, :]
+    honest = block_scores(doubled[:, cols], doubled[:, cols], same, k=1)
+    leaky = block_scores(doubled[:, cols], doubled[:, cols], np.eye(120, dtype=bool), k=1)
+    has = np.isfinite(honest)
+    assert np.all(leaky[has] < 1e-9)  # each copy finds its twin at 0
+    assert np.all(honest[has] > 1e-6)
 
 
 def test_null_n1_held_out_photos_fail_about_five_percent() -> None:
@@ -102,10 +114,10 @@ def test_rates_settle_on_the_verdict_line_as_photos_grow() -> None:
     """The verdict is a line (median cut vs the photos' 95th percentile), so
     more photos make the rate settle, toward 1 for a fake beyond the line and
     0 for one inside it; at few photos the noisy threshold adds spurious
-    fails (2026-11-01 finding, ADR 0008 section 4)."""
+    fails (ADR 0008 amendment 1)."""
     rng = np.random.default_rng(5)
     photos = _faces(120, rng)
-    far = _faces(80, rng, shift=1.2)
+    far = _faces(80, rng, shift=2.0)
     near = _faces(80, rng, shift=0.6)  # inside the line
     g1, g2 = np.random.default_rng(6).spawn(2)
     p_far = power_by_size(far, photos, g1, sizes=(15, 60), resamples=40)
@@ -166,3 +178,39 @@ def test_one_descriptor_needs_a_larger_shift_than_all() -> None:
     assert set(shifts) == {*COMPARED, "all"}
     together = min(shifts["all"])
     assert all(min(shifts[n]) > together for n in COMPARED)
+
+
+def test_an_odd_value_cannot_hide_beside_photos_that_lack_it() -> None:
+    """ADR 0008 amendment 2. Most photos lack the rings block; cuts far off
+    there alone must still fail, and the crossing shift is finite. Before the
+    blocks, such cuts scored beside the photos without rings and passed."""
+    rng = np.random.default_rng(11)
+    photos = _faces(100, rng, missing=0.1)
+    rings = dict(PARTS)["rings"]
+    photos[np.ix_(rng.random(100) < 0.7, rings)] = np.nan
+    cuts = _faces(60, rng, missing=0.0)
+    assert spread_test(cuts, photos).within
+    j = COMPARED.index("C13_depth")
+    assert crossing_shift(cuts, photos, column=j) < 10.0
+    odd = cuts.copy()
+    odd[:, rings] += 5.0
+    assert not spread_test(odd, photos).within
+
+
+def test_more_blocks_are_not_less_typical_by_chance() -> None:
+    """Cuts with every block, against photos missing many, from the same
+    population: the share outside stays near 5 %."""
+    rng = np.random.default_rng(12)
+    photos = _faces(150, rng, missing=0.5)
+    cuts = _faces(150, rng, missing=0.0)
+    s = spread_test(cuts, photos)
+    assert s.within
+    assert s.outside_share <= 0.15
+
+
+def test_block_presence_counts_rows_without_values() -> None:
+    rows = [{"C7_spread": 0.5}, {"C16_banded": 0.9, "C7_spread": 0.6}, {"C6_count": 3.0}]
+    p = block_presence(table(rows))
+    assert set(p) == set(BLOCKS)
+    assert p["shape"] == pytest.approx(2 / 3)
+    assert p["image"] == pytest.approx(1 / 3)

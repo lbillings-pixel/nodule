@@ -8,12 +8,29 @@ not whether they match its distribution (ADR 0008 section 1):
   interquartile range (robust z). A descriptor with fewer than two photo
   values, or an interquartile range of zero, is left out of the score
   (assumption: it cannot be scaled).
-- **Joint score.** The distance between two faces is the mean squared scaled
-  difference over the descriptors both faces have. A face's score is its
-  mean distance to its `K` nearest photos. Photos are scored leave-one-out,
-  which gives the reference distribution.
-- **Verdict.** The stone lies within the spread if its median cut's score
-  is at or below the `LEVEL` percentile of the photos' leave-one-out scores.
+- **Block scores.** Values are missing in blocks, as gates fail (`BLOCKS`,
+  one per measuring module). Within a block the distance between two faces
+  is the mean squared scaled difference over the face's values, and a photo
+  is a neighbour only if it has every value of the block the face has, so a
+  face cannot hide an odd value beside photos that lack it (ADR 0008
+  amendment 2). A face's block score is its mean distance to its `K`
+  nearest such photos; photos are scored leave-one-out.
+- **Joint score.** Each block score becomes a tail share *p*: how rarely a
+  photo's block score would be as high, from a normal with the robust
+  centre and spread of the cube roots of the photos' block scores
+  (`effective`; Wilson-Hilferty). A rank
+  would stop at the most extreme photo, so no face could ever be less
+  typical than all of them; *p* has no such floor. The photos take part in
+  their own block's fit; with robust estimates that leak is small
+  (reasoning). The face's *m* scored blocks combine as 1 - (1 - min *p*) **
+  *m* (Sidak's correction, so a face with more blocks is not less typical by
+  chance; it assumes the blocks independent and is conservative where they
+  are correlated). The joint score is -log10 of that: higher is less
+  typical.
+- **Verdict.** The stone lies within the spread if its median cut's joint
+  score is at or below the `LEVEL` percentile of the photos' joint scores.
+- **Block presence.** The share of faces with each block, cuts beside
+  photos, is reported too: how often the gates pass is itself a finding.
 - **Rejection rate.** A fake (F1-F3) must fail the verdict in at least
   `REJECT_SHARE` of `RESAMPLES` bootstrap resamples, resampling both its cuts
   and the photos (ADR 0008 section 4). The rate is reported, not just yes or
@@ -49,6 +66,7 @@ from pathlib import Path
 import numpy as np
 from numpy.typing import NDArray
 
+from nodule._scipy import normal_cdf
 from nodule.tags import (
     FROM_CONTINUITY,
     FROM_CURVE,
@@ -60,17 +78,22 @@ from nodule.tags import (
     TAGS_TOML,
 )
 
-# The 25 compared values: C7-C16 and C26's summaries (ADR 0006 section 10).
-COMPARED: tuple[str, ...] = (
-    *(n for n in IMPORTED if n != "C17_core"),
-    "C10_persistence",
-    *FROM_CONTINUITY,
-    *FROM_RINGS,
-    *(n for n in FROM_ORDER if n != "C16_corr_censored"),
-    *FROM_CURVE,
-    *FROM_DEFECTS,
-    *FROM_SPECTRUM,
-)
+# The 25 compared values, C7-C16 and C26's summaries (ADR 0006 section 10),
+# in blocks by measuring module (ADR 0008 amendment 2). C14-C16 share the
+# face image and fail together in the library, so they are one block.
+BLOCKS: dict[str, tuple[str, ...]] = {
+    "shape": tuple(n for n in IMPORTED if n != "C17_core"),  # agatesim.specimen.shape
+    "persistence": ("C10_persistence",),  # nodule.bands
+    "continuity": tuple(FROM_CONTINUITY),  # nodule.bands, C12
+    "rings": tuple(FROM_RINGS),  # nodule.concentric, C13
+    "image": (
+        *(n for n in FROM_ORDER if n != "C16_corr_censored"),
+        *FROM_CURVE,
+        *FROM_DEFECTS,
+    ),  # nodule.orientation, .curvature, .defects: C16, C15, C14
+    "spectrum": tuple(FROM_SPECTRUM),  # nodule.spectrum, C26
+}
+COMPARED: tuple[str, ...] = tuple(n for block in BLOCKS.values() for n in block)
 # The photo strata (ADR 0008 section 1): view kind and lighting in the tags.
 STRATA = {
     "reflected": ("cut face", "reflected"),
@@ -82,6 +105,9 @@ REJECT_SHARE = 0.80  # share of resamples a must-reject fake must fail
 RESAMPLES = 200  # bootstrap resamples for a rejection rate
 SIZES = (15, 30, 60)  # photo subsets for verdict stability (ADR 0008 s. 4, amendment 1)
 MOST_SHIFT = 20.0  # largest shift searched, in interquartile ranges (`effective`)
+MIN_REF = 4  # fewest photo block scores to fit a block's tail (assumption)
+IQR_PER_SD = 1.349  # interquartile range of a unit normal
+FLOOR = 1e-300  # smallest joint tail share kept
 STEPS = 20  # bisection steps for a shift (resolution MOST_SHIFT / 2**STEPS)
 
 Floats = NDArray[np.float64]
@@ -95,6 +121,7 @@ class Table:
     ids: tuple[str, ...]
     names: tuple[str, ...]
     values: Floats
+    rows: int  # rows given, including those with no compared value
 
     def __len__(self) -> int:
         return len(self.ids)
@@ -118,7 +145,8 @@ def table(
     values = np.array([[_number(r.get(n)) for n in names] for r in rows], dtype=np.float64)
     values = values.reshape(len(rows), len(names))
     keep = np.isfinite(values).any(axis=1)
-    return Table(tuple(k for k, y in zip(keys, keep, strict=True) if y), tuple(names), values[keep])
+    kept = tuple(k for k, y in zip(keys, keep, strict=True) if y)
+    return Table(kept, tuple(names), values[keep], len(rows))
 
 
 def library_table(
@@ -181,16 +209,83 @@ def _scaled(values: Floats, centre: Floats, width: Floats) -> Floats:
     return (values - centre) / width  # NaN columns drop out of every distance
 
 
+def blocks(names: Sequence[str] = COMPARED) -> list[tuple[str, NDArray[np.intp]]]:
+    """`BLOCKS` as column indices into `names`; a name in no block is a
+    block of its own."""
+    out: list[tuple[str, NDArray[np.intp]]] = []
+    for block, cols in BLOCKS.items():
+        idx = [names.index(n) for n in cols if n in names]
+        if idx:
+            out.append((block, np.array(idx, dtype=np.intp)))
+    known = {n for cols in BLOCKS.values() for n in cols}
+    out += [(n, np.array([j], dtype=np.intp)) for j, n in enumerate(names) if n not in known]
+    return out
+
+
+def block_scores(
+    faces: Floats, photos: Floats, exclude: NDArray[np.bool_] | None = None, k: int = K
+) -> Floats:
+    """Each face's mean distance to its `k` nearest photos within one block
+    (columns already chosen and scaled). A photo is a neighbour only if it
+    has every value the face has; `exclude[i, p]` also rules a pair out.
+    NaN where the face has none of the block or fewer than `k` neighbours."""
+    d = distances(faces, photos)
+    fa = np.isfinite(faces).astype(np.float64)
+    lacks = fa @ (1.0 - np.isfinite(photos).astype(np.float64)).T > 0
+    d[lacks] = np.nan
+    if exclude is not None:
+        d[exclude] = np.nan
+    out = knn_scores(d, k)
+    out[fa.sum(axis=1) == 0] = np.nan
+    return out
+
+
+def _tail(x: Floats, ref: Floats) -> Floats:
+    """Each `x`'s upper tail share *p* among the photos' block scores `ref`:
+    a normal with the robust centre and spread of the scores' cube roots
+    (`effective`; Wilson and Hilferty's transform, which brings a mean of
+    squares near normal and keeps the exact zeros of tied whole-number
+    values finite, where a log does not). NaN where `x` is NaN, or fewer
+    than `MIN_REF` photos are scored, or their scores have no spread."""
+    r = ref[np.isfinite(ref)]
+    out = np.full(len(x), np.nan)
+    if r.size < MIN_REF:
+        return out
+    q1, q2, q3 = np.percentile(np.cbrt(r), [25, 50, 75])
+    if q3 <= q1:
+        return out
+    ok = np.isfinite(x)
+    z = (np.cbrt(x[ok]) - q2) / ((q3 - q1) / IQR_PER_SD)
+    out[ok] = normal_cdf(-z)  # computed directly, so tiny shares keep their digits
+    return out
+
+
+def _joint(p: Floats) -> Floats:
+    """-log10 of 1 - (1 - min p) ** m over each row's m finite block tail
+    shares (Sidak); NaN where none."""
+    finite = np.isfinite(p)
+    m = finite.sum(axis=1)
+    low = np.where(finite, p, 1.0).min(axis=1)
+    out = np.full(len(p), np.nan)
+    has = m > 0
+    joint = -np.expm1(m[has] * np.log1p(-low[has]))
+    out[has] = -np.log10(np.maximum(joint, FLOOR))
+    return out
+
+
 @dataclass(frozen=True)
 class Spread:
-    """One spread test (ADR 0008 section 3)."""
+    """One spread test (ADR 0008 section 3, amendment 2)."""
 
-    cut_scores: Floats  # NaN where a cut shares too little with the photos
-    photo_scores: Floats  # leave-one-out
+    cut_scores: Floats  # joint scores; NaN where a cut has no scored block
+    photo_scores: Floats  # joint scores, leave-one-out
     threshold: float  # the photos' LEVEL percentile
     median: float  # the stone's median cut score
     within: bool
     outside_share: float  # share of scored cuts above the threshold
+    block_names: tuple[str, ...]
+    cut_blocks: Floats  # cuts by block: tail share p among the photos
+    photo_blocks: Floats  # photos by block, leave-one-out
     scaled_names: tuple[str, ...]  # descriptors that could be scaled
 
 
@@ -203,15 +298,21 @@ def spread_test(
 ) -> Spread:
     """The spread test of `cuts` against `photos` (rows by `names`).
     `origin` gives each photo row's source photo, so that a resampled
-    duplicate is left out of its own leave-one-out score."""
+    duplicate is left out of its own leave-one-out scores."""
     centre, width = robust_scale(photos)
     zp = _scaled(photos, centre, width)
     zc = _scaled(cuts, centre, width)
-    dp = distances(zp, zp)
     src = np.arange(len(photos)) if origin is None else origin
-    dp[src[:, None] == src[None, :]] = np.nan
-    photo_scores = knn_scores(dp, k)
-    cut_scores = knn_scores(distances(zc, zp), k)
+    same = src[:, None] == src[None, :]
+    parts = blocks(names)
+    ub_c = np.full((len(cuts), len(parts)), np.nan)
+    ub_p = np.full((len(photos), len(parts)), np.nan)
+    for b, (_, cols) in enumerate(parts):
+        sp = block_scores(zp[:, cols], zp[:, cols], same, k)
+        sc = block_scores(zc[:, cols], zp[:, cols], None, k)
+        ub_p[:, b] = _tail(sp, sp)
+        ub_c[:, b] = _tail(sc, sp)
+    photo_scores, cut_scores = _joint(ub_p), _joint(ub_c)
     ref = photo_scores[np.isfinite(photo_scores)]
     got = cut_scores[np.isfinite(cut_scores)]
     threshold = float(np.percentile(ref, LEVEL)) if ref.size else float("nan")
@@ -223,8 +324,19 @@ def spread_test(
         median=median,
         within=bool(median <= threshold),  # False if either is NaN
         outside_share=float(np.mean(got > threshold)) if got.size else float("nan"),
+        block_names=tuple(name for name, _ in parts),
+        cut_blocks=ub_c,
+        photo_blocks=ub_p,
         scaled_names=tuple(n for n, w in zip(names, width, strict=True) if np.isfinite(w)),
     )
+
+
+def block_presence(t: Table) -> dict[str, float]:
+    """Share of `t`'s rows (all given, gate failures included) with any
+    value of each block."""
+    f = np.isfinite(t.values)
+    parts = blocks(t.names)
+    return {name: float(f[:, cols].any(axis=1).sum() / t.rows) for name, cols in parts}
 
 
 def rejection_rate(
@@ -370,6 +482,13 @@ def main(argv: list[str] | None = None) -> None:
     photos = library_table(args.stratum)
     print(f"{args.stratum}: {len(photos)} photos with a compared value")
     print(f"N1 held-out failure rate: {held_out_rate(photos.values):.3f} (expect ~0.05)")
+    ref = spread_test(photos.values[:0], photos.values)
+    print(f"photos above the bar ({ref.threshold:.1f}), with their least typical block:")
+    for i in np.argsort(-np.nan_to_num(ref.photo_scores, nan=-np.inf)):
+        if not ref.photo_scores[i] > ref.threshold:
+            break
+        worst = ref.block_names[int(np.nanargmin(ref.photo_blocks[i]))]
+        print(f"  {ref.photo_scores[i]:6.1f} {worst:12s} {photos.ids[i]}")
     if args.cuts:
         rows = json.loads(args.cuts.read_text("utf-8"))
         cuts = table(rows)
@@ -390,6 +509,9 @@ def main(argv: list[str] | None = None) -> None:
                 f"{d.percentile:5.1f} {d.outside_share:4.0%}; {down:.2f} / {up:.2f}"
             )
         print(f"  all together: {shifts['all'][0]:.2f} / {shifts['all'][1]:.2f}")
+        pc, pp = block_presence(cuts), block_presence(photos)
+        shares = ", ".join(f"{b} {pc[b]:.0%} / {pp[b]:.0%}" for b in pc)
+        print(f"block presence, cuts / photos: {shares}")
     elapsed = time.perf_counter() - t0
     peak = tracemalloc.get_traced_memory()[1]
     tracemalloc.stop()

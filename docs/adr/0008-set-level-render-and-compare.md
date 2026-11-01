@@ -1,7 +1,9 @@
 # 8. Set-level render-and-compare, and the owner's blind test
 
-- Status: proposed (2026-11-01). Section 1 records choices the owner made
-  the same day; section 7 holds the rest.
+- Status: accepted (owner, 2026-11-01). Section 1 records the owner's earlier
+  choices; in section 7 the owner took the recommendations for 7a (staged),
+  7b (tune on all photos, parameters listed first) and 7c (cut faces of every
+  finish).
 - Date: 2026-11-01
 - Builds on: [ADR 0006](0006-band-counts-as-censored-records.md) section 10
   (the fallback: band realism is tested by rendering synthetic stones at each

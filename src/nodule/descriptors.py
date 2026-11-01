@@ -74,6 +74,7 @@ from nodule.tags import (
     FROM_DEFECTS,
     FROM_ORDER,
     FROM_RINGS,
+    FROM_SPECTRUM,
     GATE_PASSES,
     IMPORTED,
     agatesim_dir,
@@ -92,7 +93,8 @@ LATER = (
     *FROM_ORDER,
     *FROM_CURVE,
     *FROM_DEFECTS,
-)  # C12-C16
+    *FROM_SPECTRUM,
+)  # C12-C16 and C26's summaries
 
 
 def stand_in_rgb(cut: SpecimenCut) -> NDArray[np.uint8]:
@@ -161,6 +163,7 @@ def measure(pc: PhotoCut, look: Look, rng: np.random.Generator) -> dict[str, obj
     pairs = (
         (b, FROM_BANDS),
         (b, FROM_CONTINUITY),
+        (b.spectrum, FROM_SPECTRUM),
         (f.rings, FROM_RINGS),
         (f.order, FROM_ORDER),
         (f.curve, FROM_CURVE),
@@ -168,7 +171,7 @@ def measure(pc: PhotoCut, look: Look, rng: np.random.Generator) -> dict[str, obj
     )
     for source, names in pairs:
         for name, field in names.items():
-            value = getattr(source, field)
+            value = getattr(source, field) if source is not None else None
             if isinstance(value, bool | int) or value is None:
                 out[name] = value
             else:

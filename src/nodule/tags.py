@@ -35,10 +35,16 @@ Each usable photo gets one record:
   the margin, and C13's rays stop at the region's edge, which decides how
   much of each set it sees, so both are outline-bound. C14-C16 read
   local band edges and directions and count wherever they are measured, as
-  C10 does.
+  C10 does;
+- C26, the profile spectrum (`nodule.spectrum`), from C6's profiles: the
+  curve as parallel lists (`C26_period_share`, period over the inner radius;
+  `C26_power`, each bin's share of the profiles' power), its fine-side slope
+  (`C26_slope`) and its peak over a red-noise background (`C26_peak`, at
+  `C26_peak_share`). Its periods are shares of the inner radius, so it is
+  outline-bound.
 
-Where the rim outline is missing, unjudged or judged "no", C1-C3, C6, C12 and
-C13 are "unknown" (section 8). The labels' own outline check judged the old
+Where the rim outline is missing, unjudged or judged "no", C1-C3, C6, C12,
+C13 and C26 are "unknown" (section 8). The labels' own outline check judged the old
 `segment()` outline, so it no longer applies. `--relabel` applies new labels
 to the tag file without measuring again.
 
@@ -108,6 +114,7 @@ OUTLINE_BOUND = (
     "C13_depth",
     "C13_drift",
     "C13_complete",
+    *("C26_period_share", "C26_power", "C26_slope", "C26_peak", "C26_peak_share"),
 )
 # Band count and persistence measured here: name in the record -> field of `bands.Bands`.
 MEASURED = {
@@ -142,6 +149,12 @@ FROM_RINGS = {  # C13 by `nodule.concentric`
     "C13_drift": "drift",
     "C13_complete": "complete",
 }
+FROM_SPECTRUM = {  # C26 by `nodule.spectrum`, from C6's profiles
+    "C26_slope": "slope",
+    "C26_peak": "peak",
+    "C26_peak_share": "peak_share",
+}
+CURVE = {"C26_period_share": "period_share", "C26_power": "power"}  # C26's lists
 FROM_ORDER = {  # C16 by `nodule.orientation`
     "C16_coherence": "coherence",
     "C16_order": "order",
@@ -251,8 +264,8 @@ def imported(entry: dict[str, object] | None, size: int) -> dict[str, Value]:
 
 
 def measured(band: bands.Bands | None) -> dict[str, Value]:
-    """C6 (with L, C6_blank and N(L)) and C10, "unknown" where they could not
-    be judged."""
+    """C6 (with L, C6_blank and N(L)), C10 and C26, "unknown" where they could
+    not be judged."""
     out: dict[str, Value] = {}
     for name, field in MEASURED.items():
         value = getattr(band, field) if band is not None else None
@@ -262,6 +275,12 @@ def measured(band: bands.Bands | None) -> dict[str, Value]:
     for name, field in LADDER.items():
         rungs = band.ladder if band is not None else ()
         out[name] = [round(float(getattr(r, field)), 4) for r in rungs] if rungs else UNKNOWN
+    spec = band.spectrum if band is not None else None
+    for name, field in FROM_SPECTRUM.items():
+        value = getattr(spec, field) if spec is not None else None
+        out[name] = round(float(value), 4) if value is not None else UNKNOWN
+    for name, field in CURVE.items():
+        out[name] = [float(v) for v in getattr(spec, field)] if spec is not None else UNKNOWN
     return out
 
 

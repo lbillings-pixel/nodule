@@ -79,7 +79,7 @@ A weathered exterior gives partial true 3D shape [@higgins2000]. Where the
 data stop short of a descriptor's rung, the value is **unknown**, never
 estimated.
 
-### 4. The core set (22 descriptors, photo rung, no scale needed)
+### 4. The core set (23 descriptors, photo rung, no scale needed)
 
 Lengths are divided by the face's inner radius or by the median band spacing,
 as agatesim ADR 0069 does. The same code measures photos and simulated cuts.
@@ -112,6 +112,7 @@ photos": *plausible* where the method is borrowed from an analogue,
 | C20 | B, D | Eye fraction (per photo set): share of faces showing the innermost zone. Under random cuts it estimates the ratio of inner to outer mean width; under other models it is descriptive only | [@coleman1992] | Random cuts of a phantom with core radius 0.3 R show the core in ≈ 30%; a centre-seeking set (≈ 100%) is flagged non-random, not read as a large core | plausible |
 | C21 | E | Colour: chroma spread, band-to-band colour contrast and number of colour classes, after lighting flattening. `effective`; lighting unknown | none (assumption) | A greyscale image gives chroma 0; a uniform tint changes mean hue but not contrast | speculative |
 | C22 | H | Fracture traces: count per face, open or filled, and whether bands are offset across them | none (assumption) | An unfractured synthetic face gives 0 | speculative |
+| C26 | B | Profile spectrum: each quarter-octave's share of the rim-to-centre profiles' power, against period over the inner radius; its fine-side slope; its peak over a fitted red-noise background, and the peak's period³ | [@holten1997; @torrence1998; @lantink2022] | White and red noise give no peak (under 2); bands drawn without fine structure rise more steeply to their spacing than the same bands with sub-bands | plausible |
 
 ¹ Amended 2026-10-31 (owner). The first wording asked for "coherence ≈ 0 and
 no profile is extracted". At the scale the bands are read (one band spacing),
@@ -133,14 +134,48 @@ within 30° of the ray, as CS-TRD does [@marichal2025]. A set needs half of
 all rays to cross an unbroken run of at least 6 band edges facing the centre.
 Further sets are looked for once the edges facing found centres are removed.
 The run, the set rule and further sets are this project's own (details and
-measurements in `nodule.concentric`); a set is found on 39 of those 63 faces
-and on none of 3 moss faces. The owner also decided: a fortification
+measurements in `nodule.concentric`); a set is found on 38 of those 63 faces
+(39 in the probe before the code was final; corrected after the library was
+re-tagged) and on none of 3 moss faces. The owner also decided: a fortification
 whose bands turn at sharp corners may read as two sets, a stated limit, as
 two rules that merged them also merged two separate eyes; and the count of
 wedging bands is dropped, as no ray-based count passed its controls (open
 arcs round the centre gave 4 for drifting rings and 0 for one wedge).
 [@gillert2023] is no longer cited for this row. Band ends inside a face are
 counted by C14.
+
+³ Added 2026-11-01 (owner), from the later candidates (section 6), as ADR
+0006 section 10 compares synthetic and library faces by "C7–C16 and the
+profile spectrum". The owner chose: the curve and three numbers, by the
+estimate the resolving limit *L* already uses, with period as a share of the
+face's inner radius (photos have no scale). The profiles are C6's. Each loses
+its straight-line trend and is Hann-windowed, and power is pooled over them in
+quarter-octave bins, as power spectra of mineral zoning profiles are read
+[@holten1997]. A bin's share of the total power is stored, not its power per
+frequency, which for the same face at half the resolution was 2–5 times
+lower; shares agreed within 10% over most bins. The slope is fitted from *L* up to
+the peak's bin, so it reads how fast power falls toward fine periods; fitted
+over all resolved bins it read mostly the fall beyond the peak. The
+background has the AR(1) form of [@torrence1998, eq. 16], fitted to the
+face's own resolved bins by least absolute log residuals, since a lag-1
+coefficient read between pixels measures blur; [@lantink2022] likewise test
+peaks against a robust background fitted to the spectrum. These two fitting
+choices are this project's own (details and measurements in
+`nodule.spectrum`). No significance level is claimed: neighbouring profiles
+of a face are far from independent. Limits: the slope starts at *L*, so
+slopes compare only at a matched limit, as ADR 0006 section 10 renders
+them; a single pure period is a line, whose peak grows with the samples a
+profile holds, while bands of varied thickness gave 32 and 33 at the two
+resolutions. Like C6, C26 describes the photo at its *L*, not the stone:
+profiles are records in depth, not time [@holten1997], and [@lantink2022]
+gave up spectra where a varying rate of deposition distorted them.
+Multitaper and wavelet estimates stay later candidates. On the 72
+outline-bound library faces (re-tagged 2026-11-01), the peak was a median 2.9
+times the background (10th-90th percentile 1.8-5.7 on 63 fortification
+faces), under 2 on 16 of 72. It sat a median 4.2 times the quality gate's
+couplet (light plus dark band), within 1.5 times on only 10. So the peak
+reads the face's strongest scale, on most photos a grouping of bands, not
+the band spacing; drawn rings of varied thickness peaked at their spacing.
 
 Composition (G) has no core descriptor: from photos it is always unknown
 (ADR 0003, 6b). Texture (F) and hierarchy (J) need a scale or a second
@@ -171,7 +206,7 @@ their negative control against overclaiming.
 
 ### 6. Later candidates (listed, not adopted)
 
-Wavelet and multitaper spectra of profiles [@torrence1998; @lantink2022];
+Wavelet and multitaper estimates of C26's spectrum [@torrence1998; @lantink2022];
 radial chirp [@goldbaum2019] and width exponent [@droz1999]; nested band
 hierarchies [@lantink2022]; boundary roughness [@murphy2015]; two-point and
 lineal-path correlations [@jiao2007; @gommes2012]; Wadell roundness

@@ -2994,3 +2994,125 @@ licence = "publisher copyright (AMS); free to read; cite only"
 checked = "full-text"
 topics = ["radiative-transfer", "phase-function-truncation", "delta-m", "forward-peak", "henyey-greenstein", "flux-accuracy"]
 notes = """Read in full 2026-11-01 by a helper agent (notes/n2-reading/wiscombe1977.md). Delta-M replaces the phase function by 2f·δ(1−cosθ) plus a (2M−1)-degree series; it matches moments through 2M with f = χ_2M (= g^{2M} for HG) and scales dτ' = (1−ωf)dτ, ω' = (1−f)ω/(1−ωf) (eqs. 13–15, 20; pp. 1412–1413). M = 8 gives 3–6 digits in albedo and 4–6 in fluxes for HG g = 0.85 and cloud Mie tests (pp. 1416, 1420). Radiance is explicitly not treated, and the aureole and near-grazing incidence are excluded as cases where the peak shape is crucial (p. 1420). Conventional angle cuts (7.5° vs 3.8°) gave errors whose sign of change could not be known a priori (p. 1412)."""
+
+[[references]]
+id = "gretton2012"
+kind = "article"
+authors = ["Gretton, A.", "Borgwardt, K. M.", "Rasch, M. J.", "Schölkopf, B.", "Smola, A."]
+year = 2012
+title = "A Kernel Two-Sample Test"
+venue = "Journal of Machine Learning Research 13, 723–773"
+url = "https://jmlr.org/papers/v13/gretton12a.html"
+access = "open"
+licence = "authors' copyright; cite only"
+checked = "sections"
+sections_read = ["5", "8", "Appendix C"]
+topics = ["two-sample-test", "mmd", "permutation", "kernel-width"]
+notes = """Read 2026-11-01 (helper agent; notes/n2-reading/compare-methods.md). Null quantile by bootstrap on the aggregated sample, or Pearson curves (s.5, pp. 737-738); uniform-convergence bounds "too conservative" (p. 750). At m = 25 the bootstrap's Type I error was "far from its design value" (conservative) and Pearson curves were better (p. 750, Table 1). Gaussian kernel width = median pairwise distance, "a heuristic" (p. 748; App. C). m = n = 250 Gaussian tests: t-test best for mean shifts in low dimension, MMD comparable (pp. 748-749). 1-D attribute matching: MMD and KS similar (Table 2)."""
+
+[[references]]
+id = "lopezpaz2017"
+kind = "article"
+authors = ["Lopez-Paz, D.", "Oquab, M."]
+year = 2017
+title = "Revisiting Classifier Two-Sample Tests"
+venue = "International Conference on Learning Representations (ICLR 2017); arXiv:1610.06545"
+url = "https://arxiv.org/abs/1610.06545"
+access = "open"
+licence = "arXiv preprint; cite only"
+checked = "sections"
+sections_read = ["3", "4.1"]
+topics = ["two-sample-test", "classifier", "binomial", "interpretability"]
+notes = """Read 2026-11-01 (helper agent; notes/n2-reading/compare-methods.md). Held-out accuracy of any binary classifier is the statistic; under H0 n_te*t ~ Binomial(n_te, 1/2) (s.3.1, p. 3). Power trades classifier flexibility against test-set size (s.3.2, p. 4). Accuracy is in "interpretable units" and predictions show where samples differ (s.3.3). Type I error controlled for n from 25 to 10000 (s.4.1, p. 5)."""
+
+[[references]]
+id = "gelman1996"
+kind = "article"
+authors = ["Gelman, A.", "Meng, X.-L.", "Stern, H."]
+year = 1996
+title = "Posterior Predictive Assessment of Model Fitness via Realized Discrepancies"
+venue = "Statistica Sinica 6, 733–807 (with discussion)"
+url = "https://www3.stat.sinica.edu.tw/statistica/j6n4/j6n41/j6n41.htm"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "sections"
+sections_read = ["1", "2", "4.3", "Fig. 1", "discussion (Rubin)"]
+topics = ["model-checking", "predictive-check", "discrepancy", "replication"]
+notes = """Read 2026-11-01 (helper agent; notes/n2-reading/compare-methods.md). Checks are tail areas of a discrepancy under replications (eqs. 3-5). The replication must be chosen: posterior, prior (Box 1980) or mixed predictive (Fig. 1, p. 755). Discrepancies should reflect "inferential interests" since "virtually all models are wrong" (s.4.3, p. 757). Rubin (p. 790): posterior predictive p-values are conservative; a model failing one discrepancy can be adequate for another purpose."""
+
+[[references]]
+id = "rodriguezgomez2019"
+kind = "article"
+authors = ["Rodriguez-Gomez, V.", "Snyder, G. F.", "Lotz, J. M.", "et al."]
+year = 2019
+title = "The optical morphologies of galaxies in the IllustrisTNG simulation: a comparison to Pan-STARRS observations"
+venue = "Monthly Notices of the Royal Astronomical Society 483(3), 4140–4159"
+doi = "10.1093/mnras/sty3345"
+url = "https://arxiv.org/abs/1809.08239"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "sections"
+sections_read = ["abstract", "2", "3.4", "5.1"]
+topics = ["synthetic-images", "forward-modelling", "simulation-vs-observation", "image-statistics"]
+notes = """Read 2026-11-01 (helper agent; notes/n2-reading/compare-methods.md), arXiv v2 pages. 27,000 simulated galaxies rendered, convolved with a Gaussian PSF at the survey's median seeing and given sky and Poisson noise (s.3.4), measured by the same code as 56,614 Pan-STARRS galaxies. Comparison descriptive: Gini-M20 contours and median trends "within the 1σ scatter" (abstract, s.5.1). Original Illustris run through the same pipeline as a worse contrast. Noise was lowered below the survey's, "sacrificing some realism" (p. 7). Marginals agreed, but joint morphology-colour and morphology-size relations failed (abstract)."""
+
+[[references]]
+id = "portilla2000"
+kind = "article"
+authors = ["Portilla, J.", "Simoncelli, E. P."]
+year = 2000
+title = "A Parametric Texture Model Based on Joint Statistics of Complex Wavelet Coefficients"
+venue = "International Journal of Computer Vision 40(1), 49–70"
+doi = "10.1023/A:1026553619983"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "sections"
+sections_read = ["abstract", "1.1"]
+topics = ["texture-synthesis", "julesz-conjecture", "validation", "negative-control"]
+notes = """Read 2026-11-01 (helper agent; notes/n2-reading/compare-methods.md). Classifying a fixed test set by distances between statistic vectors is "a fairly weak test" (p. 51). A synthesis that looks like each library example is evidence, but "A single generated sample that is visually different ... indicates that the set of constraint functions is almost certainly insufficient" (p. 52); necessity is shown by removing statistic subsets until a synthesis fails. Perceptual comparison was "only informal" (p. 52)."""
+
+[[references]]
+id = "wallis2017"
+kind = "article"
+authors = ["Wallis, T. S. A.", "Funke, C. M.", "Ecker, A. S.", "Gatys, L. A.", "Wichmann, F. A.", "Bethge, M."]
+year = 2017
+title = "A parametric texture model based on deep convolutional features closely matches texture appearance for humans"
+venue = "Journal of Vision 17(12):5"
+doi = "10.1167/17.12.5"
+access = "open"
+licence = "bioRxiv preprint 10.1101/165761 is CC-BY-4.0; journal licence not checked"
+checked = "sections"
+sections_read = ["introduction (review)", "methods", "data analysis", "experiments 1-2", "appendix fn. 9"]
+topics = ["psychophysics", "texture", "real-vs-synthetic", "oddity-task", "observer-protocol"]
+notes = """Read 2026-11-01 (helper agent; notes/n2-reading/compare-methods.md), bioRxiv pages. 3-AFC oddity: oddball real or synthetic with equal probability; 128-px crops from non-overlapping jittered regions; 200 ms parafoveal or 2000 ms inspection; no trial-to-trial feedback, a break with mean performance every 72 trials; 360 trials per block; 30 familiarisation and 30 practice trials; two authors 3600 trials each, ten naive observers 720 each (pp. 9-10). Logistic mixed model with observer and image random effects; chance 1/3 (fn. 9). Inspection exposes syntheses that brief viewing hides. Summarises Balas 2006: PS statistics near chance (~40 % correct) under brief peripheral viewing (p. 3)."""
+
+[[references]]
+id = "zhou2019"
+kind = "article"
+authors = ["Zhou, S.", "Gordon, M. L.", "Krishna, R.", "Narcomey, A.", "Fei-Fei, L.", "Bernstein, M. S."]
+year = 2019
+title = "HYPE: A Benchmark for Human eYe Perceptual Evaluation of Generative Models"
+venue = "Advances in Neural Information Processing Systems 32 (NeurIPS 2019); arXiv:1904.01121"
+url = "https://arxiv.org/abs/1904.01121"
+access = "open"
+licence = "arXiv preprint; cite only"
+checked = "sections"
+sections_read = ["1", "2", "3", "related work"]
+topics = ["human-evaluation", "real-vs-synthetic", "observer-protocol", "binomial"]
+notes = """Read 2026-11-01 (helper agent; notes/n2-reading/compare-methods.md). HYPE-infinity: single images judged real or fake with unlimited time, 50 real and 50 fake per evaluator, ratio told to evaluators; score = error rate, 50 % = indistinguishable (s.2.2, p. 4). HYPE-time: 3-up/1-down staircase on exposure with per-trial feedback (s.2.1). Qualification: >= 65 % of 100 images, 1 in 1000 by guessing (p. 4). Bootstrapped CIs over 30 evaluators (p. 5)."""
+
+[[references]]
+id = "smith2018"
+kind = "article"
+authors = ["Smith, P. L.", "Little, D. R."]
+year = 2018
+title = "Small is beautiful: In defense of the small-N design"
+venue = "Psychonomic Bulletin & Review 25(6), 2083–2101"
+doi = "10.3758/s13423-018-1451-8"
+url = "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6267527/"
+access = "open"
+licence = "licence not checked on PMC; cite only"
+checked = "sections"
+sections_read = ["first ~60 % (argument, simulation, practice, limits)"]
+topics = ["psychophysics", "small-n", "observer-protocol", "replication"]
+notes = """Read 2026-11-01 (helper agent; notes/n2-reading/compare-methods.md), about 60 % of the text. In small-N designs "the individual, rather than the group, becomes the replication unit". Simulation with 400 trials per participant, "a fairly typical sample size for a small-N design", not from a formal power analysis; individual power above 0.9. Prefers practised observers; not for population estimates."""

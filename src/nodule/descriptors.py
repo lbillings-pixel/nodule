@@ -24,14 +24,18 @@ library photo picked at random (its `Look`):
   (`nodule.curvature`) and C16 (`nodule.orientation`) read the same image as
   C6 and C10.
 
-**The image is a stand-in, not a rendering.** Chalcedony takes agatesim's
-colour from its translucency and staining (`render.chalcedony_colour`),
-without the glow, sub-banding or rind of `render.render_slab`; tubes and
-anything else that isn't chalcedony are drawn dark, as voids. The renderer is
-N2 step 4 and needs its own ADR, so values measured here show that the code
-runs on cuts and that its controls hold; they are not yet a comparison with
-the library. Appearance only: never evidence for a formation mechanism
-(ADR 0002). Every parameter here is `effective`.
+**Two image paths.** The stand-in, not a rendering: chalcedony takes
+agatesim's colour from its translucency and staining
+(`render.chalcedony_colour`), without the glow, sub-banding or rind of
+`render.render_slab`; tubes and anything else that isn't chalcedony are drawn
+dark, as voids. It sizes every cut, and its values are the point of
+reference ADR 0008 section 3 reports. The rendered path (`rendering`, GPU)
+keeps the stand-in's size and replaces only the final image by a render
+under the stratum's light (`nodule.render.cutface`; ADR 0008 section 2),
+from the stone's band record or a fake's (`rendering_for`). F5 measures the
+render as it is, without the photo's blur and noise. Appearance only: never
+evidence for a formation mechanism (ADR 0002). Every parameter here is
+`effective`.
 
 The pixel noise is drawn per pixel of the cut, as a photo's is per pixel of
 its camera: it belongs to the look, not to the stone (as in agatesim). The
@@ -47,6 +51,7 @@ import time
 import tracemalloc
 from dataclasses import dataclass, replace
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 from agatesim import progress
@@ -67,6 +72,9 @@ from agatesim.volume.slicing import Plane, random_cuts
 from numpy.typing import NDArray
 
 from nodule import bands
+from nodule.compare import STRATA, library_table
+from nodule.render import fakes
+from nodule.render.cutface import MOST_SPP, CutRender, Rendering, render_cut
 from nodule.specimen import Specimen, SpecimenCut, load_preset
 from nodule.tags import (
     FROM_CONTINUITY,
@@ -121,29 +129,52 @@ class PhotoCut:
     cut: SpecimenCut
     rgb: NDArray[np.uint8]
     pixels: int  # pixels across, as `resolution_for` asked
+    rendered: CutRender | None = None  # the rendered path's record; None for the stand-in
 
 
-def photo_cut(specimen: Specimen, plane: Plane, look: Look, most: int = MOST_PX) -> PhotoCut:
-    """The cut at the spacing that shows its bands as `look`'s photo shows its own."""
+def photo_cut(
+    specimen: Specimen,
+    plane: Plane,
+    look: Look,
+    most: int = MOST_PX,
+    rendering: Rendering | None = None,
+    seed: int = 1,
+) -> PhotoCut:
+    """The cut at the spacing that shows its bands as `look`'s photo shows its
+    own. With `rendering`, the final image is rendered (GPU; ADR 0008
+    section 2: the size still comes from the stand-in probe)."""
     probe_mm = extent_mm(specimen, plane) / PROBE_PX
     cut = specimen.cut(plane, probe_mm)
     rgb = stand_in_rgb(cut)
     pixels = resolution_for(rgb, cut.inside, look, most)
     if pixels != PROBE_PX:
         cut = specimen.cut(plane, probe_mm * PROBE_PX / pixels)
-        rgb = stand_in_rgb(cut)
-    return PhotoCut(cut, rgb, pixels)
+    if rendering is None:
+        return PhotoCut(cut, rgb if pixels == PROBE_PX else stand_in_rgb(cut), pixels)
+    r = render_cut(specimen, cut, rendering, look.noise, seed)
+    return PhotoCut(cut, r.rgb, pixels, r)
 
 
-def measure(pc: PhotoCut, look: Look, rng: np.random.Generator) -> dict[str, object]:
+def undegraded(look: Look) -> Look:
+    """F5's look: no blur and no noise, the photo's spacing kept (ADR 0008 amendment 4)."""
+    return replace(look, edge_per_spacing=0.0, noise=0.0)
+
+
+def measure(
+    pc: PhotoCut, look: Look, rng: np.random.Generator, *, degrade: bool = True
+) -> dict[str, object]:
     """C6-C17 of a cut made to look like `look`'s photo, with
     `measure_cut`'s record of the blur (module docstring). Values are None
     where they could not be judged; `bands` is False where the gate found no
-    bands, before or after the blur."""
+    bands, before or after the blur. `degrade=False` is F5: measured as
+    rendered, `matched` None."""
     shape_rng, noise_rng, band_rng = rng.spawn(3)
+    look = look if degrade else undegraded(look)
     mask = pc.cut.inside
     quartz = pc.cut.fields.phase == Phase.QUARTZ
     entry = measure_cut(pc.rgb, mask, quartz, look, shape_rng)
+    if not degrade and "matched" in entry:
+        entry["matched"] = None
     out: dict[str, object] = {k: entry.get(k) for k in ("photo", "level", "bands", "matched")}
     out |= {"sigma_px": entry.get("sigma_px"), "spacing_px": entry.get("spacing_px")}
     out |= {name: entry.get(there) for name, there in FROM_SHAPE.items()}
@@ -186,19 +217,29 @@ def survey(
     *,
     seed: int = 0,
     most: int = MOST_PX,
+    rendering: Rendering | None = None,
 ) -> list[dict[str, object]]:
     """`cuts` random cuts (normals uniform over the sphere, as agatesim's
-    calibration cuts), each made to look like a photo drawn at random."""
-    cut_rng, look_rng, measure_rng = np.random.default_rng(seed).spawn(3)
+    calibration cuts), each made to look like a photo drawn at random.
+    With `rendering`, each cut's image is rendered (GPU), and F5 is
+    `rendering.undegraded`. The first three RNG streams are the stand-in's, so
+    a rendered run cuts the same planes and draws the same photos."""
+    cut_rng, look_rng, measure_rng, render_rng = np.random.default_rng(seed).spawn(4)
     out: list[dict[str, object]] = []
     for k, spec in enumerate(random_cuts(specimen.volume.solid, cuts, cut_rng, PROBE_PX)):
         progress.report(k / cuts, f"cut {k + 1} of {cuts}")
         look = photo_looks[int(look_rng.integers(len(photo_looks)))]
         plane = specimen.plane(spec)
-        pc = photo_cut(specimen, plane, look, most)
+        render_seed = int(render_rng.integers(1, 2**32 - 2))  # the kernel's seed is uint32
+        pc = photo_cut(specimen, plane, look, most, rendering, render_seed)
         where = [round(spec.tilt_deg, 2), round(spec.azimuth_deg, 2), round(spec.offset_mm, 2)]
         entry: dict[str, object] = {"cut": k, "plane": where, "pixels": pc.pixels}
-        entry |= measure(pc, look, measure_rng.spawn(1)[0])
+        if pc.rendered is not None:
+            r = pc.rendered
+            entry |= {"spp": r.spp, "render_noise": round(r.noise, 3), "capped": r.capped,
+                      "fill_s": round(r.fill_s, 2), "render_s": round(r.render_s, 2)}  # fmt: skip
+        degrade = rendering is None or not rendering.undegraded
+        entry |= measure(pc, look, measure_rng.spawn(1)[0], degrade=degrade)
         out.append(entry)
     progress.report(1.0, "cuts measured")
     return out
@@ -228,22 +269,78 @@ def _median(values: list[object]) -> float | None:
     return float(np.median(xs)) if xs else None
 
 
+RUNS = ("stand-in", "stone", "F1", "F2", "F3", "F4", "F5")  # ADR 0008 section 4
+
+
+def rendering_for(
+    specimen: Specimen,
+    run: str,
+    stratum: str,
+    rng: np.random.Generator,
+    points: int = fakes.STONE_POINTS,
+    **kw: Any,
+) -> Rendering:
+    """The rendering of a rendered run: the stone's record, read once from the
+    whole stone, or a fake of it (ADR 0008 amendment 4). The record comes from
+    `rng`'s first spawned stream and F4's phases from its second, so the stone
+    and every fake share one record for a given `rng`. Reflected faces take L1,
+    slabs L3 (ADR 0008 7c)."""
+    record_rng, fake_rng = rng.spawn(2)
+    record = fakes.stone_record(specimen, record_rng, points)
+    if run == "F1":
+        record = fakes.smoothed(record)
+    elif run == "F2":
+        record = fakes.remapped(record)
+    elif run == "F3":
+        record = fakes.regular(record)
+    elif run == "F4":
+        record = fakes.phase_randomised(record, fake_rng)
+    elif run not in ("stone", "F5"):
+        raise ValueError(f"no rendered run {run!r}")
+    make = Rendering.reflected if stratum == "reflected" else Rendering.transmitted
+    return make(record, undegraded=run == "F5", **kw)
+
+
+def stratum_looks(photo_looks: list[Look], stratum: str) -> list[Look]:
+    """The looks of one stratum's compared photos (`compare.library_table`)."""
+    ids = set(library_table(stratum).ids)
+    return [lk for lk in photo_looks if lk.photo in ids]
+
+
 def main(argv: list[str] | None = None) -> None:
     """Measure random cuts of a preset; print each, and the set beside the
-    library's spread. Reports time and peak traced memory."""
+    library's spread. Reports time and peak traced memory. `--run` other than
+    stand-in renders each cut (GPU; run as `uv run --no-sync`), with looks from
+    `--stratum`'s photos only."""
     parser = argparse.ArgumentParser(description=main.__doc__)
     parser.add_argument("--preset", default="n2-slice")
     parser.add_argument("--cuts", type=int, default=8)
     parser.add_argument("--most", type=int, default=MOST_PX, help="most pixels across a cut")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--out", type=Path, default=Path("runs/descriptors"))
+    parser.add_argument("--run", default="stand-in", choices=RUNS)
+    parser.add_argument("--stratum", default="reflected", choices=sorted(STRATA))
+    parser.add_argument("--record-seed", type=int, default=0, help="the stone record's stream")
+    parser.add_argument("--exposure", type=float, default=1.0)
+    parser.add_argument("--depth-mm", type=float, default=None, help="default: by light")
+    parser.add_argument("--most-spp", type=int, default=MOST_SPP)
     args = parser.parse_args(argv)
 
     photo_looks, entries = library_looks()
     tracemalloc.start()
     t0 = time.perf_counter()
     specimen = Specimen.build(load_preset(args.preset))
-    rows = survey(specimen, photo_looks, args.cuts, seed=args.seed, most=args.most)
+    rendering = None
+    if args.run != "stand-in":
+        photo_looks = stratum_looks(photo_looks, args.stratum)
+        kw: dict[str, Any] = {"exposure": args.exposure, "most_spp": args.most_spp}
+        if args.depth_mm is not None:
+            kw["depth_mm"] = args.depth_mm
+        rng = np.random.default_rng(args.record_seed)
+        rendering = rendering_for(specimen, args.run, args.stratum, rng, **kw)
+    rows = survey(
+        specimen, photo_looks, args.cuts, seed=args.seed, most=args.most, rendering=rendering
+    )
     elapsed = time.perf_counter() - t0
     peak = tracemalloc.get_traced_memory()[1]
     tracemalloc.stop()
@@ -263,8 +360,18 @@ def main(argv: list[str] | None = None) -> None:
         if name != "C16_corr_censored":  # library: after the tag rebuild of step 2
             print(f"  {name}: {_median([r[name] for r in rows])} | library not yet measured")
     print(f"{args.cuts} cuts: {elapsed:.1f} s; peak traced memory {peak / 1e6:.0f} MB")
+    if rendering is not None:
+        from nodule.render import _gpu
+
+        pool = _gpu.cupy().get_default_memory_pool()
+        print(f"GPU memory pool held at the end: {pool.total_bytes() / 1e6:.0f} MB")
+        for r in rows:
+            print(f"cut {r['cut']}: {r['pixels']} px, {r['spp']} spp, render noise "
+                  f"{r['render_noise']} (capped {r['capped']}), fill {r['fill_s']} s, "
+                  f"render {r['render_s']} s")  # fmt: skip
     args.out.mkdir(parents=True, exist_ok=True)
-    path = args.out / f"{args.preset}-{args.cuts}cuts-seed{args.seed}-{args.most}px.json"
+    tag = "" if rendering is None else f"-{args.run}-{args.stratum}"
+    path = args.out / f"{args.preset}{tag}-{args.cuts}cuts-seed{args.seed}-{args.most}px.json"
     path.write_text(json.dumps(rows, indent=1), "utf-8")
     print(f"saved {path}")
 

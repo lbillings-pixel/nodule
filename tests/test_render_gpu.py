@@ -484,3 +484,69 @@ def test_preview_matches_the_full_render(specimen_scene) -> None:
     shifted = View(preview.s0 + 1.0, preview.t0, preview.pixel_mm, nx, ny)
     other = render(dev, shifted, STAND_IN, DOME, spp=spp * k * k, seed=2, **kw).image
     assert np.sqrt(np.mean((other - boxed) ** 2)) / noise > 3  # prototype 6.7
+
+
+# --- L3: the back light (ADR 0007 7b) ---------------------------------------------------------
+
+BACK = Light("back")
+
+
+def ballistic(mua: float, depth: float, n: float = 1.54) -> float:
+    """Straight-through share of a pure absorber between two smooth faces, all internal
+    reflections summed: (1 - R)^2 e^-aD / (1 - R^2 e^-2aD) at normal incidence."""
+    r, e = reference.fresnel(1.0, 1.0, n), math.exp(-mua * depth)
+    return (1.0 - r) ** 2 * e / (1.0 - r * r * e * e)
+
+
+def test_back_light_needs_a_finite_slab(flat) -> None:
+    m = Materials.of([[0.1] * 3], [[1.0] * 3], [0.9])
+    with pytest.raises(ValueError, match="finite slab"):
+        render(flat, FLAT_VIEW, m, BACK, spp=1, flags=Flag.HOMOGENEOUS)
+
+
+def test_back_light_through_a_pure_absorber_is_exact(flat) -> None:
+    m, se = mean_px(flat, BACK, spp=64, seed=71, mua=0.4, mus=0.0, g=0.0, depth_mm=2.0)
+    assert abs(z(m, se, ballistic(0.4, 2.0))) < 3
+    assert abs(z(m, se, ballistic(0.4, 2.2))) > 10  # control: the wrong thickness
+
+
+@pytest.mark.parametrize(
+    ("depth", "mua", "mus", "g"),
+    [(1.0, 0.05, 0.5, 0.9), (2.0, 0.1, 10.0, 0.9), (1.0, 0.02, 20.0, 0.97)],
+)
+def test_back_light_matches_forward_transmittance_by_reciprocity(flat, depth, mua, mus, g) -> None:
+    m, se = mean_px(flat, BACK, spp=256, seed=72, mua=mua, mus=mus, g=g, depth_mm=depth)
+    f = slab(2 * N, depth_mm=depth, n_in=1.54, g=g, mua=[mua] * 3, mus=[mus] * 3, seed=73)
+    assert abs(z(m, se, f.tt[0], f.tt_se[0])) < 3
+
+
+def test_control_back_light_scattered_only_fails(flat) -> None:
+    m, se = mean_px(flat, BACK, spp=256, seed=72, mua=0.05, mus=0.5, g=0.9, depth_mm=1.0,
+                    flags=Flag.SCATTERED_ONLY)  # fmt: skip
+    f = slab(2 * N, depth_mm=1.0, n_in=1.54, g=0.9, mua=[0.05] * 3, mus=[0.5] * 3, seed=73)
+    assert z(m, se, f.tt[0], f.tt_se[0]) < -10
+    # what it drops is the straight-through light (scattering removes it as mus + mua)
+    assert abs(z(m + ballistic(0.55, 1.0), se, f.tt[0], f.tt_se[0])) < 3
+
+
+def two_sided(dev, view: View, mats: Materials, seed: int) -> np.ndarray:
+    """Dome above plus back light below, both radiance 1."""
+    kw: dict[str, Any] = dict(spp=64, depth_mm=DEPTH)
+    return (render(dev, view, mats, DOME, seed=seed, **kw).image
+            + render(dev, view, mats, BACK, seed=seed + 1, **kw).image)  # fmt: skip
+
+
+def test_two_sided_furnace_on_the_specimen(specimen_scene) -> None:
+    """A stone that absorbs nothing, in light of radiance 1 from every direction, shows
+    radiance 1 at every pixel whatever its bands, fractures and tube (Kirchhoff)."""
+    _, grid, dev, _ = specimen_scene
+    view = View.covering(grid, 0.8)
+    lossless = Materials.of(np.zeros_like(STAND_IN.mua), STAND_IN.mus, STAND_IN.g,
+                            STAND_IN.profile, STAND_IN.dt)  # fmt: skip
+    a, b = two_sided(dev, view, lossless, 81), two_sided(dev, view, lossless, 83)
+    noise = float(np.std(a - b)) / math.sqrt(2)
+    assert abs(z(float(a.mean()), noise / math.sqrt(a.size), 1.0)) < 3
+    assert float(np.sqrt(np.mean((a - 1.0) ** 2))) / noise < 1.3  # no pixel structure
+    # control: the stand-in that absorbs must fail it
+    lossy = two_sided(dev, view, STAND_IN, 81)
+    assert z(float(lossy.mean()), noise / math.sqrt(a.size), 1.0) < -10

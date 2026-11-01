@@ -4,7 +4,7 @@
   from the same day. In section 6 the owner took the recommendations for
   7a (C), 7c (0.2 mm) and 7d (majorant grid first). For 7b they chose all
   three lights now, not L1 + L2 first. Amendment ³ defers the majorant
-  grid (owner).
+  grid (owner). Amendment ⁵ records L3 as built.
 - Date: 2026-11-01
 - Builds on: [ADR 0003](0003-scope-a-3d-specimen-simulator.md) section 3
   (the renderer as its own concern), [ADR 0005](0005-representation-implicit-hybrid.md)
@@ -189,7 +189,9 @@ single scattering and per-channel lobes (amendment ²). Their
 controls, all of which fail as required: a non-bounding majorant in
 unweighted tracking; no backward map; grid-only edges; no 1/n² at the
 exit; no ratio tracking; no mirror term; a cut shifted 1 mm; no phase
-weight. GPU tests
+weight. L3 adds a pure absorber in closed form, reciprocity in
+transmission and a two-sided furnace (amendment ⁵), with their controls.
+GPU tests
 run locally (CI has no GPU) and skip in CI. CI runs the parts that do not
 need a GPU.
 
@@ -231,7 +233,7 @@ right" (ADR 0002).
   forward scattering gives under a point light, at about the same cost.
 - L3 *backlit slab* (transmitted light). This needs a thin-slab geometry
   and an open back. It is the light where Lorenzi's data apply and where
-  the owner's notes report bands swapping light and dark (ADR 0006).⁴
+  the owner's notes report bands swapping light and dark (ADR 0006).⁴ ⁵
 
 ⁴ Amended 2026-11-01 (L2 built; owner chose the truncation). **The disc
 alone does not remove the sparkle.** L2 is `Light("disc")`. Each real
@@ -286,6 +288,41 @@ is still in the forward peak [@iwabuchi2009, Tables 2 and 4, p. 1936].
 - L3: both papers confirm that a fixed cut is unsafe there. L3 starts
   with cut 0. If it is too noisy, try the exact-peak scheme next, checked
   against an uncut render near the light and at band edges.
+
+⁵ Amended 2026-11-01 (L3 built). L3 is `Light("back")`: uniform radiance
+over the hemisphere behind a slab of finite depth, with smooth faces and
+the camera side dark. A path that leaves through the back face adds the
+light's radiance, as a path leaving the front face does under the dome.
+The light is diffuse, so it needs no light sampling. **It renders cleanly
+with cut 0**, the full phase function, and no exact-peak scheme is needed.
+The check that truncation fails looking toward the light concerns compact
+lights. Speed is the dome's, about 16 M paths/s on the n2-slice: 4 s for
+536 × 488 pixels at 256 samples. Its reference is the bare light, so
+`reflectance_factor` gives a transmittance factor. Checks in
+tests/test_render_gpu.py (*verified*), each with a control:
+- A pure absorber, seen straight through with all internal reflections
+  summed, matches the closed form (z −0.5). Control: the formula for a
+  10% thicker slab fails (z +34).
+- Reciprocity: the image equals the forward slab's total transmittance
+  for a normal beam (z −1.2, +0.3, +0.8, up to g = 0.97). Control:
+  dropping the light seen straight through fails (z < −10), and adding
+  the closed-form share back restores the match.
+- Two-sided furnace on the n2-slice geometry. A stone that absorbs
+  nothing, lit with radiance 1 from both sides, shows 1 at every pixel
+  whatever its bands, fractures and tube: mean 0.9989 (z −1.3), with no
+  structure beyond noise. Control: the absorbing stand-in fails (z −732).
+
+The slab depth is `effective`: 3 mm, an assumption for a display slab.
+
+First look (procedural; ADR 0002 forbids reading it as evidence about
+agate). On the n2-slice, with OpticsTable defaults, as a 3 mm slab,
+L1 and L3 renders were made with independent seeds. Bands below 0.3 mm
+correlate −0.23 in luminance between the two lights, or about −0.6
+once each image's own noise is allowed for (measured from repeat
+renders). Bands pale in reflection are dark in transmission, the swap
+the owner's notes describe. Under L3 the host rock is black, the agate
+amber, and band edges softer, because light spreads sideways across the
+3 mm. Whether real slabs are as soft is for the set-level compare.
 
 **7c. Growth-time grid spacing.** Recommendation: **0.2 mm now**, with
 exact values stored near creases later if render-and-compare shows

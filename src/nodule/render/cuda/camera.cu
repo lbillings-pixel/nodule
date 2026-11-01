@@ -3,8 +3,8 @@
 // Orthographic camera on the +n side looking along -n; one path per (pixel, sample), box-filtered
 // jitter. The path enters through the smooth face with weight T(0)/n^2 (radiance leaving a denser
 // medium: L/n^2 is invariant) and walks by null-collision + Kutz spectral tracking, per-material
-// two-lobe Henyey-Greenstein phase function per channel (common.cuh). The slab under the face is D mm deep (inf allowed), smooth, air and black
-// below.
+// two-lobe Henyey-Greenstein phase function per channel (common.cuh). The slab under the face is
+// D mm deep (inf allowed), smooth, with air below: black, or the BACK light.
 // Lights:
 //   0 DIRECTIONAL: irradiance E (perpendicular to the beam) from polar angle th, azimuth ph.
 //     A delta light through a flat smooth face has one refracted direction, so next-event
@@ -22,10 +22,14 @@
 //     The grains' g ~ 0.998 lobe is far narrower than the refracted disc: phase sampling covers
 //     it, NEE covers the rest. Exit routes NEE cannot make (a top-face reflection, or two
 //     bottom-face reflections, since the last real collision) keep phase weight 1.
+//   3 BACK: uniform radiance Ld over the lower hemisphere behind a finite slab (L3, ADR 0007
+//     7b), the camera side dark; a path escaping down through the back face adds w n^2 Ld.
+//     Diffuse, so no NEE and no sparkle; renders keep the full phase function (amendment 4).
 // Flags (controls and checks):
 //   1 no fracture backward map; 2 no ratio tracking (Tr = 1); 4 homogeneous material 0, no
-//   geometry; 8 omit 1/n^2 at the camera exit; 16 no bottom-mirror NEE term; 32 dome counts
-//   scattered light only (drops the ghost: the dome seen unscattered in the back face).
+//   geometry; 8 omit 1/n^2 at the camera exit; 16 no bottom-mirror NEE term; 32 dome and back
+//   count scattered light only (dome: drops the ghost seen unscattered in the back face; back:
+//   drops the light seen straight through).
 //   64 no per-channel phase reweighting (control for the two-lobe check).
 //   DISC only: 128 NEE only (weight 1); 256 phase sampling only (weight 1); 512 both
 //   strategies at weight 1 (control: counts the light twice).
@@ -146,6 +150,9 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const unsigned
                 continue;
             }
             if (un < 0.f && C.light == 1 && !((C.flags & 32) && real == 0)) {   // up into the dome
+                for (int c = 0; c < 3; ++c) acc[c] += w[c] * n * n * C.Ld;
+            }
+            if (un > 0.f && C.light == 3 && !((C.flags & 32) && real == 0)) {   // down into the backlight
                 for (int c = 0; c < 3; ++c) acc[c] += w[c] * n * n * C.Ld;
             }
             if (un < 0.f && hits) {                             // up: into the disc?

@@ -156,21 +156,22 @@ def hg_kept(g: ArrayLike, omc_cut: float) -> F64:
     return np.clip(np.where(np.abs(g64) < 1e-9, 1 - omc_cut / 2, x), 1e-12, 1.0)
 
 
-LIGHT_KIND = {"directional": 0, "dome": 1, "disc": 2}
+LIGHT_KIND = {"directional": 0, "dome": 1, "disc": 2, "back": 3}
 
 
 @dataclass(frozen=True)
 class Light:
     """ADR 0007 7b: L1 = `Light("dome")`, L2 = `Light("disc")` (45 deg, radius 2.5 deg,
-    `effective`). A disc has uniform radiance over a cone of half-angle `radius_deg`,
-    scaled so the irradiance on a surface facing it is `irradiance`; radius -> 0 is the
-    directional light."""
+    `effective`), L3 = `Light("back")`. A disc has uniform radiance over a cone of
+    half-angle `radius_deg`, scaled so the irradiance on a surface facing it is
+    `irradiance`; radius -> 0 is the directional light. The back light is uniform radiance
+    `radiance` over the hemisphere behind a finite slab, the camera side dark."""
 
-    kind: Literal["directional", "dome", "disc"]
+    kind: Literal["directional", "dome", "disc", "back"]
     theta_deg: float = 45.0  # directional, disc: polar angle of the centre from the normal
     phi_deg: float = 90.0  # directional, disc: azimuth from plane.u toward plane.v
     irradiance: float = 1.0  # directional, disc: E on a surface facing the light
-    radiance: float = 1.0  # dome: Ld
+    radiance: float = 1.0  # dome, back: Ld
     radius_deg: float = 2.5  # disc: angular radius, effective (ADR 0007 7b)
 
     def __post_init__(self) -> None:
@@ -193,8 +194,9 @@ class Light:
     def white(self) -> float:
         """Radiance from a white Lambertian standard under this light. For a disc,
         the integral of cos over a cone is exactly cos(centre) times its value facing
-        the cone, so this is E cos(theta) / pi as for the directional light."""
-        if self.kind == "dome":
+        the cone, so this is E cos(theta) / pi as for the directional light. For the back
+        light it is the bare light itself, so the factor is a transmittance factor."""
+        if self.kind in ("dome", "back"):
             return self.radiance
         return self.irradiance * math.cos(math.radians(self.theta_deg)) / math.pi
 
@@ -263,6 +265,8 @@ def render(
 
     mubar: global majorant (default max mu_t). order > 0 keeps only that real-
     collision order (single scattering check)."""
+    if light.kind == "back" and not math.isfinite(depth_mm):
+        raise ValueError("the back light needs a finite slab (depth_mm)")
     cp = _gpu.cupy()
     kept_mus = materials.kept()[0].astype(np.float32)
     mua, mus = cp.asarray(materials.mua), cp.asarray(kept_mus)
@@ -302,7 +306,8 @@ def render(
 
 
 def reflectance_factor(image: F64, light: Light) -> F64:
-    """Radiance relative to a white Lambertian standard under the same light."""
+    """Radiance relative to a white Lambertian standard under the same light (back light:
+    relative to the bare light, i.e. a transmittance factor)."""
     return image / light.white()
 
 

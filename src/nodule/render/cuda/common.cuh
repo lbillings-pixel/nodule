@@ -73,19 +73,35 @@ __device__ __forceinline__ float phase_pdf(const float* ph, int m, int c, float 
     const float* q = ph + 9 * m + 3 * c;
     return (1.f - q[1]) * hgpdf(q[0], cs) + q[1] * hgpdf(q[2], cs);
 }
+__device__ __forceinline__ bool same_lobes(const float* ph, int m) {   // all channels alike
+    const float* q0 = ph + 9 * m;
+    bool same = true;
+    for (int k = 3; k < 9; ++k) same = same && q0[k] == q0[k % 3];
+    return same;
+}
+// Density per steradian with which `scatter` (below) draws a new direction at cosine cs from
+// the old one, given the weights w before the draw. Used for multiple importance sampling.
+__device__ float sample_pdf(const float* ph, int m, const float* w, float cs) {
+    if (same_lobes(ph, m)) return phase_pdf(ph, m, 0, cs);
+    float a0 = fabsf(w[0]), a1 = fabsf(w[1]), a2 = fabsf(w[2]), sa = a0 + a1 + a2;
+    if (!(sa > 0.f)) { a0 = a1 = a2 = 1.f; sa = 3.f; }
+    return (a0 * phase_pdf(ph, m, 0, cs) + a1 * phase_pdf(ph, m, 1, cs)
+            + a2 * phase_pdf(ph, m, 2, cs)) / sa;
+}
 // Scatter at a real collision: sample one channel's phase function (channel chosen by |w|),
 // then reweight every channel by p_c / p_mix, p_mix = sum_c pi_c p_c (the one-sample mixture
 // estimator; unbiased, and the weights stay bounded by 1/pi_c). When all channels share one
-// lobe the ratio is 1 and this is plain HG sampling.
+// lobe the ratio is 1 and this is plain HG sampling. If pdf is given it receives the density
+// of the drawn direction (sample_pdf).
 __device__ void scatter(const float* ph, int m, float* w, float& ux, float& uy, float& uz, Rng& r,
-                        bool reweight = true) {
+                        bool reweight = true, float* pdf = nullptr) {
     const float* q0 = ph + 9 * m;
-    bool same = true;                                      // every channel has the same lobes
-    for (int k = 3; k < 9; ++k) same = same && q0[k] == q0[k % 3];
-    if (same) {                                            // weight ratio 1; a single lobe draws
+    if (same_lobes(ph, m)) {                               // weight ratio 1; a single lobe draws
         float g = q0[0];                                   // exactly as plain HG sampling did
         if (q0[1] > 0.f && r.next() < q0[1]) g = q0[2];
+        float ox = ux, oy = uy, oz = uz;
         hg(g, ux, uy, uz, r);
+        if (pdf) *pdf = phase_pdf(ph, m, 0, ox * ux + oy * uy + oz * uz);
         return;
     }
     float a0 = fabsf(w[0]), a1 = fabsf(w[1]), a2 = fabsf(w[2]), sa = a0 + a1 + a2;
@@ -99,6 +115,7 @@ __device__ void scatter(const float* ph, int m, float* w, float& ux, float& uy, 
     float cs = ox * ux + oy * uy + oz * uz;
     float p[3], pm = 0.f, pi[3] = {a0 / sa, a1 / sa, a2 / sa};
     for (int k = 0; k < 3; ++k) { p[k] = phase_pdf(ph, m, k, cs); pm += pi[k] * p[k]; }
+    if (pdf) *pdf = pm;
     if (reweight) for (int k = 0; k < 3; ++k) w[k] *= p[k] / pm;   // off: a check's control
 }
 

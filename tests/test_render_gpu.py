@@ -329,6 +329,69 @@ def test_control_no_mirror_term_fails(flat, dome_diffuse) -> None:
     assert abs(z(tot, se, *dome_diffuse)) > 10  # prototype z -59
 
 
+# --- disc lamp, L2 (ADR 0007 7b): light and phase sampling under MIS ------------------------
+
+L2 = Light("disc")  # 45 deg, radius 2.5 deg
+
+
+def disc_rgb(dev, light: Light, *, seed: int, flags: int = 0):
+    return mean_rgb(dev, Materials.of(**LOBES), light, spp=1024, seed=seed, flags=flags,
+                    depth_mm=1.0)  # fmt: skip
+
+
+@pytest.fixture(scope="module")
+def disc_mis(flat):
+    return disc_rgb(flat, L2, seed=61)
+
+
+@pytest.mark.parametrize(("flags", "seed"), [(Flag.NEE_ONLY, 62), (Flag.PHASE_ONLY, 63)])
+def test_disc_strategies_agree(flat, disc_mis, flags, seed) -> None:
+    """Light sampling alone, phase sampling alone and their MIS blend estimate the same
+    image (sharp two-lobe material, all three channels; measured |z| <= 1.4)."""
+    mu, se = disc_rgb(flat, L2, seed=seed, flags=flags)
+    for c in range(3):
+        assert abs(z(mu[c], se[c], disc_mis[0][c], disc_mis[1][c])) < 3, c
+
+
+def test_control_disc_without_mis_weights_fails(flat, disc_mis) -> None:
+    mu, se = disc_rgb(flat, L2, seed=64, flags=Flag.NO_MIS_WEIGHT)
+    zs = [z(mu[c], se[c], disc_mis[0][c], disc_mis[1][c]) for c in range(3)]
+    assert max(zs) > 10  # measured 22, 17, 6
+
+
+ONE: dict[str, Any] = dict(mua=0.1, mus=10.0, g=0.9)
+
+
+@pytest.mark.parametrize("depth", [2.0, math.inf])
+@pytest.mark.parametrize("flags", [0, Flag.NEE_ONLY, Flag.PHASE_ONLY])
+def test_hemisphere_disc_is_the_dome(flat, depth, flags) -> None:
+    """A 90 deg disc at the zenith is the dome with Ld = E / pi: every angle of the light
+    sampling, refraction Jacobian and lamp-hit test is exercised (measured |z| <= 1.7)."""
+    dome = mean_px(flat, Light("dome", radiance=1 / math.pi), spp=256, seed=65, depth_mm=depth,
+                   **ONE)  # fmt: skip
+    sky = Light("disc", theta_deg=0.0, radius_deg=90.0)
+    m, se = mean_px(flat, sky, spp=256, seed=66, depth_mm=depth, flags=flags, **ONE)
+    assert abs(z(m, se, *dome)) < 3
+
+
+def test_control_part_sky_disc_is_not_the_dome(flat) -> None:
+    dome = mean_px(flat, Light("dome", radiance=1 / math.pi), spp=256, seed=65, depth_mm=2.0,
+                   **ONE)  # fmt: skip
+    m, se = mean_px(flat, Light("disc", theta_deg=0.0, radius_deg=60.0), spp=256, seed=66,
+                    depth_mm=2.0, **ONE)  # fmt: skip
+    assert abs(z(m, se, *dome)) > 10  # measured 56
+
+
+@pytest.mark.parametrize(("theta", "lo", "hi"), [(45.0, 0.0, 3.0), (50.0, 10.0, math.inf)])
+def test_small_disc_is_the_directional_light(flat, theta, lo, hi) -> None:
+    """A 0.25 deg disc matches the directional light at 45 deg (measured z 0.7).
+    Control: the disc moved to 50 deg does not (measured -24)."""
+    kw: dict[str, Any] = dict(spp=256, depth_mm=2.0, mua=0.2, mus=3.0, g=0.8)
+    want = mean_px(flat, Light("directional", theta_deg=45.0), seed=67, **kw)
+    m, se = mean_px(flat, Light("disc", theta_deg=theta, radius_deg=0.25), seed=68, **kw)
+    assert lo <= abs(z(m, se, *want)) < hi
+
+
 # --- preview against full render on the specimen -------------------------------------------
 
 # EFFECTIVE stand-ins for plumbing only, not agate optics (ADR 0007 section 3 will set them):

@@ -13,15 +13,26 @@
 //     via the mirror image in the bottom face (factor R_bottom), sampled 1 in 4 with weight 4.
 //   1 DOME: uniform radiance Ld over the upper hemisphere; a path escaping up through the face
 //     adds w n^2 Ld. The face's own specular reflection F(0) Ld is added on the host.
+//   2 DISC: uniform radiance Lr over a cone of half-angle alpha about (th, ph), Lr set so the
+//     irradiance on a surface facing the disc is E (Lr = E / (pi sin^2 alpha)); alpha -> 0 is
+//     DIRECTIONAL. Two strategies, combined by the balance heuristic (Veach 1997 ch. 9): NEE
+//     toward one direction drawn uniformly in the cone (as DIRECTIONAL, times the cone's solid
+//     angle), and phase sampling: a path leaving the face inside the cone adds w n^2 Lr. Both
+//     pdfs are taken per steradian inside the stone (air pdf 1/Omega times n^2 cos th_t / cos th).
+//     The grains' g ~ 0.998 lobe is far narrower than the refracted disc: phase sampling covers
+//     it, NEE covers the rest. Exit routes NEE cannot make (a top-face reflection, or two
+//     bottom-face reflections, since the last real collision) keep phase weight 1.
 // Flags (controls and checks):
 //   1 no fracture backward map; 2 no ratio tracking (Tr = 1); 4 homogeneous material 0, no
 //   geometry; 8 omit 1/n^2 at the camera exit; 16 no bottom-mirror NEE term; 32 dome counts
 //   scattered light only (drops the ghost: the dome seen unscattered in the back face).
 //   64 no per-channel phase reweighting (control for the two-lobe check).
+//   DISC only: 128 NEE only (weight 1); 256 phase sampling only (weight 1); 512 both
+//   strategies at weight 1 (control: counts the light twice).
 
 struct Cam { float s0, t0, pix; int nx, ny, spp; unsigned int seed; float n_in, D;
              int light; float lth, lph, E, Ld; float mubar; int nmat; int nprof; float dt;
-             int order; int flags; };
+             int order; int flags; float lomc; };
 
 __device__ int matid(const Scene& S, const Cam& C, const unsigned short* prof, float x, float y, float z) {
     if (C.flags & 4) return 0;
@@ -51,6 +62,44 @@ __device__ void ratio(const Scene& S, const Cam& C, const unsigned short* prof, 
     }
 }
 
+// Next-event estimate toward one air direction o (unit, pointing at the light, o.n > 0) from
+// a real collision at (x, y, z) with material m, path direction d. fac is the light's
+// irradiance on a surface facing it (directional: E; disc sample: Omega Lr). With mis, the
+// estimate is weighted against phase sampling (balance heuristic); omega is the solid angle
+// the light direction was drawn from (in air). Direct path through the face, plus 1 in 4 the
+// path via the mirror image in the bottom face (weight 4; flag 16 drops it).
+__device__ void nee(const Scene& S, const Cam& C, const unsigned short* prof, const float* mua,
+                    const float* mus, const float* ph, int m, const float* w, float x, float y,
+                    float z, float dx, float dy, float dz, float n, float ox, float oy, float oz,
+                    float fac, bool mis, float omega, float* acc, Rng& r) {
+    float cth = ox * S.n[0] + oy * S.n[1] + oz * S.n[2];
+    if (!(cth > 0.f)) return;                                   // below the horizon
+    float tx = (ox - cth * S.n[0]) / n, ty = (oy - cth * S.n[1]) / n, tz = (oz - cth * S.n[2]) / n;
+    float ct = sqrtf(fmaxf(0.f, 1.f - (tx * tx + ty * ty + tz * tz)));
+    float lx = ct * S.n[0] + tx, ly = ct * S.n[1] + ty, lz = ct * S.n[2] + tz;   // toward the face
+    float Ein = (1.f - fresnel(cth, 1.f, n)) * fac * cth / ct;
+    float pl = mis ? n * n * ct / (omega * cth) : 0.f;          // light pdf, inside solid angle
+    float Rb = fresnel(ct, n, 1.f);
+    float cl = lx * dx + ly * dy + lz * dz;                     // omega_t . (-d), omega_t = -l
+    float d0 = -((x - S.o[0]) * S.n[0] + (y - S.o[1]) * S.n[1] + (z - S.o[2]) * S.n[2]);
+    float T[3];
+    ratio(S, C, prof, mua, mus, x, y, z, lx, ly, lz, d0 / ct, T, r);
+    float wl = mis ? pl / (pl + sample_pdf(ph, m, w, cl)) : 1.f;
+    for (int c = 0; c < 3; ++c) acc[c] += w[c] * phase_pdf(ph, m, c, cl) * Ein * T[c] * wl;
+    if (isfinite(C.D) && Rb > 0.f && !(C.flags & 16) && r.next() < 0.25f) {
+        // mirror path: refract in, reflect off the bottom, arrive along
+        // omega_r = ct n - (tangent). Shadow legs: down along m = -omega_r, then up along l.
+        float mx = -ct * S.n[0] + tx, my = -ct * S.n[1] + ty, mz = -ct * S.n[2] + tz;
+        float L1 = (C.D - d0) / ct, T1[3], T2[3];
+        ratio(S, C, prof, mua, mus, x, y, z, mx, my, mz, L1, T1, r);
+        ratio(S, C, prof, mua, mus, x + mx * L1, y + my * L1, z + mz * L1, lx, ly, lz, C.D / ct, T2, r);
+        float cm = mx * dx + my * dy + mz * dz;                // omega_r . (-d)
+        float wm = mis ? 0.25f * pl / (0.25f * pl + sample_pdf(ph, m, w, cm)) : 1.f;
+        for (int c = 0; c < 3; ++c)
+            acc[c] += w[c] * phase_pdf(ph, m, c, cm) * Ein * Rb * 4.f * T1[c] * T2[c] * wm;
+    }
+}
+
 extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const unsigned short* prof,
                                   const float* mua, const float* mus, const float* ph,
                                   float* img, unsigned long long* stats) {
@@ -67,13 +116,20 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const unsigned
     float dx = -S.n[0], dy = -S.n[1], dz = -S.n[2];            // into the stone
     float w0 = (1.f - fresnel(1.f, 1.f, n)) / ((C.flags & 8) ? 1.f : n * n);
     float w[3] = {w0, w0, w0}, acc[3] = {0.f, 0.f, 0.f};
-    // light, refracted: shadow direction l (toward the face) and factors
-    float st = sinf(C.lth) / n, ct = sqrtf(1.f - st * st);
-    float ax = cosf(C.lph) * S.u[0] + sinf(C.lph) * S.v[0], ay = cosf(C.lph) * S.u[1] + sinf(C.lph) * S.v[1],
-          az = cosf(C.lph) * S.u[2] + sinf(C.lph) * S.v[2];
-    float lx = ct * S.n[0] + st * ax, ly = ct * S.n[1] + st * ay, lz = ct * S.n[2] + st * az;
-    float Ein = (1.f - fresnel(cosf(C.lth), 1.f, n)) * C.E * cosf(C.lth) / ct;
-    float Rb = fresnel(ct, n, 1.f);
+    // light axis a (toward the light, in air) and a frame e1, e2 around it
+    float cP = cosf(C.lph), sP = sinf(C.lph), cA = cosf(C.lth), sA = sinf(C.lth);
+    float h0 = cP * S.u[0] + sP * S.v[0], h1 = cP * S.u[1] + sP * S.v[1], h2 = cP * S.u[2] + sP * S.v[2];
+    float a0 = cA * S.n[0] + sA * h0, a1 = cA * S.n[1] + sA * h1, a2 = cA * S.n[2] + sA * h2;
+    float e10 = -sA * S.n[0] + cA * h0, e11 = -sA * S.n[1] + cA * h1, e12 = -sA * S.n[2] + cA * h2;
+    float e20 = -sP * S.u[0] + cP * S.v[0], e21 = -sP * S.u[1] + cP * S.v[1], e22 = -sP * S.u[2] + cP * S.v[2];
+    // disc: omc = 1 - cos(alpha) from the host (accurate for small alpha), solid angle Om
+    bool disc = C.light == 2;
+    float omc = C.lomc, Om = 6.28318531f * omc;
+    float Lr = disc ? C.E / (3.14159265f * omc * (2.f - omc)) : 0.f;
+    bool hits = disc && C.order == 0 && !(C.flags & 128);       // phase-sampled lamp hits
+    bool doNee = C.light == 0 || (disc && !(C.flags & 256));
+    bool mis = disc && C.order == 0 && !(C.flags & (128 | 256 | 512));
+    float lastpp = 0.f; int ntop = 0, nbot = 0;                 // since the last real collision
     int events = 0, real = 0;
     for (;;) {
         float depth = -((x - S.o[0]) * S.n[0] + (y - S.o[1]) * S.n[1] + (z - S.o[2]) * S.n[2]);
@@ -85,10 +141,25 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const unsigned
             if (r.next() <= fresnel(fabsf(un), n, 1.f)) {       // internal reflection
                 float k = 2.f * (dx * S.n[0] + dy * S.n[1] + dz * S.n[2]);
                 dx -= k * S.n[0]; dy -= k * S.n[1]; dz -= k * S.n[2];
+                if (un < 0.f) ++ntop; else ++nbot;
                 continue;
             }
             if (un < 0.f && C.light == 1 && !((C.flags & 32) && real == 0)) {   // up into the dome
                 for (int c = 0; c < 3; ++c) acc[c] += w[c] * n * n * C.Ld;
+            }
+            if (un < 0.f && hits) {                             // up: into the disc?
+                float ci = -un, ca = sqrtf(fmaxf(0.f, 1.f - n * n * (1.f - ci * ci)));
+                float ox = ca * S.n[0] + n * (dx - ci * S.n[0]), oy = ca * S.n[1] + n * (dy - ci * S.n[1]),
+                      oz = ca * S.n[2] + n * (dz - ci * S.n[2]);
+                if (ox * a0 + oy * a1 + oz * a2 >= 1.f - omc) {
+                    float wp = 1.f;                             // routes NEE cannot make: 1
+                    bool mirror = isfinite(C.D) && !(C.flags & 16) && fresnel(ci, n, 1.f) > 0.f;
+                    if (mis && real > 0 && ntop == 0 && (nbot == 0 || (nbot == 1 && mirror))) {
+                        float pl = n * n * ci / (Om * ca) * (nbot ? 0.25f : 1.f);
+                        wp = lastpp / (lastpp + pl);
+                    }
+                    for (int c = 0; c < 3; ++c) acc[c] += w[c] * n * n * Lr * wp;
+                }
             }
             break;
         }
@@ -96,26 +167,21 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const unsigned
         int m = matid(S, C, prof, x, y, z);
         if (spectral_step(w, mua, mus, m, C.mubar, r)) {
             ++real;
-            if (C.light == 0 && (C.order == 0 || real == C.order)) {
-                float cl = lx * dx + ly * dy + lz * dz;             // omega_t . (-d), omega_t = -l
-                float d0 = -((x - S.o[0]) * S.n[0] + (y - S.o[1]) * S.n[1] + (z - S.o[2]) * S.n[2]);
-                float T[3];
-                ratio(S, C, prof, mua, mus, x, y, z, lx, ly, lz, d0 / ct, T, r);
-                for (int c = 0; c < 3; ++c) acc[c] += w[c] * phase_pdf(ph, m, c, cl) * Ein * T[c];
-                if (isfinite(C.D) && Rb > 0.f && !(C.flags & 16) && r.next() < 0.25f) {
-                    // mirror path: refract in, reflect off the bottom, arrive along
-                    // omega_r = ct n - st a. Shadow legs: down along m = -omega_r, then up along l.
-                    float mx = -ct * S.n[0] + st * ax, my = -ct * S.n[1] + st * ay, mz = -ct * S.n[2] + st * az;
-                    float L1 = (C.D - d0) / ct, T1[3], T2[3];
-                    ratio(S, C, prof, mua, mus, x, y, z, mx, my, mz, L1, T1, r);
-                    ratio(S, C, prof, mua, mus, x + mx * L1, y + my * L1, z + mz * L1, lx, ly, lz, C.D / ct, T2, r);
-                    float cm = mx * dx + my * dy + mz * dz;                // omega_r . (-d)
-                    for (int c = 0; c < 3; ++c)
-                        acc[c] += w[c] * phase_pdf(ph, m, c, cm) * Ein * Rb * 4.f * T1[c] * T2[c];
+            if (doNee && (C.order == 0 || real == C.order)) {
+                if (disc) {                                     // one direction in the cone
+                    float q = r.next() * omc, sb = sqrtf(q * (2.f - q)), cb = 1.f - q;
+                    float psi = 6.28318531f * r.next(), cp = cosf(psi) * sb, sp = sinf(psi) * sb;
+                    nee(S, C, prof, mua, mus, ph, m, w, x, y, z, dx, dy, dz, n,
+                        cb * a0 + cp * e10 + sp * e20, cb * a1 + cp * e11 + sp * e21,
+                        cb * a2 + cp * e12 + sp * e22, Om * Lr, mis, Om, acc, r);
+                } else {
+                    nee(S, C, prof, mua, mus, ph, m, w, x, y, z, dx, dy, dz, n, a0, a1, a2, C.E,
+                        false, 0.f, acc, r);
                 }
             }
             if (C.order != 0 && real >= C.order) break;
-            scatter(ph, m, w, dx, dy, dz, r, !(C.flags & 64));
+            scatter(ph, m, w, dx, dy, dz, r, !(C.flags & 64), hits ? &lastpp : nullptr);
+            ntop = nbot = 0;
         }
         if (!roulette(w, w0, r)) break;
         if (events > 200000) break;

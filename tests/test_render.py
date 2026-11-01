@@ -134,6 +134,38 @@ def test_white_standard() -> None:
     assert math.isclose(Light("directional", theta_deg=60.0).white(), 0.5 / math.pi)
 
 
+def test_disc_light_normalisation() -> None:
+    """Lr pi sin^2(a) = E facing the disc, and the white standard under a tilted disc is
+    E cos(theta) / pi exactly (quadrature over the cone). Control: the small-angle form
+    pi a^2 is visibly off at a 30 deg radius."""
+    disc = Light("disc", theta_deg=40.0, radius_deg=30.0, irradiance=2.0)
+    a, th = math.radians(30.0), math.radians(40.0)
+    assert math.isclose(disc.one_minus_cos, 1 - math.cos(a), rel_tol=1e-12)
+    assert math.isclose(
+        Light("disc", radius_deg=1e-3).one_minus_cos, 1.5230870989e-10, rel_tol=1e-6
+    )
+    # cos to the normal of a direction at (beta, psi) about the disc axis, integrated
+    b, wb = np.polynomial.legendre.leggauss(64)
+    p, wp = np.polynomial.legendre.leggauss(64)
+    b, wb = a / 2 * (b + 1), a / 2 * wb
+    p, wp = math.pi * (p + 1), math.pi * wp
+    bb, pp = np.meshgrid(b, p, indexing="ij")
+    cos_n = np.cos(bb) * math.cos(th) - np.sin(bb) * np.cos(pp) * math.sin(th)
+    integral = float(np.einsum("i,j,ij->", wb, wp, cos_n * np.sin(bb)))
+    assert math.isclose(disc.disc_radiance * integral / math.pi, disc.white(), rel_tol=1e-9)
+    assert math.isclose(disc.white(), 2.0 * math.cos(th) / math.pi)
+    small_angle = disc.irradiance / (math.pi * a**2)
+    assert abs(small_angle / disc.disc_radiance - 1) > 0.05  # control: 8.8% off
+
+
+def test_disc_light_validation() -> None:
+    with pytest.raises(ValueError, match="horizon"):
+        Light("disc", theta_deg=88.0, radius_deg=2.5)
+    with pytest.raises(ValueError, match="radius"):
+        Light("disc", radius_deg=0.0)
+    Light("disc", theta_deg=0.0, radius_deg=90.0)  # the whole sky is allowed
+
+
 def test_materials_validation() -> None:
     m = Materials.of([[0.1, 0.1, 0.1]], [[1, 1, 1]], [0.9])
     assert m.mua.shape == (1, 3)

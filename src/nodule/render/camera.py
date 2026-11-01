@@ -45,6 +45,9 @@ class Flag(IntFlag):
     NO_MIRROR = 16
     SCATTERED_ONLY = 32  # dome: drop light that escapes without a real collision
     NO_PHASE_WEIGHT = 64  # skip the per-channel phase-function weight (control)
+    NEE_ONLY = 128  # disc: light sampling alone, weight 1 (a check)
+    PHASE_ONLY = 256  # disc: phase sampling alone, weight 1 (a check)
+    NO_MIS_WEIGHT = 512  # disc: both strategies at weight 1 (control: light counted twice)
 
 
 @dataclass(frozen=True)
@@ -106,16 +109,44 @@ class Materials:
         return ((1 - self.f) * hg(self.g) + self.f * hg(self.gb)).astype(np.float32)
 
 
+LIGHT_KIND = {"directional": 0, "dome": 1, "disc": 2}
+
+
 @dataclass(frozen=True)
 class Light:
-    kind: Literal["directional", "dome"]
-    theta_deg: float = 45.0  # directional: polar angle from the face normal
-    phi_deg: float = 90.0  # directional: azimuth from plane.u toward plane.v
-    irradiance: float = 1.0  # directional: E, perpendicular to the beam
+    """ADR 0007 7b: L1 = `Light("dome")`, L2 = `Light("disc")` (45 deg, radius 2.5 deg,
+    `effective`). A disc has uniform radiance over a cone of half-angle `radius_deg`,
+    scaled so the irradiance on a surface facing it is `irradiance`; radius -> 0 is the
+    directional light."""
+
+    kind: Literal["directional", "dome", "disc"]
+    theta_deg: float = 45.0  # directional, disc: polar angle of the centre from the normal
+    phi_deg: float = 90.0  # directional, disc: azimuth from plane.u toward plane.v
+    irradiance: float = 1.0  # directional, disc: E on a surface facing the light
     radiance: float = 1.0  # dome: Ld
+    radius_deg: float = 2.5  # disc: angular radius, effective (ADR 0007 7b)
+
+    def __post_init__(self) -> None:
+        if self.kind == "disc":
+            if not 0.0 < self.radius_deg <= 90.0:
+                raise ValueError("disc radius must lie in (0, 90] degrees")
+            if self.theta_deg + self.radius_deg > 90.0 + 1e-9:
+                raise ValueError("the disc must lie above the horizon")
+
+    @property
+    def one_minus_cos(self) -> float:
+        """Disc: 1 - cos(radius), written to stay accurate for small radii."""
+        return 2.0 * math.sin(math.radians(self.radius_deg) / 2.0) ** 2
+
+    @property
+    def disc_radiance(self) -> float:
+        """Disc: Lr = E / (pi sin^2 radius)."""
+        return self.irradiance / (math.pi * math.sin(math.radians(self.radius_deg)) ** 2)
 
     def white(self) -> float:
-        """Radiance from a white Lambertian standard under this light."""
+        """Radiance from a white Lambertian standard under this light. For a disc,
+        the integral of cos over a cone is exactly cos(centre) times its value facing
+        the cone, so this is E cos(theta) / pi as for the directional light."""
         if self.kind == "dome":
             return self.radiance
         return self.irradiance * math.cos(math.radians(self.theta_deg)) / math.pi
@@ -160,7 +191,8 @@ CAM_DTYPE = np.dtype(
     [("s0", "<f4"), ("t0", "<f4"), ("pix", "<f4"), ("nx", "<i4"), ("ny", "<i4"),
      ("spp", "<i4"), ("seed", "<u4"), ("n_in", "<f4"), ("D", "<f4"), ("light", "<i4"),
      ("lth", "<f4"), ("lph", "<f4"), ("E", "<f4"), ("Ld", "<f4"), ("mubar", "<f4"),
-     ("nmat", "<i4"), ("nprof", "<i4"), ("dt", "<f4"), ("order", "<i4"), ("flags", "<i4")]
+     ("nmat", "<i4"), ("nprof", "<i4"), ("dt", "<f4"), ("order", "<i4"), ("flags", "<i4"),
+     ("lomc", "<f4")]
 )  # fmt: skip
 
 
@@ -179,7 +211,8 @@ def render(
     seed: int = 1,
     block: int = 128,
 ) -> Rendered:
-    """Linear radiance per pixel, including the dome's face specular F(0) Ld.
+    """Linear radiance per pixel, including the face's specular F(0) L of a dome, or
+    of a disc that contains the normal.
 
     mubar: global majorant (default max mu_t). order > 0 keeps only that real-
     collision order (single scattering check)."""
@@ -192,11 +225,11 @@ def render(
         raise ValueError("too many paths")
     c = np.zeros((), CAM_DTYPE)
     vals = dict(s0=view.s0, t0=view.t0, pix=view.pixel_mm, nx=view.nx, ny=view.ny, spp=spp,
-                seed=seed, n_in=n_in, D=depth_mm, light=0 if light.kind == "directional" else 1,
+                seed=seed, n_in=n_in, D=depth_mm, light=LIGHT_KIND[light.kind],
                 lth=math.radians(light.theta_deg), lph=math.radians(light.phi_deg),
                 E=light.irradiance, Ld=light.radiance, mubar=mb, nmat=len(materials.g),
                 nprof=len(materials.profile), dt=materials.dt, order=order,
-                flags=int(flags))  # fmt: skip
+                flags=int(flags), lomc=light.one_minus_cos)  # fmt: skip
     for key, v in vals.items():
         c[key] = v
     cam = cp.asarray(np.frombuffer(c.tobytes(), np.uint8))
@@ -210,8 +243,11 @@ def render(
     _gpu.synchronize()
     sec = time.perf_counter() - t0
     out = img.get().astype(np.float64)
+    f0 = ((n_in - 1) / (n_in + 1)) ** 2  # the face's specular reflectance seen by the camera
     if light.kind == "dome":
-        out += ((n_in - 1) / (n_in + 1)) ** 2 * light.radiance  # face specular seen by the camera
+        out += f0 * light.radiance
+    elif light.kind == "disc" and light.theta_deg <= light.radius_deg:  # the normal is in the disc
+        out += f0 * light.disc_radiance
     st = stats.get()
     return Rendered(image=out, seconds=sec, paths=paths, events=float(st[0]) / paths,
                     real=float(st[1]) / paths)  # fmt: skip

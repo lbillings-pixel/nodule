@@ -3072,6 +3072,22 @@ topics = ["texture-synthesis", "julesz-conjecture", "validation", "negative-cont
 notes = """Read 2026-11-01 (helper agent; notes/n2-reading/compare-methods.md). Classifying a fixed test set by distances between statistic vectors is "a fairly weak test" (p. 51). A synthesis that looks like each library example is evidence, but "A single generated sample that is visually different ... indicates that the set of constraint functions is almost certainly insufficient" (p. 52); necessity is shown by removing statistic subsets until a synthesis fails. Perceptual comparison was "only informal" (p. 52)."""
 
 [[references]]
+id = "schreiber2000"
+kind = "article"
+authors = ["Schreiber, T.", "Schmitz, A."]
+year = 2000
+title = "Surrogate time series"
+venue = "Physica D 142, 346–382"
+doi = "10.1016/S0167-2789(00)00043-9"
+url = "https://arxiv.org/abs/chao-dyn/9909037"
+access = "open"
+licence = "publisher copyright; cite only (arXiv preprint read)"
+checked = "sections"
+sections_read = ["4", "4.1", "4.2", "4.3", "4.5", "4.6", "5.3", "5.4", "5.5", "7.2", "A.2"]
+topics = ["surrogate-data", "phase-randomisation", "iaaft", "negative-control"]
+notes = """Read 2026-11-01 (helper agent, arXiv LaTeX source; no page numbers, so sections and equations). FT surrogates keep the periodogram only (s.4, eqs. 7-8). IAAFT alternates amplitude replacement and rank-ordering to a fixed point; the rank-ordered output has the exact value distribution and an approximate spectrum (s.4.3, eqs. 11-13). Multivariate: one random phase per frequency shared by all channels keeps the cross-spectrum; iterative version eqs. 18-20 (s.4.6). The method assumes periodicity; an end-to-start jump leaks power to high frequencies, measured by gamma_jump (s.4.5, eq. 14). AAFT is biased for short correlated series (s.4.2); a single localised feature is spread into many (s.7.2). Nothing on piecewise-constant data or ties."""
+
+[[references]]
 id = "wallis2017"
 kind = "article"
 authors = ["Wallis, T. S. A.", "Funke, C. M.", "Ecker, A. S.", "Gatys, L. A.", "Wichmann, F. A.", "Bethge, M."]

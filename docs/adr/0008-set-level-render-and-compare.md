@@ -6,7 +6,8 @@
   finish). Amendment ¹ (owner) rereads the power-by-size runs as verdict
   stability and adds the crossing shift. Amendment ² (owner) scores the
   descriptors in blocks, so no value can hide. Amendment ³ (owner) leaves
-  six extreme photos out.
+  six extreme photos out. Amendment ⁴ (proposed, awaiting the owner)
+  makes the fakes concrete.
 - Date: 2026-11-01
 - Builds on: [ADR 0006](0006-band-counts-as-censored-records.md) section 10
   (the fallback: band realism is tested by rendering synthetic stones at each
@@ -137,7 +138,7 @@ judged only in the blind test (section 5).
 ### 4. Negative and null controls
 
 Every fake changes only the band record (the per-growth-step material fed
-to the renderer, `BandRecord`) and runs through the same pipeline:
+to the renderer, `BandRecord`) and runs through the same pipeline:⁴
 
 - **Must be rejected:**
   - F1: bands without fine structure (the record smoothed below the band
@@ -292,10 +293,10 @@ same photos that test the result can be fooled (ADR 0007, risks).
 - `nodule.descriptors` gains a rendered image path beside the stand-in, and
   a `nodule.compare` module for the scores, controls and power curves, with
   tests (CPU tests on synthetic descriptor tables; GPU tests skip in CI).
-- The fakes F1–F5 are `BandRecord` transforms in `nodule.render`, each with
-  a test.
+- The fakes F1–F4 are `BandRecord` transforms in `nodule.render.fakes`,
+  each with a test; F5 is a switch in the rendered descriptor path.⁴
 - A `nodule.blindtest` local page follows the compare.
-- References added: [@gretton2012], [@lopezpaz2017], [@gelman1996],
+- References added: [@schreiber2000] (amendment ⁴), [@gretton2012], [@lopezpaz2017], [@gelman1996],
   [@rodriguezgomez2019], [@portilla2000], [@wallis2017], [@zhou2019],
   [@smith2018]. All are at "sections" level, read by a helper agent.
 
@@ -396,3 +397,47 @@ together (from 1.1-1.8).
   photo itself, not its score.
 - The excluded photos stay in the library for every other use. A run can
   restore them by passing an empty `leave_out` (`library_table`).
+
+⁴ Proposed 2026-11-01 (awaiting the owner). Building the fakes
+(`nodule.render.fakes`) needed choices section 4 leaves open. All are
+`effective`, made here, and cheap to change.
+
+- **One fake stone, not one per cut.** A cut's record holds only the steps
+  that cut crosses (a centre cut of n2-slice reaches step 151; the stone
+  reaches 161). A fake built per cut would draw a different stone in each
+  cut, so each fake is built once from the whole stone's record, read from
+  1,000,000 points drawn through its bounds (~1.5 s, ~80 MB, one spawned
+  RNG stream).
+- **What moves.** The record is read as runs of equal deposit (one run =
+  one band; n2-slice has 32). Only chalcedony runs before the last move.
+  The last run is open, ending where the cavity closed, so the geometry
+  sets its width; quartz is not a band under test. Each stretch of movable
+  runs keeps its first and last step.
+- **F1** smooths impurity and translucency with a Gaussian of
+  sigma = P / 2π steps, P = the typical band pair (twice the median run
+  width; 10 steps for n2-slice). A typical pair keeps e^-0.5 of its
+  amplitude, its third harmonic about 1 %, and a one-step line inside a
+  band about a quarter. The median, not the shortest pair, so that sub-bands
+  cannot set the scale meant to remove them. Phase and pigment are
+  categories and stay.
+- **F2** gives each band the width of the band at the opposite rank (the
+  thickest becomes the thinnest), keeping the order of deposits.
+- **F3** makes the bands of a stretch equally wide to the step. Widths still
+  differ by one step (5 or 6 for n2-slice), the record's resolution
+  (400 steps over growth time, about 0.075 mm a step in n2-slice).
+- **F4** is a multivariate iterated amplitude-adjusted Fourier (IAAFT)
+  surrogate of impurity and translucency, sharing one phase shift per
+  frequency [@schreiber2000, ss. 4.3, 4.6]. It keeps each field's values
+  exactly (so ranges hold) and its spectrum approximately: within 9–19 %
+  (relative RMS amplitude) on n2-slice. Tied values from the runs limit the
+  match; the paper says nothing about them. The end jump that the method's
+  periodicity would leak [@schreiber2000, s. 4.5] is small there (0.05).
+- **F5 is not a record change.** It skips the photo-like blur and noise, so
+  it is a switch in the rendered descriptor path (next step), not a
+  `BandRecord` transform.
+- **A limit to state.** agatesim's record has no structure finer than its
+  bands, since each band is uniform. So F1 differs from n2-slice only in
+  soft edges and faded thin bands. If F1 passes the compare, that may mean
+  the descriptors are blind to fine structure, or that the stone has none
+  to lose. The compare of the stone itself against the photos (C26's
+  fine-side slope) is the place to see which.

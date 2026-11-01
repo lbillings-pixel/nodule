@@ -5,7 +5,8 @@
   7b (tune on all photos, parameters listed first) and 7c (cut faces of every
   finish). Amendment ¹ (owner) rereads the power-by-size runs as verdict
   stability and adds the crossing shift. Amendment ² (owner) scores the
-  descriptors in blocks, so no value can hide.
+  descriptors in blocks, so no value can hide. Amendment ³ (owner) leaves
+  six extreme photos out.
 - Date: 2026-11-01
 - Builds on: [ADR 0006](0006-band-counts-as-censored-records.md) section 10
   (the fallback: band realism is tested by rendering synthetic stones at each
@@ -106,7 +107,7 @@ judged only in the blind test (section 5).
 ### 3. The spread test (one stone)
 
 - **Scaling.** Each descriptor is scaled by the photos' median and
-  interquartile range (robust z).
+  interquartile range (robust z).³
 - **Joint score.** For any face, the mean squared scaled difference to each
   photo, taken over the descriptors both faces have (descriptors are
   missing where a gate fails, as for photos). The score is the mean distance
@@ -378,3 +379,20 @@ one block, most in the image block. Their 95th-percentile joint score is
 15. They are listed by `python -m nodule.compare` runs (ids only).
 Whether they are measurement artefacts, such as detail crops, is an open
 check for the owner. Grade: *speculative*, as for section 3.
+
+³ Amended 2026-11-01 (owner). The six reflected cut faces above the bar in
+amendment ² are left out of the compare. They are listed, each with its
+least typical block, in references/compare-excluded.toml, which
+`compare.library_table` reads; the tags are unchanged. Basis: suspected
+measurement artefacts (several are detail crops). They were not checked by
+eye. Effect, on 97 photos: N1 0.072; the bar falls from 15.3 to 10.0; the
+three stand-in cuts cross at 0.9-1.0 interquartile ranges on all values
+together (from 1.1-1.8).
+
+- **No further rounds.** The bar is the photos' 95th percentile, so about
+  5 % of photos always lie above it (five do now). Cutting them each time
+  would shrink the library's spread toward its middle, and real stones
+  would start to fail. A further exclusion needs a reason found in the
+  photo itself, not its score.
+- The excluded photos stay in the library for every other use. A run can
+  restore them by passing an empty `leave_out` (`library_table`).

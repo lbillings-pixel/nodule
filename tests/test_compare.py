@@ -15,6 +15,7 @@ from nodule.compare import (
     crossing_shift,
     crossing_shifts,
     distances,
+    excluded,
     held_out_rate,
     knn_scores,
     library_table,
@@ -214,3 +215,15 @@ def test_block_presence_counts_rows_without_values() -> None:
     assert set(p) == set(BLOCKS)
     assert p["shape"] == pytest.approx(2 / 3)
     assert p["image"] == pytest.approx(1 / 3)
+
+
+def test_owner_exclusions_are_left_out() -> None:
+    """ADR 0008 amendment 3: the six listed photos leave the reflected
+    stratum; every listed id is a real reflected cut face."""
+    out = excluded()
+    assert len(out) == 6
+    kept = library_table("reflected")
+    every = library_table("reflected", leave_out=frozenset())
+    assert out <= set(every.ids)
+    assert not out & set(kept.ids)
+    assert len(every) - len(kept) == 6

@@ -111,6 +111,7 @@ FLOOR = 1e-300  # smallest joint tail share kept
 STEPS = 20  # bisection steps for a shift (resolution MOST_SHIFT / 2**STEPS)
 
 Floats = NDArray[np.float64]
+EXCLUDED_TOML = TAGS_TOML.parent / "compare-excluded.toml"  # ADR 0008 amendment 3
 
 
 @dataclass(frozen=True)
@@ -149,19 +150,32 @@ def table(
     return Table(kept, tuple(names), values[keep], len(rows))
 
 
+def excluded(path: Path = EXCLUDED_TOML) -> frozenset[str]:
+    """The library ids the owner left out of the compare (ADR 0008
+    amendment 3)."""
+    photos: dict[str, object] = tomllib.loads(path.read_text("utf-8"))["photos"]
+    return frozenset(photos)
+
+
 def library_table(
-    stratum: str = "reflected", finishes: Sequence[str] | None = None, path: Path = TAGS_TOML
+    stratum: str = "reflected",
+    finishes: Sequence[str] | None = None,
+    path: Path = TAGS_TOML,
+    leave_out: frozenset[str] | None = None,
 ) -> Table:
     """The library photos of one stratum (`STRATA`), optionally of some
-    finishes only (ADR 0008 section 7c)."""
+    finishes only (ADR 0008 section 7c), without those in `leave_out`
+    (default: `excluded()`; pass an empty set to keep every photo)."""
     view, light = STRATA[stratum]
     images: dict[str, dict[str, object]] = tomllib.loads(path.read_text("utf-8"))["images"]
+    out = excluded() if leave_out is None else leave_out
     chosen = {
         k: e
         for k, e in images.items()
         if e.get("view_kind") == view
         and e.get("lighting") == light
         and (finishes is None or e.get("finish") in finishes)
+        and k not in out
     }
     return table(list(chosen.values()), list(chosen))
 

@@ -1,0 +1,19 @@
+# Library photos left out of the set-level compare (ADR 0008 amendment 3).
+# Keyed by agatesim library id; no image is held here. Read by
+# `nodule.compare.library_table`; the tags themselves are unchanged.
+
+[meta]
+decided = "owner, 2026-11-01"
+basis = """\
+The six reflected cut faces above the photos' 95th-percentile joint score
+(15.3) on the amendment 2 scoring, each extreme in one block. Excluded on the
+suspicion that they are measurement artefacts (several are detail crops);
+not checked by eye."""
+
+[photos]
+agate-detail-agat-lake-superior-usa-minnesota-cropped = "image"
+agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-11 = "spectrum"
+agate-filled-geode-las-choyas-geode-deposit-near-latest-eocene-35-ma-chihuahua-m-14 = "image"
+apache-flame-agate-chihuahua-mexico-33716719924 = "persistence"
+detail-agat-lake-superior-duluth-minnesota-usa-cropped = "image"
+gaillac-museum-d-histoire-naturelle-115 = "image"

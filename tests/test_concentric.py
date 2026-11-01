@@ -14,9 +14,11 @@ from nodule.bands import COUPLET_SPACINGS
 from nodule.concentric import Concentric, judge, measure
 from nodule.edges import edge_face
 
+NOISE = 1.5  # grey levels of the test faces' pixel noise, as the gate would report
+
 
 def face(
-    n: int, spacing: float, kind: str, seed: int = 0, noise: float = 1.5
+    n: int, spacing: float, kind: str, seed: int = 0, noise: float = NOISE
 ) -> tuple[NDArray[np.float32], NDArray[np.bool_]]:
     """A round face n px across on a dark ground, with grey noise (levels), of
     couplet period `spacing`: concentric rings; rings whose centres drift
@@ -63,7 +65,7 @@ def face(
 def run(n: int, spacing: float, kind: str, seed: int = 0) -> Concentric:
     lum, mask = face(n, spacing, kind, seed)
     # `spacing` is the couplet period; the gate reports one band, half of it.
-    return measure(lum, mask, 1.0, spacing / COUPLET_SPACINGS)
+    return measure(lum, mask, 1.0, NOISE, spacing / COUPLET_SPACINGS)
 
 
 @pytest.mark.parametrize(("n", "spacing"), [(400, 16.0), (800, 32.0)])
@@ -124,7 +126,7 @@ def test_results_hold_over_the_edge_smoothing(kind: str) -> None:
     lum, mask = face(400, 16.0, kind)
     seen: list[Concentric] = []
     for smooth in (0.08, 0.125, 0.2):
-        ef = edge_face(lum, mask, 1.0, 16.0 / COUPLET_SPACINGS, smooth=smooth)
+        ef = edge_face(lum, mask, 1.0, NOISE, 16.0 / COUPLET_SPACINGS, smooth=smooth)
         judged = agatesim_scipy.erode(ef.face, math.ceil(MARGIN_SPACINGS * ef.spacing))
         seen.append(judge(ef.edges, judged, ef.spacing))
     assert len({c.sets for c in seen}) == 1, seen
@@ -156,4 +158,4 @@ def test_an_even_face_has_no_set() -> None:
 
 def test_a_face_too_small_is_not_judged() -> None:
     lum, mask = face(40, 16.0, "rings")
-    assert measure(lum, mask, 1.0, 8.0) == Concentric(None, None, None, None, None)
+    assert measure(lum, mask, 1.0, NOISE, 8.0) == Concentric(None, None, None, None, None)

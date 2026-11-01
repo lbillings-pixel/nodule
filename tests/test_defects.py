@@ -9,14 +9,17 @@ from numpy.typing import NDArray
 from nodule.bands import COUPLET_SPACINGS
 from nodule.defects import Defects, classify, groom, link_ends, measure, thin, unbridge
 
+NOISE = 1.5  # grey levels of the test faces' pixel noise, as the gate would report
+
 
 def face(
-    n: int, spacing: float, kind: str, seed: int = 0, noise: float = 1.5
+    n: int, spacing: float, kind: str, seed: int = 0, noise: float = NOISE
 ) -> tuple[NDArray[np.float32], NDArray[np.bool_]]:
     """A round face n px across on a dark ground, with grey noise (levels):
     concentric rings, straight stripes, stripes with one couplet inserted at
     the centre (a dislocation), a middle-grey band that pinches out between
-    two light ones, or isotropic noise with power at the band spacing."""
+    two light ones, isotropic noise with power at the band spacing, or an
+    even grey."""
     y, x = np.mgrid[:n, :n].astype(np.float64)
     c = (n - 1) / 2
     yy, xx = y - c, x - c
@@ -37,6 +40,8 @@ def face(
         f *= np.exp(-0.5 * ((np.hypot(fy, fx) - 1 / spacing) / (0.15 / spacing)) ** 2)
         lum = np.fft.ifft2(f).real
         lum = 128 + 40 * lum / lum[mask].std()
+    elif kind == "even":
+        lum = np.full((n, n), 128.0)
     else:
         phase = {
             "rings": 2 * np.pi * np.hypot(yy, xx) / spacing,
@@ -52,7 +57,7 @@ def face(
 def run(n: int, spacing: float, kind: str, seed: int = 0) -> Defects:
     lum, mask = face(n, spacing, kind, seed)
     # `spacing` is the couplet period; the gate reports one band, half of it.
-    return measure(lum, mask, 1.0, spacing / COUPLET_SPACINGS)
+    return measure(lum, mask, 1.0, NOISE, spacing / COUPLET_SPACINGS)
 
 
 def test_thinning_and_classes_on_a_tee() -> None:
@@ -151,3 +156,10 @@ def test_noise_density_does_not_depend_on_resolution() -> None:
 def test_a_face_too_small_is_not_judged() -> None:
     d = run(40, 16.0, "stripes")
     assert d == Defects(None, None, None)
+
+
+def test_negative_control_an_even_face_with_pixel_noise_is_not_judged() -> None:
+    # The noise gate leaves no edges (`nodule.edges`), so no bands to judge;
+    # before it the edges followed the noise and C14 read about 1.0-1.2.
+    for n, spacing in ((400, 16.0), (800, 32.0)):
+        assert run(n, spacing, "even") == Defects(None, None, None)

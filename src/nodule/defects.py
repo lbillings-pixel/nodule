@@ -48,9 +48,9 @@ Measured 2026-10-31 (test faces at 10, 16 and 32 px per spacing): perfect rings
 and stripes 0; one couplet inserted, two terminations; a middle-grey band that
 pinches out between light ones, one termination and one junction; isotropic
 noise with power at the band spacing 0.76-0.93 per spacing squared at both 16
-and 32 px. An even face with pixel noise only reads about 1.0-1.2: on flat
-ground the edges follow the noise (`nodule.edges`, limit), so C14 is read
-with C16's banded share until a noise gate is added there.
+and 32 px. An even face with pixel noise only has no edges (`nodule.edges`,
+noise gate), so no bands, and is not judged (None); before the gate its edges
+followed the noise and it read about 1.0-1.2.
 
 On three random cuts of the `n2-slice` preset made to look like library
 photos (`nodule.descriptors`, seed 0): 0.10, 0.07 and 0.002, mostly
@@ -325,15 +325,21 @@ def unbridge(skeleton: NDArray[np.bool_], most: float, spur_px: float) -> NDArra
 
 
 def measure(
-    lum: NDArray[np.float32], mask: NDArray[np.bool_], scale: float, spacing_px: float
+    lum: NDArray[np.float32],
+    mask: NDArray[np.bool_],
+    scale: float,
+    noise: float,
+    spacing_px: float,
 ) -> Defects:
-    """C14 of a face. Arguments as `nodule.orientation.measure`."""
-    ef = edge_face(lum, mask, scale, spacing_px)
+    """C14 of a face. Arguments as `nodule.edges.edge_face`."""
+    ef = edge_face(lum, mask, scale, noise, spacing_px)
     spacing = ef.spacing
     judged = agatesim_scipy.erode(ef.face, max(1, math.ceil(MARGIN_SPACINGS * spacing)))
     inner = agatesim_scipy.erode(judged, max(1, math.ceil(BORDER_SPACINGS * spacing)))
     area = inner.sum() / spacing**2
     if area < MIN_SPACINGS2:
+        return Defects(None, None, None)
+    if not (ef.edges & judged).any():  # no bands, so none to judge
         return Defects(None, None, None)
     edges = link_ends(ef.edges, LINK_SPACINGS * spacing)
     bands = separate(agatesim_scipy.label(judged & ~edges, eight_connected=False))

@@ -55,8 +55,10 @@ and 3 over the edge parameters, and a band that pinches out became a ring.
 Measured 2026-10-31: the tests' faces (16 and 32 px per spacing) as asserted
 there, middle-grey bands included. On three random cuts of the `n2-slice`
 preset made to look like library photos (`nodule.descriptors`, seed 0),
-sets 2, 2 and 1 and depth 6, 19 and 19. Over the edge smoothing (0.08-0.2
-spacings), hysteresis (`HIGH` 0.2-0.4, `LOW` 0.05-0.15) and `EDGE_PX` (9-16),
+sets 2, 2 and 1 and depth 6, 19 and 19 (the same with the noise gate of
+`nodule.edges`; an even face with pixel noise has no edges, so no set). Over
+the edge smoothing (0.08-0.2 spacings), hysteresis (`HIGH` 0.2-0.4, `LOW`
+0.05-0.15) and `EDGE_PX` (9-16),
 the sets held except at smoothing 0.2 on the first cut (2 to 1), depth moved
 by 3 at most, and drift by 0.14 at most (0.04 apart from smoothing). The
 blob draft this replaces split the face by sign about a local mean. Its sets
@@ -236,10 +238,14 @@ def judge(edges: NDArray[np.bool_], judged: NDArray[np.bool_], spacing: float) -
 
 
 def measure(
-    lum: NDArray[np.float32], mask: NDArray[np.bool_], scale: float, spacing_px: float
+    lum: NDArray[np.float32],
+    mask: NDArray[np.bool_],
+    scale: float,
+    noise: float,
+    spacing_px: float,
 ) -> Concentric:
-    """C13 of a face. Arguments as `nodule.orientation.measure`."""
-    ef = edge_face(lum, mask, scale, spacing_px)
+    """C13 of a face. Arguments as `nodule.edges.edge_face`."""
+    ef = edge_face(lum, mask, scale, noise, spacing_px)
     judged = agatesim_scipy.erode(ef.face, max(1, math.ceil(MARGIN_SPACINGS * ef.spacing)))
     if judged.sum() / ef.spacing**2 < MIN_SPACINGS2:
         return Concentric(None, None, None, None, None)

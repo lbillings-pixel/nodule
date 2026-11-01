@@ -177,8 +177,8 @@ def measure(pc: PhotoCut, look: Look, rng: np.random.Generator) -> dict[str, obj
     b = bands.measure(lum, mask, 1.0, q.noise, q.band_spacing_px, rng=band_rng, ladder=False)
     o = orientation.measure(lum, mask, 1.0, q.band_spacing_px)
     c = curvature.measure(lum, mask, 1.0, q.band_spacing_px)
-    d = defects.measure(lum, mask, 1.0, q.band_spacing_px)
-    r = concentric.measure(lum, mask, 1.0, q.band_spacing_px)
+    d = defects.measure(lum, mask, 1.0, q.noise, q.band_spacing_px)
+    r = concentric.measure(lum, mask, 1.0, q.noise, q.band_spacing_px)
     pairs = (
         (b, FROM_BANDS),
         (b, FROM_CONTINUITY),

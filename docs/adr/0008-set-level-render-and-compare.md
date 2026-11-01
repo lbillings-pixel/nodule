@@ -6,8 +6,8 @@
   finish). Amendment ¹ (owner) rereads the power-by-size runs as verdict
   stability and adds the crossing shift. Amendment ² (owner) scores the
   descriptors in blocks, so no value can hide. Amendment ³ (owner) leaves
-  six extreme photos out. Amendment ⁴ (proposed, awaiting the owner)
-  makes the fakes concrete.
+  six extreme photos out. Amendment ⁴ (owner) makes the fakes
+  concrete.
 - Date: 2026-11-01
 - Builds on: [ADR 0006](0006-band-counts-as-censored-records.md) section 10
   (the fallback: band realism is tested by rendering synthetic stones at each
@@ -398,7 +398,7 @@ together (from 1.1-1.8).
 - The excluded photos stay in the library for every other use. A run can
   restore them by passing an empty `leave_out` (`library_table`).
 
-⁴ Proposed 2026-11-01 (awaiting the owner). Building the fakes
+⁴ Amended 2026-11-01 (owner accepted as written). Building the fakes
 (`nodule.render.fakes`) needed choices section 4 leaves open. All are
 `effective`, made here, and cheap to change.
 

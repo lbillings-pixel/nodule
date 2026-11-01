@@ -2966,3 +2966,31 @@ licence = "NASA NTRS accepted manuscript; cite only"
 checked = "full-text"
 topics = ["rendering", "monte-carlo", "phase-function-truncation", "radiance-error"]
 notes = """Read in full 2026-11-01 by a helper agent (notes/n2-reading/radkevich2018.md). Geometric truncation (Iwabuchi and Suzuki 2009): exact outside a cone, constant inside chosen to keep g. Cloud tests with a 3 deg cut: radiance errors within 4%, Monte Carlo time 68-95% of untruncated. Proposes a cut at the first inflection of d ln P / d Theta."""
+
+[[references]]
+id = "iwabuchi2009"
+kind = "article"
+authors = ["Iwabuchi, H.", "Suzuki, T."]
+year = 2009
+title = "Fast and accurate radiance calculations using truncation approximation for anisotropic scattering phase functions"
+venue = "Journal of Quantitative Spectroscopy and Radiative Transfer 110(17), 1926–1939"
+doi = "10.1016/j.jqsrt.2009.04.006"
+access = "closed"
+licence = "owner's copy; cite only, never redistribute"
+checked = "full-text"
+topics = ["rendering", "monte-carlo", "phase-function-truncation", "radiance-error", "aureole"]
+notes = """Read in full 2026-11-01 by a helper agent (notes/n2-reading/iwabuchi2009.md). Defines geometric truncation (GT, Eq. 10, p. 1930): exact outside a cone, constant inside, f and the constant set by normalisation and conservation of g; only f = 0.435 (cone about 8-9 deg) is tested, never a sweep. With one f for all orders, reflection bias is below 0.7% away from the glory, but transmission toward the sun is off by -80 to -99% for tau 1-5 (Tables 2, 4, pp. 1934-1936). Exact first order plus angle-adaptive f (Scheme A) keeps all biases within 0.6%, with about 20x less MC noise than no truncation (p. 1936)."""
+
+[[references]]
+id = "wiscombe1977"
+kind = "article"
+authors = ["Wiscombe, W. J."]
+year = 1977
+title = "The Delta-M Method: Rapid Yet Accurate Radiative Flux Calculations for Strongly Asymmetric Phase Functions"
+venue = "Journal of the Atmospheric Sciences 34(9), 1408–1422"
+doi = "10.1175/1520-0469(1977)034<1408:TDMRYA>2.0.CO;2"
+access = "open"
+licence = "publisher copyright (AMS); free to read; cite only"
+checked = "full-text"
+topics = ["radiative-transfer", "phase-function-truncation", "delta-m", "forward-peak", "henyey-greenstein", "flux-accuracy"]
+notes = """Read in full 2026-11-01 by a helper agent (notes/n2-reading/wiscombe1977.md). Delta-M replaces the phase function by 2f·δ(1−cosθ) plus a (2M−1)-degree series; it matches moments through 2M with f = χ_2M (= g^{2M} for HG) and scales dτ' = (1−ωf)dτ, ω' = (1−f)ω/(1−ωf) (eqs. 13–15, 20; pp. 1412–1413). M = 8 gives 3–6 digits in albedo and 4–6 in fluxes for HG g = 0.85 and cloud Mie tests (pp. 1416, 1420). Radiance is explicitly not treated, and the aureole and near-grazing incidence are excluded as cases where the peak shape is crucial (p. 1420). Conventional angle cuts (7.5° vs 3.8°) gave errors whose sign of change could not be known a priori (p. 1412)."""

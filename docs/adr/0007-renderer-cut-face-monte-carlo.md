@@ -267,8 +267,25 @@ Measured here (*verified* as numbers; the cut is `effective`):
 `L2_CUT_DEG` = 4° is used with L2 only. Dome and diffuse renders are clean
 without a cut and keep the full phase function. L3 looks toward its light,
 which is where truncation fails in Buras and Mayer. L3 therefore needs its
-own check before any cut is used with it. Still to read: Wiscombe 1977
-and Iwabuchi and Suzuki 2009 (blocked; notes/n2-reading/downloads.md).
+own check before any cut is used with it.
+
+Read since [@wiscombe1977; @iwabuchi2009]. Our rule scales μ_s by 1 − f
+as delta-M does, but delta-M was built for fluxes. It leaves radiance
+alone and excludes the aureole, where the peak's shape matters
+[@wiscombe1977, p. 1420]. Iwabuchi and Suzuki fill the cone with a
+constant that keeps g, and test only one cut (about 8–9°). With one cut
+for every order, reflection is biased by less than 0.7%, but transmission
+looking toward the sun is off by −80 to −99% at optical depth 1–5. It is
+fixed (all within 0.6%) by keeping the exact phase function while a path
+is still in the forward peak [@iwabuchi2009, Tables 2 and 4, p. 1936].
+- L2: their reflection bias matches ours. Our empty cone does not keep
+  g. The grain lobe's μ_s(1 − g) falls 3.3% at 4°, but the pore lobe
+  carries almost all of the material's μ_s(1 − g), so it falls only
+  0.04–0.05% (milky band material; *verified* as a calculation). The fill
+  is not needed.
+- L3: both papers confirm that a fixed cut is unsafe there. L3 starts
+  with cut 0. If it is too noisy, try the exact-peak scheme next, checked
+  against an uncut render near the light and at band edges.
 
 **7c. Growth-time grid spacing.** Recommendation: **0.2 mm now**, with
 exact values stored near creases later if render-and-compare shows

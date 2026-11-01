@@ -6,8 +6,9 @@ method, cited through Marichal et al., not read). Each grey step between two
 bands is an edge, whatever the bands' grey levels, so a band of a middle grey
 between a light and a dark one stays a band of its own. A split by sign about
 the local mean (the first drafts of C13 and C14) merges it with one of them,
-depending on the width of that mean. C13 (`nodule.concentric`) and C14
-(`nodule.defects`) read the bands between these edges.
+depending on the width of that mean. C14 (`nodule.defects`) reads the
+bands between these edges and C13 (`nodule.concentric`) the edges along rays,
+with normals from the same smoothing (`smoothed_face`).
 
 - The face is block-averaged and resampled (linear) so one light-dark couplet
   spans exactly `EDGE_PX` px; a band is then about 6 px wide.
@@ -141,6 +142,25 @@ def noise_gradient(noise: float, period_px: float, smooth: float = SMOOTH_SPACIN
     return float(np.sqrt(0.5 * np.mean(size**2)))  # per component; the noise has mean 0
 
 
+def face_core(face: NDArray[np.bool_], spacing: float) -> NDArray[np.bool_]:
+    """The face clear of its outline's step, `spacing` in px."""
+    return agatesim_scipy.erode(face, max(1, round(OUTLINE_PX * spacing / 4)))
+
+
+def smoothed_face(
+    field: NDArray[np.float64],
+    core: NDArray[np.bool_],
+    spacing: float,
+    smooth: float = SMOOTH_SPACINGS,
+) -> NDArray[np.float64]:
+    """`field` smoothed by a Gaussian of `smooth` spacings averaged over
+    `core` only, so the outline adds no step (module docstring)."""
+    weight = core.astype(np.float64)
+    sigma = max(1.0, smooth * spacing)
+    total = agatesim_scipy.gaussian(field * weight, sigma)
+    return total / np.maximum(agatesim_scipy.gaussian(weight, sigma), 1e-12)
+
+
 def edge_map(
     field: NDArray[np.float64],
     face: NDArray[np.bool_],
@@ -153,12 +173,8 @@ def edge_map(
 ) -> NDArray[np.bool_]:
     """The edges of `field` inside `face`, `spacing` in px (module docstring);
     `floor` is the noise's gradient spread (`noise_gradient`), 0 for no gate."""
-    core = agatesim_scipy.erode(face, max(1, round(OUTLINE_PX * spacing / 4)))
-    weight = core.astype(np.float64)
-    sigma = max(1.0, smooth * spacing)
-    total = agatesim_scipy.gaussian(field * weight, sigma)
-    smoothed = total / np.maximum(agatesim_scipy.gaussian(weight, sigma), 1e-12)
-    gy, gx = np.gradient(smoothed)
+    core = face_core(face, spacing)
+    gy, gx = np.gradient(smoothed_face(field, core, spacing, smooth))
     size = np.where(core, np.hypot(gx, gy), 0.0)
     h, w = size.shape
     rr, cc = np.mgrid[:h, :w].astype(np.float64)

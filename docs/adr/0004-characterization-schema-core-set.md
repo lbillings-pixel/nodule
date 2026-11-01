@@ -102,7 +102,7 @@ photos": *plausible* where the method is borrowed from an analogue,
 | C10 | B | Persistence: lag-1 autocorrelation of the thickness series | [@baker2008] | A shuffled copy of the series gives ≈ 0 | plausible |
 | C11 | B, J | Grey-profile roughness: Hurst exponent over 2–10 band spacings (agatesim) | [@holten1997; @holten1998] | A periodic profile shows a crossover, not one power law | plausible |
 | C12 | B, D | Continuity round the face: correlation of thickness series between profiles at different angles | [@baker2008; @marichal2025] | Independent series per profile give ≈ 0; perfect concentric bands give ≈ 1 | plausible |
-| C13 | B, D | Concentricity and completeness: drift of successive band centres over the spacing; share of 360° present; count of wedging bands | [@marichal2025; @gillert2023] | Parallel stripes, or two separate concentric sets, fail or report two centres; random closed blobs give no nesting order | plausible |
+| C13 | B, D | Concentricity and completeness: number of concentric sets; drift of successive band centres over the spacing; share of 360° present² | [@marichal2025; @marichal2024; @norell2008] | Parallel stripes and band-scale noise give no set; two separate concentric sets report two centres | plausible |
 | C14 | B, D | Defect density: band terminations and junctions per period² | [@murphy2015] | Perfect concentric bands give 0; thresholded noise of the same period gives a high density | plausible |
 | C15 | B, I | Curvature: distribution of band-contour curvature times median spacing; count of sharp corners (fortification angles) | [@riecke2006] | Straight stripes give 0; a circle gives 1/r; a roughened circle gives 1/r after smoothing | plausible |
 | C16 | I | Orientation order: structure-tensor coherence, Herman's order parameter, correlation length relative to face size; share of banded area with straight parallel bands | [@bigun1987] (method, citation only); [@murphy2015] | Isotropic noise with power at the band spacing gives coherence below agatesim's `MIN_COHERENCE` (0.3), and most of the face is not banded¹; concentric rings give a parallel share ≈ 0, stripes ≈ 1 | plausible |
@@ -121,6 +121,26 @@ noise always shows some local direction: band-scale noise gave coherence
 profiles on such noise, 8 being the least it needs to count, so on that noise
 it can sometimes count. It is noted for C6 to be checked against; for
 photos and cuts the shape gate screens faces before C6 is measured.
+
+² Amended 2026-11-01 (owner). C13 first read rings as band pieces closed
+round a hole, nested in a tree. On the library photos it found a set on 2 of
+63 fortification faces: gaps in the edges and bands that end inside the face
+merge neighbouring bands, so few close. The owner chose a redesign. The centre
+is now voted along the band normals and fitted to the lines through it, as in
+pith detection on log ends [@marichal2024; @norell2008; @schraml2013]. The
+bands are read along 360 rays from it, keeping edge points whose normal lies
+within 30° of the ray, as CS-TRD does [@marichal2025]. A set needs half of
+all rays to cross an unbroken run of at least 6 band edges facing the centre.
+Further sets are looked for once the edges facing found centres are removed.
+The run, the set rule and further sets are this project's own (details and
+measurements in `nodule.concentric`); a set is found on 39 of those 63 faces
+and on none of 3 moss faces. The owner also decided: a fortification
+whose bands turn at sharp corners may read as two sets, a stated limit, as
+two rules that merged them also merged two separate eyes; and the count of
+wedging bands is dropped, as no ray-based count passed its controls (open
+arcs round the centre gave 4 for drifting rings and 0 for one wedge).
+[@gillert2023] is no longer cited for this row. Band ends inside a face are
+counted by C14.
 
 Composition (G) has no core descriptor: from photos it is always unknown
 (ADR 0003, 6b). Texture (F) and hierarchy (J) need a scale or a second

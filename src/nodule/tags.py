@@ -32,8 +32,8 @@ Each usable photo gets one record:
   it is measured; the rest run rim to centre, so they are outline-bound;
 - C12-C16 (`face_measure`; C12 from C6's profiles) on the same image, region,
   noise and band spacing as C6 and C10. C12 matches bands by their order from
-  the margin, and C13 needs the rings that close round the face and leaves
-  out bands the region's edge cuts, so both are outline-bound. C14-C16 read
+  the margin, and C13's rays stop at the region's edge, which decides how
+  much of each set it sees, so both are outline-bound. C14-C16 read
   local band edges and directions and count wherever they are measured, as
   C10 does.
 
@@ -108,7 +108,6 @@ OUTLINE_BOUND = (
     "C13_depth",
     "C13_drift",
     "C13_complete",
-    "C13_wedges",
 )
 # Band count and persistence measured here: name in the record -> field of `bands.Bands`.
 MEASURED = {
@@ -142,7 +141,6 @@ FROM_RINGS = {  # C13 by `nodule.concentric`
     "C13_depth": "depth",
     "C13_drift": "drift",
     "C13_complete": "complete",
-    "C13_wedges": "wedges",
 }
 FROM_ORDER = {  # C16 by `nodule.orientation`
     "C16_coherence": "coherence",

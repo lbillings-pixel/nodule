@@ -1212,6 +1212,79 @@ topics = ["image-analysis", "skeleton", "thinning"]
 notes = "Two-sub-pass parallel thinning of a binary image to a one-pixel skeleton; cited for the method only (no full text read). Used for the band skeletons of C14 (nodule.defects), following the skeleton step of murphy2015."
 
 [[references]]
+id = "marichal2024"
+kind = "article"
+authors = ["Marichal, H.", "Passarella, D.", "Randall, G."]
+year = 2024
+title = "Automatic Wood Pith Detector: Local Orientation Estimation and Robust Accumulation"
+venue = "arXiv:2404.01952 (presented at ICPR 2024)"
+doi = "10.48550/arXiv.2404.01952"
+url = "https://arxiv.org/abs/2404.01952"
+access = "open"
+licence = "CC-BY-NC-SA-4.0 (arXiv)"
+checked = "full-text"
+topics = ["tree-rings", "pith-detection", "structure-tensor", "centre-voting", "image-analysis", "analogue"]
+notes = """Analogue (log ends), read in full 2026-10-31 by a helper from arXiv v1 HTML, supplementary 9.1-9.2 included. The pith lies "at the intersection of the lines supported by radial structures and the perpendiculars to the rings" (s.3). Structure-tensor orientation and coherence (eqs. 1-2); one max-coherence local orientation per lo_w patch above a percentile threshold; centre maximises the mean cos^2 between each segment and the line from the candidate (eqs. 3-4), restricted to the slice; refined on the orientations inside a square of side image/r_f about the estimate, up to 5 times, which "avoids distortions introduced by a (very) asymmetric tree ring growth pattern". Defaults st_sigma 1.2, st_w 3, percent_LO 0.7, lo_w 3, r_f 7; image resized to 640 px. 582 images, 7 collections: mean error 0.42% of the equivalent radius, median 0.19, about 0.8 s. Assumes one pith inside the slice; several piths are not discussed. Used for C13's centre fit (nodule.concentric)."""
+
+[[references]]
+id = "marichal2026"
+kind = "article"
+authors = ["Marichal, H.", "Passarella, D.", "Randall, G."]
+year = 2026
+title = "Implementation and discussion of the Pith Estimation on Rough Log End Images using Local Fourier Spectrum Analysis method"
+venue = "arXiv:2603.14127"
+url = "https://arxiv.org/abs/2603.14127"
+access = "open"
+licence = "CC-BY-4.0"
+checked = "full-text"
+topics = ["tree-rings", "pith-detection", "centre-voting", "image-analysis", "analogue"]
+notes = """Analogue (log ends), read in full 2026-10-31 by a helper from arXiv v1 HTML. Re-implements schraml2013: per-block FFT (100 px blocks, 20% overlap, image resized to 1000 px), band-pass, orientation by peak, LSR, WLSR or PCA with a certainty; lines over certainty 0.9 drawn into an image-sized accumulator (pairwise intersections or every pixel a line passes), Gaussian blur, pith = global maximum. UruDendro (64 images) mean error 44 px against ACO's 72 px, but inside the medulla in 14% against 70%. Notes Gazo et al. 2020 weight lines by distance from the outer edge (not read)."""
+
+[[references]]
+id = "decelle2022"
+kind = "article"
+authors = ["Decelle, R.", "Ngo, P.", "Debled-Rennesson, I.", "Mothe, F.", "Longuetaud, F."]
+year = 2022
+title = "Ant Colony Optimization for Estimating Pith Position on Images of Tree Log Ends"
+venue = "Image Processing On Line 12, 558–581"
+doi = "10.5201/ipol.2022.338"
+url = "https://www.ipol.im/pub/art/2022/338/"
+access = "open"
+licence = "open access (IPOL); article licence not checked, code GPL-3.0-or-later"
+checked = "sections"
+sections_read = ["1", "2.1-2.3 (method)", "3-6 (results)"]
+topics = ["tree-rings", "pith-detection", "centre-voting", "image-analysis", "analogue"]
+notes = """Analogue (log ends), read 2026-10-31 by a helper from the IPOL PDF. Orientation by doubled-angle averaged Sobel gradients (Kass and Witkin); ants deposit pheromone along normals from clusters of blocks, with evaporation; pith = barycentre of cells over 0.8 of the maximum; coarse pass on the whole image, fine pass on a 512 px crop. Douglas fir, 105 images: mean error 2.3 mm, about 1 s. Several log ends in one image are suppressed by evaporation, not reported."""
+
+[[references]]
+id = "norell2008"
+kind = "article"
+authors = ["Norell, K.", "Borgefors, G."]
+year = 2008
+title = "Estimation of pith position in untreated log ends in sawmill environments"
+venue = "Computers and Electronics in Agriculture 63(2), 155–167"
+doi = "10.1016/j.compag.2008.02.006"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["tree-rings", "pith-detection", "centre-voting", "image-analysis", "analogue"]
+notes = """Analogue (log ends), read in full 2026-11-01 by a helper from the owner's copy of the publisher PDF. Local orientation by quadrature filters or a Laplacian pyramid with a certainty; per B x B block the most certain pixel draws its orientation as a full, unweighted line into an image-sized accumulator (no angular tolerance); Gaussian smoothing, region growing from the global maximum over a share of it, pith = the region's mean; a second pass on a square about the first estimate, as rings near the pith are more circular. The smoothed accumulator "has often several local maxima" even with one pith. Only the pyramid method judges validity (accumulator spread and mean certainty), with thresholds set per dataset on the test images. Faces segmented by hand; one pith per face."""
+
+[[references]]
+id = "schraml2013"
+kind = "article"
+authors = ["Schraml, R.", "Uhl, A."]
+year = 2013
+title = "Pith estimation on rough log end images using local Fourier spectrum analysis"
+venue = "Proceedings of Computer Graphics and Imaging (CGIM 2013), Innsbruck; pages not verified"
+url = "https://arxiv.org/abs/2603.14127"
+access = "closed"
+licence = "author's copy; cite only"
+checked = "full-text"
+topics = ["tree-rings", "pith-detection", "centre-voting", "image-analysis", "analogue"]
+notes = """Analogue (log ends), read in full 2026-11-01 by a helper from the owner's copy; the PDF prints no venue, pages or DOI (venue from marichal2026); no publisher page found, so the url is that re-implementation, which describes the method. Per-block Fourier-spectrum orientation with a certainty; pairwise line intersections summed in an accumulator, Gaussian smoothing, pith = maximum; coarse-to-fine on a smaller area with smaller blocks, as rings near the pith are more circular; a second, iterative method shrinks a circle of block clusters about the estimate. Images pre-cut to one log end; faces without visible rings excluded by hand; certainty thresholds chosen per configuration in-sample."""
+
+[[references]]
 id = "marichal2025"
 kind = "article"
 authors = ["Marichal, H.", "Passarella, D.", "Randall, G."]

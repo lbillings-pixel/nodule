@@ -59,7 +59,7 @@ def test_banded_cut_is_measured(central: PhotoCut) -> None:
     assert out["C14_density"] is None or isinstance(out["C14_density"], float)
     for name in ("C12_corr", "C12_near", "C13_drift", "C13_complete"):
         assert out[name] is None or isinstance(out[name], float), name
-    for name in ("C13_sets", "C13_depth", "C13_wedges"):
+    for name in ("C13_sets", "C13_depth"):
         assert out[name] is None or isinstance(out[name], int), name
     for name in ("C14_ends", "C14_junctions"):
         assert out[name] is None or isinstance(out[name], int), name

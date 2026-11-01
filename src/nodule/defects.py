@@ -5,8 +5,9 @@ that join), counted on band skeletons as Murphy et al. [@murphy2015] do for
 block-copolymer stripes, and given per band spacing squared of the judged
 face (per period squared, as ADR 0004 asks).
 
-The bands are those C13 reads (`nodule.concentric`): the pieces of the judged
-face between the edges of `nodule.edges`, whatever their grey level. Murphy
+The bands are the pieces of the judged face between the edges of
+`nodule.edges`, whatever their grey level (C13, `nodule.concentric`, reads
+the same edges along rays). Murphy
 et al. split a two-phase image by sign and thin both phases; a middle-grey
 band then merges with a light or a dark one, depending on the width of the
 local mean, and the counts swung with it (14-271 junctions on three specimen

@@ -37,7 +37,7 @@ BAND = Bands(
     continuity_near=0.95,
 )
 FACE = tags.Face(
-    Concentric(sets=1, depth=9, drift=0.04321, complete=1.0, wedges=0),
+    Concentric(sets=1, depth=9, drift=0.04321, complete=1.0),
     Order(0.8, 0.7, 6.5, False, 0.9, banded=0.95),
     Curvature(0.21, 0.6, 2, banded=0.95),
     Defects(0.012, 3, 1),

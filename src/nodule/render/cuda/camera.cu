@@ -22,7 +22,7 @@ struct Cam { float s0, t0, pix; int nx, ny, spp; unsigned int seed; float n_in, 
              int light; float lth, lph, E, Ld; float mubar; int nmat; int nprof; float dt;
              int order; int flags; };
 
-__device__ int matid(const Scene& S, const Cam& C, const unsigned char* prof, float x, float y, float z) {
+__device__ int matid(const Scene& S, const Cam& C, const unsigned short* prof, float x, float y, float z) {
     if (C.flags & 4) return 0;
     float t = 0.f; int c = classify(S, x, y, z, t, C.flags & 1);
     if (c < 2) return c;
@@ -31,7 +31,7 @@ __device__ int matid(const Scene& S, const Cam& C, const unsigned char* prof, fl
 }
 
 // Ratio-tracked transmittance (all channels) along a unit direction over length L.
-__device__ void ratio(const Scene& S, const Cam& C, const unsigned char* prof, const float* mua,
+__device__ void ratio(const Scene& S, const Cam& C, const unsigned short* prof, const float* mua,
                       const float* mus, float x, float y, float z, float dx, float dy, float dz,
                       float L, float* T, Rng& r) {
     T[0] = T[1] = T[2] = 1.f;
@@ -50,7 +50,7 @@ __device__ void ratio(const Scene& S, const Cam& C, const unsigned char* prof, c
     }
 }
 
-extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const unsigned char* prof,
+extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const unsigned short* prof,
                                   const float* mua, const float* mus, const float* gm,
                                   float* img, unsigned long long* stats) {
     const Scene& S = *Sp; const Cam& C = *Cp;

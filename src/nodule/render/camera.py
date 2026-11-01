@@ -51,7 +51,7 @@ class Materials:
     mua: F32  # (m, 3) absorption per mm at 450, 550, 650 nm
     mus: F32  # (m, 3) scattering per mm
     g: F32  # (m,) Henyey-Greenstein asymmetry
-    profile: NDArray[np.uint8]  # band material (from 0) per growth-time step
+    profile: NDArray[np.uint16]  # band material (from 0) per growth-time step
     dt: float  # growth-time step of `profile`
 
     @classmethod
@@ -61,13 +61,15 @@ class Materials:
             mua=np.atleast_2d(np.asarray(mua, np.float32)),
             mus=np.atleast_2d(np.asarray(mus, np.float32)),
             g=np.atleast_1d(np.asarray(g, np.float32)),
-            profile=np.atleast_1d(np.asarray(profile, np.uint8)),
+            profile=np.atleast_1d(np.asarray(profile, np.uint16)),
             dt=dt,
         )
         if m.mua.shape != m.mus.shape or m.mua.shape[1] != 3 or len(m.g) != len(m.mua):
             raise ValueError("mua, mus must be (m, 3) and g (m,)")
         if (m.mua < 0).any() or (m.mus < 0).any():
             raise ValueError("coefficients must be non-negative")
+        if len(m.g) > 1 and int(m.profile.max()) + 2 >= len(m.g):
+            raise ValueError("profile names a band material beyond the table (2 + id)")
         return m
 
 
@@ -189,7 +191,10 @@ def reflectance_factor(image: F64, light: Light) -> F64:
 
 def srgb(x: F64, exposure: float = 1.0) -> NDArray[np.uint8]:
     """sRGB-encode linear values x * exposure (clipped to [0, 1]); rows flipped so
-    +v is up in the stored image. No tone curve (ADR 0007 section 2)."""
+    +v is up in the stored image, and channels reversed from the renderer's
+    450/550/650 nm order to R, G, B. Each channel is taken as the matching sRGB
+    primary, an approximation (three wavelengths, no colour-matching functions).
+    No tone curve (ADR 0007 section 2)."""
     y = np.clip(x * exposure, 0.0, 1.0)
     y = np.where(y <= 0.0031308, 12.92 * y, 1.055 * y ** (1 / 2.4) - 0.055)
-    return (y[::-1] * 255 + 0.5).astype(np.uint8)
+    return (y[::-1, :, ::-1] * 255 + 0.5).astype(np.uint8)

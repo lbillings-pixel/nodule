@@ -30,6 +30,7 @@ from agatesim.grid import FloatArray
 from agatesim.volume.slicing import Plane
 from numpy.typing import NDArray
 
+from nodule.render.record import BandRecord
 from nodule.specimen import Specimen
 
 CHUNK_POINTS = 500_000  # points per evaluation call; bounds peak memory
@@ -84,6 +85,7 @@ class GrowthGrid:
     t: FloatArray  # (nt,) mm along plane.v
     w: FloatArray  # (nw,) mm depth below the face
     values: F32  # (nw, nt, ns) t_smooth; NaN outside the stone and in tubes
+    bands: BandRecord | None = None  # what fills each growth step, from the same nodes
 
     @property
     def spacing_mm(self) -> float:
@@ -93,11 +95,13 @@ class GrowthGrid:
     def fill(
         cls, specimen: Specimen, plane: Plane, spacing_mm: float, depth_mm: float
     ) -> GrowthGrid:
-        """Evaluate agatesim at every node (CPU; ~2 s per million points)."""
+        """Evaluate agatesim at every node (CPU; ~2 s per million points), keeping
+        what fills each growth step (`bands`) for the materials table."""
         s, t, w = grid_axes(specimen, plane, spacing_mm, depth_mm)
         shape = (len(w), len(t), len(s))
         n = math.prod(shape)
         out = np.empty(n, np.float32)
+        bands = BandRecord.empty()
         for a in range(0, n, CHUNK_POINTS):
             progress.report(a / n, "filling the growth-time grid")
             k, j, i = np.unravel_index(np.arange(a, min(a + CHUNK_POINTS, n)), shape)
@@ -107,8 +111,9 @@ class GrowthGrid:
             if f.t_smooth is None:
                 raise ValueError("the model gives no smooth growth time (agatesim ADR 0076 s. 6)")
             out[a : a + len(p)] = f.t_smooth
+            bands = bands.merge(BandRecord.of(f, inside))
         progress.report(1.0, "filling the growth-time grid")
-        return cls(plane=plane, s=s, t=t, w=w, values=out.reshape(shape))
+        return cls(plane=plane, s=s, t=t, w=w, values=out.reshape(shape), bands=bands)
 
     def filled(self, passes: int = 3, linear: bool = True) -> F32:
         return fill_nan(self.values, passes=passes, linear=linear)

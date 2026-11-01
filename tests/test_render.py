@@ -153,6 +153,14 @@ def test_srgb_endpoints_and_orientation() -> None:
     assert srgb(np.full((1, 1, 3), 0.5))[0, 0, 0] == 188  # sRGB(0.5) = 0.7354
 
 
+def test_srgb_puts_650_nm_in_red() -> None:
+    # Channels run 450/550/650 nm (Materials); light only at 650 nm must come out red.
+    # Control: the unreversed order (the bug fixed 2026-11-01) would make it blue.
+    x = np.zeros((1, 1, 3))
+    x[..., 2] = 1.0
+    assert srgb(x)[0, 0].tolist() == [255, 0, 0]
+
+
 def test_fresnel_reference() -> None:
     assert math.isclose(reference.fresnel(1.0, 1.0, 1.5), 0.04)
     assert reference.fresnel(0.1, 1.54, 1.0) == 1.0  # total internal reflection

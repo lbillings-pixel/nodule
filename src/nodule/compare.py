@@ -20,6 +20,11 @@ not whether they match its distribution (ADR 0008 section 1):
   no.
 - **Null control N1.** Each photo held out in turn, scored against the rest,
   fails at about 1 - `LEVEL` by construction; this checks the code.
+- **Where the line falls.** The verdict is a line, not a test whose power
+  grows with the photos: more photos make the rates settle toward 0 or 1,
+  and few photos add spurious fails (ADR 0008 amendment 1). So the compare
+  also reports, per descriptor and for all together, the smallest shift of
+  the cuts (in the photos' interquartile ranges) that crosses the line.
 
 The method is reasoned, not taken from a source (*speculative*, ADR 0008
 section 3). One stone is one sample: a pass reads only "not refuted by these
@@ -75,7 +80,9 @@ K = 5  # nearest photos in a face's score
 LEVEL = 95.0  # percentile of the photos' scores a stone's median cut must not exceed
 REJECT_SHARE = 0.80  # share of resamples a must-reject fake must fail
 RESAMPLES = 200  # bootstrap resamples for a rejection rate
-SIZES = (15, 30, 60)  # photo subsets for the power curves (ADR 0008 section 4)
+SIZES = (15, 30, 60)  # photo subsets for verdict stability (ADR 0008 s. 4, amendment 1)
+MOST_SHIFT = 20.0  # largest shift searched, in interquartile ranges (`effective`)
+STEPS = 20  # bisection steps for a shift (resolution MOST_SHIFT / 2**STEPS)
 
 Floats = NDArray[np.float64]
 
@@ -258,6 +265,50 @@ def power_by_size(
     }
 
 
+def crossing_shift(
+    cuts: Floats,
+    photos: Floats,
+    column: int | None = None,
+    sign: float = 1.0,
+    k: int = K,
+) -> float:
+    """The smallest shift, in the photos' interquartile ranges, that moves
+    the cuts outside the spread: added to one descriptor (`column`) or to all
+    (None), upward (`sign` 1) or downward (-1). 0 if they are outside
+    already; inf if no shift up to `MOST_SHIFT` does it (the compare is
+    blind there, e.g. where the cuts lack the descriptor). Found by
+    bisection, assuming the verdict flips once (assumption)."""
+    _, width = robust_scale(photos)
+    step = np.where(np.isfinite(width), width, 0.0) * sign
+    if column is not None:
+        step = np.where(np.arange(len(step)) == column, step, 0.0)
+
+    def outside(shift: float) -> bool:
+        return not spread_test(cuts + shift * step, photos, k=k).within
+
+    if outside(0.0):
+        return 0.0
+    if not np.any(step) or not outside(MOST_SHIFT):
+        return float("inf")
+    lo, hi = 0.0, MOST_SHIFT
+    for _ in range(STEPS):
+        mid = (lo + hi) / 2
+        lo, hi = (lo, mid) if outside(mid) else (mid, hi)
+    return hi
+
+
+def crossing_shifts(
+    cuts: Floats, photos: Floats, names: Sequence[str] = COMPARED, k: int = K
+) -> dict[str, tuple[float, float]]:
+    """`crossing_shift` down and up, for each descriptor and for "all"."""
+    out: dict[str, tuple[float, float]] = {}
+    for j, name in [*enumerate(names), (None, "all")]:
+        down = crossing_shift(cuts, photos, j, -1.0, k)
+        up = crossing_shift(cuts, photos, j, 1.0, k)
+        out[name] = (down, up)
+    return out
+
+
 def held_out_rate(photos: Floats, k: int = K) -> float:
     """N1: each photo held out, scaled and scored against the rest; the share
     above the rest's LEVEL percentile. About 1 - LEVEL/100 by construction."""
@@ -330,11 +381,15 @@ def main(argv: list[str] | None = None) -> None:
             f"{'within' if s.within else 'outside'}; {s.outside_share:.0%} of cuts outside; "
             f"fails in {rate:.0%} of {args.resamples} resamples"
         )
+        shifts = crossing_shifts(cuts.values, photos.values)
+        print("descriptor: cuts, photos, percentile, outside; shift to cross down / up (IQR)")
         for d in per_descriptor(cuts.values, photos.values):
+            down, up = shifts[d.name]
             print(
-                f"  {d.name:18s} cuts {d.cuts:3d} photos {d.photos:3d} "
-                f"percentile {d.percentile:5.1f} outside {d.outside_share:.0%}"
+                f"  {d.name:18s} {d.cuts:3d} {d.photos:3d} "
+                f"{d.percentile:5.1f} {d.outside_share:4.0%}; {down:.2f} / {up:.2f}"
             )
+        print(f"  all together: {shifts['all'][0]:.2f} / {shifts['all'][1]:.2f}")
     elapsed = time.perf_counter() - t0
     peak = tracemalloc.get_traced_memory()[1]
     tracemalloc.stop()

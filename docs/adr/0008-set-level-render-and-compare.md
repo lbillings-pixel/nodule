@@ -3,7 +3,8 @@
 - Status: accepted (owner, 2026-11-01). Section 1 records the owner's earlier
   choices; in section 7 the owner took the recommendations for 7a (staged),
   7b (tune on all photos, parameters listed first) and 7c (cut faces of every
-  finish).
+  finish). Amendment ¹ (owner) rereads the power-by-size runs as verdict
+  stability and adds the crossing shift.
 - Date: 2026-11-01
 - Builds on: [ADR 0006](0006-band-counts-as-censored-records.md) section 10
   (the fallback: band realism is tested by rendering synthetic stones at each
@@ -161,7 +162,7 @@ to the renderer, `BandRecord`) and runs through the same pipeline:
 - **Power by size.** The F1–F3 rejection rates are recomputed on photo
   subsets of 15, 30 and 60 photos and on the full stratum. This shows what
   the slab stratum can catch and how many more photos each axis would need
-  (*plausible*, after the notes' section 4.4).
+  (*plausible*, after the notes' section 4.4).¹
 
 ### 5. The owner's blind test
 
@@ -295,3 +296,29 @@ same photos that test the result can be fooled (ADR 0007, risks).
 - References added: [@gretton2012], [@lopezpaz2017], [@gelman1996],
   [@rodriguezgomez2019], [@portilla2000], [@wallis2017], [@zhou2019],
   [@smith2018]. All are at "sections" level, read by a helper agent.
+
+---
+
+¹ Amended 2026-11-01 (owner chose option A). Building `nodule.compare`
+showed that the verdict of section 3 is a line, not a test whose power grows
+with the photos: a fake is rejected in the limit of many photos only if its
+median cut is less typical than the photos' 95th percentile. On synthetic
+tables (25 unit-normal descriptors, 40 % missing, 120 photos, 80 cuts,
+100 resamples; the property is kept as a test in tests/test_compare.py), a
+fake 1.2 standard deviations off was rejected in 93-98 % of resamples at
+15, 30, 60 and 120 photos. One 0.9 off fell from 63 % at 15 photos to 20 %
+at 120. One 0.6 off (inside the line) fell from 20 % to 0 %. At few photos
+the noisy threshold adds spurious fails. So:
+
+- The power-by-size runs of section 4 are kept, but they show how settled
+  the verdict is at a library size. They do not show how many more photos
+  an axis would need.
+- The compare also reports where the line falls: the smallest shift of the
+  stone's cuts, in the photos' interquartile ranges, that takes the verdict
+  outside. It is given per descriptor (down and up) and for all descriptors
+  together (`compare.crossing_shift`, found by bisection to 20 interquartile
+  ranges; `effective`). "Infinite" marks an axis the compare cannot see.
+  The negative controls are cuts already outside (shift 0) and a descriptor
+  the cuts lack (infinite).
+- Grade: *speculative*, as for section 3 (reasoning checked on synthetic
+  tables, not taken from a source).

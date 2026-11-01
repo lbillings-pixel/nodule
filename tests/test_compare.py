@@ -8,6 +8,8 @@ import pytest
 
 from nodule.compare import (
     COMPARED,
+    crossing_shift,
+    crossing_shifts,
     distances,
     held_out_rate,
     knn_scores,
@@ -130,3 +132,37 @@ def test_library_strata_load() -> None:
     assert 90 <= len(reflected) <= 172
     polished = library_table("reflected", finishes=("polished",))
     assert 0 < len(polished) < len(reflected)
+
+
+def test_crossing_shift_finds_the_line() -> None:
+    rng = np.random.default_rng(8)
+    photos = _faces(100, rng)
+    cuts = _faces(100, rng)
+    shift = crossing_shift(cuts, photos)
+    assert 0.0 < shift < 5.0
+    _, width = robust_scale(photos)
+    step = np.where(np.isfinite(width), width, 0.0)
+    assert not spread_test(cuts + shift * step, photos).within
+    assert spread_test(cuts + 0.95 * shift * step, photos).within
+
+
+def test_crossing_shift_controls() -> None:
+    """Negative controls: cuts already outside cross at 0; a descriptor the
+    cuts lack can never move them (the compare is blind there)."""
+    rng = np.random.default_rng(9)
+    photos = _faces(80, rng)
+    far = _faces(60, rng, shift=2.0)
+    assert crossing_shift(far, photos) == 0.0
+    cuts = _faces(60, rng)
+    cuts[:, 0] = np.nan
+    assert crossing_shift(cuts, photos, column=0) == float("inf")
+
+
+def test_one_descriptor_needs_a_larger_shift_than_all() -> None:
+    rng = np.random.default_rng(10)
+    photos = _faces(80, rng, missing=0.0)
+    cuts = _faces(60, rng, missing=0.0)
+    shifts = crossing_shifts(cuts, photos)
+    assert set(shifts) == {*COMPARED, "all"}
+    together = min(shifts["all"])
+    assert all(min(shifts[n]) > together for n in COMPARED)

@@ -172,7 +172,10 @@ one channel's phase function and reweights each channel by p_c / p_mix
   Lorenzi's blue-band and white-band grains [@lorenzi2022].
 - *Pore part:* air-filled spheres of radius 0.1 µm, volume fraction
   0.1% × (1 − translucency), plus 0.2% × impurity for agatesim's WHITE
-  pigment. BLUE stays Rayleigh-shaped in the same lobe.
+  pigment. BLUE stays Rayleigh-shaped in the same lobe. Tuning step 1
+  ([ADR 0010](0010-optics-tuning-step-1-pores.md)) replaced these with
+  water-filled pores (index 1.333) at 1.75% and 1.17%, iron oxide at
+  9 × 10⁻⁴, and a 2 mm slab under L1.
 - Every radius, index and fraction is `effective` and *speculative*, to be
   tuned at the set-level comparison. Coupling both parts to translucency
   is an assumption. Under the 45° point lamp the grain lobe gives

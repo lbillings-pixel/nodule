@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
+
 import numpy as np
 import pytest
 from agatesim.fields import Fields, Phase, Pigment
@@ -149,7 +151,7 @@ def test_scattering_parts_follow_translucency_and_pigment() -> None:
     assert (milky.mus > 5 * clear.mus).all()
     assert (milky.g > 0.996).all()  # coarse grains scatter almost straight ahead
     assert (milky.f > 0).all()
-    assert (milky.gb < 0.6).all()  # pores: near-isotropic lobe
+    assert (milky.gb < 0.65).all()  # pores: near-isotropic lobe (water: 0.62 in blue, ADR 0010)
     # transport mus' = mus_a (1 - g) + mus_b (1 - gb): pores dominate in milky bands
     grain_t = milky.mus * (1 - milky.f) * (1 - milky.g)
     pore_t = milky.mus * milky.f * (1 - milky.gb)
@@ -212,3 +214,20 @@ def test_profile_reproduces_the_specimen_at_random_points(specimen_grid) -> None
     assert agree(0) > 0.999
     assert agree(1) < 0.9  # measured 0.82: a band spans several steps
     assert agree(3) < 0.7  # measured 0.47
+
+
+def test_tuning_step_1_values_and_the_air_water_equivalence() -> None:
+    """ADR 0010: step 1's values, and 1.75% water-filled pores scattering like the
+    tested 0.3% air (reduced mu_s of the pore part within 3.5% per channel). Control:
+    1.75% air must not match."""
+    tab = OpticsTable()
+    assert (tab.pore_n, tab.pore_milky, tab.pore_white, tab.phi_iron_oxide) == (
+        1.333, 0.0175, 0.011667, 9e-4)  # fmt: skip
+
+    def pore_transport(t: OpticsTable):
+        o = t.scattering(Pigment.IRON, 0.5, 0.0)
+        return o.mus * o.f * (1 - o.gb)
+
+    air = pore_transport(replace(tab, pore_n=1.0, pore_milky=3e-3))
+    assert (abs(pore_transport(tab) / air - 1) < 0.035).all()
+    assert (pore_transport(replace(tab, pore_n=1.0)) > 3 * air).all()

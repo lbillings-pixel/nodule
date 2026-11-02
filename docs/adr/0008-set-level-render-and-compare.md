@@ -473,7 +473,8 @@ be met. All figures are from the n2-slice under L1 on the RTX 4070
 - **Slab depth under L1.** 20 mm against 10 mm changed one cut by 0.02
   grey levels on average (0.02 standard deviation), against 9.5 between
   two seeds: almost no light returns from below 10 mm. 10 mm stays
-  (`effective`).
+  (`effective`). Later 2 mm ([ADR 0010](0010-optics-tuning-step-1-pores.md)
+  10b).
 
 **The new rule (replaces step 5).** A rendered cut's own noise counts
 toward the photo's.

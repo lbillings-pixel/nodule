@@ -113,7 +113,7 @@ def test_only_the_lacking_noise_is_added() -> None:
 def test_rendering_takes_the_stratum_light() -> None:
     rec = BandRecord.empty()
     r1, r3 = Rendering.reflected(rec), Rendering.transmitted(rec, exposure=2.0)
-    assert (r1.light.kind, r1.depth_mm) == ("dome", 10.0)
+    assert (r1.light.kind, r1.depth_mm) == ("dome", 2.0)  # ADR 0010 10b
     assert (r3.light.kind, r3.depth_mm, r3.exposure) == ("back", 3.0, 2.0)
     assert Rendering.reflected(rec, depth_mm=4.0).depth_mm == 4.0
 

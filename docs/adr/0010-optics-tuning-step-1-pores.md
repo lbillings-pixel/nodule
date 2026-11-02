@@ -1,6 +1,8 @@
 # 10. Optics tuning, step 1: what may be tuned, and stronger pore scattering
 
-- Status: proposed (2026-11-02)
+- Status: accepted (owner, 2026-11-02): 10a A (water-filled pores at
+  1.75 %) and 10b (2 mm slab depth), as recommended. Section 5 records the
+  4-cut look check run on acceptance.
 - Date: 2026-11-02
 - Builds on: [ADR 0008](0008-set-level-render-and-compare.md) choice 7b
   (tune on all photos, with the tunable parameters listed and each step
@@ -138,6 +140,30 @@ Either A or B can later be varied together with the translucency mapping
   (ADR 0007 section 5). Never evidence for a formation mechanism
   (ADR 0002).
 
+### 5. The 4-cut look check (run on acceptance)
+
+Water-filled pores at 1.75 % (`pore_white` 1.17 %), iron 9 × 10⁻⁴, at
+2 mm depth, on the same four cuts, looks and render streams as the earlier
+look runs (`look_water.py` in runs/, not committed; 212 s, peak 549 MB):
+
+| cut | spacing, px: tested (air 0.3 %, 10 mm) | air 0.3 %, 2 mm | **water 1.75 %, 2 mm** | L sd: tested / **new** | C*: tested / **new** |
+|---|---|---|---|---|---|
+| 0 | 5.26 | 5.27 | **5.32** | 5.0 / **5.1** | 12.8 / **13.7** |
+| 5 | 7.74 | 7.77 | **7.86** | 5.5 / **5.6** | 13.2 / **14.1** |
+| 8 | 12.47 | 12.64 | **13.01** | 4.9 / **5.0** | 13.6 / **14.5** |
+| 18 | 11.16 | 11.17 | **10.91** | 3.7 / **3.7** | 13.5 / **14.4** |
+
+- Spacing changes by −2 % to +4 % with no common direction; L sd by at most
+  0.1; median L stays 45–46 (*verified*). Run-to-run noise was not
+  measured separately: the same streams were used, so these differences
+  are the setting's own. Judged small enough that the 20-cut check stands
+  for the stone run.
+- Chroma C* rises by about 0.9 on every cut (*verified*), a small
+  systematic shift (water pores scatter blue a little more forward, so a
+  little less blue returns). The photos' C* runs 2.7 / 7.3 / 33.7 (5th /
+  50th / 95th percentile), so renders sit a little further above the
+  median. Added as a third watch item.
+
 ## Alternatives considered
 
 - **Raise contrast by pigment alone.** Iron at ten times darkened the image
@@ -158,6 +184,7 @@ Either A or B can later be varied together with the translucency mapping
   percentile of L sd. The next knob is the translucency to optics mapping
   (ADR 0007 7a C), as step 2.
 - **Edges may be too orderly** (C16, the watch items above).
+- **Chroma a little higher** with water pores (section 5).
 - **GPU-only.** The checks ran locally; CI cannot repeat them.
 
 ## Consequences

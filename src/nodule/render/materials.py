@@ -21,7 +21,7 @@ evidence for what agate bands are made of.
 Scattering follows ADR 0007 choice 7a C: two parts per band, kept as two
 Henyey-Greenstein lobes (camera.Materials, lobes a and b). The grain part is
 Apetz's virtual composite through the Mie series (mie.grain_part) [@apetz2003];
-the pore part is air-filled spheres (mie.pore_part). agatesim's translucency
+the pore part is water-filled spheres (mie.pore_part; ADR 0010). agatesim's translucency
 (1 clear .. 0 milky) sets both: the grain radius runs log-linearly from Lorenzi's
 blue-band to white-band grains [@lorenzi2022], and the pore fraction rises
 linearly toward milky. Coupling translucency to both parts is an ASSUMPTION, and
@@ -127,18 +127,19 @@ class OpticsTable:
     grain_r_clear_um: float = 0.15
     grain_r_milky_um: float = 2.5
     # 7a C, pore part: radius (um), index, and volume fraction at translucency 0, falling
-    # linearly to none at 1. Air (dry pores) is assumed from milky bands' larger BET
-    # surface [@graetsch1985]; water-filled pores (1.33) scatter ~5x less. The radius sits
-    # in the 0.02-0.3 um range the reading notes give for chalcedony pores; the fraction
-    # is Apetz's "whitish" 0.1% [@apetz2003]. All *speculative*.
+    # linearly to none at 1. Tuning step 1 (ADR 0010 10a A): water-filled pores of ~0.1 um,
+    # as Folk and Weaver saw them, at 1.75%, near the ~2% their densities give if the pores
+    # hold water [@folk1952]; disputed (no such pores by TEM [@graetsch1985]). 1.75% water
+    # scatters like the 0.3% air of the tested setting (ADR 0007's was 0.1% air). All
+    # `effective`, *speculative* as optics.
     pore_r_um: float = 0.1
-    pore_n: float = 1.0
-    pore_milky: float = 1e-3
+    pore_n: float = 1.333  # water, `physical`
+    pore_milky: float = 0.0175
     quartz_mus: float = 0.05  # macrocrystalline quartz: nearly clear (one lobe)
     quartz_g: float = 0.9
     # Pigment loading: volume fraction at impurity 1 for the iron oxides (impurity scales it
     # linearly, an assumption), and mu_a at 550 nm at impurity 1 for the shape-only pigments.
-    phi_iron_oxide: float = 3e-4
+    phi_iron_oxide: float = 9e-4  # ADR 0010 step 1 (was 3e-4)
     mua550_shape: float = 3.0
     # Agatesim's unnamed IRON stain runs ochre to deep red as impurity rises (agatesim
     # render.STAIN): assumed a goethite-hematite mixture with hematite share = impurity.
@@ -146,7 +147,7 @@ class OpticsTable:
     # b: BLUE as Rayleigh scatterers (mu_s at 550 nm at impurity 1, lambda^-4, g 0), WHITE
     # as extra pores of the pore part's kind (volume fraction at impurity 1).
     mus_blue550: float = 2.0
-    pore_white: float = 2e-3
+    pore_white: float = 0.011667  # ADR 0010: 2e-3 scaled with pore_milky (0.0175 / 0.003)
 
     def _hematite(self, phi: float) -> F64:
         n, k = HEMATITE_NK[self.hematite]
@@ -175,7 +176,7 @@ class OpticsTable:
     def scattering(self, pigment: int, impurity: float, translucency: float) -> Optics:
         """Scattering of a chalcedony deposit (mua left 0). Lobe a: the grains. Lobe b:
         the pores plus any BLUE scatterers, their g weighted by mu_s within the lobe (exact
-        for the mean cosine; everything in lobe b is near-isotropic, g < ~0.6)."""
+        for the mean cosine; everything in lobe b is near-isotropic, g < ~0.65)."""
         a = min(max(float(translucency), 0.0), 1.0)
         mus_a, g_a = grain_part(self.grain_radius(a), WAVELENGTH_NM, N_CHALCEDONY)
         phi = (1 - a) * self.pore_milky

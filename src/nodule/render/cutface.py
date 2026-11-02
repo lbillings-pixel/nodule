@@ -8,9 +8,10 @@ so the face mask and quartz phase of the cut still apply.
 - **Grid**: the growth-time grid under the face at `grid_mm` (ADR 0007 7c:
   0.2 mm), `depth_mm` deep. L3 renders a slab of that depth (3 mm by default,
   `effective`, ADR 0007 amendment 5). L1 renders the face of a stone whose
-  depth below the face is cut off at `depth_mm` (10 mm by default,
-  `effective`; on one n2-slice cut, 20 mm changed the image by 0.02 grey
-  levels against 9.5 between seeds).
+  depth below the face is cut off at `depth_mm` (2 mm by default since
+  ADR 0010 10b, `effective`; on four n2-slice cuts 2 mm changed the image by
+  0.14 grey levels against 10 mm and saved ~22% of the time; earlier, 20 mm
+  changed one cut by 0.02 grey levels against 9.5 between seeds).
 - **Materials**: from a band record passed in, the stone's or a fake's
   (`nodule.render.fakes`), so the stone and its fakes differ only there.
 - **Samples and noise**: samples are added in batches, alternately to two
@@ -47,7 +48,7 @@ from nodule.render.tgrid import GrowthGrid
 from nodule.specimen import Specimen, SpecimenCut
 
 GRID_MM = 0.2  # ADR 0007 7c
-L1_DEPTH_MM = 10.0  # effective (module docstring)
+L1_DEPTH_MM = 2.0  # effective, ADR 0010 10b (module docstring)
 L3_DEPTH_MM = 3.0  # effective, owner (ADR 0007 amendment 5)
 FIRST_SPP = 256  # samples per pixel before the photo's blur is known (effective)
 MOST_SPP = 1024  # cost cap (effective); cuts left noisier than the photo are flagged

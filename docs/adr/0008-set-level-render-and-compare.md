@@ -8,7 +8,7 @@
   descriptors in blocks, so no value can hide. Amendment ³ (owner) leaves
   six extreme photos out. Amendment ⁴ (owner) makes the fakes
   concrete. Amendment ⁵ (owner) replaces the noise rule of section 2,
-  step 5. Amendment ⁶ (proposed) pilots the fakes at 20 cuts.
+  step 5. Amendment ⁶ (owner) pilots the fakes at 20 cuts.
 - Date: 2026-11-01
 - Builds on: [ADR 0006](0006-band-counts-as-censored-records.md) section 10
   (the fallback: band realism is tested by rendering synthetic stones at each
@@ -516,8 +516,8 @@ After the blur both are blurred alike. Grades: the measurements are
 sensitive. At the full run, the stone's values against `noise_matched` will
 show whether the matched cuts still differ.
 
-⁶ Proposed 2026-11-01 (the owner chose the pilot; text awaits their
-reading). The stone's run measured 104 s a cut, not 70 s, so the planned
+⁶ Amended 2026-11-01 (owner chose the pilot and accepted as
+written). The stone's run measured 104 s a cut, not 70 s, so the planned
 fake counts of section 7a (F1–F3 60 cuts, F4–F5 40) would take about 7.5
 hours. `power_by_size` cannot set those counts: it varies the photos, not
 the cuts, and it needs fake cuts to exist. Running it on the stone's cuts

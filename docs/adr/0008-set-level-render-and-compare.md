@@ -9,7 +9,7 @@
   six extreme photos out. Amendment ⁴ (owner) makes the fakes
   concrete. Amendment ⁵ (owner) replaces the noise rule of section 2,
   step 5. Amendment ⁶ (owner) pilots the fakes at 20 cuts.
-  Amendment ⁷ (proposed) adds a verdict per block.
+  Amendment ⁷ (owner) adds a verdict per block.
 - Date: 2026-11-01
 - Builds on: [ADR 0006](0006-band-counts-as-censored-records.md) section 10
   (the fallback: band realism is tested by rendering synthetic stones at each
@@ -546,8 +546,8 @@ its cuts are drawn, while one beyond it is rejected at 10. Grade:
 *speculative*. A fake rejected at 20 cuts says the compare catches it. It
 does not say by how much.
 
-⁷ Proposed 2026-11-02 (the owner chose option b after the fakes' runs;
-text awaits their reading). Of the five fakes, only F3 was rejected
+⁷ Amended 2026-11-02 (the owner chose option b after the fakes' runs;
+accepted with the two notes on resampling and the test added). Of the five fakes, only F3 was rejected
 (runs/fakes-2026-11-02/). The joint verdict of amendment ² takes one median
 over all cuts, but cuts carry different blocks: in F5's 40 cuts all had
 shape values and only 13 had any band block. The cuts with shape alone
@@ -598,7 +598,14 @@ rates over 200 resamples are F1 59 %, F2 72 %, F3 100 %, F4 51 % and
 F5 77 %, so only F3 is settled. Each fake is outside on spectrum (C26).
 The block's median against its line of 2.39 is F1 2.49, F2 8.14, F3 144,
 F4 3.40 and F5 7.56. F5 is also just outside on rings (0.72 against a line
-of 0.64). Two limits, both *plausible*:
+of 0.64). Small resampled sets reject more often by chance. With 40 % of
+blocks missing (about 6 cuts a block), synthetic sets with no shift failed
+in 8 % of resamples at 10 cuts and 1 % at 40, against 0 % under the joint
+verdict. So fail rates at 10 cuts are somewhat inflated. The fakes had 13
+or more banded cuts. The power-by-cuts test's near fake moved from 0.6 to
+0.3 standard deviations. At 0.6 it crossed no block line on the full data
+(0 of 10 seeds), but resampled it failed in 11–20 % of resamples, so it
+was no longer clearly inside the line. Two limits, both *plausible*:
 
 - F5 keeps the stone's record unchanged and still fails on spectrum, so
   the stone may itself be outside there. If so, the fakes' spectrum

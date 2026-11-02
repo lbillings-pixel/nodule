@@ -104,6 +104,7 @@ LEVEL = 95.0  # percentile of the photos' scores a stone's median cut must not e
 REJECT_SHARE = 0.80  # share of resamples a must-reject fake must fail
 RESAMPLES = 200  # bootstrap resamples for a rejection rate
 SIZES = (15, 30, 60)  # photo subsets for verdict stability (ADR 0008 s. 4, amendment 1)
+CUT_SIZES = (10, 20)  # cut subsets for the fakes' pilot (ADR 0008 amendment 6)
 MOST_SHIFT = 20.0  # largest shift searched, in interquartile ranges (`effective`)
 MIN_REF = 4  # fewest photo block scores to fit a block's tail (assumption)
 IQR_PER_SD = 1.349  # interquartile range of a unit normal
@@ -360,14 +361,16 @@ def rejection_rate(
     resamples: int = RESAMPLES,
     photo_count: int | None = None,
     k: int = K,
+    cut_count: int | None = None,
 ) -> float:
     """Share of bootstrap resamples (cuts and photos both resampled) whose
-    verdict is "outside". `photo_count` draws that many photos per resample,
-    for the power curves; default all."""
+    verdict is "outside". `photo_count` and `cut_count` draw that many
+    photos or cuts per resample, for the power curves; default all."""
     m = len(photos) if photo_count is None else photo_count
+    n = len(cuts) if cut_count is None else cut_count
     fails = 0
     for r in rng.spawn(resamples):
-        ci = r.integers(len(cuts), size=len(cuts))
+        ci = r.integers(len(cuts), size=n)
         pi = r.integers(len(photos), size=m)
         fails += not spread_test(cuts[ci], photos[pi], origin=pi, k=k).within
     return fails / resamples
@@ -387,6 +390,24 @@ def power_by_size(
     streams = rng.spawn(len(wanted))
     return {
         s: rejection_rate(cuts, photos, g, resamples, photo_count=s)
+        for s, g in zip(wanted, streams, strict=True)
+    }
+
+
+def power_by_cuts(
+    cuts: Floats,
+    photos: Floats,
+    rng: np.random.Generator,
+    sizes: Sequence[int] = CUT_SIZES,
+    resamples: int = RESAMPLES,
+) -> dict[int, float]:
+    """Rejection rate with `sizes` cuts drawn per resample, and with all the
+    cuts: how many cuts a fake needs before its verdict settles (ADR 0008
+    amendment 6). Sizes at or above the cuts' count are skipped."""
+    wanted = [s for s in sizes if s < len(cuts)] + [len(cuts)]
+    streams = rng.spawn(len(wanted))
+    return {
+        s: rejection_rate(cuts, photos, g, resamples, cut_count=s)
         for s, g in zip(wanted, streams, strict=True)
     }
 
@@ -489,6 +510,9 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--stratum", default="reflected", choices=sorted(STRATA))
     parser.add_argument("--resamples", type=int, default=RESAMPLES)
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument(
+        "--cut-sizes", type=int, nargs="*", help="also report rejection rates at these cut counts"
+    )
     args = parser.parse_args(argv)
 
     tracemalloc.start()
@@ -514,6 +538,11 @@ def main(argv: list[str] | None = None) -> None:
             f"{'within' if s.within else 'outside'}; {s.outside_share:.0%} of cuts outside; "
             f"fails in {rate:.0%} of {args.resamples} resamples"
         )
+        if args.cut_sizes:
+            by = power_by_cuts(cuts.values, photos.values, rng, args.cut_sizes, args.resamples)
+            print(
+                "rejection rate by cuts drawn: " + ", ".join(f"{n} {p:.0%}" for n, p in by.items())
+            )
         shifts = crossing_shifts(cuts.values, photos.values)
         print("descriptor: cuts, photos, percentile, outside; shift to cross down / up (IQR)")
         for d in per_descriptor(cuts.values, photos.values):

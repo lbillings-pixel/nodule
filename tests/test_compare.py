@@ -20,6 +20,7 @@ from nodule.compare import (
     knn_scores,
     library_table,
     per_descriptor,
+    power_by_cuts,
     power_by_size,
     rejection_rate,
     robust_scale,
@@ -126,6 +127,22 @@ def test_rates_settle_on_the_verdict_line_as_photos_grow() -> None:
     assert list(p_far) == [15, 60, 120]
     assert p_far[120] >= 0.8
     assert p_near[120] <= 0.05 < p_near[15]
+
+
+def test_power_by_cuts_rejects_a_far_fake_with_few_cuts_but_not_a_near_one() -> None:
+    """The fakes' pilot (ADR 0008 amendment 6): a fake well beyond the line is
+    rejected already at 10 cuts; the negative control, one inside the line,
+    is not rejected once all its cuts are drawn."""
+    rng = np.random.default_rng(11)
+    photos = _faces(120, rng)
+    far = _faces(40, rng, shift=2.0)
+    near = _faces(40, rng, shift=0.6)
+    g1, g2 = np.random.default_rng(12).spawn(2)
+    p_far = power_by_cuts(far, photos, g1, sizes=(10, 20, 60), resamples=40)
+    p_near = power_by_cuts(near, photos, g2, sizes=(10, 20), resamples=40)
+    assert list(p_far) == [10, 20, 40]  # 60 is above the cuts' count
+    assert min(p_far.values()) >= 0.8
+    assert p_near[40] <= 0.1
 
 
 def test_per_descriptor_marks_the_shifted_value() -> None:

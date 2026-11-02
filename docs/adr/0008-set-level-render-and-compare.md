@@ -8,7 +8,7 @@
   descriptors in blocks, so no value can hide. Amendment ³ (owner) leaves
   six extreme photos out. Amendment ⁴ (owner) makes the fakes
   concrete. Amendment ⁵ (owner) replaces the noise rule of section 2,
-  step 5.
+  step 5. Amendment ⁶ (proposed) pilots the fakes at 20 cuts.
 - Date: 2026-11-01
 - Builds on: [ADR 0006](0006-band-counts-as-censored-records.md) section 10
   (the fallback: band realism is tested by rendering synthetic stones at each
@@ -515,3 +515,32 @@ After the blur both are blurred alike. Grades: the measurements are
 *plausible*. The 128 against 1,024 comparison shows which values are
 sensitive. At the full run, the stone's values against `noise_matched` will
 show whether the matched cuts still differ.
+
+⁶ Proposed 2026-11-01 (the owner chose the pilot; text awaits their
+reading). The stone's run measured 104 s a cut, not 70 s, so the planned
+fake counts of section 7a (F1–F3 60 cuts, F4–F5 40) would take about 7.5
+hours. `power_by_size` cannot set those counts: it varies the photos, not
+the cuts, and it needs fake cuts to exist. Running it on the stone's cuts
+would score the stone before the fakes, which the owner ruled out.
+
+1. **Pilot.** Each fake is first rendered at 20 cuts on the reflected
+   stratum. `compare.power_by_cuts` (CLI `--cut-sizes 10`) gives its
+   rejection rate with 10 and 20 cuts drawn per resample (200 resamples).
+2. **Stopping rule.** A fake that fails in at least 95 % of resamples at 20
+   cuts is rejected and stops there (95 %: `effective`, chosen to match the
+   compare's level). Otherwise it is rerun at its planned count on the same
+   seed, and that run gives the verdict.
+3. **Seeds.** Fake *i* uses `--seed i --record-seed i` (F1 seed 1 to F5
+   seed 5), independent of the stone's seed 0.
+4. **Stone scoring (owner's choice, 2026-11-01).** 24 of the stone's 100
+   cuts are not `noise_matched`; 22 of these are at the 1,024-sample cap.
+   The stone is scored twice: all cuts, and the noise-matched cuts only.
+   Both verdicts are reported. It is scored only after the fakes are
+   rejected.
+
+Cost: about 35 minutes a fake at 20 cuts, so about 3 hours if all five
+stop at the pilot. The worst case is about 10.5 hours. Negative control:
+in tests/test_compare.py a fake inside the line is not rejected once all
+its cuts are drawn, while one beyond it is rejected at 10. Grade:
+*speculative*. A fake rejected at 20 cuts says the compare catches it. It
+does not say by how much.

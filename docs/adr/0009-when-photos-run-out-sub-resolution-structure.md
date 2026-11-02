@@ -29,10 +29,12 @@
 - **The photos still hold some signal about it.** The stone is outside the
   photos on spectrum alone (ADR 0008, the stone's verdict). Its fine-side
   slope (C26_slope 3.24 against the photos' 95th percentile of 2.93) says
-  it has less power just above the resolving limit than the photos do. Fine
-  sub-bands are the likely missing source (*plausible*; diagnosis in
-  runs/stone-2026-11-02/diagnosis.md). The photos cannot show the
-  sub-bands, but they show their combined effect at the limit.
+  it has less power just above the resolving limit than the photos do.
+  Fine sub-bands are one possible source (*speculative*). On the CPU
+  stand-in, more irregular band widths alone brought the slope within the
+  photos (runs/stone-2026-11-02/diagnosis.md), so how much is due to fine
+  structure is open. Either way the photos cannot show sub-bands, only
+  their combined effect at the limit.
 
 ## Decision
 
@@ -94,7 +96,8 @@
 - **Keep extracting from photos until results stall**, with no rule.
   Rejected: it risks fitting noise, and it gives no point at which to stop.
 - **Stop using photos for fine structure now.** Rejected: the spectrum
-  slope shows that signal remains.
+  slope may still carry its signal, and the stopping rule is how to find
+  out.
 - **Wait for higher-resolution data before N3.** Rejected: it blocks goals
   1 and 2, which the limit does not block.
 

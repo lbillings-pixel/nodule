@@ -9,6 +9,7 @@
   six extreme photos out. Amendment ⁴ (owner) makes the fakes
   concrete. Amendment ⁵ (owner) replaces the noise rule of section 2,
   step 5. Amendment ⁶ (owner) pilots the fakes at 20 cuts.
+  Amendment ⁷ (proposed) adds a verdict per block.
 - Date: 2026-11-01
 - Builds on: [ADR 0006](0006-band-counts-as-censored-records.md) section 10
   (the fallback: band realism is tested by rendering synthetic stones at each
@@ -544,3 +545,65 @@ in tests/test_compare.py a fake inside the line is not rejected once all
 its cuts are drawn, while one beyond it is rejected at 10. Grade:
 *speculative*. A fake rejected at 20 cuts says the compare catches it. It
 does not say by how much.
+
+⁷ Proposed 2026-11-02 (the owner chose option b after the fakes' runs;
+text awaits their reading). Of the five fakes, only F3 was rejected
+(runs/fakes-2026-11-02/). The joint verdict of amendment ² takes one median
+over all cuts, but cuts carry different blocks: in F5's 40 cuts all had
+shape values and only 13 had any band block. The cuts with shape alone
+score near typical and set the median, so a band block can be atypical in
+nearly every cut that has it and still not move the verdict. This is the
+dilution amendment ² fixed for neighbours (a value compared only against
+photos that have it), left open for the median.
+
+This change was proposed after seeing the fakes' results, so it is fixed
+here before any fake is rescored. It is guarded by null controls, and its
+cutoffs are the ones already used.
+
+1. **Block verdicts.** For each block, take the cuts that have it and the
+   photos that have it. The block's score for a face is -log10 *p*, its
+   tail share (amendment ²). The block is outside if the cuts' median
+   score exceeds the photos' `LEVEL` (95th) percentile of theirs,
+   leave-one-out. This is the line of section 3, applied block by block.
+   A block is judged only if at least `MIN_CUTS` = 5 cuts have it
+   (assumption). Otherwise it is reported as untested, a limit.
+2. **Verdict.** Outside if the joint verdict is outside, or any block's
+   verdict is. The joint verdict stays because it sees a cut moderately
+   atypical in several blocks at once.
+3. **Multiplicity.** Up to six block lines add chances of a false
+   rejection. Under the null a median of *n* cuts rarely passes a photo's
+   95th percentile (for 10 cuts with uniform tail shares, at most about 6 in
+   100,000). Null controls measure this rather than assume it.
+4. **Null controls.**
+   - Synthetic cuts from the photos' population, with blocks missing as
+     in the photos, stay within.
+   - N3: a real reflected photo subset (10 and 20 photos) held out and
+     tested against the rest is rejected in at most about 5 % of draws.
+5. **Negative control.** In a synthetic table, the cuts are shifted on
+   rings alone, and only 30 % of cuts and photos have rings. The joint
+   verdict passes this; the block verdict must reject it.
+6. **Rescore.** F1–F5 are rescored on CPU from their saved runs (no
+   rendering), with power by cuts. Each fake's verdict and its failing
+   blocks are reported.
+
+Grade: *speculative*. The line is reasoned, as in amendment ¹, not taken
+from a source. The null and negative controls are its only checks.
+
+**Results (2026-11-02; runs/fakes-2026-11-02/rescore-am7/, 15–17 s a
+fake on CPU).** Null controls: synthetic sets stay within. N3 on the 97
+reflected photos is 0.005 for sets of 10 and 0.015 for sets of 20. The
+rings-only negative control fails under block verdicts and passes under
+the joint one. Every fake is now outside at the point verdict. The fail
+rates over 200 resamples are F1 59 %, F2 72 %, F3 100 %, F4 51 % and
+F5 77 %, so only F3 is settled. Each fake is outside on spectrum (C26).
+The block's median against its line of 2.39 is F1 2.49, F2 8.14, F3 144,
+F4 3.40 and F5 7.56. F5 is also just outside on rings (0.72 against a line
+of 0.64). Two limits, both *plausible*:
+
+- F5 keeps the stone's record unchanged and still fails on spectrum, so
+  the stone may itself be outside there. If so, the fakes' spectrum
+  failures are inherited, not caught. The stone's own verdict decides
+  this.
+- The rings line is low (0.64; ties among C13's whole-number values
+  compress its tail shares), and every fake's median lies at 0.45–0.72.
+  A rings verdict is fragile.

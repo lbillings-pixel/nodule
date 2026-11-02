@@ -17,6 +17,7 @@ from nodule.compare import (
     distances,
     excluded,
     held_out_rate,
+    held_out_set_rate,
     knn_scores,
     library_table,
     per_descriptor,
@@ -136,13 +137,58 @@ def test_power_by_cuts_rejects_a_far_fake_with_few_cuts_but_not_a_near_one() -> 
     rng = np.random.default_rng(11)
     photos = _faces(120, rng)
     far = _faces(40, rng, shift=2.0)
-    near = _faces(40, rng, shift=0.6)
+    near = _faces(40, rng, shift=0.3)  # inside the block lines too (amendment 7)
     g1, g2 = np.random.default_rng(12).spawn(2)
     p_far = power_by_cuts(far, photos, g1, sizes=(10, 20, 60), resamples=40)
     p_near = power_by_cuts(near, photos, g2, sizes=(10, 20), resamples=40)
     assert list(p_far) == [10, 20, 40]  # 60 is above the cuts' count
     assert min(p_far.values()) >= 0.8
     assert p_near[40] <= 0.1
+
+
+def _rings_only(n: int, rng: np.random.Generator, shift: float) -> np.ndarray:
+    """Faces with every block but rings, which only 30 % have, shifted by
+    `shift` on rings alone."""
+    x = _faces(n, rng, missing=0.0)
+    cols = dict(PARTS)["rings"]
+    x[:, cols] += shift
+    x[np.ix_(rng.random(n) >= 0.3, cols)] = np.nan
+    return x
+
+
+def test_block_verdict_sees_a_block_that_few_cuts_have() -> None:
+    """ADR 0008 amendment 7, negative control: cuts off on rings alone, where
+    only 30 % of cuts and photos have rings. The joint median is set by the
+    cuts without rings, so it passes; the rings block's own verdict must not."""
+    rng = np.random.default_rng(13)
+    photos = _rings_only(120, rng, 0.0)
+    cuts = _rings_only(60, rng, 5.0)
+    s = spread_test(cuts, photos)
+    assert s.joint_within  # the dilution the amendment fixes
+    assert not s.within
+    assert [n for n, out in zip(s.block_names, s.block_outside, strict=True) if out] == ["rings"]
+
+
+def test_block_verdict_keeps_a_same_population_set_within() -> None:
+    """Null control: cuts from the photos' population, blocks missing as in
+    the photos, stay within block by block; a block too few cuts have is
+    untested (NaN), not outside."""
+    rng = np.random.default_rng(14)
+    photos = _faces(120, rng)
+    s = spread_test(_faces(40, rng), photos)
+    assert s.within
+    assert not s.block_outside.any()
+    few = spread_test(_rings_only(8, rng, 0.0), photos)  # about 2 cuts with rings
+    rings = few.block_names.index("rings")
+    assert np.isnan(few.block_medians[rings])
+    assert not few.block_outside[rings]
+
+
+def test_null_n3_held_out_photo_sets_rarely_fail() -> None:
+    rate = held_out_set_rate(
+        _faces(150, np.random.default_rng(15)), 20, np.random.default_rng(16), 40
+    )
+    assert rate <= 0.1
 
 
 def test_per_descriptor_marks_the_shifted_value() -> None:

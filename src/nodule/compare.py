@@ -109,6 +109,7 @@ MOST_SHIFT = 20.0  # largest shift searched, in interquartile ranges (`effective
 MIN_REF = 4  # fewest photo block scores to fit a block's tail (assumption)
 IQR_PER_SD = 1.349  # interquartile range of a unit normal
 FLOOR = 1e-300  # smallest joint tail share kept
+MIN_CUTS = 5  # fewest cuts with a block for its own verdict (ADR 0008 amendment 7; assumption)
 STEPS = 20  # bisection steps for a shift (resolution MOST_SHIFT / 2**STEPS)
 
 Floats = NDArray[np.float64]
@@ -302,6 +303,10 @@ class Spread:
     cut_blocks: Floats  # cuts by block: tail share p among the photos
     photo_blocks: Floats  # photos by block, leave-one-out
     scaled_names: tuple[str, ...]  # descriptors that could be scaled
+    joint_within: bool  # the joint verdict alone (amendment 2)
+    block_medians: Floats  # by block: the cuts' median -log10 p; NaN if untested
+    block_lines: Floats  # by block: the photos' LEVEL percentile of -log10 p
+    block_outside: NDArray[np.bool_]  # by block: median above line (amendment 7)
 
 
 def spread_test(
@@ -332,18 +337,40 @@ def spread_test(
     got = cut_scores[np.isfinite(cut_scores)]
     threshold = float(np.percentile(ref, LEVEL)) if ref.size else float("nan")
     median = float(np.median(got)) if got.size else float("nan")
+    joint_within = bool(median <= threshold)  # False if either is NaN
+    medians, lines = _block_lines(ub_c, ub_p)
+    block_outside = medians > lines  # False where untested (NaN)
     return Spread(
         cut_scores=cut_scores,
         photo_scores=photo_scores,
         threshold=threshold,
         median=median,
-        within=bool(median <= threshold),  # False if either is NaN
+        within=joint_within and not block_outside.any(),
         outside_share=float(np.mean(got > threshold)) if got.size else float("nan"),
         block_names=tuple(name for name, _ in parts),
         cut_blocks=ub_c,
         photo_blocks=ub_p,
         scaled_names=tuple(n for n, w in zip(names, width, strict=True) if np.isfinite(w)),
+        joint_within=joint_within,
+        block_medians=medians,
+        block_lines=lines,
+        block_outside=block_outside,
     )
+
+
+def _block_lines(cut_p: Floats, photo_p: Floats) -> tuple[Floats, Floats]:
+    """By block, over the faces that have it: the cuts' median -log10 tail
+    share and the photos' `LEVEL` percentile of theirs (ADR 0008 amendment 7).
+    NaN where fewer than `MIN_CUTS` cuts or `MIN_REF` photos have the block."""
+    n = cut_p.shape[1]
+    medians, lines = np.full(n, np.nan), np.full(n, np.nan)
+    for b in range(n):
+        c, ph = cut_p[:, b], photo_p[:, b]
+        c, ph = c[np.isfinite(c)], ph[np.isfinite(ph)]
+        if c.size >= MIN_CUTS and ph.size >= MIN_REF:
+            medians[b] = np.median(-np.log10(np.maximum(c, FLOOR)))
+            lines[b] = np.percentile(-np.log10(np.maximum(ph, FLOOR)), LEVEL)
+    return medians, lines
 
 
 def block_presence(t: Table) -> dict[str, float]:
@@ -480,6 +507,20 @@ class Single:
     outside_share: float  # cuts outside the photos' central LEVEL percent
 
 
+def held_out_set_rate(
+    photos: Floats, size: int, rng: np.random.Generator, draws: int = 200
+) -> float:
+    """N3 (ADR 0008 amendment 7): `size` photos drawn without replacement are
+    tested as if they were cuts against the rest; the share of draws whose
+    verdict is "outside". A null control of the set verdict, block lines
+    included; about 0 to 5 % expected."""
+    fails = 0
+    for r in rng.spawn(draws):
+        pick = r.permutation(len(photos))
+        fails += not spread_test(photos[pick[:size]], photos[pick[size:]]).within
+    return fails / draws
+
+
 def per_descriptor(cuts: Floats, photos: Floats, names: Sequence[str] = COMPARED) -> list[Single]:
     """Each descriptor on its own; no pass or fail."""
     tail = (100.0 - LEVEL) / 2
@@ -520,6 +561,11 @@ def main(argv: list[str] | None = None) -> None:
     photos = library_table(args.stratum)
     print(f"{args.stratum}: {len(photos)} photos with a compared value")
     print(f"N1 held-out failure rate: {held_out_rate(photos.values):.3f} (expect ~0.05)")
+    for size in (10, 20):
+        n3 = held_out_set_rate(
+            photos.values, size, np.random.default_rng(args.seed), args.resamples
+        )
+        print(f"N3 held-out sets of {size} photos: {n3:.3f} outside (expect <= ~0.05)")
     ref = spread_test(photos.values[:0], photos.values)
     print(f"photos above the bar ({ref.threshold:.1f}), with their least typical block:")
     for i in np.argsort(-np.nan_to_num(ref.photo_scores, nan=-np.inf)):
@@ -538,6 +584,14 @@ def main(argv: list[str] | None = None) -> None:
             f"{'within' if s.within else 'outside'}; {s.outside_share:.0%} of cuts outside; "
             f"fails in {rate:.0%} of {args.resamples} resamples"
         )
+        print(
+            f"joint verdict: {'within' if s.joint_within else 'outside'}; by block (median / line):"
+        )
+        for name, med, line, out in zip(
+            s.block_names, s.block_medians, s.block_lines, s.block_outside, strict=True
+        ):
+            verdict = "untested" if np.isnan(med) else ("OUTSIDE" if out else "within")
+            print(f"  {name:12s} {med:7.2f} / {line:6.2f} {verdict}")
         if args.cut_sizes:
             by = power_by_cuts(cuts.values, photos.values, rng, args.cut_sizes, args.resamples)
             print(

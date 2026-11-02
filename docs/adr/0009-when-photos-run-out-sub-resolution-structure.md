@@ -1,7 +1,7 @@
 # 9. When the photos run out: structure finer than they resolve
 
-- Status: proposed (the owner agreed with the outline on 2026-11-02; this
-  text awaits their acceptance)
+- Status: accepted (owner, 2026-11-02, as written, with the correction
+  of 834f86d)
 - Date: 2026-11-02
 - Builds on: [ADR 0006](0006-band-counts-as-censored-records.md) section 10
   (band realism by set-level render-and-compare), [ADR 0008](0008-set-level-render-and-compare.md)

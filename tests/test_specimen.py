@@ -41,6 +41,12 @@ def test_preset_has_the_slice_parts(config: SpecimenConfig) -> None:
     assert len(config.fractures) == 1
 
 
+def test_preset_band_regularity_is_the_adr_0011_choice(config: SpecimenConfig) -> None:
+    model = config.volume.model
+    assert getattr(model, "period_variability", None) == 0.7  # agatesim default 0.35
+    assert getattr(model, "alternation", None) == 0.7
+
+
 def test_cut_covers_the_stone_on_world_fixed_pixels(specimen: Specimen) -> None:
     plane = specimen.plane(SliceConfig())
     cut = specimen.cut(plane, 0.5)

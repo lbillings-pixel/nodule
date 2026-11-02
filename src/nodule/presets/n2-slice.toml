@@ -21,6 +21,10 @@ filaments = [
 kind = "procedural-growth"
 growth_mm = 30
 band_period = 0.015
+# Band regularity, tuned once against half A of the photos (ADR 0011, a
+# record tuning step; `effective`). agatesim's defaults are 0.35 / 0.7.
+period_variability = 0.7
+alternation = 0.7
 wobble_mm = 0.2
 wobble_scale_mm = 4.0
 wobble_max_slope = 0.5  # cap below 1: bands cannot fold (ADR 0005 section 3)

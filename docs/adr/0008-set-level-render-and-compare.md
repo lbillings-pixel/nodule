@@ -243,6 +243,9 @@ same photos that test the result can be fooled (ADR 0007, risks).
   listed before tuning starts. Each tuning step is recorded. The verdict
   states that it comes after tuning. The band descriptors are mostly
   geometric, so tuning optics touches them weakly (reasoning).
+  (Note, 2026-11-02: band regularity was tuned once, as a stated
+  exception, by [ADR 0011](0011-band-regularity-for-the-stone.md); the
+  spectrum and continuity blocks then no longer count as passed tests.)
 - Alternatives: a seeded half for tuning and the other half for the verdict
   (honest, but 12–50 photos per value leaves little power); or no
   tuning in this ADR.

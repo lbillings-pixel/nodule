@@ -1,6 +1,7 @@
 # 11. Band regularity for the stone: a tuning step on the record
 
-- Status: proposed
+- Status: accepted (owner, 2026-11-02): 11a A (0.7 / 0.7), as
+  recommended.
 - Date: 2026-11-02
 - Builds on: [ADR 0008](0008-set-level-render-and-compare.md) choice 7b
   (tuning limited to optics and exposure, "not band geometry"),

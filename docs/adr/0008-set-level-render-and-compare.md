@@ -7,7 +7,8 @@
   stability and adds the crossing shift. Amendment ² (owner) scores the
   descriptors in blocks, so no value can hide. Amendment ³ (owner) leaves
   six extreme photos out. Amendment ⁴ (owner) makes the fakes
-  concrete.
+  concrete. Amendment ⁵ (proposed) replaces the noise rule of section 2,
+  step 5.
 - Date: 2026-11-01
 - Builds on: [ADR 0006](0006-band-counts-as-censored-records.md) section 10
   (the fallback: band realism is tested by rendering synthetic stones at each
@@ -89,7 +90,7 @@ is that the stand-in image is replaced by a rendering:
 4. Render: the growth grid is filled for the plane (the slab depth for L3),
    rendered under the stratum's light, and converted to sRGB at one fixed
    exposure per run (`effective`).
-5. Samples per pixel: the fewest that keep the render's own Monte Carlo
+5. Samples per pixel⁵: the fewest that keep the render's own Monte Carlo
    noise at or below a third of the matched photo's noise level. That adds
    at most about 5 % to the noise in quadrature (assumption, measured on the
    first cuts).
@@ -441,3 +442,76 @@ together (from 1.1-1.8).
   the descriptors are blind to fine structure, or that the stone has none
   to lose. The compare of the stone itself against the photos (C26's
   fine-side slope) is the place to see which.
+
+⁵ Proposed 2026-11-01 (the owner chose option A after option B was
+measured). Timing the first rendered cuts showed that step 5's rule cannot
+be met. All figures are from the n2-slice under L1 on the RTX 4070
+(*verified* as measurements; one stone, three cuts).
+- **The render's noise.** At 128 samples per pixel, 6.6 grey levels of
+  luminance per pixel. It is white: a 4 × 4 box lowers it fourfold, and its
+  median absolute deviation matches its standard deviation, so there are no
+  bright outliers. The photos have 1.0–4.6 (10th–90th percentile, median
+  1.5). About one path in five leaves through the face; the rest end in
+  the stone. That all-or-nothing outcome explains the noise (each path's
+  value varies about twice its mean). A third of a photo's noise would
+  take about 90,000 samples per pixel, roughly an hour a cut.
+- **Option B, a less noisy renderer, measured first.** The kernel's own
+  light sampling (the L2 disc's, as a 90° disc that equals the dome, mean
+  within 0.08 %) is about 9 times *less* efficient than plain path
+  tracing here (noise² × time). Each aim needs a shadow ray through the
+  bands, and the grains' narrow forward lobes seldom point at the face.
+  Absorption is already weighted, not played out (`spectral_step`). Even a
+  10-fold gain would leave about 12 minutes a cut, so B was dropped.
+- **What the noise does to the descriptors.** Three cuts were rendered at
+  128 samples (two seeds) and at 1,024 and measured with the same draws.
+  Shifts, in the photos' interquartile ranges: most values move less than
+  0.5 between 128 and 1,024 samples. The defect values C14 (up to 2.1)
+  and the spectrum C26 (slope 2.2 and 0.8, peak 2.5–4.3) move most.
+  C26's peak also moves 1.4–2.0 between two seeds at 128, so it is
+  unstable in itself. Noise reads as fine structure, as expected.
+- **Slab depth under L1.** 20 mm against 10 mm changed one cut by 0.02
+  grey levels on average (0.02 standard deviation), against 9.5 between
+  two seeds: almost no light returns from below 10 mm. 10 mm stays
+  (`effective`).
+
+**The new rule (replaces step 5).** A rendered cut's own noise counts
+toward the photo's.
+1. Samples are added in batches to two halves on independent seeds. The
+   image is their mean; their difference gives its noise exactly.
+2. 256 samples first (`effective`). The photo's blur is then found as
+   before (`measure_cut`). The render's noise after that blur is its noise
+   times the blur's factor for white noise (`blur_noise_factor`, checked
+   against blurred noise within 3 %).
+3. If that exceeds 0.9 of the photo's noise (`effective`, room for the
+   photo's own noise), samples are added once, as noise falls with the
+   square root of the samples, up to 1,024 (`effective`, cost). The blur is
+   found again.
+4. Step 6 adds only the noise the cut lacks: the square root of the
+   photo's noise squared minus the render's blurred noise squared. A cut
+   still noisier than its photo gets none and is flagged
+   (`noise_matched = False`). Its share is reported beside the
+   `matched = False` share of step 6.
+5. F5 renders by the same rule and is measured without blur or noise, so
+   it keeps the render's own noise.
+
+Measured with the rule (three cuts, 280 s, 438 MB traced CPU memory, 65 MB
+GPU pool). Two cuts drawn against photos at noise 1.0 needed about 1,000
+samples (fill 10–12 s, render 81–120 s); their noise after the blur was
+0.82–0.87. One drawn against a photo at noise 6.3 stayed at 256 samples
+(10 s); its face fails the gate at any sample count, so it is not a noise
+effect. All three were matched.
+
+**Cost.** Over the 97 reflected photos the rule asks for about 580 samples
+on average; 35 % stay at 256 and none should reach the cap (estimate, for
+a typical blur). That is about 70 s a cut, so the stone's 100 cuts take
+about 2 hours and all 360 about 7 hours. This is more than section 7a's
+1.5–2 hours. The staged plan stands: each stage is announced first.
+
+**Limits.** The render's noise is white per pixel, but a photo's is shaped
+by its camera and compression. The rule matches the amount of noise, not
+its texture. That was already true of the noise added to the stand-in.
+After the blur both are blurred alike. Grades: the measurements are
+*verified*; that matching the total noise is enough for the descriptors is
+*plausible*. The 128 against 1,024 comparison shows which values are
+sensitive. At the full run, the stone's values against `noise_matched` will
+show whether the matched cuts still differ.

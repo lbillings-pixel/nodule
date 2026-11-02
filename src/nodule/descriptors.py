@@ -72,9 +72,17 @@ from agatesim.volume.slicing import Plane, random_cuts
 from numpy.typing import NDArray
 
 from nodule import bands
+from nodule._scipy import blur_noise_factor
 from nodule.compare import STRATA, library_table
 from nodule.render import fakes
-from nodule.render.cutface import MOST_SPP, CutRender, Rendering, render_cut
+from nodule.render.cutface import (
+    MOST_SPP,
+    NOISE_SHARE,
+    CutRender,
+    CutRenderer,
+    Rendering,
+    spp_for,
+)
 from nodule.specimen import Specimen, SpecimenCut, load_preset
 from nodule.tags import (
     FROM_CONTINUITY,
@@ -138,11 +146,13 @@ def photo_cut(
     look: Look,
     most: int = MOST_PX,
     rendering: Rendering | None = None,
-    seed: int = 1,
+    rng: np.random.Generator | None = None,
 ) -> PhotoCut:
     """The cut at the spacing that shows its bands as `look`'s photo shows its
     own. With `rendering`, the final image is rendered (GPU; ADR 0008
-    section 2: the size still comes from the stand-in probe)."""
+    section 2: the size still comes from the stand-in probe), with samples
+    added until its noise after the photo's blur is below `NOISE_SHARE` of the
+    photo's (`rendered_image`)."""
     probe_mm = extent_mm(specimen, plane) / PROBE_PX
     cut = specimen.cut(plane, probe_mm)
     rgb = stand_in_rgb(cut)
@@ -151,13 +161,55 @@ def photo_cut(
         cut = specimen.cut(plane, probe_mm * PROBE_PX / pixels)
     if rendering is None:
         return PhotoCut(cut, rgb if pixels == PROBE_PX else stand_in_rgb(cut), pixels)
-    r = render_cut(specimen, cut, rendering, look.noise, seed)
-    return PhotoCut(cut, r.rgb, pixels, r)
+    rgb, record = rendered_image(specimen, cut, look, rendering, rng or np.random.default_rng())
+    return PhotoCut(cut, rgb, pixels, record)
+
+
+def photo_blur(
+    rgb: NDArray[np.uint8], cut: SpecimenCut, look: Look, rng: np.random.Generator
+) -> float | None:
+    """The blur (px) `measure_cut` gives this image to match `look`'s photo;
+    None where it finds no bands."""
+    quartz = cut.fields.phase == Phase.QUARTZ
+    sigma = measure_cut(rgb, cut.inside, quartz, look, rng).get("sigma_px")
+    return float(sigma) if isinstance(sigma, int | float) else None
+
+
+def rendered_image(
+    specimen: Specimen,
+    cut: SpecimenCut,
+    look: Look,
+    rendering: Rendering,
+    rng: np.random.Generator,
+) -> tuple[NDArray[np.uint8], CutRender]:
+    """Render `first_spp` samples, find the photo's blur, then add samples (once,
+    as noise falls as 1/sqrt(spp)) until the noise after that blur is at most
+    NOISE_SHARE of the photo's, or `most_spp` is reached (ADR 0008 amendment 5)."""
+    render_rng, blur_rng = rng.spawn(2)
+    r = CutRenderer(specimen, cut, rendering, render_rng)
+    r.more(rendering.first_spp)
+    sigma = photo_blur(r.rgb, cut, look, blur_rng.spawn(1)[0])
+    wanted = NOISE_SHARE * look.noise
+    if sigma is not None and r.noise * blur_noise_factor(sigma) > wanted:
+        r.more(spp_for(r.noise, r.spp, wanted / blur_noise_factor(sigma), rendering.most_spp))
+        sigma = photo_blur(r.rgb, cut, look, blur_rng.spawn(1)[0])
+    blurred = None if sigma is None else r.noise * blur_noise_factor(sigma)
+    matched = None if blurred is None else blurred <= look.noise
+    return r.rgb, CutRender(r.spp, r.noise, blurred, matched, r.fill_s, r.render_s)
 
 
 def undegraded(look: Look) -> Look:
     """F5's look: no blur and no noise, the photo's spacing kept (ADR 0008 amendment 4)."""
     return replace(look, edge_per_spacing=0.0, noise=0.0)
+
+
+def noise_to_add(look: Look, rendered: CutRender | None) -> Look:
+    """The look with only the noise a rendered cut still lacks: the photo's and
+    the render's own (after the blur) add in quadrature (ADR 0008 amendment 5).
+    The stand-in, and a render whose blur was not found, get the photo's."""
+    if rendered is None or rendered.blurred_noise is None:
+        return look
+    return replace(look, noise=math.sqrt(max(0.0, look.noise**2 - rendered.blurred_noise**2)))
 
 
 def measure(
@@ -166,10 +218,11 @@ def measure(
     """C6-C17 of a cut made to look like `look`'s photo, with
     `measure_cut`'s record of the blur (module docstring). Values are None
     where they could not be judged; `bands` is False where the gate found no
-    bands, before or after the blur. `degrade=False` is F5: measured as
-    rendered, `matched` None."""
+    bands, before or after the blur. A rendered cut gets only the noise it
+    lacks (`noise_to_add`). `degrade=False` is F5: measured as rendered,
+    `matched` None."""
     shape_rng, noise_rng, band_rng = rng.spawn(3)
-    look = look if degrade else undegraded(look)
+    look = noise_to_add(look, pc.rendered) if degrade else undegraded(look)
     mask = pc.cut.inside
     quartz = pc.cut.fields.phase == Phase.QUARTZ
     entry = measure_cut(pc.rgb, mask, quartz, look, shape_rng)
@@ -230,13 +283,14 @@ def survey(
         progress.report(k / cuts, f"cut {k + 1} of {cuts}")
         look = photo_looks[int(look_rng.integers(len(photo_looks)))]
         plane = specimen.plane(spec)
-        render_seed = int(render_rng.integers(1, 2**32 - 2))  # the kernel's seed is uint32
-        pc = photo_cut(specimen, plane, look, most, rendering, render_seed)
+        pc = photo_cut(specimen, plane, look, most, rendering, render_rng.spawn(1)[0])
         where = [round(spec.tilt_deg, 2), round(spec.azimuth_deg, 2), round(spec.offset_mm, 2)]
         entry: dict[str, object] = {"cut": k, "plane": where, "pixels": pc.pixels}
         if pc.rendered is not None:
             r = pc.rendered
-            entry |= {"spp": r.spp, "render_noise": round(r.noise, 3), "capped": r.capped,
+            blurred = None if r.blurred_noise is None else round(r.blurred_noise, 3)
+            entry |= {"spp": r.spp, "render_noise": round(r.noise, 3), "blurred_noise": blurred,
+                      "photo_noise": look.noise, "noise_matched": r.matched_noise,
                       "fill_s": round(r.fill_s, 2), "render_s": round(r.render_s, 2)}  # fmt: skip
         degrade = rendering is None or not rendering.undegraded
         entry |= measure(pc, look, measure_rng.spawn(1)[0], degrade=degrade)
@@ -367,7 +421,8 @@ def main(argv: list[str] | None = None) -> None:
         print(f"GPU memory pool held at the end: {pool.total_bytes() / 1e6:.0f} MB")
         for r in rows:
             print(f"cut {r['cut']}: {r['pixels']} px, {r['spp']} spp, render noise "
-                  f"{r['render_noise']} (capped {r['capped']}), fill {r['fill_s']} s, "
+                  f"{r['render_noise']}, after blur {r['blurred_noise']} vs photo "
+                  f"{r['photo_noise']:.2f} (matched {r['noise_matched']}), fill {r['fill_s']} s, "
                   f"render {r['render_s']} s")  # fmt: skip
     args.out.mkdir(parents=True, exist_ok=True)
     tag = "" if rendering is None else f"-{args.run}-{args.stratum}"

@@ -60,3 +60,16 @@ def spherical_bessel(n: NDArray[np.int_], z: complex, derivative: bool = False,
 def normal_cdf(z: NDArray[np.float64]) -> NDArray[np.float64]:
     """The standard normal distribution function, elementwise (NaN stays NaN)."""
     return np.asarray(special.ndtr(z), dtype=np.float64)
+
+
+def blur_noise_factor(sigma: float) -> float:
+    """How much a 2D Gaussian blur of `sigma` px (`ndimage.gaussian_filter`, as
+    agatesim's `gaussian_rgb`) scales the standard deviation of white pixel noise:
+    the sum of squares of its 1D kernel (separable, so the 2D factor is that squared,
+    square-rooted). 1 for no blur."""
+    if not sigma > 0:
+        return 1.0
+    delta = np.zeros(2 * int(4 * sigma + 0.5) + 3)
+    delta[len(delta) // 2] = 1.0
+    k = ndimage.gaussian_filter1d(delta, sigma)
+    return float(np.sum(k * k))

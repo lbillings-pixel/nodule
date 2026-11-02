@@ -614,3 +614,33 @@ was no longer clearly inside the line. Two limits, both *plausible*:
 - The rings line is low (0.64; ties among C13's whole-number values
   compress its tail shares), and every fake's median lies at 0.45–0.72.
   A rings verdict is fragile.
+
+**The stone's verdict (2026-11-02; runs/stone-2026-11-02/, 22 s a score
+on CPU).** Scored twice as amendment ⁶ point 4 asks, with power at 10, 20,
+40 and 60 cuts. All cuts: 89 of 100 compared, median 14.2 against the bar
+of 9.96, outside, failing in 93 % of 200 resamples (91–94 % at every cut
+count). Noise-matched cuts only: 65 of 76 compared, median 13.1, outside,
+failing in 92 % (94–96 %). Both are outside on spectrum alone (block
+median 18.4 and 20.5 against its line of 2.39). The other five blocks are
+within, rings included (0.50 and 0.48 against 0.64). Against the 42
+reflected photos with a spectrum (5th / 50th / 95th percentile), the
+cuts' median C26_slope is 3.24 (0.25 / 1.37 / 2.93) and C26_peak is 9.70
+(1.69 / 2.47 / 5.51). C26_peak_share, 0.05, is within (0.02 / 0.21 /
+0.55). The measurements are *verified*. What follows from them:
+
+- The stone's profiles have one strong spacing and less fine-scale power
+  than the photos (*verified* for these descriptors; whether a viewer
+  would see it is untested).
+- Matching the noise does not change the verdict, so the failure is not
+  the unmatched cuts' extra noise (*plausible*).
+- The fakes' spectrum failures are inherited. F1, F2, F4 and F5 are all
+  nearer the photos on spectrum than the stone is (block medians 2.5–8.1
+  against 18.4). So F1, F2 and F4 differ from the stone on no block, and
+  F5 only on rings, which is fragile. Only F3 is caught on its own trait
+  (*verified* from the scores above). The negative control shows the
+  compare catches equal widths; it does not yet show it catches the other
+  four.
+- F5 (the same record, no blur or noise) has C26_slope 2.96 and C26_peak
+  6.88, so the record is already peaked before the photo-like blur, and
+  the blur and noise add to both (*verified* for medians; the cause is
+  *speculative*: the record itself, the blur estimate per photo, or both).

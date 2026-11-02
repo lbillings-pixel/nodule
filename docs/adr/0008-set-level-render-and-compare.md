@@ -7,7 +7,7 @@
   stability and adds the crossing shift. Amendment ² (owner) scores the
   descriptors in blocks, so no value can hide. Amendment ³ (owner) leaves
   six extreme photos out. Amendment ⁴ (owner) makes the fakes
-  concrete. Amendment ⁵ (proposed) replaces the noise rule of section 2,
+  concrete. Amendment ⁵ (owner) replaces the noise rule of section 2,
   step 5.
 - Date: 2026-11-01
 - Builds on: [ADR 0006](0006-band-counts-as-censored-records.md) section 10
@@ -443,7 +443,7 @@ together (from 1.1-1.8).
   to lose. The compare of the stone itself against the photos (C26's
   fine-side slope) is the place to see which.
 
-⁵ Proposed 2026-11-01 (the owner chose option A after option B was
+⁵ Amended 2026-11-01 (owner accepted as written; they chose option A after option B was
 measured). Timing the first rendered cuts showed that step 5's rule cannot
 be met. All figures are from the n2-slice under L1 on the RTX 4070
 (*verified* as measurements; one stone, three cuts).

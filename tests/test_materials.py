@@ -140,6 +140,37 @@ def test_table_responds_to_the_fields_as_stated() -> None:
         tab.band(Phase.VOID, iron, 0.0, 0.0)
 
 
+def test_iron_floor_clears_iron_oxides_below_it_only() -> None:
+    """ADR 0014 4l (option A): below the floor iron-oxide pigments absorb nothing; at and
+    above it they load as without a floor. Off (0) by default."""
+    off, on = OpticsTable(), OpticsTable(iron_floor=0.28)
+    chal, qtz = Phase.CHALCEDONY, Phase.QUARTZ
+    assert off.iron_floor == 0.0
+    assert (off.band(chal, Pigment.IRON, 0.05, 0.5).mua > off.matrix_mua).all()  # off: tinted
+    for p in (Pigment.IRON, Pigment.HEMATITE, Pigment.GOETHITE):
+        np.testing.assert_array_equal(on.band(chal, p, 0.27, 0.5).mua, on.matrix_mua)
+        for x in (0.28, 0.6):  # at the floor and above: unchanged
+            np.testing.assert_array_equal(
+                on.band(chal, p, x, 0.5).mua, off.band(chal, p, x, 0.5).mua
+            )
+    np.testing.assert_array_equal(on.band(qtz, Pigment.IRON, 0.1, 1.0).mua, on.matrix_mua)
+
+
+def test_iron_floor_negative_control_leaves_the_rest_alone() -> None:
+    """Negative control: the floor must not touch pigments that are not iron oxides, nor
+    any band's scattering."""
+    off, on = OpticsTable(), OpticsTable(iron_floor=0.28)
+    chal = Phase.CHALCEDONY
+    for p in (Pigment.CELADONITE, Pigment.MANGANESE, Pigment.VIOLET):
+        lo = on.band(chal, p, 0.1, 0.5).mua
+        assert (lo > on.matrix_mua).all()
+        np.testing.assert_array_equal(lo, off.band(chal, p, 0.1, 0.5).mua)
+    for p in (Pigment.IRON, Pigment.BLUE, Pigment.WHITE):
+        a, b = on.band(chal, p, 0.1, 0.3), off.band(chal, p, 0.1, 0.3)
+        for name in ("mus", "g", "f", "gb"):
+            np.testing.assert_array_equal(getattr(a, name), getattr(b, name))
+
+
 def test_scattering_parts_follow_translucency_and_pigment() -> None:
     """ADR 0007 7a C: grains in lobe a, pores (and BLUE) in lobe b."""
     tab = OpticsTable()

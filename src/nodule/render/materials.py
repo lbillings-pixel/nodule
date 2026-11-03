@@ -75,6 +75,7 @@ SHAPE = {
     Pigment.MANGANESE: (1.0, 1.0, 1.0),
     Pigment.VIOLET: (0.49, 1.0, 0.68),
 }
+IRON_OXIDES = frozenset({Pigment.IRON, Pigment.HEMATITE, Pigment.GOETHITE})
 
 
 def rayleigh_absorption(n: Sequence[float], k: Sequence[float], phi: float,
@@ -152,6 +153,13 @@ class OpticsTable:
     # as extra pores of the pore part's kind (volume fraction at impurity 1).
     mus_blue550: float = 2.0
     pore_white: float = 0.011667  # ADR 0010: 2e-3 scaled with pore_milky (0.0175 / 0.003)
+    # Iron pigment floor (ADR 0014 4l, option A), `effective`: iron-oxide pigments (IRON,
+    # HEMATITE, GOETHITE, and quartz's iron) add no absorption below this impurity; at
+    # or above it they load as before (a step). An ASSUMPTION standing in for the unmeasured
+    # share of a band's iron that forms pigment particles [@zhou2022; @zhang2025]. 0.28 is
+    # the lowest floor that clears every band agatesim's stand-in shows neutral (C* < 8)
+    # in the n2-slice record (4k); it is not fitted to the photos. Opt-in: 0 is off.
+    iron_floor: float = 0.0
 
     def _hematite(self, phi: float) -> F64:
         n, k = HEMATITE_NK[self.hematite]
@@ -159,6 +167,8 @@ class OpticsTable:
 
     def pigment_mua(self, pigment: int, impurity: float) -> F64:
         p, x = Pigment(pigment), float(impurity)
+        if p in IRON_OXIDES and x < self.iron_floor:
+            return np.zeros(3)
         phi = x * self.phi_iron_oxide
         if p is Pigment.HEMATITE:
             return self._hematite(phi)

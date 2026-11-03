@@ -618,3 +618,33 @@ features that carry no colour (relief and depth, 4f).
 
 **The decision now (owner): how impurity becomes iron pigment.** The
 options are A–C of 4j, with A now tested.
+
+### 4l. Decision: option A, an opt-in iron pigment floor (2026-11-03)
+
+The owner chose A. `OpticsTable.iron_floor` (`effective`) is now in the
+table. Below it, the iron-oxide pigments (IRON, HEMATITE, GOETHITE, and
+the iron that agatesim gives quartz) add no absorption. At or above it,
+they load as before (a step, as tested in 4k). The floor is an
+ASSUMPTION. It stands in for the unmeasured share of a band's iron that
+forms pigment particles [@zhou2022; @zhang2025; inference, *plausible*].
+Its value 0.28 is tied to agatesim's stand-in: it is the lowest floor
+that clears every band the stand-in shows neutral (C\* < 8) in the
+n2-slice record. It is not fitted to the photos (ADR 0002).
+
+- **Opt-in (owner's choice).** The default is 0 (off), so existing
+  results do not change. 4k tested the floor only together with 4f's
+  `matrix_mua` 0.13 and `phi_iron_oxide` 4 × 10⁻⁴ and the black bottom.
+  None of these is a default yet, so turning on only the floor would
+  give an untested mix. The tested set becomes the default together,
+  when this ADR closes.
+- Tests: the floor clears the iron oxides below it and leaves them
+  unchanged at and above it. Negative control: celadonite, manganese
+  and violet keep their absorption, and no band's scattering changes.
+  The cost is one comparison per distinct material; render time and
+  memory are as in 4k (380 s, 549 MB for four cuts).
+- **Later, in agatesim: option C.** A pigment field there would mark
+  pigment-bearing bands directly and replace this floor (a request for
+  an agatesim ADR; not started).
+- **Still open after A:** lightness spread (8.1 against 9.7) and the
+  sign of corr(L\*, C\*) (+0.01 against −0.24), both pointing to
+  colourless dark features such as relief and depth (4f, 4k).

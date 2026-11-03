@@ -314,3 +314,28 @@ against S2 iron reproduces Fig. 3a exactly. Three findings change A2:
 slab with no iron pigment on the white chip should read about L\* 64,
 C\* about 12. The negative control stands: a slab with no absorption must
 read clearly lighter, and the check must reject it. A1 is unchanged.
+
+### 4e. A1 result (2026-11-03)
+
+Deep stone (10 mm, black bottom), iron off, four cuts per setting; exposure
+fitted so the median L\* is the photos' 62.1. Time 1076 s for both
+settings (59–344 s a cut); peak traced Python memory 549 MB (GPU memory
+not traced). Earlier probe rows are repeated for comparison.
+
+| `matrix_mua` (mm⁻¹) | Y p90/p10 | L\* sd | C\* | corr(L\*, C\*) |
+|---|---|---|---|---|
+| 0.01 | 1.36 | 3.35 | 5.66 | −0.06 |
+| 0.03 | 1.53 | 4.37 | 5.84 | −0.03 |
+| 0.08 | 1.87 | 5.98 | 5.58 | +0.04 |
+| 0.13 (Lorenzi's bound) | 2.12 | 6.86 | 5.09 | +0.12 |
+| 0.01, iron 9 × 10⁻⁴ | 2.50 | 8.85 | 17.06 | +0.43 |
+| photos | 2.49 | 9.7 | 7.3 | −0.24 |
+
+*Verified* (as a property of this model): contrast and lightness spread
+rise steadily with grey absorption, and chroma stays near the photos'.
+Even at Lorenzi's upper bound, grey absorption alone reaches 2.12 of the
+photos' 2.49 contrast and 6.9 of their 9.7 L\* spread. The L\*–C\*
+correlation moves the wrong way: it turns positive, while the photos'
+is negative. So a grey absorber within the bound is part of the
+answer at most, not all of it [inference; *plausible*]. These are model
+results, not evidence about how real stones form (ADR 0002).

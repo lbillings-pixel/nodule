@@ -164,7 +164,37 @@ within a range that runs at least from 0.7 to 1.0.
   7b gains a note that band regularity was tuned once, by this ADR.
 - Then the stone run: 100 cuts at 2 mm depth, about 10 hours of GPU, which
   is announced before it starts and reports progress.
+  *Correction (2026-11-02):* the 10 hours repeated ADR 0010's figure, which
+  was mis-scaled (see the correction there). Measured: 3 cuts in 138 s,
+  then the run itself 7111 s for 100 cuts (about 71 s a cut, 2.0 hours).
 - Then optics tuning step 2, the translucency-to-optics mapping (ADR 0007
   7a C).
 - References added: none (holten1997, holten1998 and goldbaum2019 are
   catalogued; holten1998 stays at abstract).
+
+## Results: the 100-cut stone run (2026-11-02)
+
+After tuning (ADR 0010, this ADR): `n2-slice` at 0.7 / 0.7, the stone's
+record, reflected light, ADR 0010's optics, 2 mm depth, seed 0. Looks drawn
+from calibration half A of the reflected photos (seed-2026 split), judged
+against A and the held-out half B (ADR 0009), as the 20-cut check was.
+7111 s, peak traced memory 1.1 GB. Script and report:
+`runs/stone-2026-11-02/` (gitignored), `variants/stone_100.py`.
+
+| Cuts | vs A: joint / line | vs B: joint / line |
+| --- | --- | --- |
+| All 100 | 1.2 / 15.9, within | 2.3 / 7.9, within |
+| Noise-matched 50 | 4.0 / 15.9, image block 3.9 / 3.4: outside | 2.5 / 7.9, within |
+
+- Per descriptor (descriptive, ADR 0008 section 3), all cuts: C16
+  coherence 0.90, at the photos' 98th percentile against both halves (above
+  their 95th, 0.84 / 0.87), as in the 20-cut check; C15 curvature at the
+  87th-91st; C26 slope at the 86th-90th. On the noise-matched cuts C15
+  rises to the 96th-100th and C16 falls to 0.82 (88th-92nd); these two
+  measures are what puts that subset's image block past its line vs A.
+- The spectrum and continuity blocks were fitted here (Risks), so their
+  passing is not a test; the image, rings and shape blocks are.
+- Grades: the measurements *verified* (one seed, one stone). That the
+  stone's cuts look like the photos at set level: *plausible*, with band
+  edges too coherent and curvature high as open gaps. Appearance only;
+  never evidence for a formation mechanism (ADR 0002).

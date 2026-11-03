@@ -122,6 +122,13 @@ Either A or B can later be varied together with the translucency mapping
   about 22 % (206 against 265 s on the look cuts; stone run about 10 h
   instead of 13 h). The image differs by 0.14 grey levels, well under the
   photos' noise.
+  *Correction (2026-11-02):* the run times here were mis-scaled from the 4
+  look cuts (206 s for 4 cuts is about 52 s a cut, so 100 cuts take about
+  1.4 hours, not 10; the 13 h and 26 h of option C are wrong in the same
+  way, about 1.8 h and 4.4 h). The look run's log was not kept, so the slip
+  cannot be traced exactly. The 22 % saving was measured directly and
+  stands. Measured on the stone run itself: 7111 s for 100 cuts, about
+  71 s a cut (2.0 hours).
 - Keep 10 mm. The stone run is then exactly what the 20-cut check ran.
 
 ### 4. Grades

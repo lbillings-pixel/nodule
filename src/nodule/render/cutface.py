@@ -14,7 +14,8 @@ so the face mask and quartz phase of the cut still apply.
   changed one cut by 0.02 grey levels against 9.5 between seeds). Both checks had the
   slab's smooth bottom over black air, which reflects much of the light reaching it
   back up; `bottom="black"` instead loses it, as into the rest of a stone (ADR 0014,
-  `effective`; default "air" until ADR 0014 decides).
+  `effective`). Reflected renderings default to "black" since ADR 0014 closed; the
+  back light keeps "air".
 - **Materials**: from a band record passed in, the stone's or a fake's
   (`nodule.render.fakes`), so the stone and its fakes differ only there.
 - **Samples and noise**: samples are added in batches, alternately to two
@@ -54,8 +55,9 @@ GRID_MM = 0.2  # ADR 0007 7c
 L1_DEPTH_MM = 2.0  # effective, ADR 0010 10b (module docstring)
 L3_DEPTH_MM = 3.0  # effective, owner (ADR 0007 amendment 5)
 # Matches the reflected photos' median lightness (L* 62); effective, a camera
-# setting, not a property of the stone (ADR 0013). L3 keeps 1.0 until calibrated.
-REFLECTED_EXPOSURE = 2.2
+# setting, not a property of the stone (ADR 0013). Refitted for the ADR 0014 optics
+# (4k probe; was 2.2). L3 keeps 1.0 until calibrated.
+REFLECTED_EXPOSURE = 1.51
 FIRST_SPP = 256  # samples per pixel before the photo's blur is known (effective)
 MOST_SPP = 1024  # cost cap (effective); cuts left noisier than the photo are flagged
 # The render's noise after the photo's blur is brought below this share of the photo's,
@@ -93,6 +95,7 @@ class Rendering:
     def reflected(cls, record: BandRecord, **kw: Any) -> Rendering:
         """L1, the dome, for reflected cut faces (ADR 0008 7c)."""
         kw.setdefault("exposure", REFLECTED_EXPOSURE)
+        kw.setdefault("bottom", "black")  # ADR 0014
         return cls(Light("dome"), record, kw.pop("depth_mm", L1_DEPTH_MM), **kw)
 
     @classmethod

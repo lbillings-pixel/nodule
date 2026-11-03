@@ -120,8 +120,9 @@ class OpticsTable:
     host: Optics = field(default=Optics.one_lobe([1.6, 1.0, 0.6], 15.0, 0.8))
     tube_core: Optics = field(default=Optics.one_lobe([2.5, 0.8, 1.8], 10.0, 0.8))
     # Clean chalcedony absorbs little: bounded by Lorenzi's total-transmittance loss of
-    # ~0.13 per mm, which includes backscatter [@lorenzi2022]; 0.01 sits under the bound.
-    matrix_mua: float = 0.01
+    # ~0.13 per mm, which includes backscatter [@lorenzi2022]. ADR 0014 (closed): at the
+    # bound, 0.13, the grey absorber the deep stone needs for contrast (4e); was 0.01.
+    matrix_mua: float = 0.13
     # 7a C, grain part: crystallite radius (um) at translucency 1 (clear) and 0 (milky),
     # log-interpolated. The ends are Lorenzi's grain sizes, ~300 nm in blue bands and
     # ~5 um in white bands, halved to radii [@lorenzi2022].
@@ -144,7 +145,7 @@ class OpticsTable:
     quartz_g: float = 0.9
     # Pigment loading: volume fraction at impurity 1 for the iron oxides (impurity scales it
     # linearly, an assumption), and mu_a at 550 nm at impurity 1 for the shape-only pigments.
-    phi_iron_oxide: float = 9e-4  # ADR 0010 step 1 (was 3e-4)
+    phi_iron_oxide: float = 4e-4  # ADR 0014 4f (ADR 0010 step 1 had 9e-4; earlier 3e-4)
     mua550_shape: float = 3.0
     # Agatesim's unnamed IRON stain runs ochre to deep red as impurity rises (agatesim
     # render.STAIN): assumed a goethite-hematite mixture with hematite share = impurity.
@@ -158,8 +159,8 @@ class OpticsTable:
     # or above it they load as before (a step). An ASSUMPTION standing in for the unmeasured
     # share of a band's iron that forms pigment particles [@zhou2022; @zhang2025]. 0.28 is
     # the lowest floor that clears every band agatesim's stand-in shows neutral (C* < 8)
-    # in the n2-slice record (4k); it is not fitted to the photos. Opt-in: 0 is off.
-    iron_floor: float = 0.0
+    # in the n2-slice record (4k); it is not fitted to the photos. 0 turns it off.
+    iron_floor: float = 0.28
 
     def _hematite(self, phi: float) -> F64:
         n, k = HEMATITE_NK[self.hematite]

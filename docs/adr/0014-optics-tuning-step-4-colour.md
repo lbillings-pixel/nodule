@@ -1,8 +1,8 @@
 # 14. Optics tuning step 4: colour, and what darkens the stone
 
-- Status: proposed (2026-11-03). The owner chose to record the measurements
-  and read the sources before any optics change. Section 4 is filled in
-  after the reading.
+- Status: accepted (owner, 2026-11-03): 4l A, with the tested set made
+  the default (section 4m). Earlier: the owner chose to record the
+  measurements and read the sources before any optics change (section 4).
 - Date: 2026-11-03
 - Builds on: [ADR 0010](0010-optics-tuning-step-1-pores.md) (step 1: iron
   oxide tripled to 9 × 10⁻⁴; matrix absorption "only dims"),
@@ -172,9 +172,9 @@ The forward slab gained an optional bottom index for this check.
 
 ## Consequences
 
-- Defaults are unchanged. The black bottom is an option (4a, above), so
-  every earlier render and result stands. The probes are scratch
-  (runs/stone-2026-11-02/variants/, gitignored).
+- Superseded by 4m: the tested set is now the default. Results before 4m
+  stand as recorded under the defaults of their time. The probes are
+  scratch (runs/stone-2026-11-02/variants/, gitignored).
 - Open items carried forward: what darkens clear bands (section 4), edge
   coherence C16 (photos' 98th percentile), and L\* sd a little low (8.8
   against 9.7).
@@ -648,3 +648,48 @@ n2-slice record. It is not fitted to the photos (ADR 0002).
 - **Still open after A:** lightness spread (8.1 against 9.7) and the
   sign of corr(L\*, C\*) (+0.01 against −0.24), both pointing to
   colourless dark features such as relief and depth (4f, 4k).
+
+### 4m. Closing: the tested set becomes the default (2026-11-03)
+
+The owner chose to close this ADR rather than first chase the two gaps
+left after 4k. The set tested in 4k becomes the default together, as 4l
+planned. All values are `effective`.
+
+| setting | was | now | from |
+|---|---|---|---|
+| `OpticsTable.matrix_mua` (mm⁻¹) | 0.01 | 0.13 | 4e (Lorenzi's bound [@lorenzi2022]) |
+| `OpticsTable.phi_iron_oxide` | 9 × 10⁻⁴ | 4 × 10⁻⁴ | 4f |
+| `OpticsTable.iron_floor` | 0 (off) | 0.28 | 4k, 4l |
+| `Rendering.reflected` bottom | air | black | 4a, 4b |
+| `REFLECTED_EXPOSURE` | 2.2 | 1.51 | refitted below |
+
+- **Exposure.** It was refitted as in 4e (median L\* to the photos' 62.1)
+  on 4k's four saved cuts: 1.51. The same optics without the floor fit
+  1.79 at 2 mm and 1.78 at 10 mm, so slab depth hardly moves it. ADR 0013's
+  2.2 belonged to the old optics. Measured by rerunning
+  `depth_compare.py` on the saved renders (39 s).
+- **Depth.** Reflected renders keep `L1_DEPTH_MM` 2 mm. 4k used 10 mm. 4i
+  found 2 mm and 10 mm close at these optics without the floor (C\* within
+  0.6, contrast within 0.15), so 2 mm is expected to be close with it
+  [*plausible*; the 2 mm, floor-on setting has not been rendered].
+- **Back light.** `Rendering.transmitted` keeps the air bottom (a back
+  light needs it) and exposure 1.0. It does take the new optics table,
+  which no probe tested in transmitted light. No current run uses it. L3
+  calibration, when it comes, starts from these values.
+- **What it reaches** (4k, one specimen, one seed, four cuts; *verified*
+  as a model property, not a match to the photos): band colour gap 6.9
+  against the photos' 6.3; C\* 9.4 against 7.3; contrast 2.36 against
+  2.49. Procedural images remain no evidence for a formation mechanism
+  (ADR 0002).
+- **Known limits, left open** [*plausible* reading]: lightness spread
+  (8.1 against 9.7) and the sign of corr(L\*, C\*) (+0.01 against −0.24).
+  Both point to dark features that carry no colour, such as relief and
+  depth (4f, 4k). Carried forward with C16 and the agatesim pigment field
+  (option C).
+- **Earlier results.** The 20-cut checks of ADRs 0010–0013 were made with
+  the old defaults and stand as recorded. They have not been re-run with
+  these defaults.
+- Tests (442, all pass): the floor tests now check the default against
+  `iron_floor=0`. Reflected renderings default to the black bottom; the
+  back light keeps air. The step-1 test no longer checks
+  `phi_iron_oxide`, which this ADR changed.

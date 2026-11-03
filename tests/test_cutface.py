@@ -120,22 +120,23 @@ def test_rendering_takes_the_stratum_light() -> None:
 
 
 def test_exposure_is_set_per_light() -> None:
-    """ADR 0013: reflected faces at 2.2, slabs at 1.0 until calibrated; an explicit
-    exposure still wins, so 1.0 gives back the step-2 renders (negative control)."""
+    """ADR 0013, refitted in ADR 0014: reflected faces at 1.51, slabs at 1.0 until
+    calibrated; an explicit exposure still wins (negative control)."""
     rec = BandRecord.empty()
-    assert REFLECTED_EXPOSURE == 2.2
+    assert REFLECTED_EXPOSURE == 1.51
     assert Rendering.reflected(rec).exposure == REFLECTED_EXPOSURE
     assert Rendering.transmitted(rec).exposure == 1.0
     assert Rendering.reflected(rec, exposure=1.0).exposure == 1.0
 
 
-def test_bottom_is_air_unless_asked() -> None:
-    """ADR 0014: the black bottom is an option, off by default, so earlier renders
-    are unchanged; the back light cannot have one."""
+def test_reflected_bottom_is_black_unless_asked() -> None:
+    """ADR 0014 (closed): reflected faces default to the black bottom, "air" on request;
+    the back light keeps air and cannot have a black bottom."""
     rec = BandRecord.empty()
-    assert Rendering.reflected(rec).bottom == "air"
-    assert Rendering.reflected(rec).flags == 0
-    assert Rendering.reflected(rec, bottom="black").flags == Flag.BLACK_BOTTOM
+    assert Rendering.reflected(rec).bottom == "black"
+    assert Rendering.reflected(rec).flags == Flag.BLACK_BOTTOM
+    assert Rendering.reflected(rec, bottom="air").flags == 0
+    assert Rendering.transmitted(rec).bottom == "air"
     with pytest.raises(ValueError, match="bottom must be"):
         Rendering.reflected(rec, bottom="grey")  # type: ignore[arg-type]
     with pytest.raises(ValueError, match="back light"):

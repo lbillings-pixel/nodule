@@ -142,10 +142,11 @@ def test_table_responds_to_the_fields_as_stated() -> None:
 
 def test_iron_floor_clears_iron_oxides_below_it_only() -> None:
     """ADR 0014 4l (option A): below the floor iron-oxide pigments absorb nothing; at and
-    above it they load as without a floor. Off (0) by default."""
-    off, on = OpticsTable(), OpticsTable(iron_floor=0.28)
+    above it they load as without a floor. On at 0.28 by default since ADR 0014 closed;
+    0 turns it off."""
+    off, on = OpticsTable(iron_floor=0.0), OpticsTable()
     chal, qtz = Phase.CHALCEDONY, Phase.QUARTZ
-    assert off.iron_floor == 0.0
+    assert on.iron_floor == 0.28
     assert (off.band(chal, Pigment.IRON, 0.05, 0.5).mua > off.matrix_mua).all()  # off: tinted
     for p in (Pigment.IRON, Pigment.HEMATITE, Pigment.GOETHITE):
         np.testing.assert_array_equal(on.band(chal, p, 0.27, 0.5).mua, on.matrix_mua)
@@ -159,7 +160,7 @@ def test_iron_floor_clears_iron_oxides_below_it_only() -> None:
 def test_iron_floor_negative_control_leaves_the_rest_alone() -> None:
     """Negative control: the floor must not touch pigments that are not iron oxides, nor
     any band's scattering."""
-    off, on = OpticsTable(), OpticsTable(iron_floor=0.28)
+    off, on = OpticsTable(iron_floor=0.0), OpticsTable()
     chal = Phase.CHALCEDONY
     for p in (Pigment.CELADONITE, Pigment.MANGANESE, Pigment.VIOLET):
         lo = on.band(chal, p, 0.1, 0.5).mua
@@ -253,7 +254,7 @@ def test_tuning_step_1_values_and_the_air_water_equivalence() -> None:
     tested 0.3% air (reduced mu_s of the pore part within 3.5% per channel). Control:
     1.75% air must not match."""
     tab = replace(OpticsTable(), pore_gamma=1.0, pore_milky=0.0175)  # step 1 (ADR 0012)
-    assert (tab.pore_n, tab.pore_white, tab.phi_iron_oxide) == (1.333, 0.011667, 9e-4)
+    assert (tab.pore_n, tab.pore_white) == (1.333, 0.011667)
 
     def pore_transport(t: OpticsTable):
         o = t.scattering(Pigment.IRON, 0.5, 0.0)

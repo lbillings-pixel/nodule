@@ -371,3 +371,63 @@ cut and the correlation; *plausible*].
 No setting reaches all four photo statistics. Tuning these two
 parameters further against the photos would fit, not explain, so it
 is not proposed.
+
+### 4g. Per-band check: how much band colour survives the render (2026-11-03)
+
+The 4f merging was seen by eye on one cut. This check measures it on
+every saved pair (12 settings × the same four cuts, stand-in and render
+on the same pixels). Each stand-in's pixels are grouped into its band
+colours (k-means in CIELAB, K = 4, groups under 3% dropped, interiors
+only: masks eroded 3 px). Separation is the mean distance between group
+means, split into lightness (ΔL\*) and colour (Δa\*b\*). Retention is
+the render's separation on the same pixels divided by the stand-in's.
+Exposure is fitted per setting as in 4e. The renders sit on the stand-in
+grid: cross-correlation peaks at 0–1 px shift on three cuts and 4 px on
+the fourth (r 0.37–0.61), with no flip. Time 178 s, almost all in an
+unoptimised k-means; no rendering.
+
+Controls (stand-in against an altered copy of itself): identity gives
+1.00 / 1.00; colour removed gives 1.00 / 0.00; a Gaussian blur of
+σ 30 px gives 0.11 / 0.27. The check responds as intended to each.
+
+| setting | retained ΔL\* | retained Δa\*b\* | render ΔL\* / Δa\*b\* |
+|---|---|---|---|
+| stand-in (all settings) | 1 | 1 | 18.4 / 19.2 |
+| 10 mm, `matrix_mua` 0.01, iron off | 0.16 | 0.02 | 2.9 / 0.5 |
+| 20 mm, 0.01, iron off | 0.16 | 0.03 | 2.8 / 0.5 |
+| 2 mm, 0.01, iron off | 0.40 | 0.03 | 7.2 / 0.7 |
+| 10 mm, 0.13, iron off | 0.42 | 0.06 | 7.5 / 1.2 |
+| 10 mm, 0.13, iron 2 × 10⁻⁴ | 0.47 | 0.15 | 8.4 / 2.8 |
+| 10 mm, 0.13, iron 4 × 10⁻⁴ | 0.50 | 0.18 | 9.0 / 3.5 |
+| 10 mm, 0.01, iron 9 × 10⁻⁴ | 0.54 | 0.21 | 9.6 / 4.1 |
+
+One cut in detail (10 mm, 0.13, iron 2 × 10⁻⁴). The stand-in's bands
+are a dark bluish grey (L\* 52, C\* 3), an ochre band (L\* 65, C\* 29,
+hue 75°) and a pale band (L\* 78, C\* 5). In the render they read L\* 48,
+67 and 69, with C\* 10, 11 and 7, all hues 95–114° (yellow).
+
+*Verified* (as a property of this model and these cuts):
+- The render keeps at most about half the bands' lightness differences
+  and at most a fifth of their colour differences. Every setting merges
+  colour more than the σ 30 px blur does.
+- Without iron, almost no band colour survives (≤ 0.06). In the detailed cut,
+  the bluish-grey band gets no hue of its own and comes out
+  yellow-tinted.
+- Lightness retention roughly triples (0.16 → 0.40–0.42) either with a
+  thinner slab (2 mm) or with stronger grey absorption (0.13). Both
+  shorten the light's path in the stone.
+
+So the merging comes from light transport: light that returns to the
+face has crossed several bands below it, and those bands tilt under the
+cut [inference: thinner slabs and shorter paths both reduce it;
+*plausible*]. The renderer gives each band its own pigment
+(`OpticsTable.band`), so the bands do not share one material.
+The ochre band's colour is diluted, and a yellow cast spreads into the
+neutral bands. That fits 4f's positive L\*–C\* correlation
+[inference; *plausible*].
+
+Not yet known: how strongly the photos' own band colours separate. The
+photos have no band labels, so the same grouping would have to be run on
+the photos and the renders alike (each clustered on its own pixels).
+These are model results, not evidence about how real stones form
+(ADR 0002).

@@ -661,28 +661,41 @@ planned. All values are `effective`.
 | `OpticsTable.phi_iron_oxide` | 9 × 10⁻⁴ | 4 × 10⁻⁴ | 4f |
 | `OpticsTable.iron_floor` | 0 (off) | 0.28 | 4k, 4l |
 | `Rendering.reflected` bottom | air | black | 4a, 4b |
-| `REFLECTED_EXPOSURE` | 2.2 | 1.51 | refitted below |
+| `REFLECTED_EXPOSURE` | 2.2 | 1.54 | refitted below |
 
-- **Exposure.** It was refitted as in 4e (median L\* to the photos' 62.1)
-  on 4k's four saved cuts: 1.51. The same optics without the floor fit
-  1.79 at 2 mm and 1.78 at 10 mm, so slab depth hardly moves it. ADR 0013's
-  2.2 belonged to the old optics. Measured by rerunning
-  `depth_compare.py` on the saved renders (39 s).
-- **Depth.** Reflected renders keep `L1_DEPTH_MM` 2 mm. 4k used 10 mm. 4i
-  found 2 mm and 10 mm close at these optics without the floor (C\* within
-  0.6, contrast within 0.15), so 2 mm is expected to be close with it
-  [*plausible*; the 2 mm, floor-on setting has not been rendered].
+- **Exposure.** Refitted as in 4e (median L\* to the photos' 62.1): 1.51
+  on 4k's four 10 mm cuts, and 1.54 on the same four cuts rendered with
+  the new defaults (2 mm, below). The default takes 1.54, the fit for
+  the default depth. ADR 0013's 2.2 belonged to the old optics.
+- **Depth: the default checked (2 mm).** Reflected renders keep
+  `L1_DEPTH_MM` 2 mm, where 4k used 10 mm. The four 4k cuts were rendered
+  with the project defaults and nothing overridden but exposure
+  (`look_defaults.py`, scratch): 222 s, peak traced Python memory 549 MB
+  (GPU not traced); analysis 26 s (`depth_compare.py`).
+
+  | setting | Y p90/p10 | L\* sd | C\* median | corr(L\*, C\*) | band ΔL\* / Δa\*b\* | shuffled |
+  |---|---|---|---|---|---|---|
+  | defaults, 2 mm | 2.52 | 8.75 | 9.01 | +0.10 | 12.2 / 7.1 | 1.5 / 1.2 |
+  | 4k, 10 mm | 2.36 | 8.13 | 9.36 | +0.01 | 9.9 / 6.9 | 1.3 / 1.3 |
+  | photos (4e, 4h) | 2.49 | 9.7 | 7.3 | −0.24 | 14.4 / 6.3 | 2.2 / 0.7 |
+
+  *Verified* (model property; one specimen, one seed, four cuts): at
+  2 mm the defaults come as close to the photos as 10 mm or closer on
+  contrast, lightness spread, tint and band lightness. Band colour is
+  unchanged. The L\*–C\* correlation moves a little further from the
+  photos (+0.10). The band measure's k-means subsample depends on the
+  order of the settings analysed: the 10 mm row's band ΔL\* reads 9.9 here
+  and 10.3 in 4k, so differences under ~0.5 are noise.
 - **Back light.** `Rendering.transmitted` keeps the air bottom (a back
   light needs it) and exposure 1.0. It does take the new optics table,
   which no probe tested in transmitted light. No current run uses it. L3
   calibration, when it comes, starts from these values.
-- **What it reaches** (4k, one specimen, one seed, four cuts; *verified*
-  as a model property, not a match to the photos): band colour gap 6.9
-  against the photos' 6.3; C\* 9.4 against 7.3; contrast 2.36 against
-  2.49. Procedural images remain no evidence for a formation mechanism
-  (ADR 0002).
+- **What it reaches** (the 2 mm table above; *verified* as a model
+  property, not a match to the photos): band colour gap 7.1 against the
+  photos' 6.3; C\* 9.0 against 7.3; contrast 2.52 against 2.49. Procedural images remain no
+  evidence for a formation mechanism (ADR 0002).
 - **Known limits, left open** [*plausible* reading]: lightness spread
-  (8.1 against 9.7) and the sign of corr(L\*, C\*) (+0.01 against −0.24).
+  (8.75 against 9.7) and the sign of corr(L\*, C\*) (+0.10 against −0.24).
   Both point to dark features that carry no colour, such as relief and
   depth (4f, 4k). Carried forward with C16 and the agatesim pigment field
   (option C).

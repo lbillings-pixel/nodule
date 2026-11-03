@@ -120,10 +120,10 @@ def test_rendering_takes_the_stratum_light() -> None:
 
 
 def test_exposure_is_set_per_light() -> None:
-    """ADR 0013, refitted in ADR 0014: reflected faces at 1.51, slabs at 1.0 until
+    """ADR 0013, refitted in ADR 0014: reflected faces at 1.54, slabs at 1.0 until
     calibrated; an explicit exposure still wins (negative control)."""
     rec = BandRecord.empty()
-    assert REFLECTED_EXPOSURE == 1.51
+    assert REFLECTED_EXPOSURE == 1.54
     assert Rendering.reflected(rec).exposure == REFLECTED_EXPOSURE
     assert Rendering.transmitted(rec).exposure == 1.0
     assert Rendering.reflected(rec, exposure=1.0).exposure == 1.0

@@ -124,3 +124,31 @@ coefficient and no part of the record changes.
   1.05 GB, reporting every block, C16 and C15. Lightness and C\* come
   from the probe, since the survey keeps no images.
 - References added: none.
+
+## Results: the 20-cut check (2026-11-03)
+
+Record 0.7 / 0.7, γ 4, exposure 2.2; 20 rendered cuts, looks from half A,
+judged against half A and the held-out half B. 1803 s (step 2: 1611 s,
++12%), peak traced 1.05 GB. Step 2's values are given in brackets.
+
+| | vs A: joint / line | vs B: joint / line | spectrum vs A / vs B (line 1.40 / 1.97) | blocks outside |
+|---|---|---|---|---|
+| all cuts (n 20) | 0.6 / 15.9 (0.5) | 4.2 / 7.9 (3.4) | 0.49 / 1.05 (0.43 / 0.71) | none |
+| noise-matched (n 8; was 12) | 0.5 / 15.9 (0.6) | 2.9 / 7.9 (3.1) | 0.43 / 0.72 (0.40 / 0.59) | none |
+
+- **Within on both halves, no block outside.** The band descriptors barely
+  move, as expected for a change that scales every band alike: C15, C16
+  and C26 change by 0.02 or less. C16 stays at 0.91 (photos' 98th
+  percentile), still the open edge-coherence gap.
+- **Against half B the set is a little further out** (joint 3.4 to 4.2,
+  spectrum 0.71 to 1.05), still well inside the lines. With 20 cuts this is
+  within run-to-run variation [inference, not measured].
+- **Fewer cuts are noise-matched** (8 of 20 against 12). Brighter cuts
+  carry more Monte Carlo noise in grey levels, and more of them reach the
+  sample cap. This is the time cost noted under Risks.
+- Lightness and C\* are the probe's (L\* 62.1, sd 8.8, C\* 17.2).
+
+Grade: exposure 2.2 keeps the stone's set within the photos' spread on
+both halves and closes the lightness gap. *Plausible* (ADR 0002). Open:
+colour (C\* 17 against 7), edge coherence C16, and L\* sd a little low
+(8.8 against 9.7).

@@ -90,7 +90,8 @@ is that the stand-in image is replaced by a rendering:
    rendered. At most `MOST_PX` (2048) pixels across.
 4. Render: the growth grid is filled for the plane (the slab depth for L3),
    rendered under the stratum's light, and converted to sRGB at one fixed
-   exposure per run (`effective`).
+   exposure per run (`effective`; 2.2 for reflected faces,
+   [ADR 0013](0013-optics-tuning-step-3-exposure.md)).
 5. Samples per pixel⁵: the fewest that keep the render's own Monte Carlo
    noise at or below a third of the matched photo's noise level. That adds
    at most about 5 % to the noise in quadrature (assumption, measured on the

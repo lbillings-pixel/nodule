@@ -430,7 +430,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--run", default="stand-in", choices=RUNS)
     parser.add_argument("--stratum", default="reflected", choices=sorted(STRATA))
     parser.add_argument("--record-seed", type=int, default=0, help="the stone record's stream")
-    parser.add_argument("--exposure", type=float, default=1.0)
+    parser.add_argument("--exposure", type=float, default=None, help="default: by light (ADR 0013)")
     parser.add_argument("--depth-mm", type=float, default=None, help="default: by light")
     parser.add_argument("--most-spp", type=int, default=MOST_SPP)
     args = parser.parse_args(argv)
@@ -442,7 +442,9 @@ def main(argv: list[str] | None = None) -> None:
     rendering = None
     if args.run != "stand-in":
         photo_looks = stratum_looks(photo_looks, args.stratum)
-        kw: dict[str, Any] = {"exposure": args.exposure, "most_spp": args.most_spp}
+        kw: dict[str, Any] = {"most_spp": args.most_spp}
+        if args.exposure is not None:
+            kw["exposure"] = args.exposure
         if args.depth_mm is not None:
             kw["depth_mm"] = args.depth_mm
         rng = np.random.default_rng(args.record_seed)
@@ -452,6 +454,8 @@ def main(argv: list[str] | None = None) -> None:
     partial = path.with_suffix(".partial.jsonl")  # resumed if a run was cut short
     key = {k: getattr(args, k) for k in ("preset", "run", "stratum", "record_seed", "exposure",
                                           "depth_mm", "most_spp")}  # fmt: skip
+    if rendering is not None:  # the exposure used, so a resumed run cannot mix two
+        key["exposure"] = rendering.exposure
     rows = survey(specimen, photo_looks, args.cuts, seed=args.seed, most=args.most,
                   rendering=rendering, checkpoint=partial, key=key)  # fmt: skip
     elapsed = time.perf_counter() - t0

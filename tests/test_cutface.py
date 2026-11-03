@@ -21,6 +21,7 @@ from nodule.descriptors import PhotoCut, measure, noise_to_add, photo_cut
 from nodule.render import _gpu, fakes
 from nodule.render.camera import Light, srgb
 from nodule.render.cutface import (
+    REFLECTED_EXPOSURE,
     CutRender,
     CutRenderer,
     Rendering,
@@ -116,6 +117,16 @@ def test_rendering_takes_the_stratum_light() -> None:
     assert (r1.light.kind, r1.depth_mm) == ("dome", 2.0)  # ADR 0010 10b
     assert (r3.light.kind, r3.depth_mm, r3.exposure) == ("back", 3.0, 2.0)
     assert Rendering.reflected(rec, depth_mm=4.0).depth_mm == 4.0
+
+
+def test_exposure_is_set_per_light() -> None:
+    """ADR 0013: reflected faces at 2.2, slabs at 1.0 until calibrated; an explicit
+    exposure still wins, so 1.0 gives back the step-2 renders (negative control)."""
+    rec = BandRecord.empty()
+    assert REFLECTED_EXPOSURE == 2.2
+    assert Rendering.reflected(rec).exposure == REFLECTED_EXPOSURE
+    assert Rendering.transmitted(rec).exposure == 1.0
+    assert Rendering.reflected(rec, exposure=1.0).exposure == 1.0
 
 
 # --- GPU ------------------------------------------------------------------------------------

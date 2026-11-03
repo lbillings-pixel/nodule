@@ -119,7 +119,8 @@
 - Output is linear reflectance relative to a white Lambertian standard
   under the same light, converted to sRGB with a stated exposure. There is
   no artistic tone curve, so real photos can be put through the same
-  conversion.
+  conversion. Reflected faces use exposure 2.2 and slabs 1.0
+  ([ADR 0013](0013-optics-tuning-step-3-exposure.md)).
 
 ### 3. Materials (coupling to agatesim, stated as assumptions)
 

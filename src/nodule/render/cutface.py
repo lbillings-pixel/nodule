@@ -50,6 +50,9 @@ from nodule.specimen import Specimen, SpecimenCut
 GRID_MM = 0.2  # ADR 0007 7c
 L1_DEPTH_MM = 2.0  # effective, ADR 0010 10b (module docstring)
 L3_DEPTH_MM = 3.0  # effective, owner (ADR 0007 amendment 5)
+# Matches the reflected photos' median lightness (L* 62); effective, a camera
+# setting, not a property of the stone (ADR 0013). L3 keeps 1.0 until calibrated.
+REFLECTED_EXPOSURE = 2.2
 FIRST_SPP = 256  # samples per pixel before the photo's blur is known (effective)
 MOST_SPP = 1024  # cost cap (effective); cuts left noisier than the photo are flagged
 # The render's noise after the photo's blur is brought below this share of the photo's,
@@ -66,7 +69,7 @@ class Rendering:
     depth_mm: float
     optics: OpticsTable = field(default_factory=OpticsTable)
     grid_mm: float = GRID_MM
-    exposure: float = 1.0  # effective, one per run
+    exposure: float = 1.0  # effective, one per run and light (ADR 0013)
     first_spp: int = FIRST_SPP
     most_spp: int = MOST_SPP
     undegraded: bool = False  # F5: no photo-like blur or noise (ADR 0008 amendment 4)
@@ -74,6 +77,7 @@ class Rendering:
     @classmethod
     def reflected(cls, record: BandRecord, **kw: Any) -> Rendering:
         """L1, the dome, for reflected cut faces (ADR 0008 7c)."""
+        kw.setdefault("exposure", REFLECTED_EXPOSURE)
         return cls(Light("dome"), record, kw.pop("depth_mm", L1_DEPTH_MM), **kw)
 
     @classmethod

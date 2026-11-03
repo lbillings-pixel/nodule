@@ -178,7 +178,7 @@ The forward slab gained an optional bottom index for this check.
 - Open items carried forward: what darkens clear bands (section 4), edge
   coherence C16 (photos' 98th percentile), and L\* sd a little low (8.8
   against 9.7).
-- References added: goetze2012 (owner's PDF, read in full; notes/n2-reading/goetze2012-onyx.md).
+- References added: goetze2012, zhou2022, zhang2025 (owner PDFs, read in full; notes/n2-reading/goetze2012-onyx.md, step4-zhou-zhang.md).
   lorenzi2022, jayaraman1953 and jensen2001 were already catalogued, read
   in full. The step-4 note's other sources wait for the decision.
 
@@ -241,3 +241,49 @@ Open for the owner: 4b in the next section.
 - C. **Treat some photos as slabs on a dark backing**, where a black plane
   at the slab's thickness is physical. This needs the owner to say which
   reflected photos are thin slabs.
+
+**Owner's choice (2026-11-03): A**, after reading Zhou et al. 2022 and
+Zhang et al. 2025 in full (notes/n2-reading/step4-zhou-zhang.md).
+
+### 4c. What Zhou and Zhang add, and the updated plan
+
+- **A measured colour-against-iron line.** Zhou measured 24 Xunke agates
+  as 8 × 8 × 5 mm blocks on a near-white Munsell N9.5 chip (integrating
+  sphere, specular excluded). Lightness falls with iron:
+  L\* = 76.04 − 487.4 w, where w is Fe₂O₃ in wt%, over 0.035–0.118
+  (R² 0.83) [@zhou2022] (Fig. 3a; checked on the page image). The
+  sample with the least iron, a "nearly colourless control", reads only
+  about L\* 64. Extending the line to no iron gives L\* 76 [inference]. So
+  even an iron-free 5 mm slab over white returns only about half the light.
+  That is a direct measure of grey loss in agate, independent of the
+  photos.
+- **Real iron-darkened agates are far more chromatic than ours.** Yellow
+  samples at L\* 60–64 have C\* 34–47 (read off Zhou's Fig. 10 swatches,
+  approx.). The photos' median of 7.3 lies below even Zhou's colourless
+  control (C\* ≈ 12). So most photographed stones are probably not
+  darkened by iron-oxide pigment [inference].
+- **Our iron is high.** φ 9 × 10⁻⁴ as hematite is about 0.18 wt% Fe₂O₃,
+  about 1270 ppm Fe [inference: densities assumed]. That is above Zhou's
+  darkest red (0.118 wt%). By laser-ablation spot analysis, white and
+  translucent zones hold ~70–400 ppm Fe, and fibrous chalcedony ~130 ppm
+  (medians read off figures, approx.) [@zhang2025].
+
+**Updated plan for A:**
+1. **A1, as chosen:** a deep stone (10 mm, black bottom), iron off,
+   `matrix_mua` 0.08 and 0.13 (about 25 min). Does a grey absorber within
+   Lorenzi's bound give the photos' contrast?
+2. **A2 (recommended next): calibrate against Zhou's set-up.** A 5 mm slab
+   on a white backing under the dome needs one more bottom option, "white":
+   a diffuse reflector of the chip's reflectance (to be sourced). Without
+   iron the slab should read about L\* 76, and at the control's iron
+   (0.035 wt%, φ about 2 × 10⁻⁴ as goethite [inference]) about 64. Two
+   measured numbers then fix the grey absorption without the photos.
+   Negative control: the same slab with no absorption must read clearly
+   above 76, and the check must reject it. *Speculative* until built: the
+   Beihong blocks' scattering is not measured.
+3. **If the grey absorber works,** iron is reset from measured ppm by band
+   (Zhang, Möckel) through a stated conversion. That turns
+   `phi_iron_oxide` from `effective` towards `physical`, in a later ADR.
+4. **Supplements:** Zhou's Table S2 (Fe₂O₃ per sample) would give the
+   exact iron-to-colour pairs. It is worth fetching. The others are mostly
+   recovered from figures or are of low value here.

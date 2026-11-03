@@ -3160,3 +3160,31 @@ licence = "publisher copyright (Mineralogical Society); cite only"
 checked = "full-text"
 topics = ["agate", "colour", "onyx", "carbon", "graphite", "absorber", "staining"]
 notes = """Read in full 2026-11-03 (PDF the owner supplied; figures checked on page images). Mali onyx: black bands from disordered H-bearing graphitic carbon in pores of fibrous chalcedony. CNS (Table 1, p.120): C 1.88 wt% dark, 0.22 white (LOD 0.13); S 0.06/0.04; N below LOD. SEM: plates ≤200 nm, 'lower nm-range up to 200 nm' (p.124); TL shows µm-scale dark specks (Fig. 2c). Raman G 1605, D 1345 cm⁻¹, none in white (Fig. 5). IR C–H bands in dark (Fig. 4). ESR g 2.0026, ΔBpp 0.3 mT (Fig. 6). δ13C −31.1±0.2‰ organic. Fe 165 ppm dark, ~40 white; Mn <40; only hematite, so Fe oxides excluded (p.124). White = dense granular chalcedony + quartz, low porosity; black = fibrous, high porosity (Fig. 2, p.120). Natural, argued from continuous colour and carbon-free cross-cutting quartz veins (pp.116, 125); no stained control. No visible optical data; NIR absorbance on a 105 µm plate only. 'Different concentrations of carbon inclusions produce varying colouration' (p.126), without data. Intro cites Henn 2010: onyx elsewhere darkened by Mn oxides, bitumen, or Fe/Mn/Ti oxides."""
+
+[[references]]
+id = "zhou2022"
+kind = "article"
+authors = ["Zhou, Y.", "Liu, Z.", "Zhao, Z.", "Guo, Y."]
+year = 2022
+title = "Quantitative Study on Colour and Spectral Characteristics of Beihong Agate"
+venue = "Minerals 12(6), 677"
+doi = "10.3390/min12060677"
+access = "open"
+licence = "CC-BY-4.0"
+checked = "full-text"
+topics = ["agate", "colour", "cielab", "iron", "goethite", "hematite", "uv-vis", "heat-treatment"]
+notes = """Full text read 2026-11-03 (owner PDF; supplement S1-S5 not read). 24 Xunke Beihong agates, 8x8x5 mm, X-Rite SP62 sphere SCE, D65/2deg, on N9.5 Munsell chip: L* 23.56-64.17, C* 12.29-61.04, h 40.75-85.65. XRF (3 mm collimator) Fe2O3 0.035-0.118 wt%; L* = 76.043 - 487.351 w, h = 104.314 - 580.201 w (Fig. 3); Fe vs C* r=0.205. Nearly colourless control BH-F-1: no Fe3+ bands; approx. L* 64, C* 12.3, h 87, Fe2O3 0.035 (read off Figs 2, 3, 10). Raman: goethite inclusions; derivative troughs 435 + 502-585 nm (goethite->hematite). 310 C heating darkens and reddens (BH-F-24 L* 23.56->10.89, C* 39.25->19.93). Particle size not measured."""
+
+[[references]]
+id = "zhang2025"
+kind = "article"
+authors = ["Zhang, P.", "Wang, B.-C.", "Zheng, J.-L.", "Guo, X.-Y."]
+year = 2025
+title = "Formation mechanism of basalt-related agate deposits: an example from the Ating River alluvial gravels in the Xunke area, Heilongjiang, NE China"
+venue = "Frontiers in Earth Science 13, 1548167"
+doi = "10.3389/feart.2025.1548167"
+access = "open"
+licence = "CC-BY-4.0"
+checked = "full-text"
+topics = ["agate", "trace-elements", "iron", "colour", "la-icp-ms", "epma", "texture"]
+notes = """Full text read 2026-11-03 (owner PDF; Supplementary Tables S1-S2 not read). 5 Xunke alluvial agates; LA-ICP-MS 35 um spots (printed "mm"), 77 spots: Fe 1.2-4635 ppm (avg 486); Mn, Cr, Cu < 7.1 ppm avg, 'Mn shows no chromatic relevance'. Fe by texture (Fig. 8D, approx. medians): cryptocrystalline ~600, colloform ~400, fibrous ~130, micro-granular ~70, crystalline quartz ~10 ppm. White/translucent zones of BH4 ~70-400 ppm (Fig. 6B, approx). Spots not colour-tagged; no optical data. Authors invoke both Si4+ <-> (Al,Fe)3+ + alkali substitution and Fe-bearing particles. Same locality as zhou2022."""

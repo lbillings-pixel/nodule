@@ -3173,7 +3173,7 @@ access = "open"
 licence = "CC-BY-4.0"
 checked = "full-text"
 topics = ["agate", "colour", "cielab", "iron", "goethite", "hematite", "uv-vis", "heat-treatment"]
-notes = """Full text read 2026-11-03 (owner PDF; supplement S1-S5 not read). 24 Xunke Beihong agates, 8x8x5 mm, X-Rite SP62 sphere SCE, D65/2deg, on N9.5 Munsell chip: L* 23.56-64.17, C* 12.29-61.04, h 40.75-85.65. XRF (3 mm collimator) Fe2O3 0.035-0.118 wt%; L* = 76.043 - 487.351 w, h = 104.314 - 580.201 w (Fig. 3); Fe vs C* r=0.205. Nearly colourless control BH-F-1: no Fe3+ bands; approx. L* 64, C* 12.3, h 87, Fe2O3 0.035 (read off Figs 2, 3, 10). Raman: goethite inclusions; derivative troughs 435 + 502-585 nm (goethite->hematite). 310 C heating darkens and reddens (BH-F-24 L* 23.56->10.89, C* 39.25->19.93). Particle size not measured."""
+notes = """Full text and supplement S1-S5 read 2026-11-03 (owner PDFs). 24 Xunke Beihong agates, 8x8x5 mm, X-Rite SP62 sphere SCE, D65/2deg, on N9.5 Munsell chip: L* 23.56-64.17, C* 12.29-61.04, h 40.75-85.65. XRF (3 mm collimator) Fe2O3 0.035-0.118 wt%; L* = 76.043 - 487.351 w, h = 104.314 - 580.201 w (Fig. 3); Fe vs C* r=0.205. Nearly colourless control BH-F-1: no Fe3+ bands; L* 63.78, C* 12.29, h 85.61, Fe2O3 0.035 (S1, S2); BH-F-4 has the same Fe2O3 and L* 64.17 but C* 46.63. S2 per-sample Fe2O3 refit reproduces Fig. 3a; lowest five samples 0.035-0.041 (possible XRF floor; no detection limit given), so 'L* 76 at w=0' is an extrapolation. S5: control lightens on 310 C heating (L* 63.78->70.63). Raman: goethite inclusions; derivative troughs 435 + 502-585 nm (goethite->hematite). 310 C heating darkens and reddens (BH-F-24 L* 23.56->10.89, C* 39.25->19.93). Particle size not measured."""
 
 [[references]]
 id = "zhang2025"

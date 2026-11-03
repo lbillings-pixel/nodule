@@ -286,4 +286,31 @@ Zhang et al. 2025 in full (notes/n2-reading/step4-zhou-zhang.md).
    `phi_iron_oxide` from `effective` towards `physical`, in a later ADR.
 4. **Supplements:** Zhou's Table S2 (Fe₂O₃ per sample) would give the
    exact iron-to-colour pairs. It is worth fetching. The others are mostly
-   recovered from figures or are of low value here.
+   recovered from figures or are of low value here. (Fetched and read:
+   see 4d.)
+
+### 4d. Zhou's supplement (read 2026-11-03)
+
+The owner fetched Zhou's supplement (Tables S1–S5, per-sample colour, XRF,
+moganite, spectral troughs and heating) [@zhou2022]. Refitting S1 lightness
+against S2 iron reproduces Fig. 3a exactly. Three findings change A2:
+
+- **Same iron, same lightness, different colour.** The colourless control
+  (BH-F-1: L\* 63.78, C\* 12.29) and a strong yellow (BH-F-4: L\* 64.17,
+  C\* 46.63) both hold 0.035 wt% Fe₂O₃ (*verified*, S1–S2). Total iron
+  sets neither chroma nor, at this level, lightness. So the control's
+  L\* 64 is most likely grey loss from the slab itself, not iron
+  [inference; *plausible*].
+- **"L\* 76 with no iron" is weaker than it looked.** It extends the line
+  0.035 wt% below the lowest measured sample. Five samples sit at
+  0.035–0.041, perhaps the XRF floor (no detection limit is given). The
+  two lightest samples lie about 5 L\* above the line. Treat 76 as a loose
+  upper bound, not a target [*speculative*].
+- **Heating lightens the control** (L\* 63.78 → 70.63 at 310 °C), while
+  every iron-bearing sample darkens. The slab's own loss changes with
+  heating, without pigment [inference; *speculative*].
+
+**Effect on the plan.** A2 now has one measured target, not two: a 5 mm
+slab with no iron pigment on the white chip should read about L\* 64,
+C\* about 12. The negative control stands: a slab with no absorption must
+read clearly lighter, and the check must reject it. A1 is unchanged.

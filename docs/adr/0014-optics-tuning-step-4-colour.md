@@ -87,6 +87,14 @@ enter only when catalogued at the decision.
   570 nm takes about 0.02 in absorbance per ~1 mm [@lorenzi2022]. That
   gives a grey-ish μ_a of roughly 0.02–0.05 mm⁻¹ [inference, the note's],
   above our `matrix_mua` 0.01 and below Lorenzi's 0.13 mm⁻¹ bound.
+- Carbon can blacken agate, but no source yet shows it greying ordinary
+  bands. In Mali onyx the black bands hold 1.88 wt% disordered organic
+  carbon in the pores of fibrous chalcedony, while the white bands hold
+  0.22 wt% and stay white [@goetze2012] (Table 1, p. 120). Iron there is
+  165 against ~40 ppm, as hematite, which the authors rule out as the
+  darkener. The paper gives no visible-light optics. So a carbon-like grey
+  absorber is a real mechanism for black and grey onyx. For ordinary
+  agate it remains an assumption.
 - Whether a band looks light or dark depends on what lies behind it.
   Jayaraman's colourless agate plates swap light and dark bands when
   viewed against a dark background under oblique light [@jayaraman1953],
@@ -133,12 +141,22 @@ changes nothing in the defaults.
 absorption over a lossless mirror bottom must render near-white. The
 look comparison must then flag it as too light.
 
-**Sources the owner could fetch** (paywalled or bot-blocked):
-- Götze et al. 2012, black colouring in onyx agate, *Mineral. Mag.*
-  76(1), 115–127. This is the grey/black absorber question.
-- Rossman 1994, coloured varieties of silica, *Rev. Mineral.* 29.
-- The supplementary tables of the note's Zhou et al. 2022 (agate CIELAB
-  and iron, MDPI) and Zhang et al. 2025.
+**Sources.** Götze et al. 2012 was supplied by the owner and read (above).
+Rossman 1994 (*Rev. Mineral.* 29) could not be obtained. The
+supplementary tables of Zhou et al. 2022 (doi 10.3390/min12060677) and
+Zhang et al. 2025 (doi 10.3389/feart.2025.1548167) are optional.
+
+**Owner's choice (2026-11-03): A.** The option is built: `Flag.BLACK_BOTTOM`
+in the camera kernel, and `Rendering(bottom="black")` with "air" as the
+default. Three new GPU tests are checked against exact values and the
+forward slab:
+- a pure absorber over a black bottom returns only the face's specular;
+  its control, the air bottom, matches the exact round trip;
+- a clear band matches the forward slab with a matched bottom, by
+  reciprocity; its control, the air-bottom slab, is far off;
+- the back light refuses a black bottom.
+
+The forward slab gained an optional bottom index for this check.
 
 ## Alternatives considered
 
@@ -154,10 +172,12 @@ look comparison must then flag it as too light.
 
 ## Consequences
 
-- No code change. The probes are scratch (runs/stone-2026-11-02/variants/,
-  gitignored).
+- Defaults are unchanged. The black bottom is an option (4a, above), so
+  every earlier render and result stands. The probes are scratch
+  (runs/stone-2026-11-02/variants/, gitignored).
 - Open items carried forward: what darkens clear bands (section 4), edge
   coherence C16 (photos' 98th percentile), and L\* sd a little low (8.8
   against 9.7).
-- References added: none (lorenzi2022, jayaraman1953 and jensen2001 are
-  catalogued, read in full). The note's new sources wait for the decision.
+- References added: goetze2012 (owner's PDF, read in full; notes/n2-reading/goetze2012-onyx.md).
+  lorenzi2022, jayaraman1953 and jensen2001 were already catalogued, read
+  in full. The step-4 note's other sources wait for the decision.

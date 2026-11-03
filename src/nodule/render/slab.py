@@ -42,6 +42,7 @@ def slab(
     mua: ArrayLike,
     mus: ArrayLike,
     n_out: float = 1.0,
+    n_bottom: float | None = None,
     mubar: float | None = None,
     layers: ArrayLike | None = None,
     layer_mm: float = 1.0,
@@ -51,7 +52,9 @@ def slab(
 ) -> SlabResult:
     """mua, mus: (materials, 3) per mm. `layers`: material id per layer of
     `layer_mm` from the face (the last repeats); none = material 0 throughout.
-    `analog` = unweighted delta tracking, the negative control for mubar < mu_t."""
+    `analog` = unweighted delta tracking, the negative control for mubar < mu_t.
+    `n_bottom`: the index below the back face (default `n_out`; `n_in` makes the
+    bottom index-matched and black, as the camera's `Flag.BLACK_BOTTOM`)."""
     cp = _gpu.cupy()
     a = cp.asarray(np.atleast_2d(np.asarray(mua, np.float32)))
     s = cp.asarray(np.atleast_2d(np.asarray(mus, np.float32)))
@@ -67,7 +70,8 @@ def slab(
     t0 = time.perf_counter()
     k(((packets + block - 1) // block,), (block,),
       (np.int64(packets), np.uint32(seed), np.float32(depth_mm), np.float32(n_in),
-       np.float32(n_out), np.float32(g), a, s, np.float32(mb), np.int32(analog),
+       np.float32(n_out), np.float32(n_out if n_bottom is None else n_bottom),
+       np.float32(g), a, s, np.float32(mb), np.int32(analog),
        lay, np.int32(nl), np.float32(layer_mm), out))  # fmt: skip
     _gpu.synchronize()
     sec = time.perf_counter() - t0

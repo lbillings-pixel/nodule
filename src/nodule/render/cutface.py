@@ -11,7 +11,10 @@ so the face mask and quartz phase of the cut still apply.
   depth below the face is cut off at `depth_mm` (2 mm by default since
   ADR 0010 10b, `effective`; on four n2-slice cuts 2 mm changed the image by
   0.14 grey levels against 10 mm and saved ~22% of the time; earlier, 20 mm
-  changed one cut by 0.02 grey levels against 9.5 between seeds).
+  changed one cut by 0.02 grey levels against 9.5 between seeds). Both checks had the
+  slab's smooth bottom over black air, which reflects much of the light reaching it
+  back up; `bottom="black"` instead loses it, as into the rest of a stone (ADR 0014,
+  `effective`; default "air" until ADR 0014 decides).
 - **Materials**: from a band record passed in, the stone's or a fake's
   (`nodule.render.fakes`), so the stone and its fakes differ only there.
 - **Samples and noise**: samples are added in batches, alternately to two
@@ -34,13 +37,13 @@ from __future__ import annotations
 import math
 import time
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Literal
 
 import numpy as np
 from agatesim.specimen.quality import luminance
 from numpy.typing import NDArray
 
-from nodule.render.camera import Light, View, reflectance_factor, render, srgb
+from nodule.render.camera import Flag, Light, View, reflectance_factor, render, srgb
 from nodule.render.materials import OpticsTable
 from nodule.render.record import BandRecord
 from nodule.render.scene import pack, upload
@@ -73,6 +76,18 @@ class Rendering:
     first_spp: int = FIRST_SPP
     most_spp: int = MOST_SPP
     undegraded: bool = False  # F5: no photo-like blur or noise (ADR 0008 amendment 4)
+    bottom: Literal["air", "black"] = "air"  # below the slab (module docstring; ADR 0014)
+
+    def __post_init__(self) -> None:
+        if self.bottom not in ("air", "black"):
+            raise ValueError(f"bottom must be 'air' or 'black', not {self.bottom!r}")
+        if self.bottom == "black" and self.light.kind == "back":
+            raise ValueError("the back light shines through the bottom: no black bottom")
+
+    @property
+    def flags(self) -> int:
+        """Kernel flags of this rendering."""
+        return int(Flag.BLACK_BOTTOM) if self.bottom == "black" else 0
 
     @classmethod
     def reflected(cls, record: BandRecord, **kw: Any) -> Rendering:
@@ -146,7 +161,7 @@ class CutRenderer:
         for k in range(2):
             seed = int(self._rng.integers(1, 2**32 - 1))  # the kernel's seed is uint32
             out = render(self._dev, self._view, self._mats, r.light, spp=add, seed=seed,
-                         depth_mm=r.depth_mm)  # fmt: skip
+                         depth_mm=r.depth_mm, flags=r.flags)  # fmt: skip
             self._sums[k] += out.image * add
         self.spp += 2 * add
         half = self.spp / 2

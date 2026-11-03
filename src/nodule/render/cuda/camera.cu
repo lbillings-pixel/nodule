@@ -29,7 +29,9 @@
 //   1 no fracture backward map; 2 no ratio tracking (Tr = 1); 4 homogeneous material 0, no
 //   geometry; 8 omit 1/n^2 at the camera exit; 16 no bottom-mirror NEE term; 32 dome and back
 //   count scattered light only (dome: drops the ghost seen unscattered in the back face; back:
-//   drops the light seen straight through).
+//   drops the light seen straight through). 2048 black bottom: the back face is index-matched and
+//   black, so a path reaching depth D going down is lost, as into the rest of a stone (ADR 0014;
+//   no bottom reflection, no mirror NEE term; not with the back light).
 //   64 no per-channel phase reweighting (control for the two-lobe check).
 //   DISC only: 128 NEE only (weight 1); 256 phase sampling only (weight 1); 512 both
 //   strategies at weight 1 (control: counts the light twice).
@@ -91,7 +93,7 @@ __device__ void nee(const Scene& S, const Cam& C, const unsigned short* prof, co
     ratio(S, C, prof, mua, mus, x, y, z, lx, ly, lz, d0 / ct, T, r);
     float wl = mis ? pl / (pl + sample_pdf(ph, m, w, cl)) : 1.f;
     for (int c = 0; c < 3; ++c) acc[c] += w[c] * phase_pdf(ph, m, c, cl) * Ein * T[c] * wl;
-    if (isfinite(C.D) && Rb > 0.f && !(C.flags & 16) && r.next() < 0.25f) {
+    if (isfinite(C.D) && Rb > 0.f && !(C.flags & (16 | 2048)) && r.next() < 0.25f) {
         // mirror path: refract in, reflect off the bottom, arrive along
         // omega_r = ct n - (tangent). Shadow legs: down along m = -omega_r, then up along l.
         float mx = -ct * S.n[0] + tx, my = -ct * S.n[1] + ty, mz = -ct * S.n[2] + tz;
@@ -143,6 +145,7 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const unsigned
         float s = -logf(r.next()) / C.mubar;
         if (s >= db) {
             x += dx * db; y += dy * db; z += dz * db;
+            if (un > 0.f && (C.flags & 2048)) break;            // black bottom: lost
             if (r.next() <= fresnel(fabsf(un), n, 1.f)) {       // internal reflection
                 float k = 2.f * (dx * S.n[0] + dy * S.n[1] + dz * S.n[2]);
                 dx -= k * S.n[0]; dy -= k * S.n[1]; dz -= k * S.n[2];
@@ -161,7 +164,7 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const unsigned
                       oz = ca * S.n[2] + n * (dz - ci * S.n[2]);
                 if (ox * a0 + oy * a1 + oz * a2 >= 1.f - omc) {
                     float wp = 1.f;                             // routes NEE cannot make: 1
-                    bool mirror = isfinite(C.D) && !(C.flags & 16) && fresnel(ci, n, 1.f) > 0.f;
+                    bool mirror = isfinite(C.D) && !(C.flags & (16 | 2048)) && fresnel(ci, n, 1.f) > 0.f;
                     if (mis && real > 0 && ntop == 0 && (nbot == 0 || (nbot == 1 && mirror))) {
                         float pl = n * n * ci / (Om * ca) * (nbot ? 0.25f : 1.f);
                         wp = lastpp / (lastpp + pl);

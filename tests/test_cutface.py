@@ -19,7 +19,7 @@ from agatesim.volume.config import SliceConfig
 from nodule._scipy import blur_noise_factor
 from nodule.descriptors import PhotoCut, measure, noise_to_add, photo_cut
 from nodule.render import _gpu, fakes
-from nodule.render.camera import Light, srgb
+from nodule.render.camera import Flag, Light, srgb
 from nodule.render.cutface import (
     REFLECTED_EXPOSURE,
     CutRender,
@@ -127,6 +127,19 @@ def test_exposure_is_set_per_light() -> None:
     assert Rendering.reflected(rec).exposure == REFLECTED_EXPOSURE
     assert Rendering.transmitted(rec).exposure == 1.0
     assert Rendering.reflected(rec, exposure=1.0).exposure == 1.0
+
+
+def test_bottom_is_air_unless_asked() -> None:
+    """ADR 0014: the black bottom is an option, off by default, so earlier renders
+    are unchanged; the back light cannot have one."""
+    rec = BandRecord.empty()
+    assert Rendering.reflected(rec).bottom == "air"
+    assert Rendering.reflected(rec).flags == 0
+    assert Rendering.reflected(rec, bottom="black").flags == Flag.BLACK_BOTTOM
+    with pytest.raises(ValueError, match="bottom must be"):
+        Rendering.reflected(rec, bottom="grey")  # type: ignore[arg-type]
+    with pytest.raises(ValueError, match="back light"):
+        Rendering.transmitted(rec, bottom="black")
 
 
 # --- GPU ------------------------------------------------------------------------------------

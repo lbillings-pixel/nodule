@@ -1,7 +1,8 @@
 // Forward Monte Carlo through a slab 0 < z < d (d = inf: half-space), normal beam at the origin.
 // The independent reference for the camera kernel (reciprocity check) and the MCML checks
 // (Wang 1995 Tables 1-2). One thread per packet; null-collision tracking against mubar with
-// Kutz spectral tracking; smooth dielectric faces, all-or-none Fresnel. Media: one material, or
+// Kutz spectral tracking; smooth dielectric faces, all-or-none Fresnel; n_out above the face,
+// n_bot below the back face (n_bot = n_in: an index-matched, black bottom). Media: one material, or
 // a material-id grid along z (nearest cell; for the band phantom). Needs common.cuh first.
 
 __device__ int zmaterial(const unsigned char* grid, int gz, float h, float z) {
@@ -12,7 +13,7 @@ __device__ int zmaterial(const unsigned char* grid, int gz, float h, float z) {
 
 // analog = 1: unweighted delta tracking (Woodcock 1965), biased when mubar < mu_t (control).
 extern "C" __global__ void slab(
-    long long n, unsigned int seed, float d, float n_in, float n_out, float g,
+    long long n, unsigned int seed, float d, float n_in, float n_out, float n_bot, float g,
     const float* mua, const float* mus, float mubar, int analog,
     const unsigned char* grid, int gz, float h, float* out /* per packet: Rd[3], Tt[3], events */)
 {
@@ -30,7 +31,7 @@ extern "C" __global__ void slab(
         float db = uz != 0.f ? (zb - z) / uz : __int_as_float(0x7f800000);
         if (s >= db) {                                   // reach a face
             z = zb;
-            if (r.next() <= fresnel(fabsf(uz), n_in, n_out)) { uz = -uz; continue; }
+            if (r.next() <= fresnel(fabsf(uz), n_in, uz < 0.f ? n_out : n_bot)) { uz = -uz; continue; }
             float* dst = uz < 0.f ? R : T;
             for (int c = 0; c < 3; ++c) dst[c] += w[c];
             break;

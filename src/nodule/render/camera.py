@@ -52,6 +52,9 @@ class Flag(IntFlag):
     PHASE_ONLY = 256  # disc: phase sampling alone, weight 1 (a check)
     NO_MIS_WEIGHT = 512  # disc: both strategies at weight 1 (control: light counted twice)
     UNTRUNCATED_DRAWS = 1024  # draw from the whole lobes despite cut_deg (control)
+    # An option, not a control: the back face index-matched and black, so light reaching
+    # depth_mm going down is lost, as into the rest of a stone (ADR 0014; `effective`).
+    BLACK_BOTTOM = 2048
 
 
 @dataclass(frozen=True)
@@ -267,6 +270,8 @@ def render(
     collision order (single scattering check)."""
     if light.kind == "back" and not math.isfinite(depth_mm):
         raise ValueError("the back light needs a finite slab (depth_mm)")
+    if light.kind == "back" and flags & Flag.BLACK_BOTTOM:
+        raise ValueError("the back light shines through the bottom: no black bottom")
     if not flags & Flag.HOMOGENEOUS and depth_mm > scene.covers_mm + 1e-6:
         raise ValueError(f"a {depth_mm} mm slab is deeper than the growth grid covers "
                          f"({scene.covers_mm:.2f} mm): fill the grid deeper")  # fmt: skip

@@ -329,6 +329,47 @@ def test_control_no_mirror_term_fails(flat, dome_diffuse) -> None:
     assert abs(z(tot, se, *dome_diffuse)) > 10  # prototype z -59
 
 
+# --- black bottom (ADR 0014): light reaching the back face going down is lost ---------------
+
+
+def round_trip(mua: float, depth: float, n: float = 1.54) -> float:
+    """Diffuse share of a pure absorber over a smooth back face, seen along the normal under
+    a uniform dome: in, down, reflected off the bottom, out (internal reflections summed):
+    (1 - R)^2 R e^-2aD / (1 - R^2 e^-2aD)."""
+    r, e2 = reference.fresnel(1.0, 1.0, n), math.exp(-2 * mua * depth)
+    return (1.0 - r) ** 2 * r * e2 / (1.0 - r * r * e2)
+
+
+def test_black_bottom_returns_nothing_from_a_pure_absorber(flat) -> None:
+    rsp = reference.fresnel(1.0, 1.0, 1.54)
+    m, _ = mean_px(flat, DOME, spp=64, seed=81, mua=0.1, mus=0.0, g=0.0, depth_mm=2.0,
+                   flags=Flag.BLACK_BOTTOM)  # fmt: skip
+    assert m == pytest.approx(rsp, abs=1e-6)  # the face's own specular only
+    m, se = mean_px(flat, DOME, spp=64, seed=81, mua=0.1, mus=0.0, g=0.0, depth_mm=2.0)
+    assert abs(z(m, se, rsp + round_trip(0.1, 2.0))) < 3  # control: the air bottom reflects
+
+
+WEAK = {"mua": 0.01, "mus": 2.0, "g": 0.9}  # a clear band: mu_s' 0.2/mm, most light reaches 2 mm
+
+
+def test_black_bottom_matches_forward_slab_by_reciprocity(flat) -> None:
+    m, se = mean_px(flat, DOME, spp=256, seed=83, depth_mm=2.0, flags=Flag.BLACK_BOTTOM, **WEAK)
+    rsp = reference.fresnel(1.0, 1.0, 1.54)
+    kw = {"depth_mm": 2.0, "n_in": 1.54, "g": WEAK["g"], "mua": [WEAK["mua"]] * 3,
+          "mus": [WEAK["mus"]] * 3, "seed": 84}  # fmt: skip
+    black = slab(2 * N, n_bottom=1.54, **kw)
+    assert abs(z(m, se, black.rd[0] + rsp, black.rd_se[0])) < 3
+    air = slab(2 * N, **kw)  # control: the mirror bottom returns far more of a clear band
+    assert abs(z(m, se, air.rd[0] + rsp, air.rd_se[0])) > 10
+
+
+def test_black_bottom_refused_with_the_back_light(flat) -> None:
+    m = Materials.of([[0.1] * 3], [[1.0] * 3], [0.9])
+    with pytest.raises(ValueError, match="no black bottom"):
+        render(flat, FLAT_VIEW, m, Light("back"), spp=1, depth_mm=2.0,
+               flags=Flag.HOMOGENEOUS | Flag.BLACK_BOTTOM)  # fmt: skip
+
+
 # --- disc lamp, L2 (ADR 0007 7b): light and phase sampling under MIS ------------------------
 
 L2 = Light("disc")  # 45 deg, radius 2.5 deg

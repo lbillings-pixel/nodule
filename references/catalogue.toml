@@ -3146,3 +3146,17 @@ checked = "sections"
 sections_read = ["first ~60 % (argument, simulation, practice, limits)"]
 topics = ["psychophysics", "small-n", "observer-protocol", "replication"]
 notes = """Read 2026-11-01 (helper agent; notes/n2-reading/compare-methods.md), about 60 % of the text. In small-N designs "the individual, rather than the group, becomes the replication unit". Simulation with 400 trials per participant, "a fairly typical sample size for a small-N design", not from a formal power analysis; individual power above 0.9. Prefers practised observers; not for population estimates."""
+
+[[references]]
+id = "goetze2012"
+kind = "article"
+authors = ["Götze, J.", "Nasdala, L.", "Kempe, U.", "Libowitzky, E.", "Rericha, A.", "Vennemann, T."]
+year = 2012
+title = "The origin of black colouration in onyx agate from Mali"
+venue = "Mineralogical Magazine 76(1), 115–127"
+doi = "10.1180/minmag.2012.076.1.115"
+access = "closed"
+licence = "publisher copyright (Mineralogical Society); cite only"
+checked = "full-text"
+topics = ["agate", "colour", "onyx", "carbon", "graphite", "absorber", "staining"]
+notes = """Read in full 2026-11-03 (PDF the owner supplied; figures checked on page images). Mali onyx: black bands from disordered H-bearing graphitic carbon in pores of fibrous chalcedony. CNS (Table 1, p.120): C 1.88 wt% dark, 0.22 white (LOD 0.13); S 0.06/0.04; N below LOD. SEM: plates ≤200 nm, 'lower nm-range up to 200 nm' (p.124); TL shows µm-scale dark specks (Fig. 2c). Raman G 1605, D 1345 cm⁻¹, none in white (Fig. 5). IR C–H bands in dark (Fig. 4). ESR g 2.0026, ΔBpp 0.3 mT (Fig. 6). δ13C −31.1±0.2‰ organic. Fe 165 ppm dark, ~40 white; Mn <40; only hematite, so Fe oxides excluded (p.124). White = dense granular chalcedony + quartz, low porosity; black = fibrous, high porosity (Fig. 2, p.120). Natural, argued from continuous colour and carbon-free cross-cutting quartz veins (pp.116, 125); no stained control. No visible optical data; NIR absorbance on a 105 µm plate only. 'Different concentrations of carbon inclusions produce varying colouration' (p.126), without data. Intro cites Henn 2010: onyx elsewhere darkened by Mn oxides, bitumen, or Fe/Mn/Ti oxides."""

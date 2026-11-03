@@ -482,3 +482,40 @@ Caveats: pixel scale differs between the photos (no scale) and the
 renders, so σ 2 px smooths over different physical widths. The photos
 vary widely (ΔL\* IQR 9.6–30.3), and the renders are one specimen and
 seed. Model results; not evidence about formation (ADR 0002).
+
+### 4i. Thin slab with iron: the cast does not come from depth (2026-11-03)
+
+The test proposed in 4h. The same four cuts were rendered as 2 mm slabs
+(black bottom, `matrix_mua` 0.13, iron 2 and 4 × 10⁻⁴) and compared with
+the 10 mm renders on the same measures. Exposure was fitted as in 4e. All
+statistics come from the saved central crops. That puts 10 mm contrast
+at 2.42 / 2.58, where 4f has 2.39 / 2.46, so compare within the table
+only. Rendering took 448 s (218–229 s a setting); peak traced Python
+memory 549 MB (GPU memory not traced). Analysis took 52 s.
+
+| slab, iron | Y p90/p10 | L\* sd | C\* median | corr(L\*, C\*) | band ΔL\* / Δa\*b\* | shuffled |
+|---|---|---|---|---|---|---|
+| 2 mm, 2 × 10⁻⁴ | 2.57 | 8.75 | 10.01 | +0.21 | 12.0 / 3.2 | 1.8 / 0.7 |
+| 10 mm, 2 × 10⁻⁴ | 2.42 | 8.18 | 10.56 | +0.08 | 11.1 / 2.8 | 1.7 / 0.6 |
+| 2 mm, 4 × 10⁻⁴ | 2.67 | 8.93 | 12.83 | +0.30 | 13.0 / 4.2 | 1.9 / 0.7 |
+| 10 mm, 4 × 10⁻⁴ | 2.58 | 8.63 | 13.12 | +0.22 | 12.4 / 3.8 | 1.8 / 0.7 |
+| photos (4e, 4h) | 2.49 | 9.7 | 7.3 | −0.24 | 14.4 / 6.3 | 2.2 / 0.7 |
+
+*Verified* (model property; one specimen, one seed, four cuts):
+cutting the slab from 10 mm to 2 mm barely changes the colour. Overall
+C\* falls by 0.3–0.6 and the band colour gap rises by 0.4. The warm
+cast stays (C\* 10–13 against the photos' 7.3), and the L\*–C\* correlation
+becomes more positive, not less. With four cuts these small shifts are
+within what different cuts could give.
+
+So 4h's test fails: at this grey absorption the cast does not come from
+light crossing bands deeper than 2 mm. 4g's reading (mixing through
+the bands below the face) is withdrawn as the main cause of the cast.
+It still fits the lightness result at low absorption (4g: 2 mm keeps
+0.40 against 0.16 at 10 mm). Causes still open [*speculative* until
+checked]: (1) mixing within the top 2 mm, sideways across bands;
+(2) the cast is in the materials themselves, for example iron at some
+impurity in most bands, so that grey stand-in bands render yellow;
+(3) a wavelength-dependent scattering tint (iron-off renders already
+have C\* about 5, 4e). Cause (2) can be checked in seconds from the
+specimen's band record, without rendering.

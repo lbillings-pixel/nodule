@@ -700,9 +700,43 @@ planned. All values are `effective`.
   depth (4f, 4k). Carried forward with C16 and the agatesim pigment field
   (option C).
 - **Earlier results.** The 20-cut checks of ADRs 0010–0013 were made with
-  the old defaults and stand as recorded. They have not been re-run with
-  these defaults.
+  the old defaults and stand as recorded. The step-3 check was re-run
+  with these defaults: section 4n.
 - Tests (442, all pass): the floor tests now check the default against
   `iron_floor=0`. Reflected renderings default to the black bottom; the
   back light keeps air. The step-1 test no longer checks
   `phi_iron_oxide`, which this ADR changed.
+
+### 4n. The 20-cut check with the defaults (2026-11-03)
+
+The step-3 check (ADR 0013, *Results*) re-run with the defaults of 4m:
+record 0.7 / 0.7, γ 4, 2 mm slab, black bottom, exposure 1.54, matrix
+absorption 0.13, iron oxide 4 × 10⁻⁴, floor 0.28. 20 rendered cuts,
+looks from half A, judged against half A and the held-out half B (seed
+2026 split, ADR 0009). 1677 s (step 3: 1803 s), peak traced 1.05 GB
+(unchanged). Step 3's values are given in brackets.
+
+| | vs A: joint / line | vs B: joint / line | spectrum vs A / vs B (line 1.40 / 1.97) | blocks outside |
+|---|---|---|---|---|
+| all cuts (n 20) | 1.1 / 15.9 (0.6) | 3.0 / 7.9 (4.2) | 0.45 / 0.89 (0.49 / 1.05) | none |
+| noise-matched (n 8; 8) | 1.0 / 15.9 (0.5) | 3.0 / 7.9 (2.9) | 0.61 / 1.28 (0.43 / 0.72) | none |
+
+- **Within on both halves, no block outside.** The new defaults keep the
+  set within the photos' spread. Against half A it moves a little out
+  (joint 0.6 to 1.1), against half B a little in (4.2 to 3.0); both stay
+  far inside the lines.
+- **The band spectrum got steeper.** C26 slope rose from 2.25 to 2.68
+  (all cuts). Against half A that is still the 86th percentile; against
+  half B it is the 95th, just above B's 95th percentile (2.55). It is the
+  measure closest to an edge in this check. A reading, not measured: a
+  thinner, darker-bottomed slab shows fine bands more sharply, which
+  steepens the spectrum. Worth watching in the 100-cut run.
+- **Unchanged:** C16 0.91 (photos' 98th percentile, the open edge-coherence
+  gap), C15 curvature 0.08 (76th to 78th), C15 high 0.19. Noise-matched
+  cuts: still 8 of 20; their spectrum distance rose (0.72 to 1.28 against
+  B) but is drawn from 8 cuts only.
+
+Grade: the 4m defaults keep the stone's set within the photos' spread on
+both halves. *Plausible* (ADR 0002), as for steps 1–3. Procedural images
+remain no evidence for a formation mechanism. Open, as before: C16, L\*
+spread, the sign of corr(L\*, C\*); new to watch: C26 slope against half B.

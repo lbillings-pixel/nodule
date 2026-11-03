@@ -181,3 +181,63 @@ The forward slab gained an optional bottom index for this check.
 - References added: goetze2012 (owner's PDF, read in full; notes/n2-reading/goetze2012-onyx.md).
   lorenzi2022, jayaraman1953 and jensen2001 were already catalogued, read
   in full. The step-4 note's other sources wait for the decision.
+
+## Results: the black-bottom probe (2026-11-03)
+
+`look_bottom.py` and `bottom_compare.py` (scratch): the four look cuts,
+saved at exposure 1.0. Each setting is then given the one exposure k that
+brings its median L\* to the photos' 62.1. In all, 4803 s (deep slabs cost
+12–21 min a setting, against ~4 min at 2 mm); peak traced 0.70 GB. Medians
+over the cuts:
+
+| bottom, depth | `matrix_mua` | iron | k | Y p90/p10 | L\* sd | C\* |
+|---|---|---|---|---|---|---|
+| photos (median) | | | | 2.49 | 9.7 | 7.3 |
+| air, 2 mm (control) | 0.01 | off | 0.57 | 1.72 | 5.5 | 6.3 |
+| black, 2 mm | 0.01 | off | 0.71 | 2.26 | 7.5 | 6.6 |
+| black, 2 mm | 0.03 | off | 0.77 | 2.32 | 7.6 | 6.4 |
+| black, 10 mm | 0.01 | off | 0.49 | 1.36 | 3.4 | 5.7 |
+| black, 10 mm | 0.03 | off | 0.62 | 1.53 | 4.4 | 5.8 |
+| black, 20 mm | 0.01 | off | 0.49 | 1.36 | 3.3 | 5.6 |
+| black, 20 mm | 0.03 | off | 0.62 | 1.53 | 4.4 | 5.8 |
+| black, 10 mm | 0.01 | 9 × 10⁻⁴ | 2.20 | 2.50 | 8.9 | 17.1 |
+| air, 2 mm (ADR 0013, re-exposed) | 0.01 | 9 × 10⁻⁴ | 2.2 | 2.46 | 8.8 | 17.2 |
+
+All *verified* within the model (4 cuts):
+1. **With iron, the bottom does not matter.** A 10 mm black bottom gives
+   the same image as the 2 mm mirror (contrast 2.50 against 2.46, C\* 17.1
+   against 17.2, same exposure). The iron absorbs light before it gets
+   deep. The defaults' results stand.
+2. **Without iron, contrast is set by what lies below the face.** The
+   mirror at 2 mm gives 1.72, and a black plane at 2 mm gives 2.26. A stone
+   that goes on below the face gives 1.36 (10 and 20 mm agree, so this is
+   the deep limit). Light then spreads sideways under the face, from milky
+   bands into clear ones. Tripling grey absorption to 0.03 mm⁻¹ raises this
+   only to 1.53.
+3. **So in a stone that continues below the face, photo-like contrast
+   needs a strong absorber near the face.** In the model only the iron
+   does this, and it is yellow. Grey absorption at the level the sources
+   suggest so far (0.01–0.03 mm⁻¹) is several times too weak. A black plane
+   at 2 mm imitates the effect, but a whole stone has no such plane. It is
+   physical only for a thin slab on a dark backing.
+4. **Without iron, C\* is about 6 and blue-ish** (median a\*, b\* about −1,
+   −1.5; hue 224–241°). This comes from the scatterers, which return more
+   blue, and from per-pixel noise in the chroma [inference].
+
+Open for the owner: 4b in the next section.
+
+### 4b. Choice for the owner: what darkens the stone
+
+- *(Recommended)* **A. Measure grey absorption up to Lorenzi's bound
+  first.** Lorenzi's total-transmittance loss, about 0.13 mm⁻¹, bounds the
+  matrix absorption from above [@lorenzi2022]. One more probe (10 mm black
+  bottom, iron off, `matrix_mua` 0.08 and 0.13, about 25 min) shows
+  whether a grey absorber inside that bound can give the photos'
+  contrast. If it can, iron can be lowered toward the stone's real stain,
+  with grey absorption doing the darkening (a later ADR). If not, B.
+- B. **Keep iron as the darkener** (the current defaults). Colour is graded
+  *plausible* (within the photos' range), and the darkening mechanism is
+  recorded as an open assumption. Move on to C16 and the 100-cut run.
+- C. **Treat some photos as slabs on a dark backing**, where a black plane
+  at the slab's thickness is physical. This needs the owner to say which
+  reflected photos are thin slabs.

@@ -339,3 +339,35 @@ correlation moves the wrong way: it turns positive, while the photos'
 is negative. So a grey absorber within the bound is part of the
 answer at most, not all of it [inference; *plausible*]. These are model
 results, not evidence about how real stones form (ADR 0002).
+
+### 4f. Probe B: grey bound plus measured-level iron (2026-11-03)
+
+Same set-up as 4e, `matrix_mua` 0.13 with `phi_iron_oxide` 2 and
+4 × 10⁻⁴: about 280 and 560 ppm Fe as hematite [inference: densities
+assumed, as in 4c]. That spans the upper end of clear-band Fe through the
+coloured-layer medians [@zhang2025]. Time 723 s; peak traced Python
+memory 549 MB.
+
+| `phi_iron_oxide` | Y p90/p10 | L\* sd | C\* | corr(L\*, C\*) |
+|---|---|---|---|---|
+| 0 | 2.12 | 6.86 | 5.09 | +0.12 |
+| 2 × 10⁻⁴ | 2.39 | 7.74 | 10.76 | +0.05 |
+| 4 × 10⁻⁴ | 2.46 | 8.27 | 13.10 | +0.23 |
+| photos | 2.49 | 9.7 | 7.3 | −0.24 |
+
+*Verified* (model property): measured-level iron on top of the grey
+bound brings contrast to within 4% of the photos'. Colour strength
+overshoots, already 10.8 at the lower iron, and the lightness spread
+stays short (8.3 against 9.7). The L\*–C\* correlation stays positive,
+while the photos' is negative.
+
+In the rendered cuts the band colours of the stand-in (brown, grey,
+blue) mostly merge into one warm cream. The darkest features are thin
+neutral lines that look like relief at band edges. So the model's
+contrast comes mainly from light returning from different depths, not
+from dark, coloured bands as in the photos [inference from viewing one
+cut and the correlation; *plausible*].
+
+No setting reaches all four photo statistics. Tuning these two
+parameters further against the photos would fit, not explain, so it
+is not proposed.

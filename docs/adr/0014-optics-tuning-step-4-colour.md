@@ -1,0 +1,163 @@
+# 14. Optics tuning step 4: colour, and what darkens the stone
+
+- Status: proposed (2026-11-03). The owner chose to record the measurements
+  and read the sources before any optics change. Section 4 is filled in
+  after the reading.
+- Date: 2026-11-03
+- Builds on: [ADR 0010](0010-optics-tuning-step-1-pores.md) (step 1: iron
+  oxide tripled to 9 × 10⁻⁴; matrix absorption "only dims"),
+  [ADR 0013](0013-optics-tuning-step-3-exposure.md) (step 3: exposure 2.2;
+  C\* named as the next gap), [ADR 0007](0007-renderer-cut-face-monte-carlo.md)
+  section 3 (the optics table) and [ADR 0002](0002-founding-nodule.md)
+  (graded claims).
+
+## Context
+
+ADR 0013 left colour as the largest gap in the look: C\* 17.2 for the
+renders against the photos' median 7.3 (p95 33.7). Step 4 measures that
+gap before anything is changed. Two scratch probes ran on the four look
+cuts (0, 5, 8, 18) of the n2-slice stone (record 0.7 / 0.7, γ 4).
+
+**Probe 1** (`chroma_probe.py`, 43 s, 0.27 GB) compares the saved renders,
+re-exposed by 2.2, with the 46 half-A reflected photos (centre window),
+image by image.
+
+| | photos p5 / p25 / p50 / p75 / p95 | renders (percentile among photos) |
+|---|---|---|
+| C\* median | 2.7 / 4.8 / 7.3 / 12.3 / 33.7 | 15.8–18.2 (87) |
+| hue of median a\*, b\* (deg) | 26 / 80 / 200 / 271 / 316 | 84–87 (26) |
+| corr(L\*, C\*) within the image | −0.73 / −0.58 / −0.24 / 0.18 / 0.70 | 0.19–0.56 (74–87) |
+| share of pixels with C\* > 15 | 0.00 / 0.00 / 0.05 / 0.37 / 0.87 | 0.56–0.72 (87–89) |
+| L\* median | 14.7 / 47.4 / 62.1 / 73.0 / 79.8 | 60.1–63.8 (41–54) |
+
+Photos with a warm hue (20–90°, n 11) have C\* 8.5 / 12.1 / 27.3 (p25 /
+p50 / p75). The renders' 16–18 lie inside that range.
+
+**Probe 2** (`look_pigment.py` with `phi_iron_oxide` 0, then
+`chroma_compare.py`; 295 s, 0.55 GB) renders the same cuts, looks and
+streams with the iron oxide switched off. The stand-ins match the earlier
+renders exactly. With iron off, 60–75 % of each face's pixels clip to white
+at exposure 2.2, and the darkest tenth stays at 0.78–0.98 of white.
+
+## Findings
+
+1. **The colour is within the photos' range.** The comparison against the
+   library median set one ochre stone against a library made mostly of grey
+   and blue agates. Among photos of a similar hue, the stone's chroma lies
+   inside the middle half. *Plausible*: only 4 cuts, and hue is a crude
+   way to group photos.
+2. **Iron oxide is the model's only darkening agent.** Without it the face
+   is nearly white (*verified* within the model). The lightness and contrast
+   matched in steps 1 and 3 therefore rest on the yellow pigment. In
+   step 1 (ADR 0010) iron was tripled to raise contrast, and step 3
+   brightened the image to match the photos' lightness. Grey matrix
+   absorption and deeper slabs only dimmed the image in step 1. So
+   lowering the iron would wash the stone out, unless something else
+   darkens it.
+3. **Colour sits in the bright parts.** Within a render, brighter pixels are
+   more coloured (correlation +0.19 to +0.56). In most photos the darker
+   pixels are (median −0.24), as pigmented bands would be. The renders
+   still lie inside the photos' wide spread. *Speculative*: a lead that
+   fits finding 2, not a failure.
+
+## Decision (proposed)
+
+1. **No optics change now.** The colour is graded *plausible*: within the
+   photos' range, and carried by the same iron oxide that gives the stone its
+   darkness. The 20-cut check's descriptors are measured on luminance
+   (`descriptors.py`), so chroma does not enter them and the stone's
+   verdict there is unchanged.
+2. **Fitting one stone to the library median is rejected.** It would make a
+   strongly stained stone into an average one.
+3. **The open question goes to the sources:** what makes clear chalcedony
+   bands look dark in reflected light? Candidates: light lost into the
+   stone's depth, grey (broadband) absorbers, or iron itself. Section 4
+   records the reading.
+
+## 4. Reading and a renderer finding (2026-11-03)
+
+Reading note: notes/n2-reading/step4-dark-bands.md (helper report, about
+12 sources, unreviewed). Only catalogued sources are cited here. The
+note's other leads (carbon, measured CIELAB of agate, iron by band colour)
+enter only when catalogued at the decision.
+
+**What the sources say.**
+- Clear chalcedony is a weak scatterer that absorbs little. Blue and white
+  bands of one agate hold about 20 ppm Fe, and a broad iron-centre band near
+  570 nm takes about 0.02 in absorbance per ~1 mm [@lorenzi2022]. That
+  gives a grey-ish μ_a of roughly 0.02–0.05 mm⁻¹ [inference, the note's],
+  above our `matrix_mua` 0.01 and below Lorenzi's 0.13 mm⁻¹ bound.
+- Whether a band looks light or dark depends on what lies behind it.
+  Jayaraman's colourless agate plates swap light and dark bands when
+  viewed against a dark background under oblique light [@jayaraman1953],
+  explained by diffusion.
+- Diffusion theory [@jensen2001] with the model's own clear-band values
+  (reduced scattering μ_s′ 0.09–0.19 mm⁻¹, computed from `OpticsTable`)
+  gives a diffusion length of about 7–18 mm at μ_a 0.01–0.03 mm⁻¹. In a
+  semi-infinite clear band, diffuse reflectance is then about 0.17–0.38, a
+  grey, not a white [inference: computed here with the dipole's total
+  diffuse reflectance, n 1.54; it agrees with the note's table].
+  Milky bands (μ_s′ 3–13 mm⁻¹) return light within 1–3 mm and stay
+  light (0.6–0.84 at the same μ_a).
+
+**What the renderer does instead** (*verified*, `camera.cu`). The
+reflected face is a slab 2 mm deep (ADR 0010 10b) with a smooth bottom
+face over black air. Inside chalcedony (n ≈ 1.54), light that meets the
+bottom at more than about 40° is totally reflected back up. So most
+diffuse light that reaches 2 mm, about the depth where a clear band
+should lose it, is sent back toward the face. A real cut nodule has more
+agate below the face, with no such mirror: light that goes deep is lost to
+the stone's interior and rind [inference]. The 2 mm depth was checked
+against 10 mm (0.14 grey levels), but both depths had the same mirror, and
+that check ran before γ 4 made the clear bands clear.
+
+**So the likely reason the stone needs iron to be dark** is the trapped
+light, not a missing absorber. *Plausible*: computed, not yet rendered.
+
+### 4a. Choice for the owner: what to test first
+
+Each test renders the four look cuts with iron off (about 5 minutes each,
+under 1 GB), then measures L\*, contrast (Y p90/p10) and C\*. A test
+changes nothing in the defaults.
+- *(Recommended)* **A. A lossy bottom.** A renderer option (`effective`;
+  default off, so every earlier render is unchanged) makes the bottom
+  face index-matched and black, so light that goes down is lost as into
+  the rest of the nodule. It is tried at depths of 2, 10 and 20 mm and
+  `matrix_mua` 0.01 and 0.03. It needs a small kernel change, with tests,
+  including the negative control below.
+- B. Grey matrix absorption only (`matrix_mua` 0.03–0.05, bottom
+  unchanged). No code change, but the mirror stays.
+- C. Wait for more sources first (below).
+
+**Negative control (for whichever is adopted).** A clear band with no
+absorption over a lossless mirror bottom must render near-white. The
+look comparison must then flag it as too light.
+
+**Sources the owner could fetch** (paywalled or bot-blocked):
+- Götze et al. 2012, black colouring in onyx agate, *Mineral. Mag.*
+  76(1), 115–127. This is the grey/black absorber question.
+- Rossman 1994, coloured varieties of silica, *Rev. Mineral.* 29.
+- The supplementary tables of the note's Zhou et al. 2022 (agate CIELAB
+  and iron, MDPI) and Zhang et al. 2025.
+
+## Alternatives considered
+
+- **Swap part of the iron for grey matrix absorption** so that C\* falls
+  while L\* holds. There is no source yet for grey absorption in chalcedony
+  (`matrix_mua` is `effective`), and it would tune one stone to the
+  library median. Not tried.
+- **Lower the iron and raise exposure further.** Ruled out by probe 2: the
+  face clips to white.
+- **Group the photos by hue for the comparison.** A possible later
+  criterion. It would need a negative control (for example a stone dyed a
+  hue no photo has) before it could judge anything. Not built.
+
+## Consequences
+
+- No code change. The probes are scratch (runs/stone-2026-11-02/variants/,
+  gitignored).
+- Open items carried forward: what darkens clear bands (section 4), edge
+  coherence C16 (photos' 98th percentile), and L\* sd a little low (8.8
+  against 9.7).
+- References added: none (lorenzi2022, jayaraman1953 and jensen2001 are
+  catalogued, read in full). The note's new sources wait for the decision.

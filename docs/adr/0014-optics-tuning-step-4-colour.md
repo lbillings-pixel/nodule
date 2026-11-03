@@ -431,3 +431,54 @@ photos have no band labels, so the same grouping would have to be run on
 the photos and the renders alike (each clustered on its own pixels).
 These are model results, not evidence about how real stones form
 (ADR 0002).
+
+### 4h. Band-colour separation in the photos (2026-11-03)
+
+The same measure on photos, stand-ins and renders, each grouped on its
+own pixels: light Gaussian smoothing (σ 2 px) so that groups are
+spatially coherent, then k-means in CIELAB (K = 4, groups under 3%
+dropped). Separation is as in 4g. Photos: the half-A reflected set,
+centre window as in 4e, raw sRGB; 46 photos have a usable window.
+Renders: the four saved cuts per setting, exposure fitted as in 4e.
+Control: each image pixel-shuffled before smoothing (same colours, no
+bands). Time 132 s; peak traced Python memory 280 MB.
+
+| image set | ΔL\* median [IQR] | Δa\*b\* median [IQR] | shuffled ΔL\* / Δa\*b\* |
+|---|---|---|---|
+| photos (46) | 14.4 [9.6–30.3] | 6.3 [3.3–12.2] | 2.2 / 0.7 |
+| stand-in (4 cuts) | 12.4 [11.3–13.4] | 15.6 [15.1–16.0] | 2.1 / 2.2 |
+| 10 mm, `matrix_mua` 0.01, iron off | 4.8 [3.5–7.7] | 0.6 [0.3–1.3] | 0.5 / 1.3 |
+| 2 mm, 0.01, iron off | 12.2 [10.5–13.5] | 0.5 [0.5–0.7] | 1.3 / 1.1 |
+| 10 mm, 0.13, iron off | 10.2 [9.0–11.4] | 1.3 [1.2–1.4] | 1.3 / 0.8 |
+| 10 mm, 0.13, iron 2 × 10⁻⁴ | 11.1 [9.9–12.3] | 2.8 [2.1–3.5] | 1.6 / 0.6 |
+| 10 mm, 0.13, iron 4 × 10⁻⁴ | 12.4 [11.1–13.4] | 3.8 [3.4–4.1] | 1.8 / 0.7 |
+| 10 mm, 0.01, iron 9 × 10⁻⁴ (default) | 13.8 [12.8–14.6] | 4.8 [4.7–5.2] | 1.9 / 1.0 |
+
+*Verified* (measurement; 46 photos, one specimen, one seed, four cuts):
+- The control works: shuffled images score at most 2.2 / 2.2, well
+  under the photos' and renders' band values. The deep iron-free render
+  (4.8 / 0.6) falls below the photos' lower quartile on both, so the
+  measure rejects it as an obvious fake.
+- The stand-in separates band colours far more than most photos do
+  (Δa\*b\* 15.6 against a photo median of 6.3 and upper quartile 12.2).
+  4g's retention ratios therefore overstate the gap to the photos: they
+  were measured against a stand-in that is more colourful than the photos.
+- Against the photos, the renders with iron sit inside the photos'
+  interquartile range for lightness (11.1–13.8 against 9.6–30.3) and
+  near its lower edge for colour (2.8–4.8 against 3.3–12.2, median 6.3).
+
+Read with 4f, the gap is more specific than "too little colour". The
+renders carry more overall colour than the photos (median C\* 10.8–17
+against 7.3) but smaller colour differences between bands. The photos
+are less coloured overall, and their colour sits in some bands and not
+others. In the renders a warm cast covers every band. That fits the
+L\*–C\* correlation having the wrong sign
+[inference; *plausible*]. A test that would separate the causes: if the
+cast comes from light crossing iron bands below the face (4g), a thin
+slab with iron should show more Δa\*b\* and less overall C\* than a deep
+one at the same iron.
+
+Caveats: pixel scale differs between the photos (no scale) and the
+renders, so σ 2 px smooths over different physical widths. The photos
+vary widely (ΔL\* IQR 9.6–30.3), and the renders are one specimen and
+seed. Model results; not evidence about formation (ADR 0002).

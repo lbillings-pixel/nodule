@@ -47,6 +47,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 import time
 import tracemalloc
 from dataclasses import dataclass, replace
@@ -271,19 +272,37 @@ def survey(
     seed: int = 0,
     most: int = MOST_PX,
     rendering: Rendering | None = None,
+    checkpoint: Path | None = None,
+    key: dict[str, object] | None = None,
 ) -> list[dict[str, object]]:
     """`cuts` random cuts (normals uniform over the sphere, as agatesim's
     calibration cuts), each made to look like a photo drawn at random.
     With `rendering`, each cut's image is rendered (GPU), and F5 is
     `rendering.undegraded`. The first three RNG streams are the stand-in's, so
-    a rendered run cuts the same planes and draws the same photos."""
+    a rendered run cuts the same planes and draws the same photos.
+
+    With `checkpoint`, each cut's row is appended to that file (JSON lines) as
+    it is measured, so a crash loses at most the cut in progress; a rerun with
+    the same file skips the cuts already there, still drawing their random
+    numbers, so the result is the uninterrupted run's. The file's first line
+    is the run's `key` (with `seed`, `cuts`, `most` and the looks' photos); a
+    file with another key is refused rather than mixed in."""
     cut_rng, look_rng, measure_rng, render_rng = np.random.default_rng(seed).spawn(4)
+    done: dict[int, dict[str, object]] = {}
+    if checkpoint is not None:
+        run = {**(key or {}), "seed": seed, "cuts": cuts, "most": most,
+               "looks": [lk.photo for lk in photo_looks]}  # fmt: skip
+        done = _resume(checkpoint, json.loads(json.dumps(run, default=str)))
     out: list[dict[str, object]] = []
     for k, spec in enumerate(random_cuts(specimen.volume.solid, cuts, cut_rng, PROBE_PX)):
         progress.report(k / cuts, f"cut {k + 1} of {cuts}")
         look = photo_looks[int(look_rng.integers(len(photo_looks)))]
+        cut_render_rng, cut_measure_rng = render_rng.spawn(1)[0], measure_rng.spawn(1)[0]
+        if k in done:
+            out.append(done[k])
+            continue
         plane = specimen.plane(spec)
-        pc = photo_cut(specimen, plane, look, most, rendering, render_rng.spawn(1)[0])
+        pc = photo_cut(specimen, plane, look, most, rendering, cut_render_rng)
         where = [round(spec.tilt_deg, 2), round(spec.azimuth_deg, 2), round(spec.offset_mm, 2)]
         entry: dict[str, object] = {"cut": k, "plane": where, "pixels": pc.pixels}
         if pc.rendered is not None:
@@ -293,10 +312,46 @@ def survey(
                       "photo_noise": look.noise, "noise_matched": r.matched_noise,
                       "fill_s": round(r.fill_s, 2), "render_s": round(r.render_s, 2)}  # fmt: skip
         degrade = rendering is None or not rendering.undegraded
-        entry |= measure(pc, look, measure_rng.spawn(1)[0], degrade=degrade)
+        entry |= measure(pc, look, cut_measure_rng, degrade=degrade)
+        if checkpoint is not None:
+            _append(checkpoint, entry)
         out.append(entry)
     progress.report(1.0, "cuts measured")
     return out
+
+
+def _resume(path: Path, run: dict[str, object]) -> dict[int, dict[str, object]]:
+    """The cuts already in `path`, by number, after checking its key line is
+    `run`; starts the file if there is none. A last line cut short by a crash
+    is dropped (the file is rewritten without it)."""
+    if not path.exists() or not path.read_text("utf-8").strip():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({"run": run}) + "\n", "utf-8")
+        return {}
+    lines = path.read_text("utf-8").splitlines()
+    head = json.loads(lines[0])
+    if head.get("run") != run:
+        raise ValueError(f"{path} belongs to another run: {head.get('run')} vs {run}")
+    done: dict[int, dict[str, object]] = {}
+    kept = [lines[0]]
+    for line in lines[1:]:
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError:
+            break  # the cut in progress at the crash; measured again
+        done[int(row["cut"])] = row
+        kept.append(line)
+    if len(kept) < len(lines):
+        path.write_text("\n".join(kept) + "\n", "utf-8")
+    return done
+
+
+def _append(path: Path, row: dict[str, object]) -> None:
+    """Appends one cut's row and forces it to disk."""
+    with path.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(row, default=str) + "\n")
+        f.flush()
+        os.fsync(f.fileno())
 
 
 def library_looks(agatesim: Path | None = None) -> tuple[list[Look], dict[str, dict[str, object]]]:
@@ -392,9 +447,13 @@ def main(argv: list[str] | None = None) -> None:
             kw["depth_mm"] = args.depth_mm
         rng = np.random.default_rng(args.record_seed)
         rendering = rendering_for(specimen, args.run, args.stratum, rng, **kw)
-    rows = survey(
-        specimen, photo_looks, args.cuts, seed=args.seed, most=args.most, rendering=rendering
-    )
+    tag = "" if rendering is None else f"-{args.run}-{args.stratum}"
+    path = args.out / f"{args.preset}{tag}-{args.cuts}cuts-seed{args.seed}-{args.most}px.json"
+    partial = path.with_suffix(".partial.jsonl")  # resumed if a run was cut short
+    key = {k: getattr(args, k) for k in ("preset", "run", "stratum", "record_seed", "exposure",
+                                          "depth_mm", "most_spp")}  # fmt: skip
+    rows = survey(specimen, photo_looks, args.cuts, seed=args.seed, most=args.most,
+                  rendering=rendering, checkpoint=partial, key=key)  # fmt: skip
     elapsed = time.perf_counter() - t0
     peak = tracemalloc.get_traced_memory()[1]
     tracemalloc.stop()
@@ -424,10 +483,8 @@ def main(argv: list[str] | None = None) -> None:
                   f"{r['render_noise']}, after blur {r['blurred_noise']} vs photo "
                   f"{r['photo_noise']:.2f} (matched {r['noise_matched']}), fill {r['fill_s']} s, "
                   f"render {r['render_s']} s")  # fmt: skip
-    args.out.mkdir(parents=True, exist_ok=True)
-    tag = "" if rendering is None else f"-{args.run}-{args.stratum}"
-    path = args.out / f"{args.preset}{tag}-{args.cuts}cuts-seed{args.seed}-{args.most}px.json"
     path.write_text(json.dumps(rows, indent=1), "utf-8")
+    partial.unlink()  # its rows are all in `path`
     print(f"saved {path}")
 
 

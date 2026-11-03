@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import json
 from dataclasses import replace
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -10,6 +12,7 @@ from agatesim.cut_shapes import Look
 from agatesim.render import VOID
 from agatesim.volume.config import SliceConfig
 
+from nodule import descriptors
 from nodule.compare import library_table
 from nodule.descriptors import (
     PhotoCut,
@@ -19,6 +22,7 @@ from nodule.descriptors import (
     rendering_for,
     stand_in_rgb,
     stratum_looks,
+    survey,
 )
 from nodule.render.cutface import Rendering
 from nodule.render.record import FIELDS
@@ -134,3 +138,38 @@ def test_stratum_looks_keep_its_photos_only() -> None:
     looks = [Look(photo=p, edge_per_spacing=0.4, noise=1.0, spacing_px=9.0) for p in (slab, face)]
     assert [lk.photo for lk in stratum_looks(looks, "transmitted")] == [slab]
     assert [lk.photo for lk in stratum_looks(looks, "reflected")] == [face]
+
+
+def test_checkpoint_resumes_a_cut_short_run_exactly(
+    specimen: Specimen, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    looks = [LOOK, replace(LOOK, photo="other", noise=0.9)]
+    path = tmp_path / "run.partial.jsonl"
+    whole = survey(specimen, looks, 2, seed=5, most=MOST, checkpoint=path, key={"k": 1})
+    lines = path.read_text("utf-8").splitlines()
+    assert len(lines) == 3  # the run's key, then one line per cut
+    # A crash during the second cut: one cut saved, the second half written.
+    path.write_text("\n".join(lines[:2]) + "\n" + lines[2][:20], "utf-8")
+    calls: list[int] = []
+    real = descriptors.photo_cut
+
+    def counted(*a: object, **kw: object) -> PhotoCut:
+        calls.append(1)
+        return real(*a, **kw)  # type: ignore[arg-type]
+
+    monkeypatch.setattr(descriptors, "photo_cut", counted)
+    resumed = survey(specimen, looks, 2, seed=5, most=MOST, checkpoint=path, key={"k": 1})
+    assert len(calls) == 1  # only the lost cut is measured again
+    assert resumed == json.loads(json.dumps(whole, default=str))
+    assert path.read_text("utf-8").splitlines() == lines
+
+
+def test_negative_control_checkpoint_of_another_run_is_refused(
+    specimen: Specimen, tmp_path: Path
+) -> None:
+    path = tmp_path / "run.partial.jsonl"
+    survey(specimen, [LOOK], 1, seed=5, most=MOST, checkpoint=path, key={"k": 1})
+    with pytest.raises(ValueError, match="another run"):
+        survey(specimen, [LOOK], 1, seed=5, most=MOST, checkpoint=path, key={"k": 2})
+    with pytest.raises(ValueError, match="another run"):
+        survey(specimen, [LOOK], 1, seed=6, most=MOST, checkpoint=path, key={"k": 1})

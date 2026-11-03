@@ -170,3 +170,36 @@ darkness (L median 44 against 62). Those would be a step 3, after the
   [inference].
 - References added: none (pelto1956, lu1994, folk1952, graetsch1985 are
   catalogued).
+
+## Results: the 20-cut check (2026-11-03)
+
+- **What was run.** γ 4 (`pore_milky` 0.043894), band regularity 0.7 / 0.7,
+  2 mm depth, 20 rendered cuts, looks from half A. The cuts were judged
+  against half A and against the held-out half B. Run time 1611 s, peak
+  traced memory 1049 MB (*verified*; the report is in runs/, not
+  committed).
+- **What it is compared with.** The comparator is ADR 0010's 20-cut check
+  (0.3% air pores at 10 mm depth, 1471 s). ADR 0010 judged that setting
+  equivalent to step 1's water pores. It is not an exact rerun of step 1.
+- **Verdict.**
+  - All 20 cuts are within against A and against B. So are the 12
+    noise-matched cuts (11 before). No block is outside.
+  - The joint distance against A is 0.5 (was 1.1) and against B 3.4 (was
+    2.8). The line for "within" is 15.9 against A and 7.9 against B.
+- **Gains.**
+  - The spectrum distance is lower against both halves: 0.43 (was 0.50)
+    against A, 0.71 (was 0.91) against B.
+  - Edge curvature C15 is 0.08, the photos' 74th percentile against A
+    (was 0.09 at the 87th).
+  - Noise-matched C15 is 0.10, the 91st percentile against A (was 0.11 at
+    the 98th). That watch item eases.
+- **Edge coherence worse, as the Risks expected.** C16 is still 0.91 (the
+  photos' 98th percentile against both halves). On the noise-matched cuts
+  it rose to 0.89 (was 0.85), from the 96th / 92nd to the 98th / 98th
+  percentile. It stays within, but sharper bands make edges a little more
+  orderly than in the photos.
+- **Contrast.** This check does not record L sd. The evidence for the gain
+  is the 4-cut probe (Context).
+- **Grade:** *plausible*. Step 2 keeps the stone within the photos on both
+  halves and improves the spectrum and curvature. Edge coherence remains
+  the open watch item, with contrast and darkness (L median) still to do.

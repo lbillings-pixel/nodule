@@ -1,6 +1,6 @@
 # 12. Optics tuning step 2: how fast pores fade toward clear bands
 
-- Status: proposed (2026-11-02)
+- Status: accepted (owner, 2026-11-02): 12a A (γ 4), as recommended.
 - Date: 2026-11-02
 - Builds on: [ADR 0007](0007-renderer-cut-face-monte-carlo.md) choice 7a C
   (grain part plus pore part, both coupled to agatesim's translucency, an

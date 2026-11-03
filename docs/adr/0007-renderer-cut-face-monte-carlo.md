@@ -175,7 +175,9 @@ one channel's phase function and reweights each channel by p_c / p_mix
   pigment. BLUE stays Rayleigh-shaped in the same lobe. Tuning step 1
   ([ADR 0010](0010-optics-tuning-step-1-pores.md)) replaced these with
   water-filled pores (index 1.333) at 1.75% and 1.17%, iron oxide at
-  9 × 10⁻⁴, and a 2 mm slab under L1.
+  9 × 10⁻⁴, and a 2 mm slab under L1. Tuning step 2
+  ([ADR 0012](0012-optics-tuning-step-2-clear-bands.md)) made the pore
+  fraction fall as (1 − translucency)⁴, keeping the median band's 1.29%.
 - Every radius, index and fraction is `effective` and *speculative*, to be
   tuned at the set-level comparison. Coupling both parts to translucency
   is an assumption. Under the 45° point lamp the grain lobe gives

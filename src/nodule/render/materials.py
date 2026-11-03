@@ -24,7 +24,7 @@ Apetz's virtual composite through the Mie series (mie.grain_part) [@apetz2003];
 the pore part is water-filled spheres (mie.pore_part; ADR 0010). agatesim's translucency
 (1 clear .. 0 milky) sets both: the grain radius runs log-linearly from Lorenzi's
 blue-band to white-band grains [@lorenzi2022], and the pore fraction rises
-linearly toward milky. Coupling translucency to both parts is an ASSUMPTION, and
+toward milky as (1 - t)^4 (ADR 0012). Coupling translucency to both parts is an ASSUMPTION, and
 every radius and fraction is `effective`, to be tuned by render-and-compare.
 Nothing here claims which part makes agate's white bands white (ADR 0007 s.5).
 """
@@ -126,15 +126,19 @@ class OpticsTable:
     # ~5 um in white bands, halved to radii [@lorenzi2022].
     grain_r_clear_um: float = 0.15
     grain_r_milky_um: float = 2.5
-    # 7a C, pore part: radius (um), index, and volume fraction at translucency 0, falling
-    # linearly to none at 1. Tuning step 1 (ADR 0010 10a A): water-filled pores of ~0.1 um,
-    # as Folk and Weaver saw them, at 1.75%, near the ~2% their densities give if the pores
-    # hold water [@folk1952]; disputed (no such pores by TEM [@graetsch1985]). 1.75% water
-    # scatters like the 0.3% air of the tested setting (ADR 0007's was 0.1% air). All
-    # `effective`, *speculative* as optics.
+    # 7a C, pore part: radius (um), index, and volume fraction pore_milky * (1 - t)^pore_gamma
+    # (t: translucency). Tuning step 1 (ADR 0010 10a A): water-filled pores of ~0.1 um,
+    # as Folk and Weaver saw them, at 1.75% with gamma 1, near the ~2% their densities give
+    # if the pores hold water [@folk1952]; disputed (no such pores by TEM [@graetsch1985]).
+    # 1.75% water scatters like the 0.3% air of the tested setting (ADR 0007's was 0.1% air).
+    # Tuning step 2 (ADR 0012 12a A): gamma 4, so clear bands reach the grains' floor, with
+    # pore_milky rescaled to keep the step-1 fraction (1.29%) at the n2-slice record's median
+    # band, t 0.264. The curve's shape is an ASSUMPTION: no source measures pores band by
+    # band. All `effective`, *speculative* as optics.
     pore_r_um: float = 0.1
     pore_n: float = 1.333  # water, `physical`
-    pore_milky: float = 0.0175
+    pore_gamma: float = 4.0
+    pore_milky: float = 0.0175 / 0.736**3  # = 0.04389
     quartz_mus: float = 0.05  # macrocrystalline quartz: nearly clear (one lobe)
     quartz_g: float = 0.9
     # Pigment loading: volume fraction at impurity 1 for the iron oxides (impurity scales it
@@ -179,7 +183,7 @@ class OpticsTable:
         for the mean cosine; everything in lobe b is near-isotropic, g < ~0.65)."""
         a = min(max(float(translucency), 0.0), 1.0)
         mus_a, g_a = grain_part(self.grain_radius(a), WAVELENGTH_NM, N_CHALCEDONY)
-        phi = (1 - a) * self.pore_milky
+        phi = (1 - a) ** self.pore_gamma * self.pore_milky
         if pigment == Pigment.WHITE:
             phi += max(float(impurity), 0.0) * self.pore_white
         mus_p, g_p = pore_part(self.pore_r_um, phi, self.pore_n, WAVELENGTH_NM, N_CHALCEDONY)

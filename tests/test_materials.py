@@ -18,6 +18,7 @@ from nodule.render.materials import (
     GOETHITE_N,
     HEMATITE_NK,
     STEPS,
+    Optics,
     OpticsTable,
     rayleigh_absorption,
 )
@@ -220,9 +221,8 @@ def test_tuning_step_1_values_and_the_air_water_equivalence() -> None:
     """ADR 0010: step 1's values, and 1.75% water-filled pores scattering like the
     tested 0.3% air (reduced mu_s of the pore part within 3.5% per channel). Control:
     1.75% air must not match."""
-    tab = OpticsTable()
-    assert (tab.pore_n, tab.pore_milky, tab.pore_white, tab.phi_iron_oxide) == (
-        1.333, 0.0175, 0.011667, 9e-4)  # fmt: skip
+    tab = replace(OpticsTable(), pore_gamma=1.0, pore_milky=0.0175)  # step 1 (ADR 0012)
+    assert (tab.pore_n, tab.pore_white, tab.phi_iron_oxide) == (1.333, 0.011667, 9e-4)
 
     def pore_transport(t: OpticsTable):
         o = t.scattering(Pigment.IRON, 0.5, 0.0)
@@ -231,3 +231,29 @@ def test_tuning_step_1_values_and_the_air_water_equivalence() -> None:
     air = pore_transport(replace(tab, pore_n=1.0, pore_milky=3e-3))
     assert (abs(pore_transport(tab) / air - 1) < 0.035).all()
     assert (pore_transport(replace(tab, pore_n=1.0)) > 3 * air).all()
+
+
+def _reduced(o: Optics) -> np.ndarray:
+    return o.mus * ((1 - o.f) * (1 - o.g) + o.f * (1 - o.gb))
+
+
+def test_tuning_step_2_pores_fade_as_a_fourth_power() -> None:
+    """ADR 0012 12a A: gamma 4, pore_milky rescaled so the n2-slice record's median band
+    (t 0.264) keeps step 1's 1.29%. A clear band (t 0.806) then scatters 9x less than
+    under step 1, down near the grains-only floor (the probe's 0.99 -> 0.11 per mm at
+    550 nm). Control: step 1's values (gamma 1, 1.75%) must keep the old optics, and
+    fail the clear-band bound."""
+    tab = OpticsTable()
+    assert tab.pore_gamma == 4.0
+    assert abs(tab.pore_milky - 0.043894) < 1e-6
+    step1 = replace(tab, pore_gamma=1.0, pore_milky=0.0175)
+    med, clear = 0.264, 0.806
+    assert np.allclose(_reduced(tab.scattering(Pigment.IRON, 0.1, med)),
+                       _reduced(step1.scattering(Pigment.IRON, 0.1, med)), rtol=1e-9)  # fmt: skip
+    floor = _reduced(replace(tab, pore_milky=0.0).scattering(Pigment.IRON, 0.1, clear))
+    now = _reduced(tab.scattering(Pigment.IRON, 0.1, clear))
+    old = _reduced(step1.scattering(Pigment.IRON, 0.1, clear))
+    assert np.allclose(old[1], 0.99, atol=0.01)
+    assert np.allclose(now[1], 0.11, atol=0.01)
+    assert (now < 1.2 * floor).all()
+    assert not (old < 1.2 * floor).any()  # control: step 1 is far above the floor

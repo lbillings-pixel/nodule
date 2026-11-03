@@ -578,3 +578,43 @@ A probe of A costs one render setting (about 4–6 min). Iron would be
 removed from the bands below the stand-in's neutral split, with
 everything else as in 4f. It would show whether the cast and the
 L\*–C\* sign follow, before any of A–C is chosen.
+
+### 4k. Probe of A: iron only above an impurity floor (2026-11-03)
+
+As 4f (10 mm, black bottom, `matrix_mua` 0.13, iron 4 × 10⁻⁴, the same
+four cuts), except that bands with impurity below 0.28 get no iron
+pigment. A scratch subclass of `OpticsTable` does this; no project code
+changed. The floor 0.28 is the lowest at which every band the stand-in
+shows neutral (C\* < 8) loses its iron. 54 of 163 bands keep iron. The
+cost is that 17 weakly coloured bands (C\* 8–15) lose theirs too. Time
+380 s; peak traced Python memory 549 MB. Measures as in 4i (central
+crops), analysis 51 s.
+
+| iron | Y p90/p10 | L\* sd | C\* median | corr(L\*, C\*) | band ΔL\* / Δa\*b\* | shuffled |
+|---|---|---|---|---|---|---|
+| none | 2.13 | 7.34 | 4.92 | +0.18 | 10.1 / 1.2 | 1.4 / 0.8 |
+| 2 × 10⁻⁴, every band | 2.42 | 8.18 | 10.56 | +0.08 | 11.1 / 2.8 | 1.7 / 0.6 |
+| 4 × 10⁻⁴, every band | 2.58 | 8.63 | 13.12 | +0.22 | 12.4 / 3.8 | 1.8 / 0.7 |
+| **4 × 10⁻⁴, impurity ≥ 0.28 only** | 2.36 | 8.13 | 9.36 | +0.01 | 10.3 / **6.9** | 1.3 / 1.3 |
+| photos (4e, 4h) | 2.49 | 9.7 | 7.3 | −0.24 | 14.4 / 6.3 | 2.2 / 0.7 |
+
+*Verified* (model property; one specimen, one seed, four cuts):
+- With iron removed from the low-impurity bands, the band colour gap
+  almost doubles (3.8 → 6.9), reaching the photos' median (6.3). The
+  overall tint falls (C\* 13.1 → 9.4, photos 7.3). Viewed side by side
+  (cut 0), the render shows separate grey and ochre bands like the
+  stand-in. With every band iron-bearing, the render is one
+  olive-khaki wash.
+- The L\*–C\* correlation falls from +0.22 to +0.01 but does not turn
+  negative as in the photos. Contrast (2.36 against 2.49) and lightness
+  spread (8.1 against 9.7) drop slightly, because less iron darkens.
+
+So the cast of 4f–4i comes mainly from iron pigment in bands that the
+stand-in shows uncoloured: 4j's reading holds [*verified* for this
+model]. A floor is a single effective parameter here, not a measured
+one. The photos are not evidence for it (ADR 0002). The lightness side
+is still short, and the remaining correlation gap points to dark
+features that carry no colour (relief and depth, 4f).
+
+**The decision now (owner): how impurity becomes iron pigment.** The
+options are A–C of 4j, with A now tested.

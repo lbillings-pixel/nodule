@@ -519,3 +519,62 @@ impurity in most bands, so that grey stand-in bands render yellow;
 (3) a wavelength-dependent scattering tint (iron-off renders already
 have C\* about 5, 4e). Cause (2) can be checked in seconds from the
 specimen's band record, without rendering.
+
+### 4j. Every band carries iron (2026-11-03)
+
+Cause (2) checked against the band record of the stone used in 4e–4i (as
+`rendering_for` reads it, stream 0). For each band the check reads the
+stand-in colour that agatesim gives it and the iron absorption the
+renderer gives it. Time 2 s; peak traced Python memory 198 MB.
+
+*Verified* (record and code facts):
+- All 163 bands seen are chalcedony with pigment IRON. Agatesim's growth
+  model gives no pigment field, and the record then sets IRON
+  (`BandRecord.of`). Impurity runs 0.06–0.45 (median 0.24), so every band
+  gets iron oxide in proportion to it (`OpticsTable.pigment_mua`; the
+  linear scaling is labelled there as an assumption).
+- The stand-in shows 92 of the 163 bands (56%) as near-neutral (C\* < 8,
+  hue about 270°, bluish grey; impurity median 0.17). The 58 coloured
+  bands (C\* ≥ 15, hue about 75°, ochre) have impurity median 0.36.
+  The stand-in's colour follows impurity steeply (correlation +0.85 with
+  C\*). It treats low impurity as almost no colour.
+- The renderer does not. At iron 2 × 10⁻⁴, the stand-in's neutral bands
+  get iron absorption of 0.22 / 0.07 / 0.05 mm⁻¹ at 450 / 550 / 650 nm.
+  That is yellow, and at 450 nm it exceeds the whole grey absorption
+  (0.13). The coloured bands get 0.59 / 0.22 / 0.11, only 2.7 times more.
+  At the default 9 × 10⁻⁴ every value is 4.5 times larger.
+- **Correction to 4c and 4f.** The ppm figures there (about 1270, 280 and
+  560 ppm Fe) hold at impurity 1, which no band reaches. With the
+  impurity scaling, iron 2 × 10⁻⁴ puts bands at about 17–126 ppm (neutral
+  ones about 48), and the default about 76–570 ppm [inference: same
+  densities as 4c]. The "measured-level iron" of 4f is at or below
+  Zhang's clear-zone range (~70–400 ppm), not at its upper end.
+
+So the warm cast is built into the materials. The renderer turns all of
+a band's iron into pigment particles, so bands that the stand-in shows
+grey render yellow, and the coloured bands stand out only 2.7-fold
+[inference from the record and 4h–4i; *plausible* until a render tests
+it]. This also fits the sources. In Zhou's set the same total iron
+(0.035 wt% Fe₂O₃) gives C\* 12 or 47 (4d), and Zhang's clear zones hold
+~70–400 ppm Fe yet look clear. Total iron does not set colour; how much
+of it forms pigment particles does [@zhou2022; @zhang2025; inference,
+*plausible*]. One impurity number per band cannot tell pigmenting iron
+from the rest.
+
+Options (owner's choice; a materials-mapping decision):
+- **A. Threshold or steeper mapping (effective).** Pigment loading as a
+  steep function of impurity, set so that the bands the stand-in shows
+  neutral get almost none. Quick to try; it only moves the gap into one
+  new parameter.
+- **B. Split iron into pigment and non-pigment (towards physical).** Only
+  part of a band's iron forms hematite or goethite particles. The rest
+  absorbs weakly and broadly, like Lorenzi's ~570 nm band (4a, grey-ish).
+  Better sourced, but the split itself is not measured per band.
+- **C. Ask agatesim for a pigment field.** Agatesim would mark which bands
+  carry iron pigment (agatesim ADR). This is the cleanest, but it is a
+  change in the other project.
+
+A probe of A costs one render setting (about 4–6 min). Iron would be
+removed from the bands below the stand-in's neutral split, with
+everything else as in 4f. It would show whether the cast and the
+L\*–C\* sign follow, before any of A–C is chosen.

@@ -319,6 +319,40 @@ the drift only. The lenses are still worked out at every sample, since
 - **Tests.** Three GPU tests (bake accuracy, image, refusal of another
   grid's bake) and one CPU test of the setting. 460 tests.
 
+### 10. Twenty-cut survey with set 4 (2026-11-04)
+
+The plain stone's 20-cut run (ADR 0015 section 6, `gpu_check_defaults.py`)
+repeated with set 4 and the baked drift: the same seed, cuts, looks and
+render streams. Looks come from half A; half B is held out. **5,874 s**
+against 1,670 s plain (3.5×); peak traced Python memory 1,171 MB; GPU
+pool 197 MB at the end. Nine of 20 cuts were noise-matched in both runs.
+
+| all 20 cuts | plain | set 4 | photos p50 / p95 (A; B) |
+|---|---|---|---|
+| joint distance vs A (line 15.9) | 1.1 | 0.4 | |
+| joint distance vs B (line 7.9) | 3.2 | 2.8 | |
+| spectrum block vs B (line 1.97) | 0.36 | 1.07 | |
+| C26 slope (pct A / B) | 2.29 (86 / 90) | 2.66 (86 / 95) | 1.41 / 2.94; 1.23 / 2.55 |
+| C26 peak (pct A / B) | 3.05 (67 / 67) | 2.68 (62 / 48) | 2.07 / 4.78; 2.83 / 5.54 |
+| C15 curvature (pct A / B) | 0.08 (78 / 83) | 0.09 (87 / 87) | 0.06 / 0.10; 0.06 / 0.11 |
+| C15 high (pct A / B) | 0.19 (52 / 53) | 0.21 (70 / 62) | 0.18 / 0.25; 0.19 / 0.30 |
+| C16 coherence (pct A / B) | 0.91 (98 / 98) | 0.90 (98 / 98) | 0.67 / 0.84; 0.60 / 0.87 |
+
+- *Verified* as a model property (one stone, one seed, 20 paired cuts;
+  no test of whether each change exceeds cut-to-cut noise). Both runs
+  are within the joint lines, and set 4 is a little closer on both
+  halves. No block falls outside.
+- Moved away from the photos: the C26 spectrum slope, back to the 95th
+  percentile of B (the open gap of ADR 0014 4o), the spectrum block
+  against B, and C15 curvature. C16 coherence is unchanged and still
+  above the photos' 95th percentile. The C26 peak moves toward B's
+  median.
+- *Speculative* reading: the drift adds slow change along the bands,
+  which would put power at coarse scales and steepen the slope. Not
+  tested. Render-to-photo only; never evidence for how lenses form.
+- Cost for longer runs: the 100-cut plain run took 8,466 s, so set 4
+  would take about 8 h at 3.5×.
+
 ## Alternatives considered
 
 The B and C options of 16a to 16c. Also a cut-face-only shift held

@@ -44,7 +44,7 @@ extern "C" __global__ void slab(
                 for (int c = 0; c < 3; ++c) w[c] *= mus[3 * m + c] / (mua[3 * m + c] + mus[3 * m + c]);
                 hg(g, ux, uy, uz, r);
             }
-        } else if (spectral_step(w, mua, mus, m, mubar, r)) {
+        } else if (spectral_step(w, mua + 3 * m, mus, m, mubar, r)) {
             hg(g, ux, uy, uz, r);
         }
         if (!roulette(w, 1.f, r)) break;

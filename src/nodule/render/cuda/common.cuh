@@ -135,11 +135,12 @@ __device__ void scatter(const float* ph, int m, float* w, float& ux, float& uy, 
 
 // Kutz et al. 2017 spectral tracking at a tentative collision, three channels sharing one path.
 // History-aware probability of a real collision; weights updated in place. Returns 1 if real.
-__device__ int spectral_step(float* w, const float* mua, const float* mus, int m, float mubar,
+// a: the sample's absorption (3 channels; it may vary within a material, ADR 0016).
+__device__ int spectral_step(float* w, const float* a, const float* mus, int m, float mubar,
                              Rng& r) {
     float mt[3], mn[3], ms[3], sr = 0.f, sn = 0.f;
     for (int c = 0; c < 3; ++c) {
-        ms[c] = mus[3 * m + c]; mt[c] = mua[3 * m + c] + ms[c]; mn[c] = mubar - mt[c];
+        ms[c] = mus[3 * m + c]; mt[c] = a[c] + ms[c]; mn[c] = mubar - mt[c];
         sr += fabsf(w[c] * mt[c]); sn += fabsf(w[c] * mn[c]);
     }
     float pr = sr / (sr + sn);

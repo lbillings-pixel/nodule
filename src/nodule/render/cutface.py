@@ -48,6 +48,8 @@ from nodule.render.camera import Flag, Light, View, reflectance_factor, render, 
 from nodule.render.materials import OpticsTable
 from nodule.render.record import BandRecord
 from nodule.render.scene import pack, upload
+from nodule.render.shift import ShiftArrays, variation_of
+from nodule.render.shift import upload as shift_upload
 from nodule.render.tgrid import GrowthGrid
 from nodule.specimen import Specimen, SpecimenCut
 
@@ -144,7 +146,12 @@ class CutRenderer:
         grid = GrowthGrid.fill(specimen, cut.plane, r.grid_mm, r.depth_mm)
         self._dev = upload(pack(specimen, grid))
         self.fill_s = time.perf_counter() - t0
-        self._mats = r.optics.materials(r.record)
+        # materials that vary along the bands (ADR 0016), when the stone has them and the
+        # record marks steps that take them (a fake's record carries them with its runs)
+        variation = variation_of(specimen) if r.record.shifts.any() else None
+        host = ShiftArrays.of(variation) if variation is not None else None
+        self._mats = r.optics.materials(r.record, host)
+        self._shift = shift_upload(host, self._mats) if host is not None else None
         self._view = view_of(cut)
         self._face = cut.inside
         self._rng = rng
@@ -164,7 +171,7 @@ class CutRenderer:
         for k in range(2):
             seed = int(self._rng.integers(1, 2**32 - 1))  # the kernel's seed is uint32
             out = render(self._dev, self._view, self._mats, r.light, spp=add, seed=seed,
-                         depth_mm=r.depth_mm, flags=r.flags)  # fmt: skip
+                         depth_mm=r.depth_mm, flags=r.flags, shift=self._shift)  # fmt: skip
             self._sums[k] += out.image * add
         self.spp += 2 * add
         half = self.spp / 2

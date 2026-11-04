@@ -1,4 +1,5 @@
-// Camera + standard lights over the polished cut face (ADR 0007). Needs common.cuh, scene.cuh.
+// Camera + standard lights over the polished cut face (ADR 0007). Needs common.cuh, scene.cuh,
+// shift.cuh.
 //
 // Orthographic camera on the +n side looking along -n; one path per (pixel, sample), box-filtered
 // jitter. The path enters through the smooth face with weight T(0)/n^2 (radiance leaving a denser
@@ -41,26 +42,49 @@ struct Cam { float s0, t0, pix; int nx, ny, spp; unsigned int seed; float n_in, 
              int light; float lth, lph, E, Ld; float mubar; int nmat; int nprof; float dt;
              int order; int flags; float lomc; };
 
-__device__ int matid(const Scene& S, const Cam& C, const unsigned short* prof, float x, float y, float z) {
-    if (C.flags & 4) return 0;
-    float t = 0.f; int c = classify(S, x, y, z, t, C.flags & 1);
-    if (c < 2) return c;
-    int u = (int)floorf(t / C.dt); u = min(max(u, 0), C.nprof - 1);
-    return 2 + prof[u];
+// What a sample sees: m, the row of its scattering and phase function, and a, its absorption.
+// Without a shift a = mua[m]. With one (ADR 0016; shift.cuh), a band row that takes it adds
+// (gain - 1) x its pigment's absorption (16b: a lens is more of the band's own pigment), and
+// with drift m becomes the translucency table's row nearest the drifted translucency.
+struct Mat { int m; float a[3]; };
+
+__device__ Mat matid(const Scene& S, const Cam& C, const Shift& H, const unsigned short* prof,
+                     const float* mua, float x, float y, float z) {
+    Mat M; M.m = 0;
+    float t = 0.f;
+    if (!(C.flags & 4)) {
+        int c = classify(S, x, y, z, t, C.flags & 1);           // x, y, z now restored
+        if (c < 2) M.m = c;
+        else { int u = (int)floorf(t / C.dt); u = min(max(u, 0), C.nprof - 1); M.m = 2 + prof[u]; }
+    }
+    for (int c = 0; c < 3; ++c) M.a[c] = mua[3 * M.m + c];
+    if (H.band == nullptr || M.m < 2) return M;
+    const float* B = H.band + 4 * M.m;
+    if (!(B[0] >= 0.f)) return M;                               // takes no shift
+    bool lens = B[1] > 0.f || B[2] > 0.f || B[3] > 0.f, drift = H.ntr > 0;
+    if (!lens && !drift) return M;                              // below the iron floor: no lens
+    float gain, change;
+    shift_at(H, x, y, z, t, lens, drift, gain, change);
+    for (int c = 0; c < 3; ++c) M.a[c] += (gain - 1.f) * B[1 + c];
+    if (drift) {
+        float tr = fminf(fmaxf(B[0] + change, 0.f), 1.f);
+        M.m = H.tr0 + min((int)(tr * (H.ntr - 1) + 0.5f), H.ntr - 1);
+    }
+    return M;
 }
 
 // Ratio-tracked transmittance (all channels) along a unit direction over length L.
-__device__ void ratio(const Scene& S, const Cam& C, const unsigned short* prof, const float* mua,
-                      const float* mus, float x, float y, float z, float dx, float dy, float dz,
-                      float L, float* T, Rng& r) {
+__device__ void ratio(const Scene& S, const Cam& C, const Shift& H, const unsigned short* prof,
+                      const float* mua, const float* mus, float x, float y, float z, float dx,
+                      float dy, float dz, float L, float* T, Rng& r) {
     T[0] = T[1] = T[2] = 1.f;
     if (C.flags & 2) return;
     float s = 0.f;
     for (int it = 0; it < 100000; ++it) {
         s += -logf(r.next()) / C.mubar;
         if (s >= L) return;
-        int m = matid(S, C, prof, x + dx * s, y + dy * s, z + dz * s);
-        for (int c = 0; c < 3; ++c) T[c] *= 1.f - (mua[3 * m + c] + mus[3 * m + c]) / C.mubar;
+        Mat M = matid(S, C, H, prof, mua, x + dx * s, y + dy * s, z + dz * s);
+        for (int c = 0; c < 3; ++c) T[c] *= 1.f - (M.a[c] + mus[3 * M.m + c]) / C.mubar;
         float tm = fmaxf(T[0], fmaxf(T[1], T[2]));
         if (tm < 0.1f) {                                   // shadow roulette (unbiased)
             if (tm <= 0.f || r.next() * 0.1f >= tm) { T[0] = T[1] = T[2] = 0.f; return; }
@@ -75,8 +99,8 @@ __device__ void ratio(const Scene& S, const Cam& C, const unsigned short* prof, 
 // estimate is weighted against phase sampling (balance heuristic); omega is the solid angle
 // the light direction was drawn from (in air). Direct path through the face, plus 1 in 4 the
 // path via the mirror image in the bottom face (weight 4; flag 16 drops it).
-__device__ void nee(const Scene& S, const Cam& C, const unsigned short* prof, const float* mua,
-                    const float* mus, const float* ph, int m, const float* w, float x, float y,
+__device__ void nee(const Scene& S, const Cam& C, const Shift& H, const unsigned short* prof,
+                    const float* mua, const float* mus, const float* ph, int m, const float* w, float x, float y,
                     float z, float dx, float dy, float dz, float n, float ox, float oy, float oz,
                     float fac, bool mis, float omega, float* acc, Rng& r) {
     float cth = ox * S.n[0] + oy * S.n[1] + oz * S.n[2];
@@ -90,7 +114,7 @@ __device__ void nee(const Scene& S, const Cam& C, const unsigned short* prof, co
     float cl = lx * dx + ly * dy + lz * dz;                     // omega_t . (-d), omega_t = -l
     float d0 = -((x - S.o[0]) * S.n[0] + (y - S.o[1]) * S.n[1] + (z - S.o[2]) * S.n[2]);
     float T[3];
-    ratio(S, C, prof, mua, mus, x, y, z, lx, ly, lz, d0 / ct, T, r);
+    ratio(S, C, H, prof, mua, mus, x, y, z, lx, ly, lz, d0 / ct, T, r);
     float wl = mis ? pl / (pl + sample_pdf(ph, m, w, cl)) : 1.f;
     for (int c = 0; c < 3; ++c) acc[c] += w[c] * phase_pdf(ph, m, c, cl) * Ein * T[c] * wl;
     if (isfinite(C.D) && Rb > 0.f && !(C.flags & (16 | 2048)) && r.next() < 0.25f) {
@@ -98,8 +122,8 @@ __device__ void nee(const Scene& S, const Cam& C, const unsigned short* prof, co
         // omega_r = ct n - (tangent). Shadow legs: down along m = -omega_r, then up along l.
         float mx = -ct * S.n[0] + tx, my = -ct * S.n[1] + ty, mz = -ct * S.n[2] + tz;
         float L1 = (C.D - d0) / ct, T1[3], T2[3];
-        ratio(S, C, prof, mua, mus, x, y, z, mx, my, mz, L1, T1, r);
-        ratio(S, C, prof, mua, mus, x + mx * L1, y + my * L1, z + mz * L1, lx, ly, lz, C.D / ct, T2, r);
+        ratio(S, C, H, prof, mua, mus, x, y, z, mx, my, mz, L1, T1, r);
+        ratio(S, C, H, prof, mua, mus, x + mx * L1, y + my * L1, z + mz * L1, lx, ly, lz, C.D / ct, T2, r);
         float cm = mx * dx + my * dy + mz * dz;                // omega_r . (-d)
         float wm = mis ? 0.25f * pl / (0.25f * pl + sample_pdf(ph, m, w, cm)) : 1.f;
         for (int c = 0; c < 3; ++c)
@@ -107,10 +131,10 @@ __device__ void nee(const Scene& S, const Cam& C, const unsigned short* prof, co
     }
 }
 
-extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const unsigned short* prof,
-                                  const float* mua, const float* mus, const float* ph,
-                                  float* img, unsigned long long* stats) {
-    const Scene& S = *Sp; const Cam& C = *Cp;
+extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* Hp,
+                                  const unsigned short* prof, const float* mua, const float* mus,
+                                  const float* ph, float* img, unsigned long long* stats) {
+    const Scene& S = *Sp; const Cam& C = *Cp; const Shift& H = *Hp;
     long long id = (long long)blockIdx.x * blockDim.x + threadIdx.x;
     long long npx = (long long)C.nx * C.ny;
     if (id >= npx * C.spp) return;
@@ -175,18 +199,19 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const unsigned
             break;
         }
         x += dx * s; y += dy * s; z += dz * s; ++events;
-        int m = matid(S, C, prof, x, y, z);
-        if (spectral_step(w, mua, mus, m, C.mubar, r)) {
+        Mat M = matid(S, C, H, prof, mua, x, y, z);
+        int m = M.m;
+        if (spectral_step(w, M.a, mus, m, C.mubar, r)) {
             ++real;
             if (doNee && (C.order == 0 || real == C.order)) {
                 if (disc) {                                     // one direction in the cone
                     float q = r.next() * omc, sb = sqrtf(q * (2.f - q)), cb = 1.f - q;
                     float psi = 6.28318531f * r.next(), cp = cosf(psi) * sb, sp = sinf(psi) * sb;
-                    nee(S, C, prof, mua, mus, ph, m, w, x, y, z, dx, dy, dz, n,
+                    nee(S, C, H, prof, mua, mus, ph, m, w, x, y, z, dx, dy, dz, n,
                         cb * a0 + cp * e10 + sp * e20, cb * a1 + cp * e11 + sp * e21,
                         cb * a2 + cp * e12 + sp * e22, Om * Lr, mis, Om, acc, r);
                 } else {
-                    nee(S, C, prof, mua, mus, ph, m, w, x, y, z, dx, dy, dz, n, a0, a1, a2, C.E,
+                    nee(S, C, H, prof, mua, mus, ph, m, w, x, y, z, dx, dy, dz, n, a0, a1, a2, C.E,
                         false, 0.f, acc, r);
                 }
             }

@@ -6,11 +6,16 @@ f(t_dep) (agatesim `growth_fields`), so phase, pigment, impurity and
 translucency are functions of the growth step alone. `BandRecord.of` checks
 this at every point it is given and refuses what the renderer cannot show.
 `GrowthGrid.fill` builds one from the same evaluations that fill the grid.
+
+When agatesim varies materials along the bands (agatesim ADR 0078), it reports each
+step's own values as `band_impurity` and `band_translucency`. The record reads those
+and marks the steps that take the variation (`shifts`: banded chalcedony, as in agatesim
+`_vary_along_bands`). The renderer works the variation out at each sample (ADR 0016).
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import numpy as np
 from agatesim.fields import Fields, Phase, Pigment
@@ -21,7 +26,7 @@ STEPS = TIME_STEPS  # agatesim's growth-time steps; t_dep = (k + 0.5) / STEPS
 
 F32 = NDArray[np.float32]
 BoolArray = NDArray[np.bool_]
-FIELDS = ("phase", "pigment", "impurity", "translucency")
+FIELDS = ("phase", "pigment", "impurity", "translucency", "shifts")
 
 
 @dataclass(frozen=True)
@@ -33,6 +38,8 @@ class BandRecord:
     pigment: NDArray[np.uint8]  # Pigment; IRON where agatesim gives none (its convention)
     impurity: F32
     translucency: F32
+    # the step's material varies along its band (agatesim ADR 0078): banded chalcedony
+    shifts: BoolArray = field(default_factory=lambda: np.zeros(STEPS, bool))
 
     @classmethod
     def empty(cls) -> BandRecord:
@@ -42,6 +49,7 @@ class BandRecord:
             pigment=np.zeros(STEPS, np.uint8),
             impurity=np.zeros(STEPS, np.float32),
             translucency=np.zeros(STEPS, np.float32),
+            shifts=np.zeros(STEPS, bool),
         )
 
     @classmethod
@@ -49,7 +57,8 @@ class BandRecord:
         """From fields at points (any shape) and which lie in the stone. Refuses what
         the renderer cannot show: an unfilled point inside the stone (an open cavity or
         a hollow crystal: no void material yet), an inclusion other than a tube
-        (dendrites), and a step whose properties differ between points."""
+        (dendrites), and a step whose properties differ between points. Where agatesim
+        varies materials along the bands, a step's properties are its band values."""
         if f.t_smooth is None:
             raise ValueError("the model gives no smooth growth time (agatesim ADR 0076 s. 6)")
         tube = inside & (f.phase == Phase.INCLUSION) & np.isnan(f.t_dep)
@@ -63,11 +72,18 @@ class BandRecord:
             raise ValueError("inclusions other than tubes (dendrites) are not rendered yet")
         k = np.clip(np.floor(f.t_dep[body] * STEPS).astype(np.intp), 0, STEPS - 1)
         pigment = f.pigment if f.pigment is not None else np.full(f.phase.shape, Pigment.IRON)
+        impurity = f.impurity if f.band_impurity is None else f.band_impurity
+        translucency = f.translucency if f.band_translucency is None else f.band_translucency
+        # agatesim _vary_along_bands; none where agatesim varies nothing, so such a record
+        # (and its materials) is exactly what it was before ADR 0016
+        varies = f.band_impurity is not None
+        shifts = (f.phase == Phase.CHALCEDONY) & (f.band >= 0) & varies
         cols = {
             "phase": f.phase[body],
             "pigment": pigment[body].astype(np.uint8),
-            "impurity": f.impurity[body],
-            "translucency": f.translucency[body],
+            "impurity": impurity[body],
+            "translucency": translucency[body],
+            "shifts": shifts[body],
         }
         out = cls.empty()
         if not len(k):

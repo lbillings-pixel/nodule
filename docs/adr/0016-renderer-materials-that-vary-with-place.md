@@ -184,6 +184,50 @@ dropped: length 10 mm; subtle (strength 0.5, drift 0.1); thickness 0.5 mm.
   and drift is *speculative*: renders are procedural and are never
   evidence for what makes agate lenses.
 
+### 7. Built (2026-11-04)
+
+- **Code.** `render/shift.py` and `cuda/shift.cuh` hold the GPU copy. The
+  stone's own fields come from agatesim's documented route,
+  `wall_features(model, setting, default_rng(seed))`. The pack reads
+  agatesim's `SheetNoise` and `BandNoise` internals, guarded by the test
+  below. `BandRecord` reads the band values and marks the steps that take
+  the shift. It marks none when agatesim varies nothing, so such records,
+  tables and images are as before. `OpticsTable.materials(record, shift)`
+  adds each row's translucency and pigment absorption. With drift it also
+  adds a 1,025-row table in translucency, and a drifted sample takes the
+  nearest row. `CutRenderer` turns the shift on by itself when the record
+  has steps that take it. Fakes carry the flag with their moved runs.
+- **Checks** (`tests/test_shift.py`, `tests/test_shift_gpu.py`; 13 tests,
+  each with a control). *verified*:
+  - The rebuilt fields are the stone's own: they reproduce agatesim's
+    varied impurity to 3e-5 and its translucency to 1e-6, the residue of
+    float32 growth times. Control: another seed's fields miss by > 0.1.
+  - GPU vs agatesim `material_shift` at 1e5 points: gain within 3.1e-4
+    (p99 2.3e-5), change within 2.1e-6. This is float32 with fast math,
+    not bit-exact. Control: a transposed rotation fails by > 100× the
+    bounds.
+  - With no step taking the shift, the image is bit-identical to the plain
+    renderer's at the same seed. All 442 earlier tests pass unchanged.
+  - Constant gain 2.5 per sample vs the per-step table with 2.5× pigment:
+    mean difference 1.9e-9 against 3.3e-2 without the lens (the control).
+  - Drift vs lenses half a band (0.225 mm) deeper at the same place:
+    correlation 0.76 for the drift and 0.01 for the 0.1 mm lenses (the
+    control). The drift shows no structure finer than a band.
+  - The drift table's nearest row is within 1% of the exact optics (mus,
+    1 − g, lobe share). Control: a 33-row table misses by > 1%.
+- **Cost** (one n2-slice cut, 268 × 244 px, 64 spp, dome, black bottom;
+  best of 3): 0.43 s plain; lenses only 0.71 s (1.65×); drift only 1.45 s
+  (3.4×); both 1.96 s (**4.6×, over the 2× flag**). GPU memory is
+  unchanged at ~1.1 GB. The drift is read at every sample in every banded
+  layer, and the lenses only in bands above the iron floor. Making the
+  milkiest bands milkier also raises the majorant, from 28.7 to 52.9 /mm,
+  which alone costs ~1.7×.
+- **Measured option, not built.** The drift could be baked once per cut
+  on the 0.2 mm growth-time grid and interpolated. Its error in
+  translucency would be p50 0.005, p99 0.036, and at worst 0.10 where
+  growth time jumps (drift range ±0.25; 16k points). Lenses would stay
+  exact. This departs from 16a, so it is the owner's choice.
+
 ## Alternatives considered
 
 The B and C options of 16a to 16c. Also a cut-face-only shift held

@@ -51,8 +51,9 @@ __device__ float tlookup(const Scene& S, float x, float y, float z) {
          +    c *((1-b)*((1-a)*q[sz] + a*q[sz+1]) + b*((1-a)*q[sz+sy] + a*q[sz+sy+1]));
 }
 
-// mode bit 1: skip the fracture backward map (negative control)
-__device__ int classify(const Scene& S, float x, float y, float z, float& t, int mode) {
+// mode bit 1: skip the fracture backward map (negative control). x, y, z become the restored
+// point, where materials that vary along the bands are read (shift.cuh).
+__device__ int classify(const Scene& S, float& x, float& y, float& z, float& t, int mode) {
     if (!(mode & 1)) restore(S, x, y, z);
     float lev = -1e30f;
     for (int i = 0; i < S.nsph; ++i) {
@@ -80,6 +81,7 @@ extern "C" __global__ void classify_points(long long n, const float* pts, const 
     long long p = (long long)blockIdx.x * blockDim.x + threadIdx.x;
     if (p >= n) return;
     float t = __int_as_float(0x7fc00000);
-    cls[p] = classify(S, pts[3 * p], pts[3 * p + 1], pts[3 * p + 2], t, mode);
+    float x = pts[3 * p], y = pts[3 * p + 1], z = pts[3 * p + 2];
+    cls[p] = classify(S, x, y, z, t, mode);
     tout[p] = t;
 }

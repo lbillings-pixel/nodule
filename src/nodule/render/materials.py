@@ -34,7 +34,7 @@ from __future__ import annotations
 import math
 from collections.abc import Sequence
 from dataclasses import dataclass, field
-from typing import Literal, NamedTuple
+from typing import TYPE_CHECKING, Literal, NamedTuple
 
 import numpy as np
 from agatesim.fields import Phase, Pigment
@@ -44,7 +44,15 @@ from nodule.render.camera import N_CHALCEDONY, Materials
 from nodule.render.mie import grain_part, pore_part
 from nodule.render.record import FIELDS, STEPS, BandRecord
 
+if TYPE_CHECKING:
+    from nodule.render.shift import ShiftArrays
+
 __all__ = ["STEPS", "BandRecord", "Optics", "OpticsTable", "rayleigh_absorption"]
+
+# The drift's table in translucency (ADR 0016 s.3): a drifted sample takes the nearest of
+# these rows, so its translucency is off by at most 1/2048. A numerical choice, not a model
+# one; each row costs ~1.4 ms of Mie series (measured), ~1.4 s in all.
+TR_NODES = 1025
 
 WAVELENGTH_NM = np.array([450.0, 550.0, 650.0])  # the renderer's channels (ADR 0007 s.2)
 
@@ -217,16 +225,48 @@ class OpticsTable:
         mua = self.matrix_mua + self.pigment_mua(pigment, impurity)
         return self.scattering(pigment, impurity, translucency)._replace(mua=mua)
 
-    def materials(self, record: BandRecord) -> Materials:
+    def materials(self, record: BandRecord, shift: ShiftArrays | None = None) -> Materials:
         """The camera's material table for a record: 0 host, 1 tube core, then one
-        material per distinct deposit, and the step -> material profile (dt = 1/STEPS)."""
+        material per distinct deposit, and the step -> material profile (dt = 1/STEPS).
+
+        With a shift (ADR 0016), each deposit that takes it gets its translucency and its
+        pigment's absorption at gain 1 (`Materials.along`): a lens multiplies the AMOUNT of
+        the band's own pigment, mua = matrix_mua + gain x pigment_mua(pigment, impurity),
+        at the band's impurity, so its hue stays and a band under the iron floor shows no
+        lens (16b A, an ASSUMPTION). This departs from agatesim's own fields, which
+        multiply impurity (`impurity x gain`); descriptors that read agatesim's colour see
+        agatesim's version. With drift, TR_NODES rows of scattering follow, one per
+        translucency in [0, 1] (the coupling of translucency to both scattering parts is
+        ADR 0007's assumption). First scope: iron oxides only, whose scattering does not
+        depend on pigment or impurity; any other pigment that takes the shift is refused."""
         src = record.nearest_seen()
         keys = np.stack([getattr(record, name)[src].astype(np.float64) for name in FIELDS], 1)
         uniq, prof = np.unique(keys, axis=0, return_inverse=True)
         rows = [self.host, self.tube_core] + [
-            self.band(int(p), int(pg), float(x), float(tr)) for p, pg, x, tr in uniq
+            self.band(int(p), int(pg), float(x), float(tr)) for p, pg, x, tr, _ in uniq
         ]
+        along: F64 | None = None
+        tr_rows = (0, 0)
+        if shift is not None:
+            along = np.zeros((len(rows), 4))
+            along[:, 0] = -1.0
+            for i, (p, pg, x, tr, takes) in enumerate(uniq):
+                if not takes:
+                    continue
+                if Phase(int(p)) is not Phase.CHALCEDONY or Pigment(int(pg)) not in IRON_OXIDES:
+                    raise ValueError(
+                        f"materials varying along the bands are drawn for iron-stained "
+                        f"chalcedony only, not {Phase(int(p)).name} {Pigment(int(pg)).name} "
+                        "(ADR 0016 s.3)"
+                    )
+                along[2 + i] = [tr, *self.pigment_mua(int(pg), float(x))]
+            if shift.drift is not None:
+                tr_rows = (len(rows), TR_NODES)
+                rows += [self.scattering(Pigment.IRON, 0.0, a)
+                         for a in np.linspace(0.0, 1.0, TR_NODES)]  # fmt: skip
+                along = np.r_[along, np.tile([-1.0, 0.0, 0.0, 0.0], (TR_NODES, 1))]
         return Materials.of(
             mua=[r.mua for r in rows], mus=[r.mus for r in rows], g=[r.g for r in rows],
             profile=prof.ravel(), dt=1.0 / STEPS, f=[r.f for r in rows], gb=[r.gb for r in rows],
+            along=along, tr_rows=tr_rows,
         )  # fmt: skip

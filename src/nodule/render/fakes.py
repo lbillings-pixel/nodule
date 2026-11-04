@@ -116,6 +116,7 @@ def _from_dense(d: dict[str, NDArray[np.generic]]) -> BandRecord:
         pigment=d["pigment"].astype(np.uint8),
         impurity=d["impurity"].astype(np.float32),
         translucency=d["translucency"].astype(np.float32),
+        shifts=d["shifts"].astype(bool),
     )
 
 

@@ -16,11 +16,15 @@ from typing import Any
 SOURCES = {
     "slab": ("common.cuh", "slab.cu"),
     "scene": ("common.cuh", "scene.cuh"),
-    "camera": ("common.cuh", "scene.cuh", "camera.cu"),
+    "shift": ("common.cuh", "scene.cuh", "shift.cuh"),
+    "camera": ("common.cuh", "scene.cuh", "shift.cuh", "camera.cu"),
 }
 # fast-math is safe in the camera kernel (checked against analytic values in
-# tests/test_render_gpu.py); the reference slab kernel stays exact IEEE.
-OPTIONS: dict[str, tuple[str, ...]] = {"camera": ("--use_fast_math",)}
+# tests/test_render_gpu.py); the shift module is the camera's shift code alone, compiled
+# the same way so its test checks what renders use. The reference slab kernel stays
+# exact IEEE.
+FAST = ("--use_fast_math",)
+OPTIONS: dict[str, tuple[str, ...]] = {"camera": FAST, "shift": FAST}
 
 
 @cache

@@ -21,7 +21,7 @@ import math
 import time
 from dataclasses import dataclass
 from enum import IntFlag
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
@@ -29,6 +29,9 @@ from numpy.typing import ArrayLike, NDArray
 from nodule.render import _gpu
 from nodule.render.scene import DeviceScene
 from nodule.render.tgrid import GrowthGrid
+
+if TYPE_CHECKING:
+    from nodule.render.shift import DeviceShift
 
 # ADR 0007 amendment 4: forward-peak cut for renders under the L2 disc lamp (effective). Dome
 # and other diffuse-light renders show no sparkle and use the full phase function (0).
@@ -69,12 +72,20 @@ class Materials:
     # Forward-peak truncation (ADR 0007 amendment 4): scattering by less than cut_deg is
     # counted as no scattering. `effective`; 0 renders the full phase function.
     cut_deg: float = 0.0
+    # Materials that vary along the bands (ADR 0016; shift.py). Per row (m, 4): the band's
+    # translucency (-1: the row takes no shift) and its pigment absorption at gain 1, so a
+    # sample's mua = mua[row] + (gain - 1) pigment. And the rows of the drift's table in
+    # translucency (first, count; count 0: no drift), whose mus and phase a drifted sample
+    # takes (their own mua is unused).
+    along: F32 | None = None
+    tr_rows: tuple[int, int] = (0, 0)
 
     @classmethod
     def of(cls, mua: ArrayLike, mus: ArrayLike, g: ArrayLike,
            profile: ArrayLike = (0,), dt: float = 1.0,
            f: ArrayLike | None = None, gb: ArrayLike | None = None,
-           cut_deg: float = 0.0) -> Materials:  # fmt: skip
+           cut_deg: float = 0.0, along: ArrayLike | None = None,
+           tr_rows: tuple[int, int] = (0, 0)) -> Materials:  # fmt: skip
         """g, f, gb: (m,) for one value per material or (m, 3) per channel. Without f the
         phase function is one HG lobe (f = 0). mus, f, g, gb describe the full phase
         function; `cut_deg` truncates it (see `kept`)."""
@@ -95,7 +106,17 @@ class Materials:
             mua=mua32, mus=mus32, g=per_channel(g, "g"),
             profile=np.atleast_1d(np.asarray(profile, np.uint16)), dt=dt,
             f=per_channel(f, "f"), gb=per_channel(gb, "gb"), cut_deg=float(cut_deg),
+            along=None if along is None else np.ascontiguousarray(along, np.float32),
+            tr_rows=(int(tr_rows[0]), int(tr_rows[1])),
         )  # fmt: skip
+        if m.along is not None:
+            if m.along.shape != (len(m.mua), 4):
+                raise ValueError("along must be (m, 4): translucency, pigment mua x 3")
+            if (m.along[:, 1:] < 0).any():
+                raise ValueError("pigment absorption must be non-negative")
+        first, count = m.tr_rows
+        if count and (count < 2 or first < 2 or first + count > len(m.mua)):
+            raise ValueError("the translucency table must be 2 or more rows inside the table")
         if (m.mua < 0).any() or (m.mus < 0).any():
             raise ValueError("coefficients must be non-negative")
         if (m.f < 0).any() or (m.f > 1).any():
@@ -157,6 +178,28 @@ def hg_kept(g: ArrayLike, omc_cut: float) -> F64:
     d = (1 - safe) ** 2 + 2 * safe * omc_cut
     x = ((1 - safe**2) / np.sqrt(d) - (1 - safe)) / (2 * safe)
     return np.clip(np.where(np.abs(g64) < 1e-9, 1 - omc_cut / 2, x), 1e-12, 1.0)
+
+
+def majorant(materials: Materials, kept_mus: F32, shift: DeviceShift | None) -> float:
+    """Largest mu_t a sample can have. With a shift, a row that takes it reaches its
+    absorption at the largest gain, plus the largest scattering of the drift's table
+    when there is one (any pairing may occur); a hair over, for float rounding."""
+    mut = materials.mua + kept_mus  # float32, as before ADR 0016: same majorant, same image
+    if shift is None or materials.along is None:
+        return float(mut.max())
+    first, count = materials.tr_rows
+    rows = np.ones(len(mut), bool)
+    rows[first : first + count] = False  # table rows: only their mus is read
+    takes = rows & (materials.along[:, 0] >= 0)
+    if not takes.any():  # nothing varies: the majorant (and image) of the plain table
+        return float(mut[rows].max())
+    a = materials.mua + (shift.max_gain - 1.0) * materials.along[:, 1:]
+    s = kept_mus.astype(np.float64)
+    if count:
+        s = np.broadcast_to(s[first : first + count].max(0), s.shape)
+    top = max(float(mut[rows & ~takes].max(initial=0.0)),
+              float((a + s)[takes].max(initial=0.0)))  # fmt: skip
+    return top * (1.0 + 1e-5)
 
 
 LIGHT_KIND = {"directional": 0, "dome": 1, "disc": 2, "back": 3}
@@ -262,12 +305,17 @@ def render(
     flags: int = 0,
     seed: int = 1,
     block: int = 128,
+    shift: DeviceShift | None = None,
 ) -> Rendered:
     """Linear radiance per pixel, including the face's specular F(0) L of a dome, or
     of a disc that contains the normal.
 
-    mubar: global majorant (default max mu_t). order > 0 keeps only that real-
-    collision order (single scattering check)."""
+    mubar: global majorant (default max mu_t, with any shift at its largest). order > 0
+    keeps only that real-collision order (single scattering check). shift: materials that
+    vary along the bands (shift.upload, for these materials); None renders each growth
+    step's own material."""
+    if shift is not None and shift.materials is not materials:
+        raise ValueError("the shift was uploaded for another material table")
     if light.kind == "back" and not math.isfinite(depth_mm):
         raise ValueError("the back light needs a finite slab (depth_mm)")
     if light.kind == "back" and flags & Flag.BLACK_BOTTOM:
@@ -279,7 +327,7 @@ def render(
     kept_mus = materials.kept()[0].astype(np.float32)
     mua, mus = cp.asarray(materials.mua), cp.asarray(kept_mus)
     ph, prof = cp.asarray(materials.phase_table()), cp.asarray(materials.profile)
-    mb = float((materials.mua + kept_mus).max()) if mubar is None else mubar
+    mb = majorant(materials, kept_mus, shift) if mubar is None else mubar
     paths = view.nx * view.ny * spp
     if paths >= 2**63:
         raise ValueError("too many paths")
@@ -298,8 +346,11 @@ def render(
     k = _gpu.kernel("camera", "render")
     _gpu.synchronize()
     t0 = time.perf_counter()
+    from nodule.render.shift import off
+
+    hs = (off() if shift is None else shift).struct
     k(((paths + block - 1) // block,), (block,),
-      (scene.struct, cam, prof, mua, mus, ph, img, stats))  # fmt: skip
+      (scene.struct, cam, hs, prof, mua, mus, ph, img, stats))  # fmt: skip
     _gpu.synchronize()
     sec = time.perf_counter() - t0
     out = img.get().astype(np.float64)

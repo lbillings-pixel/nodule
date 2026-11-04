@@ -228,6 +228,30 @@ dropped: length 10 mm; subtle (strength 0.5, drift 0.1); thickness 0.5 mm.
   growth time jumps (drift range ±0.25; 16k points). Lenses would stay
   exact. This departs from 16a, so it is the owner's choice.
 
+### 8. The owner's verdict and the preset (2026-11-04)
+
+- **Look cuts.** The run was stopped after cuts 0 and 1 (the PC ran low on
+  memory); the owner judged from those two. **Set 4 is best** (lens cover
+  0.1, drift 0.1). The owner's words: "the variance effect is subtle, as it
+  should be, since ... the original unmodified images are already pretty
+  good". Drift 0.25 had turned a milky eye clear and then dark brown-grey
+  over the black bottom (the first risk below, cut 1). The 0.1 mm lenses
+  are barely visible at full-sheet size (the second risk).
+- **Preset.** `n2-slice` now carries set 4: lens_strength 1.5,
+  lens_length_mm 4, lens_thickness_mm 0.1, lens_cover 0.1,
+  translucency_drift 0.1, translucency_drift_length_mm 20,
+  translucency_drift_thickness_mm 0.5. All `effective`, judged by eye.
+  The look is *speculative* and is no evidence for how lenses form.
+- **Tests.** A new test checks that the preset gives a variation at set 4;
+  the plain stone (lens_strength and drift 0) still gives none, as the
+  control. Two tests of the renderer's machinery now build that plain
+  stone explicitly (fixture `plain_config`): the per-step table check,
+  which assumes values constant along a band, and one rendered cut
+  measured end to end. That cut sits on the quality gate's edge: without
+  lenses, one of three render seeds already fails the gate ("not fit"),
+  and with set 4 the test's seed fails it too. The gate is unchanged.
+  Every other test passes with set 4 as it stands. 456 tests.
+
 ## Alternatives considered
 
 The B and C options of 16a to 16c. Also a cut-face-only shift held

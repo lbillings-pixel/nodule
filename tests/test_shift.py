@@ -6,6 +6,7 @@ fields, the material table and the majorant. The GPU copy is checked in test_shi
 from __future__ import annotations
 
 import dataclasses
+from statistics import NormalDist
 from types import SimpleNamespace
 from typing import Any
 
@@ -19,7 +20,7 @@ from nodule.render.camera import majorant
 from nodule.render.materials import TR_NODES, OpticsTable
 from nodule.render.record import STEPS, BandRecord
 from nodule.render.shift import DeviceShift, ShiftArrays, variation_of
-from nodule.specimen import Specimen, load_preset
+from nodule.specimen import Specimen, SpecimenConfig, load_preset
 
 
 @pytest.fixture(scope="module")
@@ -72,8 +73,17 @@ def test_record_reads_band_values_and_marks_banded_chalcedony(sample) -> None:
         BandRecord.of(plain, np.ones(len(f.phase), bool))
 
 
-def test_without_variation_nothing_is_marked() -> None:
-    sp = Specimen.build(load_preset("n2-slice"))
+def test_preset_varies_materials_along_bands() -> None:
+    """ADR 0016 s.8: n2-slice carries set 4 (lens cover 0.1, drift 0.1)."""
+    v = variation_of(Specimen.build(load_preset("n2-slice")))
+    assert v is not None
+    assert v.lens_strength == 1.5
+    assert v.drift_size == pytest.approx(0.1)
+    assert v.lens_threshold == pytest.approx(NormalDist().inv_cdf(0.9))  # cover 0.1
+
+
+def test_without_variation_nothing_is_marked(plain_config: SpecimenConfig) -> None:
+    sp = Specimen.build(plain_config)
     assert variation_of(sp) is None
     rng = np.random.default_rng(2)
     lo, hi = sp.volume.solid.bounds()

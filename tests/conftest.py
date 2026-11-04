@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from nodule.specimen import Specimen, load_preset
+from nodule.specimen import Specimen, SpecimenConfig, load_preset
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -10,6 +10,15 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 LOOK = dict(lens_strength=1.5, lens_length_mm=4.0, lens_thickness_mm=0.1, lens_cover=0.2,
             translucency_drift=0.25, translucency_drift_length_mm=20.0,
             translucency_drift_thickness_mm=0.5)  # fmt: skip
+
+
+@pytest.fixture(scope="session")
+def plain_config() -> SpecimenConfig:
+    """n2-slice without lenses or drift: materials constant along each band."""
+    cfg = load_preset("n2-slice")
+    model = cfg.volume.model.model_copy(update=dict(lens_strength=0.0, translucency_drift=0.0))
+    volume = cfg.volume.model_copy(update={"model": model})
+    return cfg.model_copy(update={"volume": volume})
 
 
 @pytest.fixture

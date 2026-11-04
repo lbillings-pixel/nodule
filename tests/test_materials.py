@@ -23,7 +23,7 @@ from nodule.render.materials import (
     rayleigh_absorption,
 )
 from nodule.render.record import BandRecord
-from nodule.specimen import Specimen, load_preset
+from nodule.specimen import Specimen, SpecimenConfig
 
 CUT = SliceConfig(tilt_deg=90.0, azimuth_deg=270.0, offset_mm=0.0)
 
@@ -207,8 +207,8 @@ def test_materials_validation_catches_a_profile_beyond_the_table() -> None:
 
 
 @pytest.fixture(scope="module")
-def specimen_grid() -> tuple[Specimen, tgrid.GrowthGrid]:
-    sp = Specimen.build(load_preset("n2-slice"))
+def specimen_grid(plain_config: SpecimenConfig) -> tuple[Specimen, tgrid.GrowthGrid]:
+    sp = Specimen.build(plain_config)  # constant along each band, as the table is
     return sp, tgrid.GrowthGrid.fill(sp, sp.plane(CUT), 0.5, 2.0)  # ~0.2 s
 
 

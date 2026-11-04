@@ -31,7 +31,7 @@ from nodule.render.cutface import (
     view_of,
 )
 from nodule.render.record import BandRecord
-from nodule.specimen import Specimen, load_preset
+from nodule.specimen import Specimen, SpecimenConfig
 
 CUT = SliceConfig(tilt_deg=90.0, azimuth_deg=270.0, offset_mm=0.0)
 LOOK = Look(photo="test", edge_per_spacing=0.38, noise=1.35, spacing_px=9.9)  # as test_descriptors
@@ -39,8 +39,8 @@ gpu = pytest.mark.skipif(not _gpu.available(), reason="needs a CUDA GPU and CuPy
 
 
 @pytest.fixture(scope="module")
-def specimen() -> Specimen:
-    return Specimen.build(load_preset("n2-slice"))
+def specimen(plain_config: SpecimenConfig) -> Specimen:
+    return Specimen.build(plain_config)  # no lenses or drift: the machinery alone
 
 
 # --- CPU ------------------------------------------------------------------------------------

@@ -33,6 +33,17 @@ wobble_max_slope = 0.5  # cap below 1: bands cannot fold (ADR 0005 section 3)
 # "Often one" in fist-sized stones [@walger2009]. No clear layer: its look
 # failed (ADR 0015 s.6). `effective`, judged by the owner's eye.
 channel_count = 1
+# Materials that vary along the bands (ADR 0016 s.8; agatesim ADR 0078): set 4
+# of the look cuts, the owner's pick. Pigment lenses cover a tenth of each
+# band; translucency drifts by up to 0.1 over ~20 mm. All `effective`, judged
+# by the owner's eye; never evidence for how lenses form.
+lens_strength = 1.5
+lens_length_mm = 4
+lens_thickness_mm = 0.1
+lens_cover = 0.1
+translucency_drift = 0.1
+translucency_drift_length_mm = 20
+translucency_drift_thickness_mm = 0.5
 
 [[fractures]]
 centre_mm = [2, 0, -6]

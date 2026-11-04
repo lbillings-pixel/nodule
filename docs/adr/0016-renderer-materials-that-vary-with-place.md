@@ -251,6 +251,39 @@ dropped: length 10 mm; subtle (strength 0.5, drift 0.1); thickness 0.5 mm.
   lenses, one of three render seeds already fails the gate ("not fit"),
   and with set 4 the test's seed fails it too. The gate is unchanged.
   Every other test passes with set 4 as it stands. 456 tests.
+- **Cost of set 4** (section 7's cut and pattern; 269 × 245 px, 64 spp,
+  best of 3): plain 0.49 s; lenses only 0.91 s (1.9×); drift only 1.66 s
+  (3.4×); both 2.22 s (**4.6×**), the same as drift 0.25. The majorant
+  is 52.9 /mm for both drifts. It takes the densest row of the whole
+  drift table, so it does not depend on the drift's size. On full survey
+  cuts (2048 px, 256–1,024 spp) set 4 took 2.5–3.4× the plain stone.
+  The bake option (section 7) stays open.
+- **Measured option, not built: a tighter majorant.** A bound over the
+  translucency each band can reach (its own ± drift size) gives 42.8 /mm
+  for set 4 and 1.61 s against 1.97 s (−18%). Drift 0.25 gains nothing
+  (52.9 either way). The mean image is unchanged: −1.7e-4 against a
+  per-pixel spread of 3.4e-2, within noise. Most of the cost is the drift
+  read at every sample, not the majorant.
+- **Statistics probe** (`lens_stats.py`, scratch): ADR 0014's four look
+  cuts (k 0, 5, 8, 18), plain and set 4 on the same planes, looks and
+  render streams, analysed by ADR 0014's `depth_compare.py` with the
+  exposure fitted to median L\* 62.1. 1,435 s; peak traced Python memory
+  671 MB (GPU not traced).
+
+  | setting | Y p90/p10 | L\* sd | C\* median | corr(L\*, C\*) | band ΔL\* / Δa\*b\* | shuffled |
+  |---|---|---|---|---|---|---|
+  | plain | 2.53 | 8.75 | 9.01 | +0.10 | 12.2 / 7.1 | 1.5 / 1.2 |
+  | set 4 | 2.67 | 9.35 | 9.12 | +0.05 | 10.6 / 7.6 | 1.5 / 1.3 |
+  | photos (ADR 0014) | 2.49 | 9.7 | 7.3 | −0.24 | 14.4 / 6.3 | 2.2 / 0.7 |
+
+  *Verified* as a model property (one stone, one seed, four cuts). The
+  plain row repeats ADR 0014's defaults (the wall channel left them
+  unmoved). Set 4 closes most of the lightness-spread gap (8.75 → 9.35
+  against 9.7). The L\*–C\* correlation moves a little toward the photos'
+  sign (+0.10 → +0.05) but stays positive. Band lightness contrast moves
+  away from the photos (12.2 → 10.6 against 14.4); differences under
+  ~0.5 are noise here (ADR 0014). Contrast and band colour move slightly
+  away. Render-to-photo only: no evidence for how lenses form.
 
 ## Alternatives considered
 

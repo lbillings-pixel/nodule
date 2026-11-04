@@ -297,6 +297,38 @@ peak traced 1054 MB (4n: 1677 s, 1049 MB).
   through the look, which passed, not through these statistics. The C16,
   C14 and C7 gaps are left to option C.
 
+### 7. Option C: the owner's choices (2026-11-04)
+
+- **Order: agatesim first, as section 5 planned.** An agatesim ADR and
+  build come first, then a pin move, then the renderer ADR here, then
+  look cuts. A look probe before any agatesim work was offered and
+  declined.
+- **Scope: pigment and translucency both vary along each band.** Varying
+  pigment alone, which changes absorption only, was offered as the smaller
+  first step and declined.
+- **What the agatesim ADR covers.** agatesim ADR 0077 section 5 already
+  names the interface: `FeatureLayer.material_shift` and new per-point
+  `Fields` that a renderer reads together with the growth step. Neither
+  changes arrival times, so the fold guarantee holds. With amplitude 0 the
+  stone must come out unchanged.
+- **Sources (qualitative; no sizes or amounts):**
+  - hematite in "laminated and lenticular agglomerates" along the banding
+    [@goetze2020, §4.3];
+  - band widths and inclusions that vary along a band [@howard2018,
+    pp. 99, 104];
+  - sectors of one band set that look dark, faintly banded or bright
+    [@raman1953].
+  Every amplitude and length scale is `effective`, and the couplings are
+  **assumptions**. The owner's eye judges the look before any statistics,
+  as in section 1.
+- **The renderer ADR here** lets materials depend on place as well as on
+  the growth step. Today `BandRecord` refuses such materials (ADR 0007
+  section 3). Translucency sets the scattering (grain radius and pore
+  fraction, ADR 0007 section 3), so the change touches the scattering as
+  well as the absorption.
+- **Risk.** Clear patches over the black bottom may show the same dark
+  grey that failed for the clear layer (section 6). *plausible*.
+
 ## Alternatives considered
 
 - **Random pinch-outs and splits throughout the stone.** Against the

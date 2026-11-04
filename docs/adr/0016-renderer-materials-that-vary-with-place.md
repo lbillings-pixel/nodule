@@ -1,0 +1,210 @@
+# 16. Renderer: band materials that vary with place (lenses and drift)
+
+- Status: accepted (owner, 2026-11-04): 16a A, 16b A, 16c B (section 2).
+  All three as recommended except 16c, where A was recommended.
+- Date: 2026-11-04
+- Builds on: [ADR 0007](0007-renderer-cut-face-monte-carlo.md) section 3 (materials
+  as a function of the growth step), [ADR 0014](0014-optics-tuning-step-4-colour.md)
+  4m (current optical defaults, `iron_floor` 0.28),
+  [ADR 0015](0015-band-order-diagnosis-and-options.md) sections 1, 6 and 7
+  (option C; the owner's eye first; the dark-grey risk over the black bottom);
+  agatesim ADR 0078 (the fields; its sections 2, 3 and 5).
+
+## Context
+
+agatesim ADR 0078 (pinned at 35bcd89) makes each band's pigment and
+translucency vary along the band. There are two independent fields: pigment
+lenses and a translucency drift. Both read a point's place and its growth
+time alone. `FeatureLayer.material_shift(points, t)` returns a pigment
+multiple (`gain`, 1 off a lens, up to 1 + `lens_strength`) and a
+translucency change (`change`, up to ±`translucency_drift`). agatesim
+applies them as `impurity × gain` and `translucency + change`, both clipped
+to [0, 1], and only to banded chalcedony (phase CHALCEDONY, band ≥ 0). The
+clear first layer is left as it is.
+
+Nodule's renderer cannot show this today. `BandRecord` reads one set of
+materials per growth step and refuses a step whose values differ between
+points (ADR 0007 section 3). The GPU camera then looks up one material per
+step. Three facts set the design:
+
+- **Thin lenses.** The owner chose 0.1 mm lenses. The time grid has 0.2 mm
+  spacing, so a lens can't be stored on it. Interpolated growth time is
+  accurate far below the spacing (agatesim ADR 0078 section 2), so the
+  field must be worked out at each sample from the sample's place and time.
+- **Cost on the CPU** (measured, scratchpad `shift_cost.py`, n2-slice
+  settings, 0.1 mm lenses with drift): agatesim's `material_shift` handles
+  0.5 million points a second, with a peak of 144 MB per million points.
+  A grid baked at 0.05 mm over a 50 × 50 × 2 mm slab is 4 × 10⁷ points:
+  about 80 s per cut, and a 0.1 mm lens there is only two nodes thick.
+- **The iron floor is a step** (ADR 0014 4m). Below impurity 0.28 iron
+  oxides absorb nothing. At 0.28 the iron absorption jumps to
+  (0.83, 0.29, 0.16) /mm, about half its value at 0.45, which is
+  (1.61, 0.60, 0.29) /mm (measured with `OpticsTable.pigment_mua`).
+  Band impurity runs 0.06 to 0.45, and 57% of bands lie between 0.20 and
+  0.40. A lens that multiplies impurity would carry many faint bands
+  across the step, giving a hard-edged core inside the lens.
+
+### The owner's first look (2026-11-04)
+
+A rough stand-in drawn from agatesim's `Fields`, not the renderer
+(`runs/stone-2026-11-02/variants/lens-first-look/look.png`), showed four
+panels. The owner: **"0.1 mm with drift" looks best, but the effect should
+be more sporadic and sparse across the cut face.** The owner suggested
+lowering lens cover to 20%, 10% and 5% (`lens_cover` 0.2, 0.1, 0.05).
+
+Lower cover also makes each lens smaller. This was measured on the noise
+(setting 4 mm, thickness 0.1 mm; `cover.py` beside the panel):
+
+| cover | length p10 / p50 / p90 (mm) | thickness p50 (mm) | lenses per 100 mm of band |
+|---|---|---|---|
+| 0.20 | 1.7 / 4.0 / 7.1 | 0.100 | 4.5 |
+| 0.10 | 1.4 / 3.3 / 5.6 | 0.080 | 2.8 |
+| 0.05 | 1.1 / 2.8 / 4.8 | 0.072 | 1.7 |
+
+agatesim ADR 0078 section 3 records cover 0.2 only. To keep the size fixed
+while cover falls, the length setting must be raised by hand.
+
+**Lens cover thins only the lenses.** The drift still runs across the
+whole face and may account for much of the busyness the owner saw. This
+was put to the owner (16c below).
+
+### Sources
+
+The sources are as in ADR 0015 section 7, narrowed. [@raman1953] is
+context only, since the lighting behind its dark and bright sectors isn't
+stated and transmission there depends on the ray's angle to the bands
+(agatesim ADR 0078 section 6). That leaves [@goetze2020, §4.3]
+("laminated and lenticular agglomerates" of hematite along the banding) and
+[@howard2018, pp. 99, 104] (widths and inclusions that vary along a band).
+Both are qualitative: they give no sizes and no amounts.
+
+## Decision
+
+### 1. What is recorded now
+
+The owner's verdict and the cover plan above, and the narrowed source list.
+
+### 2. The owner's choices (2026-11-04)
+
+**16a. How the renderer gets the fields at each sample.**
+
+- **A (chosen, recommended): a GPU copy, tested against agatesim.**
+  Nodule's CUDA code works out agatesim's sheet noise at each sample. Fractures are already
+  handled this way (`cuda/scene.cuh` mirrors agatesim's `Fracture.restore`,
+  checked by `tests/test_render_gpu.py`). The test compares it with
+  agatesim's own `material_shift` at random points, so a change in
+  agatesim shows up there. It is exact at any lens thickness. Its cost per
+  sample has to be measured.
+- B: a fine grid baked per cut by agatesim's own code. No copy, but about
+  80 s per cut at 0.05 mm, and 0.1 mm lenses blur.
+- C: the GPU code lives in agatesim and Nodule includes it. No copy in
+  Nodule, but every change needs work in both projects.
+
+**16b. What a lens multiplies.**
+
+- **A (chosen, recommended): the amount of the band's own pigment.**
+  `mua = matrix_mua + gain × pigment_mua(pigment, impurity)`. The band's
+  impurity, and with it the hematite share (its hue), stays at the
+  band's value. A lens is more of the same pigment, so it has no step and
+  no change of hue. Bands below the iron floor get no visible lenses,
+  which also makes lenses sparser, as the owner asked. This **departs
+  from agatesim's field values** (`impurity × gain`). Nodule's
+  descriptors that read agatesim's own colour (`descriptors.py`) will see
+  agatesim's version, not the rendered one. That is noted, not fixed.
+- B: impurity × gain, keeping the step. Lenses also turn redder, and may
+  show hard edges.
+- C: impurity × gain, with the floor softened into a ramp. This changes
+  the ADR 0014 calibration, so the colour statistics need re-checking.
+
+**16c. The drift in the first real renders.**
+
+- A (recommended): keep drift at 0.25 and judge again on real renders.
+- **B (chosen): add one set with lower drift.**
+- C: a sparse drift, which would be a new agatesim setting and come first.
+
+### 3. Design
+
+- **Reading the record.** When agatesim gives `band_impurity` and
+  `band_translucency`, `BandRecord.of` reads those, which are the step's
+  own values, and still refuses a step that varies in them. It also
+  records which steps take the shift: banded chalcedony, as in agatesim.
+- **Per sample (GPU).** For each sample in a band that takes the shift:
+  growth time `t` as now (trilinear grid lookup at the restored point),
+  then growth depth from `t` by agatesim's step-edge table
+  (`MaterialVariation.depth_mm`), then each field's two bracketing
+  sheets, then two noise lookups per field (the sheet blend in agatesim
+  `SheetNoise.__call__`), then `gain` and `change` as in `shift`. The
+  noise is one octave of agatesim `BandNoise`: a rotated, offset,
+  periodic cubic B-spline on a 128³ tile. It needs 8 MB per field on the
+  GPU, plus the sheet positions and offsets.
+- **Optics per sample.** Absorption follows 16b. Scattering follows the
+  shifted translucency, clipped to [0, 1], through a table in translucency
+  for each band material (grain radius and pore fraction, ADR 0007
+  section 3). The table is checked against `OpticsTable.band` to a stated
+  tolerance. The majorant `mubar` covers the largest gain and the whole
+  translucency range. First scope: iron-stained and unpigmented bands
+  only. Any other pigment with the shift on is refused, not drawn wrong
+  (n2-slice uses iron only).
+- **With the shift off nothing changes.** The per-step table path stays
+  as it is, and the 442 existing tests must pass unchanged.
+
+### 4. Controls and measurements
+
+- GPU vs agatesim CPU `material_shift` at about 10⁵ random points across
+  the slab: they must match to float precision. This is the copy's guard.
+- Shift off: renders identical to the current renderer, with the same
+  seed and samples.
+- Negative control for the per-sample path: a stone whose shift is a
+  constant gain (all one lens) must render as the per-step path does with
+  that pigment amount, and the drift must show no structure finer than a band.
+- Measure render time and memory against the current 6-cut probe (about
+  8 min, 1 GB). Flag a slowdown above 2×.
+
+### 5. Look cuts (owner's eye first, ADR 0015 section 1)
+
+Real renders at the first-look settings: lens_strength 1.5,
+lens_length_mm 4, lens_thickness_mm 0.1, drift length 20 mm and thickness
+0.5 mm, seed 3, wobble as n2-slice, one closing channel (`channel_count`
+1, kept from ADR 0015 section 6).
+
+1. cover 0.2, drift 0.25
+2. cover 0.1, drift 0.25
+3. cover 0.05, drift 0.25
+4. cover 0.1, drift 0.1 (16c B; the middle cover, which the owner may change)
+
+Each set is about 8 min before any slowdown. Offered afterwards and not
+dropped: length 10 mm; subtle (strength 0.5, drift 0.1); thickness 0.5 mm.
+
+### 6. Labels and grades
+
+- Every lens and drift setting is `effective` (agatesim ADR 0078). The
+  coupling of gain to pigment amount (16b) is an **assumption**, and so is
+  the coupling of translucency to both scattering parts (ADR 0007 section 3).
+- GPU-CPU agreement will be *verified* by its test. The look of lenses
+  and drift is *speculative*: renders are procedural and are never
+  evidence for what makes agate lenses.
+
+## Alternatives considered
+
+The B and C options of 16a to 16c. Also a cut-face-only shift held
+constant through the slab's depth. It was rejected because bands cross the
+cut at an angle, so a lens is not constant along the view ray.
+
+## Risks
+
+- **Clear stretches over the black bottom** may show the dark grey that
+  failed for the clear layer (ADR 0015 section 6). *plausible*. The drift
+  at +0.25 makes the clearest bands (about 0.875) fully clear.
+- **0.1 mm lenses may blur away** under scattering in milky bands.
+  *plausible*. Judge by eye.
+- **The cost per sample**, from four cubic-spline lookups per sample, may
+  slow renders noticeably. It is measured before any long run.
+- **16b's departure from agatesim's numbers** could confuse later
+  comparisons that read agatesim's `Fields`. It is stated here and in the
+  code.
+
+## Consequences
+
+`BandRecord`, `OpticsTable`, the scene upload and the CUDA camera all
+change. A new GPU test guards the copy. The look cuts in section 5 follow
+the build, and statistics come only after the owner has judged the look.

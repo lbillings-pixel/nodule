@@ -740,3 +740,45 @@ Grade: the 4m defaults keep the stone's set within the photos' spread on
 both halves. *Plausible* (ADR 0002), as for steps 1–3. Procedural images
 remain no evidence for a formation mechanism. Open, as before: C16, L\*
 spread, the sign of corr(L\*, C\*); new to watch: C26 slope against half B.
+### 4o. The 100-cut stone run with the defaults (2026-11-03)
+
+ADR 0011's 100-cut stone run (*Results*) repeated with the defaults of 4m:
+`n2-slice` at 0.7 / 0.7, reflected light, 2 mm slab, black bottom,
+exposure 1.54, seed 0; looks from calibration half A, judged against A and
+the held-out half B (ADR 0009). 8466 s (2.35 h; ADR 0011: 7111 s, +19%),
+peak traced memory 1.1 GB (unchanged). Script and report:
+`runs/stone-2026-11-02/` (gitignored), `variants/stone_100_defaults.py`.
+ADR 0011's run, in brackets, predates steps 2–4 (ADR 0012's pores,
+ADR 0013's exposure and this ADR), so the differences are the three steps
+together, not step 4 alone.
+
+| Cuts | vs A: joint / line | vs B: joint / line | spectrum vs A / vs B (line 1.40 / 1.97) |
+| --- | --- | --- | --- |
+| All 100 | 1.1 / 15.9, within (1.2) | 4.0 / 7.9, within (2.3) | 0.46 / 0.85 (0.46 / 0.64) |
+| Noise-matched 31 (50) | 3.0 / 15.9, within (4.0, image block outside) | 3.6 / 7.9, within (2.5) | 0.46 / 0.68 (0.54 / 0.86) |
+
+- **Within on both halves, no block outside, for all cuts and the
+  noise-matched ones.** The image block of the noise-matched cuts, outside
+  half A's line in ADR 0011, is now inside it. Those cuts are a different
+  and smaller subset (31 against 50), so this is not a like-for-like gain.
+- **Against half B the set sits further out** (joint 2.3 to 4.0, spectrum
+  0.64 to 0.85), still about half the line.
+- **The C26 slope rise is real, not 20-cut noise.** All cuts: 2.72 (98 cuts
+  with a slope; 4n's 20 cuts: 2.68; ADR 0011: 2.48). Against half A the
+  86th percentile, as before; against half B the 95th (was the 90th),
+  above B's 95th percentile 2.55. Half B has only 21 photos with a slope,
+  so the 95th means one photo lies higher. The spectrum block holding this
+  measure was fitted in ADR 0011 (Risks), so its passing is not a test.
+- **Curvature eased a little; edge coherence did not move.** All cuts: C15
+  curvature 0.09 (87th; was 0.10, 87th–91st), C15 high 0.20 (55th–65th;
+  was 74th). C16 coherence 0.90, the photos' 98th percentile against both
+  halves, as before. Noise-matched cuts: C15 0.12 (96th–100th; was 0.14),
+  C16 0.85 (92nd–96th; was 0.82).
+- Two cuts give no C26 slope (ADR 0011: seven).
+
+Grades: the measurements *verified* (one seed, one stone). That the
+stone's cuts look like the photos at set level with the 4m defaults:
+*plausible*. Appearance only, never evidence for a formation mechanism
+(ADR 0002). Open gaps: C16 edge coherence (98th percentile), C26 slope
+against half B (95th), L\* spread (8.75 against 9.7) and the sign of
+corr(L\*, C\*).

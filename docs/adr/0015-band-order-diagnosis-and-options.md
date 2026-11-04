@@ -201,7 +201,35 @@ reads that influence to thin bands. C will read the same influences
 p. 104), plus new along-band fields, to vary materials. The interface C
 needs is written into B's agatesim ADR but not built until C.
 
-The detailed plan for B goes to the owner for approval before any code.
+**Plan for B (owner-approved, 2026-11-03).**
+1. agatesim (its own ADR and tests, in a session started there):
+   - B1, a clear unbanded outer layer, off by default.
+   - B2, wall channels: bands thin to zero toward each channel's focus;
+     depth ≤ 2.5 cm [@walger2009]; lateral size 0.5–2 cm (rough figure
+     measurements, *speculative*).
+   - Both rest on a world-fixed feature layer that C will reuse.
+   - Controls: no features gives the current stone exactly; the fold
+     check holds; previews match full runs; a cut through a channel shows
+     converging bands and a cut that misses it does not. Time and memory
+     are measured.
+2. nodule: move the pin and turn the features on in the `n2-slice`
+   preset.
+3. The owner judges about 4 look cuts beside the current renders before
+   any statistics.
+4. Only if the look passes: the 20-cut check of C16, C14, C7 and the joint
+   compare.
+
+**Starting values for this stone (owner):**
+- Clear layer 1.5 mm: within Howard's 1–2 mm; Walger's pigment-free first
+  layer is 2–2.5 mm.
+- One channel: Walger's "often one, rarely more" for fist-sized
+  amygdules.
+Both are `effective` and judged by eye in step 3.
+
+**Deferred: thinning at indentations** [@howard2018, p. 98]. It is needed
+eventually, but it has no geometry to build from yet. It is to be added
+once the project plans how to model and show nodule exteriors (README
+goal 2), which will give the wall its indentations.
 
 ## Alternatives considered
 

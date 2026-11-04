@@ -37,7 +37,9 @@ __device__ void restore(const Scene& S, float& x, float& y, float& z) {
     }
 }
 
-__device__ float tlookup(const Scene& S, float x, float y, float z) {
+// Trilinear read of a grid on the scene's axes (t, or the baked drift: shift.cuh), at a
+// restored point; clamped to the grid as the growth time is.
+__device__ float grid_at(const Scene& S, const float* __restrict__ g, float x, float y, float z) {
     float rx = x - S.o[0], ry = y - S.o[1], rz = z - S.o[2];
     float fs = ((rx * S.u[0] + ry * S.u[1] + rz * S.u[2]) - S.s0) / S.h;
     float ft = ((rx * S.v[0] + ry * S.v[1] + rz * S.v[2]) - S.t0) / S.h;
@@ -46,9 +48,13 @@ __device__ float tlookup(const Scene& S, float x, float y, float z) {
     fw = fminf(fmaxf(fw, 0.f), S.nw - 1.001f);
     int i = (int)fs, j = (int)ft, k = (int)fw; float a = fs - i, b = ft - j, c = fw - k;
     long long sy = S.ns, sz = (long long)S.ns * S.nt;
-    const float* q = S.grid + k * sz + j * sy + i;
+    const float* q = g + k * sz + j * sy + i;
     return (1-c)*((1-b)*((1-a)*q[0] + a*q[1]) + b*((1-a)*q[sy] + a*q[sy+1]))
          +    c *((1-b)*((1-a)*q[sz] + a*q[sz+1]) + b*((1-a)*q[sz+sy] + a*q[sz+sy+1]));
+}
+
+__device__ __forceinline__ float tlookup(const Scene& S, float x, float y, float z) {
+    return grid_at(S, S.grid, x, y, z);
 }
 
 // mode bit 1: skip the fracture backward map (negative control). x, y, z become the restored

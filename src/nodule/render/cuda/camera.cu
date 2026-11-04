@@ -46,6 +46,8 @@ struct Cam { float s0, t0, pix; int nx, ny, spp; unsigned int seed; float n_in, 
 // Without a shift a = mua[m]. With one (ADR 0016; shift.cuh), a band row that takes it adds
 // (gain - 1) x its pigment's absorption (16b: a lens is more of the band's own pigment), and
 // with drift m becomes the translucency table's row nearest the drifted translucency.
+// The drift is read from the cut's baked grid when there is one (ADR 0016 s.9), else
+// worked out here; the lenses always are, being thinner than the grid.
 struct Mat { int m; float a[3]; };
 
 __device__ Mat matid(const Scene& S, const Cam& C, const Shift& H, const unsigned short* prof,
@@ -64,7 +66,8 @@ __device__ Mat matid(const Scene& S, const Cam& C, const Shift& H, const unsigne
     bool lens = B[1] > 0.f || B[2] > 0.f || B[3] > 0.f, drift = H.ntr > 0;
     if (!lens && !drift) return M;                              // below the iron floor: no lens
     float gain, change;
-    shift_at(H, x, y, z, t, lens, drift, gain, change);
+    shift_at(H, x, y, z, t, lens, drift && H.dgrid == nullptr, gain, change);
+    if (drift && H.dgrid != nullptr) change = grid_at(S, H.dgrid, x, y, z);  // baked (s.9)
     for (int c = 0; c < 3; ++c) M.a[c] += (gain - 1.f) * B[1 + c];
     if (drift) {
         float tr = fminf(fmaxf(B[0] + change, 0.f), 1.f);

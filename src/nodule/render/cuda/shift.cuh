@@ -14,6 +14,8 @@ struct Shift {
     const float* cj[2];      // per field: nsheet x 3 index constants
     const float* coef[2];    // per field: n^3 spline coefficients, C order
     const float* band;       // per material: translucency (-1: takes no shift), pigment mua x 3
+    const float* dgrid;      // per cut: the drift's change baked on the scene's growth-time
+                             // grid (ADR 0016 s.9); null: worked out at each sample
     float M[2][9];           // per field: rotation / cell, rows
     int nsheet[2], n[2], on[2];
     int steps, tr0, ntr;     // step count; translucency table rows (ntr 0: no drift table)

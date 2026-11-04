@@ -198,3 +198,12 @@ def test_rendered_path_is_measured_and_f5_skips_the_blur(
     sigma = blurry["sigma_px"]
     assert isinstance(sigma, float)
     assert sigma > 0  # control: the photo's look blurs
+
+
+def test_rendering_drift_is_baked_by_default() -> None:
+    """ADR 0016 s.9: the drift is baked on the growth-time grid unless asked otherwise."""
+    rec = BandRecord.empty()
+    assert Rendering.reflected(rec).drift == "baked"
+    assert Rendering.reflected(rec, drift="exact").drift == "exact"
+    with pytest.raises(ValueError, match="drift must be"):
+        Rendering.reflected(rec, drift="sometimes")  # type: ignore[arg-type]

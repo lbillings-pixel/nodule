@@ -48,7 +48,7 @@ from nodule.render.camera import Flag, Light, View, reflectance_factor, render, 
 from nodule.render.materials import OpticsTable
 from nodule.render.record import BandRecord
 from nodule.render.scene import pack, upload
-from nodule.render.shift import ShiftArrays, variation_of
+from nodule.render.shift import ShiftArrays, bake_drift, variation_of
 from nodule.render.shift import upload as shift_upload
 from nodule.render.tgrid import GrowthGrid
 from nodule.specimen import Specimen, SpecimenCut
@@ -81,10 +81,15 @@ class Rendering:
     most_spp: int = MOST_SPP
     undegraded: bool = False  # F5: no photo-like blur or noise (ADR 0008 amendment 4)
     bottom: Literal["air", "black"] = "air"  # below the slab (module docstring; ADR 0014)
+    # the drift along the bands (ADR 0016 s.9): baked once per cut on the growth-time grid,
+    # or worked out at each sample ("exact", the reference); lenses are always exact
+    drift: Literal["baked", "exact"] = "baked"
 
     def __post_init__(self) -> None:
         if self.bottom not in ("air", "black"):
             raise ValueError(f"bottom must be 'air' or 'black', not {self.bottom!r}")
+        if self.drift not in ("baked", "exact"):
+            raise ValueError(f"drift must be 'baked' or 'exact', not {self.drift!r}")
         if self.bottom == "black" and self.light.kind == "back":
             raise ValueError("the back light shines through the bottom: no black bottom")
 
@@ -144,14 +149,19 @@ class CutRenderer:
         r = self.rendering = rendering
         t0 = time.perf_counter()
         grid = GrowthGrid.fill(specimen, cut.plane, r.grid_mm, r.depth_mm)
-        self._dev = upload(pack(specimen, grid))
-        self.fill_s = time.perf_counter() - t0
+        packed = pack(specimen, grid)
+        self._dev = upload(packed)
         # materials that vary along the bands (ADR 0016), when the stone has them and the
         # record marks steps that take them (a fake's record carries them with its runs)
         variation = variation_of(specimen) if r.record.shifts.any() else None
         host = ShiftArrays.of(variation) if variation is not None else None
         self._mats = r.optics.materials(r.record, host)
-        self._shift = shift_upload(host, self._mats) if host is not None else None
+        self._shift = None
+        if host is not None:
+            baked = host.drift is not None and r.drift == "baked"
+            dgrid = bake_drift(host, grid, packed.grid) if baked else None
+            self._shift = shift_upload(host, self._mats, dgrid)
+        self.fill_s = time.perf_counter() - t0  # the grid, and the drift baked on it
         self._view = view_of(cut)
         self._face = cut.inside
         self._rng = rng

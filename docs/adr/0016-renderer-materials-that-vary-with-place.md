@@ -285,6 +285,40 @@ dropped: length 10 mm; subtle (strength 0.5, drift 0.1); thickness 0.5 mm.
   ~0.5 are noise here (ADR 0014). Contrast and band colour move slightly
   away. Render-to-photo only: no evidence for how lenses form.
 
+### 9. The drift baked per cut (the owner's choice, 2026-11-04)
+
+The owner chose the bake measured in section 7. This departs from 16a for
+the drift only. The lenses are still worked out at every sample, since
+0.1 mm lenses are thinner than the grid.
+
+- **What it does.** Once per cut, `bake_drift` evaluates the drift's
+  translucency change at every node of the cut's 0.2 mm growth-time grid
+  (restored coordinates). It uses the node's filled growth time and the
+  tested GPU copy (`shift_points`). The camera reads the change by the
+  same trilinear lookup as the growth time (`grid_at`, scene.cuh). The
+  per-sample drift stays as the reference (`Rendering.drift = "exact"`).
+  `"baked"` is the default. `render` refuses a baked grid made on another
+  grid. The majorant is unchanged and still bounds every sample: the
+  interpolated change stays within ± the drift size.
+- **Accuracy** (*verified*; one cut, 2e5 points in banded chalcedony
+  within the slab, against the per-sample drift at the grid's growth
+  time). Error in translucency for drift 0.25: p50 0.0047, p99 0.034, max
+  0.11, matching section 7's estimate. For set 4 (0.1): p50 0.0019, p99
+  0.014, max 0.043. The largest errors sit where growth time jumps.
+  Control: a wrong copy baked the same way (each sheet given another's
+  pattern offset) misses by p50 0.10.
+- **Image** (*verified*; drift alone, same seed and majorant, 32 spp,
+  2 mm blocks of a 20 × 20 mm view). Baked and per-sample images differ by
+  3.6e-3 in luminance, against 3.7e-2 between the per-sample drift and
+  no drift (the control). The whole-image bias is −1.5e-3.
+- **Cost** (section 7's cut; best of 3): set 4 renders in 1.57 s baked
+  against 2.19 s per sample (−28%), still ~3.2× the plain stone. The
+  lenses and the majorant, which still spans the whole drift table, are
+  the rest. The bake takes 0.25 s and 8 MB per cut. The tighter majorant
+  (section 8) is not built.
+- **Tests.** Three GPU tests (bake accuracy, image, refusal of another
+  grid's bake) and one CPU test of the setting. 460 tests.
+
 ## Alternatives considered
 
 The B and C options of 16a to 16c. Also a cut-face-only shift held

@@ -19,7 +19,7 @@ from agatesim.volume.config import SliceConfig
 from nodule.render import _gpu, scene, tgrid
 from nodule.render.camera import Flag, Light, View, render
 from nodule.render.materials import OpticsTable
-from nodule.render.shift import ShiftArrays, upload, variation_of
+from nodule.render.shift import ShiftArrays, bake_drift, upload, variation_of
 
 pytestmark = pytest.mark.skipif(not _gpu.available(), reason="needs a CUDA GPU and CuPy")
 
@@ -109,10 +109,18 @@ def test_drift_has_no_structure_finer_than_a_band(host, banded_points) -> None:
 
 
 @pytest.fixture(scope="module")
-def look_scene(look, host):
+def look_grid(look):
+    """One cut's growth-time grid at the renderer's 0.2 mm, and its packed scene."""
     grid = tgrid.GrowthGrid.fill(look, look.plane(CUT), 0.2, DEPTH)
     assert grid.bands is not None
-    dev = scene.upload(scene.pack(look, grid))
+    return grid, scene.pack(look, grid)
+
+
+@pytest.fixture(scope="module")
+def look_scene(look_grid):
+    grid, packed = look_grid
+    assert grid.bands is not None
+    dev = scene.upload(packed)
     full = View.covering(grid, 0.2)
     view = View(full.s0 + 15, full.t0 + 15, 0.2, 100, 100)  # 20 x 20 mm in the middle
     return grid.bands, dev, view
@@ -172,3 +180,76 @@ def test_shift_render_cost(host, look_scene) -> None:
           f"off {off.seconds:.2f} s ({off.events:.0f}); x{ratio:.2f}")  # fmt: skip
     assert math.isfinite(on.image.sum())
     assert ratio < 20
+
+
+# --- the drift baked on the growth-time grid (ADR 0016 s.9) -----------------------------------
+
+
+@pytest.fixture(scope="module")
+def grid_points(look, look_grid):
+    """Restored points in banded chalcedony within the cut's slab, with the growth time the
+    camera reads there (the grid's)."""
+    grid, packed = look_grid
+    rng = np.random.default_rng(1)
+    n = 200_000
+    s = rng.uniform(grid.s[0], grid.s[-1], n)
+    t = rng.uniform(grid.t[0], grid.t[-1], n)
+    p = tgrid.to_world(grid.plane, s, t, rng.uniform(0.0, DEPTH, n))
+    inside = look.volume.solid.contains(p)
+    f = look.volume.evaluate(p, inside)
+    ok = inside & (f.phase == Phase.CHALCEDONY) & (f.band >= 0) & np.isfinite(f.t_smooth)
+    return p[ok], grid.lookup(p[ok], packed.grid)
+
+
+def test_baked_drift_matches_the_per_sample_drift(host, look_grid, grid_points) -> None:
+    grid, packed = look_grid
+    pts, ts = grid_points
+    assert len(pts) > 50_000
+    _, want = gpu_shift(host, pts, ts)
+    e = np.abs(grid.lookup(pts, bake_drift(host, grid, packed.grid)) - want)
+    # control: a wrong copy (each sheet with another's pattern offset) baked the same way
+    wrong_cj = np.roll(host.drift.cj, 1, axis=0)
+    bad = dataclasses.replace(host, drift=dataclasses.replace(host.drift, cj=wrong_cj))
+    miss = np.abs(grid.lookup(pts, bake_drift(bad, grid, packed.grid)) - want)
+    print(f"baked |err| p50 {np.median(e):.4f} p99 {np.percentile(e, 99):.4f} max {e.max():.4f}; "
+          f"wrong copy p50 {np.median(miss):.4f}; drift sd {want.std():.4f}")  # fmt: skip
+    # measured (drift 0.25): p50 0.0047, p99 0.034, max 0.107 where growth time jumps
+    assert np.median(e) < 0.01
+    assert np.percentile(e, 99) < 0.05
+    assert e.max() < 0.15
+    assert np.median(miss) > 5 * np.median(e)
+
+
+def test_baked_drift_renders_as_the_per_sample_drift(host, look_grid, look_scene) -> None:
+    """Drift alone, same seed and majorant: in 2 mm blocks (the drift varies over ~20 mm,
+    pixel noise averages down), baked and per-sample images differ far less than the
+    per-sample image differs from no drift (drift size 0, same tables)."""
+    grid, packed = look_grid
+    rec, dev, view = look_scene
+    drift = dataclasses.replace(host, lens=None)
+    zero = dataclasses.replace(drift, drift_size=0.0)
+    mats = OpticsTable().materials(rec, drift)
+    kw: dict[str, Any] = dict(spp=32, seed=14, depth_mm=DEPTH, flags=Flag.BLACK_BOTTOM)
+    exact = lum(render(dev, view, mats, DOME, shift=upload(drift, mats), **kw).image)
+    dg = bake_drift(drift, grid, packed.grid)
+    baked = lum(render(dev, view, mats, DOME, shift=upload(drift, mats, dg), **kw).image)
+    none = lum(render(dev, view, mats, DOME, shift=upload(zero, mats), **kw).image)
+
+    def blocks(img: np.ndarray) -> np.ndarray:
+        return img.reshape(10, 10, 10, 10).mean(axis=(1, 3))
+
+    same = np.abs(blocks(baked) - blocks(exact)).mean()
+    effect = np.abs(blocks(exact) - blocks(none)).mean()
+    bias = (baked - exact).mean()
+    print(f"mean |baked - exact| {same:.2e}, |exact - no drift| {effect:.2e}, bias {bias:+.2e}")
+    # measured (drift 0.25, 32 spp): 3.6e-3 against 3.7e-2; whole-image bias -1.5e-3
+    assert same < 0.25 * effect
+    assert effect > 1e-3  # control: the drift changes the image
+
+
+def test_a_baked_drift_from_another_grid_is_refused(host, look_scene) -> None:
+    rec, dev, view = look_scene
+    mats = OpticsTable().materials(rec, host)
+    wrong = upload(host, mats, np.zeros((2, 2, 2), np.float32))
+    with pytest.raises(ValueError, match="another growth-time grid"):
+        render(dev, view, mats, DOME, spp=2, seed=1, depth_mm=DEPTH, shift=wrong)

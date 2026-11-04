@@ -316,6 +316,12 @@ def render(
     step's own material."""
     if shift is not None and shift.materials is not materials:
         raise ValueError("the shift was uploaded for another material table")
+    if (
+        shift is not None
+        and shift.grid_shape is not None
+        and (shift.grid_shape != tuple(scene.arrays["grid"].shape))
+    ):
+        raise ValueError("the baked drift was made on another growth-time grid")
     if light.kind == "back" and not math.isfinite(depth_mm):
         raise ValueError("the back light needs a finite slab (depth_mm)")
     if light.kind == "back" and flags & Flag.BLACK_BOTTOM:

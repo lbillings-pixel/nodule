@@ -28,6 +28,11 @@ alternation = 0.7
 wobble_mm = 0.2
 wobble_scale_mm = 4.0
 wobble_max_slope = 0.5  # cap below 1: bands cannot fold (ADR 0005 section 3)
+# One wall channel (ADR 0015 s.6; agatesim ADR 0077): bands thin to nothing
+# toward a line on the wall and close on it (channel_opening_mm stays 0).
+# "Often one" in fist-sized stones [@walger2009]. No clear layer: its look
+# failed (ADR 0015 s.6). `effective`, judged by the owner's eye.
+channel_count = 1
 
 [[fractures]]
 centre_mm = [2, 0, -6]

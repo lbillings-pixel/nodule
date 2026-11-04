@@ -231,6 +231,72 @@ eventually, but it has no geometry to build from yet. It is to be added
 once the project plans how to model and show nodule exteriors (README
 goal 2), which will give the wall its indentations.
 
+### 6. The look check: the channel passes, the clear layer does not (2026-11-04)
+
+Step 3 of the plan. The owner compared look cuts of the current stone with
+cuts through one channel, with and without the clear layer.
+
+**Verdict (owner):**
+- **The channel passes.** It is comparable in realism to the plain stone.
+  The approved look is the channel-only render (run folder
+  `variants/channel/look2-channel-only`, gitignored).
+- **Channels close fully on the line.** `channel_opening_mm` = 0, the
+  agatesim default since agatesim ADR 0077's update (7de45c6): every band
+  in the stack thins to nothing on the channel's line.
+- **The clear layer is off.** Its dark grey ring is an obvious fake tell.
+  It returns only once that is solved (a cause and a fix are not yet
+  known).
+
+**Why channels close.** Walger's wall layers thin "from the normal thickness
+to zero" toward the channel's focus (pp. 116, 136) [@walger2009]. That is
+a closed fan, and the model now builds exactly that. *verified* (that the
+source says so; qualitative).
+
+**Open or fading band ends belong elsewhere.** The owner also sees band
+ends that stop short or fade out. Howard's escape tubes fit them: bands
+"narrowed and thinned and eventually peter out completely" (Fig. 6, p. 99)
+[@howard2018]. In their model the tubes form after banding, as outflow
+(stage 2), so they are a different feature from Walger's inflow channels.
+The mechanism is context only; the geometry is what the stone uses.
+- Escape tubes come **later, as a separate feature**, with their own
+  agatesim ADR.
+- Fading ends need band material that varies along a band, which is
+  option C's renderer work. So the tubes follow C.
+*plausible* (that tubes explain the open ends seen in photos; no counts).
+
+**Now on in the preset.** `n2-slice` sets `channel_count = 1` (agatesim
+pinned at 7de45c6). Lateral size, length and depth stay at agatesim's
+defaults: 8 mm each side, 10 mm, 5 mm (`effective`). Step 4, the 20-cut
+check of C16, C14 and C7 and the joint compare, runs on this preset.
+
+**Step 4 result (2026-11-04).** The 20 cuts of ADR 0014 4n, rerun with the
+channel: same planes, looks and seeds, so only the channel differs. 1670 s,
+peak traced 1054 MB (4n: 1677 s, 1049 MB).
+
+| Median of 20 cuts | Without channel (4n) | With channel | Photos |
+|---|---|---|---|
+| C16 coherence | 0.909 (pct 98) | 0.907 (pct 98) | 0.67 (A), 0.60 (B) |
+| C14 defect density | 0.236 | 0.213 | 0.51 |
+| C7 thickness spread | 0.530 | 0.517 | 0.62 |
+| C26 slope, pct vs B | 2.68 (95) | 2.29 (90) | 1.23 |
+| Joint, A / B (limit) | 1.1 / 3.0 (15.9 / 7.9) | 1.1 / 3.2 (15.9 / 7.9) | |
+
+- 12 of the 20 cuts changed and 8 came out identical. That is more than
+  expected, because the thinned zone is wide (about 16 by 10 by 5 mm in a
+  50 mm stone). Within the changed cuts, C14 rose in some (cut 5: 0.29 to
+  0.41) and fell in others (cut 11: 0.38 to 0.21).
+- **The channel does not close the band-order gap.** C16 is unchanged.
+  C14 and C7 moved slightly away from the photos, by less than the spread
+  between cuts. *verified* (measured, descriptive; one stone, one seed).
+- The joint compare stays within both halves. C26 slope moved toward the
+  photos (90th percentile against B, down from 95th). *verified* that it
+  moved; *speculative* that the channel is the cause and not chance, with
+  only 12 changed cuts.
+- This fits the sources: channels are local, and bands elsewhere grow "in
+  relatively uniform thickness" (p. 128) [@walger2009]. B earns its place
+  through the look, which passed, not through these statistics. The C16,
+  C14 and C7 gaps are left to option C.
+
 ## Alternatives considered
 
 - **Random pinch-outs and splits throughout the stone.** Against the

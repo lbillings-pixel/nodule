@@ -5,7 +5,7 @@ requires-python = "==3.12.*"
 [[package]]
 name = "agatesim"
 version = "0.1.0"
-source = { git = "https://github.com/lbillings-pixel/agatesim?rev=2f92fb7c6e02c1b64446c25a0d0fbc1137d4ac15#2f92fb7c6e02c1b64446c25a0d0fbc1137d4ac15" }
+source = { git = "https://github.com/lbillings-pixel/agatesim?rev=7de45c6dad71458acb155e1377a720076343b377#7de45c6dad71458acb155e1377a720076343b377" }
 dependencies = [
     { name = "fastapi" },
     { name = "numba" },
@@ -318,8 +318,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "agatesim", git = "https://github.com/lbillings-pixel/agatesim?rev=2f92fb7c6e02c1b64446c25a0d0fbc1137d4ac15" },
-    { name = "agatesim", extras = ["gpu"], marker = "extra == 'gpu'", git = "https://github.com/lbillings-pixel/agatesim?rev=2f92fb7c6e02c1b64446c25a0d0fbc1137d4ac15" },
+    { name = "agatesim", git = "https://github.com/lbillings-pixel/agatesim?rev=7de45c6dad71458acb155e1377a720076343b377" },
+    { name = "agatesim", extras = ["gpu"], marker = "extra == 'gpu'", git = "https://github.com/lbillings-pixel/agatesim?rev=7de45c6dad71458acb155e1377a720076343b377" },
     { name = "numpy", specifier = ">=2.5.4" },
     { name = "pydantic", specifier = ">=2.14.2" },
     { name = "scipy", specifier = ">=1.18.1" },

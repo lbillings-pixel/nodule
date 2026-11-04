@@ -23,9 +23,9 @@ doi = "10.3390/min10111037"
 access = "open"
 licence = "CC-BY-4.0"
 checked = "sections"
-sections_read = ["1", "3", "4.1", "4.2.1", "5.3", "5.4", "5.5", "6"]
+sections_read = ["1", "3", "4.1", "4.2.1", "4.3", "5.3", "5.4", "5.5", "6"]
 topics = ["mineralogy", "geochemistry", "genesis", "formation-temperature", "host-rocks", "quartz-transition", "spherulites", "moss", "plume", "tubes"]
-notes = """Primary overview, read 2026-10-15. Key points: crystallisation often starts with spherulitic chalcedony at the wall that continues into fibrous chalcedony (§4.1.2, §5.4, Fig. 29); wall-lining agates have three zones, spherulitic/granular rim, fibrous chalcedony, macrocrystalline quartz centre (§4.1.2); "Macrocrystalline quartz crystallizes when the SiO2 concentration in the mineralizing fluid is low" (§6), with a drop in impurities and defects at the chalcedony–quartz interface (§5.4); Uruguay bands from gravitational sedimentation of sols with flocculated silica particles, needing high silica concentration (§4.1.2); iron pigments are rejected by crystallising quartz and accumulate along the banding (§5.4); visible bands can contain up to 1000 micro-bands per mm (§4.1.2); colour banding governed by self-organisation of the silica matrix rather than Liesegang diffusion (§5.4); "infiltration channels"/"escape tubes" mostly deformation of plastic silica (§5.5); stalactitic SFF and moss agate filaments have Fe-silicate/zeolite cores with concentric chalcedony and possible biosignatures (§5.5); plume agate interpreted as silica-garden self-assembly from osmosis, reaction and buoyancy (§5.5). §5.3 (read 2026-10-17): silica in volcanic agates comes from alteration of the host rock; pathways for free flow are lacking in most rocks, so supply by diffusion of monomeric silicic acid through intergranular pore space is favoured; "The continuous supply of silicic acid results in the accumulation of silica and the filling of the cavities"; low solubility means much water must pass (Landmesser: up to 0.5 m3 for a 100 g agate at 250 mg/L). §4.1.2 re-read 2026-11-02 (p. 11): "visible macroscopic bands may consist of up to 1000 micro-bands per mm" carries no citation (the next sentence cites Holzhey [100] for particle sizes only), so the figure is the review's own, without a stated primary source; visible banding is attributed to changes in silica phase, crystal size and habit, porosity and Fe-oxide micro-inclusions (Fig. 10). A word search of the other sections found no band-width, spacing or fractal statistics; Holten 1998 is not cited."""
+notes = """Primary overview, read 2026-10-15. Key points: crystallisation often starts with spherulitic chalcedony at the wall that continues into fibrous chalcedony (§4.1.2, §5.4, Fig. 29); wall-lining agates have three zones, spherulitic/granular rim, fibrous chalcedony, macrocrystalline quartz centre (§4.1.2); "Macrocrystalline quartz crystallizes when the SiO2 concentration in the mineralizing fluid is low" (§6), with a drop in impurities and defects at the chalcedony–quartz interface (§5.4); Uruguay bands from gravitational sedimentation of sols with flocculated silica particles, needing high silica concentration (§4.1.2); iron pigments are rejected by crystallising quartz and accumulate along the banding (§5.4); visible bands can contain up to 1000 micro-bands per mm (§4.1.2); colour banding governed by self-organisation of the silica matrix rather than Liesegang diffusion (§5.4); "infiltration channels"/"escape tubes" mostly deformation of plastic silica (§5.5); stalactitic SFF and moss agate filaments have Fe-silicate/zeolite cores with concentric chalcedony and possible biosignatures (§5.5); plume agate interpreted as silica-garden self-assembly from osmosis, reaction and buoyancy (§5.5). §5.3 (read 2026-10-17): silica in volcanic agates comes from alteration of the host rock; pathways for free flow are lacking in most rocks, so supply by diffusion of monomeric silicic acid through intergranular pore space is favoured; "The continuous supply of silicic acid results in the accumulation of silica and the filling of the cavities"; low solubility means much water must pass (Landmesser: up to 0.5 m3 for a 100 g agate at 250 mg/L). §4.1.2 re-read 2026-11-02 (p. 11): "visible macroscopic bands may consist of up to 1000 micro-bands per mm" carries no citation (the next sentence cites Holzhey [100] for particle sizes only), so the figure is the review's own, without a stated primary source; visible banding is attributed to changes in silica phase, crystal size and habit, porosity and Fe-oxide micro-inclusions (Fig. 10). A word search of the other sections found no band-width, spacing or fractal statistics; Holten 1998 is not cited. §4.3 read 2026-11-03 by a helper agent (p. 27): "laminated and lenticular agglomerates of very small hematite particles (<10 µm)" accumulated along the banding; no lens sizes given."""
 
 [[references]]
 id = "moxon2020"
@@ -3188,3 +3188,31 @@ licence = "CC-BY-4.0"
 checked = "full-text"
 topics = ["agate", "trace-elements", "iron", "colour", "la-icp-ms", "epma", "texture"]
 notes = """Full text read 2026-11-03 (owner PDF; Supplementary Tables S1-S2 not read). 5 Xunke alluvial agates; LA-ICP-MS 35 um spots (printed "mm"), 77 spots: Fe 1.2-4635 ppm (avg 486); Mn, Cr, Cu < 7.1 ppm avg, 'Mn shows no chromatic relevance'. Fe by texture (Fig. 8D, approx. medians): cryptocrystalline ~600, colloform ~400, fibrous ~130, micro-granular ~70, crystalline quartz ~10 ppm. White/translucent zones of BH4 ~70-400 ppm (Fig. 6B, approx). Spots not colour-tagged; no optical data. Authors invoke both Si4+ <-> (Al,Fe)3+ + alkali substitution and Fe-bearing particles. Same locality as zhou2022."""
+
+[[references]]
+id = "howard2018"
+kind = "article"
+authors = ["Howard, C. B.", "Rabinovitch, A."]
+year = 2018
+title = "A new model of agate geode formation based on a combination of morphological features and silica sol–gel experiments"
+venue = "European Journal of Mineralogy 30(1), 97-106 (printed '2017, 30, 97–106'; online 31 Aug 2017)"
+doi = "10.1127/ejm/2017/0029-2685"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["agate", "band-geometry", "escape-tubes", "sectors", "inclusions"]
+notes = """Owner-supplied PDF, read in full 2026-11-03 by a helper agent (figures viewed as page images). Qualitative only (agates from 6 regions, count not stated): bands thinner at indentation apices (p. 98) and narrowing at escape tubes "until … the banded structure is lost" (p. 99); band widths vary within sectors and inclusions vary along bands (pp. 99, 104); a 1-2 mm clear unbanded outer layer (p. 99); band fragments in the quartz centre (p. 100); bands keep "the same width, consistency and colour" across sector boundaries, "no mismatching" (p. 104); "fractures through the bands are never seen" (p. 102); rejects regular inward thickening (p. 101), against wang1990. Formation model is context only."""
+
+[[references]]
+id = "walger2009"
+kind = "article"
+authors = ["Walger, E.", "Mattheß, G.", "von Seckendorff, V.", "Liebau, F."]
+year = 2009
+title = "The formation of agate structures: models for silica transport, agate layer accretion, and for flow patterns and flow regimes in infiltration channels"
+venue = "Neues Jahrbuch für Mineralogie, Abhandlungen 186(2), 113-152"
+doi = "10.1127/0077-7757/2009/0141"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["agate", "infiltration-channels", "layer-thickness", "band-geometry"]
+notes = """Owner-supplied PDF, read in full 2026-11-03 by a helper agent (figures viewed as page images). Posthumous: E. Walger, compiled by Mattheß, von Seckendorff and Liebau. Wall layers thin "from the normal thickness to zero" toward a focus where an infiltration channel enters (pp. 116, 136); elsewhere they grow "in relatively uniform thickness" (p. 128). Channels: never in amygdules below cherry size, "often one, rarely more" in fist-size, "frequently several" above 1 dm3 (p. 128); depth a few mm to 2-2.5 cm (p. 125); often missed by random sections (p. 127); single layers extend "cm to dm" (p. 115). No sample size, no counts per area. Hydrodynamic model is context only."""

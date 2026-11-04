@@ -198,3 +198,5 @@ against A and the held-out half B (ADR 0009), as the 20-cut check was.
   stone's cuts look like the photos at set level: *plausible*, with band
   edges too coherent and curvature high as open gaps. Appearance only;
   never evidence for a formation mechanism (ADR 0002).
+- 2026-11-03: the edge-coherence gap is diagnosed in
+  [ADR 0015](0015-band-order-diagnosis-and-options.md), together with C14 and C7.

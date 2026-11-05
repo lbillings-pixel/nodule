@@ -253,3 +253,34 @@ def test_a_baked_drift_from_another_grid_is_refused(host, look_scene) -> None:
     wrong = upload(host, mats, np.zeros((2, 2, 2), np.float32))
     with pytest.raises(ValueError, match="another growth-time grid"):
         render(dev, view, mats, DOME, spp=2, seed=1, depth_mm=DEPTH, shift=wrong)
+
+
+# --- a tighter majorant (ADR 0016 s.11) --------------------------------------------------------
+
+
+def test_tighter_majorant_keeps_the_image(host, look_scene) -> None:
+    """Set 4's drift (0.1): bounding each band by the translucency it can reach leaves the
+    image as the whole-table bound gives it, to within render noise (the two bounds draw
+    different random paths, so they are compared against two seeds of the same bound),
+    and costs less. Measured, timing not asserted."""
+    rec, dev, view = look_scene
+    set4 = dataclasses.replace(host, drift_size=0.1)
+    mats = OpticsTable().materials(rec, set4)
+    tight = upload(set4, mats)
+    loose = dataclasses.replace(tight, drift_size=1.0)
+    kw: dict[str, Any] = dict(spp=32, depth_mm=DEPTH, flags=Flag.BLACK_BOTTOM)
+    render(dev, view, mats, DOME, shift=tight, seed=1, **{**kw, "spp": 1})  # compile
+    a = render(dev, view, mats, DOME, shift=tight, seed=15, **kw)
+    b = render(dev, view, mats, DOME, shift=loose, seed=15, **kw)
+    c = render(dev, view, mats, DOME, shift=loose, seed=16, **kw)
+
+    def blocks(img: np.ndarray) -> np.ndarray:
+        return lum(img).reshape(10, 10, 10, 10).mean(axis=(1, 3))
+
+    diff = np.abs(blocks(a.image) - blocks(b.image)).mean()
+    noise = np.abs(blocks(c.image) - blocks(b.image)).mean()
+    bias = float(lum(a.image).mean() - lum(b.image).mean())
+    print(f"tight {a.seconds:.2f} s, loose {b.seconds:.2f} s; block |tight - loose| "
+          f"{diff:.2e} against two seeds {noise:.2e}; bias {bias:+.2e}")  # fmt: skip
+    assert diff < 1.5 * noise
+    assert abs(bias) < 3 * noise

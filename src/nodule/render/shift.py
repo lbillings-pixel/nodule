@@ -135,6 +135,7 @@ class DeviceShift:
     arrays: dict[str, Any]
     materials: Materials | None  # the table it was built for; None for `off()`
     max_gain: float = 1.0
+    drift_size: float = 1.0  # bounds each band's reachable translucency (majorant); 1: any
     grid_shape: tuple[int, ...] | None = None  # the baked drift's grid; None: per sample
 
 
@@ -177,7 +178,8 @@ def upload(
     struct = cp.asarray(np.frombuffer(h.tobytes(), np.uint8))
     shape = tuple(drift_grid.shape) if drift_grid is not None else None
     return DeviceShift(struct=struct, arrays=arrays, materials=materials,
-                       max_gain=shift.max_gain, grid_shape=shape)  # fmt: skip
+                       max_gain=shift.max_gain, drift_size=shift.drift_size,
+                       grid_shape=shape)  # fmt: skip
 
 
 BAKE_CHUNK = 1 << 21  # nodes per kernel launch (~60 MB of device scratch)

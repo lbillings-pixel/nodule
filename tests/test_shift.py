@@ -168,17 +168,47 @@ def test_other_pigments_are_refused_when_they_take_the_shift(tables) -> None:
     )  # and a green band that doesn't shift
 
 
+def reached(m, kept, gain: float, d: float) -> float:
+    """Brute force: the largest mu_t the kernel's own float32 pick reaches, over changes
+    in [-d, d] (camera.cu: tr = clip(band + change), nearest of the drift table's rows)."""
+    takes = m.along[:, 0] >= 0
+    first, count = m.tr_rows
+    change = np.linspace(-d, d, 20001, dtype=np.float32)
+    top = 0.0
+    for i in np.flatnonzero(takes):
+        tr = np.clip(np.float32(m.along[i, 0]) + change, np.float32(0), np.float32(1))
+        idx = np.minimum((tr * np.float32(count - 1) + np.float32(0.5)).astype(np.int32),
+                         count - 1)  # fmt: skip
+        mut = m.mua[i] + (gain - 1) * m.along[i, 1:] + kept[first + np.unique(idx)]
+        top = max(top, float(mut.max()))
+    return top
+
+
 def test_majorant_covers_the_largest_lens(tables) -> None:
     _, host, _, plain, m = tables
     kept_plain, kept = plain.kept()[0].astype(np.float32), m.kept()[0].astype(np.float32)
-    dev = DeviceShift(struct=None, arrays={}, materials=m, max_gain=host.max_gain)
+    d = host.drift_size
+    dev = DeviceShift(struct=None, arrays={}, materials=m, max_gain=host.max_gain,
+                      drift_size=d)  # fmt: skip
     assert host.max_gain == 2.5
+    assert 0 < d < 0.5
     assert m.along is not None
     takes = m.along[:, 0] >= 0
     first, count = m.tr_rows
-    want = (m.mua + 1.5 * m.along[:, 1:])[takes].max(0) + kept[first : first + count].max(0)
-    assert majorant(m, kept, dev) >= float(want.max())
-    assert majorant(m, kept, dev) > majorant(plain, kept_plain, None)
+    mb = majorant(m, kept, dev)
+    assert mb >= reached(m, kept, host.max_gain, d)  # covers every sample the kernel draws
+    # ADR 0016 s.11: tighter than the whole-table bound (drift_size 1), which it equals
+    # when the drift can reach every row
+    loose = dataclasses.replace(dev, drift_size=1.0)
+    whole = (m.mua + 1.5 * m.along[:, 1:])[takes].max(0) + kept[first : first + count].max(0)
+    assert majorant(m, kept, loose) >= float(whole.max())
+    assert mb < majorant(m, kept, loose)
+    assert majorant(m, kept, loose) == pytest.approx(float(whole.max()) * (1 + 1e-5), rel=1e-6)
+    # negative control: a bound that ignores the drift (size 0) misses samples it reaches
+    assert majorant(m, kept, dataclasses.replace(dev, drift_size=0.0)) < reached(
+        m, kept, host.max_gain, d
+    )
+    assert mb > majorant(plain, kept_plain, None)
     # nothing takes the shift: exactly the plain majorant, so the plain image
     none = dataclasses.replace(
         m, along=np.where(takes[:, None], [-1, 0, 0, 0], m.along).astype(np.float32)

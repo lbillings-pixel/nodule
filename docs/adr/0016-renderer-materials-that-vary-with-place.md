@@ -353,6 +353,35 @@ pool 197 MB at the end. Nine of 20 cuts were noise-matched in both runs.
 - Cost for longer runs: the 100-cut plain run took 8,466 s, so set 4
   would take about 8 h at 3.5×.
 
+### 11. A tighter majorant (the owner's choice, 2026-11-04)
+
+The bound measured in section 8 is now built. It is exact: the renderer
+draws the same image, only with less wasted work.
+
+- **What it does.** `majorant` no longer pairs every band that takes the
+  shift with the densest row of the whole drift table. Each band is paired
+  with the densest row it can reach, its own translucency ± the drift
+  size, clipped to [0, 1], widened by one row on each side for float
+  rounding in the kernel's nearest-row pick. `DeviceShift` carries the
+  drift size; its default of 1 gives the old whole-table bound. The baked
+  drift stays within ± the drift size (section 9), so the bound covers it.
+- **Bound** (*verified*; `tests/test_shift.py`). It is at least the
+  largest mu_t the kernel's own float32 pick reaches over 20,001 changes
+  in [−d, d], band by band. It is below the whole-table bound and equals
+  it at drift size 1. Control: a bound that ignores the drift (size 0)
+  misses samples the drift reaches.
+- **Image** (*verified*; set 4's drift 0.1 on the look stone, 32 spp,
+  2 mm blocks of a 20 × 20 mm view). Tighter and whole-table bounds differ
+  by 5.4e-3 in block luminance, against 5.6e-3 between two seeds of the
+  same bound; whole-image bias −1.7e-5. The two bounds draw different
+  random paths, so render seeds are not comparable across this change.
+- **Cost** (section 7's cut, 268 × 244 px, 64 spp, dome, black bottom,
+  baked drift; best of 3; `majorant_cost.py`, scratch, 20 s). The
+  majorant falls from 52.9 to 42.8 /mm. Set 4 renders in 1.11 s against
+  1.34 s (**−17%**), 2.6× the plain stone (0.43 s); collision events per
+  path 295 against 364. GPU memory is unchanged. Drift 0.25 still gains
+  little (section 8). 461 tests.
+
 ## Alternatives considered
 
 The B and C options of 16a to 16c. Also a cut-face-only shift held

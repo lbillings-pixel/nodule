@@ -182,8 +182,10 @@ def hg_kept(g: ArrayLike, omc_cut: float) -> F64:
 
 def majorant(materials: Materials, kept_mus: F32, shift: DeviceShift | None) -> float:
     """Largest mu_t a sample can have. With a shift, a row that takes it reaches its
-    absorption at the largest gain, plus the largest scattering of the drift's table
-    when there is one (any pairing may occur); a hair over, for float rounding."""
+    absorption at the largest gain, plus the largest scattering among the drift-table
+    rows its own translucency can reach, tr +- the drift size (ADR 0016 s.11; any
+    pairing may occur), widened by a row each side for float rounding in the kernel's
+    nearest-row pick; then a hair over, for float rounding."""
     mut = materials.mua + kept_mus  # float32, as before ADR 0016: same majorant, same image
     if shift is None or materials.along is None:
         return float(mut.max())
@@ -196,7 +198,13 @@ def majorant(materials: Materials, kept_mus: F32, shift: DeviceShift | None) -> 
     a = materials.mua + (shift.max_gain - 1.0) * materials.along[:, 1:]
     s = kept_mus.astype(np.float64)
     if count:
-        s = np.broadcast_to(s[first : first + count].max(0), s.shape)
+        tab = s[first : first + count].copy()
+        d = min(max(shift.drift_size, 0.0), 1.0)
+        for i in np.flatnonzero(takes):
+            tr = float(materials.along[i, 0])
+            lo = int(min(max(tr - d, 0.0), 1.0) * (count - 1) + 0.5) - 1
+            hi = int(min(max(tr + d, 0.0), 1.0) * (count - 1) + 0.5) + 1
+            s[i] = tab[max(lo, 0) : min(hi, count - 1) + 1].max(0)
     top = max(float(mut[rows & ~takes].max(initial=0.0)),
               float((a + s)[takes].max(initial=0.0)))  # fmt: skip
     return top * (1.0 + 1e-5)

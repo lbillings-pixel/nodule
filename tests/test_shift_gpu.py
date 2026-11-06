@@ -130,8 +130,16 @@ def lum(img: np.ndarray) -> np.ndarray:
     return img @ np.array([0.0722, 0.7152, 0.2126])  # channels 450, 550, 650 nm
 
 
+def exact_view(view: View) -> View:
+    """The same place at 400 x 400 px. Samples add into the image as float32 atomics, so where
+    a pixel's samples are few blocks apart, thread order moves the last digit (about 2e-7,
+    ADR 0016 s.15). They are 1,250 apart here and repeats are exact; the overlap ends by 200 px."""
+    return View(view.s0, view.t0, view.pixel_mm * 100 / 400, 400, 400)
+
+
 def test_shift_with_no_takers_renders_identically(host, look_scene) -> None:
     rec, dev, view = look_scene
+    view = exact_view(view)
     none = dataclasses.replace(rec, shifts=np.zeros_like(rec.shifts))
     tab = OpticsTable()
     plain, with_cols = tab.materials(none), tab.materials(none, host)
@@ -139,6 +147,26 @@ def test_shift_with_no_takers_renders_identically(host, look_scene) -> None:
     a = render(dev, view, plain, DOME, **kw).image
     b = render(dev, view, with_cols, DOME, shift=upload(host, with_cols), **kw).image
     assert np.array_equal(a, b)
+
+
+def test_register_cap_leaves_the_image_unchanged(host, look_scene, monkeypatch) -> None:
+    """ADR 0016 s.15: the cap only changes how the kernel uses registers, here on the path
+    that takes lenses and drift. Control: another seed differs, so the comparison can fail."""
+    rec, dev, view = look_scene
+    view = exact_view(view)
+    mats = OpticsTable().materials(rec, host)
+    shift = upload(host, mats)
+    kw: dict[str, Any] = dict(spp=8, depth_mm=DEPTH, flags=Flag.BLACK_BOTTOM, shift=shift)
+    capped = render(dev, view, mats, DOME, seed=11, **kw).image
+    other_seed = render(dev, view, mats, DOME, seed=12, **kw).image
+    monkeypatch.setitem(_gpu.OPTIONS, "camera", _gpu.FAST)
+    _gpu.kernel.cache_clear()
+    try:
+        uncapped = render(dev, view, mats, DOME, seed=11, **kw).image
+    finally:
+        _gpu.kernel.cache_clear()
+    assert np.array_equal(capped, uncapped)
+    assert not np.array_equal(capped, other_seed)
 
 
 def test_constant_lens_renders_as_the_per_step_pigment(host, look_scene) -> None:

@@ -23,8 +23,17 @@ SOURCES = {
 # tests/test_render_gpu.py); the shift module is the camera's shift code alone, compiled
 # the same way so its test checks what renders use. The reference slab kernel stays
 # exact IEEE.
+#
+# The camera kernel's registers are capped (ADR 0016 s.15): a kernel holds its peak count on
+# every path, so the lens code, which most samples never run, slowed every sample. Registers
+# only: the image is bit-identical. 128 is `effective`, measured on the RTX 4070, on a plateau
+# (96 to 128) above a sharp slowdown at 80; on another GPU it may not be the best value.
 FAST = ("--use_fast_math",)
-OPTIONS: dict[str, tuple[str, ...]] = {"camera": FAST, "shift": FAST}
+CAMERA_REGISTERS = 128
+OPTIONS: dict[str, tuple[str, ...]] = {
+    "camera": (*FAST, f"--maxrregcount={CAMERA_REGISTERS}"),
+    "shift": FAST,
+}
 
 
 @cache

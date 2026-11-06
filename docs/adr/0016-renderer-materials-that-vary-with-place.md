@@ -663,6 +663,60 @@ finished, so they had been seen, though the rule does not use them.
 - **Nothing in the measure has changed.** Section 12's slope gap stands as
   measured. The owner decides whether to go on.
 
+### 15. Why today's code is slower, and a register cap (the owner's choice, 2026-11-06)
+
+Section 14 found the plain preset rendering 1.80× slower than its stored run, with
+the same samples and pixels. Stored rows put it in the render stage (fill 1.05×).
+
+- **Where** (*verified*; cut 1, 728 px, 128 spp, fixed seed, best of 3, kernel
+  seconds, code of each commit). Plain takes 2.69 s before section 7 (a328f04) and
+  4.85 s from section 7 on (1743581, 0b5a750, 4bd6159, cd3f798): 1.80×, the same
+  as the 100-cut figure. Images are bit-identical and event counts equal at all five.
+- **Why** (*verified* for the render kernel on this RTX 4070). Section 7 raised the
+  kernel's peak registers from 113 to 211, read from the compiled binaries, though
+  the lens code does not run for the plain stone. Removing the cold path restores
+  the speed (113 registers, 2.66 s), and so does keeping the branch with a trivial
+  body (113, 2.72 s). Moving it out of line does not (184, 5.05 s; set 4 +5%), nor
+  does forcing `matid` inline (211, 5.08 s) or moving the spline lookup out of line
+  (190, 4.83 s; set 4 +8%). Code size rose too, so the test that separates them is
+  the cap below: registers fall with the code size unchanged, and the time falls.
+- **The mechanism** (*plausible*). A kernel's peak register count would limit how
+  many threads run at once. This is not measured directly. The one indirect sign is
+  in the last-digit item below: the capped kernel's samples overlap at a wider
+  spacing.
+- **The cap** (`effective`; `--maxrregcount`, camera kernel only). Same cut, kernel
+  seconds, plain / set 4; every image bit-identical to the uncapped one:
+
+  | cap | none (211) | 160 | 128 | 112 | 96 | 80 | 64 |
+  |---|---|---|---|---|---|---|---|
+  | plain | 4.86 | 3.73 | 3.20 | 3.29 | 3.25 | 4.55 | 5.82 |
+  | set 4 | 10.3 | 7.73 | 7.05 | 7.34 | 6.94 | 8.84 | 10.88 |
+
+  **128 is chosen.** 96 to 128 is a plateau whose differences are small and point
+  different ways by preset, and 96 sits next to the sharp slowdown at 80, which
+  later kernel changes could reach. The best value may differ on another GPU.
+- **On real cuts** (*verified*; the first 4 of each stored 25-cut pass, same seeds).
+  Every stored value but the timings is identical on all 4 cuts of both presets,
+  slopes included. Set 4 render time 716 s → 492 s (**0.688×**; per cut 0.684 to
+  0.691); plain 380 s → 240 s (**0.631×**; 0.628 to 0.647). Peak traced 1,051 and
+  931 MB, GPU pool at the end 129 and 63 MB. Plain's kernel stays about 1.2× the
+  one before section 7; a second kernel without the shift would recover that but
+  serves plain only, so it was not built. Section 14's set 4 / plain ratio moves to
+  about 2.2 on the small cut. Stored timings from before this section do not
+  compare with new ones.
+- **The last digit, not new** (*verified*). The kernel adds samples into the image
+  as float32 atomics, so thread order can move the last digit where a pixel's
+  samples are few blocks apart (`npx` / 128). The cap exposed this:
+  `test_shift_with_no_takers_renders_identically` failed on its 100 × 100 view
+  (differences up to 2e-7 relative, event counts equal). The uncapped kernel does it
+  too, on repeats at 100 px and at 128 spp, so that test's exact match was luck of
+  timing. Over 4 repeats at 16 spp the differences end between 150 and 200 px
+  capped and between 100 and 150 px uncapped; real cuts are about 3,700 blocks
+  apart and matched exactly. The test keeps exact equality and moves to 400 × 400
+  (1,250 blocks apart). New test: the cap leaves the lens and drift path's image
+  unchanged; control, another seed differs. 466 tests pass; CI has no GPU, so it
+  skips both.
+
 ## Alternatives considered
 
 The B and C options of 16a to 16c. Also a cut-face-only shift held

@@ -60,15 +60,31 @@ def test_nothing_resolved_keeps_the_curve_without_summaries():
     s = spectrum.measure(profiles("white", 0), 1.0, RADIUS, None)
     assert s is not None
     assert len(s.power) > spectrum.MIN_BINS
-    assert (s.slope, s.peak, s.peak_share) == (None, None, None)
+    assert (s.tilt, s.peak, s.peak_share) == (None, None, None)
+
+
+def test_too_few_bins_in_the_band_give_no_tilt():
+    """The band must hold MIN_TILT_BINS; a limit near its top leaves the peak but no tilt.
+    Control: the same profiles with a fine limit have one."""
+    rng = np.random.default_rng(0)
+    long = [rng.normal(0.0, 1.0, 2000) for _ in range(40)]  # periods up to 2 radii of 500 px
+    fine = spectrum.measure(long, 1.0, 500.0, 2.0)
+    assert fine is not None
+    assert fine.tilt is not None
+    near_top = spectrum.measure(
+        long, 1.0, 500.0, spectrum.TILT_TOP_SHARE * 500.0 / spectrum.GRID_STEP
+    )
+    assert near_top is not None
+    assert near_top.tilt is None
+    assert near_top.peak is not None
 
 
 @pytest.mark.parametrize("seed", range(5))
-def test_white_noise_slope_is_about_minus_one(seed: int):
+def test_white_noise_tilt_is_about_minus_one(seed: int):
     s = spectrum.measure(profiles("white", seed), 1.0, RADIUS, 2.0)
     assert s is not None
-    assert s.slope is not None
-    assert -1.15 < s.slope < -0.7  # 5th-95th percentile -1.01 to -0.85 over 20 seeds
+    assert s.tilt is not None
+    assert -1.15 < s.tilt < -0.7  # 5th-95th percentile -1.01 to -0.85 over 20 seeds
 
 
 @pytest.mark.parametrize("kind", ["white", "0.9", "0.99"])
@@ -92,20 +108,20 @@ def test_one_period_gives_a_peak_there():
     assert 18 / spectrum.GRID_STEP <= period <= 18 * spectrum.GRID_STEP
 
 
-def test_red_noise_slope_rises_with_its_memory():
-    slopes: list[float] = []
+def test_red_noise_tilt_rises_with_its_memory():
+    tilts: list[float] = []
     for kind in ("white", "0.9", "0.99"):
         s = spectrum.measure(profiles(kind, 0), 1.0, RADIUS, 2.0)
         assert s is not None
-        assert s.slope is not None
-        slopes.append(s.slope)
-    assert slopes == sorted(slopes)
+        assert s.tilt is not None
+        tilts.append(s.tilt)
+    assert tilts == sorted(tilts)
 
 
 def test_two_resolutions_give_the_same_curve():
     """Negative control: one drawn stone at 600 and 300 px across. Shares that
     hold at least 1% agree within 25%, the peak sits in the same bin, and the
-    fine-side slope agrees within 1 (it starts at L, which differs)."""
+    tilt agrees within 1 (its band starts at L, which differs)."""
     fine, coarse = (
         bands.measure(
             *ring_face(n, 4), 1.0, 3.0, 9.0 * n / 600, rng=np.random.default_rng(0), ladder=False
@@ -120,9 +136,9 @@ def test_two_resolutions_give_the_same_curve():
     assert a.peak is not None
     assert c.peak is not None
     assert abs(a.peak / c.peak - 1) < 0.2
-    assert a.slope is not None
-    assert c.slope is not None
-    assert abs(a.slope - c.slope) < 1.0
+    assert a.tilt is not None
+    assert c.tilt is not None
+    assert abs(a.tilt - c.tilt) < 1.0
     fa, fc = (
         dict(zip(a.period_share, a.power, strict=True)),
         dict(zip(c.period_share, c.power, strict=True)),
@@ -133,16 +149,17 @@ def test_two_resolutions_give_the_same_curve():
         assert abs(fa[k] / fc[k] - 1) < 0.25, k
 
 
-def test_fine_structure_lowers_the_slope():
+def test_fine_structure_moves_the_tilt():
     """Negative control: bands drawn without fine structure (ADR 0006 section
-    10's obvious fake) must rise more steeply to their spacing than the same
-    bands with sub-bands (measured 13.2 and 2.5)."""
+    10's obvious fake) must read far from the same bands with sub-bands (measured
+    -6.6 and -1.6). The smooth bands are the lower here: one narrow line, and the
+    tilt's band runs past it (`nodule.spectrum`), so this is no rule of direction."""
     y, x = np.mgrid[0:600, 0:600] - 299.5
     r = np.hypot(x, y)
     rng = np.random.default_rng(1)
     smooth = 128 + 40 * np.cos(2 * math.pi * r / 18) + rng.normal(0, 3, r.shape)
     sub = smooth + 12 * np.cos(2 * math.pi * r / 4.5)
-    slopes: list[float] = []
+    tilts: list[float] = []
     for lum in (smooth, sub):
         b = bands.measure(
             lum.astype(np.float32),
@@ -154,6 +171,6 @@ def test_fine_structure_lowers_the_slope():
             ladder=False,
         )
         assert b.spectrum is not None
-        assert b.spectrum.slope is not None
-        slopes.append(b.spectrum.slope)
-    assert slopes[1] < slopes[0] - 5.0
+        assert b.spectrum.tilt is not None
+        tilts.append(b.spectrum.tilt)
+    assert tilts[0] < tilts[1] - 3.0

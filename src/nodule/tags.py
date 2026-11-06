@@ -38,8 +38,8 @@ Each usable photo gets one record:
   C10 does;
 - C26, the profile spectrum (`nodule.spectrum`), from C6's profiles: the
   curve as parallel lists (`C26_period_share`, period over the inner radius;
-  `C26_power`, each bin's share of the profiles' power), its fine-side slope
-  (`C26_slope`) and its peak over a red-noise background (`C26_peak`, at
+  `C26_power`, each bin's share of the profiles' power), its tilt over a fixed
+  band of scales (`C26_tilt`, ADR 0017) and its peak over a red-noise background (`C26_peak`, at
   `C26_peak_share`). Its periods are shares of the inner radius, so it is
   outline-bound.
 
@@ -114,7 +114,7 @@ OUTLINE_BOUND = (
     "C13_depth",
     "C13_drift",
     "C13_complete",
-    *("C26_period_share", "C26_power", "C26_slope", "C26_peak", "C26_peak_share"),
+    *("C26_period_share", "C26_power", "C26_tilt", "C26_peak", "C26_peak_share"),
 )
 # Band count and persistence measured here: name in the record -> field of `bands.Bands`.
 MEASURED = {
@@ -150,7 +150,7 @@ FROM_RINGS = {  # C13 by `nodule.concentric`
     "C13_complete": "complete",
 }
 FROM_SPECTRUM = {  # C26 by `nodule.spectrum`, from C6's profiles
-    "C26_slope": "slope",
+    "C26_tilt": "tilt",
     "C26_peak": "peak",
     "C26_peak_share": "peak_share",
 }

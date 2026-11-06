@@ -21,16 +21,19 @@ time [@holten1997], and depth spectra are distorted by a varying growth rate
   since a band's power per frequency grows with the samples a profile holds:
   the same face at half the resolution gave 2-5 times less (measured
   2026-11-01), while its shares agree.
-- **Slope** (how fast power falls toward fine periods): the least-squares
-  slope of log share against log period over the fine side, the resolved bins
-  (at or coarser than L, so above the noise floor) up to the peak's bin, at
-  least `MIN_SLOPE_BINS` of them. Bands without fine structure rise steeply to
-  their spacing; sub-bands below it lower the slope. White noise gives about
-  -1, as a quarter-octave holds more frequencies the finer it is. Fitted over
-  all resolved bins instead, the slope read mostly the fall beyond the peak
-  (smooth bands -3.8, the same with sub-bands -1.4, white noise -0.85;
-  measured 2026-11-01). The fine side starts at L, so slopes compare only at
-  a matched limit, as ADR 0006 section 10 renders them.
+- **Tilt** (ADR 0017, the owner's choice; it replaces a fine-side slope that
+  ended at the peak's bin): the least-squares slope of log share against log
+  period over a fixed band of scales, the resolved bins (at or coarser than L,
+  so above the noise floor) up to `TILT_TOP_SHARE` of the inner radius, at
+  least `MIN_TILT_BINS` of them. It is not a fine-side slope: on most stone
+  cuts this band runs past the strongest peak, so it reads the spectrum's
+  overall tilt. Which way a fake moves it depends on the spectrum: smoothing a
+  stone's bands raised it on 12 of 12 planes (ADR 0016 s.16), while removing
+  sub-bands from one narrow line lowers it, as the band then runs past the line
+  into a steep fall. So tilts are read as a distance from the photos, never as
+  a direction. White noise gives about -1, as a quarter-octave holds more
+  frequencies the finer it is. The band starts at L, so tilts compare only at a
+  matched limit, as ADR 0006 section 10 renders them.
 - **Peak**: the largest ratio of a bin's power to a red-noise background, and
   that bin's period over the radius. The background has the AR(1) form of
   [@torrence1998, eq. 16], fitted to the face's own resolved bins by least
@@ -59,7 +62,8 @@ BINS = 48  # effective: the grid runs from FINEST_SHARE to 1 radius
 MIN_PERIOD_PX = 2.0  # sampling: the shortest period a profile can hold (Nyquist)
 MIN_CYCLES = 2.0  # effective: a period is read only where a profile holds this many
 MIN_BINS = 4  # effective: resolved bins needed for the peak
-MIN_SLOPE_BINS = 2  # effective: fine-side bins needed for the slope
+TILT_TOP_SHARE = 0.25  # effective: the tilt's band ends here, over the inner radius (ADR 0017)
+MIN_TILT_BINS = 3  # effective: bins needed for the tilt
 ALPHAS = 1.0 - np.geomspace(1.0, 1e-4, 200)  # effective: AR(1) coefficients tried, 0 to 0.9999
 
 
@@ -69,7 +73,7 @@ class Spectrum:
 
     period_share: tuple[float, ...]  # bin centres, period over the inner radius
     power: tuple[float, ...]  # share of the profiles' total power in each bin
-    slope: float | None  # d log share / d log period, L up to the peak
+    tilt: float | None  # d log share / d log period, L up to TILT_TOP_SHARE
     peak: float | None  # largest power over the red-noise background
     peak_share: float | None  # that bin's period over the inner radius
 
@@ -167,7 +171,8 @@ def measure(
     s, p = share[resolved], power[resolved]
     ratio = p / red_noise(s, p, n_in[resolved], step, radius)
     top = int(np.argmax(ratio))
-    slope = None
-    if top + 1 >= MIN_SLOPE_BINS:
-        slope = float(np.polyfit(np.log10(s[: top + 1]), np.log10(p[: top + 1]), 1)[0])
-    return Spectrum(out.period_share, out.power, slope, float(ratio[top]), float(s[top]))
+    band = s <= TILT_TOP_SHARE
+    tilt = None
+    if band.sum() >= MIN_TILT_BINS:
+        tilt = float(np.polyfit(np.log10(s[band]), np.log10(p[band]), 1)[0])
+    return Spectrum(out.period_share, out.power, tilt, float(ratio[top]), float(s[top]))

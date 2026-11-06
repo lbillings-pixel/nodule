@@ -27,7 +27,7 @@ from nodule.descriptors import (
 from nodule.render.cutface import Rendering
 from nodule.render.record import FIELDS
 from nodule.specimen import Specimen, load_preset
-from nodule.spectrum import GRID_STEP
+from nodule.spectrum import GRID_STEP, TILT_TOP_SHARE
 
 # A median library look (2026-10-31: edge/spacing 0.38, noise 1.35, spacing 9.9 px),
 # fixed here as CI has no library cache.
@@ -83,21 +83,18 @@ def test_banded_cut_is_measured(central: PhotoCut) -> None:
         assert out[name] is None or isinstance(out[name], int), name
 
 
-def test_row_holds_the_curve_its_slope_was_fitted_on(central: PhotoCut) -> None:
+def test_row_holds_the_curve_its_tilt_was_fitted_on(central: PhotoCut) -> None:
     out = measure(central, LOOK, np.random.default_rng(0))
-    assert isinstance(out["C26_slope"], float)  # else this test checks nothing
+    assert isinstance(out["C26_tilt"], float)  # else this test checks nothing
     json.dumps(out)  # a checkpoint line
     limit = out["C6_L_share"]
-    peak = out["C26_peak_share"]
     assert isinstance(limit, float)
-    assert isinstance(peak, float)
     share = np.array(out["C26_period_share"], dtype=np.float64)
     power = np.array(out["C26_power"], dtype=np.float64)
     kept = (power > 0) & (share * GRID_STEP**0.5 >= limit - 1e-9)
-    s, p = share[kept], power[kept]
-    top = int(np.argmin(np.abs(np.log(s / peak))))
-    rebuilt = np.polyfit(np.log10(s[: top + 1]), np.log10(p[: top + 1]), 1)[0]
-    assert rebuilt == pytest.approx(out["C26_slope"], abs=0.02)  # values are rounded
+    kept &= share <= TILT_TOP_SHARE
+    rebuilt = np.polyfit(np.log10(share[kept]), np.log10(power[kept]), 1)[0]
+    assert rebuilt == pytest.approx(out["C26_tilt"], abs=0.02)  # values are rounded
 
 
 def test_curve_is_not_compared(central: PhotoCut) -> None:

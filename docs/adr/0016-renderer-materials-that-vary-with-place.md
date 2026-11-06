@@ -746,6 +746,37 @@ later commit.
   on 2 to 4 of 12). A known fine-side loss, power × (share / 0.25)² below 0.25,
   passes on every range (X/Y 4.6 to 19, upward on 12 of 12). Scratch:
   `f1_control_judge.py`.
+- **The result** (*verified* for this stone, this fake, these 12 planes; the rule
+  applied as committed in b5497ef):
+
+  | range | median X | median Y | X/Y | X − Y, 95% | upward | verdict | without cuts 1, 3 |
+  |---|---|---|---|---|---|---|---|
+  | L to 0.25 | 0.758 | 0.177 | 4.27 | +0.32 to +1.02 | 12/12 | **pass** | pass (5.68, 10/10) |
+  | L to 0.1 | 0.799 | 0.106 | 7.54 | +0.21 to +1.08 | 12/12 | **pass** | pass (6.47, 10/10) |
+  | L to the peak (today's) | 0.949 | 0.440 | 2.16 | −0.47 to +0.80 | 7/12 | **fail** | fail (2.60, 5/10) |
+
+  Today's range moves about as much as the others but in no steady direction, and
+  section 14 found it hardly follows its own cut. So it fails both tests, and L to
+  0.25 and L to 0.1 each pass this one.
+- **Checks after the verdict; none changes it** (*verified*). F1 did lose bands: C6
+  count falls on 11 of 12 cuts, about by half. The rise is not from the fit window:
+  F1's L moved coarser on most cuts, but on one common window for all three states
+  X/Y is 18.5 (L to 0.25) and 14.3 (L to 0.1), upward on 12 of 12. F1 keeps the
+  lenses and drift: its record marks 400 steps against the stone's 169, but the
+  renderer fills a stone's unseen steps from their nearest seen step, as the fake
+  does, so both render the same steps.
+- **A difference that remains** (*plausible*). F1 needed fewer samples (256 on 8 of
+  12 cuts, against 1,024 on 6 of set 4's), so its render noise is often higher, 5.7
+  against 3.0 grey levels. White noise adds fine-side power, which should lower the
+  slope, the opposite of the rise, so it would work against a pass. Not measured.
+- **Still open.** It rejects one fake on one stone, and does not show the range
+  rejects every result without the form. L to 0.25 remains an overall tilt across a
+  fixed band of scales (section 14). None of this shows the slope gap is an artefact.
+- **Cost** (*verified*). 753 s, peak traced 1,051 MB, against about 28 minutes
+  estimated: set 4 render 1,945 s against F1 504 s, as F1 took 5,122 samples per
+  pixel in all against 9,256 and costs about 0.55× per sample. No image saved, no
+  photo left the PC; half B not read. Rows and curves:
+  `runs/stone-2026-11-02/run12-f1-curves`. The owner decides what follows.
 
 ## Alternatives considered
 

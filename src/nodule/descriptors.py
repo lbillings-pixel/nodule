@@ -86,6 +86,7 @@ from nodule.render.cutface import (
 )
 from nodule.specimen import Specimen, SpecimenCut, load_preset
 from nodule.tags import (
+    CURVE,
     FROM_CONTINUITY,
     FROM_CURVE,
     FROM_DEFECTS,
@@ -221,7 +222,9 @@ def measure(
     where they could not be judged; `bands` is False where the gate found no
     bands, before or after the blur. A rendered cut gets only the noise it
     lacks (`noise_to_add`). `degrade=False` is F5: measured as rendered,
-    `matched` None."""
+    `matched` None. Rows also hold C26's curve and C6's L over the radius, as
+    the library tags do, so a C26 summary can be recomputed from a saved run;
+    they are not compared (`compare.COMPARED`)."""
     shape_rng, noise_rng, band_rng = rng.spawn(3)
     look = noise_to_add(look, pc.rendered) if degrade else undegraded(look)
     mask = pc.cut.inside
@@ -232,7 +235,7 @@ def measure(
     out: dict[str, object] = {k: entry.get(k) for k in ("photo", "level", "bands", "matched")}
     out |= {"sigma_px": entry.get("sigma_px"), "spacing_px": entry.get("spacing_px")}
     out |= {name: entry.get(there) for name, there in FROM_SHAPE.items()}
-    out |= {name: None for name in (*FROM_BANDS, *LATER)}
+    out |= {name: None for name in (*FROM_BANDS, *LATER, *CURVE, "C6_L_share")}
     sigma = entry.get("sigma_px")
     if not entry.get("bands") or not isinstance(sigma, int | float):
         return out
@@ -261,6 +264,10 @@ def measure(
                 out[name] = value
             else:
                 out[name] = round(float(value), 4)
+    if b.limit_share is not None:
+        out["C6_L_share"] = round(float(b.limit_share), 4)
+    if b.spectrum is not None:
+        out |= {name: list(getattr(b.spectrum, field)) for name, field in CURVE.items()}
     return out
 
 
@@ -274,6 +281,7 @@ def survey(
     rendering: Rendering | None = None,
     checkpoint: Path | None = None,
     key: dict[str, object] | None = None,
+    stop_after: int | None = None,
 ) -> list[dict[str, object]]:
     """`cuts` random cuts (normals uniform over the sphere, as agatesim's
     calibration cuts), each made to look like a photo drawn at random.
@@ -286,7 +294,11 @@ def survey(
     the same file skips the cuts already there, still drawing their random
     numbers, so the result is the uninterrupted run's. The file's first line
     is the run's `key` (with `seed`, `cuts`, `most` and the looks' photos); a
-    file with another key is refused rather than mixed in."""
+    file with another key is refused rather than mixed in.
+
+    `stop_after` measures only the first cuts of the `cuts`-cut run: the same
+    planes and draws, as `random_cuts` depends on `cuts` and this does not. It
+    is left out of the key, so a later run without it goes on to `cuts`."""
     cut_rng, look_rng, measure_rng, render_rng = np.random.default_rng(seed).spawn(4)
     done: dict[int, dict[str, object]] = {}
     if checkpoint is not None:
@@ -294,8 +306,11 @@ def survey(
                "looks": [lk.photo for lk in photo_looks]}  # fmt: skip
         done = _resume(checkpoint, json.loads(json.dumps(run, default=str)))
     out: list[dict[str, object]] = []
+    total = cuts if stop_after is None else min(stop_after, cuts)
     for k, spec in enumerate(random_cuts(specimen.volume.solid, cuts, cut_rng, PROBE_PX)):
-        progress.report(k / cuts, f"cut {k + 1} of {cuts}")
+        if k >= total:
+            break
+        progress.report(k / total, f"cut {k + 1} of {total}")
         look = photo_looks[int(look_rng.integers(len(photo_looks)))]
         cut_render_rng, cut_measure_rng = render_rng.spawn(1)[0], measure_rng.spawn(1)[0]
         if k in done:

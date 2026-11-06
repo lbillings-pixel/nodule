@@ -13,7 +13,7 @@ from agatesim.render import VOID
 from agatesim.volume.config import SliceConfig
 
 from nodule import descriptors
-from nodule.compare import library_table
+from nodule.compare import COMPARED, library_table, table
 from nodule.descriptors import (
     PhotoCut,
     bandless,
@@ -27,6 +27,7 @@ from nodule.descriptors import (
 from nodule.render.cutface import Rendering
 from nodule.render.record import FIELDS
 from nodule.specimen import Specimen, load_preset
+from nodule.spectrum import GRID_STEP
 
 # A median library look (2026-10-31: edge/spacing 0.38, noise 1.35, spacing 9.9 px),
 # fixed here as CI has no library cache.
@@ -82,6 +83,29 @@ def test_banded_cut_is_measured(central: PhotoCut) -> None:
         assert out[name] is None or isinstance(out[name], int), name
 
 
+def test_row_holds_the_curve_its_slope_was_fitted_on(central: PhotoCut) -> None:
+    out = measure(central, LOOK, np.random.default_rng(0))
+    assert isinstance(out["C26_slope"], float)  # else this test checks nothing
+    json.dumps(out)  # a checkpoint line
+    limit = out["C6_L_share"]
+    peak = out["C26_peak_share"]
+    assert isinstance(limit, float)
+    assert isinstance(peak, float)
+    share = np.array(out["C26_period_share"], dtype=np.float64)
+    power = np.array(out["C26_power"], dtype=np.float64)
+    kept = (power > 0) & (share * GRID_STEP**0.5 >= limit - 1e-9)
+    s, p = share[kept], power[kept]
+    top = int(np.argmin(np.abs(np.log(s / peak))))
+    rebuilt = np.polyfit(np.log10(s[: top + 1]), np.log10(p[: top + 1]), 1)[0]
+    assert rebuilt == pytest.approx(out["C26_slope"], abs=0.02)  # values are rounded
+
+
+def test_curve_is_not_compared(central: PhotoCut) -> None:
+    out = measure(central, LOOK, np.random.default_rng(0))
+    assert not {"C26_period_share", "C26_power", "C6_L_share"} & set(COMPARED)
+    assert np.isfinite(table([out]).values).any()  # a list beside the values changes nothing
+
+
 def test_measurement_repeats_with_its_seed(central: PhotoCut) -> None:
     a = measure(central, LOOK, np.random.default_rng(1))
     b = measure(central, LOOK, np.random.default_rng(1))
@@ -100,6 +124,8 @@ def test_negative_control_bandless_cut_gives_no_bands(central: PhotoCut) -> None
         assert out[name] is None, name
     assert out["C12_corr"] is None
     assert out["C13_sets"] is None
+    for name in ("C26_period_share", "C26_power", "C6_L_share"):
+        assert out[name] is None, name  # no curve is invented for a face with no bands
 
 
 def test_f5_measures_the_image_as_it_is(central: PhotoCut) -> None:
@@ -173,3 +199,24 @@ def test_negative_control_checkpoint_of_another_run_is_refused(
         survey(specimen, [LOOK], 1, seed=5, most=MOST, checkpoint=path, key={"k": 2})
     with pytest.raises(ValueError, match="another run"):
         survey(specimen, [LOOK], 1, seed=6, most=MOST, checkpoint=path, key={"k": 1})
+
+
+def test_stopped_run_is_the_start_of_the_whole_run_and_resumes_to_it(
+    specimen: Specimen, tmp_path: Path
+) -> None:
+    looks = [LOOK, replace(LOOK, photo="other", noise=0.9)]
+    whole = survey(specimen, looks, 3, seed=5, most=MOST)
+    path = tmp_path / "run.partial.jsonl"
+    stopped = survey(specimen, looks, 3, seed=5, most=MOST, checkpoint=path, stop_after=1)
+    assert len(stopped) == 1
+    assert json.loads(path.read_text("utf-8").splitlines()[0])["run"]["cuts"] == 3
+    assert json.loads(json.dumps(stopped)) == json.loads(json.dumps(whole[:1]))
+    resumed = survey(specimen, looks, 3, seed=5, most=MOST, checkpoint=path)
+    assert json.loads(json.dumps(resumed)) == json.loads(json.dumps(whole))
+
+
+def test_negative_control_asking_for_fewer_cuts_gives_other_planes(specimen: Specimen) -> None:
+    """Why `stop_after` exists: the planes depend on the number of cuts asked for."""
+    three = survey(specimen, [LOOK], 3, seed=5, most=MOST, stop_after=1)
+    one = survey(specimen, [LOOK], 1, seed=5, most=MOST)
+    assert three[0]["plane"] != one[0]["plane"]

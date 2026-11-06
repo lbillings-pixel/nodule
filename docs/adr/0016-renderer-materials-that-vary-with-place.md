@@ -585,6 +585,84 @@ which peak wins, and several peaks often come close.
   saved, and no photo left the PC. Scratch: `slope_*.py` beside the run scripts,
   outputs in `slope-seeds/`.
 
+### 14. Choosing a slope range on a fair sample (the owner's choice, 2026-11-06)
+
+Section 13 could not judge the fit ranges: its cuts were selected and half B
+had been seen. Here are the first 25 cuts of the set 4 run, rendered again with
+curves saved, and the same 25 planes under the plain preset, as a second state.
+Both reproduce their stored runs: all 25 slopes are identical, and so is every
+other stored value but the timings. Four of the 25 (1, 3, 20, 24) were selected
+in section 13; the rule's results are repeated without them.
+
+**The rule, fixed before the plain pass finished.** Eligible: defined on at
+least 90% of paired cuts and of half A's photos with a slope. It must beat
+shuffled pairs of different cuts (the negative control: median change below the
+5th percentile of 2,000 pairings). Rank by median change. Today's range is
+replaced only if the best one's gain excludes zero (95% bootstrap over cuts).
+The correlation between states is reported so a range steady only because it is
+flat is seen. The gap to the photos has no part; half B was not read. A dry run
+of set 4 against itself had printed half A's medians before the plain pass
+finished, so they had been seen, though the rule does not use them.
+
+| fit range | median change | over 1 | largest | r | Spearman (95%) | between-cut IQR (set 4 / plain) | beats shuffle |
+|---|---|---|---|---|---|---|---|
+| L to the peak (today's) | 0.28 | 32% | 4.96 | −0.01 | 0.27 (−0.22 to 0.70) | 2.01 / 1.49 | yes |
+| L to 0.1 | 0.19 | 4% | 1.24 | 0.91 | 0.83 (0.59 to 0.94) | 1.26 / 1.02 | yes |
+| L to 0.25 | 0.13 | 0% | 0.69 | 0.86 | 0.79 (0.54 to 0.91) | 0.74 / 0.55 | yes |
+| L plus 8 bins | 0.28 | 16% | 2.15 | 0.47 | 0.52 (0.10 to 0.82) | 1.12 / 0.95 | yes |
+| L plus 12 bins | 0.34 | 4% | 1.07 | 0.47 | 0.41 (−0.01 to 0.74) | 0.54 / 0.51 | **no** |
+
+- **The rule's outcome** (*verified* for this stone, these planes and this one
+  pair of states). L to 0.25 ranks first; its gain over today's is +0.14 (95%
+  +0.05 to +1.28), and +0.13 (+0.02 to +0.64) without the selected cuts. Its
+  change is smaller on 21 of 25 cuts. L to 0.1's gain includes zero (−0.06 to
+  +1.24), as does L plus 8 bins' (−0.35 to +0.93). Allowing for the three
+  comparisons, the gain still excludes zero, narrowly (+0.01 to +1.62).
+- **Today's range hardly follows its own cut between the states** (*verified*,
+  same limits). Spearman 0.27, r −0.01. Nine of the 25 peaks moved bin. This
+  confirms section 13 on a less selected sample.
+- **L plus 12 bins fails its control** (*verified*). Its change is no smaller
+  than the 5th percentile of shuffled pairs. Section 13 listed it as the
+  steadiest on selected cuts, and as closing the gap; that reading is withdrawn.
+- **L to 0.25's lead over L to 0.1 is not settled** (*plausible*). L to 0.25 also
+  has less spread between cuts, so its smaller change is partly a smaller scale;
+  L to 0.1 has the higher correlation, and the two were not compared directly.
+  The rule compares each with today's.
+- **It measures something else** (*verified* as arithmetic). L to 0.25 runs past
+  the strongest peak on 15 of 25 set 4 cuts and 18 of 25 plain cuts, so it is no
+  longer a fine-side slope. It is the tilt of the spectrum across a fixed band of
+  scales. Today's slope is 3.04 on set 4's fine-peak cuts and 0.95 on the coarse;
+  L to 0.25 gives 0.83 and 1.26. Being steadier is not enough: a blunt measure is
+  steady too, and part of what it ignores may be real. **No control yet shows L
+  to 0.25 can reject a result without the form.** The shuffled pairs test only
+  that it knows its cut, so it cannot be adopted on this.
+- **The gap, for the record only** (half A, *speculative*). Cuts' median and its
+  percentile among half A's 21 photos: L to the peak 2.46 at 86; L to 0.1 1.59 at
+  81; L to 0.25 0.98 at 62; L plus 8 bins 2.86 at 62; L plus 12 bins 1.79 at 62.
+  Section 13's L to 0.25 at the 100th percentile came from 12 selected cuts and
+  does not hold on this sample. This does **not** show the slope gap is an
+  artefact: one stone, 25 cuts, half A, the photos already seen, and photos with a
+  slope are only the 42 with a whole rim. Fresh cuts renew only the cuts; half B
+  is spent for this question, and no photos are held out.
+- **Section 12's 3.6× mixes code and materials** (*verified*). With the same
+  samples and pixels, today's code renders the plain preset 1.80× slower than the
+  stored plain run (median; 10th to 90th percentile 1.76 to 1.81), while set 4 run
+  again takes 1.00×, so the machine is not the cause. On today's code set 4 costs
+  1.95× plain over these 25 cuts (2.06 per sample per pixel, median), against 3.50×
+  from the stored runs. *Plausible*: this is also section 13's unexplained
+  factor-test overrun. The cause is not examined; the materials that vary
+  (section 7) and the majorant (section 11) came between the two plain runs.
+- **Cost** (*verified*). Set 4 pass 5,307 s, peak traced 1,177 MB, GPU pool 240 MB
+  at the end. Plain pass 2,922 s, 1,045 MB, 149 MB; the estimate of about 1,870 s
+  used the old plain timings and missed the slowdown above. Judging takes seconds.
+  No image saved, no photo left the PC. Rows now hold each cut's curve;
+  `survey`'s `stop_after` keeps a 100-cut run's planes and can resume on to 100.
+  Saved curves are rounded, so rebuilt slopes lie within 0.02 of stored (largest
+  0.0127), after using the stored slope where L's rounding leaves the finest bin
+  ambiguous. Scratch: `slope_range_judge.py`, `slope_range_followup.py`.
+- **Nothing in the measure has changed.** Section 12's slope gap stands as
+  measured. The owner decides whether to go on.
+
 ## Alternatives considered
 
 The B and C options of 16a to 16c. Also a cut-face-only shift held

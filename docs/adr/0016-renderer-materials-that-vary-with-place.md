@@ -338,6 +338,8 @@ pool 197 MB at the end. Nine of 20 cuts were noise-matched in both runs.
 | C15 high (pct A / B) | 0.19 (52 / 53) | 0.21 (70 / 62) | 0.18 / 0.25; 0.19 / 0.30 |
 | C16 coherence (pct A / B) | 0.91 (98 / 98) | 0.90 (98 / 98) | 0.67 / 0.84; 0.60 / 0.87 |
 
+- Read with section 12: at 20 paired cuts none of the changes in this table
+  exceeds cut-to-cut noise, and the reading below is withdrawn there.
 - *Verified* as a model property (one stone, one seed, 20 paired cuts;
   no test of whether each change exceeds cut-to-cut noise). Both runs
   are within the joint lines, and set 4 is a little closer on both
@@ -381,6 +383,207 @@ draws the same image, only with less wasted work.
   1.34 s (**−17%**), 2.6× the plain stone (0.43 s); collision events per
   path 295 against 364. GPU memory is unchanged. Drift 0.25 still gains
   little (section 8). 461 tests.
+
+### 12. The 100-cut run with set 4, and a corrected reading of section 10 (2026-11-06)
+
+`stone_100_defaults.py` with the current preset: set 4, baked drift, tighter
+majorant, one stone, seed 0, looks from half A, half B held out. It ran
+without a crash or resume. The script's report still says "ADR 0014 4m
+defaults"; that label is out of date, and the preset is what counts.
+
+- **Cost** (*verified*). **25,494 s** (7.1 h); peak traced Python memory
+  1,246 MB; GPU pool 327 MB at the end. Rendering alone took 23,059 s
+  against 6,388 s for the plain run, **3.6×**. The 68 cuts at 1,024 spp in
+  both runs also give 3.6×, and the median per-sample ratio is 3.56. The
+  whole run is 3.0× only because about 1,600 s of other work is the same in
+  both. Section 11's 2.6× came from a 268 × 244 px cut at 64 spp and does not
+  carry over to full-size cuts; why is untested. Only two cuts share samples
+  and pixels with section 10's run, so the majorant's gain at full size has
+  thin support: 1,486 s to 1,174 s (−21%).
+- **The baseline is not plain set 4's.** The plain 100-cut run (ADR 0014 4o)
+  predates the closing channel (ADR 0015 section 6). This run differs from it
+  by the channel, the lenses and the drift together. No 100-cut run exists
+  with the channel alone, so the table below cannot separate them. The
+  channel adds no measurable cost: 1,225 s against 1,240 s over 20 cuts.
+
+| 100 cuts, same planes | no channel, no set 4 | channel + set 4 | photos p50 / p95 (A; B) |
+|---|---|---|---|
+| joint distance vs A (line 15.9) | 1.1 | 0.5 | |
+| joint distance vs B (line 7.9) | 4.0 | 2.7 | |
+| spectrum block vs A (line 1.40) | 0.46 | 0.49 | |
+| spectrum block vs B (line 1.97) | 0.85 | 0.64 | |
+| C26 slope (pct A / B) | 2.72 (86 / 95) | 2.66 (86 / 95) | 1.41 / 2.94; 1.23 / 2.55 |
+| C26 peak (pct A / B) | 2.99 (67 / 62) | 2.73 (62 / 48) | 2.07 / 4.78; 2.83 / 5.54 |
+| C15 curvature (pct A / B) | 0.09 (87 / 87) | 0.09 (87 / 87) | 0.06 / 0.10; 0.06 / 0.11 |
+| C15 high (pct A / B) | 0.20 (65 / 55) | 0.21 (74 / 64) | 0.18 / 0.25; 0.19 / 0.30 |
+| C16 coherence (pct A / B) | 0.90 (98 / 98) | 0.89 (98 / 98) | 0.67 / 0.84; 0.60 / 0.87 |
+
+- *Verified* as a model property (one stone, one seed; the bootstrap below
+  resamples cuts of this stone and says nothing about other stones). Both
+  runs are within the joint lines, with no block outside. The joint distance
+  falls on both halves beyond cut-to-cut noise (95% bootstrap over paired
+  cuts: A −1.19 to −0.07; B −2.37 to −0.60). The spectrum block's change is
+  within noise on both halves. C26 peak falls and C16 coherence falls very
+  slightly, both beyond noise; C16 stays above the photos' 95th percentile on
+  all cuts.
+- **Noise-matched cuts** (32 here, 31 plain, 29 in both) do not confirm the
+  joint gain. On the 29 cuts matched in both, the joint distance goes from
+  3.0 to 2.6 vs A and from 3.5 to 3.4 vs B, well within noise (A −5.40 to
+  +2.60; B −2.59 to +2.13). The other 68 or so cuts are capped at 1,024 spp
+  and stay noisier than the photos, so the all-cuts gain may depend on how
+  noise enters; untested.
+- *Plausible*: set 4, not the channel, gives the joint gain. Over the 20-cut
+  planes the channel left the joint distance almost unchanged (A 1.13 to
+  1.13; B 3.02 to 3.18) and set 4 then lowered it (A 0.43; B 2.85), but those
+  20-cut steps are within noise themselves. Render-to-photo only; never
+  evidence for how lenses form.
+- **Section 10's reading is withdrawn.** It said set 4 moved the C26 slope and
+  the spectrum block away from the photos. Bootstrapped over its 20 paired
+  cuts, every change it listed includes zero: slope 2.29 to 2.66 (−0.54 to
+  +1.38), spectrum vs B 0.36 to 1.07 (−0.15 to +1.05), joint vs A (−1.78 to
+  +0.26), joint vs B (−3.21 to +0.80). The speculative reading there, that
+  drift steepens the slope, now has no result to explain. The 100-cut planes
+  differ from the 20-cut planes, so the two runs cannot be paired.
+- **The open gap (ADR 0014 4o) is the shape of the C26 slope spread, and it
+  did not move** (*verified* for this stone). The renders have too many steep
+  cuts, in both runs. Only 21 photos have a slope in each half.
+
+| C26 slope | below 1.5 | 1.5 to 2.5 | above 2.5 | median (95%) |
+|---|---|---|---|---|
+| no channel, no set 4 (98 cuts) | 29% | 15% | 56% | 2.72 |
+| channel + set 4 (100 cuts) | 26% | 16% | 58% | 2.66 (2.47 to 2.82) |
+| photos, half A (21) | 57% | 29% | 14% | 1.41 |
+| photos, half B (21) | 62% | 29% | 10% | 1.23 |
+
+- **The slope is unstable on a single plane** (*verified*). Between the two
+  100-cut runs it changes by more than 1 on 27% of the 98 paired cuts; their
+  correlation is 0.39. On one plane it went from 5.74 to 0.95. That pair also
+  differs by the channel, but section 10's pair shares the channel and changes
+  by more than 1 on 30% of its 20 cuts. A median of 20 cuts can therefore swing
+  on a few cuts. *Speculative*: the fit may flip between two regimes,
+  which would be a property of the measure and not of the stone. Section 13
+  tests this.
+- **Lens variants: keep set 4** (the owner's verdict, 2026-11-04). They looked
+  at 4L (length 10 mm), 4T (thickness 0.5 mm) and 4S (strength 0.5), cuts 0
+  and 1 (`lens_variants.py`, 757 s). All look nearly the same at cover 0.1; 4T
+  is a little patchier.
+- Scratch analysis, gitignored: `compare100_*.py` beside the run scripts.
+
+### 13. Why the C26 slope jumps (the owner's choice, 2026-11-06)
+
+Section 12 found the slope changing by more than 1 on about a quarter of
+paired cuts. The cause is how the measure is built. The slope is fitted from
+the resolving limit L up to the bin with the strongest peak, so it depends on
+which peak wins, and several peaks often come close.
+
+- **Slope jumps follow peak jumps** (*verified*, 98 paired cuts of section 12).
+  Their sizes correlate at 0.92. Where the peak kept its bin (65 cuts) no slope
+  changed by more than 1; where it moved over 1.5 octaves (24 cuts) every slope
+  did.
+- **The tests reproduce the runs** (*verified*). The set 4 run's own random
+  streams gave its stored slope on 12 of 12 cuts. Today's code with the old
+  plain preset gave the plain run's stored slope on 8 of 8. Slopes rebuilt from
+  saved curves match on all 168 render measurements and all 42 photos. The
+  cuts are the cheapest ones that flipped or stayed put, not a random sample;
+  the 12 cuts' stored median, 2.67, happens to sit close to the run's 2.66.
+- **Noise alone tips few set 4 cuts** (*verified* for these cuts). A new render
+  seed plus three noise draws moved one of 12 cuts by more than 1 (cut 1, 1.58);
+  the median range of the others is 0.24. Noise draws alone tipped more cuts in
+  the materials without set 4, as the second table shows, on small selected
+  sets.
+- **Many things tip it** (*verified* for these cuts). One factor at a time on
+  the same planes; each entry is the strongest peak's period over the inner
+  radius. "Size" is the image's pixels across, which the stand-in probe sets
+  and which differs between the runs by up to 14%.
+
+| cut | plain | plain, set 4's size | + channel | + lenses and drift | set 4, plain's size | what tipped it |
+|---|---|---|---|---|---|---|
+| 3 | 0.034 | 0.034 | 0.545 | 0.545 | 0.545 | channel |
+| 20 | 0.545 | 0.545 | 0.545 | 0.068 | 0.068 | lenses and drift |
+| 24 | 0.081 | 0.081 | 0.081 | 0.648 | 0.081 | lenses and drift, then size |
+| 26 | 0.057 | 0.229 | 0.229 | 0.229 | 0.193 | size, near-tie under noise |
+| 66 | 0.648 | 0.648 | 0.648 | 0.193 | 0.193 | lenses and drift |
+| 71 | 0.162 | 0.162 | 0.029 | 0.029 | 0.029 | channel, near-tie under noise |
+| 92 | 0.162 | 0.386 | 0.386 | 0.162 | 0.162 | size, then lenses and drift |
+| 98 | 0.229 | 0.229 | 0.229 | 0.229 | 0.229 | nothing |
+
+| noise draws alone change the slope by more than 1 | cuts |
+|---|---|
+| plain | 3 of 8 |
+| plain, set 4's size | 2 of 8 |
+| channel, set 4's size | 1 of 8 |
+| set 4, plain's size | 0 of 8 |
+| set 4 (12 cuts, 2 renders each) | 1 of 24 |
+
+- **The margins are thin** (*verified* for these cuts). The winner often beats
+  its best rival an octave or more away by only 5–50%. Cut 3's slope fell from
+  5.40 to 0.75 when the channel moved its peak. Size alone changed cut 92 by
+  2.4 for a 1.5% resize, on a cut already tied under noise.
+- **Section 12's speculation is answered in part.** The slope does flip between
+  fits, but noise alone is rarely the trigger in set 4. Any modest change to the
+  image can do it. The change is real; the size of the jump comes from the
+  measure.
+- **The mix of peaks** (*verified* for this stone). With the peak finer than 0.1
+  of the radius the slope is steep; with it coarser, renders and photos agree.
+
+| | cuts with a fine peak | slope, median | cuts with a coarse peak | slope, median |
+|---|---|---|---|---|
+| set 4 | 63 of 100 | 3.02 | 37 | 0.93 |
+| no channel, no set 4 | 64 of 98 | 2.89 | 34 | 0.82 |
+| photos | 14 of 42 | 1.98 | 28 | 0.84 |
+
+- **Which photos have a slope** (*verified*). A photo has one exactly when its
+  rim outline was found and accepted: 42 of 97, half A and half B 21 each. Of
+  the other 55, 42 have no usable rim and 13 have a rejected outline. All 100
+  set 4 cuts have a known outline. So the slope compares every cut with the
+  photos that show a whole rim; whether that subset differs is not tested.
+- *Speculative*: the pile of fine peaks may be this stone's own band spacing.
+  One stone has one spacing over its radius, and the photos are many stones.
+  Not tested; it needs more than one simulated stone.
+- **A fixed fit range is steadier** (*plausible*: 8 and 12 selected cuts). Range
+  of the slope within a cut over every seed, draw, size and material above:
+
+| fit range | median | largest | set 4 seeds only, median / largest |
+|---|---|---|---|
+| L to the peak (today's) | 2.75 | 4.99 | 0.26 / 1.58 |
+| L to 0.1 of the radius | 1.08 | 2.57 | 0.34 / 2.12 |
+| L to 0.25 of the radius | 0.61 | 1.51 | 0.20 / 1.48 |
+| L plus 8 bins (2 octaves) | 1.10 | 1.92 | 0.39 / 1.32 |
+| L plus 12 bins (3 octaves) | 0.88 | 1.33 | 0.22 / 0.89 |
+
+  Part of what remains is real image change, so these ranges would not fall to
+  zero for a good measure. On set 4's seeds alone, today's range is already
+  about as steady as the others; the gain shows when the image changes.
+- **The gap's size depends on the fit range** (*speculative*). The 12 cuts'
+  median, against the photos:
+
+| fit range | cuts' median | photos' medians (A; B) | percentile (A / B) |
+|---|---|---|---|
+| L to the peak | 2.67 | 1.41; 1.23 | 86 / 95 |
+| L to 0.1 | 2.80 | 1.18; 1.17 | 100 / 100 |
+| L to 0.25 | 1.66 | 0.88; 0.96 | 100 / 95 |
+| L plus 8 bins | 2.42 | 2.13; 2.34 | 62 / 62 |
+| L plus 12 bins | 1.57 | 1.49; 1.69 | 52 / 43 |
+
+  Ranges counted from L close the gap and ranges ending at a fixed share of
+  the radius keep or widen it. This does **not** show the gap is an artefact:
+  12 selected cuts, five ranges tried, half B looked at. A range picked because
+  it closes the gap would prove nothing. Any replacement must be chosen on
+  stability and half A, needs a negative control (a result without the form
+  that it must reject), and then needs fresh cuts, since half B has now been
+  seen for this question.
+- **Effect on what has been reported.** The numbers stand; their reading
+  narrows. The C26 slope's median is steady across 100 cuts, but a single cut's
+  slope, or a median of 20, is not a reliable way to judge a change. Section 12
+  stays as the record of the slope gap *as measured*; whether the stone really
+  lacks what the photos have is open. The slope is one value in the joint
+  comparison and the spectrum block, which was fitted in ADR 0011, so changing
+  it could move those results too. Nothing has been changed in the code.
+- **Cost.** Seed test 1,140 s; factor test 1,232 s against an estimate of about
+  720 s, cause not examined. Memory was not measured in these two tests; the
+  same render path peaked at 1,246 MB in section 12. Renders only; no image
+  saved, and no photo left the PC. Scratch: `slope_*.py` beside the run scripts,
+  outputs in `slope-seeds/`.
 
 ## Alternatives considered
 

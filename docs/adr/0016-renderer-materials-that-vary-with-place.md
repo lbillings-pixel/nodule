@@ -717,6 +717,36 @@ the same samples and pixels. Stored rows put it in the render stage (fill 1.05×
   unchanged; control, another seed differs. 466 tests pass; CI has no GPU, so it
   skips both.
 
+### 16. Can a fit range reject a result without the form? The rule (2026-11-06)
+
+Section 14 left open whether L to 0.25 can reject anything. **This rule was
+committed before F1 rendered on these planes.** The result follows below it in a
+later commit.
+
+- **Test.** F1 (`fakes.smoothed`: impurity and translucency smoothed below the band
+  scale, so the fine bands are gone; it shares the stone's record) on the first 12
+  set 4 planes, the same looks and seeds. Ranges: L to 0.25, L to 0.1, and today's
+  L to the peak. For each: X = |F1 − set 4|, the change the fake causes;
+  Y = |set 4 − plain|, the ordinary change between two states that have the form.
+- **A range passes only if all hold**, on cuts with a slope in all three states:
+  (0) coverage, at least 10 of 12 such cuts, otherwise it is not judged;
+  (1) size, median X at least 2 × median Y (`effective`, chosen before the render);
+  (2) reliability, the paired X − Y has a 95% bootstrap interval over cuts above zero;
+  (3) direction, F1 − set 4 above zero on at least 10 of 12 cuts, or 5/6 of the
+  covered cuts, as smoothing removes fine bands.
+- **Selected cuts.** Cuts 1 and 3 were selected in section 13, so the verdict is
+  repeated without them; if it differs, the range is not settled.
+- **Limits, stated in advance.** Half B is not read. One fake, one stone, 12 planes.
+  Set 4's and plain's values on these planes were already seen in section 14; F1's
+  curves have never been stored, though earlier F1 runs in other states reported
+  today's slope. A pass only earns 25 fresh cuts (seed 1), with the owner's OK, and
+  adopts nothing. A failure leaves the slope as it is and is recorded here.
+- **Controls of the rule** (*verified*, dry run on stored curves, no F1). Plain in
+  F1's place, a state with the form, fails on every range (X/Y 1.00, change upward
+  on 2 to 4 of 12). A known fine-side loss, power × (share / 0.25)² below 0.25,
+  passes on every range (X/Y 4.6 to 19, upward on 12 of 12). Scratch:
+  `f1_control_judge.py`.
+
 ## Alternatives considered
 
 The B and C options of 16a to 16c. Also a cut-face-only shift held

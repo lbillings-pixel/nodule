@@ -73,3 +73,8 @@ def blur_noise_factor(sigma: float) -> float:
     delta[len(delta) // 2] = 1.0
     k = ndimage.gaussian_filter1d(delta, sigma)
     return float(np.sum(k * k))
+
+
+def distance_inside(mask: NDArray[np.bool_]) -> NDArray[np.float64]:
+    """Each pixel's distance to the nearest pixel outside `mask`; 0 outside it."""
+    return cast(NDArray[np.float64], ndimage.distance_transform_edt(mask))

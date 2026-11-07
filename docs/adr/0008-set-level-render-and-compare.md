@@ -208,6 +208,35 @@ Run only after the machine compare has been run and any tuning (section 7,
   saved locally as counts and image ids. Photos and crops never leave the
   PC or enter the repository; derived files carry no metadata.
 
+### 5a. A small trial before the full test (the owner's choice, 2026-11-06)
+
+The full test costs about 5 h of rendering and 220 of the owner's answers, and it
+needs tuning frozen. The trial asks first whether the fakes can be told at a glance,
+and how. If they can, the full test would only confirm it. Built as `nodule.blindtest`.
+
+- **Pairs.** 16 main pairs from 8 stone cuts, two crops each (as section 5 allows),
+  and 4 catch pairs: F1 and F3, two cuts each. The rules of section 5 apply: same
+  crop size, own position, flip and quarter-turn, no feedback, no score until the end.
+- **Kept apart.** Its own seed (1), so its planes are not the full test's. Looks from
+  calibration half A, as the compare.
+- **Rule, fixed before anything renders.** 14 or more of 16 correct means spotted at a
+  glance: the full test waits, and the owner's notes say what to look at. By coin flip
+  that has probability 0.0021; a judge right 90 % of the time reaches it with
+  probability 0.79, and one right 70 % of the time with 0.10 (*verified* as arithmetic,
+  treating pairs as independent, which they are not: the crops of a cut are related).
+  Fewer than 14 means the full test is still worth its cost. It is not evidence the
+  images cannot be told apart. A missed catch pair is looked at, and no verdict comes
+  from 4 pairs.
+- **Render noise may be a giveaway.** In the 100-cut set 4 run, 68 cuts reached the
+  1,024-sample cap still noisier than their photos (median ratio 1.99 of those 68; 2.93
+  against 1.48 grey levels over all 100). Whether this shows by eye is unknown. The key
+  records each pair's match and the score splits on it, and the note box catches what
+  the owner sees.
+- **Limits.** One judge, one stone, 16 pairs: a screening step only (*plausible*). The
+  images cannot be seen by Claude, as crops stay on this PC, so a crop showing
+  background is caught by the owner's note. Appearance only: never evidence for a
+  formation mechanism (ADR 0002).
+
 ### 6. Later: the distribution match (with a stone family)
 
 Once stones can be drawn from a parameter prior, the spread test is joined

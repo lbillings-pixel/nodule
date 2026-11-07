@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blind Test</title>
+<style>
+:root { --bg: #1b1b1a; --panel: #262625; --ink: #ecebe8; --muted: #a09f9a; --line: #3a3936;
+  --accent: #7fb2f0; --bad: #f08a80; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { display: flex; gap: 16px; align-items: baseline; padding: 10px 16px;
+  border-bottom: 1px solid var(--line); background: var(--panel); }
+header h1 { font-size: 17px; margin: 0; font-weight: 600; }
+#progress { color: var(--muted); }
+main { padding: 12px 16px; }
+#pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 170vh; }
+figure { margin: 0; }
+figure img { display: block; width: 100%; aspect-ratio: 1; object-fit: contain; background: #000; }
+figure button { width: 100%; margin-top: 8px; padding: 12px; font: inherit; font-weight: 600;
+  background: var(--panel); color: var(--ink); border: 1px solid var(--line);
+  border-radius: 6px; cursor: pointer; }
+figure button:hover, figure button:focus-visible { border-color: var(--accent); color: var(--accent); }
+label { display: block; margin-top: 12px; color: var(--muted); }
+textarea { display: block; width: 100%; margin-top: 4px; padding: 8px; font: inherit;
+  background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; }
+#problem { color: var(--bad); }
+#done { max-width: 40em; }
+</style>
+</head>
+<body>
+<header><h1>Which one is synthetic?</h1><span id="progress"></span></header>
+<main>
+  <div id="test">
+    <div id="pair">
+      <figure><img id="img-a" alt="left image"><button id="pick-a" type="button">Left is synthetic (&larr;)</button></figure>
+      <figure><img id="img-b" alt="right image"><button id="pick-b" type="button">Right is synthetic (&rarr;)</button></figure>
+    </div>
+    <label for="note">What gave it away, or is an image bad? (optional)</label>
+    <textarea id="note" rows="2"></textarea>
+    <p id="problem" role="alert"></p>
+  </div>
+  <div id="done" hidden>
+    <h2>All pairs answered</h2>
+    <p>Your answers are saved on this PC. Tell Claude you have finished and it will work out the score.</p>
+  </div>
+</main>
+<script>
+const DATA = /*DATA*/null;
+const answered = new Set(DATA.answered);
+const left = DATA.trials.filter(t => !answered.has(t));
+const total = DATA.trials.length;
+const note = document.getElementById("note");
+const problem = document.getElementById("problem");
+let shownAt = 0;
+let busy = false;
+
+function show() {
+  if (left.length === 0) {
+    document.getElementById("test").hidden = true;
+    document.getElementById("done").hidden = false;
+    document.getElementById("progress").textContent = `${total} of ${total}`;
+    return;
+  }
+  const t = left[0];
+  document.getElementById("progress").textContent = `pair ${total - left.length + 1} of ${total}`;
+  document.getElementById("img-a").src = `/img/${t}-a.png`;
+  document.getElementById("img-b").src = `/img/${t}-b.png`;
+  note.value = "";
+  problem.textContent = "";
+  shownAt = performance.now();
+}
+
+async function pick(side) {
+  if (busy || left.length === 0) return;
+  busy = true;
+  const values = { pick: side, note: note.value.trim(), seconds: (performance.now() - shownAt) / 1000 };
+  try {
+    const reply = await fetch("/save", { method: "POST", body: JSON.stringify({ id: left[0], values }) });
+    const body = await reply.json();
+    if (body.ok) { left.shift(); show(); }
+    else { problem.textContent = body.problems.join("; "); }
+  } catch (err) {
+    problem.textContent = `Could not save: ${err}. Nothing was lost; try again.`;
+  }
+  busy = false;
+}
+
+document.getElementById("pick-a").addEventListener("click", () => pick("a"));
+document.getElementById("pick-b").addEventListener("click", () => pick("b"));
+document.addEventListener("keydown", e => {
+  if (document.activeElement === note) return;
+  if (e.key === "ArrowLeft") pick("a");
+  if (e.key === "ArrowRight") pick("b");
+});
+show();
+</script>
+</body>
+</html>

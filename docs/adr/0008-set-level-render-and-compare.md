@@ -237,6 +237,28 @@ and how. If they can, the full test would only confirm it. Built as `nodule.blin
   background is caught by the owner's note. Appearance only: never evidence for a
   formation mechanism (ADR 0002).
 
+**Result (owner, 2026-11-06).** 16 of 16 main pairs and 4 of 4 catch pairs correct;
+8 of 8 in each half; median 48 s a pair. By the rule, the fakes were spotted at a
+glance and **the full test waits**. *Verified* as a count, for this judge under these
+conditions: one stone, and related crops. The owner also knows what the model lacks,
+which an outside judge would not, and said some pairs were close taken alone.
+
+What the owner's notes on the 16 main pairs name (5 pairs had no note):
+
+| Tell | Pairs | Note |
+|---|---|---|
+| Jagged artefacts along the rendered fracture line | 5, on 3 of 8 cuts | Learnt during the test. In 3 of them it was the deciding tell: "the only way I know", "a very tough call" otherwise, "very, very, very good" except for it |
+| Less random-but-structured, "multidimensional" diversity of form and detail than the photo | 3 | Also noted on an F1 catch pair |
+| Real features the model lacks: a pale orange bubbly layer | 1 | Also on the F1 pair: an odd inclusion, chalcedony filigree and tubing through the quartz centre |
+| In the photo, mottled, warped bands and iron-stained fractures that cut through features | 1 | "Pretty close" |
+| A cavity close-up in the photo; a blurry eye in the render | 1 | The blur could also be a mid-quality photo |
+
+On an F3 catch pair the owner also named how light refracts and glints in the real
+stone. No note names grain or noise, so the sample cap is not raised for now. That is
+not evidence the noise is invisible: 14 of 16 main pairs were noisier than their photos
+and only 2 matched, so the score cannot separate them. Appearance only: never evidence
+for a formation mechanism (ADR 0002).
+
 ### 6. Later: the distribution match (with a stone family)
 
 Once stones can be drawn from a parameter prior, the spread test is joined

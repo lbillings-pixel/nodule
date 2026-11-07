@@ -259,6 +259,21 @@ not evidence the noise is invisible: 14 of 16 main pairs were noisier than their
 and only 2 matched, so the score cannot separate them. Appearance only: never evidence
 for a formation mechanism (ADR 0002).
 
+**The jagged fracture lines, diagnosed (2026-11-06).** They are the model's geometry,
+not the renderer: an exact CPU cut with no renderer or grid shows the same blades in
+the same places on the two cuts checked, and the same cuts with no fracture lose them
+(*verified* for those cuts). The sheet is flat with no aperture, and its 1.5 mm slip
+meets bands at shallow angles. The cause is read from the geometry (*plausible*).
+
+**The owner's choices (2026-11-06).** After look cuts of today's slip, no fracture and
+0.3 mm slip, the owner chose **no fracture** for look work for now
+(`specimen.look_preset`). `n2-slice` keeps its fracture as the slice's definition, and
+the fracture code stays. The stone therefore shows no fractures until they have a real
+form (width, fill, staining), which needs reading first. **No rerun yet:** the fracture
+decided only 3 of 16 main pairs, so a rerun would probably reach the rule again (expected
+14.5 of 16 if those 3 became guesses). The variety work comes first, then a rerun on
+new cuts.
+
 ### 6. Later: the distribution match (with a stone family)
 
 Once stones can be drawn from a parameter prior, the spread test is joined

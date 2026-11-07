@@ -9,7 +9,7 @@ import numpy as np
 import pytest
 from agatesim.volume.config import SliceConfig
 
-from nodule.specimen import FractureConfig, Specimen, SpecimenConfig, load_preset
+from nodule.specimen import FractureConfig, Specimen, SpecimenConfig, load_preset, look_preset
 from nodule.specimen_checks import (
     coincident_agreement,
     fold_check,
@@ -171,3 +171,12 @@ def test_fracture_config_rejects_bad_values() -> None:
             radius_along_mm=1,
             radius_across_mm=1,
         )
+
+
+def test_look_preset_is_the_slice_without_its_fracture() -> None:
+    """Control: n2-slice itself keeps the fracture; only that differs."""
+    slice_ = load_preset("n2-slice")
+    look = look_preset()
+    assert len(slice_.fractures) == 1
+    assert look.fractures == []
+    assert look.volume == slice_.volume

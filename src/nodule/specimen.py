@@ -96,6 +96,13 @@ def load_preset(name: str) -> SpecimenConfig:
     return SpecimenConfig.model_validate(tomllib.loads(text))
 
 
+def look_preset() -> SpecimenConfig:
+    """n2-slice without its fracture, the stone for look work (the owner's choice,
+    ADR 0008 section 5a): the flat sheet's blades gave it away, so it stays out until
+    fractures have a real form. n2-slice itself keeps it, as the slice's definition."""
+    return load_preset("n2-slice").model_copy(update={"fractures": []})
+
+
 @dataclass(frozen=True, eq=False)
 class SpecimenCut:
     """A planar cut: fields on pixel centres (j, i) at plane coordinates (s[i], t[j])."""

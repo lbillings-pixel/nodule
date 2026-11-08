@@ -23,9 +23,9 @@ doi = "10.3390/min10111037"
 access = "open"
 licence = "CC-BY-4.0"
 checked = "sections"
-sections_read = ["1", "3", "4.1", "4.2.1", "4.3", "5.3", "5.4", "5.5", "6"]
+sections_read = ["1", "3", "4.1", "4.2.1", "4.3", "5.1", "5.3", "5.4", "5.5", "6"]
 topics = ["mineralogy", "geochemistry", "genesis", "formation-temperature", "host-rocks", "quartz-transition", "spherulites", "moss", "plume", "tubes"]
-notes = """Primary overview, read 2026-10-15. Key points: crystallisation often starts with spherulitic chalcedony at the wall that continues into fibrous chalcedony (§4.1.2, §5.4, Fig. 29); wall-lining agates have three zones, spherulitic/granular rim, fibrous chalcedony, macrocrystalline quartz centre (§4.1.2); "Macrocrystalline quartz crystallizes when the SiO2 concentration in the mineralizing fluid is low" (§6), with a drop in impurities and defects at the chalcedony–quartz interface (§5.4); Uruguay bands from gravitational sedimentation of sols with flocculated silica particles, needing high silica concentration (§4.1.2); iron pigments are rejected by crystallising quartz and accumulate along the banding (§5.4); visible bands can contain up to 1000 micro-bands per mm (§4.1.2); colour banding governed by self-organisation of the silica matrix rather than Liesegang diffusion (§5.4); "infiltration channels"/"escape tubes" mostly deformation of plastic silica (§5.5); stalactitic SFF and moss agate filaments have Fe-silicate/zeolite cores with concentric chalcedony and possible biosignatures (§5.5); plume agate interpreted as silica-garden self-assembly from osmosis, reaction and buoyancy (§5.5). §5.3 (read 2026-10-17): silica in volcanic agates comes from alteration of the host rock; pathways for free flow are lacking in most rocks, so supply by diffusion of monomeric silicic acid through intergranular pore space is favoured; "The continuous supply of silicic acid results in the accumulation of silica and the filling of the cavities"; low solubility means much water must pass (Landmesser: up to 0.5 m3 for a 100 g agate at 250 mg/L). §4.1.2 re-read 2026-11-02 (p. 11): "visible macroscopic bands may consist of up to 1000 micro-bands per mm" carries no citation (the next sentence cites Holzhey [100] for particle sizes only), so the figure is the review's own, without a stated primary source; visible banding is attributed to changes in silica phase, crystal size and habit, porosity and Fe-oxide micro-inclusions (Fig. 10). A word search of the other sections found no band-width, spacing or fractal statistics; Holten 1998 is not cited. §4.3 read 2026-11-03 by a helper agent (p. 27): "laminated and lenticular agglomerates of very small hematite particles (<10 µm)" accumulated along the banding; no lens sizes given."""
+notes = """Primary overview, read 2026-10-15. Key points: crystallisation often starts with spherulitic chalcedony at the wall that continues into fibrous chalcedony (§4.1.2, §5.4, Fig. 29); wall-lining agates have three zones, spherulitic/granular rim, fibrous chalcedony, macrocrystalline quartz centre (§4.1.2); "Macrocrystalline quartz crystallizes when the SiO2 concentration in the mineralizing fluid is low" (§6), with a drop in impurities and defects at the chalcedony–quartz interface (§5.4); Uruguay bands from gravitational sedimentation of sols with flocculated silica particles, needing high silica concentration (§4.1.2); iron pigments are rejected by crystallising quartz and accumulate along the banding (§5.4); visible bands can contain up to 1000 micro-bands per mm (§4.1.2); colour banding governed by self-organisation of the silica matrix rather than Liesegang diffusion (§5.4); "infiltration channels"/"escape tubes" mostly deformation of plastic silica (§5.5); stalactitic SFF and moss agate filaments have Fe-silicate/zeolite cores with concentric chalcedony and possible biosignatures (§5.5); plume agate interpreted as silica-garden self-assembly from osmosis, reaction and buoyancy (§5.5). §5.3 (read 2026-10-17): silica in volcanic agates comes from alteration of the host rock; pathways for free flow are lacking in most rocks, so supply by diffusion of monomeric silicic acid through intergranular pore space is favoured; "The continuous supply of silicic acid results in the accumulation of silica and the filling of the cavities"; low solubility means much water must pass (Landmesser: up to 0.5 m3 for a 100 g agate at 250 mg/L). §4.1.2 re-read 2026-11-02 (p. 11): "visible macroscopic bands may consist of up to 1000 micro-bands per mm" carries no citation (the next sentence cites Holzhey [100] for particle sizes only), so the figure is the review's own, without a stated primary source; visible banding is attributed to changes in silica phase, crystal size and habit, porosity and Fe-oxide micro-inclusions (Fig. 10). A word search of the other sections found no band-width, spacing or fractal statistics; Holten 1998 is not cited. §4.3 read 2026-11-03 by a helper agent (p. 27): "laminated and lenticular agglomerates of very small hematite particles (<10 µm)" accumulated along the banding; no lens sizes given. §5.4 and §5.1 read 2026-11-08 by helper agents, key quote re-checked in the owner's PDF: colouring or discolouring along nodule rims or secondary cracks, "discordant to the agate banding", is "often called 'chromatography' effect" (p. 37, Fig. 33b,c); pigment random where banding is lacking (Figs 32a, 33a); red hematite, yellow goethite, shade from compound, amount and particle size (p. 37); amethyst and smoky quartz "frequently" in the agate centre (p. 37); fractures healed by a later agate or quartz generation (§5.1, Fig. 26a)."""
 
 [[references]]
 id = "moxon2020"
@@ -38,9 +38,9 @@ doi = "10.3390/min10110953"
 access = "open"
 licence = "CC-BY-4.0"
 checked = "sections"
-sections_read = ["2.1", "2.2", "2.4 (gel experiments, Heaney model)", "5"]
+sections_read = ["1", "2", "3", "4", "5"]
 topics = ["genesis", "history-of-theories", "basic-igneous-hosts", "quartz-transition", "liesegang"]
-notes = """History of genesis theories for agate in basic igneous hosts, read in part 2026-10-15. Summary (§5): formation mostly below 100 °C in basic igneous hosts; agate starts as amorphous silica and matures over geological time (moganite slowly converts to quartz, crystallites coarsen); "little support" now for agate formation by metal-ion diffusion into a silica gel. Describes Heaney's mechanism: a weakly polymerised silica solution forms chalcedony and leaves dilute monomeric silicic acid, undersaturated for amorphous silica but saturated for quartz, from which prismatic quartz grows last. A final quartz deposit gives an impression of a separate entry, which the authors judge not possible (read 2026-10-17). Reports gel experiments (Godovikov et al.) in which branched dendrites appear at maximum supersaturation and faceted crystals at minimal supersaturation."""
+notes = """History of genesis theories for agate in basic igneous hosts, read in part 2026-10-15. Summary (§5): formation mostly below 100 °C in basic igneous hosts; agate starts as amorphous silica and matures over geological time (moganite slowly converts to quartz, crystallites coarsen); "little support" now for agate formation by metal-ion diffusion into a silica gel. Describes Heaney's mechanism: a weakly polymerised silica solution forms chalcedony and leaves dilute monomeric silicic acid, undersaturated for amorphous silica but saturated for quartz, from which prismatic quartz grows last. A final quartz deposit gives an impression of a separate entry, which the authors judge not possible (read 2026-10-17). Reports gel experiments (Godovikov et al.) in which branched dendrites appear at maximum supersaturation and faceted crystals at minimal supersaturation. Owner-supplied PDF, body (§§1-5, pp. 1-22) read 2026-11-08 by a helper agent; references not read: in 9 Brazilian agates horizontal banding is 30-70 % of the volume, wall lining above, with layers from chalcedony to prismatic quartz in the stack (pp. 15-16); a quartz centre shows "a clean break from the surrounding chalcedony" (p. 19); fractures are rare (p. 15); canals are rare (p. 14); white bands do not take dye (p. 4); some agates from iron-rich hosts are uncoloured (p. 18)."""
 
 [[references]]
 id = "cartwright2026"
@@ -3201,7 +3201,7 @@ access = "closed"
 licence = "publisher copyright; cite only"
 checked = "full-text"
 topics = ["agate", "band-geometry", "escape-tubes", "sectors", "inclusions"]
-notes = """Owner-supplied PDF, read in full 2026-11-03 by a helper agent (figures viewed as page images). Qualitative only (agates from 6 regions, count not stated): bands thinner at indentation apices (p. 98) and narrowing at escape tubes "until … the banded structure is lost" (p. 99); band widths vary within sectors and inclusions vary along bands (pp. 99, 104); a 1-2 mm clear unbanded outer layer (p. 99); band fragments in the quartz centre (p. 100); bands keep "the same width, consistency and colour" across sector boundaries, "no mismatching" (p. 104); "fractures through the bands are never seen" (p. 102); rejects regular inward thickening (p. 101), against wang1990. Formation model is context only."""
+notes = """Owner-supplied PDF, read in full 2026-11-03 by a helper agent (figures viewed as page images). Qualitative only (agates from 6 regions, count not stated): bands thinner at indentation apices (p. 98) and narrowing at escape tubes "until … the banded structure is lost" (p. 99); band widths vary within sectors and inclusions vary along bands (pp. 99, 104); a 1-2 mm clear unbanded outer layer (p. 99); "most agates have, to a greater or lesser extent, a hollow macro-quartz lined (drusy quartz) centre", its boundary "mostly very sharp, although in some parts there is some merging" (p. 99, re-checked 2026-11-08); band fragments in the quartz centre (p. 100); bands keep "the same width, consistency and colour" across sector boundaries, "no mismatching" (p. 104); "fractures through the bands are never seen" (p. 102); rejects regular inward thickening (p. 101), against wang1990. Formation model is context only."""
 
 [[references]]
 id = "walger2009"
@@ -3216,3 +3216,102 @@ licence = "publisher copyright; cite only"
 checked = "full-text"
 topics = ["agate", "infiltration-channels", "layer-thickness", "band-geometry"]
 notes = """Owner-supplied PDF, read in full 2026-11-03 by a helper agent (figures viewed as page images). Posthumous: E. Walger, compiled by Mattheß, von Seckendorff and Liebau. Wall layers thin "from the normal thickness to zero" toward a focus where an infiltration channel enters (pp. 116, 136); elsewhere they grow "in relatively uniform thickness" (p. 128). Channels: never in amygdules below cherry size, "often one, rarely more" in fist-size, "frequently several" above 1 dm3 (p. 128); depth a few mm to 2-2.5 cm (p. 125); often missed by random sections (p. 127); single layers extend "cm to dm" (p. 115). No sample size, no counts per area. Hydrodynamic model is context only."""
+
+[[references]]
+id = "mrozik2023"
+kind = "article"
+authors = ["Mrozik, M.", "Götze, J.", "Pan, Y.", "Möckel, R."]
+year = 2023
+title = "Mineralogy, Geochemistry, and Genesis of Agates from Chihuahua, Northern Mexico"
+venue = "Minerals 13(5), 687"
+doi = "10.3390/min13050687"
+access = "open"
+licence = "CC BY 4.0"
+checked = "full-text"
+topics = ["agate", "colour", "iron", "hematite", "goethite", "quartz-transition", "locality", "mexico"]
+notes = """Owner-supplied PDF, read in full 2026-11-08 by a helper agent (figures viewed). All Chihuahua deposits sit in one latite flow (pp. 19, 21). Chalcedony is followed by macro-quartz in most specimens, from thin crusts to thick crystal layers (p. 13); microcrystalline-fibrous-quartz series repeat in some stones (pp. 11, 13). Red = hematite, yellow/brown = goethite, shade from mixture and particle size (pp. 25, 29); band Fe (Table 5): red 538-863, yellow 633-969, white/colourless 262-456, macro-quartz 78-141 ppm; Fe correlates weakly with colour intensity (p. 23). Pigment inclusions gather near the crystallisation front of each band; red/yellow/brown bands more uniform than white (p. 23); colour can change along a band (p. 11). White bands and white inclusions become less frequent from rim to core (pp. 13, 22). Coyamito violet is a structural defect, not inclusions (p. 29). Fe-oxides infiltrated pores and secondary cracks after crystallisation (p. 27). Locality colour tendencies (p. 11); almost all colours occur at all localities. No frequencies of centre types."""
+
+[[references]]
+id = "kigai2019"
+kind = "article"
+authors = ["Kigai, I. N."]
+year = 2019
+title = "The Genesis of Agates and Amethyst Geodes"
+venue = "The Canadian Mineralogist 57(6), 867-883"
+doi = "10.3749/canmin.1900028"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["agate", "genesis", "onyx", "waterline", "channels", "moss", "geode", "outline"]
+notes = """Owner-supplied PDF, read in full 2026-11-08 by a helper agent (pp. 867-880; references skimmed). A minority high-temperature genesis view, against the consensus below 100 C (moxon2020 p. 18): mechanisms are context only. Descriptive points: onyx (horizontal) banding taken as initially horizontal, with tilts of 50-60 degrees fanning within one stone (p. 871); concentric and onyx packets alternate (p. 872, Fig. 9); extrusion channels never reach the outer wall, and adjacent bands bend outward and thin (p. 872); moss and membrane tubes at amygdule bottoms (pp. 874-875); lithophysae can be over 80 % cavity (p. 876); amygdules flat below and convex above, elongated along flow; geodes prolate in strongly altered basalt, oblate in less altered, citing others (pp. 870, 878); smoky quartz in late zones of Sartmola geodes (p. 871)."""
+
+[[references]]
+id = "rodrigueznavarro2000"
+kind = "article"
+authors = ["Rodríguez-Navarro, A.", "García-Ruiz, J. M."]
+year = 2000
+title = "Model of textural development of layered crystal aggregates"
+venue = "European Journal of Mineralogy 12(3), 609-614"
+doi = "10.1127/0935-1221/2000/0012-0609"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["geometric-selection", "crystal-growth", "quartz-transition", "geode"]
+notes = """Owner-supplied PDF, read in full 2026-11-08 by a helper agent. A 2-D model of competitive growth from randomly oriented nuclei, not an agate measurement. Surviving grain count falls as t^-beta with beta about 0.5 (p. 611); mean grain width grows as a power law, exponent 0.5 on a flat substrate and 0.65 on a convex one (p. 613); on a concave substrate width grows, levels off, then falls sharply as the cavity closes (p. 613). More elongated habits shorten the competitive stage; the outer surface is saw-toothed (p. 611). Lengths scale with the nucleus spacing."""
+
+[[references]]
+id = "pabian1994"
+kind = "book"
+authors = ["Pabian, R. K.", "Zarins, A."]
+year = 1994
+title = "Banded Agates: Origins and Inclusions"
+venue = "University of Nebraska-Lincoln, Conservation and Survey Division, Educational Circular 12"
+url = "https://digitalcommons.unl.edu/conservationsurvey/418"
+access = "open"
+licence = "cite only"
+checked = "full-text"
+topics = ["agate", "inclusions", "locality", "deformation", "eyes", "tubes", "iris", "outline"]
+notes = """Owner-supplied scan, read in full 2026-11-08 by a helper agent through OCR (683 s) plus viewing figures; the Fig. 1 map and about 4 lines on p. 3 were unreadable. Based on about 15,000 agates from 18 localities; its genesis model (ash-derived gels) is the authors' own and context only. Table 1 (pp. 4-5) rates features per locality (Abundant >90 %, Rare <5 %): flow or plastic deformation structures present at all 12 tabulated localities; host-rock weathering products rare in Lake Superior agates, abundant in Chihuahua and Alpine, Texas. "Almost every agate nodule has a pod of euhedral quartz" in the innermost band (p. 20, qualitative). Escape tubes: inner bands thin and converge (p. 20); diapiric pods truncate outer bands (Figs 34-35, p. 20). Basalt/andesite vesicles almond-shaped; rhyolite thunder-egg cavities star-shaped (pp. 11, 16). Eyes are surface hemispheres, most common in amygdaloidal agates, few in thunder eggs (pp. 21-22). Cristobalite membrane tubes 0.3-0.5 mm across, several cm long (p. 15); iris in about 7 % of agates (p. 22). No fracture or breccia data for nodules."""
+
+[[references]]
+id = "jebrak1997"
+kind = "article"
+authors = ["Jébrak, M."]
+year = 1997
+title = "Hydrothermal breccias in vein-type ore deposits: a review of mechanisms, morphology and size distribution"
+venue = "Ore Geology Reviews 12, 111-134"
+doi = "10.1016/S0169-1368(97)00009-7"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["analogue", "breccia", "fractures", "fragment-size", "fractal"]
+notes = """Owner-supplied PDF, read 2026-11-08 by a helper agent (pp. 111-131; references skimmed). DOI inferred from the printed PII. Analogue only: ore veins, not agate. Eight breccia mechanisms classed by fragment roughness Dr and size-distribution slope Ds (Table 2, Fig. 5): hydraulic breccias angular, jigsaw-fit, similar sizes, West Rouyn Ds 1.15; volume-reduction (desiccation, silica sinter) breccias polygonal with 4-6 sides and about 120 degree junctions, Ds about 1, cell size set by the thickness of the shrinking layer (pp. 120-121); wear breccias 1.32-1.59; explosion 4-6. The measured Ds (Fig. 4) sit outside the axis of Fig. 5, unexplained."""
+
+[[references]]
+id = "moxon2014"
+kind = "article"
+authors = ["Moxon, T."]
+year = 2014
+title = "Agate in thin section"
+venue = "Rocks & Minerals 89(4), 328-339"
+doi = "10.1080/00357529.2014.904663"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["agate", "thin-section", "fractures", "hematite", "mottling", "waterline"]
+notes = """Owner-supplied PDF, read in full 2026-11-08 by a helper agent (pp. 328-337; 338-339 are adverts). Mostly thin-section method. In large Brazilian agates a final macro-quartz layer with a small void is "very common" (p. 331); horizontally banded agates "not common but by no means rare" (p. 331). Red/yellow assumed hematite/goethite, both XRD-amorphous; hematite about 25 % of the Burn Anne hand sample but about 3 % of its thin section (p. 334); Fairburn "frogspawn" iron-oxide spheres stop at about 1 mm (p. 334). Figures (no stated frequencies) show a stained crack crossing all wall bands with no visible offset (Fig. 3 I, p. 332), rim-only short cracks (Fig. 2 I), hairline cracks without halo (Fig. 8), crenulated band edges and red mottle patches (Figs 7, 8)."""
+
+[[references]]
+id = "volkert2023"
+kind = "article"
+authors = ["Volkert, R. A.", "Gorring, M. L.", "Peck, W. H.", "Stanford, S. D."]
+year = 2023
+title = "Characterization and Origin of Basalt-Derived Carnelian in the Mesozoic Newark Basin, New Jersey, USA"
+venue = "Minerals 13(10), 1249"
+doi = "10.3390/min13101249"
+access = "open"
+licence = "CC BY 4.0"
+checked = "sections"
+sections_read = ["abstract", "p. 9", "p. 12", "discussion"]
+topics = ["carnelian", "iron", "colour", "chalcedony"]
+notes = """Owner-supplied PDF (watchung-carnelian.pdf), sections read 2026-11-08 by a helper agent. Unbanded red carnelian: SiO2 97.51 +- 0.31 and Fe2O3 1.09 +- 0.07 wt% (p. 12), red attributed to Fe-oxide/hydroxide inclusions; pebbles 1.0-5.5 cm (p. 9)."""

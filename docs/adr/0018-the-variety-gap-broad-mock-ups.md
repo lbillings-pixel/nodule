@@ -108,6 +108,108 @@ uses new cuts and a new seed, and runs only after the owner has seen a sheet.
 about 5 min a cut; a 12-stone sheet about 1 h on the GPU. Any run over 30 s or 2 GB is
 flagged before it starts. `render_cuts` must take the preset for any rerun.
 
+### 7. Reading for features 1 to 5 (2026-11-08)
+
+Five helper agents read the catalogue's notes, the owner's PDFs and open web pages;
+claims below stay within each source's `checked` level. No source counts how often
+any of these features occurs, so every share in the recipe is `effective`, to be
+judged on the owner's sheets. Figure readings are a helper's measurement against a
+scale bar on one or two stones: *plausible* at best.
+
+**Centre.**
+- Many agates end in macro-quartz, often hollow: "most agates" [@howard2018, p. 99],
+  "almost every agate nodule" [@pabian1994, p. 20], "very common" in large Brazilian
+  agates [@moxon2014, p. 331], most Chihuahua specimens [@mrozik2023, p. 13]. All
+  qualitative (*verified* as statements). The library tags (quartz core 104, open
+  cavity 75 of 261) are the only counts.
+- The chalcedony–quartz boundary is mostly sharp [@howard2018, p. 99; @moxon2020,
+  p. 19]. Quartz is near-colourless and low in iron [@goetze2009; @mrozik2023,
+  Table 5], at times amethyst or smoky [@goetze2020, p. 37] (*verified*).
+- Grain width follows geometric selection: count falls about as t^-0.5, width grows
+  as a power law and, in a closing cavity, levels off and then falls
+  [@rodrigueznavarro2000, pp. 611, 613]. A model, not an agate measurement; quartz
+  grains in one Chihuahua figure grow from about 0.25 mm to 1–2 mm over 3 mm
+  (*plausible*).
+- Centre width on 7 figured stones: 0 to about 0.6 of the nodule, most near 0.2
+  (*plausible*, a hand-picked set).
+- Flat (waterline) floors: in 9 Brazilian agates they fill 30–70 % of the volume, with
+  quartz layers allowed in the stack [@moxon2020, pp. 15–16]; shares of banding types
+  in 73 stones [@moxon2013] (*verified*). **Order is disputed** (options, not settled):
+  floor first, wall lining above [@moxon2020, p. 16]; or concentric and flat packets
+  alternating [@kigai2019, p. 872]. Kigai's genesis is a minority view; only his
+  descriptions are used.
+
+**Fractures** (option C, section 4).
+- Rare, and put down to host-rock movement [@moxon2020, p. 15]; healed by later agate
+  or quartz [@goetze2020, §5.1]; secondary cracks refilled with chalcedony or iron
+  oxides [@mrozik2023, pp. 14, 27]; stain "discordant to the agate banding" along rims
+  and cracks [@goetze2020, p. 37] (*verified*). One figured crack crosses every wall
+  band with no visible offset [@moxon2014, Fig. 3 I] (*plausible*; a bought stone, a
+  cutting crack not ruled out).
+- From figures (*plausible*): traces 0.05–0.4 mm; little halo along the trace (0–0.5
+  mm) but stain pools of 2–6 mm where a crack meets the cavity or a porous band; short
+  rim-only cracks 1–4 mm. No offset is seen in any figure.
+- Breccia: the sources read give data only for ore veins [@jebrak1997], and none for
+  nodules [@pabian1994]. **Left out of the first sheet.**
+
+**Mottled and warped bands.**
+- Flow or plastic deformation is marked present at all 12 tabulated localities
+  [@pabian1994, Table 1]; bands thin and converge at escape tubes [@pabian1994, p. 20;
+  @howard2018, p. 99]; hematite lies in lenses along bands [@goetze2020, §4.3]; colour
+  can change along a band [@mrozik2023, p. 11] (*verified*). Bands keep width and
+  colour across sector boundaries [@howard2018, p. 104], which limits patchiness there.
+- From figures (*plausible*): crenulated band edges, wavelength 1–5 mm, amplitude
+  0.2–1 mm; kinks or lobes 0.3–1.5 cm; red mottle patches 5–30 mm with rims 0.6–1.2 mm.
+
+**Colour.**
+- Iron follows the band's texture: about 600 ppm cryptocrystalline down to about 70
+  micro-granular [@zhang2025]; macro-quartz 78–141 ppm against 262–969 in bands
+  [@mrozik2023, Table 5]; unbanded carnelian Fe2O3 about 1.1 wt% [@volkert2023, p. 12];
+  black from carbon in the pores of fibrous chalcedony [@goetze2012] (*verified*).
+- Pigment gathers near each band's growing front; red, yellow and brown bands are more
+  even than white; white bands thin out from rim to core [@mrozik2023, pp. 13, 22, 23];
+  Coyamito violet is a lattice defect, not iron [@mrozik2023, p. 29] (*verified*).
+- Iron correlates only weakly with colour strength [@mrozik2023, p. 23], and some
+  stones from iron-rich hosts are uncoloured [@moxon2020, p. 18]: palette is set per
+  stone, not from host (*plausible* as a rule for the recipe).
+
+**Differences between stones.**
+- Outline follows the host: almond vesicles in basalt and andesite, star cavities in
+  rhyolite thunder eggs [@pabian1994, pp. 11, 16]; amygdules flat below and convex
+  above [@kigai2019, p. 870] (*verified*). Locality colour tendencies exist but almost
+  all colours occur everywhere [@mrozik2023, p. 11].
+- Visible band frequency 1 to about 5 per mm, narrowing inward [@goldbaum2019]
+  (*verified* as reported; its fit is weak).
+
+**First sheet recipe (all `effective` unless marked).** Twelve stones, each from a
+spawned stream, each drawing a subset:
+- *Centre:* solid, quartz-filled or quartz-lined cavity, about a third each; centre
+  width 0–0.6, mass near 0.2; sharp boundary under 0.2 mm with a saw-tooth inner face;
+  grain width w0 (1 + d/Δ)^0.5 from w0 about 0.25 mm, levelling off in a closing cavity
+  (form from [@rodrigueznavarro2000]); amethyst or smoky tint in 10–20 % of quartz
+  centres. Quartz low in iron (`physical`, sourced above).
+- *Floor:* in 2–3 of 12 stones, 30–70 % of the volume (`physical`, small n), floor
+  first by default, Kigai's alternation as the option.
+- *Fractures:* 1–2 of 12 stones; 1–3 sheets each, high angle to bands; trace 0.05–0.4
+  mm; fill clear or iron; stain pools at cavity and porous bands; no offset.
+- *Warp and mottle:* on some stones, never all: crenulation 1–5 mm by 0.2–1 mm, 0–2
+  kinks, mottle patches 5–30 mm with darker rims.
+- *Colour:* per-stone palette, about 6 neutral, 3 iron, 1 onyx (carbon in fibrous
+  bands), 1 stained, 1 carnelian-like (Fe2O3 near 1 wt%, `physical` anchor); iron
+  weighted by band texture (`physical` ratios); pigment at band fronts; white bands
+  fewer inward.
+- *Outline:* about 7 basalt vesicles (1–2 lobed), 2 thunder eggs with star cavities,
+  1 prolate, 1 irregular, 1 small unbanded pebble.
+- **Couplings (assumptions unless cited):** centre sits inside the last band; floors
+  perpendicular to a per-stone "down"; fracture stain pools at the cavity and porous
+  bands (from figures); white-band share falls inward [@mrozik2023]; quartz takes
+  little pigment [@mrozik2023; @goetze2009].
+- **Negative controls:** a solid stone reports no cavity; a centre without facets fails
+  a faceted-lining check; a curved floor fails a waterline check; an unstained crack
+  fails a stained-fracture check.
+- **Screening first:** stand-in cuts (about 6 s each) make a preview sheet for the
+  owner before any render (about 1 h for 12).
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

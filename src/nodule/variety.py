@@ -38,7 +38,8 @@ from agatesim.fields import Fields, Phase, Pigment
 from agatesim.grid import FloatArray
 from agatesim.volume.config import SliceConfig, SolidConfig, VolumeConfig
 from agatesim.volume.models import SmoothNoise3
-from agatesim.volume.solids import BoolArray, Solid
+from agatesim.volume.slicing import Plane
+from agatesim.volume.solids import BoolArray, Rotated, Solid, SphereUnion
 from numpy.typing import NDArray
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -90,6 +91,26 @@ MAX_SLOPE = 0.5
 # keeps the wobble's own slope near two thirds of the cap.
 WOBBLE_PER_SCALE_PER_CAP = 0.16
 
+# The owner's notes on the roughness trial and the plain cap-0.5 stones
+# (2026-11-08, ADR 0018 s.9): keep such features, but make them rare.
+# Floors: silica supply while the floor settles. The floor gets the same height
+# in 1/supply as many bands; at 1 its bands are about 5 times the wall bands
+# (the floor rises faster than the walls grow), which the owner judged too thick
+# for most stones.
+FLOOR_SUPPLY = (0.12, 0.35)
+THICK_FLOOR_CHANCE = 1 / 8  # supply 1: the thick floor bands, kept but rare
+# Cuts of overlapping-sphere outlines: the cutter's choice. A cut far off a
+# sphere's centre shows its shells widening toward the middle, and one that only
+# grazes a sphere leaves a nub on the outline; the owner judged both atypical.
+CLEAN_CUT = 0.3  # largest |offset| / radius of any sphere the cut crosses
+CUT_TRIES = 64
+ODD_CUTS = (0, 1)  # per 12 stones: keep the first cut drawn, however oblique
+# Band roughness, smooth form only: none on most stones, little on many, more on
+# a few (the owner: the trial's 0.4 mm was a bit too strong).
+ROUGHNESS_LIMIT_MM = 0.25
+ROUGHNESS_SHARES: dict[str, float] = {"none": 0.5, "faint": 0.35, "marked": 0.15}
+ROUGHNESS_MM = {"faint": (0.04, 0.12), "marked": (0.12, ROUGHNESS_LIMIT_MM)}
+
 
 class FractureLayer(BaseModel):
     """A flat crack without offset (ADR 0018 s.4, option C; s.7). A disc in 3D."""
@@ -133,7 +154,9 @@ class Roughness(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    amplitude_mm: float = Field(gt=0, description="Largest shift of a band, reached inward.")
+    amplitude_mm: float = Field(
+        gt=0, le=ROUGHNESS_LIMIT_MM, description="Largest shift of a band, reached inward."
+    )
     fade_mm: float = Field(default=5.0, gt=0, description="Depth over which it builds.")
     scale_mm: float = Field(gt=0, description="Size of the roughness along a band.")
     renew_mm: float = Field(default=4.0, gt=0, description="Depth over which it renews.")
@@ -155,6 +178,9 @@ class StoneRecipe(BaseModel):
     lining: float = Field(ge=0, le=1, description="Quartz-lined: share of the centre in quartz.")
     tint: Tint = "none"
     floor: float = Field(ge=0, le=1, description="0 = none, else the floor's target height.")
+    floor_supply: float = Field(
+        default=1.0, gt=0, le=1, description="Silica supply while the floor settles."
+    )
     colour: Colour
     band_mm: float = Field(gt=0, description="Mean band width.")
     warp: Warp
@@ -176,7 +202,8 @@ class StoneRecipe(BaseModel):
         if self.tint != "none":
             parts.append(self.tint)
         if self.floor:
-            parts.append(f"floor {self.floor:.2f}")
+            thick = " thick" if self.floor_supply >= 1 else ""
+            parts.append(f"floor {self.floor:.2f}{thick}")
         if self.warp != "mild":
             parts.append(self.warp)
         if self.mottle is not None:
@@ -184,7 +211,8 @@ class StoneRecipe(BaseModel):
         if self.fractures:
             parts.append(f"{len(self.fractures)} cracks")
         if self.roughness is not None:
-            parts.append("ridged" if self.roughness.ridged else "rough")
+            kind = "ridged" if self.roughness.ridged else "rough"
+            parts.append(f"{kind} {self.roughness.amplitude_mm:.2f} mm")
         parts.append(f"bands {self.band_mm:.2f} mm")
         return ", ".join(parts)
 
@@ -227,6 +255,8 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     crack_ok = [i for i, o in enumerate(outlines) if o != "pebble"]
     cracked = set(plan.permutation(crack_ok)[: _scaled(plan, FRACTURED_STONES, n)].tolist())
     mottled = set(plan.permutation(n)[: round(MOTTLE_SHARE * n)].tolist())
+    odd_ok = [i for i, o in enumerate(outlines) if o in ("vesicle", "irregular")]
+    odd = set(plan.permutation(odd_ok)[: _scaled(plan, ODD_CUTS, n)].tolist())
     return [
         draw_stone(
             i,
@@ -238,6 +268,7 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
             floor=i in floors,
             cracked=i in cracked,
             mottled=i in mottled,
+            odd_cut=i in odd,
         )
         for i in range(n)
     ]
@@ -373,6 +404,7 @@ def draw_stone(
     floor: bool,
     cracked: bool,
     mottled: bool,
+    odd_cut: bool = False,
 ) -> StoneRecipe:
     solid_config = solid_for(rng, outline)  # type: ignore[arg-type]
     solid = solid_config.build()
@@ -409,7 +441,7 @@ def draw_stone(
             azimuth_deg=float(rng.uniform(0, 360)),
             offset_mm=float(rng.uniform(-0.15, 0.15) * r),
         )
-    return StoneRecipe(
+    recipe = StoneRecipe(
         index=index,
         seed=int(rng.integers(0, 2**31)),
         outline=outline,  # type: ignore[arg-type]
@@ -430,6 +462,64 @@ def draw_stone(
         fractures=draw_fractures(rng, solid, colour in ("iron", "carnelian")) if cracked else (),
         cut=cut,
     )
+    return _refine(recipe, solid, r, odd_cut=odd_cut)
+
+
+def _refine(recipe: StoneRecipe, solid: Solid, r: float, *, odd_cut: bool) -> StoneRecipe:
+    """Floor bands, the cutter's choice and band roughness (ADR 0018 s.9), drawn
+    from the recipe's own stream so that the rest of the recipe stays as drawn."""
+    rng = np.random.default_rng(np.random.SeedSequence(recipe.seed).spawn(4)[3])
+    update: dict[str, object] = {}
+    if recipe.floor:
+        thick = rng.uniform() < THICK_FLOOR_CHANCE
+        update["floor_supply"] = 1.0 if thick else _log_uniform(rng, *FLOOR_SUPPLY)
+    if recipe.outline != "thunder-egg" and not odd_cut:
+        update["cut"] = clean_cut(rng, solid, recipe.cut, r)
+    level = str(rng.choice(list(ROUGHNESS_SHARES), p=_shares(ROUGHNESS_SHARES)))
+    # Not on cracked stones (a warp takes no slipping fractures) or the pebble.
+    if level != "none" and not recipe.fractures and recipe.outline != "pebble":
+        update["roughness"] = Roughness(
+            amplitude_mm=_log_uniform(rng, *ROUGHNESS_MM[level]),
+            scale_mm=float(rng.uniform(1.5, 3.0)),
+            ridged=False,
+        )
+    return recipe.model_copy(update=update)
+
+
+def _shares(shares: dict[str, float]) -> list[float]:
+    total = sum(shares.values())
+    return [v / total for v in shares.values()]
+
+
+def cut_obliqueness(solid: Solid, cut: SliceConfig) -> float:
+    """Largest |offset| / radius over the spheres of an overlapping-sphere solid
+    that the cut crosses: 0 through every centre, near 1 where it grazes one
+    (a nub on the outline). 0 for other solids."""
+    rotation, inner = (solid.rotation, solid.inner) if isinstance(solid, Rotated) else (None, solid)
+    if not isinstance(inner, SphereUnion):
+        return 0.0
+    centres = inner.centres if rotation is None else inner.centres @ rotation.T
+    plane = Plane.of(cut, solid.centre())
+    z = np.abs((centres - plane.origin) @ plane.normal)
+    return float(np.max(np.where(z < inner.radii, z / inner.radii, 0.0)))
+
+
+def clean_cut(rng: np.random.Generator, solid: Solid, first: SliceConfig, r: float) -> SliceConfig:
+    """The first of up to CUT_TRIES cuts (the drawn one first) that crosses every
+    sphere it meets within CLEAN_CUT of its centre, else the least oblique."""
+    best, least = first, cut_obliqueness(solid, first)
+    for _ in range(CUT_TRIES - 1):
+        if least <= CLEAN_CUT:
+            break
+        cut = SliceConfig(
+            tilt_deg=float(rng.uniform(70, 90)),
+            azimuth_deg=float(rng.uniform(0, 360)),
+            offset_mm=float(rng.uniform(-0.15, 0.15) * r),
+        )
+        b = cut_obliqueness(solid, cut)
+        if b < least:
+            best, least = cut, b
+    return best
 
 
 # --- recipe to specimen ------------------------------------------------------------------
@@ -442,11 +532,28 @@ class Growth:
 
     growth_mm: float
     quartz_at: float | None
+    start: float = 0.0  # growth time at which the walls start (after a floor)
 
     @property
     def chalcedony_end(self) -> float:
         """Growth time at which the last chalcedony band lies down."""
         return self.quartz_at if self.quartz_at is not None else 1.0
+
+    def after_floor(self, floor_mm: float, supply: float) -> Growth:
+        """The run with a floor first. At full supply the floor takes the first
+        floor_mm of growth (time W0 = floor_mm / g, at most 0.6 as before). At
+        lower supply that phase stretches to time W (g' supply W = floor_mm) and
+        the rest of the run is unchanged (g' (1 - W) = g (1 - W0)): the walls
+        grow as much as at full supply, so a floor still leaves its centre."""
+        g = self.growth_mm
+        w0 = min(floor_mm / g, 0.6)
+        floor_mm = w0 * g
+        rest = g - floor_mm
+        w = floor_mm / (supply * rest + floor_mm)
+        quartz_at = None
+        if self.quartz_at is not None:
+            quartz_at = w + (1 - w) * max(self.quartz_at - w0, 0.0) / (1 - w0)
+        return Growth(rest / (1 - w), quartz_at, w)
 
 
 def growth_for(recipe: StoneRecipe, r: float) -> Growth:
@@ -473,6 +580,10 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
     solid = recipe.solid.build()
     r = inradius(solid)
     growth = growth_for(recipe, r)
+    if recipe.floor:
+        # Floor growth scaled from one probe (40 mm round vesicle, 30 mm growth:
+        # a 0.12 pulse gave a floor at about 0.55 of the height); `effective`.
+        growth = growth.after_floor(recipe.floor * 6.6 * r / 16.0, recipe.floor_supply)
     g = growth.growth_mm
     model: dict[str, object] = {
         "kind": "procedural-growth",
@@ -499,21 +610,13 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
         silica.append({"type": "step", "at": growth.quartz_at, "value": QUARTZ_SUPPLY})
     schedules: dict[str, object] = {"silica": {"base": 1.0, "events": silica}}
     if recipe.floor:
-        # A settling pulse first: floor first [@moxon2020, p. 16]. Width scaled
-        # from one probe (40 mm round vesicle, 30 mm growth: 0.12 gave a floor
-        # at about 0.55 of the height); `effective`, judged on the sheet.
-        width = recipe.floor * 0.22 * (30.0 / g) * (r / 16.0)
-        schedules["settling"] = {
-            "base": 0.0,
-            "events": [
-                {
-                    "type": "pulse",
-                    "at": 0.0,
-                    "width": float(np.clip(width, 0.01, 0.6)),
-                    "value": 1.0,
-                }
-            ],
-        }
+        # A settling pulse first: floor first [@moxon2020, p. 16]. Settling takes
+        # precedence over quartz in agatesim, so supply may drop below the quartz
+        # threshold here; low supply gives thin floor bands (THICK_FLOOR_CHANCE).
+        pulse: dict[str, object] = {"type": "pulse", "at": 0.0, "width": growth.start}
+        schedules["settling"] = {"base": 0.0, "events": [pulse | {"value": 1.0}]}
+        if recipe.floor_supply < 1:
+            silica.append(pulse | {"value": recipe.floor_supply})
     palette, iron = _palette(recipe)
     schedules["iron"] = {"base": iron}
     model["palette"] = palette
@@ -577,6 +680,7 @@ class VarietyLayers:
     recipe: StoneRecipe
     solid_centre: FloatArray
     chalcedony_end: float
+    start: float
     mottle_noise: SmoothNoise3 | None
     stain_noise: SmoothNoise3 | None
 
@@ -589,10 +693,14 @@ class VarietyLayers:
         stain = None
         if recipe.rim_stain > 0:
             stain = SmoothNoise3(solid, 8.0, np.random.default_rng(seqs[1]))
+        end = growth.chalcedony_end
+        if recipe.centre == "solid":  # the last band lies down at about 1/1.3 of the walls' run
+            end = growth.start + (end - growth.start) / 1.3
         return cls(
             recipe,
             np.asarray(solid.centre(), dtype=np.float64),
-            growth.chalcedony_end / 1.3 if recipe.centre == "solid" else growth.chalcedony_end,
+            end,
+            growth.start,
             mottle,
             stain,
         )
@@ -619,7 +727,8 @@ class VarietyLayers:
         quartz = inside & (phase == Phase.QUARTZ)
 
         imp[quartz] *= QUARTZ_IRON_RATIO
-        depth = np.clip(t / self.chalcedony_end, 0, 1)  # 0 at the wall, 1 at the centre
+        # 0 at the wall (and on the floor), 1 at the centre
+        depth = np.clip((t - self.start) / (self.chalcedony_end - self.start), 0, 1)
         trans[chal] += (rec.white_fade * depth[chal] * (1 - trans[chal])).astype(np.float32)
 
         def stain(mask: NDArray[np.bool_], amount: NDArray[np.float64], pigment: Pigment) -> None:
@@ -698,13 +807,14 @@ class BandRoughness:
     noise: SmoothNoise3
     drift: FloatArray
     quartz_at: float | None = None  # growth time at which quartz starts, if it does
+    start: float = 0.0  # growth time at which the walls start; the floor stays flat
     step_mm: float = 0.5
 
     @classmethod
     def of(cls, roughness: Roughness, solid: Solid, growth: Growth, seed: int) -> BandRoughness:
         rng = np.random.default_rng(np.random.SeedSequence(seed).spawn(3)[2])
         noise = SmoothNoise3(solid, roughness.scale_mm, rng)
-        return cls(roughness, growth.growth_mm, noise, _unit(rng), growth.quartz_at)
+        return cls(roughness, growth.growth_mm, noise, _unit(rng), growth.quartz_at, growth.start)
 
     def __call__(
         self, points: FloatArray, growth_time: Callable[[FloatArray], FloatArray]
@@ -737,7 +847,7 @@ class BandRoughness:
         size = np.linalg.norm(grad, axis=1)
         ok = np.isfinite(t) & np.isfinite(size) & (size > 0)
         g = np.where(ok[:, None], grad / np.where(ok, size, 1.0)[:, None], 0.0)
-        depth = np.where(ok, t * self.growth_mm, 0.0)
+        depth = np.where(ok, np.maximum(t - self.start, 0.0) * self.growth_mm, 0.0)
         rate = np.where(ok, size * self.growth_mm, 0.0)  # about 1 in wall bands
         weight = np.clip((rate - 0.5) / 0.4, 0.0, 1.0)
         if self.quartz_at is not None:
@@ -832,6 +942,22 @@ def flat_bands(cut: SpecimenCut, least_span: float = 0.4, most_spread_mm: float 
         if float(np.std(tops)) < most_spread_mm:
             count += 1
     return count
+
+
+def floor_bands(cut: SpecimenCut, layers: VarietyLayers) -> tuple[float, float]:
+    """Floor check: the floor's height and its mean band width (mm), from the
+    chalcedony laid down before the walls start. Height is measured along the
+    plane's projection of world up; (0, 0) without a floor."""
+    up = cut.plane.in_plane(np.array([0.0, 0.0, 1.0]))
+    t = cut.fields.t_dep
+    floor = cut.inside & (cut.fields.phase == Phase.CHALCEDONY) & (t < layers.start)
+    if not floor.any() or float(np.linalg.norm(up)) < 0.5:
+        return 0.0, 0.0
+    up = up / float(np.linalg.norm(up))
+    ss, tt = np.meshgrid(cut.s, cut.t)
+    height = (ss * up[0] + tt * up[1])[floor]
+    span = float(height.max() - height.min())
+    return span, span / len(np.unique(cut.fields.band[floor]))
 
 
 def fracture_stain(cut: SpecimenCut, layers: VarietyLayers, near_mm: float = 0.5) -> float:

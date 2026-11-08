@@ -13,16 +13,22 @@ from agatesim.volume.config import SliceConfig, SolidConfig, VolumeConfig
 
 from nodule.specimen import Specimen, SpecimenConfig, SpecimenCut
 from nodule.variety import (
+    CLEAN_CUT,
+    ROUGHNESS_LIMIT_MM,
     BandRoughness,
     FractureLayer,
+    Growth,
     Mottle,
     Roughness,
     StoneRecipe,
     VarietyLayers,
     build,
+    clean_cut,
+    cut_obliqueness,
     cut_of,
     draw_sheet,
     flat_bands,
+    floor_bands,
     fold_share,
     fracture_stain,
     has_cavity,
@@ -217,7 +223,7 @@ def test_slope_cap_is_a_setting_below_one() -> None:
         build(crenulated, 1.0)  # at 1 or above, bands could fold (ADR 0005 s.3)
 
 
-ROUGH = Roughness(amplitude_mm=0.4, scale_mm=2.0)
+ROUGH = Roughness(amplitude_mm=ROUGHNESS_LIMIT_MM, scale_mm=2.0)
 
 
 def test_roughness_grows_inward_and_its_negative_control() -> None:
@@ -234,7 +240,8 @@ def test_roughness_grows_inward_and_its_negative_control() -> None:
 def test_roughness_does_not_fold_and_its_negative_control() -> None:
     specimen, _ = build(recipe(roughness=ROUGH))
     assert fold_share(specimen, samples=1500) < 0.02
-    extreme = Roughness(amplitude_mm=3.0, scale_mm=1.0, renew_mm=0.3, fade_mm=0.5)
+    # Past the limit, so built without validation.
+    extreme = Roughness.model_construct(amplitude_mm=3.0, scale_mm=1.0, renew_mm=0.3, fade_mm=0.5)
     folded, _ = build(recipe(roughness=extreme))
     assert fold_share(folded, samples=1500) > 0.2
 
@@ -252,3 +259,67 @@ def test_quartz_contact_stays_sharp_and_its_negative_control() -> None:
     assert isinstance(specimen.warp, BandRoughness)
     unfaded = dc_replace(specimen, warp=dc_replace(specimen.warp, quartz_at=None))
     assert stray_quartz(cut_of(unfaded, lined, SPACING)) > 0.015  # scattered contact
+
+
+# --- the owner's notes on the plain stones and the roughness trial (ADR 0018 s.9) ---
+
+
+def test_floor_stretches_only_its_own_phase() -> None:
+    full = Growth(20.0, 0.6).after_floor(5.0, 1.0)  # control: the old timing
+    assert (full.growth_mm, full.start, full.quartz_at) == pytest.approx((20.0, 0.25, 0.6))
+    run = Growth(20.0, 0.6).after_floor(5.0, 0.25)
+    assert run.growth_mm * 0.25 * run.start == pytest.approx(5.0)  # the floor's growth
+    assert run.growth_mm * (1 - run.start) == pytest.approx(15.0)  # the rest as before
+    # Quartz starts after the same wall growth as at full supply: 7 mm.
+    assert run.quartz_at is not None
+    assert run.growth_mm * (run.quartz_at - run.start) == pytest.approx(7.0)
+
+
+def test_low_supply_gives_thin_floor_bands() -> None:
+    thin = floor_bands(*cut_for(FLOOR.model_copy(update={"floor_supply": 0.2})))
+    thick = floor_bands(*cut_for(FLOOR))  # control: supply 1, the old thick bands
+    assert thin[0] == pytest.approx(thick[0], rel=0.25)  # about the same floor
+    assert thin[1] < 0.4 * thick[1]
+    assert thin[1] < 2.5 * FLOOR.band_mm < thick[1]
+    assert floor_bands(*cut_for(recipe())) == (0.0, 0.0)  # no floor, nothing measured
+
+
+LOBATE = SolidConfig(preset="vesicle-lobate", size_mm=40).build()
+
+
+def test_clean_cut_crosses_spheres_near_their_centres() -> None:
+    grazing = SliceConfig(tilt_deg=90, azimuth_deg=0, offset_mm=0.0)
+    for offset in np.linspace(-20, 20, 81):  # control: a cut that grazes a sphere
+        grazing = grazing.model_copy(update={"offset_mm": float(offset)})
+        if cut_obliqueness(LOBATE, grazing) > 0.9:
+            break
+    assert cut_obliqueness(LOBATE, grazing) > 0.9
+    chosen = clean_cut(np.random.default_rng(3), LOBATE, grazing, 10.0)
+    assert cut_obliqueness(LOBATE, chosen) <= CLEAN_CUT
+    round_ = SolidConfig(preset="vesicle-round", size_mm=40).build()
+    assert cut_obliqueness(round_, grazing) == 0.0
+
+
+SHEETS = [r for seed in range(1, 7) for r in draw_sheet(seed)]
+
+
+def test_sheets_keep_odd_cuts_rare() -> None:
+    lobed = [r for r in SHEETS if cut_obliqueness(r.solid.build(), r.cut) > 0]
+    odd = [r for r in lobed if cut_obliqueness(r.solid.build(), r.cut) > CLEAN_CUT]
+    assert lobed
+    assert len(odd) <= len(SHEETS) // 12  # at most one per sheet
+
+
+def test_sheets_draw_gentle_smooth_roughness() -> None:
+    rough = [r.roughness for r in SHEETS if r.roughness is not None]
+    assert 0.25 * len(SHEETS) <= len(rough) <= 0.75 * len(SHEETS)
+    assert all(not g.ridged and g.amplitude_mm <= ROUGHNESS_LIMIT_MM for g in rough)
+    assert not any(r.roughness and (r.fractures or r.outline == "pebble") for r in SHEETS)
+    with pytest.raises(ValueError, match="less than or equal"):  # control: the trial's 0.4 mm
+        Roughness(amplitude_mm=0.4, scale_mm=2.0)
+
+
+def test_sheets_keep_thick_floors_rare() -> None:
+    floors = [r.floor_supply for r in SHEETS if r.floor]
+    assert floors
+    assert sum(f >= 1 for f in floors) <= 0.3 * len(floors)

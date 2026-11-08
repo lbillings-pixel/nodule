@@ -135,13 +135,12 @@ def close_up(cut: SpecimenCut, rgb: NDArray[np.uint8], window_mm: float) -> Imag
 
 
 Variant = tuple[str, float, "Roughness | None"]  # label, no-fold cap, band roughness
-# The owner's roughness trial (ADR 0018 s.8): plain wobble at cap 0.5, then ridged
-# and smooth band roughness. Sizes `effective`, from one thunder egg's close-ups.
-TRIAL_ROUGHNESS = Roughness(amplitude_mm=0.4, scale_mm=2.0)
+# The owner's roughness trial (ADR 0018 s.8) chose smooth roughness, weaker than
+# the 0.4 mm tried (s.9): plain, then the faint and marked ends of the new range.
 ROUGHNESS_VARIANTS: list[Variant] = [
     ("plain (cap 0.5)", MAX_SLOPE, None),
-    ("ridged roughness", MAX_SLOPE, TRIAL_ROUGHNESS),
-    ("smooth roughness", MAX_SLOPE, TRIAL_ROUGHNESS.model_copy(update={"ridged": False})),
+    ("faint roughness", MAX_SLOPE, Roughness(amplitude_mm=0.08, scale_mm=2.0, ridged=False)),
+    ("marked roughness", MAX_SLOPE, Roughness(amplitude_mm=0.2, scale_mm=2.0, ridged=False)),
 ]
 
 

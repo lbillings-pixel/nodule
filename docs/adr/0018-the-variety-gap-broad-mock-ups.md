@@ -270,8 +270,7 @@ Seeds 1 and 2 are drawn. Stand-in colours only: no render yet.
   for an extreme setting (threshold 2 %); quartz contact, 0.13 % stray quartz
   pixels against 3.25 % without the fade. Cost: about 2-4 times the plain cut (6
   more model reads a point for the normal); 18 stand-in cuts at 1200 px took 153 s.
-  Comparison sheet: `nodule.sheet --roughness-trial 1 2`. Not yet drawn into
-  recipes; the owner judges first.
+  Comparison sheet: `nodule.sheet --roughness-trial 1 2`. The owner's verdict: s.9.
 - **Owner's notes for planning (2026-11-08):** thunder-egg arms are much too
   regular and straight; real ones are sinuous and river-like, as of fluid
   infiltrating an irregular void. Higher fidelity may wait for later stages.
@@ -285,6 +284,47 @@ Seeds 1 and 2 are drawn. Stand-in colours only: no render yet.
 - **Before any render:** the GPU growth grid (`nodule.render.tgrid`) reads agatesim
   directly and must apply the same layers, and the quartz tint must reach the
   materials. No render or statistics before the owner has seen the sheets (s.1).
+
+### 9. The owner's verdicts: rare, not removed (2026-11-08)
+
+The owner judged the roughness trial and the plain stones: the plain cap-0.5 stones
+look most real; smooth roughness beats ridged but was too strong at 0.4 mm. Two
+plain stones of seed 2 looked less real: stone 1 (thick waterline bands, a small
+nub on the outline) and stone 12 (bands swelling at the bulges). Each such feature
+does occur in agates, but rarely, so each is kept and made rare (all `effective`):
+
+- **Floor bands.** Bands are periods of growth time, and the floor rises faster
+  than the walls grow, so at full supply floor bands came out about 4-5 times the
+  wall bands. Silica supply now drops while the floor settles (agatesim gives
+  settling precedence over quartz, so this cannot start quartz), and the run
+  lengthens so the floor keeps its height and the walls their growth. Measured on a
+  26 mm test stone with 0.5 mm bands: floor 10.9 mm at every supply, mean floor
+  band 1.82 mm at supply 1, 0.91 at 0.35, 0.64 at 0.2, 0.34 at 0.12. Recipes draw
+  supply 0.12-0.35, and 1 (the thick bands) for 1 floor in 8. Only the floor's
+  phase stretches; the rest of the run is as at full supply.
+- **Seen, not changed:** large floors (0.64-0.66 on seed 1's stones 8 and 10) rise
+  above their target and can crowd out a quartz centre (stone 10 shows none). This
+  was so before s.9 too; left for the owner's call.
+- **The cutter's choice.** Both stones are overlapping spheres (agatesim's lobed
+  vesicle). Stone 1's cut grazed one sphere (offset 0.96 of its radius), leaving a
+  nub; stone 12's passed 0.59 of a radius off one lobe's centre, where its shells
+  widen toward the middle as in any off-centre cut. Taking the wobble out did not
+  change it. Cuts are now redrawn (up to 64 tries) until every sphere they cross is
+  cut within 0.3 of its radius from its centre, else the least oblique is kept;
+  0-1 stones per 12 keep the first cut drawn. Over seeds 1-6: 28 stones of
+  overlapping spheres, 2 above 0.8, both the kept odd cuts. Real slabs are cut for
+  the best face, so this mimics the cutter, not growth.
+- **Band roughness.** Smooth form only, now drawn into recipes, at most 0.25 mm (a
+  limit on the setting): none on half the stones, faint (0.04-0.12 mm) on 35 %,
+  marked (0.12-0.25 mm) on 15 %; not on cracked stones or the pebble. Over seeds
+  1-6: 29 of 72 stones rough, 13 of them faint. Depth now counts from the walls'
+  start, so floors stay flat.
+- **Checks with controls:** `floor_bands` (thin at supply 0.2 against the thick
+  control at 1, floor height within 25 %); `cut_obliqueness` (a grazing control
+  above 0.9; the chosen cut within 0.3; 0 for a single-body solid); sheet shares for
+  odd cuts, thick floors and roughness (a 0.4 mm control is refused).
+- **Confirmed list:** the owner agreed the missing features to add next are
+  band-following particles and dust, plumes and moss, and depth through clear bands.
 
 ## Limits
 

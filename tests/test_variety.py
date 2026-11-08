@@ -4,6 +4,7 @@ and each check with its negative control (CLAUDE.md)."""
 from __future__ import annotations
 
 from collections import Counter
+from dataclasses import dataclass
 from dataclasses import replace as dc_replace
 
 import numpy as np
@@ -13,10 +14,10 @@ from agatesim.volume.config import SliceConfig, SolidConfig, VolumeConfig
 
 from nodule.specimen import Specimen, SpecimenConfig, SpecimenCut
 from nodule.variety import (
-    BEND_SHARE,
     CLEAN_CUT,
     FLOOR_HEIGHT,
     ROUGHNESS_LIMIT_MM,
+    SAG_SHARE,
     BandRoughness,
     FractureLayer,
     Growth,
@@ -27,6 +28,7 @@ from nodule.variety import (
     build,
     clean_cut,
     crack_bend,
+    crack_wiggle,
     cut_obliqueness,
     cut_of,
     draw_sheet,
@@ -297,14 +299,43 @@ def test_a_floor_keeps_its_centre_and_its_negative_control(centre: str) -> None:
     assert _phase_share(solid, Phase.QUARTZ, Phase.VOID) == 0
 
 
-BENT = CRACK.model_copy(update={"bend_mm": 1.2, "bend_scale_mm": 6.0})
+BENT = CRACK.model_copy(update={"sagitta_mm": 1.5})  # share 0.075, mid-range
+
+
+@dataclass(frozen=True, eq=False)
+class _Wavy(VarietyLayers):
+    """Negative control for the no-S-turn check: crack 0 shifted along its normal by
+    sine waves in two in-plane directions (1 mm, 16 mm period), as the old noise
+    bends did, so its trace in any face switches its curve's direction."""
+
+    def crack_distance(self, i: int, points: np.ndarray) -> np.ndarray:
+        f = self.recipe.fractures[i]
+        n = np.asarray(f.normal) / np.linalg.norm(f.normal)
+        e1 = np.cross(n, [1.0, 0.0, 0.0])
+        e1 /= np.linalg.norm(e1)
+        e2 = np.cross(n, e1)
+        rel = points - (self.solid_centre + np.asarray(f.centre_mm))
+        wave = sum(np.sin(2 * np.pi * (rel @ e) / 16.0) for e in (e1, e2))
+        z = rel @ n - 1.0 * wave
+        r = np.linalg.norm(rel - (rel @ n)[:, None] * n, axis=1)
+        return np.hypot(z, np.maximum(r - f.radius_mm, 0.0))
 
 
 def test_bent_crack_check_and_its_negative_control() -> None:
     bent = crack_bend(*cut_for(recipe(fractures=(BENT,))), 0)
     straight = crack_bend(*cut_for(recipe(fractures=(CRACK,))), 0)  # control: a flat disc
-    assert bent > 0.2
+    assert 0.08 < bent < 0.6  # a gentle bow: about 0.3 x the sag over the face
     assert straight < 0.03
+
+
+def test_no_s_turn_check_and_its_negative_control() -> None:
+    """ADR 0018 s.10 (owner, 2026-11-08): cracks curve slightly, rarely if ever
+    switching direction. A bowl's trace is one arc; the wavy control is not."""
+    cut, layers = cut_for(recipe(fractures=(BENT,)))
+    arc = crack_wiggle(cut, layers, 0)
+    wavy = crack_wiggle(cut, _Wavy(**vars(layers)), 0)
+    assert arc < 0.03
+    assert wavy > 0.2
 
 
 def test_sheets_draw_low_floors_and_bent_healed_cracks() -> None:
@@ -313,8 +344,8 @@ def test_sheets_draw_low_floors_and_bent_healed_cracks() -> None:
     assert max(floors) <= FLOOR_HEIGHT[1]
     cracks = [f for r in SHEETS for f in r.fractures]
     assert cracks
-    assert all(f.fill != "open" and f.bend_mm > 0 for f in cracks)
-    assert all(f.bend_mm <= BEND_SHARE[1] * f.bend_scale_mm for f in cracks)
+    assert all(f.fill != "open" and f.sagitta_mm > 0 for f in cracks)
+    assert all(f.sagitta_mm <= SAG_SHARE[1] * f.radius_mm for f in cracks)
 
 
 def test_low_supply_gives_thin_floor_bands() -> None:

@@ -363,9 +363,19 @@ judged ruler-straight black cracks fake. All values `effective` unless cited.
   line (0.11-2.2 over the 12 cracks seen in sheets 1-6), so a few stay nearly
   straight. Positions are drawn as before; bends are drawn after, so the cracks lie
   where they did. Branching is not modelled.
+- **Gentler bends (the owner, 2026-11-08: they bend too much; only very slight
+  curves, rarely if ever switching direction).** The noise bend is replaced by one
+  gentle curvature per crack: a shallow bowl (paraboloid) that rises by a sagitta at
+  the crack's edge, 0.03-0.1 of its radius (steepest slope 0.2), so a trace in any
+  face is one arc and never an S. Over the 12 cracks seen in sheets 1-6 the median
+  trace now bends 0.23 mm RMS from its best line (0.13-0.67; was 0.73), and none
+  shows an S-turn: at most 0.014 mm departs from the best parabola. Sheets 1 and 2
+  redrawn: runs/variety-sheet-s10b/.
 - **Checks with controls:** `crack_bend` (RMS offset of the trace's centre line from
-  its best line, in 1 mm bins: a bent test crack above 0.2 mm, the flat control below
-  0.03); a floor keeps a quartz-filled or quartz-lined centre (over 20 % of its
+  its best line, in 1 mm bins: a bent test crack, sagitta 1.5 mm, above 0.08 mm, the
+  flat control below 0.03); `crack_wiggle`, the no-S-turn check (RMS offset from the
+  best parabola, what one curve cannot follow: the bowl crack below 0.03 mm, a control
+  bent by sine waves of 16 mm period above 0.2); a floor keeps a quartz-filled or quartz-lined centre (over 20 % of its
   share without a floor), while the same floor on a solid centre shows none;
   sheets draw floors at most 0.5 and no open or unbent crack.
 - **Seen, open:** a clear-filled crack shows as a dark grey line in the stand-in

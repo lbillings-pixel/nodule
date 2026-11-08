@@ -105,12 +105,11 @@ FLOOR_HEIGHT = (0.2, 0.5)
 # Cracks (the owner, 2026-11-08: ruler-straight black cracks look fake). Open
 # cracks are no longer drawn: the sources describe cracks healed by chalcedony,
 # quartz or iron oxides [@goetze2020, §5.1; @mrozik2023, pp. 14, 27]. Each crack
-# bends along smooth world noise: amplitude a share of the noise scale, so its
-# slope stays below about 0.75 (`effective`, for the eye; no source gives a form).
-# A first draw at 0.15-0.3 of a 3-8 mm scale bent 30 mm traces by only 0.2-0.3 mm
-# RMS, still straight to the eye: within one face the noise spreads less than 1.
-BEND_SCALE_MM = {"sheet": (3.0, 6.0), "rim": (2.0, 4.0)}
-BEND_SHARE = (0.35, 0.6)
+# is a shallow bowl of one gentle curvature: it rises by a sagitta at its edge, a
+# share of its radius (`effective`, for the eye; no source gives a form). The owner
+# judged noise bends too strong (2026-11-08): only slight curves, rarely if ever
+# switching direction. A bowl's trace in any face is one arc, never an S.
+SAG_SHARE = (0.03, 0.1)  # steepest slope 2 x share, at most 0.2
 # Cuts of overlapping-sphere outlines: the cutter's choice. A cut far off a
 # sphere's centre shows its shells widening toward the middle, and one that only
 # grazes a sphere leaves a nub on the outline; the owner judged both atypical.
@@ -137,21 +136,21 @@ class FractureLayer(BaseModel):
     stain: float = Field(ge=0, le=1, description="Iron added at the trace.")
     halo_mm: float = Field(ge=0, description="Stain reach along the trace, 0-0.5.")
     pool_mm: float = Field(ge=0, description="Stain reach at the cavity and porous bands.")
-    bend_mm: float = Field(default=0.0, ge=0, description="Bend along the normal; 0 is flat.")
-    bend_scale_mm: float = Field(default=4.0, gt=0, description="Scale of the bend's noise.")
+    sagitta_mm: float = Field(
+        default=0.0, ge=0, description="Rise along the normal at the edge; 0 is flat."
+    )
 
-    def distance(
-        self, points: FloatArray, solid_centre: FloatArray, shift: FloatArray | None = None
-    ) -> FloatArray:
-        """Distance (mm) from points (n, 3) to the disc, bent by `shift` (mm along
-        the normal at each point; slow, so the flat formula stays near true)."""
+    def distance(self, points: FloatArray, solid_centre: FloatArray) -> FloatArray:
+        """Distance (mm) from points (n, 3) to the disc, bent into a bowl that rises
+        by the sagitta at its edge (a paraboloid; slopes stay below 0.2, so the flat
+        formula stays near true)."""
         n = np.asarray(self.normal, dtype=np.float64)
         n = n / float(np.linalg.norm(n))
         rel = points - (solid_centre + np.asarray(self.centre_mm))
         z = rel @ n
-        if shift is not None:
-            z = z - shift
         r = np.linalg.norm(rel - z[:, None] * n, axis=1)
+        if self.sagitta_mm:
+            z = z - self.sagitta_mm * (np.minimum(r, self.radius_mm) / self.radius_mm) ** 2
         return np.hypot(z, np.maximum(r - self.radius_mm, 0.0))
 
 
@@ -376,8 +375,8 @@ def draw_fractures(rng: np.random.Generator, solid: Solid, red: bool) -> tuple[F
     """1-3 sheets at high angle to the bands (through the centre region), and 0-3
     short rim-only cracks 1-4 mm long (ADR 0018 s.7, plausible from figures). On a
     red stone, iron fill hardly shows, so most cracks there are clear
-    (`effective`, for the sheet's eye). None is open, and each bends (ADR 0018 s.10);
-    the bends are drawn last, so the cracks lie where they were first drawn."""
+    (`effective`, for the sheet's eye). None is open, and each bends gently (ADR 0018
+    s.10); the bends are drawn last, so the cracks lie where they were first drawn."""
     r = inradius(solid)
     # The old open share goes to clear fill; one fill draw per crack, as before.
     fills, p = ["open", "clear", "iron"], [0.0, 0.9, 0.1] if red else [0.0, 0.6, 0.4]
@@ -412,13 +411,10 @@ def draw_fractures(rng: np.random.Generator, solid: Solid, red: bool) -> tuple[F
                 pool_mm=float(rng.uniform(0.5, 1.5)),
             )
         )
-    return tuple(_bent(rng, f, "sheet" if i < sheets else "rim") for i, f in enumerate(out))
-
-
-def _bent(rng: np.random.Generator, f: FractureLayer, kind: str) -> FractureLayer:
-    scale = float(rng.uniform(*BEND_SCALE_MM[kind]))
-    bend = float(rng.uniform(*BEND_SHARE)) * scale
-    return f.model_copy(update={"bend_mm": bend, "bend_scale_mm": scale})
+    return tuple(
+        f.model_copy(update={"sagitta_mm": float(rng.uniform(*SAG_SHARE)) * f.radius_mm})
+        for f in out
+    )
 
 
 def draw_stone(
@@ -720,17 +716,10 @@ class VarietyLayers:
     start: float
     mottle_noise: SmoothNoise3 | None
     stain_noise: SmoothNoise3 | None
-    bend_noise: tuple[SmoothNoise3 | None, ...] = ()
 
     @classmethod
     def of(cls, recipe: StoneRecipe, solid: Solid, growth: Growth) -> VarietyLayers:
         seqs = np.random.SeedSequence(recipe.seed).spawn(2)
-        # Stream 4 (0-1 here, 2 roughness, 3 refinement), one child per crack.
-        bend_seqs = np.random.SeedSequence(recipe.seed).spawn(5)[4].spawn(len(recipe.fractures))
-        bends = tuple(
-            SmoothNoise3(solid, f.bend_scale_mm, np.random.default_rng(s)) if f.bend_mm else None
-            for f, s in zip(recipe.fractures, bend_seqs, strict=True)
-        )
         mottle = None
         if recipe.mottle is not None:
             mottle = SmoothNoise3(solid, recipe.mottle.scale_mm, np.random.default_rng(seqs[0]))
@@ -747,15 +736,11 @@ class VarietyLayers:
             growth.start,
             mottle,
             stain,
-            bends,
         )
 
     def crack_distance(self, i: int, points: FloatArray) -> FloatArray:
         """Distance (mm) from points to crack i, bent as drawn."""
-        f = self.recipe.fractures[i]
-        noise = self.bend_noise[i] if i < len(self.bend_noise) else None
-        shift = None if noise is None else f.bend_mm * noise(points)
-        return f.distance(points, self.solid_centre, shift)
+        return self.recipe.fractures[i].distance(points, self.solid_centre)
 
     def fracture_distance(self, points: FloatArray) -> FloatArray:
         out = np.full(len(points), np.inf)
@@ -1025,18 +1010,18 @@ def fracture_stain(cut: SpecimenCut, layers: VarietyLayers, near_mm: float = 0.5
     return float(imp[near].mean() - np.median(imp[far]))
 
 
-def crack_bend(cut: SpecimenCut, layers: VarietyLayers, i: int, bin_mm: float = 1.0) -> float:
-    """Bent-crack check: the RMS offset (mm) of crack i's trace in the face from
-    its best straight line. The trace's centre line is the mean offset in bins of
-    `bin_mm` along the line, so a straight trace of any width gives about 0. NaN
-    if the trace spans less than 3 bins."""
+def _trace_centre(
+    cut: SpecimenCut, layers: VarietyLayers, i: int, bin_mm: float
+) -> tuple[FloatArray, FloatArray] | None:
+    """Crack i's trace in the face as a centre line: the mean offset from the
+    trace's main axis in bins of `bin_mm` along it. None if under 3 bins."""
     f = layers.recipe.fractures[i]
     ss, tt = np.meshgrid(cut.s, cut.t)
     d = layers.crack_distance(i, cut.plane.points(ss, tt)).reshape(ss.shape)
     trace = cut.inside & (d < max(f.aperture_mm / 2, cut.spacing_mm))
     xy = np.stack([ss[trace], tt[trace]], axis=1)
     if len(xy) < 10:
-        return math.nan
+        return None
     xy = xy - xy.mean(axis=0)
     axes = np.linalg.svd(xy, full_matrices=False)[2]
     along, off = xy @ axes[0], xy @ axes[1]
@@ -1044,14 +1029,33 @@ def crack_bend(cut: SpecimenCut, layers: VarietyLayers, i: int, bin_mm: float = 
     counts = np.bincount(k)
     keep = counts >= 3
     if keep.sum() < 3:
-        return math.nan
+        return None
     sums = np.zeros(len(counts))
     np.add.at(sums, k, off)
-    centre: FloatArray = sums[keep] / counts[keep]
     x: FloatArray = (np.arange(len(counts))[keep] + 0.5) * bin_mm
-    slope, icept = np.polyfit(x, centre, 1)
-    resid: FloatArray = centre - (slope * x + icept)
+    return x, sums[keep] / counts[keep]
+
+
+def _fit_rms(x: FloatArray, y: FloatArray, degree: int) -> float:
+    resid: FloatArray = y - np.polyval(np.polyfit(x, y, degree), x)
     return float(np.sqrt(np.mean(resid**2)))
+
+
+def crack_bend(cut: SpecimenCut, layers: VarietyLayers, i: int, bin_mm: float = 1.0) -> float:
+    """Bent-crack check: the RMS offset (mm) of crack i's trace in the face from
+    its best straight line, so a straight trace of any width gives about 0. NaN
+    if the trace spans less than 3 bins."""
+    line = _trace_centre(cut, layers, i, bin_mm)
+    return math.nan if line is None else _fit_rms(*line, 1)
+
+
+def crack_wiggle(cut: SpecimenCut, layers: VarietyLayers, i: int, bin_mm: float = 1.0) -> float:
+    """No-S-turn check: the RMS offset (mm) of crack i's trace from its best
+    parabola, the part of the bend that one curve cannot follow. An arc gives
+    about 0; a trace whose curvature switches sign (an S-turn, a wiggle) does not.
+    NaN if the trace spans less than 4 bins."""
+    line = _trace_centre(cut, layers, i, bin_mm)
+    return math.nan if line is None or len(line[0]) < 4 else _fit_rms(*line, 2)
 
 
 def shift_by_depth(

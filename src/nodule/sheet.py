@@ -26,7 +26,7 @@ from numpy.typing import NDArray
 from PIL import Image, ImageDraw
 
 from nodule.specimen import SpecimenCut
-from nodule.variety import StoneRecipe, build, cut_of, draw_sheet
+from nodule.variety import MAX_SLOPE, StoneRecipe, build, cut_of, draw_sheet
 
 HOST_RGB = {  # effective: basalt grey, rhyolite pink-brown, sediment tan
     "volcanic": (68, 66, 66),
@@ -64,7 +64,9 @@ def extent(cut_shape: tuple[int, int], spacing_mm: float) -> float:
     return max(cut_shape) * spacing_mm
 
 
-def make_sheet(seed: int, n: int, px: int, out: Path, tile: int = 400) -> Path:
+def make_sheet(
+    seed: int, n: int, px: int, out: Path, tile: int = 400, max_slope: float = MAX_SLOPE
+) -> Path:
     recipes = draw_sheet(seed, n)
     out.mkdir(parents=True, exist_ok=True)
     cols = min(4, n)
@@ -75,7 +77,7 @@ def make_sheet(seed: int, n: int, px: int, out: Path, tile: int = 400) -> Path:
         progress.report(i / n, f"stone {i + 1} of {n}")
         tracemalloc.start()
         t0 = time.perf_counter()
-        specimen, _ = build(rec)
+        specimen, _ = build(rec, max_slope)
         t1 = time.perf_counter()
         lo, hi = specimen.volume.solid.bounds()
         spacing = float(np.max(np.asarray(hi) - np.asarray(lo))) / px
@@ -111,9 +113,58 @@ def make_sheet(seed: int, n: int, px: int, out: Path, tile: int = 400) -> Path:
             }
         )
     progress.report(1.0, "sheet done")
-    path = out / f"sheet-seed{seed}.png"
+    tag = "" if max_slope == MAX_SLOPE else f"-cap{max_slope:g}"
+    path = out / f"sheet-seed{seed}{tag}.png"
     sheet.save(path)
-    (out / f"sheet-seed{seed}.json").write_text(json.dumps(log, indent=1), "utf-8")
+    (out / f"sheet-seed{seed}{tag}.json").write_text(json.dumps(log, indent=1), "utf-8")
+    return path
+
+
+def close_up(cut: SpecimenCut, rgb: NDArray[np.uint8], window_mm: float) -> Image.Image:
+    """A square window of the picture, centred halfway from the stone's centre to
+    its right-hand rim on the centre row: where wall bands sit in most stones."""
+    inside = cut.inside[::-1]
+    rows, cols = np.nonzero(inside)
+    r0 = int(np.median(rows))
+    c_mid = int(np.median(cols))
+    right = int(cols[rows == r0].max())
+    c0 = (c_mid + right) // 2
+    half = round(window_mm / 2 / cut.spacing_mm)
+    box = (c0 - half, r0 - half, c0 + half, r0 + half)
+    return Image.fromarray(rgb).crop(box)
+
+
+def slope_pairs(seed: int, caps: tuple[float, float], px: int, out: Path, tile: int = 360) -> Path:
+    """Every warped stone of a sheet at two no-fold caps, side by side: whole stone
+    and a 15 mm close-up at each cap (ADR 0018 s.8). Mild-warp stones are left out
+    (their wobble is under both clamps, so they do not change)."""
+    recipes = [r for r in draw_sheet(seed) if r.warp != "mild"]
+    out.mkdir(parents=True, exist_ok=True)
+    head = 24
+    sheet = Image.new("RGB", (4 * tile, head + len(recipes) * (tile + 22)), (235, 235, 235))
+    draw = ImageDraw.Draw(sheet)
+    for k, cap in enumerate(caps):
+        draw.text(
+            (2 * k * tile + 6, 6), f"cap {cap:g}: whole stone | 15 mm close-up", fill=(0, 0, 0)
+        )
+    for row, rec in enumerate(recipes):
+        y = head + row * (tile + 22)
+        for k, cap in enumerate(caps):
+            specimen, _ = build(rec, cap)
+            lo, hi = specimen.volume.solid.bounds()
+            spacing = float(np.max(np.asarray(hi) - np.asarray(lo))) / px
+            cut = cut_of(specimen, rec, spacing)
+            rgb = preview_rgb(cut, rec)
+            whole = Image.fromarray(rgb)
+            whole.thumbnail((tile, tile))
+            near = close_up(cut, rgb, 15.0).resize((tile, tile), Image.Resampling.NEAREST)
+            x = 2 * k * tile
+            sheet.paste(whole, (x + (tile - whole.width) // 2, y + (tile - whole.height) // 2))
+            sheet.paste(near, (x + tile, y))
+        draw.text((6, y + tile + 4), f"stone {rec.index + 1}. {rec.summary()}", fill=(0, 0, 0))
+        print(f"stone {rec.index + 1} done ({rec.warp})")
+    path = out / f"slope-pairs-seed{seed}.png"
+    sheet.save(path)
     return path
 
 
@@ -126,9 +177,20 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--n", type=int, default=12)
     parser.add_argument("--px", type=int, default=600, help="pixels across a stone's box")
     parser.add_argument("--out", type=Path, default=Path("runs/variety-sheet"))
+    parser.add_argument("--max-slope", type=float, default=MAX_SLOPE, help="no-fold cap")
+    parser.add_argument(
+        "--pairs",
+        type=float,
+        nargs=2,
+        metavar=("CAP_A", "CAP_B"),
+        help="instead of a sheet, show the warped stones at two caps side by side",
+    )
     args = parser.parse_args(argv)
     t0 = time.perf_counter()
-    path = make_sheet(args.seed, args.n, args.px, args.out)
+    if args.pairs:
+        path = slope_pairs(args.seed, tuple(args.pairs), args.px, args.out)
+    else:
+        path = make_sheet(args.seed, args.n, args.px, args.out, max_slope=args.max_slope)
     print(f"saved {path} in {time.perf_counter() - t0:.0f} s")
 
 

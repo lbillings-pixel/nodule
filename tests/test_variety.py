@@ -199,3 +199,13 @@ def test_every_outline_builds(outline: str) -> None:
     r = next(r for r in draw_sheet(1) if r.outline == outline)
     config, _ = volume_config(r)
     assert isinstance(config, VolumeConfig)
+
+
+def test_slope_cap_is_a_setting_below_one() -> None:
+    crenulated = next(r for r in draw_sheet(1) if r.warp == "crenulated")
+    low, _ = volume_config(crenulated, 0.5)
+    high, _ = volume_config(crenulated, 0.9)
+    wobble = [float(getattr(c.model, "wobble_mm")) for c in (low, high)]  # noqa: B009
+    assert wobble[1] > wobble[0]
+    with pytest.raises(ValueError, match="fold"):
+        build(crenulated, 1.0)  # at 1 or above, bands could fold (ADR 0005 s.3)

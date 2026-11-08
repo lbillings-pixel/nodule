@@ -247,6 +247,25 @@ Seeds 1 and 2 are drawn. Stand-in colours only: no render yet.
   - Mottle patches are capped at 0.35 of the stone's size, so a face shows several.
   - On red stones most cracks are open or clear, as iron fill hardly shows.
   - Amethyst and smoky tints are in the stand-in colour only.
+- **Slope-cap trial (owner's request, 2026-11-08).** The cap is now a per-run
+  setting (`max_slope`, below 1; default 0.5) and the clamp scales with it
+  (amplitude at most 0.16 × cap × scale). At 0.9 the crenulated stones of seeds 1
+  and 2 take about twice the amplitude (0.16 to 0.29 mm, 0.26 to 0.46 mm), yet the
+  stand-in pairs look nearly the same. agatesim's wobble moves all bands together
+  as one smooth swell. The crenulation in the owner's reference photos is sharp
+  chevrons and roughness that differs band by band, so the cap is not what limits
+  it (*plausible*, from the pairs and the photos). Owner judges the pairs; a
+  per-band roughness form is the likely next step for crenulation.
+- **Owner's notes for planning (2026-11-08):** thunder-egg arms are much too
+  regular and straight; real ones are sinuous and river-like, as of fluid
+  infiltrating an irregular void. Higher fidelity may wait for later stages.
+- **New reference photos (owner, 2026-11-08):** one thunder egg (face and three
+  close-ups), one green moss agate with plumes (four views), one plume agate whose
+  plumes vary in colour. Private: stored with the specimen photos in agatesim, never
+  in this repository; notes in its `specimens/observations.md`. Features they show
+  for the list: band-following particle dust and larger flakes seen at depth;
+  chevron crenulation; healed cracks without stain; plumes growing from a base,
+  with pale rims and colour that varies per plume (feature 6).
 - **Before any render:** the GPU growth grid (`nodule.render.tgrid`) reads agatesim
   directly and must apply the same layers, and the quartz tint must reach the
   materials. No render or statistics before the owner has seen the sheets (s.1).

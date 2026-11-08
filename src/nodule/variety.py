@@ -81,7 +81,13 @@ QUARTZ_GRAIN_MM = 0.5
 # `physical`: macro-quartz holds 78-141 ppm Fe against 262-969 in the bands
 # [@mrozik2023, Table 5]; 0.2 lies inside the range of ratios (about 0.08-0.54).
 QUARTZ_IRON_RATIO = 0.2
-WOBBLE_PER_SCALE = 0.08  # largest wobble amplitude per mm of wobble scale (see volume_config)
+# The no-fold slope cap on band wobble (ADR 0005 s.3: below 1, bands cannot fold).
+# 0.5 is the look preset's; the owner asked to try higher (2026-11-08, ADR 0018 s.8).
+MAX_SLOPE = 0.5
+# Largest wobble amplitude per mm of wobble scale, per unit of cap: agatesim's slope
+# bound is about 4.2 / scale per mm of amplitude (measured 2026-11-08), so this
+# keeps the wobble's own slope near two thirds of the cap.
+WOBBLE_PER_SCALE_PER_CAP = 0.16
 
 
 class FractureLayer(BaseModel):
@@ -445,7 +451,7 @@ def growth_for(recipe: StoneRecipe, r: float) -> Growth:
             return Growth(g, (1 - w) * r / g)
 
 
-def volume_config(recipe: StoneRecipe) -> tuple[VolumeConfig, Growth]:
+def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[VolumeConfig, Growth]:
     solid = recipe.solid.build()
     r = inradius(solid)
     growth = growth_for(recipe, r)
@@ -456,12 +462,13 @@ def volume_config(recipe: StoneRecipe) -> tuple[VolumeConfig, Growth]:
         "band_period": min(recipe.band_mm / g, 0.5),
         "period_variability": 0.7,  # ADR 0011, kept from the look preset
         "alternation": 0.7,
-        # Clamped under agatesim's no-fold cap (its slope bound is about 4.2 / scale
-        # per mm of amplitude, measured 2026-11-08), so crenulation is gentler than
-        # the figures show; raising the cap is an open question (ADR 0005 s.3).
-        "wobble_mm": min(recipe.wobble_mm, WOBBLE_PER_SCALE * recipe.wobble_scale_mm),
+        # Clamped under the no-fold cap, so at 0.5 crenulation is gentler than the
+        # figures show (ADR 0018 s.8).
+        "wobble_mm": min(
+            recipe.wobble_mm, WOBBLE_PER_SCALE_PER_CAP * max_slope * recipe.wobble_scale_mm
+        ),
         "wobble_scale_mm": recipe.wobble_scale_mm,
-        "wobble_max_slope": 0.5,  # bands never fold (ADR 0005 s.3)
+        "wobble_max_slope": max_slope,
     }
     silica: list[dict[str, object]] = []
     if growth.quartz_at is not None:
@@ -646,8 +653,10 @@ class VarietyLayers:
         return replace(fields, phase=phase, impurity=imp, translucency=trans, pigment=pig)
 
 
-def build(recipe: StoneRecipe) -> tuple[Specimen, VarietyLayers]:
-    config, growth = volume_config(recipe)
+def build(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Specimen, VarietyLayers]:
+    if not 0 < max_slope < 1:
+        raise ValueError("max_slope must lie in (0, 1): at 1 or above, bands can fold")
+    config, growth = volume_config(recipe, max_slope)
     specimen = Specimen.build(SpecimenConfig(volume=config))
     layers = VarietyLayers.of(recipe, specimen.volume.solid, growth)
     return replace(specimen, layers=layers), layers

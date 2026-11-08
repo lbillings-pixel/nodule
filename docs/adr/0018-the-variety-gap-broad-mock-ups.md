@@ -397,7 +397,8 @@ judged ruler-straight black cracks fake. All values `effective` unless cited.
   Check: `band_swelling`, the same measure: the test stone at half wobble (0.1 mm,
   4 mm scale) below 1.08, the control at the drooping stone's full strength (0.2
   mm) above 1.12 (measured 1.03 and 1.20). Sheets 1 and 2 redrawn:
-  runs/variety-sheet-s10c/.
+  runs/variety-sheet-s10c/ The owner (2026-11-08): the bands
+  look good enough.
 - **Seen, open:** a clear-filled crack shows as a dark grey line in the stand-in
   (seed 2 stone 5); whether it reads darker than a real healed crack is for the
   render, not the stand-in.

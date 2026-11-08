@@ -304,7 +304,7 @@ does occur in agates, but rarely, so each is kept and made rare (all `effective`
   phase stretches; the rest of the run is as at full supply.
 - **Seen, not changed:** large floors (0.64-0.66 on seed 1's stones 8 and 10) rise
   above their target and can crowd out a quartz centre (stone 10 shows none). This
-  was so before s.9 too; left for the owner's call.
+  was so before s.9 too; left for the owner's call. Fixed in s.10.
 - **The cutter's choice.** Both stones are overlapping spheres (agatesim's lobed
   vesicle). Stone 1's cut grazed one sphere (offset 0.96 of its radius), leaving a
   nub; stone 12's passed 0.59 of a radius off one lobe's centre, where its shells
@@ -325,6 +325,52 @@ does occur in agates, but rarely, so each is kept and made rare (all `effective`
   odd cuts, thick floors and roughness (a 0.4 mm control is refused).
 - **Confirmed list:** the owner agreed the missing features to add next are
   band-following particles and dust, plumes and moss, and depth through clear bands.
+
+### 10. Floors keep their centres; cracks heal and bend (2026-11-08)
+
+The owner asked for lower floors (seed 1's 0.64-0.66 floors crowd out quartz) and
+judged ruler-straight black cracks fake. All values `effective` unless cited.
+
+- **Floors lost every centre.** Measured over sheets 1-6 before the change: none of
+  the 11 floor stones with a quartz centre showed quartz or open space in its cut.
+  The walls do not grow while the floor settles (agatesim fills the open space from
+  its lowest point), but they were still sized to the whole cavity, so they always
+  closed the space left above the floor. Now the walls are sized to that space: in
+  a sphere of radius r a floor at a share f of the height leaves room for a sphere
+  of radius r (1 - f) exactly (other outlines: an approximation), and the centre's
+  width is a share of that. The floor runs first, then the walls' whole run.
+- **Floor growth from volume.** The old scaling (6.6 / 16 r per unit share, from one
+  probe) made low floors rise well above target once walls no longer shrank to make
+  room (0.28 drawn, 0.43 reached). Settling conserves volume, so the floor's cap
+  (pi h^2 (3r - h) / 3, h = 2 r f) now equals the shell of the growth it needs,
+  which gives the old value at f = 0.5. Floors now reach their target within +0.06.
+- **Lower draw:** f from 0.2-0.5 (was 0.3-0.7). Over sheets 1-6, the 15 floors reach
+  0.28-0.55 of the cut's height; 10 of the 11 with a quartz centre show quartz or
+  open space (0.1-6 % of the face; centres sit in the smaller space above the
+  floor). The miss is an irregular outline with a narrow centre (seed 1 stone 9,
+  width 0.11), where the sphere rule is only approximate.
+- **No open cracks.** The sources describe cracks healed by later agate or quartz
+  and refilled with chalcedony or iron oxides [@goetze2020, §5.1; @mrozik2023, pp.
+  14, 27]; open cracks were drawn as voids, black in the stand-in. They are no longer
+  drawn (the old open share goes to clear fill: red stones 0.9 clear, 0.1 iron;
+  others 0.6 clear, 0.4 iron). Open fill stays available as a setting.
+- **Bent cracks.** Each crack bends along the normal by smooth world noise (its own
+  stream, so previews match full runs): long cracks at a 3-6 mm scale, rim cracks at
+  2-4 mm, amplitude 0.35-0.6 of the scale (steepest slope about 0.75). No source
+  gives a crack's form; this is for the eye. A first draw at 0.15-0.3 of a 3-8 mm
+  scale bent 30 mm traces by only 0.2-0.3 mm RMS: within one face the noise spreads
+  less than its full range. Now the median trace bends 0.73 mm RMS from its best
+  line (0.11-2.2 over the 12 cracks seen in sheets 1-6), so a few stay nearly
+  straight. Positions are drawn as before; bends are drawn after, so the cracks lie
+  where they did. Branching is not modelled.
+- **Checks with controls:** `crack_bend` (RMS offset of the trace's centre line from
+  its best line, in 1 mm bins: a bent test crack above 0.2 mm, the flat control below
+  0.03); a floor keeps a quartz-filled or quartz-lined centre (over 20 % of its
+  share without a floor), while the same floor on a solid centre shows none;
+  sheets draw floors at most 0.5 and no open or unbent crack.
+- **Seen, open:** a clear-filled crack shows as a dark grey line in the stand-in
+  (seed 2 stone 5); whether it reads darker than a real healed crack is for the
+  render, not the stand-in.
 
 ## Limits
 

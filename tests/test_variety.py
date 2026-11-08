@@ -13,7 +13,9 @@ from agatesim.volume.config import SliceConfig, SolidConfig, VolumeConfig
 
 from nodule.specimen import Specimen, SpecimenConfig, SpecimenCut
 from nodule.variety import (
+    BEND_SHARE,
     CLEAN_CUT,
+    FLOOR_HEIGHT,
     ROUGHNESS_LIMIT_MM,
     BandRoughness,
     FractureLayer,
@@ -24,6 +26,7 @@ from nodule.variety import (
     VarietyLayers,
     build,
     clean_cut,
+    crack_bend,
     cut_obliqueness,
     cut_of,
     draw_sheet,
@@ -264,15 +267,54 @@ def test_quartz_contact_stays_sharp_and_its_negative_control() -> None:
 # --- the owner's notes on the plain stones and the roughness trial (ADR 0018 s.9) ---
 
 
-def test_floor_stretches_only_its_own_phase() -> None:
-    full = Growth(20.0, 0.6).after_floor(5.0, 1.0)  # control: the old timing
-    assert (full.growth_mm, full.start, full.quartz_at) == pytest.approx((20.0, 0.25, 0.6))
+def test_floor_comes_first_and_leaves_the_walls_their_run() -> None:
+    full = Growth(20.0, 0.6).after_floor(5.0, 1.0)
+    assert (full.growth_mm, full.start, full.quartz_at) == pytest.approx((25.0, 0.2, 0.68))
     run = Growth(20.0, 0.6).after_floor(5.0, 0.25)
     assert run.growth_mm * 0.25 * run.start == pytest.approx(5.0)  # the floor's growth
-    assert run.growth_mm * (1 - run.start) == pytest.approx(15.0)  # the rest as before
-    # Quartz starts after the same wall growth as at full supply: 7 mm.
+    assert run.growth_mm * (1 - run.start) == pytest.approx(20.0)  # the walls' run, whole
+    # Quartz starts after the walls' own 12 mm, whatever the floor.
     assert run.quartz_at is not None
-    assert run.growth_mm * (run.quartz_at - run.start) == pytest.approx(7.0)
+    assert run.growth_mm * (run.quartz_at - run.start) == pytest.approx(12.0)
+
+
+def _phase_share(r: StoneRecipe, *phases: Phase) -> float:
+    cut, _ = cut_for(r)
+    return float(np.isin(cut.fields.phase[cut.inside], phases).mean())
+
+
+@pytest.mark.parametrize("centre", ["quartz-filled", "quartz-lined"])
+def test_a_floor_keeps_its_centre_and_its_negative_control(centre: str) -> None:
+    """ADR 0018 s.10: walls sized to the cavity above the floor leave the centre.
+    Before, every floor stone of sheets 1-6 lost its centre."""
+    open_centre = recipe(centre=centre, centre_width=0.3, lining=0.5)
+    floored = open_centre.model_copy(update={"floor": 0.5, "floor_supply": 0.2})
+    alone = _phase_share(open_centre, Phase.QUARTZ, Phase.VOID)
+    kept = _phase_share(floored, Phase.QUARTZ, Phase.VOID)
+    assert kept > 0.2 * alone > 0
+    # Control: a solid centre with the same floor shows no centre at all.
+    solid = floored.model_copy(update={"centre": "solid", "centre_width": 0.0})
+    assert _phase_share(solid, Phase.QUARTZ, Phase.VOID) == 0
+
+
+BENT = CRACK.model_copy(update={"bend_mm": 1.2, "bend_scale_mm": 6.0})
+
+
+def test_bent_crack_check_and_its_negative_control() -> None:
+    bent = crack_bend(*cut_for(recipe(fractures=(BENT,))), 0)
+    straight = crack_bend(*cut_for(recipe(fractures=(CRACK,))), 0)  # control: a flat disc
+    assert bent > 0.2
+    assert straight < 0.03
+
+
+def test_sheets_draw_low_floors_and_bent_healed_cracks() -> None:
+    floors = [r.floor for r in SHEETS if r.floor]
+    assert floors
+    assert max(floors) <= FLOOR_HEIGHT[1]
+    cracks = [f for r in SHEETS for f in r.fractures]
+    assert cracks
+    assert all(f.fill != "open" and f.bend_mm > 0 for f in cracks)
+    assert all(f.bend_mm <= BEND_SHARE[1] * f.bend_scale_mm for f in cracks)
 
 
 def test_low_supply_gives_thin_floor_bands() -> None:

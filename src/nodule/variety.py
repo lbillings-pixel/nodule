@@ -99,6 +99,18 @@ WOBBLE_PER_SCALE_PER_CAP = 0.16
 # for most stones.
 FLOOR_SUPPLY = (0.12, 0.35)
 THICK_FLOOR_CHANCE = 1 / 8  # supply 1: the thick floor bands, kept but rare
+# Floor height, as a share of the cavity's height: lower than the first draw
+# (0.3-0.7), which the owner judged too high (2026-11-08); `effective`.
+FLOOR_HEIGHT = (0.2, 0.5)
+# Cracks (the owner, 2026-11-08: ruler-straight black cracks look fake). Open
+# cracks are no longer drawn: the sources describe cracks healed by chalcedony,
+# quartz or iron oxides [@goetze2020, §5.1; @mrozik2023, pp. 14, 27]. Each crack
+# bends along smooth world noise: amplitude a share of the noise scale, so its
+# slope stays below about 0.75 (`effective`, for the eye; no source gives a form).
+# A first draw at 0.15-0.3 of a 3-8 mm scale bent 30 mm traces by only 0.2-0.3 mm
+# RMS, still straight to the eye: within one face the noise spreads less than 1.
+BEND_SCALE_MM = {"sheet": (3.0, 6.0), "rim": (2.0, 4.0)}
+BEND_SHARE = (0.35, 0.6)
 # Cuts of overlapping-sphere outlines: the cutter's choice. A cut far off a
 # sphere's centre shows its shells widening toward the middle, and one that only
 # grazes a sphere leaves a nub on the outline; the owner judged both atypical.
@@ -125,13 +137,20 @@ class FractureLayer(BaseModel):
     stain: float = Field(ge=0, le=1, description="Iron added at the trace.")
     halo_mm: float = Field(ge=0, description="Stain reach along the trace, 0-0.5.")
     pool_mm: float = Field(ge=0, description="Stain reach at the cavity and porous bands.")
+    bend_mm: float = Field(default=0.0, ge=0, description="Bend along the normal; 0 is flat.")
+    bend_scale_mm: float = Field(default=4.0, gt=0, description="Scale of the bend's noise.")
 
-    def distance(self, points: FloatArray, solid_centre: FloatArray) -> FloatArray:
-        """Distance (mm) from points (n, 3) to the disc."""
+    def distance(
+        self, points: FloatArray, solid_centre: FloatArray, shift: FloatArray | None = None
+    ) -> FloatArray:
+        """Distance (mm) from points (n, 3) to the disc, bent by `shift` (mm along
+        the normal at each point; slow, so the flat formula stays near true)."""
         n = np.asarray(self.normal, dtype=np.float64)
         n = n / float(np.linalg.norm(n))
         rel = points - (solid_centre + np.asarray(self.centre_mm))
         z = rel @ n
+        if shift is not None:
+            z = z - shift
         r = np.linalg.norm(rel - z[:, None] * n, axis=1)
         return np.hypot(z, np.maximum(r - self.radius_mm, 0.0))
 
@@ -356,12 +375,15 @@ def _unit(rng: np.random.Generator) -> FloatArray:
 def draw_fractures(rng: np.random.Generator, solid: Solid, red: bool) -> tuple[FractureLayer, ...]:
     """1-3 sheets at high angle to the bands (through the centre region), and 0-3
     short rim-only cracks 1-4 mm long (ADR 0018 s.7, plausible from figures). On a
-    red stone, iron fill hardly shows, so most cracks there are open or clear
-    (`effective`, for the sheet's eye)."""
+    red stone, iron fill hardly shows, so most cracks there are clear
+    (`effective`, for the sheet's eye). None is open, and each bends (ADR 0018 s.10);
+    the bends are drawn last, so the cracks lie where they were first drawn."""
     r = inradius(solid)
-    fills, p = ["open", "clear", "iron"], [0.4, 0.5, 0.1] if red else [0.3, 0.3, 0.4]
+    # The old open share goes to clear fill; one fill draw per crack, as before.
+    fills, p = ["open", "clear", "iron"], [0.0, 0.9, 0.1] if red else [0.0, 0.6, 0.4]
     out: list[FractureLayer] = []
-    for _ in range(int(rng.integers(1, 4))):
+    sheets = int(rng.integers(1, 4))
+    for _ in range(sheets):
         fill: Fill = str(rng.choice(fills, p=p))  # type: ignore[assignment]
         out.append(
             FractureLayer(
@@ -390,7 +412,13 @@ def draw_fractures(rng: np.random.Generator, solid: Solid, red: bool) -> tuple[F
                 pool_mm=float(rng.uniform(0.5, 1.5)),
             )
         )
-    return tuple(out)
+    return tuple(_bent(rng, f, "sheet" if i < sheets else "rim") for i, f in enumerate(out))
+
+
+def _bent(rng: np.random.Generator, f: FractureLayer, kind: str) -> FractureLayer:
+    scale = float(rng.uniform(*BEND_SCALE_MM[kind]))
+    bend = float(rng.uniform(*BEND_SHARE)) * scale
+    return f.model_copy(update={"bend_mm": bend, "bend_scale_mm": scale})
 
 
 def draw_stone(
@@ -450,7 +478,7 @@ def draw_stone(
         centre_width=width,
         lining=float(rng.uniform(0.3, 0.7)),
         tint=tint,
-        floor=float(rng.uniform(0.3, 0.7)) if floor else 0.0,
+        floor=float(rng.uniform(*FLOOR_HEIGHT)) if floor else 0.0,
         colour=colour,  # type: ignore[arg-type]
         band_mm=0.12 if outline == "pebble" else _log_uniform(rng, 0.2, 1.0),
         warp=warp,  # type: ignore[arg-type]
@@ -540,20 +568,16 @@ class Growth:
         return self.quartz_at if self.quartz_at is not None else 1.0
 
     def after_floor(self, floor_mm: float, supply: float) -> Growth:
-        """The run with a floor first. At full supply the floor takes the first
-        floor_mm of growth (time W0 = floor_mm / g, at most 0.6 as before). At
-        lower supply that phase stretches to time W (g' supply W = floor_mm) and
-        the rest of the run is unchanged (g' (1 - W) = g (1 - W0)): the walls
-        grow as much as at full supply, so a floor still leaves its centre."""
-        g = self.growth_mm
-        w0 = min(floor_mm / g, 0.6)
-        floor_mm = w0 * g
-        rest = g - floor_mm
-        w = floor_mm / (supply * rest + floor_mm)
-        quartz_at = None
-        if self.quartz_at is not None:
-            quartz_at = w + (1 - w) * max(self.quartz_at - w0, 0.0) / (1 - w0)
-        return Growth(rest / (1 - w), quartz_at, w)
+        """This run (the walls) with a floor first. The floor grows floor_mm at
+        `supply` over time W (g' supply W = floor_mm); the walls do not grow while
+        it settles (agatesim fills the open space from its lowest point), then grow
+        as this run does (g' (1 - W) = g). The caller sizes this run to the cavity
+        left above the floor (ADR 0018 s.10), so the floor keeps its centre."""
+        pre = floor_mm / supply
+        g = pre + self.growth_mm
+        w = pre / g
+        quartz_at = None if self.quartz_at is None else w + (1 - w) * self.quartz_at
+        return Growth(g, quartz_at, w)
 
 
 def growth_for(recipe: StoneRecipe, r: float) -> Growth:
@@ -576,14 +600,27 @@ def growth_for(recipe: StoneRecipe, r: float) -> Growth:
             return Growth(g, (1 - w) * r / g)
 
 
+def floor_growth_mm(share: float, r: float) -> float:
+    """Growth (mm) whose volume settles into a floor at `share` of the height of a
+    sphere of radius r: agatesim's settling conserves volume, so the floor's cap
+    (pi h^2 (3r - h) / 3, h = 2 r share) equals the shell of that growth. Exact for
+    a sphere; for other outlines an approximation (ADR 0018 s.10). At 0.5 it gives
+    0.206 r, as the old one-probe scaling did (6.6 / 16 per unit share)."""
+    return r * (1.0 - (1.0 - share**2 * (3.0 - 2.0 * share)) ** (1 / 3))
+
+
 def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[VolumeConfig, Growth]:
     solid = recipe.solid.build()
     r = inradius(solid)
     growth = growth_for(recipe, r)
     if recipe.floor:
-        # Floor growth scaled from one probe (40 mm round vesicle, 30 mm growth:
-        # a 0.12 pulse gave a floor at about 0.55 of the height); `effective`.
-        growth = growth.after_floor(recipe.floor * 6.6 * r / 16.0, recipe.floor_supply)
+        # The walls are sized to the cavity left above the floor: in a sphere of
+        # radius r, a floor at a share f of the height leaves room for a sphere of
+        # radius r (1 - f) exactly; for other outlines an approximation.
+        left = r * max(1.0 - recipe.floor, 0.1)
+        growth = growth_for(recipe, left).after_floor(
+            floor_growth_mm(recipe.floor, r), recipe.floor_supply
+        )
     g = growth.growth_mm
     model: dict[str, object] = {
         "kind": "procedural-growth",
@@ -683,10 +720,17 @@ class VarietyLayers:
     start: float
     mottle_noise: SmoothNoise3 | None
     stain_noise: SmoothNoise3 | None
+    bend_noise: tuple[SmoothNoise3 | None, ...] = ()
 
     @classmethod
     def of(cls, recipe: StoneRecipe, solid: Solid, growth: Growth) -> VarietyLayers:
         seqs = np.random.SeedSequence(recipe.seed).spawn(2)
+        # Stream 4 (0-1 here, 2 roughness, 3 refinement), one child per crack.
+        bend_seqs = np.random.SeedSequence(recipe.seed).spawn(5)[4].spawn(len(recipe.fractures))
+        bends = tuple(
+            SmoothNoise3(solid, f.bend_scale_mm, np.random.default_rng(s)) if f.bend_mm else None
+            for f, s in zip(recipe.fractures, bend_seqs, strict=True)
+        )
         mottle = None
         if recipe.mottle is not None:
             mottle = SmoothNoise3(solid, recipe.mottle.scale_mm, np.random.default_rng(seqs[0]))
@@ -703,12 +747,20 @@ class VarietyLayers:
             growth.start,
             mottle,
             stain,
+            bends,
         )
+
+    def crack_distance(self, i: int, points: FloatArray) -> FloatArray:
+        """Distance (mm) from points to crack i, bent as drawn."""
+        f = self.recipe.fractures[i]
+        noise = self.bend_noise[i] if i < len(self.bend_noise) else None
+        shift = None if noise is None else f.bend_mm * noise(points)
+        return f.distance(points, self.solid_centre, shift)
 
     def fracture_distance(self, points: FloatArray) -> FloatArray:
         out = np.full(len(points), np.inf)
-        for f in self.recipe.fractures:
-            out = np.minimum(out, f.distance(points, self.solid_centre))
+        for i in range(len(self.recipe.fractures)):
+            out = np.minimum(out, self.crack_distance(i, points))
         return out
 
     def __call__(self, points: FloatArray, fields: Fields, inside: BoolArray) -> Fields:
@@ -751,8 +803,8 @@ class VarietyLayers:
             patch = np.clip(0.7 + 0.5 * self.stain_noise(points), 0, 1)
             stain(chal, rec.rim_stain * np.exp(-depth / 0.25) * patch, Pigment.IRON)
 
-        for f in rec.fractures:
-            d = f.distance(points, self.solid_centre)
+        for i, f in enumerate(rec.fractures):
+            d = self.crack_distance(i, points)
             near = inside & (d < f.halo_mm + 4 * f.pool_mm + f.aperture_mm)
             if not near.any():
                 continue
@@ -971,6 +1023,35 @@ def fracture_stain(cut: SpecimenCut, layers: VarietyLayers, near_mm: float = 0.5
     if near.sum() < 20 or far.sum() < 20:
         return math.nan
     return float(imp[near].mean() - np.median(imp[far]))
+
+
+def crack_bend(cut: SpecimenCut, layers: VarietyLayers, i: int, bin_mm: float = 1.0) -> float:
+    """Bent-crack check: the RMS offset (mm) of crack i's trace in the face from
+    its best straight line. The trace's centre line is the mean offset in bins of
+    `bin_mm` along the line, so a straight trace of any width gives about 0. NaN
+    if the trace spans less than 3 bins."""
+    f = layers.recipe.fractures[i]
+    ss, tt = np.meshgrid(cut.s, cut.t)
+    d = layers.crack_distance(i, cut.plane.points(ss, tt)).reshape(ss.shape)
+    trace = cut.inside & (d < max(f.aperture_mm / 2, cut.spacing_mm))
+    xy = np.stack([ss[trace], tt[trace]], axis=1)
+    if len(xy) < 10:
+        return math.nan
+    xy = xy - xy.mean(axis=0)
+    axes = np.linalg.svd(xy, full_matrices=False)[2]
+    along, off = xy @ axes[0], xy @ axes[1]
+    k = np.floor((along - along.min()) / bin_mm).astype(np.int64)
+    counts = np.bincount(k)
+    keep = counts >= 3
+    if keep.sum() < 3:
+        return math.nan
+    sums = np.zeros(len(counts))
+    np.add.at(sums, k, off)
+    centre: FloatArray = sums[keep] / counts[keep]
+    x: FloatArray = (np.arange(len(counts))[keep] + 0.5) * bin_mm
+    slope, icept = np.polyfit(x, centre, 1)
+    resid: FloatArray = centre - (slope * x + icept)
+    return float(np.sqrt(np.mean(resid**2)))
 
 
 def shift_by_depth(

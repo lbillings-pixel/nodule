@@ -90,6 +90,15 @@ MAX_SLOPE = 0.5
 # bound is about 4.2 / scale per mm of amplitude (measured 2026-11-08), so this
 # keeps the wobble's own slope near two thirds of the cap.
 WOBBLE_PER_SCALE_PER_CAP = 0.16
+# Mild warps at half the drawn wobble (the owner, 2026-11-08: a wide band droops).
+# agatesim's wobble is independent at each depth, so a wide band's two edges drift
+# apart; over sheets 1-6 the 28 mild stones without floors swell by a median 1.10
+# (P99 band width over the same stone without wobble), 1.03 at half (all 28 less).
+# Crenulated and lobed warps keep theirs: they sit at the no-fold clamp, and there a
+# weaker wobble fades in more steeply from the wall, so lobed stones swell more
+# (median 1.11 to 1.17; ADR 0018 s.10). `effective`.
+MILD_WOBBLE_SHARE = 0.5
+FULL_WOBBLE_STONES = (1, 1)  # per 12 stones: a mild stone keeps its full wobble
 
 # The owner's notes on the roughness trial and the plain cap-0.5 stones
 # (2026-11-08, ADR 0018 s.9): keep such features, but make them rare.
@@ -204,6 +213,7 @@ class StoneRecipe(BaseModel):
     warp: Warp
     wobble_mm: float = Field(ge=0)
     wobble_scale_mm: float = Field(gt=0)
+    full_wobble: bool = False  # a mild stone kept at its full drawn wobble (rare)
     white_fade: float = Field(ge=0, le=1, description="White bands thin inward.")
     rim_stain: float = Field(ge=0, le=1)
     mottle: Mottle | None = None
@@ -224,6 +234,8 @@ class StoneRecipe(BaseModel):
             parts.append(f"floor {self.floor:.2f}{thick}")
         if self.warp != "mild":
             parts.append(self.warp)
+        elif self.full_wobble:
+            parts.append("full wobble")
         if self.mottle is not None:
             parts.append("mottle")
         if self.fractures:
@@ -275,6 +287,9 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     mottled = set(plan.permutation(n)[: round(MOTTLE_SHARE * n)].tolist())
     odd_ok = [i for i, o in enumerate(outlines) if o in ("vesicle", "irregular")]
     odd = set(plan.permutation(odd_ok)[: _scaled(plan, ODD_CUTS, n)].tolist())
+    # Drawn last, so the stones drawn before this choice keep their plan.
+    mild = [i for i, w in enumerate(warps) if w == "mild"]
+    full = set(plan.permutation(mild)[: _scaled(plan, FULL_WOBBLE_STONES, n)].tolist())
     return [
         draw_stone(
             i,
@@ -287,6 +302,7 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
             cracked=i in cracked,
             mottled=i in mottled,
             odd_cut=i in odd,
+            full_wobble=i in full,
         )
         for i in range(n)
     ]
@@ -429,6 +445,7 @@ def draw_stone(
     cracked: bool,
     mottled: bool,
     odd_cut: bool = False,
+    full_wobble: bool = False,
 ) -> StoneRecipe:
     solid_config = solid_for(rng, outline)  # type: ignore[arg-type]
     solid = solid_config.build()
@@ -444,6 +461,8 @@ def draw_stone(
             wobble, scale = float(rng.uniform(0.5, 1.5)), float(rng.uniform(8.0, 15.0))
         case _:
             wobble, scale = float(rng.uniform(0.05, 0.25)), float(rng.uniform(3.0, 8.0))
+            if not full_wobble:
+                wobble *= MILD_WOBBLE_SHARE
     mottle = None
     if mottled:
         # Patches 5-30 mm, but at most about a third of the stone, so a face shows
@@ -480,6 +499,7 @@ def draw_stone(
         warp=warp,  # type: ignore[arg-type]
         wobble_mm=wobble,
         wobble_scale_mm=scale,
+        full_wobble=full_wobble and warp == "mild",
         white_fade=float(rng.uniform(0.2, 0.5)),
         rim_stain=float(rng.uniform(0.5, 0.9)) if colour == "stained" else 0.0,
         mottle=mottle,
@@ -1056,6 +1076,28 @@ def crack_wiggle(cut: SpecimenCut, layers: VarietyLayers, i: int, bin_mm: float 
     NaN if the trace spans less than 4 bins."""
     line = _trace_centre(cut, layers, i, bin_mm)
     return math.nan if line is None or len(line[0]) < 4 else _fit_rms(*line, 2)
+
+
+def band_swelling(
+    cut: SpecimenCut, layers: VarietyLayers, growth_mm: float, plain: SpecimenCut
+) -> float:
+    """Wobble swelling check (ADR 0018 s.10): the 99th percentile of band width over
+    the same stone cut without wobble (`plain`, same plane and spacing), pixel by
+    pixel, in chalcedony from 1 mm below the wall to 1 mm short of its end. Band
+    width is 1 / |grad depth|, so the stone's outline and the cut's obliqueness
+    cancel. Not for floor stones: a floor's flat bands give near-zero gradients."""
+    widths: list[tuple[NDArray[np.float64], NDArray[np.float64]]] = []
+    for c in (cut, plain):
+        f = c.fields
+        t = np.asarray(f.t_smooth if f.t_smooth is not None else f.t_dep, dtype=np.float64)
+        ok = c.inside & np.isfinite(t) & (t < layers.chalcedony_end)
+        depth = np.where(ok, t * growth_mm, np.nan)
+        gy, gx = np.gradient(depth, c.spacing_mm)
+        widths.append((depth, np.hypot(gx, gy)))
+    (_, g), (d0, g0) = widths
+    end = np.nanmax(d0)
+    m = np.isfinite(d0) & np.isfinite(g) & (d0 > 1.0) & (d0 < end - 1.0) & (g > 0) & (g0 > 0)
+    return float(np.percentile(g0[m] / g[m], 99)) if m.sum() > 100 else math.nan
 
 
 def shift_by_depth(

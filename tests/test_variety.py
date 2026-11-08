@@ -16,6 +16,8 @@ from nodule.specimen import Specimen, SpecimenConfig, SpecimenCut
 from nodule.variety import (
     CLEAN_CUT,
     FLOOR_HEIGHT,
+    FULL_WOBBLE_STONES,
+    MILD_WOBBLE_SHARE,
     ROUGHNESS_LIMIT_MM,
     SAG_SHARE,
     BandRoughness,
@@ -25,6 +27,7 @@ from nodule.variety import (
     Roughness,
     StoneRecipe,
     VarietyLayers,
+    band_swelling,
     build,
     clean_cut,
     crack_bend,
@@ -396,3 +399,23 @@ def test_sheets_keep_thick_floors_rare() -> None:
     floors = [r.floor_supply for r in SHEETS if r.floor]
     assert floors
     assert sum(f >= 1 for f in floors) <= 0.3 * len(floors)
+
+
+def test_wobble_swelling_check_and_its_negative_control() -> None:
+    """ADR 0018 s.10 (owner, 2026-11-08: a wide band droops). A mild stone at half
+    wobble keeps its bands even; the control, the full-strength wobble of the
+    drooping stone (0.05 mm per mm of scale), swells them."""
+    plain = cut_for(recipe(wobble_mm=0.0))[0]
+    growth = volume_config(recipe())[1].growth_mm
+    half = band_swelling(*cut_for(recipe(wobble_mm=0.1)), growth, plain=plain)
+    full = band_swelling(*cut_for(recipe(wobble_mm=0.2)), growth, plain=plain)
+    assert half < 1.08
+    assert full > 1.12
+
+
+def test_sheets_halve_mild_wobble_but_one_stone_in_twelve() -> None:
+    mild = [r for r in SHEETS if r.warp == "mild"]
+    full = [r for r in mild if r.full_wobble]
+    assert len(full) == FULL_WOBBLE_STONES[0] * len(SHEETS) // 12
+    assert all(r.wobble_mm <= 0.25 * MILD_WOBBLE_SHARE for r in mild if not r.full_wobble)
+    assert not any(r.full_wobble for r in SHEETS if r.warp != "mild")

@@ -378,6 +378,26 @@ judged ruler-straight black cracks fake. All values `effective` unless cited.
   bent by sine waves of 16 mm period above 0.2); a floor keeps a quartz-filled or quartz-lined centre (over 20 % of its
   share without a floor), while the same floor on a solid centre shows none;
   sheets draw floors at most 0.5 and no open or unbent crack.
+- **Half the wobble on mild warps (the owner, 2026-11-08: seed 1 stone 1's
+  grey-blue band droops at lower right).** agatesim's wobble is independent noise at
+  each depth, so a wide band's two edges drift apart. Measured over sheets 1-6 as
+  the 99th percentile of band width over the same stone cut without wobble, pixel by
+  pixel (so outline and cut obliqueness cancel; floor stones left out, their flat
+  bands defeat the measure): the 28 mild stones swell by a median 1.10 (max 1.22),
+  1.03 (max 1.12) at half wobble, all 28 less. Crenulated and lobed warps are left
+  as drawn: they sit at the no-fold clamp, and there agatesim's fade-in from the
+  wall takes up the slope the wobble leaves unused, so a weaker wobble fades in more
+  steeply. Halved, crenulated stones barely change (median 1.09 to 1.10) and lobed
+  ones swell more near the wall (1.11 to 1.17, though less beyond 6 mm). A gentler
+  fade-in would be an agatesim change, not made. A first measure (band width P99
+  over its median, per face) mixed the wobble with the cut's own widening and was
+  dropped. Mild wobble is drawn as before (same stream) and then halved
+  (`effective`); one mild stone in 12 keeps its full wobble ("full wobble" on the
+  sheet), chosen last in the sheet's plan so that all other draws stand.
+  Check: `band_swelling`, the same measure: the test stone at half wobble (0.1 mm,
+  4 mm scale) below 1.08, the control at the drooping stone's full strength (0.2
+  mm) above 1.12 (measured 1.03 and 1.20). Sheets 1 and 2 redrawn:
+  runs/variety-sheet-s10c/.
 - **Seen, open:** a clear-filled crack shows as a dark grey line in the stand-in
   (seed 2 stone 5); whether it reads darker than a real healed crack is for the
   render, not the stand-in.

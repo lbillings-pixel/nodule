@@ -254,8 +254,24 @@ Seeds 1 and 2 are drawn. Stand-in colours only: no render yet.
   stand-in pairs look nearly the same. agatesim's wobble moves all bands together
   as one smooth swell. The crenulation in the owner's reference photos is sharp
   chevrons and roughness that differs band by band, so the cap is not what limits
-  it (*plausible*, from the pairs and the photos). Owner judges the pairs; a
-  per-band roughness form is the likely next step for crenulation.
+  it (*plausible*, from the pairs and the photos). **Owner: keep 0.5** (it looks
+  better overall), and try a per-band roughness form as well.
+- **Band roughness trial (2026-11-08).** `Roughness` / `BandRoughness`: the growth
+  model is read at points shifted along the local band normal by world noise taken
+  at the point's foot on the wall. The noise drifts with depth, so the pattern
+  renews over a few mm, and its strength builds inward. Ridged (sharp creases) and
+  smooth versions. The outline is not warped. The shift fades out near the centre
+  line and over the last bands before quartz (an assumption, for the look; never a
+  growth mechanism). Trial sizes (`effective`): 0.4 mm amplitude, 2 mm along the
+  band, from one thunder egg's close-ups scaled by fingertips (field about 9-10 mm;
+  chevron arms 1.5-3 mm; *plausible*, +-40 %). Checks and negative controls: band
+  shift at 0.2-1.5 mm depth 0.035 mm RMS against 0.114 mm at 1.5-8 mm (full
+  strength from the wall: 0.207 at both); no fold, 0.4-0.6 % of steps against 36 %
+  for an extreme setting (threshold 2 %); quartz contact, 0.13 % stray quartz
+  pixels against 3.25 % without the fade. Cost: about 2-4 times the plain cut (6
+  more model reads a point for the normal); 18 stand-in cuts at 1200 px took 153 s.
+  Comparison sheet: `nodule.sheet --roughness-trial 1 2`. Not yet drawn into
+  recipes; the owner judges first.
 - **Owner's notes for planning (2026-11-08):** thunder-egg arms are much too
   regular and straight; real ones are sinuous and river-like, as of fluid
   infiltrating an irregular void. Higher fidelity may wait for later stages.

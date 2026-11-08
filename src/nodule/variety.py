@@ -28,6 +28,7 @@ Appearance only: never evidence for a formation mechanism (ADR 0002).
 from __future__ import annotations
 
 import math
+from collections.abc import Callable
 from dataclasses import dataclass, replace
 from statistics import NormalDist
 from typing import Literal
@@ -125,6 +126,20 @@ class Mottle(BaseModel):
     strength: float = Field(ge=0, le=1)
 
 
+class Roughness(BaseModel):
+    """Band roughness that grows inward, band by band (ADR 0018 s.8; the owner's
+    trial after the slope-cap pairs). All `effective`. Sizes from one thunder egg's
+    close-ups, scaled by fingertips (*plausible*, +-40 %): chevron arms 1.5-3 mm."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    amplitude_mm: float = Field(gt=0, description="Largest shift of a band, reached inward.")
+    fade_mm: float = Field(default=5.0, gt=0, description="Depth over which it builds.")
+    scale_mm: float = Field(gt=0, description="Size of the roughness along a band.")
+    renew_mm: float = Field(default=4.0, gt=0, description="Depth over which it renews.")
+    ridged: bool = Field(default=True, description="Sharp creases (chevrons), else smooth.")
+
+
 class StoneRecipe(BaseModel):
     """One stone's features. Lengths in mm; all values `effective` unless the
     module says otherwise."""
@@ -149,6 +164,7 @@ class StoneRecipe(BaseModel):
     rim_stain: float = Field(ge=0, le=1)
     mottle: Mottle | None = None
     fractures: tuple[FractureLayer, ...] = ()
+    roughness: Roughness | None = None
     cut: SliceConfig
 
     def summary(self) -> str:
@@ -167,6 +183,8 @@ class StoneRecipe(BaseModel):
             parts.append("mottle")
         if self.fractures:
             parts.append(f"{len(self.fractures)} cracks")
+        if self.roughness is not None:
+            parts.append("ridged" if self.roughness.ridged else "rough")
         parts.append(f"bands {self.band_mm:.2f} mm")
         return ", ".join(parts)
 
@@ -653,13 +671,94 @@ class VarietyLayers:
         return replace(fields, phase=phase, impurity=imp, translucency=trans, pigment=pig)
 
 
+RIDGE_MEAN = math.sqrt(2 / math.pi)  # mean of |n| for unit normal noise
+
+
+@dataclass(frozen=True, eq=False)
+class BandRoughness:
+    """Reads the growth model at points shifted along the local band normal
+    (`nodule.specimen.Warp`), so band edges roughen while the outline stays.
+
+    The shift is A(d) R(n(w + d (s/r) e)), where d is the depth from the wall
+    (growth time times growth_mm), w = p - d g the point's foot on the wall (g the
+    unit inward normal, from growth time by central differences), n smooth world
+    noise of scale s, r the renew depth and e a fixed unit vector, so the pattern
+    holds along each normal and drifts into a new one over r. A(d) = A (1 - exp(-d/f))
+    grows inward; R is the noise itself, or |n| - its mean for sharp creases. The
+    shift varies slowly along the normal, so bands do not fold (`fold_share` checks
+    it); along a band it may change fast, which gives the chevrons. Near the
+    centre line, where bands from opposite walls meet and g flips, the shift fades
+    out: there growth time rises more slowly than one growth_mm per mm over the
+    0.5 mm difference step (and on floors, which grow faster than the walls). A form
+    chosen for the look, not a growth mechanism (ADR 0002): an assumption. It also
+    fades out over the last bands before a quartz centre, keeping that contact sharp."""
+
+    roughness: Roughness
+    growth_mm: float
+    noise: SmoothNoise3
+    drift: FloatArray
+    quartz_at: float | None = None  # growth time at which quartz starts, if it does
+    step_mm: float = 0.5
+
+    @classmethod
+    def of(cls, roughness: Roughness, solid: Solid, growth: Growth, seed: int) -> BandRoughness:
+        rng = np.random.default_rng(np.random.SeedSequence(seed).spawn(3)[2])
+        noise = SmoothNoise3(solid, roughness.scale_mm, rng)
+        return cls(roughness, growth.growth_mm, noise, _unit(rng), growth.quartz_at)
+
+    def __call__(
+        self, points: FloatArray, growth_time: Callable[[FloatArray], FloatArray]
+    ) -> FloatArray:
+        r = self.roughness
+        g, depth, weight = self.frame(points, growth_time)
+        foot = points - depth[:, None] * g
+        n = self.noise(foot + (depth * r.scale_mm / r.renew_mm)[:, None] * self.drift)
+        shape = np.abs(n) - RIDGE_MEAN if r.ridged else n
+        shift = r.amplitude_mm * (1 - np.exp(-depth / r.fade_mm)) * shape * weight
+        return points + shift[:, None] * g
+
+    def frame(
+        self, points: FloatArray, growth_time: Callable[[FloatArray], FloatArray]
+    ) -> tuple[FloatArray, FloatArray, FloatArray]:
+        """Unit inward normal g, depth from the wall (mm) and the shift's weight
+        (0 where growth time is undefined or near the centre line, else up to 1).
+        Differences are one-sided where one side has no growth time (quartz, voids)."""
+        h = self.step_mm
+        t = growth_time(points)
+        grad = np.full_like(points, np.nan)
+        for k in range(3):
+            e = np.zeros(3)
+            e[k] = h
+            up, down = growth_time(points + e), growth_time(points - e)
+            both = np.isfinite(up) & np.isfinite(down)
+            grad[:, k] = np.where(
+                both, (up - down) / (2 * h), np.where(np.isfinite(up), up - t, t - down) / h
+            )
+        size = np.linalg.norm(grad, axis=1)
+        ok = np.isfinite(t) & np.isfinite(size) & (size > 0)
+        g = np.where(ok[:, None], grad / np.where(ok, size, 1.0)[:, None], 0.0)
+        depth = np.where(ok, t * self.growth_mm, 0.0)
+        rate = np.where(ok, size * self.growth_mm, 0.0)  # about 1 in wall bands
+        weight = np.clip((rate - 0.5) / 0.4, 0.0, 1.0)
+        if self.quartz_at is not None:
+            # Fade out over the last bands before quartz, so the contact stays
+            # sharp: reading across it would scatter quartz and chalcedony.
+            left = (self.quartz_at - np.where(ok, t, 0.0)) * self.growth_mm
+            span = max(1.5 * self.roughness.amplitude_mm, 0.1)
+            weight *= np.clip((left - 0.05) / span, 0.0, 1.0)
+        return g, depth, weight
+
+
 def build(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Specimen, VarietyLayers]:
     if not 0 < max_slope < 1:
         raise ValueError("max_slope must lie in (0, 1): at 1 or above, bands can fold")
     config, growth = volume_config(recipe, max_slope)
     specimen = Specimen.build(SpecimenConfig(volume=config))
     layers = VarietyLayers.of(recipe, specimen.volume.solid, growth)
-    return replace(specimen, layers=layers), layers
+    warp = None
+    if recipe.roughness is not None:
+        warp = BandRoughness.of(recipe.roughness, specimen.volume.solid, growth, recipe.seed)
+    return replace(specimen, layers=layers, warp=warp), layers
 
 
 def cut_of(specimen: Specimen, recipe: StoneRecipe, spacing_mm: float) -> SpecimenCut:
@@ -746,3 +845,62 @@ def fracture_stain(cut: SpecimenCut, layers: VarietyLayers, near_mm: float = 0.5
     if near.sum() < 20 or far.sum() < 20:
         return math.nan
     return float(imp[near].mean() - np.median(imp[far]))
+
+
+def shift_by_depth(
+    cut: SpecimenCut, plain: SpecimenCut, growth_mm: float, depths_mm: tuple[float, float, float]
+) -> tuple[float, float]:
+    """Roughness-grows-inward check: the RMS shift of the bands (mm), from the same
+    stone cut without roughness (`plain`, same plane and spacing), in chalcedony at
+    depth `depths_mm[0]`-`[1]` from the wall and at `[1]`-`[2]`. Depth is read from
+    the plain cut's growth time."""
+    f, g = cut.fields, plain.fields
+    tf = f.t_smooth if f.t_smooth is not None else f.t_dep
+    tg = g.t_smooth if g.t_smooth is not None else g.t_dep
+    both = cut.inside & (f.phase == Phase.CHALCEDONY) & (g.phase == Phase.CHALCEDONY)
+    both &= np.isfinite(tf) & np.isfinite(tg)
+    depth = np.asarray(tg, dtype=np.float64) * growth_mm
+    shift = (np.asarray(tf, dtype=np.float64) - np.asarray(tg, dtype=np.float64)) * growth_mm
+    out: list[float] = []
+    for lo, hi in ((depths_mm[0], depths_mm[1]), (depths_mm[1], depths_mm[2])):
+        m = both & (depth >= lo) & (depth < hi)
+        out.append(float(np.sqrt(np.mean(shift[m] ** 2))) if m.sum() > 20 else math.nan)
+    return out[0], out[1]
+
+
+def fold_share(
+    specimen: Specimen, samples: int = 4000, step_mm: float = 0.05, seed: int = 0
+) -> float:
+    """No-fold check: at random points in the stone, step `step_mm` inward along
+    the unwarped band normal and read growth time through the warp at both ends.
+    Returns the share of steps (among those where the unwarped bands rise inward)
+    where the warped bands fall instead: bands met in reverse, a fold. Zero for an
+    unwarped stone by construction."""
+    warp = specimen.warp
+    if not isinstance(warp, BandRoughness):
+        raise ValueError("fold_share reads a stone warped by BandRoughness")
+    solid = specimen.volume.solid
+    rng = np.random.default_rng(seed)
+    lo, hi = (np.asarray(b, dtype=np.float64) for b in solid.bounds())
+    pts = lo + rng.uniform(size=(samples, 3)) * (hi - lo)
+    pts = pts[solid.contains(pts)]
+    gt = specimen.growth_time
+    g, _, _ = warp.frame(pts, gt)
+    ahead = pts + step_mm * g
+    rising = gt(ahead) - gt(pts) > 0
+    if not rising.any():
+        return 0.0
+    w0, w1 = gt(warp(pts, gt)), gt(warp(ahead, gt))
+    folded = rising & np.isfinite(w0) & np.isfinite(w1) & (w1 < w0)
+    return float(folded.sum() / rising.sum())
+
+
+def stray_quartz(cut: SpecimenCut) -> float:
+    """Sharp-contact check: the share of quartz pixels with fewer than two quartz
+    neighbours (of four), i.e. quartz scattered into the chalcedony."""
+    q = cut.inside & (cut.fields.phase == Phase.QUARTZ)
+    if q.sum() < 50:
+        return math.nan
+    p = np.pad(q, 1)
+    neighbours = p[:-2, 1:-1].astype(int) + p[2:, 1:-1] + p[1:-1, :-2] + p[1:-1, 2:]
+    return float((q & (neighbours < 2)).sum() / q.sum())

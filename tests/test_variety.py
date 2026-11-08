@@ -4,6 +4,7 @@ and each check with its negative control (CLAUDE.md)."""
 from __future__ import annotations
 
 from collections import Counter
+from dataclasses import replace as dc_replace
 
 import numpy as np
 import pytest
@@ -12,18 +13,23 @@ from agatesim.volume.config import SliceConfig, SolidConfig, VolumeConfig
 
 from nodule.specimen import Specimen, SpecimenConfig, SpecimenCut
 from nodule.variety import (
+    BandRoughness,
     FractureLayer,
     Mottle,
+    Roughness,
     StoneRecipe,
     VarietyLayers,
     build,
     cut_of,
     draw_sheet,
     flat_bands,
+    fold_share,
     fracture_stain,
     has_cavity,
     lining_roughness,
     quota,
+    shift_by_depth,
+    stray_quartz,
     volume_config,
 )
 
@@ -209,3 +215,40 @@ def test_slope_cap_is_a_setting_below_one() -> None:
     assert wobble[1] > wobble[0]
     with pytest.raises(ValueError, match="fold"):
         build(crenulated, 1.0)  # at 1 or above, bands could fold (ADR 0005 s.3)
+
+
+ROUGH = Roughness(amplitude_mm=0.4, scale_mm=2.0)
+
+
+def test_roughness_grows_inward_and_its_negative_control() -> None:
+    plain, _ = cut_for(recipe())
+    growth = volume_config(recipe())[1].growth_mm
+    depths = (0.2, 1.5, 8.0)
+    rim, inner = shift_by_depth(cut_for(recipe(roughness=ROUGH))[0], plain, growth, depths)
+    assert inner > 2.5 * rim
+    flat = ROUGH.model_copy(update={"fade_mm": 0.01})  # full strength from the wall
+    rim0, inner0 = shift_by_depth(cut_for(recipe(roughness=flat))[0], plain, growth, depths)
+    assert inner0 < 1.5 * rim0
+
+
+def test_roughness_does_not_fold_and_its_negative_control() -> None:
+    specimen, _ = build(recipe(roughness=ROUGH))
+    assert fold_share(specimen, samples=1500) < 0.02
+    extreme = Roughness(amplitude_mm=3.0, scale_mm=1.0, renew_mm=0.3, fade_mm=0.5)
+    folded, _ = build(recipe(roughness=extreme))
+    assert fold_share(folded, samples=1500) > 0.2
+
+
+def test_roughness_keeps_the_outline() -> None:
+    rough, _ = cut_for(recipe(roughness=ROUGH))
+    plain, _ = cut_for(recipe())
+    np.testing.assert_array_equal(rough.inside, plain.inside)
+
+
+def test_quartz_contact_stays_sharp_and_its_negative_control() -> None:
+    lined = LINED.model_copy(update={"roughness": ROUGH})
+    specimen, _ = build(lined)
+    assert stray_quartz(cut_of(specimen, lined, SPACING)) < 0.005
+    assert isinstance(specimen.warp, BandRoughness)
+    unfaded = dc_replace(specimen, warp=dc_replace(specimen.warp, quartz_at=None))
+    assert stray_quartz(cut_of(unfaded, lined, SPACING)) > 0.015  # scattered contact

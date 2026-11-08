@@ -26,7 +26,7 @@ from numpy.typing import NDArray
 from PIL import Image, ImageDraw
 
 from nodule.specimen import SpecimenCut
-from nodule.variety import MAX_SLOPE, StoneRecipe, build, cut_of, draw_sheet
+from nodule.variety import MAX_SLOPE, Roughness, StoneRecipe, build, cut_of, draw_sheet
 
 HOST_RGB = {  # effective: basalt grey, rhyolite pink-brown, sediment tan
     "volcanic": (68, 66, 66),
@@ -134,27 +134,37 @@ def close_up(cut: SpecimenCut, rgb: NDArray[np.uint8], window_mm: float) -> Imag
     return Image.fromarray(rgb).crop(box)
 
 
-def slope_pairs(seed: int, caps: tuple[float, float], px: int, out: Path, tile: int = 360) -> Path:
-    """Every warped stone of a sheet at two no-fold caps, side by side: whole stone
-    and a 15 mm close-up at each cap (ADR 0018 s.8). Mild-warp stones are left out
-    (their wobble is under both clamps, so they do not change)."""
-    recipes = [r for r in draw_sheet(seed) if r.warp != "mild"]
-    out.mkdir(parents=True, exist_ok=True)
-    head = 24
-    sheet = Image.new("RGB", (4 * tile, head + len(recipes) * (tile + 22)), (235, 235, 235))
+Variant = tuple[str, float, "Roughness | None"]  # label, no-fold cap, band roughness
+# The owner's roughness trial (ADR 0018 s.8): plain wobble at cap 0.5, then ridged
+# and smooth band roughness. Sizes `effective`, from one thunder egg's close-ups.
+TRIAL_ROUGHNESS = Roughness(amplitude_mm=0.4, scale_mm=2.0)
+ROUGHNESS_VARIANTS: list[Variant] = [
+    ("plain (cap 0.5)", MAX_SLOPE, None),
+    ("ridged roughness", MAX_SLOPE, TRIAL_ROUGHNESS),
+    ("smooth roughness", MAX_SLOPE, TRIAL_ROUGHNESS.model_copy(update={"ridged": False})),
+]
+
+
+def variant_sheet(
+    recipes: list[StoneRecipe], variants: list[Variant], px: int, path: Path, tile: int = 330
+) -> Path:
+    """Each stone in each variant side by side: whole stone and a 15 mm close-up
+    per variant (ADR 0018 s.8)."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    head, cols = 24, 2 * len(variants)
+    sheet = Image.new("RGB", (cols * tile, head + len(recipes) * (tile + 22)), (235, 235, 235))
     draw = ImageDraw.Draw(sheet)
-    for k, cap in enumerate(caps):
-        draw.text(
-            (2 * k * tile + 6, 6), f"cap {cap:g}: whole stone | 15 mm close-up", fill=(0, 0, 0)
-        )
+    for k, (label, _, _) in enumerate(variants):
+        draw.text((2 * k * tile + 6, 6), f"{label}: whole | 15 mm close-up", fill=(0, 0, 0))
     for row, rec in enumerate(recipes):
         y = head + row * (tile + 22)
-        for k, cap in enumerate(caps):
-            specimen, _ = build(rec, cap)
+        for k, (_, cap, roughness) in enumerate(variants):
+            stone = rec.model_copy(update={"roughness": roughness})
+            specimen, _ = build(stone, cap)
             lo, hi = specimen.volume.solid.bounds()
             spacing = float(np.max(np.asarray(hi) - np.asarray(lo))) / px
-            cut = cut_of(specimen, rec, spacing)
-            rgb = preview_rgb(cut, rec)
+            cut = cut_of(specimen, stone, spacing)
+            rgb = preview_rgb(cut, stone)
             whole = Image.fromarray(rgb)
             whole.thumbnail((tile, tile))
             near = close_up(cut, rgb, 15.0).resize((tile, tile), Image.Resampling.NEAREST)
@@ -162,10 +172,24 @@ def slope_pairs(seed: int, caps: tuple[float, float], px: int, out: Path, tile: 
             sheet.paste(whole, (x + (tile - whole.width) // 2, y + (tile - whole.height) // 2))
             sheet.paste(near, (x + tile, y))
         draw.text((6, y + tile + 4), f"stone {rec.index + 1}. {rec.summary()}", fill=(0, 0, 0))
-        print(f"stone {rec.index + 1} done ({rec.warp})")
-    path = out / f"slope-pairs-seed{seed}.png"
+        print(f"stone {rec.index + 1} done")
     sheet.save(path)
     return path
+
+
+def slope_pairs(seed: int, caps: tuple[float, float], px: int, out: Path) -> Path:
+    """Every warped stone of a sheet at two no-fold caps (mild-warp stones are
+    under both clamps, so they do not change)."""
+    recipes = [r for r in draw_sheet(seed) if r.warp != "mild"]
+    variants: list[Variant] = [(f"cap {c:g}", c, None) for c in caps]
+    return variant_sheet(recipes, variants, px, out / f"slope-pairs-seed{seed}.png", tile=360)
+
+
+def roughness_trial(seeds: list[int], px: int, out: Path) -> Path:
+    """The crenulated stones of the given seeds, plain and with band roughness."""
+    recipes = [r for s in seeds for r in draw_sheet(s) if r.warp == "crenulated"]
+    name = "roughness-trial-seeds" + "-".join(str(s) for s in seeds) + ".png"
+    return variant_sheet(recipes, ROUGHNESS_VARIANTS, px, out / name)
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -179,6 +203,13 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--out", type=Path, default=Path("runs/variety-sheet"))
     parser.add_argument("--max-slope", type=float, default=MAX_SLOPE, help="no-fold cap")
     parser.add_argument(
+        "--roughness-trial",
+        type=int,
+        nargs="+",
+        metavar="SEED",
+        help="instead of a sheet, the crenulated stones of these seeds with and without roughness",
+    )
+    parser.add_argument(
         "--pairs",
         type=float,
         nargs=2,
@@ -187,7 +218,9 @@ def main(argv: list[str] | None = None) -> None:
     )
     args = parser.parse_args(argv)
     t0 = time.perf_counter()
-    if args.pairs:
+    if args.roughness_trial:
+        path = roughness_trial(args.roughness_trial, args.px, args.out)
+    elif args.pairs:
         path = slope_pairs(args.seed, tuple(args.pairs), args.px, args.out)
     else:
         path = make_sheet(args.seed, args.n, args.px, args.out, max_slope=args.max_slope)

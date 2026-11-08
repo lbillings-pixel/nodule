@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import math
 import tomllib
+from collections.abc import Callable
 from dataclasses import dataclass, fields, replace
 from functools import cached_property
 from importlib import resources
@@ -124,11 +125,23 @@ class Layers(Protocol):
     def __call__(self, points: FloatArray, fields: Fields, inside: BoolArray) -> Fields: ...
 
 
+class Warp(Protocol):
+    """Where to read the growth model for each world point (mm): band roughness
+    that starts in Nodule (ADR 0018 s.8). Given the points and a function giving
+    growth time at any points, it returns the points to read instead. The stone's
+    outline is not warped: whether a point lies in the stone is decided where it is."""
+
+    def __call__(
+        self, points: FloatArray, growth_time: Callable[[FloatArray], FloatArray]
+    ) -> FloatArray: ...
+
+
 @dataclass(frozen=True, eq=False)
 class Specimen:
     volume: VolumeSimulation
     fractures: tuple[Fracture, ...]
     layers: Layers | None = None
+    warp: Warp | None = None
 
     @classmethod
     def build(cls, config: SpecimenConfig) -> Specimen:
@@ -142,12 +155,25 @@ class Specimen:
 
     def evaluate(self, points: FloatArray) -> tuple[Fields, BoolArray]:
         """Fields at world points (n, 3), and which points lie in the stone."""
-        fields, inside = evaluate_fractured(
-            self.volume.evaluate, self.volume.solid.contains, points, self.fractures
-        )
+        if self.warp is not None:
+            if self.fractures:
+                raise ValueError("a warped specimen takes no slipping fractures")
+            inside = self.volume.solid.contains(points)
+            fields = self.volume.evaluate(self.warp(points, self.growth_time), inside)
+        else:
+            fields, inside = evaluate_fractured(
+                self.volume.evaluate, self.volume.solid.contains, points, self.fractures
+            )
         if self.layers is not None:
             fields = self.layers(points, fields, inside)
         return fields, inside
+
+    def growth_time(self, points: FloatArray) -> FloatArray:
+        """The unwarped growth time at world points: smooth where the model gives
+        it, NaN where nothing grew."""
+        f = self.volume.evaluate(points, self.volume.solid.contains(points))
+        t = f.t_smooth if f.t_smooth is not None else f.t_dep
+        return np.asarray(t, dtype=np.float64)
 
     def fracture_distance(self, points: FloatArray) -> FloatArray:
         """Distance (mm) to the nearest fracture sheet, in present coordinates.

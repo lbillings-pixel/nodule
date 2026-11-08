@@ -27,7 +27,7 @@ import tomllib
 from dataclasses import dataclass, fields, replace
 from functools import cached_property
 from importlib import resources
-from typing import Literal
+from typing import Literal, Protocol
 
 import numpy as np
 from agatesim import progress
@@ -116,10 +116,19 @@ class SpecimenCut:
     fracture_mm: FloatArray  # (ny, nx): distance to the nearest fracture sheet; inf if none
 
 
+class Layers(Protocol):
+    """Changes to the fields after growth, at world points (mm): quick feature layers
+    that start in Nodule (ADR 0018 section 3). Present coordinates: a layer does not
+    move with fracture slip, so layered specimens keep their fractures slip-free."""
+
+    def __call__(self, points: FloatArray, fields: Fields, inside: BoolArray) -> Fields: ...
+
+
 @dataclass(frozen=True, eq=False)
 class Specimen:
     volume: VolumeSimulation
     fractures: tuple[Fracture, ...]
+    layers: Layers | None = None
 
     @classmethod
     def build(cls, config: SpecimenConfig) -> Specimen:
@@ -133,9 +142,12 @@ class Specimen:
 
     def evaluate(self, points: FloatArray) -> tuple[Fields, BoolArray]:
         """Fields at world points (n, 3), and which points lie in the stone."""
-        return evaluate_fractured(
+        fields, inside = evaluate_fractured(
             self.volume.evaluate, self.volume.solid.contains, points, self.fractures
         )
+        if self.layers is not None:
+            fields = self.layers(points, fields, inside)
+        return fields, inside
 
     def fracture_distance(self, points: FloatArray) -> FloatArray:
         """Distance (mm) to the nearest fracture sheet, in present coordinates.

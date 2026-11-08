@@ -210,6 +210,47 @@ spawned stream, each drawing a subset:
 - **Screening first:** stand-in cuts (about 6 s each) make a preview sheet for the
   owner before any render (about 1 h for 12).
 
+### 8. First layers and preview sheets (2026-11-08)
+
+`nodule.variety` draws a sheet's recipes from one seed (quotas exactly as section 7)
+and turns each into an agatesim run plus quick layers in Nodule; `nodule.sheet` cuts
+each stone and makes a stand-in preview sheet (`runs/variety-sheet`, gitignored).
+Seeds 1 and 2 are drawn. Stand-in colours only: no render yet.
+
+- **From agatesim, chosen per stone:** outline (its solid presets; a drawn star
+  prism for thunder eggs, cut across), quartz centre (silica supply drops below
+  agatesim's quartz threshold), quartz-lined open centre (the run ends as the lining
+  reaches its thickness: agatesim allows no stage after quartz), floor (a settling
+  pulse at the start), warp (its slope-capped wobble), palette and iron supply.
+- **New layers in Nodule** (`VarietyLayers`, couplings labelled there): quartz iron
+  at 0.2 of the bands' (`physical` ratio, [@mrozik2023, Table 5]); white bands fade
+  inward; mottle patches with darker rims, milky bands taking more; a patchy rim
+  stain; fracture traces (open, clear or iron fill, no offset) whose stain pools at
+  milky bands and the cavity. Layers hook into `Specimen.evaluate`, so previews at
+  any spacing agree (tested on shared pixels).
+- **Checks and negative controls** (`tests/test_variety.py`), measured values:
+  cavity (a solid stone reports none); faceted lining, boundary over smoothed
+  boundary, 1.36 for a quartz lining against 1.04 for the same cavity lined by
+  chalcedony (thresholds 1.15 and 1.08); waterline, level bands across 40 % of the
+  width, 5 on a floor stone against 0 on a concentric one (threshold 3); stained
+  fracture, impurity near the crack over the median beyond 3 mm, 0.41 against
+  -0.01 unstained (thresholds 0.1 and 0.03).
+- **Costs:** a 12-stone sheet takes 30 to 37 s at 600 px, peak traced memory under
+  0.3 GB a stone. One early probe at 0.25 mm quartz grain spacing took 124 s for a
+  45 mm stone (32 s at 0.5 mm), so grains start at 0.5 mm (`effective`).
+- **Departures from section 7, for the owner:**
+  - Crenulation is clamped to an amplitude of 0.08 × its scale, under agatesim's
+    no-fold slope cap of 0.5 (ADR 0005 s.3); figures show steeper crenulation.
+    Raising the cap (still below 1, so bands cannot fold) is the owner's call.
+    Its scale starts at 2 mm, not 1 mm (cost of the noise lattice).
+  - Kinks are not separate: "lobed" warp is a long wobble (8 to 15 mm).
+  - Mottle patches are capped at 0.35 of the stone's size, so a face shows several.
+  - On red stones most cracks are open or clear, as iron fill hardly shows.
+  - Amethyst and smoky tints are in the stand-in colour only.
+- **Before any render:** the GPU growth grid (`nodule.render.tgrid`) reads agatesim
+  directly and must apply the same layers, and the quartz tint must reach the
+  materials. No render or statistics before the owner has seen the sheets (s.1).
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

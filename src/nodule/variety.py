@@ -31,7 +31,7 @@ import math
 from collections.abc import Callable
 from dataclasses import dataclass, replace
 from statistics import NormalDist
-from typing import Literal
+from typing import Literal, NamedTuple
 
 import numpy as np
 from agatesim.fields import Fields, Phase, Pigment
@@ -119,6 +119,21 @@ FLOOR_HEIGHT = (0.2, 0.5)
 # judged noise bends too strong (2026-11-08): only slight curves, rarely if ever
 # switching direction. A bowl's trace in any face is one arc, never an S.
 SAG_SHARE = (0.03, 0.1)  # steepest slope 2 x share, at most 0.2
+# The owner on crack form and mix (2026-11-08, ADR 0018 s.10; all `effective`, for the
+# eye: no source gives crack counts, lengths or fills for agates). Healed cracks in a
+# stone usually share one shade; some are straight; most are short or partial, and
+# long, central or crossing cracks are rare (cracking that deep usually splits the
+# stone). Shares below are among cracked stones.
+CRACK_FILLS: dict[str, float] = {"clear": 0.6, "iron": 0.4}  # red stones: RED_CRACK_FILLS
+RED_CRACK_FILLS: dict[str, float] = {"clear": 0.9, "iron": 0.1}  # iron hardly shows on red
+MIXED_FILL_CHANCE = 1 / 12  # one crack takes the other fill (a later crack)
+STAIN_JITTER = 0.1  # each crack's iron within this of the stone's
+STRAIGHT_SHARE = 1 / 3  # cracks with no bend
+PARTIAL_CRACKS = (3, 8)  # per cracked stone: inward from the rim
+PARTIAL_REACH = (0.2, 0.5)  # how far in, as a share of the inradius
+LONG_CRACKS: dict[int, float] = {0: 8, 1: 3, 2: 1}  # per 12 cracked stones
+LONG_RADIUS = (0.6, 1.2)  # share of the inradius
+LONG_OFFSET = (0.2, 0.6)  # centre's distance from the stone's centre, share of inradius
 # Cuts of overlapping-sphere outlines: the cutter's choice. A cut far off a
 # sphere's centre shows its shells widening toward the middle, and one that only
 # grazes a sphere leaves a nub on the outline; the owner judged both atypical.
@@ -388,47 +403,71 @@ def _unit(rng: np.random.Generator) -> FloatArray:
 
 
 def draw_fractures(rng: np.random.Generator, solid: Solid, red: bool) -> tuple[FractureLayer, ...]:
-    """1-3 sheets at high angle to the bands (through the centre region), and 0-3
-    short rim-only cracks 1-4 mm long (ADR 0018 s.7, plausible from figures). On a
-    red stone, iron fill hardly shows, so most cracks there are clear
-    (`effective`, for the sheet's eye). None is open, and each bends gently (ADR 0018
-    s.10); the bends are drawn last, so the cracks lie where they were first drawn."""
+    """A cracked stone's cracks (ADR 0018 s.7, s.10): 1-4 partial cracks running in
+    from the rim, 0-3 nicks 1-4 mm long at the rim and, on 1 cracked stone in 3,
+    one or (rarely) two long cracks off the centre. All share one fill and about
+    one iron strength, except that 1 cracked stone in 12 has one crack of the other
+    fill. None is open; 1 in 3 is straight and the rest bend gently. The bends are
+    drawn last, so the cracks lie where they were first drawn."""
     r = inradius(solid)
-    # The old open share goes to clear fill; one fill draw per crack, as before.
-    fills, p = ["open", "clear", "iron"], [0.0, 0.9, 0.1] if red else [0.0, 0.6, 0.4]
+    shares = RED_CRACK_FILLS if red else CRACK_FILLS
+    fill: Fill = str(rng.choice(list(shares), p=_shares(shares)))  # type: ignore[assignment]
+    stain = float(rng.uniform(0.4, 1.0))
+
+    def shade() -> float:
+        return float(np.clip(stain + rng.uniform(-STAIN_JITTER, STAIN_JITTER), 0.0, 1.0))
+
+    def from_rim(radius_mm: float, aperture: tuple[float, float]) -> FractureLayer:
+        radial = _unit(rng)
+        normal = np.cross(radial, _unit(rng))  # the crack runs inward from the rim
+        return FractureLayer(
+            centre_mm=tuple(rim_point(solid, radial).tolist()),
+            normal=tuple((normal / float(np.linalg.norm(normal))).tolist()),
+            radius_mm=radius_mm,
+            aperture_mm=_log_uniform(rng, *aperture),
+            fill=fill,
+            stain=shade(),
+            halo_mm=float(rng.uniform(0.0, 0.4)),
+            pool_mm=float(rng.uniform(0.5, 2.0)),
+        )
+
     out: list[FractureLayer] = []
-    sheets = int(rng.integers(1, 4))
-    for _ in range(sheets):
-        fill: Fill = str(rng.choice(fills, p=p))  # type: ignore[assignment]
+    n_long = int(
+        rng.choice(
+            list(LONG_CRACKS), p=[v / sum(LONG_CRACKS.values()) for v in LONG_CRACKS.values()]
+        )
+    )
+    for _ in range(n_long):
+        offset = float(rng.uniform(*LONG_OFFSET)) * r
         out.append(
             FractureLayer(
-                centre_mm=tuple((0.3 * r * rng.uniform() ** (1 / 3) * _unit(rng)).tolist()),
+                centre_mm=tuple((offset * _unit(rng)).tolist()),
                 normal=tuple(_unit(rng).tolist()),
-                radius_mm=float(rng.uniform(0.6, 1.5) * r),
+                radius_mm=float(rng.uniform(*LONG_RADIUS) * r),
                 aperture_mm=_log_uniform(rng, 0.05, 0.4),
                 fill=fill,
-                stain=float(rng.uniform(0.4, 1.0)),
+                stain=shade(),
                 halo_mm=float(rng.uniform(0.0, 0.5)),
                 pool_mm=float(rng.uniform(1.0, 3.0)),  # half the 2-6 mm pools
             )
         )
+    for _ in range(int(rng.integers(PARTIAL_CRACKS[0], PARTIAL_CRACKS[1] + 1))):
+        out.append(from_rim(float(rng.uniform(*PARTIAL_REACH)) * r, (0.05, 0.3)))
+    main = len(out)  # long and partial cracks; the nicks follow
     for _ in range(int(rng.integers(0, 4))):
-        radial = _unit(rng)
-        normal = np.cross(radial, _unit(rng))  # the crack runs inward from the rim
-        out.append(
-            FractureLayer(
-                centre_mm=tuple(rim_point(solid, radial).tolist()),
-                normal=tuple((normal / float(np.linalg.norm(normal))).tolist()),
-                radius_mm=float(rng.uniform(1.0, 4.0)),
-                aperture_mm=_log_uniform(rng, 0.05, 0.2),
-                fill="clear" if red else "iron",
-                stain=float(rng.uniform(0.3, 0.8)),
-                halo_mm=float(rng.uniform(0.0, 0.3)),
-                pool_mm=float(rng.uniform(0.5, 1.5)),
-            )
-        )
+        out.append(from_rim(float(rng.uniform(1.0, 4.0)), (0.05, 0.2)))
+    if rng.uniform() < MIXED_FILL_CHANCE:
+        k = int(rng.integers(main))  # a long or partial crack, so the odd shade shows
+        other: Fill = "iron" if fill == "clear" else "clear"
+        out[k] = out[k].model_copy(update={"fill": other})
     return tuple(
-        f.model_copy(update={"sagitta_mm": float(rng.uniform(*SAG_SHARE)) * f.radius_mm})
+        f.model_copy(
+            update={
+                "sagitta_mm": 0.0
+                if rng.uniform() < STRAIGHT_SHARE
+                else float(rng.uniform(*SAG_SHARE)) * f.radius_mm
+            }
+        )
         for f in out
     )
 
@@ -1067,6 +1106,56 @@ def crack_bend(cut: SpecimenCut, layers: VarietyLayers, i: int, bin_mm: float = 
     if the trace spans less than 3 bins."""
     line = _trace_centre(cut, layers, i, bin_mm)
     return math.nan if line is None else _fit_rms(*line, 1)
+
+
+def crack_traces(cut: SpecimenCut, layers: VarietyLayers, least_mm: float = 1.0) -> list[float]:
+    """Crack-length check (ADR 0018 s.10): each crack's trace in the face, its
+    length along its main axis as a share of the face's widest extent. Traces
+    shorter than `least_mm` (or missing) are left out."""
+    ss, tt = np.meshgrid(cut.s, cut.t)
+    pts = cut.plane.points(ss, tt)
+    inside = cut.inside
+    s_in, t_in = ss[inside], tt[inside]
+    width = max(float(s_in.max() - s_in.min()), float(t_in.max() - t_in.min()))
+    out: list[float] = []
+    for i, f in enumerate(layers.recipe.fractures):
+        d = layers.crack_distance(i, pts).reshape(ss.shape)
+        trace = inside & (d < max(f.aperture_mm / 2, cut.spacing_mm))
+        if trace.sum() < 4:
+            continue
+        xy = np.stack([ss[trace], tt[trace]], axis=1)
+        xy = xy - xy.mean(axis=0)
+        along: FloatArray = xy @ np.linalg.svd(xy, full_matrices=False)[2][0]
+        length = float(along.max() - along.min())
+        if length >= least_mm:
+            out.append(length / width)
+    return out
+
+
+class CrackMix(NamedTuple):
+    mixed: float  # share of cracked stones whose cracks take more than one fill
+    stain_spread: float  # largest spread of iron strength within a one-fill stone
+    straight: float  # share of cracks with no bend
+    long: float  # share of cracked stones with a long crack
+    two_long: float  # share with two or more
+
+
+def crack_mix(stones: list[tuple[tuple[FractureLayer, ...], float]]) -> CrackMix:
+    """Crack-mix check (ADR 0018 s.10) over cracked stones, each given as its
+    cracks and its inradius (mm). A long crack reaches LONG_RADIUS[0] x inradius."""
+    cracks = [f for fs, _ in stones for f in fs]
+    one_fill = [fs for fs, _ in stones if len({f.fill for f in fs}) == 1]
+    longs = [sum(f.radius_mm >= LONG_RADIUS[0] * r for f in fs) for fs, r in stones]
+    n = len(stones)
+    return CrackMix(
+        mixed=1 - len(one_fill) / n,
+        stain_spread=max(
+            (max(f.stain for f in fs) - min(f.stain for f in fs) for fs in one_fill), default=0.0
+        ),
+        straight=sum(f.sagitta_mm == 0 for f in cracks) / len(cracks),
+        long=sum(k >= 1 for k in longs) / n,
+        two_long=sum(k >= 2 for k in longs) / n,
+    )
 
 
 def crack_wiggle(cut: SpecimenCut, layers: VarietyLayers, i: int, bin_mm: float = 1.0) -> float:

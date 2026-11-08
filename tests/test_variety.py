@@ -17,9 +17,12 @@ from nodule.variety import (
     CLEAN_CUT,
     FLOOR_HEIGHT,
     FULL_WOBBLE_STONES,
+    LONG_RADIUS,
     MILD_WOBBLE_SHARE,
+    MIXED_FILL_CHANCE,
     ROUGHNESS_LIMIT_MM,
     SAG_SHARE,
+    STRAIGHT_SHARE,
     BandRoughness,
     FractureLayer,
     Growth,
@@ -31,17 +34,22 @@ from nodule.variety import (
     build,
     clean_cut,
     crack_bend,
+    crack_mix,
+    crack_traces,
     crack_wiggle,
     cut_obliqueness,
     cut_of,
+    draw_fractures,
     draw_sheet,
     flat_bands,
     floor_bands,
     fold_share,
     fracture_stain,
     has_cavity,
+    inradius,
     lining_roughness,
     quota,
+    rim_point,
     shift_by_depth,
     stray_quartz,
     volume_config,
@@ -341,13 +349,72 @@ def test_no_s_turn_check_and_its_negative_control() -> None:
     assert wavy > 0.2
 
 
+def test_crack_length_check_and_its_negative_control() -> None:
+    """ADR 0018 s.10 (owner, 2026-11-08): most cracks are short or partial. A crack
+    running in from the rim a third of the way gives a short trace; the control, a
+    crack through the centre wider than the stone (the old drawing), spans the face."""
+    base = recipe()
+    specimen, _ = build(base)
+    plane = specimen.plane(base.cut)
+    solid = specimen.volume.solid
+    partial = CRACK.model_copy(
+        update={
+            "centre_mm": tuple(rim_point(solid, np.asarray(plane.u)).tolist()),
+            "normal": tuple(np.asarray(plane.v).tolist()),
+            "radius_mm": 0.35 * inradius(solid),
+        }
+    )
+    (short,) = crack_traces(*cut_for(recipe(fractures=(partial,))))
+    (long,) = crack_traces(*cut_for(recipe(fractures=(CRACK,))))
+    assert 0.1 < short < 0.3
+    assert long > 0.7  # across most of the face
+
+
+def _old_style(rng: np.random.Generator, r: float) -> tuple[FractureLayer, ...]:
+    """Negative control for the crack-mix check: the drawing before ADR 0018 s.10's
+    crack fix, 1-3 long cracks near the centre, each with its own fill, all bent."""
+    return tuple(
+        CRACK.model_copy(
+            update={
+                "radius_mm": float(rng.uniform(0.6, 1.5) * r),
+                "fill": str(rng.choice(["clear", "iron"], p=[0.6, 0.4])),
+                "stain": float(rng.uniform(0.4, 1.0)),
+                "sagitta_mm": float(rng.uniform(*SAG_SHARE)) * r,
+            }
+        )
+        for _ in range(int(rng.integers(1, 4)))
+    )
+
+
+def test_crack_mix_check_and_its_negative_control() -> None:
+    """One shade per stone (rare exceptions), a third straight, long cracks on a
+    third of cracked stones and two on few (owner, 2026-11-08; ADR 0018 s.10)."""
+    rng = np.random.default_rng(0)
+    solid = recipe().solid.build()
+    r = inradius(solid)
+    drawn = crack_mix([(draw_fractures(rng, solid, bool(k % 4 == 0)), r) for k in range(600)])
+    assert abs(drawn.mixed - MIXED_FILL_CHANCE) < 0.04
+    assert drawn.stain_spread <= 0.2 + 1e-9
+    assert abs(drawn.straight - STRAIGHT_SHARE) < 0.05
+    assert 0.25 < drawn.long < 0.42  # 4 in 12
+    assert 0.03 < drawn.two_long < 0.15  # 1 in 12
+    old = crack_mix([(_old_style(rng, r), r) for _ in range(600)])
+    assert old.mixed > 0.3
+    assert old.stain_spread > 0.2
+    assert old.straight == 0
+    assert old.long > 0.9
+    assert LONG_RADIUS[0] == 0.6
+
+
 def test_sheets_draw_low_floors_and_bent_healed_cracks() -> None:
     floors = [r.floor for r in SHEETS if r.floor]
     assert floors
     assert max(floors) <= FLOOR_HEIGHT[1]
     cracks = [f for r in SHEETS for f in r.fractures]
     assert cracks
-    assert all(f.fill != "open" and f.sagitta_mm > 0 for f in cracks)
+    assert all(f.fill != "open" for f in cracks)
+    assert any(f.sagitta_mm == 0 for f in cracks)
+    assert any(f.sagitta_mm > 0 for f in cracks)
     assert all(f.sagitta_mm <= SAG_SHARE[1] * f.radius_mm for f in cracks)
 
 

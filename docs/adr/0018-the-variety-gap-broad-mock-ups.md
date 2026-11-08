@@ -377,7 +377,7 @@ judged ruler-straight black cracks fake. All values `effective` unless cited.
   best parabola, what one curve cannot follow: the bowl crack below 0.03 mm, a control
   bent by sine waves of 16 mm period above 0.2); a floor keeps a quartz-filled or quartz-lined centre (over 20 % of its
   share without a floor), while the same floor on a solid centre shows none;
-  sheets draw floors at most 0.5 and no open or unbent crack.
+  sheets draw floors at most 0.5 and no open crack.
 - **Half the wobble on mild warps (the owner, 2026-11-08: seed 1 stone 1's
   grey-blue band droops at lower right).** agatesim's wobble is independent noise at
   each depth, so a wide band's two edges drift apart. Measured over sheets 1-6 as
@@ -399,6 +399,34 @@ judged ruler-straight black cracks fake. All values `effective` unless cited.
   mm) above 1.12 (measured 1.03 and 1.20). Sheets 1 and 2 redrawn:
   runs/variety-sheet-s10c/ The owner (2026-11-08): the bands
   look good enough.
+- **Crack form and mix (the owner, 2026-11-08, judging seed 2 stone 5: two long
+  cracks of different shades crossing near the centre).** Such cracks occur but are
+  rare, since cracking that reaches the centre usually splits the stone; healed
+  cracks in one stone usually share a shade; some are straight; many are short. The
+  drawing was 1-3 cracks of 0.6-1.5 x the inradius within 0.3 x of the centre, each
+  with its own fill, all bent. Numbers proposed and approved (all `effective`, for
+  the eye; no source gives crack counts, lengths or fills for agates; shares among
+  cracked stones, which stay 1-2 in 12 by the owner's choice): one fill per stone at
+  the old odds (clear 0.6 / iron 0.4; on red stones 0.9 / 0.1) and one iron strength
+  within 0.1; 1 cracked stone in 12 has one crack of the other fill; 1 crack in 3 is
+  straight; partial cracks run in from the rim 0.2-0.5 x the inradius, and the
+  1-4 mm rim nicks stay; long cracks (0.6-1.2 x the inradius, centred 0.2-0.6 x off
+  the centre) on 4 cracked stones in 12, two of them on 1 in 12. Partial cracks were
+  proposed at 1-4 per stone; measured on the cut faces of the 91 cracked stones in
+  sheets 1-60 (solid and plane only), 31 % of faces then showed no trace, so the
+  count was raised to 3-8 (owner told): 9 % of faces show none, 88 % show 1-4; the
+  median trace is 0.14 of the face's width (was 0.72), 79 % under a quarter (was
+  8 %); 26 % of faces show a trace over half the width (was 91 %) and 1 % two (was
+  55 %). Only the fractures' draw changed, so the cracked stones' other draws and
+  every other stone stand (seed 1 stone 10, seed 2 stone 5 changed).
+  Checks with controls: `crack_traces` (trace length over the face's widest extent:
+  a crack running a third of the way in from the rim gives 0.1-0.3, the control
+  through the centre, wider than the stone, over 0.7); `crack_mix` over 600 draws
+  (mixed fills within 0.04 of 1/12, iron spread at most 0.2 in a one-fill stone,
+  straight within 0.05 of 1/3, long on 0.25-0.42, two long on 0.03-0.15), its
+  control the old drawing (mixed over 0.3, spread over 0.2, none straight, long
+  over 0.9). Sheets 1 and 2 and a strip of 12 cracked stones from seeds 3-11
+  redrawn: runs/variety-sheet-s10d/.
 - **Seen, open:** a clear-filled crack shows as a dark grey line in the stand-in
   (seed 2 stone 5); whether it reads darker than a real healed crack is for the
   render, not the stand-in.

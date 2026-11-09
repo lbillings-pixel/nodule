@@ -748,6 +748,53 @@ build 99 s and peak 0.9 GB; the plumes show as loose speckle, not dense tufts.
 Limits found: agatesim's bias is upward only (sideways plumes, C2, need an agatesim
 change, which waits on GitHub); one stage per stone, so plume colour is one per stone.
 
+**Owner's verdict on the probe pair (2026-11-09):** L (density 0.15, sticking 0.5; at
+8 M cells 33 s, 0.61 GB) is the default; R (density 0.02, sticking 0.15; 17 s,
+0.58 GB) is a per-stone variant. The reading barely separates them: tufted and
+feathery plumes are both reported, and higher particle concentration gives bulkier,
+merged branches [@hou2023; @hou2025, s.5] (*plausible* as an analogue). Kile's plates
+show dense fans of feathery fronds from a narrow base [@kile2002, Figs 27-28]
+(*plausible*; magazine plates, our reading of them).
+
+**Full texts read (2026-11-09; helper notes in notes/n1-reading/kile2002-reading.md,
+hofmann2008-reading.md).** Kile is a magazine paper with editorial review, so its
+claims stay *plausible* at most.
+- Plumes: "typically 1-2 inches long", up to 5 inches; arborescent or feathery,
+  "diffuse wispy" to "discrete arborescent" under the microscope; they start at the
+  wall, often near an apex [@kile2002, p. 259, 266]. Truly three-dimensional, so one
+  egg gives one or two good slabs and a cut across a plume top looks "mosslike"
+  [@kile2002, p. 266]. Nothing on gravity or direction.
+- Plume colour: black-brown dominate, orange-gold common, red rare; one plume is often
+  "variegated orange-to-black"; orange = non-crystalline Fe oxide, black = Fe-Mn oxides,
+  white = opal [@kile2002, p. 259-260].
+- Halos: clear chalcedony halos commonly enclose plumes and moss, sometimes several
+  [@kile2002, p. 259, 263]; reported (after Staples 1965) to erase earlier Uruguay
+  bands [@kile2002, p. 263]. Kile's own sequence puts plumes before all bands and he
+  calls it "largely conjecture" [@kile2002, p. 265].
+- Frequency: plumes in "fewer than 1 percent" of Del Norte eggs (personal
+  communication), moss "much more commonplace" [@kile2002, p. 259, 266].
+- Moss colour: Kile's moss is white, yellow, brown or black, never green [@kile2002].
+- Filaments (Hofmann, *verified*, Table 2): median width 1.6 µm, far below render
+  scale, so the visible look comes from strands. Fabrics: irregular masses, flat mats
+  (sometimes layered), and drapes hanging from the roof, with gravity-sagged U-loops;
+  no radial sprays [@hofmann2008, p. 94, Table 8]. Filaments are crusted with yellow-
+  brown Fe hydroxide (goethite; hematite at some sites), later partly replaced by
+  celadonitic clay [@hofmann2008, p. 99-100]; the paper itself never says "green".
+- Timing: filaments come before the cavity fill [@hofmann2008, p. 105] (*plausible*);
+  they "partly stick out of layered ('Uruguay-type') agate", the flat layers filling
+  round them [@hofmann2008, p. 110] (*verified*). This supports A3's floor-band case.
+- Mineral (abiogenic) fibres look different: straight, radial sprays, widths that vary
+  [@hofmann2008, p. 107, Table 8]. A straight radial spray is therefore the negative
+  control for any moss-shape check.
+- Still no source for: plume or strand counts per stone, area share, branching
+  statistics, halo width. Those stay assumptions.
+
+**Consequences (open, for the next probe):** within-plume orange-to-black and clear
+halos both need per-plume colour, which one dendrite stage cannot give (nodule-side
+colour pass, or an agatesim change that waits on GitHub). Moss should hang from the
+roof and lie in mats on the floor, wiggly and of even width, never as straight sprays.
+Moss colour is put to the owner: green only, or green mixed with yellow-brown.
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

@@ -3423,9 +3423,9 @@ venue = "Rocks & Minerals 77(4), 252-268"
 doi = "10.1080/00357529.2002.9925643"
 access = "closed"
 licence = "publisher copyright; cite only"
-checked = "citation"
+checked = "full-text"
 topics = ["plume", "moss", "thunder-egg"]
-notes = "Del Norte, Colorado thunder eggs. Not read; asked of the owner 2026-11-09. Magazine with editorial review, not strictly refereed."
+notes = "Del Norte, Colorado thunder eggs. Full text read 2026-11-09 (owner supplied; notes/n1-reading/kile2002-reading.md). Magazine with editorial review, not strictly refereed: claims plausible at most. Plume sizes, colours, halos, frequency (<1 % plume, personal communication); no green moss."
 
 [[references]]
 id = "hofmann2008"
@@ -3437,6 +3437,6 @@ venue = "Astrobiology 8(1), 87-117"
 doi = "10.1089/ast.2007.0130"
 access = "closed"
 licence = "publisher copyright; cite only"
-checked = "abstract"
+checked = "full-text"
 topics = ["moss", "filaments", "biosignatures", "morphometry"]
-notes = "Abstract: tubular filaments of median diameter 1.6 µm at high density, as irregular masses, matted fabrics and stalactite-like drapes; abiogenic forms differ in width distribution and have lower curvature and fewer direction changes. Full text asked of the owner 2026-11-09."
+notes = "Full text read 2026-11-09 (owner supplied; notes/n1-reading/hofmann2008-reading.md): Table 2 morphometry, fabrics (masses, mats, drapes), Fe-hydroxide crusts, filaments sticking out of Uruguay-type layers (p. 110). Abstract: tubular filaments of median diameter 1.6 µm at high density, as irregular masses, matted fabrics and stalactite-like drapes; abiogenic forms differ in width distribution and have lower curvature and fewer direction changes."

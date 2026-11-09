@@ -688,7 +688,10 @@ not flagged; negative control 2 (bands without dust) not flagged.
 dusty stone whole, then 12 mm without and with dust (0.03 mm pixels) and 4 mm with
 dust (0.01 mm), windows where its dust is densest (so not typical views). Dust is
 invisible at whole-stone scale, as expected from s.11. Hematite blobs on carnelian
-barely show (red on red). Awaiting the owner's verdict before any statistic or render.
+barely show (red on red).
+
+**Owner's verdict (2026-11-09):** "the dust looks good, for now". Kept as built;
+closed for now, like mottle (s.10).
 
 ## Limits
 

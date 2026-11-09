@@ -478,6 +478,21 @@ judged ruler-straight black cracks fake. All values `effective` unless cited.
   test stone dark on 0.1-0.4 of points, the control, the first drawing, on all).
   Sheets 1, 2 and a strip of 9 small and 3 large mottled stones:
   runs/variety-sheet-s10f/.
+- **Soft and hard mottle edges (the owner, 2026-11-08).** Not every patch should
+  have a hard outline: about half of mottled stones soft, graded patches, the rest
+  hard, and only about 5 % both. Built (all `effective`): a per-stone edge, hard
+  0.475, soft 0.475, mixed 0.05, drawn last in the recipe's refine stream so that
+  all else stands. A soft patch has no rim; its stain rises to 0.7 x strength over
+  0.5-1.0 noise units centred on the patch's edge (about 0.4-0.8 x the noise scale
+  in mm), so it keeps its size. A first ramp that started at the edge left soft
+  patches smaller and fainter than hard ones and was dropped. On a mixed stone a
+  noise at twice the patch scale makes about half its patches soft. Over 200
+  sheets: 296 mottled stones, 150 hard, 124 soft, 22 mixed; nothing else changed.
+  Check: `graded_share` (among patch points, the share whose stain lies between
+  0.05 and 0.55 x strength): the control, a hard stone, 0; soft over 0.4; mixed in
+  between, with 0.25-0.75 of points soft. Full renders read the same layer fields,
+  once the renderer applies the layers (the open item on tgrid.py). Strip of 5
+  hard, 5 soft and 2 mixed stones, and sheets 1, 2: runs/variety-sheet-s10g/.
 - **Seen, open:** a clear-filled crack shows as a dark grey line in the stand-in
   (seed 2 stone 5); whether it reads darker than a real healed crack is for the
   render, not the stand-in.

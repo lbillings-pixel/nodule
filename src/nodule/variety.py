@@ -86,6 +86,13 @@ LARGE_MOTTLE = ((0.2, 0.35), (0.35, 0.5))
 MOTTLE_TRIES = 16  # noise draws until the face shows the drawn class
 DARK_RIM_SHARE = 0.25  # of patches (by area of the rim-darkness noise)
 LIGHT_RIM = 0.4  # a light rim's darkening, as a share of a dark rim's
+# Edges (the owner, 2026-11-08): about half of mottled stones have soft, graded
+# patches, the rest hard-edged ones, and a few (5 %) both. A soft patch has no rim
+# and rises to SOFT_PEAK x strength over SOFT_WIDTH in noise units, centred on the
+# edge (about 0.4-0.8 x the noise scale in mm). All `effective`.
+EDGE_SHARES: dict[str, float] = {"hard": 0.475, "soft": 0.475, "mixed": 0.05}
+SOFT_WIDTH = (0.5, 1.0)
+SOFT_PEAK = 0.7
 TINT_CHANCE = 0.15  # amethyst or smoky in 10-20 % of quartz centres
 
 # Quartz (agatesim's quartz-geode values for threshold and supply).
@@ -213,6 +220,8 @@ class Mottle(BaseModel):
     strength: float = Field(ge=0, le=1)
     large: bool = Field(default=False, description="Drawn to show a patch of LARGE_PATCH.")
     variant: int = Field(default=0, ge=0, description="Which noise draw; 0 is the first.")
+    edge: Literal["hard", "soft", "mixed"] = "hard"
+    soft_width: float = Field(default=0.75, gt=0, description="Soft ramp, noise units.")
 
 
 class Roughness(BaseModel):
@@ -619,6 +628,14 @@ def draw_stone(
     return _refine(recipe, solid, r, odd_cut=odd_cut, keep_mottle=keep_mottle)
 
 
+def mottle_edge_noise(recipe: StoneRecipe, solid: Solid) -> SmoothNoise3:
+    """Which patches of a mixed stone are soft: noise at twice the patch scale."""
+    m = recipe.mottle
+    assert m is not None
+    seq = np.random.SeedSequence(recipe.seed).spawn(4)[2].spawn(MOTTLE_TRIES + 2)[-1]
+    return SmoothNoise3(solid, 2 * m.scale_mm, np.random.default_rng(seq))
+
+
 def mottle_fields(
     recipe: StoneRecipe, solid: Solid, *, rim: bool = True
 ) -> tuple[SmoothNoise3, SmoothNoise3 | None]:
@@ -676,7 +693,8 @@ def _mottle_size(rng: np.random.Generator, recipe: StoneRecipe, solid: Solid) ->
         share = largest_patch(recipe.model_copy(update={"mottle": m}), solid)
         if (LARGE_PATCH <= share <= LARGE_PATCH_MAX) if large else share < LARGE_PATCH:
             break
-    return m
+    edge = str(rng.choice(list(EDGE_SHARES), p=_shares(EDGE_SHARES)))
+    return m.model_copy(update={"edge": edge, "soft_width": float(rng.uniform(*SOFT_WIDTH))})
 
 
 def _refine(
@@ -981,13 +999,16 @@ class VarietyLayers:
     mottle_noise: SmoothNoise3 | None
     stain_noise: SmoothNoise3 | None
     rim_noise: SmoothNoise3 | None = None
+    edge_noise: SmoothNoise3 | None = None
 
     @classmethod
     def of(cls, recipe: StoneRecipe, solid: Solid, growth: Growth) -> VarietyLayers:
         seqs = np.random.SeedSequence(recipe.seed).spawn(2)
-        mottle = rim = None
+        mottle = rim = edge = None
         if recipe.mottle is not None:
             mottle, rim = mottle_fields(recipe, solid)
+            if recipe.mottle.edge == "mixed":
+                edge = mottle_edge_noise(recipe, solid)
         stain = None
         if recipe.rim_stain > 0:
             stain = SmoothNoise3(solid, 8.0, np.random.default_rng(seqs[1]))
@@ -1002,7 +1023,39 @@ class VarietyLayers:
             mottle,
             stain,
             rim,
+            edge,
         )
+
+    def mottle_softness(self, points: FloatArray) -> FloatArray:
+        """1 where mottle patches are soft, 0 where hard; on a mixed stone about
+        half its patches are soft."""
+        m = self.recipe.mottle
+        if m is None or m.edge == "hard":
+            return np.zeros(len(points))
+        if m.edge == "soft" or self.edge_noise is None:
+            return np.ones(len(points))
+        return np.clip(0.5 + self.edge_noise(points) / 0.3, 0.0, 1.0)
+
+    def mottle_amount(self, points: FloatArray) -> FloatArray:
+        """Mottle stain before the band's porosity: hard patches step up at the
+        edge to a rim, then fall to 0.6 x strength inside; soft ones rise
+        smoothly across the edge (centred on it, so the patch keeps its size), with
+        no rim."""
+        m = self.recipe.mottle
+        if m is None or self.mottle_noise is None:
+            return np.zeros(len(points))
+        n = self.mottle_noise(points)
+        thr = NormalDist().inv_cdf(1 - m.cover)
+        band = m.rim_mm * 1.22 / m.scale_mm  # rim width in noise units (|grad n| ~ 1.22/scale)
+        # Rims: dark (as first drawn) on about DARK_RIM_SHARE of patches,
+        # lighter (LIGHT_RIM of the darkening) on the rest.
+        rim = 0.6 + 0.4 * (LIGHT_RIM + (1 - LIGHT_RIM) * self.rim_darkness(points))
+        inner = np.where(n > thr, rim * m.strength, 0.0)
+        hard: FloatArray = np.where(n > thr + band, 0.6 * m.strength, inner)
+        ramp = np.clip((n - thr) / m.soft_width + 0.5, 0.0, 1.0)
+        soft: FloatArray = SOFT_PEAK * m.strength * ramp
+        b = self.mottle_softness(points)
+        return (1 - b) * hard + b * soft
 
     def rim_darkness(self, points: FloatArray) -> FloatArray:
         """Mottle rim darkness, 1 dark to 0 light: dark on about DARK_RIM_SHARE of
@@ -1048,16 +1101,7 @@ class VarietyLayers:
             pig[mask & (a > 0.05)] = pigment
 
         if self.mottle_noise is not None and rec.mottle is not None:
-            m = rec.mottle
-            n = self.mottle_noise(points)
-            thr = NormalDist().inv_cdf(1 - m.cover)
-            band = m.rim_mm * 1.22 / m.scale_mm  # rim width in noise units (|grad n| ~ 1.22/scale)
-            # Rims: dark (as first drawn) on about DARK_RIM_SHARE of patches,
-            # lighter (LIGHT_RIM of the darkening) on the rest.
-            dark = self.rim_darkness(points)
-            rim = 0.6 + 0.4 * (LIGHT_RIM + (1 - LIGHT_RIM) * dark)
-            inner = np.where(n > thr, rim * m.strength, 0.0)
-            amount: NDArray[np.float64] = np.where(n > thr + band, 0.6 * m.strength, inner)
+            amount = self.mottle_amount(points)
             # Milky (porous) bands take more than clear ones, so bands show through
             # a patch (assumption).
             stain(chal, amount * (0.4 + 0.6 * (1 - trans)), Pigment.HEMATITE)
@@ -1325,6 +1369,18 @@ def crack_bend(cut: SpecimenCut, layers: VarietyLayers, i: int, bin_mm: float = 
     if the trace spans less than 3 bins."""
     line = _trace_centre(cut, layers, i, bin_mm)
     return math.nan if line is None else _fit_rms(*line, 1)
+
+
+def graded_share(layers: VarietyLayers, points: FloatArray) -> float:
+    """Soft-edge check (ADR 0018 s.10): among points inside mottle patches, the share
+    whose stain lies between 0.05 and 0.55 x strength, which a hard patch (0, then a
+    rim of at least 0.76 x, then 0.6 x) never shows."""
+    m = layers.recipe.mottle
+    if m is None:
+        return math.nan
+    a = layers.mottle_amount(points) / m.strength
+    patch = a > 0
+    return float(np.mean((a[patch] > 0.05) & (a[patch] < 0.55))) if patch.any() else math.nan
 
 
 def crack_traces(cut: SpecimenCut, layers: VarietyLayers, least_mm: float = 1.0) -> list[float]:

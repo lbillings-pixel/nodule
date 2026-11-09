@@ -53,6 +53,7 @@ from nodule.variety import (
     floor_bands,
     fold_share,
     fracture_stain,
+    graded_share,
     has_cavity,
     inradius,
     largest_patch,
@@ -475,6 +476,24 @@ def test_mottle_rims_vary_and_its_negative_control() -> None:
     share = float(np.mean(layers.rim_darkness(pts) > 0.5))
     assert 0.1 < share < 0.4
     assert np.mean(dc_replace(layers, rim_noise=None).rim_darkness(pts) > 0.5) == 1.0
+
+
+def test_soft_mottle_check_and_its_negative_control() -> None:
+    """ADR 0018 s.10 (owner, 2026-11-08): about half of mottled stones have soft,
+    graded patches; 5 % have both kinds. Control: a hard-edged stone."""
+    base = Mottle(scale_mm=4, cover=0.3, rim_mm=0.8, strength=0.6)
+    pts = np.random.default_rng(0).uniform(-12, 12, size=(40000, 3))
+    shares = {}
+    for edge in ("hard", "soft", "mixed"):
+        _, layers = cut_for(recipe(mottle=base.model_copy(update={"edge": edge})))
+        shares[edge] = graded_share(layers, pts + layers.solid_centre)
+        soft = float(np.mean(layers.mottle_softness(pts + layers.solid_centre) > 0.5))
+        assert soft == {"hard": 0.0, "soft": 1.0}.get(edge, soft)
+        if edge == "mixed":
+            assert 0.25 < soft < 0.75  # about half its patches
+    assert shares["hard"] == 0  # control
+    assert shares["soft"] > 0.4
+    assert 0.05 < shares["mixed"] < shares["soft"]
 
 
 def test_crack_mix_check_and_its_negative_control() -> None:

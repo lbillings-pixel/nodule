@@ -496,6 +496,27 @@ judged ruler-straight black cracks fake. All values `effective` unless cited.
 - **Seen, open:** a clear-filled crack shows as a dark grey line in the stand-in
   (seed 2 stone 5); whether it reads darker than a real healed crack is for the
   render, not the stand-in.
+- **Thunder-egg arms (2026-11-08, owner's note in s.9):** two arm styles, offered as
+  options because the sources disagree. *Angular* (the first drawing): straight
+  arms, as sections through Ross's rupture model of shear planes [@ross1941, p.
+  729]. *Sinuous* (new): lobed, winding arms with rounded embayments, after the
+  owner's private reference thunderegg-1 (one specimen; *plausible* as a look,
+  never evidence for a mechanism). `nodule.thunderegg` draws a sinuous star as discs
+  along winding arm midlines (heading off the radial by a sum of two sines, capped
+  at 70 degrees so arms never turn back) around a lumpy body, with swelling widths
+  and 0-2 side buds per arm; it is rasterised on a grid fixed in shape units,
+  blurred to round the embayments, traced and checked by agatesim's
+  `outline_problem`. Share: 3 in 4 stones sinuous (`effective`, assumption: the
+  owner's remark that real arms are sinuous). All sizes `effective`. Check:
+  `arm_meander`, the upper quartile over arms of the largest sideways offset of an
+  arm's midline from its best straight line, over the radial span followed; angular
+  0.008-0.031 and sinuous 0.046-0.165 over 80 draws each, threshold 0.04; negative
+  control: the angular star. Cost: 0.7 s an outline; stand-in cuts of the 8
+  thunder eggs on sheets 1-4 took 1-5 s each, under 0.22 GB. Thunder-egg stones
+  draw their other features afresh (the outline uses the stream differently).
+  Cuts: runs/thunderegg-arms/ (cuts-1-2-3-4.png, outlines.png). Not yet: a cut
+  still crosses an extruded prism, so every section shows the same outline
+  ([@ross1941, p. 731]: the star depends on where the cut falls).
 
 ## Limits
 

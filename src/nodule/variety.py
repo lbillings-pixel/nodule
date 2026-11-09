@@ -7,8 +7,9 @@ sheet fixed by quota as in the first sheet recipe (ADR 0018 section 7). No stone
 carries every feature.
 
 Most parts come from agatesim, chosen per stone: the outline (solid presets, or
-a drawn star for thunder eggs), the quartz centre (a silica supply that drops
-below agatesim's quartz threshold), the open cavity (supply that stops), the
+a drawn star with angular or sinuous arms for thunder eggs, `nodule.thunderegg`),
+the quartz centre (a silica supply that drops below agatesim's quartz
+threshold), the open cavity (supply that stops), the
 floor (a settling pulse at the start: floor first [@moxon2020, p. 16]; Kigai's
 alternation [@kigai2019] is the option not taken here), warp (agatesim's wobble,
 slope-capped so bands never fold) and the palette. What agatesim lacks starts
@@ -45,6 +46,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from nodule._scipy import largest_patch_size
 from nodule.specimen import Specimen, SpecimenConfig, SpecimenCut
+from nodule.thunderegg import ArmStyle, thunder_egg_outline
 
 Centre = Literal["solid", "quartz-filled", "quartz-lined"]
 Colour = Literal["neutral", "iron", "onyx", "stained", "carnelian"]
@@ -250,6 +252,7 @@ class StoneRecipe(BaseModel):
     seed: int = Field(ge=0)
     outline: Outline
     solid: SolidConfig
+    arms: ArmStyle | None = None  # a thunder egg's star: angular or sinuous arms
     centre: Centre
     centre_width: float = Field(ge=0, le=1, description="Share of the inradius.")
     lining: float = Field(ge=0, le=1, description="Quartz-lined: share of the centre in quartz.")
@@ -273,7 +276,7 @@ class StoneRecipe(BaseModel):
 
     def summary(self) -> str:
         parts = [
-            self.outline,
+            self.outline if self.arms is None else f"{self.outline} ({self.arms})",
             self.centre if self.centre == "solid" else f"{self.centre} {self.centre_width:.2f}",
             self.colour,
         ]
@@ -367,48 +370,38 @@ def _log_uniform(rng: np.random.Generator, lo: float, hi: float) -> float:
     return float(math.exp(rng.uniform(math.log(lo), math.log(hi))))
 
 
-def star_outline(rng: np.random.Generator, arms: int) -> list[tuple[float, float]]:
-    """A thunder egg's star cavity [@pabian1994, p. 16]: arms of uneven length."""
-    lengths = rng.uniform(0.6, 1.0, arms)
-    phase = rng.uniform(0, 2 * math.pi)
-    theta = np.linspace(0, 2 * math.pi, 24 * arms, endpoint=False)
-    k = np.floor((theta - phase) % (2 * math.pi) / (2 * math.pi) * arms).astype(int) % arms
-    frac = ((theta - phase) % (2 * math.pi / arms)) / (2 * math.pi / arms)
-    peak = (0.5 + 0.5 * np.cos(2 * math.pi * (frac - 0.5))) ** 3  # 1 at an arm's tip
-    r = 0.32 + (lengths[k] - 0.32) * peak
-    return [(float(a), float(b)) for a, b in zip(r * np.cos(theta), r * np.sin(theta), strict=True)]
-
-
-def solid_for(rng: np.random.Generator, outline: Outline) -> SolidConfig:
-    """The outline follows the host [@pabian1994, pp. 11, 16] (ADR 0018 s.7)."""
+def solid_for(rng: np.random.Generator, outline: Outline) -> tuple[SolidConfig, ArmStyle | None]:
+    """The outline follows the host [@pabian1994, pp. 11, 16] (ADR 0018 s.7); a
+    thunder egg's star also has an arm style (`nodule.thunderegg`)."""
     yaw = float(rng.uniform(0, 360))
     match outline:
         case "vesicle":
             preset = str(rng.choice(["vesicle-round", "vesicle-lobate"]))
-            return SolidConfig(preset=preset, size_mm=float(rng.uniform(30, 65)), yaw_deg=yaw)
+            return SolidConfig(preset=preset, size_mm=float(rng.uniform(30, 65)), yaw_deg=yaw), None
         case "prolate":
             return SolidConfig(
                 preset="vesicle-almond",
                 size_mm=float(rng.uniform(45, 70)),
                 yaw_deg=yaw,
                 pitch_deg=float(rng.uniform(-15, 15)),
-            )
+            ), None
         case "irregular":
             return SolidConfig(
                 preset="nodule-irregular", size_mm=float(rng.uniform(35, 60)), yaw_deg=yaw
-            )
+            ), None
         case "pebble":
             return SolidConfig(
                 preset="nodule-round", size_mm=float(rng.uniform(12, 20)), yaw_deg=yaw
-            )
+            ), None
         case "thunder-egg":
-            arms = int(rng.integers(5, 9))
-            return SolidConfig(
-                outline=star_outline(rng, arms),
+            style, star = thunder_egg_outline(rng)
+            solid = SolidConfig(
+                outline=star,
                 host="volcanic",  # type: ignore[arg-type]
                 size_mm=float(rng.uniform(40, 70)),
                 depth_fraction=0.6,
             )
+            return solid, style
 
 
 def inradius(solid: Solid) -> float:
@@ -560,7 +553,7 @@ def draw_stone(
     odd_cut: bool = False,
     full_wobble: bool = False,
 ) -> StoneRecipe:
-    solid_config = solid_for(rng, outline)  # type: ignore[arg-type]
+    solid_config, arms = solid_for(rng, outline)  # type: ignore[arg-type]
     solid = solid_config.build()
     r = inradius(solid)
     width = 0.0 if centre == "solid" else float(np.clip(rng.gamma(4.0, 0.05), 0.08, 0.6))
@@ -602,6 +595,7 @@ def draw_stone(
         seed=int(rng.integers(0, 2**31)),
         outline=outline,  # type: ignore[arg-type]
         solid=solid_config,
+        arms=arms,
         centre=centre,  # type: ignore[arg-type]
         centre_width=width,
         lining=float(rng.uniform(0.3, 0.7)),

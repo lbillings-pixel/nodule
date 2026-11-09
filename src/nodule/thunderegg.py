@@ -1,6 +1,8 @@
 """Thunder-egg star cavities, drawn as 2D outlines for agatesim (ADR 0018 s.10).
 
-Two styles, offered as options because the sources disagree on how arms look:
+Two styles exist because the sources disagree on how arms look. The owner chose
+sinuous for every stone (2026-11-08); angular stays as the check's negative
+control and is never drawn on a sheet.
 
 - *angular*: straight-sided arms, as sections through Ross's rupture model, a
   pyritohedron of inward pentagonal pyramids made by shear planes [@ross1941,
@@ -26,18 +28,47 @@ from agatesim._scipy import distance_to_false, fill_holes, gaussian, label
 from agatesim.geometry import outline_problem
 from agatesim.specimen.segment import trace_outline
 from numpy.typing import NDArray
+from pydantic import BaseModel, ConfigDict, Field
 
 ArmStyle = Literal["angular", "sinuous"]
 FloatArray = NDArray[np.float64]
 BoolArray = NDArray[np.bool_]
 
-SINUOUS_SHARE = 0.75  # `effective`; the owner's reference and remark favour sinuous
 GRID = 384  # raster cells across the drawing box (shape units, not pixels of a cut)
 EXTENT = 1.3  # half-width of the drawing box; arms reach at most about 1.0
 OUTLINE_POINTS = 480  # resampled outline length (agatesim allows up to 2000)
 # `arm_meander` above this reads as sinuous. Over 80 draws of each style: angular
 # 0.008-0.031, sinuous 0.046-0.165 (2026-11-08).
 SINUOUS_MIN = 0.04
+# Per-stone spread of a sinuous star (owner, 2026-11-08: moderately more and less
+# bending and thickness; side lobes per arm from one fewer to two more). `effective`.
+BEND_RANGE = (0.7, 1.4)  # multiplies each arm's meander, drawn log-uniform
+WIDTH_RANGE = (0.75, 1.3)  # multiplies each arm's half-width, drawn log-uniform
+BUDS_RANGE = (-1, 2)  # added to each arm's 0-2 side lobes (floored at 0)
+
+
+class ArmShape(BaseModel):
+    """How one sinuous star departs from the typical one; all `effective`."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    bend: float = Field(default=1.0, gt=0, description="Meander, x the typical.")
+    width: float = Field(default=1.0, gt=0, description="Arm thickness, x the typical.")
+    buds: int = Field(default=0, description="Side lobes added to each arm's 0-2.")
+
+    @classmethod
+    def draw(cls, rng: np.random.Generator) -> ArmShape:
+        def log_uniform(lo: float, hi: float) -> float:
+            return float(math.exp(rng.uniform(math.log(lo), math.log(hi))))
+
+        return cls(
+            bend=log_uniform(*BEND_RANGE),
+            width=log_uniform(*WIDTH_RANGE),
+            buds=int(rng.integers(BUDS_RANGE[0], BUDS_RANGE[1] + 1)),
+        )
+
+    def summary(self) -> str:
+        return f"bend {self.bend:.2f}, width {self.width:.2f}, lobes {self.buds:+d}"
 
 
 def star_outline(rng: np.random.Generator, arms: int) -> list[tuple[float, float]]:
@@ -105,8 +136,11 @@ def _arm(
     return pts, w
 
 
-def sinuous_mask(rng: np.random.Generator, arms: int) -> BoolArray:
-    """A sinuous star rasterised on the fixed drawing grid."""
+def sinuous_mask(rng: np.random.Generator, arms: int, shape: ArmShape | None = None) -> BoolArray:
+    """A sinuous star rasterised on the fixed drawing grid. Each arm draws from
+    its own spawned stream, so a change in one arm's side lobes leaves the other
+    arms as they were."""
+    shape = shape or ArmShape()
     x, y = _grid()
     r = np.hypot(x, y)
     th = np.arctan2(y, x)
@@ -117,18 +151,20 @@ def sinuous_mask(rng: np.random.Generator, arms: int) -> BoolArray:
     mask = r <= body * (1 + lump)
     base = rng.uniform(0, 2 * math.pi) + np.arange(arms) * 2 * math.pi / arms
     base = base + rng.uniform(-0.25, 0.25, arms) * 2 * math.pi / arms
-    for a in base:
-        reach = rng.uniform(0.55, 1.0)
+    for a, arm_rng in zip(base, rng.spawn(arms), strict=True):
+        reach = arm_rng.uniform(0.55, 1.0)
         start = 0.6 * body
-        pts, w = _arm(
-            rng, float(a), start, reach - start, rng.uniform(0.08, 0.14), rng.uniform(0.5, 1.0)
-        )
+        half_width = shape.width * arm_rng.uniform(0.08, 0.14)
+        meander = shape.bend * arm_rng.uniform(0.5, 1.0)
+        pts, w = _arm(arm_rng, float(a), start, reach - start, half_width, meander)
         _discs(mask, x, y, pts, w)
-        for _ in range(int(rng.integers(0, 3))):  # side buds: short lobes off an arm
-            i = int(rng.integers(len(pts) // 5, max(len(pts) // 5 + 1, 3 * len(pts) // 4)))
+        buds = max(0, int(arm_rng.integers(0, 3)) + shape.buds)
+        bud_rngs = arm_rng.spawn(buds)
+        for bud_rng in bud_rngs:  # side buds: short lobes off an arm
+            i = int(bud_rng.integers(len(pts) // 5, max(len(pts) // 5 + 1, 3 * len(pts) // 4)))
             side = math.atan2(*(pts[min(i + 1, len(pts) - 1)] - pts[max(i - 1, 0)])[::-1])
-            turn = rng.choice([-1, 1]) * math.radians(rng.uniform(40, 80))
-            bud_len = rng.uniform(0.08, 0.22)
+            turn = bud_rng.choice([-1, 1]) * math.radians(bud_rng.uniform(40, 80))
+            bud_len = bud_rng.uniform(0.08, 0.22)
             t = np.linspace(0, bud_len, max(3, int(bud_len / 0.008)))
             bud = pts[i] + np.outer(t, [math.cos(side + turn), math.sin(side + turn)])
             _discs(mask, x, y, bud, np.maximum(0.6 * w[i] * (1 - t / bud_len) ** 0.7, 0.012))
@@ -157,27 +193,30 @@ def mask_outline(mask: BoolArray, points: int = OUTLINE_POINTS) -> FloatArray:
     return v
 
 
-def sinuous_outline(rng: np.random.Generator, arms: int) -> list[tuple[float, float]]:
+def sinuous_outline(
+    rng: np.random.Generator, arms: int, shape: ArmShape | None = None
+) -> list[tuple[float, float]]:
     """A sinuous star's outline; redrawn (from the same stream) in the rare case
     that tracing gives a self-touching polygon."""
     for _ in range(8):
-        v = mask_outline(sinuous_mask(rng, arms))
+        v = mask_outline(sinuous_mask(rng, arms, shape))
         if outline_problem(v) is None:
             return [(float(a), float(b)) for a, b in v]
     raise RuntimeError("no valid sinuous outline in 8 draws")
 
 
 def thunder_egg_outline(
-    rng: np.random.Generator, style: ArmStyle | None = None
-) -> tuple[ArmStyle, list[tuple[float, float]]]:
+    rng: np.random.Generator, style: ArmStyle = "sinuous", shape: ArmShape | None = None
+) -> tuple[ArmStyle, ArmShape | None, list[tuple[float, float]]]:
     """A thunder egg's star cavity: 5-8 arms [@ross1941, p. 727: five-pointed
-    stars are the most striking]; style drawn per stone unless given."""
+    stars are the most striking]. Sinuous unless asked (owner, 2026-11-08); a
+    sinuous star's shape is drawn per stone unless given."""
     arms = int(rng.integers(5, 9))
-    if style is None:
-        style = "sinuous" if rng.random() < SINUOUS_SHARE else "angular"
     if style == "angular":
-        return style, star_outline(rng, arms)
-    return style, sinuous_outline(rng, arms)
+        return style, None, star_outline(rng, arms)
+    if shape is None:
+        shape = ArmShape.draw(rng)
+    return style, shape, sinuous_outline(rng, arms, shape)
 
 
 def outline_mask(outline: FloatArray) -> BoolArray:

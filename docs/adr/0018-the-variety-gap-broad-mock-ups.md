@@ -506,8 +506,8 @@ judged ruler-straight black cracks fake. All values `effective` unless cited.
   at 70 degrees so arms never turn back) around a lumpy body, with swelling widths
   and 0-2 side buds per arm; it is rasterised on a grid fixed in shape units,
   blurred to round the embayments, traced and checked by agatesim's
-  `outline_problem`. Share: 3 in 4 stones sinuous (`effective`, assumption: the
-  owner's remark that real arms are sinuous). All sizes `effective`. Check:
+  `outline_problem`. Share at first 3 in 4 sinuous; the owner then chose sinuous
+  for every stone (below). All sizes `effective`. Check:
   `arm_meander`, the upper quartile over arms of the largest sideways offset of an
   arm's midline from its best straight line, over the radial span followed; angular
   0.008-0.031 and sinuous 0.046-0.165 over 80 draws each, threshold 0.04; negative
@@ -517,6 +517,19 @@ judged ruler-straight black cracks fake. All values `effective` unless cited.
   Cuts: runs/thunderegg-arms/ (cuts-1-2-3-4.png, outlines.png). Not yet: a cut
   still crosses an extruded prism, so every section shows the same outline
   ([@ross1941, p. 731]: the star depends on where the cut falls).
+- **Owner's verdicts (2026-11-08):** winding arms "look very good"; every thunder
+  egg winds, none straight (angular stays only as the check's negative control).
+  Mottle (s10g) is "good enough" for now: it should improve with fuller renders
+  in later stages, so it is closed for this round.
+- **Spread of winding arms (owner, 2026-11-08: moderately more and less bending
+  and thickness; side lobes per arm from one fewer to two more):** each stone draws
+  an `ArmShape`: bend x0.7-1.4 and width x0.75-1.3 (log-uniform), side lobes added
+  to each arm's 0-2 by -1 to +2 (floored at 0); all `effective`. Each arm and each
+  lobe draws from its own spawned stream, so changing the lobe count leaves the
+  other arms as they were (tested). Extremes stay sinuous: over 40 draws each,
+  `arm_meander` 0.048 at least (least bend, thickest arms) against the 0.04
+  threshold. Sheets: runs/thunderegg-arms/spread-one-at-a-time.png (one setting
+  at a time on two stars), spread-random-12.png; cuts-1-2-3-4.png redrawn.
 
 ## Limits
 

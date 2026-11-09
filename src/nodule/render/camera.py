@@ -398,6 +398,17 @@ def reflectance_factor(image: F64, light: Light) -> F64:
     return image / light.white()
 
 
+def rolloff(x: F64, knee: float, white: float) -> F64:
+    """A highlight shoulder for the eye (ADR 0019 s.6.6): x unchanged up to `knee`, then
+    knee + d / (1 + a d), d = x - knee, with a set so `white` maps to 1 and slope 1 at the
+    knee. Smooth and rising; above `white`, srgb clips as before. `effective`."""
+    if not 0.0 < knee < 1.0 < white:
+        raise ValueError(f"need 0 < knee < 1 < white, not knee {knee}, white {white}")
+    a = 1.0 / (1.0 - knee) - 1.0 / (white - knee)
+    d = np.maximum(x - knee, 0.0)
+    return np.where(x <= knee, x, knee + d / (1.0 + a * d))
+
+
 def srgb(x: F64, exposure: float = 1.0) -> NDArray[np.uint8]:
     """sRGB-encode linear values x * exposure (clipped to [0, 1]); rows flipped so
     +v is up in the stored image, and channels reversed from the renderer's

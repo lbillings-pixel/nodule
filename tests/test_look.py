@@ -12,7 +12,7 @@ from agatesim.fields import Pigment
 from agatesim.volume.config import SliceConfig, SolidConfig
 
 from nodule.render import _gpu
-from nodule.render.camera import Light, render
+from nodule.render.camera import Light, render, rolloff
 from nodule.render.cutface import (
     F0,
     REFLECTED_EXPOSURE,
@@ -20,13 +20,20 @@ from nodule.render.cutface import (
     Rendering,
     look_exposure,
     mean_lightness,
+    to_rgb,
 )
 from nodule.render.fakes import stone_record
 from nodule.render.materials import OpticsTable
 from nodule.render.record import BandRecord
 from nodule.specimen import Specimen, SpecimenCut
 from nodule.variety import StoneRecipe, build, cut_of
-from nodule.varietyrender import CARNELIAN_LOADING, HEMATITE_RED_K, optics_for
+from nodule.varietyrender import (
+    BACKLIT_EXPOSURE,
+    BACKLIT_KNEE,
+    CARNELIAN_LOADING,
+    HEMATITE_RED_K,
+    optics_for,
+)
 
 gpu = pytest.mark.skipif(not _gpu.available(), reason="needs a CUDA GPU and CuPy")
 
@@ -146,3 +153,49 @@ def test_one_fill_serves_a_backlit_slice_and_its_controls() -> None:
         shared.on(Rendering.transmitted(record, grid_mm=0.25, optics=OpticsTable(iron_floor=0)))
     shared.more(16)  # the look itself: lightness matched, exposure set per render
     assert shared.exposure != REFLECTED_EXPOSURE
+
+
+# --- the backlit view's highlight roll-off (ADR 0019 s.6.6) ---------------------------------
+
+
+def test_rolloff_keeps_values_below_the_knee_and_makes_the_light_box_white() -> None:
+    """Below the knee nothing changes (carnelian's colour); the bare light box (factor 1,
+    x = exposure) maps to white; the curve rises smoothly (slope 1 at the knee)."""
+    x = np.linspace(0.0, 3.0, 3001)
+    y = rolloff(x, BACKLIT_KNEE, 3.0)
+    below = x <= BACKLIT_KNEE
+    assert np.array_equal(y[below], x[below])
+    assert y[-1] == pytest.approx(1.0)
+    assert (np.diff(y) > 0).all()
+    h = 1e-6
+    k = BACKLIT_KNEE
+    slope = (rolloff(np.array([k + h]), k, 3.0) - k) / h
+    assert slope[0] == pytest.approx(1.0, abs=1e-4)
+    with pytest.raises(ValueError, match="knee"):
+        rolloff(x, 0.6, 1.0)  # no highlight above white to roll off
+
+
+def test_rolloff_keeps_bright_bands_apart_and_clipping_does_not() -> None:
+    """Clear bands passing 40-90 % of the light at exposure 3 differ on screen after the
+    roll-off (distinct grey levels, 239-254: only a few apart near the top, none white).
+    Control: plain clipping makes them all white, so the same check rejects it."""
+
+    def apart(levels: np.ndarray) -> bool:
+        return bool((np.diff(levels) >= 1).all()) and int(levels.max()) < 255
+
+    light = Light("back")
+    bands = np.repeat(np.linspace(0.4, 0.9, 6), 3).reshape(1, 6, 3) * light.white()
+    assert apart(to_rgb(bands, light, BACKLIT_EXPOSURE, BACKLIT_KNEE)[0, :, 0].astype(int))
+    assert not apart(to_rgb(bands, light, BACKLIT_EXPOSURE)[0, :, 0].astype(int))
+
+
+def test_rolloff_is_for_the_backlit_view_only() -> None:
+    """The variety backlit view takes it; the dome and the compare's L3 do not."""
+    rec = BandRecord.empty()
+    back = Rendering.transmitted(rec, exposure=BACKLIT_EXPOSURE, rolloff_knee=BACKLIT_KNEE)
+    assert back.rolloff_knee == BACKLIT_KNEE
+    assert Rendering.transmitted(rec).rolloff_knee is None
+    with pytest.raises(ValueError, match="back light only"):
+        Rendering.look(rec, rolloff_knee=0.6)
+    with pytest.raises(ValueError, match="exposure"):
+        Rendering.transmitted(rec, rolloff_knee=0.6)  # exposure 1: nothing to roll off

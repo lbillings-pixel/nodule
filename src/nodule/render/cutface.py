@@ -59,6 +59,7 @@ from nodule.render.camera import (
     View,
     reflectance_factor,
     render,
+    rolloff,
     srgb,
 )
 from nodule.render.materials import OpticsTable
@@ -111,6 +112,9 @@ class Rendering:
     glare: bool = True
     # True: exposure per render by `look_exposure` (the photo compare's face lightness)
     match_lightness: bool = False
+    # back light only: highlight roll-off from this knee, the bare light box white
+    # (`camera.rolloff`; the backlit view's, ADR 0019 s.6.6); None: plain clipping
+    rolloff_knee: float | None = None
 
     def __post_init__(self) -> None:
         if self.match_lightness and self.light.kind != "dome":
@@ -121,6 +125,11 @@ class Rendering:
             raise ValueError("a matte bottom, and only it, has a nonzero bottom_albedo")
         if self.bottom == "matte" and self.light.kind != "dome":
             raise ValueError("a matte bottom is for the dome only")
+        if self.rolloff_knee is not None:
+            if self.light.kind != "back":
+                raise ValueError("the highlight roll-off is for the back light only")
+            if not 0.0 < self.rolloff_knee < 1.0 < self.exposure:
+                raise ValueError("roll-off needs 0 < knee < 1 < exposure")
         if self.drift not in ("baked", "exact"):
             raise ValueError(f"drift must be 'baked' or 'exact', not {self.drift!r}")
         if self.bottom == "black" and self.light.kind == "back":
@@ -167,9 +176,15 @@ def view_of(cut: SpecimenCut) -> View:
     return View(float(cut.s[0]) - p / 2, float(cut.t[0]) - p / 2, p, len(cut.s), len(cut.t))
 
 
-def to_rgb(image: NDArray[np.float64], light: Light, exposure: float) -> NDArray[np.uint8]:
-    """8-bit sRGB in the cut's row order (`srgb` flips rows for display)."""
-    return srgb(reflectance_factor(image, light), exposure)[::-1]
+def to_rgb(
+    image: NDArray[np.float64], light: Light, exposure: float, knee: float | None = None
+) -> NDArray[np.uint8]:
+    """8-bit sRGB in the cut's row order (`srgb` flips rows for display). knee: the
+    highlight roll-off (`camera.rolloff`), the bare light (factor 1) mapping to white."""
+    x = reflectance_factor(image, light) * exposure
+    if knee is not None:
+        x = rolloff(x, knee, exposure)
+    return srgb(x, 1.0)[::-1]
 
 
 F0 = ((N_CHALCEDONY - 1) / (N_CHALCEDONY + 1)) ** 2  # the face's reflectance at normal incidence
@@ -300,8 +315,9 @@ class CutRenderer:
         mean = (self._sums[0] + self._sums[1]) / self.spp
         if r.match_lightness:
             self.exposure = look_exposure(reflectance_factor(mean, r.light), self._face)
-        a, b = (to_rgb(s / half, r.light, self.exposure) for s in self._sums)
-        self.rgb = to_rgb(mean, r.light, self.exposure)
+        knee = r.rolloff_knee
+        a, b = (to_rgb(s / half, r.light, self.exposure, knee) for s in self._sums)
+        self.rgb = to_rgb(mean, r.light, self.exposure, knee)
         self.noise = half_noise(a, b, self._face)
         self.render_s += time.perf_counter() - t0
 

@@ -8,7 +8,8 @@ two views of each cut, on one grid fill (owner's choice, ADR 0019 B3):
   without the face's mirror reflection, at the photo compare's mean lightness
   (`Rendering.look`);
 - **a backlit slice** SLICE_MM thick on a light box (L3, `Rendering.transmitted`), at
-  one fixed exposure so slices differ in how much light they pass.
+  one fixed exposure so slices differ in how much light they pass, with a highlight
+  roll-off (BACKLIT_KNEE) so clear bands keep their shading.
 
 The whole face, and for a dusty stone a 12 mm close-up at 0.03 mm pixels where its dust
 is densest, each beside its stand-in preview. No photo blur or noise: these are for the
@@ -45,6 +46,9 @@ SLICE_MM = 3.0  # backlit slice thickness, owner's choice (2026-11-09; and ADR 0
 # Light box exposure (transmittance factor x this), `effective`, one for every stone so
 # slices differ in brightness as they pass more or less light (2026-11-09 look sheets).
 BACKLIT_EXPOSURE = 3.0
+# Highlight roll-off of the backlit view (owner's pick from runs/backlit-rolloff/,
+# 2026-11-09, ADR 0019 s.6.6): `effective`; the bare light box stays white
+BACKLIT_KNEE = 0.6
 VIEWS = ("look", "backlit")
 # Hematite pigment's red absorption and carnelian's loading (owner's pick from the
 # 2026-11-09 carnelian sweeps, ADR 0019 s.6): `effective`, *speculative*.
@@ -110,7 +114,8 @@ def views(
     look = CutRenderer(specimen, cut, Rendering.look(record, grid_mm=grid_mm, optics=optics),
                        rng, fill_depth_mm=SLICE_MM)  # fmt: skip
     back = look.on(Rendering.transmitted(record, grid_mm=grid_mm, depth_mm=SLICE_MM,
-                                         optics=optics, exposure=BACKLIT_EXPOSURE))  # fmt: skip
+                                         optics=optics, exposure=BACKLIT_EXPOSURE,
+                                         rolloff_knee=BACKLIT_KNEE))  # fmt: skip
     row: dict[str, object] = {f"{key}_fill_s": round(look.fill_s, 1)}
     for view, cr in zip(VIEWS, (look, back), strict=True):
         cr.more(spp)

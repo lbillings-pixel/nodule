@@ -152,6 +152,23 @@ as now, no face glare, no glare plus a display curve, a backlit 3 mm slice) was 
    (ADR 0014). Tests: the matte bottom matches a closed form for a pure absorber (with
    internal reflections at the face), per channel; the black bottom fails the same check
    (negative control); refusals without the black-bottom flag or the dome.
+6. **A highlight roll-off for backlit slices** (owner's pick after runs/backlit-rolloff/,
+   2026-11-09). At the fixed exposure 3.0, clear neutral slices blew out: 45 % of stone
+   1's face and 15 % of stone 8's at full white. The backlit view now passes values
+   through a shoulder (`camera.rolloff`, `varietyrender.BACKLIT_KNEE`): unchanged up to
+   a **knee of 0.6**, then compressed so the bare light box (transmittance 1) is exactly
+   white, slope 1 at the knee; `effective`, a display choice, not optics. The exposure
+   stays one value for every stone. Carnelian's median colour is unchanged (stone 10),
+   only its brightest glow softens; stone 1's near-white share (all channels >= 245)
+   falls from 40 % to 6 %. Clear quartz itself stays pale and flat: it passes nearly
+   all the light, so there is no hidden detail to recover. Bright bands get their
+   shading back, though bands passing 40-90 % of the light span only grey levels
+   239-254. Trial: knee 0.6 and 0.8 per channel, and 0.4 per channel or on the brightest
+   channel (keeps hue); 0.4 greyed the whites. Only the variety backlit view uses it;
+   the photo compare's L3 renders and the look are unchanged. Tests: below the knee
+   unchanged, light box white, smooth and rising; bright bands stay distinct and not
+   white, while plain clipping fails the same check (negative control); refused for
+   the dome and for exposures that cannot exceed white.
 
 Tests (tests/test_look.py), each with a negative control: glare off removes exactly
 F0 Ld; the look's exposure matches the compare's lightness; one fill serves a backlit

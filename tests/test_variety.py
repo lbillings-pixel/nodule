@@ -11,10 +11,12 @@ import numpy as np
 import pytest
 from agatesim.fields import Phase
 from agatesim.volume.config import SliceConfig, SolidConfig, VolumeConfig
+from agatesim.volume.slicing import Plane
 
 from nodule.specimen import Specimen, SpecimenConfig, SpecimenCut
 from nodule.variety import (
     CLEAN_CUT,
+    CRACK_CUT_ANGLE,
     FLOOR_HEIGHT,
     FULL_WOBBLE_STONES,
     LONG_RADIUS,
@@ -22,6 +24,8 @@ from nodule.variety import (
     MIXED_FILL_CHANCE,
     ROUGHNESS_LIMIT_MM,
     SAG_SHARE,
+    STAIN,
+    STAIN_JITTER,
     STRAIGHT_SHARE,
     BandRoughness,
     FractureLayer,
@@ -34,6 +38,7 @@ from nodule.variety import (
     build,
     clean_cut,
     crack_bend,
+    crack_cut_angle,
     crack_mix,
     crack_traces,
     crack_wiggle,
@@ -41,6 +46,7 @@ from nodule.variety import (
     cut_of,
     draw_fractures,
     draw_sheet,
+    enters_cavity,
     flat_bands,
     floor_bands,
     fold_share,
@@ -386,6 +392,56 @@ def _old_style(rng: np.random.Generator, r: float) -> tuple[FractureLayer, ...]:
     )
 
 
+def test_smear_check_and_cutter_avoid_cutting_along_a_crack() -> None:
+    """ADR 0018 s.10 (owner, 2026-11-08): a crack near the face's plane shows as a
+    wide smear, and a cutter would not saw along a crack. Control: a crack lying in
+    the cut's plane."""
+    base = recipe()
+    solid = base.solid.build()
+    plane = Plane.of(base.cut, solid.centre())
+    along = CRACK.model_copy(update={"normal": tuple(np.asarray(plane.normal).tolist())})
+    across = CRACK.model_copy(update={"normal": tuple(np.asarray(plane.u).tolist())})
+    assert crack_cut_angle(solid, base.cut, (along,)) < 1  # control: a smear
+    assert crack_cut_angle(solid, base.cut, (across,)) > 89
+    assert crack_cut_angle(solid, base.cut, ()) == 90
+    chosen = clean_cut(np.random.default_rng(0), solid, base.cut, 10.0, (along,))
+    assert crack_cut_angle(solid, chosen, (along,)) >= CRACK_CUT_ANGLE
+    assert clean_cut(np.random.default_rng(0), solid, base.cut, 10.0) == base.cut  # no crack
+
+
+def test_cavity_check_and_cracks_keep_out_of_open_cavities() -> None:
+    """ADR 0018 s.10 (owner, 2026-11-08): no long crack through a cavity. A crack
+    through the centre of a quartz-lined stone enters it (the control); a rim nick
+    does not; and cracks drawn for that stone keep out."""
+    solid = LINED.solid.build()
+    r = inradius(solid)
+    cavity = (1 - LINED.centre_width) * r + LINED.lining * LINED.centre_width * r
+    nick = CRACK.model_copy(
+        update={
+            "centre_mm": tuple(rim_point(solid, np.array([1.0, 0.0, 0.0])).tolist()),
+            "normal": (0.0, 1.0, 0.0),
+            "radius_mm": 2.0,
+        }
+    )
+    assert enters_cavity(solid, CRACK, cavity)  # control
+    assert not enters_cavity(solid, nick, cavity)
+    rng = np.random.default_rng(1)
+    drawn = [f for _ in range(40) for f in draw_fractures(rng, solid, False, cavity)]
+    assert drawn
+    assert not any(enters_cavity(solid, f, cavity) for f in drawn)
+
+
+def test_crack_stain_is_capped() -> None:
+    """The owner (2026-11-08): iron stain on cracks was too intense (up to 1.0).
+    Control: the old fixture's 0.9 lies above the cap."""
+    rng = np.random.default_rng(2)
+    solid = recipe().solid.build()
+    stains = [f.stain for _ in range(300) for f in draw_fractures(rng, solid, False)]
+    cap = STAIN[1] + STAIN_JITTER
+    assert max(stains) <= cap
+    assert CRACK.stain > cap
+
+
 def test_crack_mix_check_and_its_negative_control() -> None:
     """One shade per stone (rare exceptions), a third straight, long cracks on a
     third of cracked stones and two on few (owner, 2026-11-08; ADR 0018 s.10)."""
@@ -397,7 +453,7 @@ def test_crack_mix_check_and_its_negative_control() -> None:
     assert drawn.stain_spread <= 0.2 + 1e-9
     assert abs(drawn.straight - STRAIGHT_SHARE) < 0.05
     assert 0.25 < drawn.long < 0.42  # 4 in 12
-    assert 0.03 < drawn.two_long < 0.15  # 1 in 12
+    assert 0.01 < drawn.two_long < 0.06  # 1 in 36
     old = crack_mix([(_old_style(rng, r), r) for _ in range(600)])
     assert old.mixed > 0.3
     assert old.stain_spread > 0.2

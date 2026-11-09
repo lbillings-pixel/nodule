@@ -427,6 +427,32 @@ judged ruler-straight black cracks fake. All values `effective` unless cited.
   control the old drawing (mixed over 0.3, spread over 0.2, none straight, long
   over 0.9). Sheets 1 and 2 and a strip of 12 cracked stones from seeds 3-11
   redrawn: runs/variety-sheet-s10d/.
+- **The owner on the strip of cracked stones (2026-11-08).** Four changes, all
+  `effective`: (1) the cutter avoids cutting along a crack, since a slab would split
+  there and a crack near the face's plane shows as a wide stain; a cut now also
+  meets no crack at under 30 degrees, counting a crack within its stain's reach of
+  the plane (halo + 2 x pool) and less its largest bend (`crack_cut_angle`), chosen
+  among the same 64 tries; thunder eggs, cut across the star, move the cut along
+  the axis only; cracks the chosen cut still runs along are left out (that stone
+  would have split on the saw). (2) Iron stain lowered from 0.4-1.0 to 0.25-0.6,
+  and the iron fill's own trace from 0.9 to the stain + 0.2 (at most 0.8). (3) No
+  crack enters an open cavity: on quartz-lined stones a crack that comes within
+  0.5 mm (plus its largest bend) of the points more than the lining's depth from
+  the nearest wall is redrawn, up to 20 times, then left out (`enters_cavity`).
+  (4) Two long cracks only on 1 cracked stone in 36 (was 1 in 12); long cracks stay
+  on 1 in 3. Measured on the 91 cracked stones of sheets 1-60: traces meeting the
+  face at under 30 degrees 0 (13 before at under 20); long cracks entering the
+  cavity of the 33 open-cavity stones 0 (5); stones with two long cracks 1 (8);
+  faces showing no crack 23 % (9 %), since more cracks are left out; median trace
+  0.14 of the face's width, as before. Every uncracked stone is unchanged; cracked
+  stones differ only in their cracks and cut. Checks with controls: a crack in the
+  cut's plane gives under 1 degree, one across it over 89, and `clean_cut` moves off
+  the first; a crack through the centre of a quartz-lined stone enters its cavity
+  (the control), a rim nick does not, and no crack drawn for it does; drawn stain
+  stays at or under 0.7, the old 0.9 above. Seen: the wide pink and red patches on
+  strip stones 2, 7, 9, 11 and 12, first read as crack smears, are mottle patches
+  (s.8), not cracks; they stand until the owner judges them. Sheets 1, 2 and the
+  strip redrawn: runs/variety-sheet-s10e/.
 - **Seen, open:** a clear-filled crack shows as a dark grey line in the stand-in
   (seed 2 stone 5); whether it reads darker than a real healed crack is for the
   render, not the stand-in.

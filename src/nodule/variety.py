@@ -131,7 +131,17 @@ STAIN_JITTER = 0.1  # each crack's iron within this of the stone's
 STRAIGHT_SHARE = 1 / 3  # cracks with no bend
 PARTIAL_CRACKS = (3, 8)  # per cracked stone: inward from the rim
 PARTIAL_REACH = (0.2, 0.5)  # how far in, as a share of the inradius
-LONG_CRACKS: dict[int, float] = {0: 8, 1: 3, 2: 1}  # per 12 cracked stones
+LONG_CRACKS: dict[int, float] = {0: 24, 1: 11, 2: 1}  # per 36 cracked stones
+# The owner on the strip of cracked stones (2026-11-08): two long cracks crossing
+# through the centre very rare (2 long was 1 in 12 cracked stones); iron stain too
+# intense (was 0.4-1.0, the iron fill's own trace 0.9); no long crack through a
+# cavity; and the cutter avoids cutting along a crack (a slab would split there),
+# since a crack near the face's plane shows as a wide smear. All `effective`.
+STAIN = (0.25, 0.6)
+IRON_TRACE = 0.2  # the iron fill's trace: impurity = stain + this, at most 0.8
+CRACK_CUT_ANGLE = 30.0  # degrees: least angle between the cut and a crack it meets
+CAVITY_MARGIN_MM = 0.5  # cracks keep this far from the open cavity (estimate)
+CRACK_TRIES = 20  # redraws of a crack that would enter the cavity; then it is left out
 LONG_RADIUS = (0.6, 1.2)  # share of the inradius
 LONG_OFFSET = (0.2, 0.6)  # centre's distance from the stone's centre, share of inradius
 # Cuts of overlapping-sphere outlines: the cutter's choice. A cut far off a
@@ -402,17 +412,37 @@ def _unit(rng: np.random.Generator) -> FloatArray:
     return v / float(np.linalg.norm(v))
 
 
-def draw_fractures(rng: np.random.Generator, solid: Solid, red: bool) -> tuple[FractureLayer, ...]:
-    """A cracked stone's cracks (ADR 0018 s.7, s.10): 1-4 partial cracks running in
+def enters_cavity(solid: Solid, f: FractureLayer, cavity_mm: float) -> bool:
+    """Whether crack f comes within CAVITY_MARGIN_MM (plus its largest bend) of the
+    open cavity: the points more than `cavity_mm` from the nearest wall."""
+    n = np.asarray(f.normal) / float(np.linalg.norm(f.normal))
+    e1 = np.cross(n, [1.0, 0.0, 0.0] if abs(n[0]) < 0.9 else [0.0, 1.0, 0.0])
+    e1 /= float(np.linalg.norm(e1))
+    e2 = np.cross(n, e1)
+    rho = f.radius_mm * np.sqrt(np.linspace(0.0, 1.0, 16))[:, None]
+    phi = np.linspace(0.0, 2 * math.pi, 48, endpoint=False)[None, :]
+    a = (rho * np.cos(phi)).reshape(-1, 1)
+    b = (rho * np.sin(phi)).reshape(-1, 1)
+    pts: FloatArray = solid.centre() + np.asarray(f.centre_mm) + a * e1 + b * e2
+    margin = CAVITY_MARGIN_MM + SAG_SHARE[1] * f.radius_mm
+    return bool(np.any(solid.wall_distance(pts) > cavity_mm - margin))
+
+
+def draw_fractures(
+    rng: np.random.Generator, solid: Solid, red: bool, cavity_mm: float | None = None
+) -> tuple[FractureLayer, ...]:
+    """A cracked stone's cracks (ADR 0018 s.7, s.10): 3-8 partial cracks running in
     from the rim, 0-3 nicks 1-4 mm long at the rim and, on 1 cracked stone in 3,
-    one or (rarely) two long cracks off the centre. All share one fill and about
+    one or (very rarely) two long cracks off the centre. All share one fill and about
     one iron strength, except that 1 cracked stone in 12 has one crack of the other
     fill. None is open; 1 in 3 is straight and the rest bend gently. The bends are
-    drawn last, so the cracks lie where they were first drawn."""
+    drawn last, so the cracks lie where they were first drawn. With an open cavity
+    (`cavity_mm` in from the wall), a crack that would reach it is redrawn, and
+    left out after CRACK_TRIES."""
     r = inradius(solid)
     shares = RED_CRACK_FILLS if red else CRACK_FILLS
     fill: Fill = str(rng.choice(list(shares), p=_shares(shares)))  # type: ignore[assignment]
-    stain = float(rng.uniform(0.4, 1.0))
+    stain = float(rng.uniform(*STAIN))
 
     def shade() -> float:
         return float(np.clip(stain + rng.uniform(-STAIN_JITTER, STAIN_JITTER), 0.0, 1.0))
@@ -431,33 +461,46 @@ def draw_fractures(rng: np.random.Generator, solid: Solid, red: bool) -> tuple[F
             pool_mm=float(rng.uniform(0.5, 2.0)),
         )
 
-    out: list[FractureLayer] = []
+    def clear_of_cavity(draw: Callable[[], FractureLayer]) -> FractureLayer | None:
+        for _ in range(CRACK_TRIES if cavity_mm is not None else 1):
+            f = draw()
+            if cavity_mm is None or not enters_cavity(solid, f, cavity_mm):
+                return f
+        return None
+
+    def long_crack() -> FractureLayer:
+        offset = float(rng.uniform(*LONG_OFFSET)) * r
+        return FractureLayer(
+            centre_mm=tuple((offset * _unit(rng)).tolist()),
+            normal=tuple(_unit(rng).tolist()),
+            radius_mm=float(rng.uniform(*LONG_RADIUS) * r),
+            aperture_mm=_log_uniform(rng, 0.05, 0.4),
+            fill=fill,
+            stain=shade(),
+            halo_mm=float(rng.uniform(0.0, 0.5)),
+            pool_mm=float(rng.uniform(1.0, 3.0)),  # half the 2-6 mm pools
+        )
+
+    drawn: list[FractureLayer | None] = []
     n_long = int(
         rng.choice(
             list(LONG_CRACKS), p=[v / sum(LONG_CRACKS.values()) for v in LONG_CRACKS.values()]
         )
     )
     for _ in range(n_long):
-        offset = float(rng.uniform(*LONG_OFFSET)) * r
-        out.append(
-            FractureLayer(
-                centre_mm=tuple((offset * _unit(rng)).tolist()),
-                normal=tuple(_unit(rng).tolist()),
-                radius_mm=float(rng.uniform(*LONG_RADIUS) * r),
-                aperture_mm=_log_uniform(rng, 0.05, 0.4),
-                fill=fill,
-                stain=shade(),
-                halo_mm=float(rng.uniform(0.0, 0.5)),
-                pool_mm=float(rng.uniform(1.0, 3.0)),  # half the 2-6 mm pools
-            )
-        )
+        drawn.append(clear_of_cavity(long_crack))
     for _ in range(int(rng.integers(PARTIAL_CRACKS[0], PARTIAL_CRACKS[1] + 1))):
-        out.append(from_rim(float(rng.uniform(*PARTIAL_REACH)) * r, (0.05, 0.3)))
-    main = len(out)  # long and partial cracks; the nicks follow
+        reach = float(rng.uniform(*PARTIAL_REACH)) * r
+        drawn.append(clear_of_cavity(lambda reach=reach: from_rim(reach, (0.05, 0.3))))
+    main = sum(f is not None for f in drawn)  # long and partial; the nicks follow
     for _ in range(int(rng.integers(0, 4))):
-        out.append(from_rim(float(rng.uniform(1.0, 4.0)), (0.05, 0.2)))
+        size = float(rng.uniform(1.0, 4.0))
+        drawn.append(clear_of_cavity(lambda size=size: from_rim(size, (0.05, 0.2))))
+    out = [f for f in drawn if f is not None]
+    if not out:
+        return ()
     if rng.uniform() < MIXED_FILL_CHANCE:
-        k = int(rng.integers(main))  # a long or partial crack, so the odd shade shows
+        k = int(rng.integers(max(main, 1)))  # a long or partial crack, so it shows
         other: Fill = "iron" if fill == "clear" else "clear"
         out[k] = out[k].model_copy(update={"fill": other})
     return tuple(
@@ -542,9 +585,15 @@ def draw_stone(
         white_fade=float(rng.uniform(0.2, 0.5)),
         rim_stain=float(rng.uniform(0.5, 0.9)) if colour == "stained" else 0.0,
         mottle=mottle,
-        fractures=draw_fractures(rng, solid, colour in ("iron", "carnelian")) if cracked else (),
         cut=cut,
     )
+    if cracked:  # drawn last, as before, so the stone's other draws stand
+        cavity = None
+        if centre == "quartz-lined":
+            w = recipe.centre_width
+            cavity = (1 - w) * r + recipe.lining * w * r
+        red = colour in ("iron", "carnelian")
+        recipe = recipe.model_copy(update={"fractures": draw_fractures(rng, solid, red, cavity)})
     return _refine(recipe, solid, r, odd_cut=odd_cut)
 
 
@@ -557,7 +606,19 @@ def _refine(recipe: StoneRecipe, solid: Solid, r: float, *, odd_cut: bool) -> St
         thick = rng.uniform() < THICK_FLOOR_CHANCE
         update["floor_supply"] = 1.0 if thick else _log_uniform(rng, *FLOOR_SUPPLY)
     if recipe.outline != "thunder-egg" and not odd_cut:
-        update["cut"] = clean_cut(rng, solid, recipe.cut, r)
+        update["cut"] = clean_cut(rng, solid, recipe.cut, r, recipe.fractures)
+    elif recipe.outline == "thunder-egg" and recipe.fractures:
+        update["cut"] = thunder_egg_cut(rng, solid, recipe.cut, r, recipe.fractures)
+    if recipe.fractures:
+        # A stone cracked along the saw's path would split; the cutter picks another
+        # stone. So cracks the chosen cut still runs along are left out.
+        cut = update.get("cut", recipe.cut)
+        assert isinstance(cut, SliceConfig)
+        kept = tuple(
+            f for f in recipe.fractures if crack_cut_angle(solid, cut, (f,)) >= CRACK_CUT_ANGLE
+        )
+        if kept != recipe.fractures:
+            update["fractures"] = kept
     level = str(rng.choice(list(ROUGHNESS_SHARES), p=_shares(ROUGHNESS_SHARES)))
     # Not on cracked stones (a warp takes no slipping fractures) or the pebble.
     if level != "none" and not recipe.fractures and recipe.outline != "pebble":
@@ -587,21 +648,75 @@ def cut_obliqueness(solid: Solid, cut: SliceConfig) -> float:
     return float(np.max(np.where(z < inner.radii, z / inner.radii, 0.0)))
 
 
-def clean_cut(rng: np.random.Generator, solid: Solid, first: SliceConfig, r: float) -> SliceConfig:
+def crack_cut_angle(solid: Solid, cut: SliceConfig, fractures: tuple[FractureLayer, ...]) -> float:
+    """Smear check: the least angle (degrees) between the cut and any crack whose
+    disc comes within its stain's reach of it, less the crack's largest bend; 90 if
+    none does. A crack near
+    the face's plane shows as a wide smear (trace width / sin angle)."""
+    plane = Plane.of(cut, solid.centre())
+    m = np.asarray(plane.normal)
+    least = 90.0
+    for f in fractures:
+        n = np.asarray(f.normal) / float(np.linalg.norm(f.normal))
+        cos = min(abs(float(n @ m)), 1.0)
+        gap = abs(float(m @ (solid.centre() + np.asarray(f.centre_mm) - plane.origin)))
+        stain_mm = f.halo_mm + 2 * f.pool_mm  # a crack just under the face stains it
+        if gap > f.radius_mm * math.sqrt(1 - cos**2) + f.sagitta_mm + stain_mm:
+            continue
+        bend = math.degrees(math.atan(2 * f.sagitta_mm / f.radius_mm))
+        least = min(least, max(math.degrees(math.acos(cos)) - bend, 0.0))
+    return least
+
+
+def _cut_fault(solid: Solid, cut: SliceConfig, fractures: tuple[FractureLayer, ...]) -> float:
+    """0 for a clean cut; otherwise how far it misses, over both rules."""
+    oblique = max(cut_obliqueness(solid, cut) - CLEAN_CUT, 0.0) / (1 - CLEAN_CUT)
+    angle = crack_cut_angle(solid, cut, fractures)
+    return oblique + max(CRACK_CUT_ANGLE - angle, 0.0) / CRACK_CUT_ANGLE
+
+
+def clean_cut(
+    rng: np.random.Generator,
+    solid: Solid,
+    first: SliceConfig,
+    r: float,
+    fractures: tuple[FractureLayer, ...] = (),
+) -> SliceConfig:
     """The first of up to CUT_TRIES cuts (the drawn one first) that crosses every
-    sphere it meets within CLEAN_CUT of its centre, else the least oblique."""
-    best, least = first, cut_obliqueness(solid, first)
+    sphere it meets within CLEAN_CUT of its centre and meets no crack at under
+    CRACK_CUT_ANGLE, else the one that misses least."""
+    best, least = first, _cut_fault(solid, first, fractures)
     for _ in range(CUT_TRIES - 1):
-        if least <= CLEAN_CUT:
+        if least == 0:
             break
         cut = SliceConfig(
             tilt_deg=float(rng.uniform(70, 90)),
             azimuth_deg=float(rng.uniform(0, 360)),
             offset_mm=float(rng.uniform(-0.15, 0.15) * r),
         )
-        b = cut_obliqueness(solid, cut)
+        b = _cut_fault(solid, cut, fractures)
         if b < least:
             best, least = cut, b
+    return best
+
+
+def thunder_egg_cut(
+    rng: np.random.Generator,
+    solid: Solid,
+    first: SliceConfig,
+    r: float,
+    fractures: tuple[FractureLayer, ...],
+) -> SliceConfig:
+    """A thunder egg is cut across its star (tilt 0); the cutter moves the cut along
+    the axis, within 0.1 r, to miss cracks lying near its plane."""
+    best, least = first, crack_cut_angle(solid, first, fractures)
+    for _ in range(CUT_TRIES - 1):
+        if least >= CRACK_CUT_ANGLE:
+            break
+        cut = first.model_copy(update={"offset_mm": float(rng.uniform(-0.1, 0.1) * r)})
+        a = crack_cut_angle(solid, cut, fractures)
+        if a > least:
+            best, least = cut, a
     return best
 
 
@@ -869,7 +984,7 @@ class VarietyLayers:
                     trans[trace] = 1.0
                     imp[trace] = 0.0
                 case "iron":
-                    imp[trace] = 0.9
+                    imp[trace] = min(f.stain + IRON_TRACE, 0.8)
                     pig[trace] = Pigment.IRON
                     phase[trace] = Phase.CHALCEDONY
 

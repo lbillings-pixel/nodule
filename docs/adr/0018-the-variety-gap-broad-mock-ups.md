@@ -1,7 +1,8 @@
 # 18. The variety gap: broad mock-ups of many features, varied per stone
 
 - Status: accepted (owner, 2026-11-08; drafted from their choices of 2026-11-06).
-  Fractures: option C (section 4).
+  Fractures: option C (section 4). Section 11 (dust): accepted 2026-11-09, options
+  A3, B1, C1.
 - Date: 2026-11-08
 - Builds on: [ADR 0008](0008-set-level-render-and-compare.md) section 5a (the
   trial and its notes), [ADR 0006](0006-band-counts-as-censored-records.md)
@@ -556,6 +557,98 @@ judged ruler-straight black cracks fake. All values `effective` unless cited.
   For the open 3D cavity, the owner notes that a cavity varying with depth means a
   cut will sometimes gain or lose arms depending on where it falls (as Ross's
   cut-position remark implies [@ross1941, p. 731]); a 3D version must allow that.
+
+### 11. Band-following dust: reading and plan (2026-11-09)
+
+First item of the owner's next list (dust, then plumes and moss, then depth through
+clear bands). Reading by helper agents, 2026-11-08/09 (notes/n1-reading/
+dust-reading.md, wang2025.md, pabian1994-dust.md; gitignored); grades per ADR 0002.
+
+- **What it is:** fine hematite (red) and goethite (yellow), particles under 10 µm
+  in laminated or lenticular agglomerates [@goetze2020, p. 27]; in Nanhong agate,
+  aggregates of nano-hematite in silica, mean 4.94 µm, 95 % within 1.0-10.2 µm,
+  largest 43 µm [@wang2025, Fig. 7a]; Fe-Ti oxides 2-5 µm in fire agate
+  [@natkaniec2020, p. 10] (*verified*).
+- **Two populations:** fine dust along the crystallisation front; coarse aggregates
+  up to several 100 µm at random in the inner chalcedony [@goetze2009, pp. 680-81;
+  @goetze2020, p. 27]; orange-brown bubbles up to 100 µm at random within a band
+  [@mrozik2023] (*verified*).
+- **Where:** "for the most part, on the band boundaries" [@howard2018, Fig. 5];
+  wall-parallel along crystallisation fronts, in only a small part of each band
+  [@mrozik2023, p. 13, Fig. 14]; a brown belt 0.06 mm wide in a 0.3 mm layer
+  [@wang1990, Fig. 2] (*verified*). White bands are mostly clean [@howard2018,
+  Fig. 5; @mrozik2023, p. 23]; the quartz centre nearly so (Fe 7 against 483 ppm in
+  chalcedony [@goetze2009]; 78-141 against 262-969 ppm [@mrozik2023, Table 5])
+  (*verified*).
+- **Along a band:** continuous lines and dotted strings both occur, and the amount
+  varies "from band to band and along individual bands" [@howard2018, p. 104]
+  (*verified*, qualitative). Red bands with fine, even dust look evenly coloured
+  [@mrozik2023, p. 23; @wang2025, Fig. 6c].
+- **Colour:** saturation rises with the pigment's projected area (S = 38.04 + 2.57 ×
+  area %, R² 0.76, area 2-10 %), not with particle count or size [@wang2025,
+  Figs 6-7] (*verified* for one locality; HSB from micrographs, not CIE Lab).
+- **Floor:** earthy iron debris may settle on the vesicle floor before banding
+  [@pabian1994, pp. 13-14, Fig. 26] (*plausible*; a collectors' book). No source
+  describes dust lines in floor bands; Fe is below detection in Brazilian floor bands
+  [@moxon2013], while "heavily pigmented" ones are possible [@heaney1993].
+- **At render scale** (Claude's inference, *plausible*): a pixel covers about
+  50-100 µm, so single particles and most lines (4-30 µm, measured on figures) are
+  unresolved and show as a faint tinted line or a tinted band. Visible specks are
+  about 25-70 µm on a polished face [@mrozik2023, Fig. 14b] and 0.07-0.4 mm under a
+  hand lens [@howard2018, Fig. 5] (sizes measured on figures: *speculative*).
+- **Mechanism** (context only, never tested by renders): iron rejected ahead of the
+  front [@goetze2009, p. 686], or trapped when growth is fastest [@wang1990,
+  p. 1635]; pigment supply varying independently of the micro-zoning
+  [@frondel1985, p. 977].
+
+**Gaps, so assumptions** (memory: state assumptions when sourcing stalls): no source
+gives the share of bands carrying dust, lines per mm, number density in a section,
+the length of dust patches along a band (one figure: at least 10 mm), or which side
+of a layer the dust takes.
+
+**Plan: four forms, varied per stone** (all `effective`; the numbers are starting
+assumptions for look sheets, to be set by the owner's eye):
+
+1. *Tinted band:* pigment even through a band. The band iron already does this; add
+   nothing unless the look needs it.
+2. *Dust line:* a thin strip at a band boundary, about 0.03-0.06 mm, drawn by area
+   coverage so it can be thinner than a pixel; the stone's pigment, darker and more
+   saturated; its strength varies along the band with noise in world coordinates
+   (patches about 5-20 mm long).
+3. *Speck string:* visible specks 0.03-0.3 mm, oval and drawn out along the band, in
+   loose clustered rows on the same boundaries.
+4. *Coarse blobs:* rounded aggregates 0.1-0.5 mm at random in the inner chalcedony,
+   not on bands.
+
+Rules: no dust on white bands, in the quartz centre or in floor bands; fewer dusty
+bands toward the centre; dust colour from the stone's palette (red stones red,
+others red, yellow or brown). Starting shares: dust lines on 1 stone in 2, on 20-40 %
+of its coloured band boundaries; speck strings on 1 in 4; coarse blobs on 1 in 4.
+No source gives these frequencies; coarse host debris is in over 90 % or under 5 %
+of stones depending on locality [@pabian1994, Table 1], so a per-stone switch fits.
+No stone gets every form (memory: realism is interplay).
+
+**Options for the owner** (sources disagree or are silent):
+
+- **A. Which side of a band boundary.** A1: the end of a layer, its inner, younger
+  side (rejection [@goetze2009]). A2: the start of a fibrous layer [@pabian1994,
+  Fig. 22] (trapping [@wang1990]). A3: either, drawn per stone. *Recommended: A3*;
+  the sources split, and at render scale the side shows only as which shade the
+  line borders.
+- **B. Pore belts** (faint whitish haze lines in reflected light [@folk1952]). B1:
+  leave out, as their nature is disputed (no 0.1 µm pores by TEM [@graetsch1985,
+  p. 305]; no visible fluid inclusions in chalcedony [@goetze2020, p. 22]). B2: rare.
+  *Recommended: B1.*
+- **C. Settled iron debris on the cavity floor.** C1: later, with the floor work.
+  C2: now, on 1 stone in 12. *Recommended: C1.*
+- **Chosen (owner, 2026-11-09): A3, B1, C1**, as recommended.
+
+**Checks:** `dust_on_bands`, the share of dust within a short distance of a band
+boundary. Negative control 1: the same dust at random positions must fail. Negative
+control 2: a stone with band contrast but no dust must not be flagged as dusty.
+Specks are drawn per world-fixed cell from spawned streams, so previews match full
+runs. **Cost:** measured as built; stand-in cuts about 6 s each. The owner sees
+look sheets before any statistic or render (memory: owner's eye over statistics).
 
 ## Limits
 

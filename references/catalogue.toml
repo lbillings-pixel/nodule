@@ -3315,3 +3315,18 @@ checked = "sections"
 sections_read = ["abstract", "p. 9", "p. 12", "discussion"]
 topics = ["carnelian", "iron", "colour", "chalcedony"]
 notes = """Owner-supplied PDF (watchung-carnelian.pdf), sections read 2026-11-08 by a helper agent. Unbanded red carnelian: SiO2 97.51 +- 0.31 and Fe2O3 1.09 +- 0.07 wt% (p. 12), red attributed to Fe-oxide/hydroxide inclusions; pebbles 1.0-5.5 cm (p. 9)."""
+
+[[references]]
+id = "goetze2023"
+kind = "article"
+authors = ["Götze, J.", "Möckel, R.", "Pan, Y.", "Müller, A."]
+year = 2024
+title = "Geochemistry and formation of agate-bearing lithophysae in Lower Permian volcanics of the NW-Saxonian Basin (Germany)"
+venue = "Mineralogy and Petrology 118, 23–40"
+doi = "10.1007/s00710-023-00841-2"
+url = "https://doi.org/10.1007/s00710-023-00841-2"
+access = "open"
+licence = "CC-BY-4.0"
+checked = "full-text"
+topics = ["thunder-egg", "lithophysae", "cavity-geometry", "fill-sequence", "formation-temperature", "host-rocks", "pseudomorphs", "colour"]
+notes = """Published online 22 Aug 2023; the article's header cites it as Mineralogy and Petrology (2024) 118:23–40 (id = online year, year = volume). PDF supplied by the owner; read in full 2026-11-08 by a helper agent (pypdf text plus Fig. 2), Fig. 2 checked by Claude. Kemmlitz rhyolite, Saxony. The text gives no cavity geometry: cavities from "shear stress, degassing and/or corrosion" (p. 25), "tensional stress (Breitkreuz 2013)" above Tg (p. 35); Ross 1941 not cited. Fig. 2 (p. 26; five specimens) shows irregular, asymmetric cores: an irregular star of about 5–6 ragged arms with red pigment bleeding into the host (b inset), a three-armed triangular core with thick dark red-brown rind, yellow at the contact and a small quartz druse in the centre (d), a broad core with stepped, zigzag walls whose bands keep the wall's corners (e), angular segments around host blocks with a brown crack network (f). Walls are angular or jagged; no smooth winding arms with rounded embayments; lithophysae roughly 6–10 cm (helper's estimate from scale bars). Fill: granular microquartz, then fibrous chalcedony, then macrocrystalline quartz centre, in several generations each starting with spherulitic chalcedony (p. 31); euhedral quartz centres, quartz pseudomorphs after carbonate or sulphate laths, late kaolinite in kaolin districts (pp. 30, 38); grey and bluish-white colours there (p. 30); blotched iron pigmentation or bleaching of the host (p. 27). Host: yellowish-white groundmass, phenocrysts 5–20 %, about 1 mm (pp. 27, 29); glassy pitchstone only (pp. 35–36, 39). Fluid inclusions in centre quartz: Th 134–186 °C, salinity 4.96–9.21 wt% NaCl eq. (p. 34); authors' interpretation: above 150 °C, late- or post-volcanic, silica from host alteration (pp. 37, 39). Interpretations plausible; the geometry is observed."""

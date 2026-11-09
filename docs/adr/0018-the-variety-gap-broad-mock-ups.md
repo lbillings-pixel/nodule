@@ -522,14 +522,36 @@ judged ruler-straight black cracks fake. All values `effective` unless cited.
   Mottle (s10g) is "good enough" for now: it should improve with fuller renders
   in later stages, so it is closed for this round.
 - **Spread of winding arms (owner, 2026-11-08: moderately more and less bending
-  and thickness; side lobes per arm from one fewer to two more):** each stone draws
-  an `ArmShape`: bend x0.7-1.4 and width x0.75-1.3 (log-uniform), side lobes added
-  to each arm's 0-2 by -1 to +2 (floored at 0); all `effective`. Each arm and each
+  and thickness; a count from one fewer to two more, see the correction below):**
+  each stone draws an `ArmShape`: bend x0.7-1.4 and width x0.75-1.3
+  (log-uniform); first drawn as side lobes added to each arm's 0-2 by -1 to +2,
+  now arms (below); all `effective`. Each arm and each
   lobe draws from its own spawned stream, so changing the lobe count leaves the
   other arms as they were (tested). Extremes stay sinuous: over 40 draws each,
   `arm_meander` 0.048 at least (least bend, thickest arms) against the 0.04
   threshold. Sheets: runs/thunderegg-arms/spread-one-at-a-time.png (one setting
   at a time on two stars), spread-random-12.png; cuts-1-2-3-4.png redrawn.
+- **Correction, arms not lobes (owner, 2026-11-08):** the "one fewer to two more"
+  was meant for the number of arms. Side lobes are back to 0-2 per arm; a sinuous
+  star now has 5-8 arms plus an extra -1 to +2 drawn per stone (4-10, the ends
+  rare; `ArmShape.extra_arms`).
+- **Jagged mode (owner's choice 2026-11-08, after [@goetze2023]):** the paper's
+  text gives no cavity geometry, but its Fig. 2 (p. 26; five Saxon lithophysae,
+  checked by Claude) shows irregular, asymmetric cores with angular, stepped walls,
+  3 to about 6 arms and bands that keep the wall's corners; no smooth winding arms.
+  Sources disagree (the owner's specimen winds), so both are drawn: jagged on 1 in
+  3 thunder eggs (`effective`; Claude's suggested share, accepted), sinuous on the
+  rest. A jagged core is an irregular 5-8-cornered polygon (radius 0.32-0.52 of
+  the reach) with 3-6 kinked wedges (kink up to 35 degrees, broad at the body),
+  traced, cut into straight runs of 0.06-0.12, each corner pushed in or out by up
+  to 0.02-0.04 (shape units; all `effective`), halving the push if the outline
+  would cross itself. Check: `wall_corners`, the share of the wall's turning at
+  corners sharper than 15 degrees (outline resampled at 0.005); over 40 draws
+  each: jagged 0.70-0.87, sinuous 0.07-0.36, angular 0.40-0.62; threshold 0.66;
+  negative controls: the sinuous and angular stars. Cost: 0.2 s an outline; cuts
+  1-10 s to build, under 0.22 GB. Sheets: runs/thunderegg-arms/jagged-12.png,
+  cuts-1-2-3-4-5-6.png (4 of 12 jagged). Later (owner agreed): the paper's rind,
+  host speckle, pigment bleeding into the host, central druse, host crack nets.
 
 ## Limits
 

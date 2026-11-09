@@ -1,8 +1,8 @@
 """Thunder-egg star cavities, drawn as 2D outlines for agatesim (ADR 0018 s.10).
 
-Two styles exist because the sources disagree on how arms look. The owner chose
-sinuous for every stone (2026-11-08); angular stays as the check's negative
-control and is never drawn on a sheet.
+Three styles exist because the sources disagree on how arms look. The owner
+chose (2026-11-08) sinuous on most stones and jagged on about 1 in 3; angular
+stays as the negative control of the sinuous check and is never drawn on a sheet.
 
 - *angular*: straight-sided arms, as sections through Ross's rupture model, a
   pyritohedron of inward pentagonal pyramids made by shear planes [@ross1941,
@@ -11,11 +11,16 @@ control and is never drawn on a sheet.
   infiltrated an irregular void", from the owner's private reference
   (thunderegg-1, agatesim `specimens/observations.md`; one specimen, so the look
   is *plausible*, never evidence for a mechanism; ADR 0002).
+- *jagged*: irregular, asymmetric cores of 3-6 broad arms with kinks and stepped,
+  zigzag walls, as in five Saxon lithophysae [@goetze2023, Fig. 2, p. 26]; also
+  *plausible* as a look only.
 
 A sinuous star is a union of discs along winding arm centrelines around a lumpy
 body, rasterised on a grid fixed in shape units (so it does not depend on any
-render or preview resolution), blurred to round the embayments, and traced.
-Every size and share here is `effective`.
+render or preview resolution), blurred to round the embayments, and traced. A
+jagged star is a union of kinked wedges around an irregular polygon, traced, then
+cut into short straight runs whose corners are pushed in or out. Every size and
+share here is `effective`.
 """
 
 from __future__ import annotations
@@ -30,7 +35,7 @@ from agatesim.specimen.segment import trace_outline
 from numpy.typing import NDArray
 from pydantic import BaseModel, ConfigDict, Field
 
-ArmStyle = Literal["angular", "sinuous"]
+ArmStyle = Literal["angular", "sinuous", "jagged"]
 FloatArray = NDArray[np.float64]
 BoolArray = NDArray[np.bool_]
 
@@ -41,10 +46,16 @@ OUTLINE_POINTS = 480  # resampled outline length (agatesim allows up to 2000)
 # 0.008-0.031, sinuous 0.046-0.165 (2026-11-08).
 SINUOUS_MIN = 0.04
 # Per-stone spread of a sinuous star (owner, 2026-11-08: moderately more and less
-# bending and thickness; side lobes per arm from one fewer to two more). `effective`.
+# bending and thickness; arms from one fewer to two more). `effective`.
 BEND_RANGE = (0.7, 1.4)  # multiplies each arm's meander, drawn log-uniform
 WIDTH_RANGE = (0.75, 1.3)  # multiplies each arm's half-width, drawn log-uniform
-BUDS_RANGE = (-1, 2)  # added to each arm's 0-2 side lobes (floored at 0)
+ARMS_BASE = (5, 8)  # arms before the spread [@ross1941, p. 727: five-pointed stars]
+EXTRA_ARMS_RANGE = (-1, 2)  # added to the base count: 4-10 arms, the ends rare
+JAGGED_SHARE = 1 / 3  # owner, 2026-11-08 (Claude's suggested share); `effective`
+JAGGED_ARMS = (3, 6)  # arms of a jagged core [@goetze2023, Fig. 2]
+# `wall_corners` above this reads as jagged. Over 40 draws each (2026-11-08):
+# jagged 0.70-0.87, sinuous 0.07-0.36, angular 0.40-0.62.
+JAGGED_MIN = 0.66
 
 
 class ArmShape(BaseModel):
@@ -54,7 +65,7 @@ class ArmShape(BaseModel):
 
     bend: float = Field(default=1.0, gt=0, description="Meander, x the typical.")
     width: float = Field(default=1.0, gt=0, description="Arm thickness, x the typical.")
-    buds: int = Field(default=0, description="Side lobes added to each arm's 0-2.")
+    extra_arms: int = Field(default=0, description="Arms added to the base count.")
 
     @classmethod
     def draw(cls, rng: np.random.Generator) -> ArmShape:
@@ -64,11 +75,11 @@ class ArmShape(BaseModel):
         return cls(
             bend=log_uniform(*BEND_RANGE),
             width=log_uniform(*WIDTH_RANGE),
-            buds=int(rng.integers(BUDS_RANGE[0], BUDS_RANGE[1] + 1)),
+            extra_arms=int(rng.integers(EXTRA_ARMS_RANGE[0], EXTRA_ARMS_RANGE[1] + 1)),
         )
 
     def summary(self) -> str:
-        return f"bend {self.bend:.2f}, width {self.width:.2f}, lobes {self.buds:+d}"
+        return f"bend {self.bend:.2f}, width {self.width:.2f}, arms {self.extra_arms:+d}"
 
 
 def star_outline(rng: np.random.Generator, arms: int) -> list[tuple[float, float]]:
@@ -158,7 +169,7 @@ def sinuous_mask(rng: np.random.Generator, arms: int, shape: ArmShape | None = N
         meander = shape.bend * arm_rng.uniform(0.5, 1.0)
         pts, w = _arm(arm_rng, float(a), start, reach - start, half_width, meander)
         _discs(mask, x, y, pts, w)
-        buds = max(0, int(arm_rng.integers(0, 3)) + shape.buds)
+        buds = int(arm_rng.integers(0, 3))
         bud_rngs = arm_rng.spawn(buds)
         for bud_rng in bud_rngs:  # side buds: short lobes off an arm
             i = int(bud_rng.integers(len(pts) // 5, max(len(pts) // 5 + 1, 3 * len(pts) // 4)))
@@ -206,17 +217,101 @@ def sinuous_outline(
 
 
 def thunder_egg_outline(
-    rng: np.random.Generator, style: ArmStyle = "sinuous", shape: ArmShape | None = None
+    rng: np.random.Generator, style: ArmStyle | None = None, shape: ArmShape | None = None
 ) -> tuple[ArmStyle, ArmShape | None, list[tuple[float, float]]]:
-    """A thunder egg's star cavity: 5-8 arms [@ross1941, p. 727: five-pointed
-    stars are the most striking]. Sinuous unless asked (owner, 2026-11-08); a
-    sinuous star's shape is drawn per stone unless given."""
-    arms = int(rng.integers(5, 9))
-    if style == "angular":
-        return style, None, star_outline(rng, arms)
-    if shape is None:
-        shape = ArmShape.draw(rng)
-    return style, shape, sinuous_outline(rng, arms, shape)
+    """A thunder egg's star cavity. The style is drawn per stone unless given
+    (jagged on `JAGGED_SHARE`, else sinuous); a sinuous star's shape, including
+    its arm count (`ARMS_BASE` plus its extra arms), likewise."""
+    base = int(rng.integers(ARMS_BASE[0], ARMS_BASE[1] + 1))
+    if style is None:
+        style = "jagged" if rng.random() < JAGGED_SHARE else "sinuous"
+    match style:
+        case "angular":
+            return style, None, star_outline(rng, base)
+        case "jagged":
+            arms = int(rng.integers(JAGGED_ARMS[0], JAGGED_ARMS[1] + 1))
+            return style, None, jagged_outline(rng, arms)
+        case "sinuous":
+            if shape is None:
+                shape = ArmShape.draw(rng)
+            return style, shape, sinuous_outline(rng, base + shape.extra_arms, shape)
+
+
+def jagged_mask(rng: np.random.Generator, arms: int) -> BoolArray:
+    """A jagged core before its walls are stepped: kinked wedges, broad at the
+    base, around an irregular polygon [@goetze2023, Fig. 2]. Each arm draws from
+    its own spawned stream."""
+    corners = int(rng.integers(5, 9))
+    th = np.sort((np.arange(corners) + rng.uniform(-0.3, 0.3, corners)) * 2 * math.pi / corners)
+    rad = rng.uniform(0.32, 0.52, corners)
+    mask = outline_mask(np.stack([rad * np.cos(th), rad * np.sin(th)], axis=1))
+    base = rng.uniform(0, 2 * math.pi) + np.arange(arms) * 2 * math.pi / arms
+    base = base + rng.uniform(-0.3, 0.3, arms) * 2 * math.pi / arms
+    for a, arm_rng in zip(base, rng.spawn(arms), strict=True):
+        reach = arm_rng.uniform(0.55, 0.95)
+        f = arm_rng.uniform(0.4, 0.7)  # where the arm kinks
+        turn = math.radians(arm_rng.uniform(-35, 35))
+        h0 = arm_rng.uniform(0.15, 0.3)  # half-width at the body
+        h1 = h0 * arm_rng.uniform(0.5, 0.85)  # at the kink
+        h2 = arm_rng.uniform(0.02, 0.05)  # at the tip
+        d0 = np.array([math.cos(a), math.sin(a)])
+        d1 = np.array([math.cos(a + turn), math.sin(a + turn)])
+        p1 = reach * f * d0
+        p2 = p1 + reach * (1 - f) * d1
+        n0, n1 = _perp(d0), _perp(d1)
+        mid = _perp(d0 + d1) / float(np.linalg.norm(d0 + d1))
+        wedge = [h0 * n0, p1 + h1 * mid, p2 + h2 * n1, p2 + 0.5 * h2 * d1]
+        wedge += [p2 - h2 * n1, p1 - h1 * mid, -h0 * n0]
+        mask |= outline_mask(np.array(wedge))
+    found = label(fill_holes(mask), eight_connected=False)
+    sizes = np.bincount(found.ravel())
+    sizes[0] = 0
+    return found == int(np.argmax(sizes))
+
+
+def _perp(d: FloatArray) -> FloatArray:
+    return np.array([-d[1], d[0]])
+
+
+def _resample(v: FloatArray, step: float) -> FloatArray:
+    """A closed polygon resampled at about `step` along its length."""
+    closed = np.vstack([v, v[:1]])
+    arc = np.concatenate([[0.0], np.cumsum(np.linalg.norm(np.diff(closed, axis=0), axis=1))])
+    n = max(8, int(arc[-1] / step))
+    t: FloatArray = np.linspace(0.0, float(arc[-1]), n, endpoint=False)
+    return np.stack([np.interp(t, arc, closed[:, 0]), np.interp(t, arc, closed[:, 1])], axis=1)
+
+
+def jagged_outline(rng: np.random.Generator, arms: int) -> list[tuple[float, float]]:
+    """A jagged core's outline: the traced wedges cut into straight runs of
+    0.06-0.12 (shape units), each corner pushed in or out by up to `amp`, which
+    gives stepped, zigzag walls. Halves the push if the result crosses itself."""
+    smooth = mask_outline(jagged_mask(rng, arms))
+    step = rng.uniform(0.06, 0.12)
+    amp = rng.uniform(0.02, 0.04)
+    v = _resample(smooth, step)
+    tangent = np.roll(v, -1, axis=0) - np.roll(v, 1, axis=0)
+    normal = np.stack([tangent[:, 1], -tangent[:, 0]], axis=1)
+    normal /= np.linalg.norm(normal, axis=1, keepdims=True)
+    push = rng.uniform(-1, 1, len(v))
+    for _ in range(6):
+        out = v + (amp * push)[:, None] * normal
+        if outline_problem(out) is None:
+            return [(float(a), float(b)) for a, b in out]
+        amp *= 0.5
+    return [(float(a), float(b)) for a, b in v]
+
+
+def wall_corners(outline: FloatArray, step: float = 0.005, turn_deg: float = 15.0) -> float:
+    """Share of the wall's turning that happens at sharp corners: with the
+    outline resampled at `step`, the summed turn at points turning by more than
+    `turn_deg`, over the summed turn everywhere. A stepped, zigzag wall turns
+    mostly at corners; a smooth winding wall turns gradually."""
+    v = _resample(np.asarray(outline, dtype=np.float64), step)
+    a = v - np.roll(v, 1, axis=0)
+    b = np.roll(v, -1, axis=0) - v
+    turn = np.abs(np.arctan2(a[:, 0] * b[:, 1] - a[:, 1] * b[:, 0], (a * b).sum(axis=1)))
+    return float(turn[turn > math.radians(turn_deg)].sum() / turn.sum())
 
 
 def outline_mask(outline: FloatArray) -> BoolArray:

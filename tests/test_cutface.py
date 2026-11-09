@@ -143,6 +143,25 @@ def test_reflected_bottom_is_black_unless_asked() -> None:
         Rendering.transmitted(rec, bottom="black")
 
 
+def test_matte_bottom_needs_its_albedo_and_the_dome() -> None:
+    """The look's grey bottom (ADR 0019): a matte bottom shares the black bottom's flag and
+    carries an albedo; neither goes without the other, nor with another light."""
+    rec = BandRecord.empty()
+    grey = Rendering.look(rec, bottom="matte", bottom_albedo=(0.3, 0.3, 0.3))
+    assert grey.flags == Flag.BLACK_BOTTOM
+    look = Rendering.look(rec)  # the owner's pick, ADR 0019 s.6.5
+    assert (look.bottom, look.bottom_albedo) == ("matte", (0.15, 0.15, 0.15))
+    assert Rendering.reflected(rec).bottom == "black"  # the compare keeps ADR 0014's
+    assert Rendering.look(rec, bottom="black").bottom_albedo == (0.0, 0.0, 0.0)
+    with pytest.raises(ValueError, match="nonzero bottom_albedo"):
+        Rendering.look(rec, bottom="matte")
+    assert Rendering.look(rec, bottom_albedo=(0.3, 0.3, 0.3)).bottom_albedo == (0.3, 0.3, 0.3)
+    with pytest.raises(ValueError, match="nonzero bottom_albedo"):
+        Rendering.reflected(rec, bottom_albedo=(0.3, 0.3, 0.3))  # still "black"
+    with pytest.raises(ValueError, match="dome only"):
+        Rendering.transmitted(rec, bottom="matte", bottom_albedo=(0.3, 0.3, 0.3))
+
+
 # --- GPU ------------------------------------------------------------------------------------
 
 

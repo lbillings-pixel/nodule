@@ -363,6 +363,48 @@ def test_black_bottom_matches_forward_slab_by_reciprocity(flat) -> None:
     assert abs(z(m, se, air.rd[0] + rsp, air.rd_se[0])) > 10
 
 
+def matte_trip(mua: float, depth: float, albedo: float, n: float = 1.54) -> float:
+    """Diffuse share of a pure absorber over an index-matched Lambertian bottom of `albedo`,
+    seen along the normal under a uniform dome: in (1 - F0), down e^-aD, then per bounce up
+    at cosine mu (density 2 mu): out with (1 - F(mu)) e^-aD/mu, or back with F(mu) e^-2aD/mu
+    and another bounce: (1 - F0) e^-aD A P / (1 - A Q)."""
+    mu = np.linspace(1e-7, 1.0, 400_001)
+    f = np.array([reference.fresnel(m, n, 1.0) for m in mu])
+    p = np.trapezoid(2 * mu * np.exp(-mua * depth / mu) * (1 - f), mu)
+    q = np.trapezoid(2 * mu * np.exp(-2 * mua * depth / mu) * f, mu)
+    f0 = reference.fresnel(1.0, 1.0, n)
+    return float((1 - f0) * math.exp(-mua * depth) * albedo * p / (1 - albedo * q))
+
+
+MATTE = (0.2, 0.5, 0.8)  # one albedo per channel
+
+
+def test_matte_bottom_matches_closed_form(flat) -> None:
+    m = Materials.of([[0.1] * 3], [[0.0] * 3], [0.0])
+    kw: dict[str, Any] = dict(spp=64, depth_mm=2.0, flags=Flag.HOMOGENEOUS | Flag.BLACK_BOTTOM)
+    im = render(flat, FLAT_VIEW, m, DOME, seed=85, bottom_albedo=MATTE, **kw).image
+    rsp = reference.fresnel(1.0, 1.0, 1.54)
+    black = render(flat, FLAT_VIEW, m, DOME, seed=86, **kw).image
+    for c, a in enumerate(MATTE):
+        px = im[..., c].ravel()
+        mean, se = float(px.mean()), float(px.std(ddof=1) / math.sqrt(px.size))
+        want = rsp + matte_trip(0.1, 2.0, a)
+        assert abs(z(mean, se, want)) < 3
+        # negative control: the black bottom (no return) is rejected by the same test
+        assert float(black[..., c].mean()) == pytest.approx(rsp, abs=1e-6)
+        assert abs(z(rsp, se, want)) > 10
+
+
+def test_matte_bottom_refused_without_black_bottom_or_dome(flat) -> None:
+    m = Materials.of([[0.1] * 3], [[1.0] * 3], [0.9])
+    with pytest.raises(ValueError, match="matte bottom"):
+        render(flat, FLAT_VIEW, m, DOME, spp=1, depth_mm=2.0, flags=Flag.HOMOGENEOUS,
+               bottom_albedo=MATTE)  # fmt: skip
+    with pytest.raises(ValueError, match="matte bottom"):
+        render(flat, FLAT_VIEW, m, Light("disc"), spp=1, depth_mm=2.0,
+               flags=Flag.HOMOGENEOUS | Flag.BLACK_BOTTOM, bottom_albedo=MATTE)  # fmt: skip
+
+
 def test_black_bottom_refused_with_the_back_light(flat) -> None:
     m = Materials.of([[0.1] * 3], [[1.0] * 3], [0.9])
     with pytest.raises(ValueError, match="no black bottom"):

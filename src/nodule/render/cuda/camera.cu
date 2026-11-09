@@ -32,7 +32,10 @@
 //   count scattered light only (dome: drops the ghost seen unscattered in the back face; back:
 //   drops the light seen straight through). 2048 black bottom: the back face is index-matched and
 //   black, so a path reaching depth D going down is lost, as into the rest of a stone (ADR 0014;
-//   no bottom reflection, no mirror NEE term; not with the back light).
+//   no bottom reflection, no mirror NEE term; not with the back light). With a nonzero albedo
+//   ba the black face is matte instead: an index-matched Lambertian reflector sending the path
+//   back up, cosine-weighted, with weight x ba (the look's grey bottom, ADR 0019; dome only,
+//   as no NEE reaches the bottom).
 //   64 no per-channel phase reweighting (control for the two-lobe check).
 //   DISC only: 128 NEE only (weight 1); 256 phase sampling only (weight 1); 512 both
 //   strategies at weight 1 (control: counts the light twice).
@@ -40,7 +43,7 @@
 
 struct Cam { float s0, t0, pix; int nx, ny, spp; unsigned int seed; float n_in, D;
              int light; float lth, lph, E, Ld; float mubar; int nmat; int nprof; float dt;
-             int order; int flags; float lomc; };
+             int order; int flags; float lomc; float ba[3]; };
 
 // What a sample sees: m, the row of its scattering and phase function, and a, its absorption.
 // Without a shift a = mua[m]. With one (ADR 0016; shift.cuh), a band row that takes it adds
@@ -176,7 +179,19 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
         float s = -logf(r.next()) / C.mubar;
         if (s >= db) {
             x += dx * db; y += dy * db; z += dz * db;
-            if (un > 0.f && (C.flags & 2048)) break;            // black bottom: lost
+            if (un > 0.f && (C.flags & 2048)) {                 // black or matte bottom
+                if (C.ba[0] <= 0.f && C.ba[1] <= 0.f && C.ba[2] <= 0.f) break;   // black: lost
+                // matte: index-matched Lambertian, albedo ba per channel, cosine-weighted up
+                for (int c = 0; c < 3; ++c) w[c] *= C.ba[c];
+                float ct = sqrtf(1.f - r.next()), st = sqrtf(fmaxf(0.f, 1.f - ct * ct));
+                float p = 6.28318531f * r.next(), cu = cosf(p) * st, sv = sinf(p) * st;
+                dx = ct * S.n[0] + cu * S.u[0] + sv * S.v[0];
+                dy = ct * S.n[1] + cu * S.u[1] + sv * S.v[1];
+                dz = ct * S.n[2] + cu * S.u[2] + sv * S.v[2];
+                ntop = nbot = 0;
+                if (!roulette(w, w0, r)) break;
+                continue;
+            }
             if (r.next() <= fresnel(fabsf(un), n, 1.f)) {       // internal reflection
                 float k = 2.f * (dx * S.n[0] + dy * S.n[1] + dz * S.n[2]);
                 dx -= k * S.n[0]; dy -= k * S.n[1]; dz -= k * S.n[2];

@@ -4,8 +4,9 @@ ADR 0018's features through the path tracer instead of the stand-in colours.
 Per stone the renderer can show (no open cavity yet: ADR 0019 option for the owner),
 two views of each cut, on one grid fill (owner's choice, ADR 0019 B3):
 
-- **the look**: the dome (L1, ADR 0008 7c; black bottom, ADR 0014) without the face's
-  mirror reflection, at the photo compare's mean lightness (`Rendering.look`);
+- **the look**: the dome (L1, ADR 0008 7c) over a grey matte bottom (ADR 0019 s.6.5)
+  without the face's mirror reflection, at the photo compare's mean lightness
+  (`Rendering.look`);
 - **a backlit slice** SLICE_MM thick on a light box (L3, `Rendering.transmitted`), at
   one fixed exposure so slices differ in how much light they pass.
 

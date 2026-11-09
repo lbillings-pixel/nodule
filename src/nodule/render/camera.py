@@ -295,7 +295,7 @@ CAM_DTYPE = np.dtype(
      ("spp", "<i4"), ("seed", "<u4"), ("n_in", "<f4"), ("D", "<f4"), ("light", "<i4"),
      ("lth", "<f4"), ("lph", "<f4"), ("E", "<f4"), ("Ld", "<f4"), ("mubar", "<f4"),
      ("nmat", "<i4"), ("nprof", "<i4"), ("dt", "<f4"), ("order", "<i4"), ("flags", "<i4"),
-     ("lomc", "<f4")]
+     ("lomc", "<f4"), ("ba", "<f4", (3,))]
 )  # fmt: skip
 
 
@@ -315,6 +315,7 @@ def render(
     block: int = 128,
     shift: DeviceShift | None = None,
     glare: bool = True,
+    bottom_albedo: tuple[float, float, float] = (0.0, 0.0, 0.0),
 ) -> Rendered:
     """Linear radiance per pixel, including the face's specular F(0) L of a dome, or
     of a disc that contains the normal; glare=False leaves that reflection out, as a
@@ -323,7 +324,9 @@ def render(
     mubar: global majorant (default max mu_t, with any shift at its largest). order > 0
     keeps only that real-collision order (single scattering check). shift: materials that
     vary along the bands (shift.upload, for these materials); None renders each growth
-    step's own material."""
+    step's own material. bottom_albedo (with BLACK_BOTTOM, dome only): a nonzero value
+    makes the black bottom matte, an index-matched Lambertian reflector of that albedo
+    per channel (the look's grey bottom, ADR 0019; `effective`)."""
     if shift is not None and shift.materials is not materials:
         raise ValueError("the shift was uploaded for another material table")
     if (
@@ -336,6 +339,11 @@ def render(
         raise ValueError("the back light needs a finite slab (depth_mm)")
     if light.kind == "back" and flags & Flag.BLACK_BOTTOM:
         raise ValueError("the back light shines through the bottom: no black bottom")
+    if any(a != 0.0 for a in bottom_albedo):
+        if not flags & Flag.BLACK_BOTTOM or light.kind != "dome":
+            raise ValueError("a matte bottom needs BLACK_BOTTOM and the dome")
+        if not all(0.0 <= a <= 1.0 for a in bottom_albedo):
+            raise ValueError(f"bottom albedo must be within 0..1, not {bottom_albedo}")
     if not flags & Flag.HOMOGENEOUS and depth_mm > scene.covers_mm + 1e-6:
         raise ValueError(f"a {depth_mm} mm slab is deeper than the growth grid covers "
                          f"({scene.covers_mm:.2f} mm): fill the grid deeper")  # fmt: skip
@@ -355,7 +363,7 @@ def render(
                 lth=math.radians(light.theta_deg), lph=math.radians(light.phi_deg),
                 E=light.irradiance, Ld=light.radiance, mubar=mb, nmat=len(materials.g),
                 nprof=len(materials.profile), dt=materials.dt, order=order,
-                flags=int(flags), lomc=light.one_minus_cos)  # fmt: skip
+                flags=int(flags), lomc=light.one_minus_cos, ba=bottom_albedo)  # fmt: skip
     for key, v in vals.items():
         c[key] = v
     cam = cp.asarray(np.frombuffer(c.tobytes(), np.uint8))

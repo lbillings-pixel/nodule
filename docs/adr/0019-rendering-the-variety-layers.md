@@ -137,6 +137,21 @@ as now, no face glare, no glare plus a display curve, a backlit 3 mm slice) was 
    photo compare keeps the source's k, so ADR 0014's calibration stands. A later, fuller
    fix: several wavelengths within each channel, for every pigment, then recheck
    ADR 0014.
+5. **A grey bottom for the look** (owner's pick after runs/grey-bottom/, 2026-11-09).
+   Over the black bottom, clear quartz centres rendered black (seed 1, stones 1 and 6):
+   light passing through them was lost. The look's slab (2 mm) now ends in an
+   index-matched Lambertian reflector of albedo **0.15**, neutral (`Rendering.look`,
+   `cutface.LOOK_BOTTOM_ALBEDO`; kernel: a nonzero `bottom_albedo` with
+   `Flag.BLACK_BOTTOM`, dome only, as no next-event estimation reaches the bottom),
+   `effective`: a stand-in for whatever lies below the face, not a measured rock.
+   Trial: black, grey 0.15, grey 0.35 and a warm rock tint (0.33, 0.29, 0.24) on stones
+   1, 5, 6 and 7. Any grey lit the quartz centres; at 0.35 the lightness matching washed
+   out fine bands (stone 5) and clear zones (stone 1); 0.15 kept them. The warm tint
+   looked like the grey; iron-stained stone 7 barely changed. Look renders take ~1.5x
+   longer (paths return from the bottom). The photo compare keeps the black bottom
+   (ADR 0014). Tests: the matte bottom matches a closed form for a pure absorber (with
+   internal reflections at the face), per channel; the black bottom fails the same check
+   (negative control); refusals without the black-bottom flag or the dome.
 
 Tests (tests/test_look.py), each with a negative control: glare off removes exactly
 F0 Ld; the look's exposure matches the compare's lightness; one fill serves a backlit

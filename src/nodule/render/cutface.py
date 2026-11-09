@@ -29,8 +29,9 @@ so the face mask and quartz phase of the cut still apply.
 - **Exposure**: one fixed value per run (`effective`; ADR 0008 7b tunes it).
 - **The owner's look** (`Rendering.look`, ADR 0019 B3): the dome without the face's
   mirror reflection (as a polariser or dark surround gives), exposed so the face's mean
-  lightness equals the photo-compare rendering's (`look_exposure`). For the eye only;
-  the compare's renderings are unchanged.
+  lightness equals the photo-compare rendering's (`look_exposure`), over a grey matte
+  bottom (an index-matched Lambertian reflector of LOOK_BOTTOM_ALBEDO, so clear quartz
+  no longer renders black). For the eye only; the compare's renderings are unchanged.
 - **One fill, several lights** (`CutRenderer.on`): a grid filled for the deepest slab
   serves every rendering of the same record and optics, e.g. the look and a backlit slice.
 
@@ -70,6 +71,9 @@ from nodule.specimen import Specimen, SpecimenCut
 
 GRID_MM = 0.2  # ADR 0007 7c
 L1_DEPTH_MM = 2.0  # effective, ADR 0010 10b (module docstring)
+# The look's grey matte bottom (owner's pick 2026-11-09, ADR 0019 s.6.5): `effective`;
+# 0.35 washed fine bands out, 0.15 lights clear quartz and keeps them
+LOOK_BOTTOM_ALBEDO = 0.15
 L3_DEPTH_MM = 3.0  # effective, owner (ADR 0007 amendment 5)
 # Matches the reflected photos' median lightness (L* 62); effective, a camera
 # setting, not a property of the stone (ADR 0013). Refitted for the ADR 0014 optics on
@@ -95,7 +99,10 @@ class Rendering:
     first_spp: int = FIRST_SPP
     most_spp: int = MOST_SPP
     undegraded: bool = False  # F5: no photo-like blur or noise (ADR 0008 amendment 4)
-    bottom: Literal["air", "black"] = "air"  # below the slab (module docstring; ADR 0014)
+    # below the slab (module docstring; ADR 0014); "matte": the black bottom made an
+    # index-matched Lambertian reflector of bottom_albedo (the look's grey bottom, ADR 0019)
+    bottom: Literal["air", "black", "matte"] = "air"
+    bottom_albedo: tuple[float, float, float] = (0.0, 0.0, 0.0)  # effective
     # the drift along the bands (ADR 0016 s.9): baked once per cut on the growth-time grid,
     # or worked out at each sample ("exact", the reference); lenses are always exact
     drift: Literal["baked", "exact"] = "baked"
@@ -108,8 +115,12 @@ class Rendering:
     def __post_init__(self) -> None:
         if self.match_lightness and self.light.kind != "dome":
             raise ValueError("lightness is matched to the dome's photo-compare rendering")
-        if self.bottom not in ("air", "black"):
-            raise ValueError(f"bottom must be 'air' or 'black', not {self.bottom!r}")
+        if self.bottom not in ("air", "black", "matte"):
+            raise ValueError(f"bottom must be 'air', 'black' or 'matte', not {self.bottom!r}")
+        if (self.bottom == "matte") != any(a > 0.0 for a in self.bottom_albedo):
+            raise ValueError("a matte bottom, and only it, has a nonzero bottom_albedo")
+        if self.bottom == "matte" and self.light.kind != "dome":
+            raise ValueError("a matte bottom is for the dome only")
         if self.drift not in ("baked", "exact"):
             raise ValueError(f"drift must be 'baked' or 'exact', not {self.drift!r}")
         if self.bottom == "black" and self.light.kind == "back":
@@ -118,7 +129,7 @@ class Rendering:
     @property
     def flags(self) -> int:
         """Kernel flags of this rendering."""
-        return int(Flag.BLACK_BOTTOM) if self.bottom == "black" else 0
+        return int(Flag.BLACK_BOTTOM) if self.bottom in ("black", "matte") else 0
 
     @classmethod
     def reflected(cls, record: BandRecord, **kw: Any) -> Rendering:
@@ -129,9 +140,13 @@ class Rendering:
 
     @classmethod
     def look(cls, record: BandRecord, **kw: Any) -> Rendering:
-        """The owner's look (ADR 0019 B3): the dome and black bottom of `reflected`,
-        without the face's mirror reflection, at the lightness `reflected` gives."""
+        """The owner's look (ADR 0019 B3): the dome of `reflected` without the face's
+        mirror reflection, at the lightness `reflected` gives, over a grey matte bottom
+        of LOOK_BOTTOM_ALBEDO (ADR 0019 s.6.5: clear quartz rendered black over black)."""
         kw |= {"glare": False, "match_lightness": True}
+        if "bottom" not in kw:
+            kw["bottom"] = "matte"
+            kw.setdefault("bottom_albedo", (LOOK_BOTTOM_ALBEDO,) * 3)
         return cls.reflected(record, **kw)
 
     @classmethod
@@ -278,7 +293,7 @@ class CutRenderer:
             seed = int(self._rng.integers(1, 2**32 - 1))  # the kernel's seed is uint32
             out = render(self._dev, self._view, self._mats, r.light, spp=add, seed=seed,
                          depth_mm=r.depth_mm, flags=r.flags, shift=self._shift,
-                         glare=r.glare)  # fmt: skip
+                         glare=r.glare, bottom_albedo=r.bottom_albedo)  # fmt: skip
             self._sums[k] += out.image * add
         self.spp += 2 * add
         half = self.spp / 2

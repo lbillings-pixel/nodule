@@ -552,6 +552,10 @@ judged ruler-straight black cracks fake. All values `effective` unless cited.
   1-10 s to build, under 0.22 GB. Sheets: runs/thunderegg-arms/jagged-12.png,
   cuts-1-2-3-4-5-6.png (4 of 12 jagged). Later (owner agreed): the paper's rind,
   host speckle, pigment bleeding into the host, central druse, host crack nets.
+- **Owner's verdict (2026-11-08):** the jagged cores "look good"; closed for now.
+  For the open 3D cavity, the owner notes that a cavity varying with depth means a
+  cut will sometimes gain or lose arms depending on where it falls (as Ross's
+  cut-position remark implies [@ross1941, p. 731]); a 3D version must allow that.
 
 ## Limits
 

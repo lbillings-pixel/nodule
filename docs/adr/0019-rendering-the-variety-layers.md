@@ -94,16 +94,17 @@ band's own optics (hematite, impurity 0.4, 2 mm, black bottom) reflects red, R/B
 render: (i) **the face's glare**: the dome adds its mirror reflection, F0 = 4.5 % white
 (n 1.54), over body reflectance of only 1-3 % in translucent bands; removing it at the
 same mean lightness raises red minus blue from 15 to 44 (stone 11) and 14 to 50 (stone
-10); (ii) **the black bottom** (ADR 0014): translucent red bands return little light, so
-without glare carnelian reads dark brown, not red; red shows mostly where bands are
-milky. Both come from the lighting chosen for the photo compare (ADR 0008 7c, ADR 0014),
-not from the pigment.
+10). What is left reads dark brown-orange rather than red; (ii) **the bottom** matters
+little: an air bottom instead of black, glare removed, raises red minus blue only from
+28 to 34 (stone 11) and 34 to 37 (stone 10), so the rest of the gap to the stand-in's red
+lies in the pigment's hue and darkness at this loading (untested). The glare comes from
+the lighting chosen for the photo compare (ADR 0008 7c, ADR 0014), not from the pigment.
 
 B1: keep (ADR 0014 is closed; the photo compare was matched under this lighting). B2
 (dropped by the measurement): a stronger loading. B3: a **look preset** for the owner's
 eye only, leaving the compare's settings alone: a light without the face's glare (as a
-photographer's polariser or dark surround gives) and a lighter bottom (a white backing
-or air), each tried and shown side by side. B4: reopen ADR 0014's lighting against the
+photographer's polariser or dark surround gives), shown beside the current render; then,
+if red stones still read brown, a look at the pigment's hue (a separate question). B4: reopen ADR 0014's lighting against the
 library's red-agate photos. *Recommended: B3*, cheap (a render setting, no new
 physics), and it keeps the closed calibration intact.
 

@@ -81,14 +81,21 @@ photographs). A2: true air with refraction at the cavity's lining (right, but th
 renderer's single-interface design needs a second interface: days of work).
 *Recommended: A1 first, A2 only if the look asks for it.*
 
-**B. Red stones render pale** (first renders, 2026-11-09). The optics' hematite
-loading (`phi_iron_oxide` 4e-4, ADR 0014 4f) and iron floor (0.28, 4l) were set on the
-n2-slice stone against its photos; a red variety stone whose stand-in is deep red renders
-grey-brown. B1: keep (ADR 0014 is closed; the stand-in may overstate colour). B2: a
-stronger loading for stones whose palette has hematite (an assumption per palette).
-B3: calibrate loading against the library's red-agate photos (machine tags; the
-owner's labour not needed). *Recommended: look at the comparison renders first
-(runs/variety-render-phi/), then B3 if red stones should be red.*
+**B. Red stones render pale** (measured 2026-11-09, runs/variety-render-phi/). The
+optics' hematite loading (`phi_iron_oxide` 4e-4, ADR 0014 4f) and iron floor (0.28, 4l)
+were set on the n2-slice stone against its photos. Red variety stones render grey-brown:
+mean face colour (sRGB, red minus blue) 15-19 against a deep red stand-in (stone 10,
+carnelian: render 93/84/79, stand-in 135/58/45). The cause predates this ADR: stone 11
+without layers or warp renders the same (122/113/102). **Tripling the loading darkens
+without reddening** (red minus blue falls, 15 to 7 on stone 10), so more pigment is not
+the fix: the hue is lost elsewhere (candidates, untested: the grey matrix absorption
+0.13 mm^-1, which ADR 0014 4e set at its bound; long multiple-scattering paths under the
+black bottom, which absorb every channel; the hematite k at 650 nm, 0.2 in go2022).
+B1: keep (ADR 0014 is closed; the stand-in may overstate colour). B2 (dropped by the
+measurement above): a stronger loading. B3: a diagnosis pass on a homogeneous red slab
+(single-scattering against multiple), then calibrate against the library's red-agate
+photos (machine tags; no owner labour). *Recommended: B3*, as no red stone can look
+red until it is done, and the owner's eye judges renders, not stand-ins.
 
 ## Consequences
 

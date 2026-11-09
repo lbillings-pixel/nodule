@@ -1,10 +1,17 @@
 """Renders of a variety sheet's stones with their layers (ADR 0019): the first look at
 ADR 0018's features through the path tracer instead of the stand-in colours.
 
-Per stone the renderer can show (no open cavity yet: ADR 0019 option for the owner):
-the whole face under the dome light (L1, ADR 0008 7c; black bottom, ADR 0014) beside its
-stand-in preview, and for a dusty stone a 12 mm close-up at 0.03 mm pixels where its
-dust is densest. No photo blur or noise: these are for the eye, not the blind test.
+Per stone the renderer can show (no open cavity yet: ADR 0019 option for the owner),
+two views of each cut, on one grid fill (owner's choice, ADR 0019 B3):
+
+- **the look**: the dome (L1, ADR 0008 7c; black bottom, ADR 0014) without the face's
+  mirror reflection, at the photo compare's mean lightness (`Rendering.look`);
+- **a backlit slice** SLICE_MM thick on a light box (L3, `Rendering.transmitted`), at
+  one fixed exposure so slices differ in how much light they pass.
+
+The whole face, and for a dusty stone a 12 mm close-up at 0.03 mm pixels where its dust
+is densest, each beside its stand-in preview. No photo blur or noise: these are for the
+eye, not the blind test.
 
 Run: `uv run --no-sync python -m nodule.varietyrender --seed 1 --out runs/variety-render`.
 GPU. Logs time per stone; resumes, skipping stones already saved.
@@ -23,13 +30,20 @@ from PIL import Image, ImageDraw
 from nodule.render.cutface import CutRenderer, Rendering
 from nodule.render.fakes import stone_record
 from nodule.render.materials import OpticsTable
+from nodule.render.record import BandRecord
 from nodule.sheet import dustiest, preview_rgb, window_cut
+from nodule.specimen import Specimen, SpecimenCut
 from nodule.variety import StoneRecipe, build, cut_of, draw_sheet
 
 WHOLE_PX = 600  # pixels across the stone's box
 WHOLE_GRID_MM = 0.1
 CLOSE_MM, CLOSE_PIXEL_MM, CLOSE_GRID_MM = 12.0, 0.03, 0.03
 SPP = 512  # samples per pixel (effective; noise falls as 1/sqrt(spp))
+SLICE_MM = 3.0  # backlit slice thickness, owner's choice (2026-11-09; and ADR 0007 am. 5)
+# Light box exposure (transmittance factor x this), `effective`, one for every stone so
+# slices differ in brightness as they pass more or less light (2026-11-09 look sheets).
+BACKLIT_EXPOSURE = 3.0
+VIEWS = ("look", "backlit")
 
 
 def renderable(r: StoneRecipe) -> bool:
@@ -53,40 +67,66 @@ def render_stone(
     record = stone_record(specimen, np.random.default_rng(r.seed))
     rng = np.random.default_rng(r.seed + 1)
     row: dict[str, object] = {"stone": r.index + 1, "summary": r.summary()}
-    whole = CutRenderer(
-        specimen, cut, Rendering.reflected(record, grid_mm=WHOLE_GRID_MM, optics=optics), rng
-    )
-    whole.more(spp)
-    Image.fromarray(whole.rgb[::-1]).save(out / f"stone-{r.index + 1:02d}-render.png")
-    Image.fromarray(preview_rgb(cut, r)).save(out / f"stone-{r.index + 1:02d}-preview.png")
-    row |= {"whole_fill_s": round(whole.fill_s, 1), "whole_render_s": round(whole.render_s, 1),
-            "noise": round(whole.noise, 2)}  # fmt: skip
+    name = f"stone-{r.index + 1:02d}"
+    row |= views(specimen, cut, record, WHOLE_GRID_MM, optics, spp, rng, out / name, "whole")
+    Image.fromarray(preview_rgb(cut, r)).save(out / f"{name}-preview.png")
     if r.dust is not None and close_ups:
         near = window_cut(specimen, cut, dustiest(cut, CLOSE_MM), CLOSE_MM, CLOSE_PIXEL_MM)
-        close = CutRenderer(
-            specimen, near, Rendering.reflected(record, grid_mm=CLOSE_GRID_MM, optics=optics), rng
-        )
-        close.more(spp)
-        Image.fromarray(close.rgb[::-1]).save(out / f"stone-{r.index + 1:02d}-close-render.png")
-        Image.fromarray(preview_rgb(near, r)).save(
-            out / f"stone-{r.index + 1:02d}-close-preview.png"
-        )
-        row |= {"close_fill_s": round(close.fill_s, 1), "close_render_s": round(close.render_s, 1)}
+        row |= views(specimen, near, record, CLOSE_GRID_MM, optics, spp, rng,
+                     out / f"{name}-close", "close")  # fmt: skip
+        Image.fromarray(preview_rgb(near, r)).save(out / f"{name}-close-preview.png")
     row["seconds"] = round(time.perf_counter() - t0, 1)
     return row
 
 
-def contact_sheet(out: Path, rows: list[dict[str, object]], tile: int = 360) -> Path:
-    """Render | preview, then close-up render | preview where there is one."""
+def views(
+    specimen: Specimen,
+    cut: SpecimenCut,
+    record: BandRecord,
+    grid_mm: float,
+    optics: OpticsTable,
+    spp: int,
+    rng: np.random.Generator,
+    stem: Path,
+    key: str,
+) -> dict[str, object]:
+    """The look and the backlit slice of one cut, on one grid fill; saves
+    `<stem>-look.png` and `<stem>-backlit.png`."""
+    look = CutRenderer(specimen, cut, Rendering.look(record, grid_mm=grid_mm, optics=optics),
+                       rng, fill_depth_mm=SLICE_MM)  # fmt: skip
+    back = look.on(Rendering.transmitted(record, grid_mm=grid_mm, depth_mm=SLICE_MM,
+                                         optics=optics, exposure=BACKLIT_EXPOSURE))  # fmt: skip
+    row: dict[str, object] = {f"{key}_fill_s": round(look.fill_s, 1)}
+    for view, cr in zip(VIEWS, (look, back), strict=True):
+        cr.more(spp)
+        Image.fromarray(cr.rgb[::-1]).save(f"{stem}-{view}.png")
+        row |= {f"{key}_{view}_s": round(cr.render_s, 1), f"{key}_{view}_noise": round(cr.noise, 2)}
+    row[f"{key}_look_exposure"] = round(look.exposure, 2)
+    return row
+
+
+COLUMNS = {
+    "look": "look (dome, no face glare)",
+    "backlit": f"backlit {SLICE_MM:g} mm slice",
+    "preview": "stand-in preview",
+    "close-look": "12 mm look",
+    "close-backlit": "12 mm backlit",
+    "close-preview": "12 mm preview",
+}
+
+
+def contact_sheet(out: Path, rows: list[dict[str, object]], tile: int = 300) -> Path:
+    """Look | backlit | preview, then the close-up's three where there is one."""
     head = 24
-    sheet = Image.new("RGB", (4 * tile, head + len(rows) * (tile + 22)), (235, 235, 235))
+    sheet = Image.new("RGB", (len(COLUMNS) * tile, head + len(rows) * (tile + 22)),
+                      (235, 235, 235))  # fmt: skip
     draw = ImageDraw.Draw(sheet)
-    for k, label in enumerate(["render", "stand-in preview", "12 mm render", "12 mm preview"]):
+    for k, label in enumerate(COLUMNS.values()):
         draw.text((k * tile + 6, 6), label, fill=(0, 0, 0))
     for n, row in enumerate(rows):
         y = head + n * (tile + 22)
         i = int(str(row["stone"]))
-        names = ["render", "preview", "close-render", "close-preview"]
+        names = list(COLUMNS)
         for k, name in enumerate(names):
             path = out / f"stone-{i:02d}-{name}.png"
             if not path.exists():

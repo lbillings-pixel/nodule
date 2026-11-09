@@ -27,6 +27,12 @@ so the face mask and quartz phase of the cut still apply.
   noise after that blur is below `NOISE_SHARE` of the photo's, or `most_spp`
   is reached.
 - **Exposure**: one fixed value per run (`effective`; ADR 0008 7b tunes it).
+- **The owner's look** (`Rendering.look`, ADR 0019 B3): the dome without the face's
+  mirror reflection (as a polariser or dark surround gives), exposed so the face's mean
+  lightness equals the photo-compare rendering's (`look_exposure`). For the eye only;
+  the compare's renderings are unchanged.
+- **One fill, several lights** (`CutRenderer.on`): a grid filled for the deepest slab
+  serves every rendering of the same record and optics, e.g. the look and a backlit slice.
 
 Procedural images: never evidence for a formation mechanism (ADR 0002).
 """
@@ -35,6 +41,7 @@ Procedural images: never evidence for a formation mechanism (ADR 0002).
 
 from __future__ import annotations
 
+import copy
 import math
 import time
 from dataclasses import dataclass, field
@@ -44,7 +51,15 @@ import numpy as np
 from agatesim.specimen.quality import luminance
 from numpy.typing import NDArray
 
-from nodule.render.camera import Flag, Light, View, reflectance_factor, render, srgb
+from nodule.render.camera import (
+    N_CHALCEDONY,
+    Flag,
+    Light,
+    View,
+    reflectance_factor,
+    render,
+    srgb,
+)
 from nodule.render.materials import OpticsTable
 from nodule.render.record import BandRecord
 from nodule.render.scene import pack, upload
@@ -84,8 +99,15 @@ class Rendering:
     # the drift along the bands (ADR 0016 s.9): baked once per cut on the growth-time grid,
     # or worked out at each sample ("exact", the reference); lenses are always exact
     drift: Literal["baked", "exact"] = "baked"
+    # the face's mirror reflection of the light (dome, or a disc holding the normal);
+    # False: left out, the owner's look (ADR 0019 B3)
+    glare: bool = True
+    # True: exposure per render by `look_exposure` (the photo compare's face lightness)
+    match_lightness: bool = False
 
     def __post_init__(self) -> None:
+        if self.match_lightness and self.light.kind != "dome":
+            raise ValueError("lightness is matched to the dome's photo-compare rendering")
         if self.bottom not in ("air", "black"):
             raise ValueError(f"bottom must be 'air' or 'black', not {self.bottom!r}")
         if self.drift not in ("baked", "exact"):
@@ -104,6 +126,13 @@ class Rendering:
         kw.setdefault("exposure", REFLECTED_EXPOSURE)
         kw.setdefault("bottom", "black")  # ADR 0014
         return cls(Light("dome"), record, kw.pop("depth_mm", L1_DEPTH_MM), **kw)
+
+    @classmethod
+    def look(cls, record: BandRecord, **kw: Any) -> Rendering:
+        """The owner's look (ADR 0019 B3): the dome and black bottom of `reflected`,
+        without the face's mirror reflection, at the lightness `reflected` gives."""
+        kw |= {"glare": False, "match_lightness": True}
+        return cls.reflected(record, **kw)
 
     @classmethod
     def transmitted(cls, record: BandRecord, **kw: Any) -> Rendering:
@@ -128,6 +157,29 @@ def to_rgb(image: NDArray[np.float64], light: Light, exposure: float) -> NDArray
     return srgb(reflectance_factor(image, light), exposure)[::-1]
 
 
+F0 = ((N_CHALCEDONY - 1) / (N_CHALCEDONY + 1)) ** 2  # the face's reflectance at normal incidence
+
+
+def mean_lightness(factor: NDArray[np.float64], face: NDArray[np.bool_], exposure: float) -> float:
+    """Mean sRGB-encoded luminance (0-1) over the face of a reflectance-factor image
+    (cut row order)."""
+    y = srgb(factor, exposure)[::-1].astype(np.float64) / 255
+    lum = 0.2126 * y[..., 0] + 0.7152 * y[..., 1] + 0.0722 * y[..., 2]
+    return float(lum[face].mean() if face.any() else lum.mean())
+
+
+def look_exposure(bare: NDArray[np.float64], face: NDArray[np.bool_]) -> float:
+    """Exposure giving a dome render without its face glare (reflectance factor `bare`)
+    the face's mean lightness of the same render with the glare (F0 added) at
+    REFLECTED_EXPOSURE: the photo compare's lightness, without its glare (ADR 0019 B3)."""
+    target = mean_lightness(bare + F0, face, REFLECTED_EXPOSURE)
+    lo, hi = 0.01, 1000.0
+    for _ in range(50):  # bisection in log exposure; lightness rises with exposure
+        mid = math.sqrt(lo * hi)
+        lo, hi = (mid, hi) if mean_lightness(bare, face, mid) < target else (lo, mid)
+    return math.sqrt(lo * hi)
+
+
 def half_noise(a: NDArray[np.uint8], b: NDArray[np.uint8], face: NDArray[np.bool_]) -> float:
     """Noise (grey levels) of the mean of two equal, independent renders, from
     their difference over the face: std(a - b) / 2."""
@@ -150,16 +202,27 @@ class CutRenderer:
     (module docstring). GPU."""
 
     def __init__(
-        self, specimen: Specimen, cut: SpecimenCut, rendering: Rendering, rng: np.random.Generator
+        self,
+        specimen: Specimen,
+        cut: SpecimenCut,
+        rendering: Rendering,
+        rng: np.random.Generator,
+        fill_depth_mm: float | None = None,
     ) -> None:
+        """fill_depth_mm: fill the grid this deep (default the rendering's slab), so
+        renderings with deeper slabs can share it (`on`)."""
         r = self.rendering = rendering
         t0 = time.perf_counter()
+        depth = r.depth_mm if fill_depth_mm is None else fill_depth_mm
+        if depth < r.depth_mm:
+            raise ValueError("the grid must be filled at least as deep as the slab")
         # the grid covers the view, padded by the slab's depth for light that wanders
         # sideways (a close-up's grid then covers its window, not the whole stone)
         # with the layers' place-to-place part baked as absorption in the same pass (ADR 0019)
         grid = GrowthGrid.fill(
-            specimen, cut.plane, r.grid_mm, r.depth_mm, window_of(cut, r.depth_mm), r.optics
+            specimen, cut.plane, r.grid_mm, depth, window_of(cut, depth), r.optics
         )
+        self._fill_depth = depth
         packed = pack(specimen, grid, absorb=grid.absorb)
         self._dev = upload(packed)
         # materials that vary along the bands (ADR 0016), when the stone has them and the
@@ -181,6 +244,28 @@ class CutRenderer:
         self.render_s = 0.0
         self.rgb: NDArray[np.uint8] = np.zeros((self._view.ny, self._view.nx, 3), np.uint8)
         self.noise = math.inf  # of `rgb`, grey levels per pixel, before any blur
+        self.exposure = r.exposure  # as used for `rgb` (the look sets it per render)
+
+    def on(self, rendering: Rendering) -> CutRenderer:
+        """A renderer for another rendering on this one's filled grid (no new fill):
+        same record, optics, grid spacing and drift; a slab no deeper than the fill.
+        Starts with no samples; shares this one's random generator."""
+        r = self.rendering
+        if rendering.record is not r.record or rendering.optics != r.optics:
+            raise ValueError("another record or optics needs its own fill")
+        if rendering.grid_mm != r.grid_mm or rendering.drift != r.drift:
+            raise ValueError("another grid spacing or drift needs its own fill")
+        if rendering.depth_mm > self._fill_depth + 1e-9:
+            raise ValueError(f"the grid was filled {self._fill_depth} mm deep, "
+                             f"not {rendering.depth_mm}")  # fmt: skip
+        other = copy.copy(self)
+        other.rendering = rendering
+        other._sums = [np.zeros_like(s) for s in self._sums]
+        other.spp, other.render_s, other.fill_s = 0, 0.0, 0.0
+        other.rgb = np.zeros_like(self.rgb)
+        other.noise = math.inf
+        other.exposure = rendering.exposure
+        return other
 
     def more(self, spp: int) -> None:
         """Bring the total to `spp` samples per pixel (even; split between halves)."""
@@ -192,12 +277,16 @@ class CutRenderer:
         for k in range(2):
             seed = int(self._rng.integers(1, 2**32 - 1))  # the kernel's seed is uint32
             out = render(self._dev, self._view, self._mats, r.light, spp=add, seed=seed,
-                         depth_mm=r.depth_mm, flags=r.flags, shift=self._shift)  # fmt: skip
+                         depth_mm=r.depth_mm, flags=r.flags, shift=self._shift,
+                         glare=r.glare)  # fmt: skip
             self._sums[k] += out.image * add
         self.spp += 2 * add
         half = self.spp / 2
-        a, b = (to_rgb(s / half, r.light, r.exposure) for s in self._sums)
-        self.rgb = to_rgb((self._sums[0] + self._sums[1]) / self.spp, r.light, r.exposure)
+        mean = (self._sums[0] + self._sums[1]) / self.spp
+        if r.match_lightness:
+            self.exposure = look_exposure(reflectance_factor(mean, r.light), self._face)
+        a, b = (to_rgb(s / half, r.light, self.exposure) for s in self._sums)
+        self.rgb = to_rgb(mean, r.light, self.exposure)
         self.noise = half_noise(a, b, self._face)
         self.render_s += time.perf_counter() - t0
 

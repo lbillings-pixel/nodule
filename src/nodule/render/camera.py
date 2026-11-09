@@ -314,9 +314,11 @@ def render(
     seed: int = 1,
     block: int = 128,
     shift: DeviceShift | None = None,
+    glare: bool = True,
 ) -> Rendered:
     """Linear radiance per pixel, including the face's specular F(0) L of a dome, or
-    of a disc that contains the normal.
+    of a disc that contains the normal; glare=False leaves that reflection out, as a
+    polariser or dark surround would (the owner's look, ADR 0019 B3).
 
     mubar: global majorant (default max mu_t, with any shift at its largest). order > 0
     keeps only that real-collision order (single scattering check). shift: materials that
@@ -371,7 +373,9 @@ def render(
     sec = time.perf_counter() - t0
     out = img.get().astype(np.float64)
     f0 = ((n_in - 1) / (n_in + 1)) ** 2  # the face's specular reflectance seen by the camera
-    if light.kind == "dome":
+    if not glare:
+        pass
+    elif light.kind == "dome":
         out += f0 * light.radiance
     elif light.kind == "disc" and light.theta_deg <= light.radius_deg:  # the normal is in the disc
         out += f0 * light.disc_radiance

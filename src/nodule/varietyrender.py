@@ -22,6 +22,7 @@ from PIL import Image, ImageDraw
 
 from nodule.render.cutface import CutRenderer, Rendering
 from nodule.render.fakes import stone_record
+from nodule.render.materials import OpticsTable
 from nodule.sheet import dustiest, preview_rgb, window_cut
 from nodule.variety import StoneRecipe, build, cut_of, draw_sheet
 
@@ -36,7 +37,14 @@ def renderable(r: StoneRecipe) -> bool:
     return r.centre != "quartz-lined"
 
 
-def render_stone(r: StoneRecipe, out: Path, spp: int = SPP) -> dict[str, object]:
+def render_stone(
+    r: StoneRecipe,
+    out: Path,
+    spp: int = SPP,
+    optics: OpticsTable | None = None,
+    close_ups: bool = True,
+) -> dict[str, object]:
+    optics = optics or OpticsTable()
     t0 = time.perf_counter()
     specimen, _ = build(r)
     lo, hi = specimen.volume.solid.bounds()
@@ -45,15 +53,19 @@ def render_stone(r: StoneRecipe, out: Path, spp: int = SPP) -> dict[str, object]
     record = stone_record(specimen, np.random.default_rng(r.seed))
     rng = np.random.default_rng(r.seed + 1)
     row: dict[str, object] = {"stone": r.index + 1, "summary": r.summary()}
-    whole = CutRenderer(specimen, cut, Rendering.reflected(record, grid_mm=WHOLE_GRID_MM), rng)
+    whole = CutRenderer(
+        specimen, cut, Rendering.reflected(record, grid_mm=WHOLE_GRID_MM, optics=optics), rng
+    )
     whole.more(spp)
     Image.fromarray(whole.rgb[::-1]).save(out / f"stone-{r.index + 1:02d}-render.png")
     Image.fromarray(preview_rgb(cut, r)).save(out / f"stone-{r.index + 1:02d}-preview.png")
     row |= {"whole_fill_s": round(whole.fill_s, 1), "whole_render_s": round(whole.render_s, 1),
             "noise": round(whole.noise, 2)}  # fmt: skip
-    if r.dust is not None:
+    if r.dust is not None and close_ups:
         near = window_cut(specimen, cut, dustiest(cut, CLOSE_MM), CLOSE_MM, CLOSE_PIXEL_MM)
-        close = CutRenderer(specimen, near, Rendering.reflected(record, grid_mm=CLOSE_GRID_MM), rng)
+        close = CutRenderer(
+            specimen, near, Rendering.reflected(record, grid_mm=CLOSE_GRID_MM, optics=optics), rng
+        )
         close.more(spp)
         Image.fromarray(close.rgb[::-1]).save(out / f"stone-{r.index + 1:02d}-close-render.png")
         Image.fromarray(preview_rgb(near, r)).save(
@@ -97,6 +109,10 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--out", type=Path, default=Path("runs/variety-render"))
     parser.add_argument("--spp", type=int, default=SPP)
     parser.add_argument(
+        "--phi-scale", type=float, default=1.0, help="iron-oxide loading x this (ADR 0019 B)"
+    )
+    parser.add_argument("--whole-only", action="store_true", help="no close-ups")
+    parser.add_argument(
         "--stones", type=int, nargs="*", help="stone numbers (1-based); default all"
     )
     args = parser.parse_args(argv)
@@ -115,7 +131,8 @@ def main(argv: list[str] | None = None) -> None:
         progress.report(n / len(recipes), f"stone {r.index + 1}")
         if r.index + 1 in done:
             continue
-        row = render_stone(r, out, args.spp)
+        optics = OpticsTable(phi_iron_oxide=OpticsTable().phi_iron_oxide * args.phi_scale)
+        row = render_stone(r, out, args.spp, optics, close_ups=not args.whole_only)
         done[r.index + 1] = row
         with log.open("a", encoding="utf-8") as f:
             f.write(json.dumps(row) + "\n")

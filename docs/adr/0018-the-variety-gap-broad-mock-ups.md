@@ -794,6 +794,18 @@ halos both need per-plume colour, which one dendrite stage cannot give (nodule-s
 colour pass, or an agatesim change that waits on GitHub). Moss should hang from the
 roof and lie in mats on the floor, wiggly and of even width, never as straight sprays.
 Moss colour is put to the owner: green only, or green mixed with yellow-brown.
+Owner's answer (2026-11-09): mostly green, some yellow-brown.
+
+**agatesim change (2026-11-09; owner's one-time approval, then "change the agatesim
+growth code to allow more color variation in a single stone"):** agatesim ADR 0079,
+commit 6dad2c2, pinned locally. Each plume is traced after aggregation (the loops are
+unchanged), so a stone can carry: tint changing from base to tips; tints differing
+plume by plume; a favoured direction tilted from up, snapping to one of six lattice
+axes (so up or sideways, never in between); clear halos of a set width on a drawn
+share of plumes. All `effective`, off by default; defaults byte-identical. Halo width,
+the linear tint change and full erasure of band colour inside a halo are assumptions;
+Kile supports only that halos erase bands and that one plume can run orange to black
+[@kile2002, pp. 259-263] (*plausible*). Nodule's recipes do not use them yet.
 
 ## Limits
 

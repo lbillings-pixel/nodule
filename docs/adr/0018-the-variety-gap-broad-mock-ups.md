@@ -453,6 +453,31 @@ judged ruler-straight black cracks fake. All values `effective` unless cited.
   strip stones 2, 7, 9, 11 and 12, first read as crack smears, are mottle patches
   (s.8), not cracks; they stand until the owner judges them. Sheets 1, 2 and the
   strip redrawn: runs/variety-sheet-s10e/.
+- **The owner on the cracks after these changes (2026-11-08): "pretty good".**
+- **Mottle: rarer, mostly small, rims varied (the owner, 2026-11-08).** Asked: a
+  third to a half as often; most patches small, a large one (at least a quarter of
+  the face) on 15-25 % of mottled stones; dark rims on about 1 patch in 4, slightly
+  lighter on the rest. Built (all `effective`): mottle is kept on 1-2 stones in 12
+  (was 4), the first of the first draw's stones, whose other draws stand; measured
+  over sheets 1-60, 83 mottled stones (was 240, 0.35 x). Noise scale turned out
+  not to be patch size: patches come out about 3-4 x wider than the scale, and at
+  the old scales (5 mm to 0.35 x the stone's size, cover 0.15-0.35) the largest
+  patch on a face reached a quarter of it in about 30-50 % of faces (solid and
+  plane only, 22 stones, 3 noise draws each). Now 1 mottled stone in 5 is drawn
+  large (scale 0.2-0.35 x the stone's size, cover 0.35-0.5), the rest small
+  (0.04-0.06 x, cover 0.15-0.3); after the cut, the first of up to 16 noise draws
+  whose face shows its class is kept (small: largest patch under a quarter of the
+  face; large: a quarter to 0.6, beyond which a patch reads as a film over the
+  face; one such film was seen). Measured: 14 % drawn large (12 of 83; 20 %
+  expected), every small face under 0.22 and every large one 0.26-0.6. Rims: a
+  second noise at twice the patch scale marks about a quarter of the stone dark
+  (rim darkening as before); elsewhere the rim darkens 0.4 as much. Per stone the
+  dark share runs 0.08-0.44 (12 stones). Checks with controls: `largest_patch` (a
+  small pattern under 0.25, the control, a large one, above; sheets 1-6 draw 1-2
+  mottled stones each, each showing its class, none above 0.6); `rim_darkness` (a
+  test stone dark on 0.1-0.4 of points, the control, the first drawing, on all).
+  Sheets 1, 2 and a strip of 9 small and 3 large mottled stones:
+  runs/variety-sheet-s10f/.
 - **Seen, open:** a clear-filled crack shows as a dark grey line in the stand-in
   (seed 2 stone 5); whether it reads darker than a real healed crack is for the
   render, not the stand-in.

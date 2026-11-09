@@ -43,6 +43,7 @@ from agatesim.volume.solids import BoolArray, Rotated, Solid, SphereUnion
 from numpy.typing import NDArray
 from pydantic import BaseModel, ConfigDict, Field
 
+from nodule._scipy import largest_patch_size
 from nodule.specimen import Specimen, SpecimenConfig, SpecimenCut
 
 Centre = Literal["solid", "quartz-filled", "quartz-lined"]
@@ -71,7 +72,20 @@ OUTLINE_SHARES: dict[str, float] = {
 WARP_SHARES: dict[str, float] = {"mild": 2, "crenulated": 1, "lobed": 1}
 FLOOR_STONES = (2, 3)  # per 12 stones
 FRACTURED_STONES = (1, 2)  # per 12 stones
-MOTTLE_SHARE = 1 / 3
+MOTTLE_SHARE = 1 / 3  # the first draw; kept: MOTTLE_STONES of these
+# The owner on mottle (2026-11-08, ADR 0018 s.10; all `effective`): a third to a
+# half as often; most patches small, a large one (at least LARGE_PATCH of the face)
+# on 15-25 % of mottled stones; dark rims on about 1 patch in 4, lighter on the rest.
+MOTTLE_STONES = (1, 2)  # per 12 stones (was 4)
+LARGE_MOTTLE_CHANCE = 1 / 5
+LARGE_PATCH = 0.25  # share of the face
+LARGE_PATCH_MAX = 0.6  # beyond this a patch reads as a film over the face
+# Noise scale as a share of the stone's size; patches come out about 3-4 x wider.
+SMALL_MOTTLE = ((0.04, 0.06), (0.15, 0.3))  # (scale, cover)
+LARGE_MOTTLE = ((0.2, 0.35), (0.35, 0.5))
+MOTTLE_TRIES = 16  # noise draws until the face shows the drawn class
+DARK_RIM_SHARE = 0.25  # of patches (by area of the rim-darkness noise)
+LIGHT_RIM = 0.4  # a light rim's darkening, as a share of a dark rim's
 TINT_CHANCE = 0.15  # amethyst or smoky in 10-20 % of quartz centres
 
 # Quartz (agatesim's quartz-geode values for threshold and supply).
@@ -197,6 +211,8 @@ class Mottle(BaseModel):
     cover: float = Field(gt=0, lt=1)
     rim_mm: float = Field(gt=0)
     strength: float = Field(ge=0, le=1)
+    large: bool = Field(default=False, description="Drawn to show a patch of LARGE_PATCH.")
+    variant: int = Field(default=0, ge=0, description="Which noise draw; 0 is the first.")
 
 
 class Roughness(BaseModel):
@@ -309,12 +325,16 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     floors = set(plan.permutation(floor_ok)[: _scaled(plan, FLOOR_STONES, n)].tolist())
     crack_ok = [i for i, o in enumerate(outlines) if o != "pebble"]
     cracked = set(plan.permutation(crack_ok)[: _scaled(plan, FRACTURED_STONES, n)].tolist())
-    mottled = set(plan.permutation(n)[: round(MOTTLE_SHARE * n)].tolist())
+    mottle_pool = plan.permutation(n)
+    mottled = set(mottle_pool[: round(MOTTLE_SHARE * n)].tolist())
     odd_ok = [i for i, o in enumerate(outlines) if o in ("vesicle", "irregular")]
     odd = set(plan.permutation(odd_ok)[: _scaled(plan, ODD_CUTS, n)].tolist())
     # Drawn last, so the stones drawn before this choice keep their plan.
     mild = [i for i, w in enumerate(warps) if w == "mild"]
     full = set(plan.permutation(mild)[: _scaled(plan, FULL_WOBBLE_STONES, n)].tolist())
+    # Mottle kept on fewer stones: the first of the first draw (whose stones still
+    # draw their mottle, so their other draws stand).
+    kept = set(mottle_pool[: _scaled(plan, MOTTLE_STONES, n)].tolist())
     return [
         draw_stone(
             i,
@@ -326,6 +346,7 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
             floor=i in floors,
             cracked=i in cracked,
             mottled=i in mottled,
+            keep_mottle=i in kept,
             odd_cut=i in odd,
             full_wobble=i in full,
         )
@@ -526,6 +547,7 @@ def draw_stone(
     floor: bool,
     cracked: bool,
     mottled: bool,
+    keep_mottle: bool = True,
     odd_cut: bool = False,
     full_wobble: bool = False,
 ) -> StoneRecipe:
@@ -594,10 +616,72 @@ def draw_stone(
             cavity = (1 - w) * r + recipe.lining * w * r
         red = colour in ("iron", "carnelian")
         recipe = recipe.model_copy(update={"fractures": draw_fractures(rng, solid, red, cavity)})
-    return _refine(recipe, solid, r, odd_cut=odd_cut)
+    return _refine(recipe, solid, r, odd_cut=odd_cut, keep_mottle=keep_mottle)
 
 
-def _refine(recipe: StoneRecipe, solid: Solid, r: float, *, odd_cut: bool) -> StoneRecipe:
+def mottle_fields(
+    recipe: StoneRecipe, solid: Solid, *, rim: bool = True
+) -> tuple[SmoothNoise3, SmoothNoise3 | None]:
+    """The mottle's patch noise (variant 0: the stone's first stream, as before) and
+    the rim-darkness noise, at twice the patch scale so a patch's rim is mostly of
+    one kind. Both in world coordinates (resolution-independent)."""
+    m = recipe.mottle
+    assert m is not None
+    root = np.random.SeedSequence(recipe.seed).spawn(4)
+    extra = root[2].spawn(MOTTLE_TRIES + 1)
+    patch_seq = root[0] if m.variant == 0 else extra[m.variant]
+    patch = SmoothNoise3(solid, m.scale_mm, np.random.default_rng(patch_seq))
+    if not rim:
+        return patch, None
+    return patch, SmoothNoise3(solid, 2 * m.scale_mm, np.random.default_rng(extra[0]))
+
+
+def largest_patch(recipe: StoneRecipe, solid: Solid, spacing_mm: float = 0.5) -> float:
+    """Mottle-size check: the largest connected mottle patch on the cut face, as a
+    share of the face (solid and plane only, before bands and centre)."""
+    m = recipe.mottle
+    if m is None:
+        return 0.0
+    plane = Plane.of(recipe.cut, solid.centre())
+    half = 0.55 * recipe_size(solid)
+    g = np.arange(-half, half, spacing_mm)
+    ss, tt = np.meshgrid(g, g)
+    pts = plane.points(ss, tt).reshape(-1, 3)
+    inside = solid.contains(pts).reshape(ss.shape)
+    if not inside.any():
+        return 0.0
+    noise, _ = mottle_fields(recipe, solid, rim=False)
+    patch = inside & (noise(pts).reshape(ss.shape) > NormalDist().inv_cdf(1 - m.cover))
+    return largest_patch_size(patch) / float(inside.sum())
+
+
+def _mottle_size(rng: np.random.Generator, recipe: StoneRecipe, solid: Solid) -> Mottle:
+    """Small or (1 in 5) large patches, then the first noise draw whose face shows
+    that class, a large patch at most LARGE_PATCH_MAX (else the last); the face is
+    the cutter's, so draw after the cut."""
+    m = recipe.mottle
+    assert m is not None
+    large = bool(rng.uniform() < LARGE_MOTTLE_CHANCE)
+    (scale, cover) = LARGE_MOTTLE if large else SMALL_MOTTLE
+    size = recipe_size(solid)
+    m = m.model_copy(
+        update={
+            "scale_mm": float(rng.uniform(*scale)) * size,
+            "cover": float(rng.uniform(*cover)),
+            "large": large,
+        }
+    )
+    for v in range(MOTTLE_TRIES):
+        m = m.model_copy(update={"variant": v})
+        share = largest_patch(recipe.model_copy(update={"mottle": m}), solid)
+        if (LARGE_PATCH <= share <= LARGE_PATCH_MAX) if large else share < LARGE_PATCH:
+            break
+    return m
+
+
+def _refine(
+    recipe: StoneRecipe, solid: Solid, r: float, *, odd_cut: bool, keep_mottle: bool = True
+) -> StoneRecipe:
     """Floor bands, the cutter's choice and band roughness (ADR 0018 s.9), drawn
     from the recipe's own stream so that the rest of the recipe stays as drawn."""
     rng = np.random.default_rng(np.random.SeedSequence(recipe.seed).spawn(4)[3])
@@ -627,6 +711,12 @@ def _refine(recipe: StoneRecipe, solid: Solid, r: float, *, odd_cut: bool) -> St
             scale_mm=float(rng.uniform(1.5, 3.0)),
             ridged=False,
         )
+    if recipe.mottle is not None:
+        if keep_mottle:
+            cut = update.get("cut", recipe.cut)
+            update["mottle"] = _mottle_size(rng, recipe.model_copy(update={"cut": cut}), solid)
+        else:
+            update["mottle"] = None
     return recipe.model_copy(update=update)
 
 
@@ -890,13 +980,14 @@ class VarietyLayers:
     start: float
     mottle_noise: SmoothNoise3 | None
     stain_noise: SmoothNoise3 | None
+    rim_noise: SmoothNoise3 | None = None
 
     @classmethod
     def of(cls, recipe: StoneRecipe, solid: Solid, growth: Growth) -> VarietyLayers:
         seqs = np.random.SeedSequence(recipe.seed).spawn(2)
-        mottle = None
+        mottle = rim = None
         if recipe.mottle is not None:
-            mottle = SmoothNoise3(solid, recipe.mottle.scale_mm, np.random.default_rng(seqs[0]))
+            mottle, rim = mottle_fields(recipe, solid)
         stain = None
         if recipe.rim_stain > 0:
             stain = SmoothNoise3(solid, 8.0, np.random.default_rng(seqs[1]))
@@ -910,7 +1001,16 @@ class VarietyLayers:
             growth.start,
             mottle,
             stain,
+            rim,
         )
+
+    def rim_darkness(self, points: FloatArray) -> FloatArray:
+        """Mottle rim darkness, 1 dark to 0 light: dark on about DARK_RIM_SHARE of
+        the stone (all dark without a rim noise, as first drawn)."""
+        if self.rim_noise is None:
+            return np.ones(len(points))
+        q = NormalDist().inv_cdf(1 - DARK_RIM_SHARE)
+        return np.clip((self.rim_noise(points) - q) / 0.3, 0.0, 1.0)
 
     def crack_distance(self, i: int, points: FloatArray) -> FloatArray:
         """Distance (mm) from points to crack i, bent as drawn."""
@@ -952,7 +1052,11 @@ class VarietyLayers:
             n = self.mottle_noise(points)
             thr = NormalDist().inv_cdf(1 - m.cover)
             band = m.rim_mm * 1.22 / m.scale_mm  # rim width in noise units (|grad n| ~ 1.22/scale)
-            inner = np.where(n > thr, m.strength, 0.0)
+            # Rims: dark (as first drawn) on about DARK_RIM_SHARE of patches,
+            # lighter (LIGHT_RIM of the darkening) on the rest.
+            dark = self.rim_darkness(points)
+            rim = 0.6 + 0.4 * (LIGHT_RIM + (1 - LIGHT_RIM) * dark)
+            inner = np.where(n > thr, rim * m.strength, 0.0)
             amount: NDArray[np.float64] = np.where(n > thr + band, 0.6 * m.strength, inner)
             # Milky (porous) bands take more than clear ones, so bands show through
             # a patch (assumption).

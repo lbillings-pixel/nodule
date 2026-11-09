@@ -19,6 +19,8 @@ from nodule.variety import (
     CRACK_CUT_ANGLE,
     FLOOR_HEIGHT,
     FULL_WOBBLE_STONES,
+    LARGE_PATCH,
+    LARGE_PATCH_MAX,
     LONG_RADIUS,
     MILD_WOBBLE_SHARE,
     MIXED_FILL_CHANCE,
@@ -53,6 +55,7 @@ from nodule.variety import (
     fracture_stain,
     has_cavity,
     inradius,
+    largest_patch,
     lining_roughness,
     quota,
     rim_point,
@@ -440,6 +443,38 @@ def test_crack_stain_is_capped() -> None:
     cap = STAIN[1] + STAIN_JITTER
     assert max(stains) <= cap
     assert CRACK.stain > cap
+
+
+def test_mottle_size_check_and_its_negative_control() -> None:
+    """ADR 0018 s.10 (owner, 2026-11-08): most mottle patches small, a large one
+    (a quarter of the face or more) on 15-25 % of mottled stones. Control: a large
+    pattern's patch, which the small class must reject."""
+    small = recipe(mottle=Mottle(scale_mm=1.3, cover=0.2, rim_mm=0.8, strength=0.6, variant=1))
+    large = recipe(mottle=Mottle(scale_mm=7.8, cover=0.5, rim_mm=0.8, strength=0.6, variant=1))
+    solid = small.solid.build()
+    assert largest_patch(small, solid) < LARGE_PATCH
+    assert largest_patch(large, solid) >= LARGE_PATCH  # control
+    assert largest_patch(recipe(), solid) == 0
+
+
+def test_sheets_mottle_fewer_stones_and_show_the_drawn_size() -> None:
+    for k in range(0, len(SHEETS), 12):
+        assert 1 <= sum(r.mottle is not None for r in SHEETS[k : k + 12]) <= 2  # was 4
+    for r in SHEETS:
+        if r.mottle is not None:
+            share = largest_patch(r, r.solid.build())
+            assert (share >= LARGE_PATCH) == r.mottle.large
+            assert share <= LARGE_PATCH_MAX
+
+
+def test_mottle_rims_vary_and_its_negative_control() -> None:
+    """Dark rims on about 1 patch in 4, lighter on the rest (owner, 2026-11-08).
+    Control: the first drawing, every rim dark."""
+    _, layers = cut_for(recipe(mottle=Mottle(scale_mm=4, cover=0.3, rim_mm=0.8, strength=0.6)))
+    pts = np.random.default_rng(0).uniform(-12, 12, size=(20000, 3)) + layers.solid_centre
+    share = float(np.mean(layers.rim_darkness(pts) > 0.5))
+    assert 0.1 < share < 0.4
+    assert np.mean(dc_replace(layers, rim_noise=None).rim_darkness(pts) > 0.5) == 1.0
 
 
 def test_crack_mix_check_and_its_negative_control() -> None:

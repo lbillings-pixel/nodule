@@ -41,6 +41,12 @@ def hole_free_patches(mask: NDArray[np.bool_]) -> int:
     )
 
 
+def largest_patch_size(mask: NDArray[np.bool_]) -> int:
+    """Pixels in the largest 4-connected patch of a 2D mask; 0 if none."""
+    found, n = cast("tuple[NDArray[np.int32], int]", ndimage.label(mask))
+    return int(np.bincount(found.ravel())[1:].max()) if n else 0
+
+
 def riccati_bessel(
     n: NDArray[np.int_], x: float
 ) -> tuple[NDArray[np.float64], NDArray[np.float64]]:

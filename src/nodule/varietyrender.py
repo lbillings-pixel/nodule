@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import json
 import time
+from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -44,6 +45,19 @@ SLICE_MM = 3.0  # backlit slice thickness, owner's choice (2026-11-09; and ADR 0
 # slices differ in brightness as they pass more or less light (2026-11-09 look sheets).
 BACKLIT_EXPOSURE = 3.0
 VIEWS = ("look", "backlit")
+# Hematite pigment's red absorption and carnelian's loading (owner's pick from the
+# 2026-11-09 carnelian sweeps, ADR 0019 s.6): `effective`, *speculative*.
+HEMATITE_RED_K = 0.05
+CARNELIAN_LOADING = 0.5
+
+
+def optics_for(r: StoneRecipe, base: OpticsTable | None = None) -> OpticsTable:
+    """The optics a variety stone renders with: `base` (default OpticsTable()) with the
+    hematite pigment's red absorption at HEMATITE_RED_K, and carnelian's iron-oxide
+    loading x CARNELIAN_LOADING (its slices were too opaque, owner 2026-11-09)."""
+    base = base or OpticsTable()
+    phi = base.phi_iron_oxide * (CARNELIAN_LOADING if r.colour == "carnelian" else 1.0)
+    return replace(base, hematite_red_k=HEMATITE_RED_K, phi_iron_oxide=phi)
 
 
 def renderable(r: StoneRecipe) -> bool:
@@ -58,7 +72,7 @@ def render_stone(
     optics: OpticsTable | None = None,
     close_ups: bool = True,
 ) -> dict[str, object]:
-    optics = optics or OpticsTable()
+    optics = optics_for(r, optics)
     t0 = time.perf_counter()
     specimen, _ = build(r)
     lo, hi = specimen.volume.solid.bounds()
@@ -149,7 +163,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--out", type=Path, default=Path("runs/variety-render"))
     parser.add_argument("--spp", type=int, default=SPP)
     parser.add_argument(
-        "--phi-scale", type=float, default=1.0, help="iron-oxide loading x this (ADR 0019 B)"
+        "--phi-scale", type=float, default=1.0, help="iron-oxide loading x this (all stones)"
     )
     parser.add_argument("--whole-only", action="store_true", help="no close-ups")
     parser.add_argument(

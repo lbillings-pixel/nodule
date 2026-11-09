@@ -169,9 +169,17 @@ class OpticsTable:
     # the lowest floor that clears every band agatesim's stand-in shows neutral (C* < 8)
     # in the n2-slice record (4k); it is not fitted to the photos. 0 turns it off.
     iron_floor: float = 0.28
+    # k at 650 nm for the HEMATITE pigment alone (None: the source's), `effective`,
+    # *speculative* (ADR 0019 s.6). One wavelength per channel puts the red channel beside
+    # hematite's 682 nm band (Scheinost Table 2); real red light passes mostly through the
+    # window between its bands, so through thick stone the source's k overstates the red
+    # absorption the eye sees. The IRON pigment (the photo compare's) keeps the source's k.
+    hematite_red_k: float | None = None
 
-    def _hematite(self, phi: float) -> F64:
+    def _hematite(self, phi: float, red_k: float | None = None) -> F64:
         n, k = HEMATITE_NK[self.hematite]
+        if red_k is not None:
+            k = (k[0], k[1], red_k)
         return rayleigh_absorption(n, k, phi)
 
     def pigment_mua(self, pigment: int, impurity: float) -> F64:
@@ -180,7 +188,7 @@ class OpticsTable:
             return np.zeros(3)
         phi = x * self.phi_iron_oxide
         if p is Pigment.HEMATITE:
-            return self._hematite(phi)
+            return self._hematite(phi, self.hematite_red_k)
         if p is Pigment.GOETHITE:
             return rayleigh_absorption(GOETHITE_N, GOETHITE_K, phi)
         if p is Pigment.IRON:

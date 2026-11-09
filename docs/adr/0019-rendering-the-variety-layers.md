@@ -108,6 +108,41 @@ if red stones still read brown, a look at the pigment's hue (a separate question
 library's red-agate photos. *Recommended: B3*, cheap (a render setting, no new
 physics), and it keeps the closed calibration intact.
 
+## 6. The owner's decisions (2026-11-09)
+
+The owner found every render washed out, not only the red stones: structure built in
+the model no longer showed. A look sheet (runs/look-sheet/: four stones and a close-up;
+as now, no face glare, no glare plus a display curve, a backlit 3 mm slice) was shown.
+
+1. **B3 accepted: the owner's look.** Renders for the eye leave out the face's mirror
+   reflection (`camera.render(glare=False)`, as a polariser or dark surround gives) and
+   are exposed so the face's mean lightness equals the photo compare's
+   (`Rendering.look`, `cutface.look_exposure`). The compare's renderings are unchanged.
+2. **Backlit slices as a second view** (the owner's idea): a 3 mm slice (owner's
+   choice of 3-4 mm) on a light box (L3, ADR 0007 7b, the existing back light), at one
+   fixed exposure (3.0, `effective`) for every stone so slices differ in how much light
+   they pass. Rendered on the look's grid fill (`CutRenderer.on`): no second fill.
+3. **The display curve is dropped** (it warmed the host to orange more than it helped).
+4. **Carnelian was too opaque** (owner's judgement; no photo test wanted). Two sweeps on
+   stone 10 (runs/carnelian-sweep/): less pigment alone turns the slice tan and the look
+   olive-grey, not lighter red; lowering hematite's red absorption as well gives
+   carnelian red-orange (median red transmission of the slice 2.3 % -> 12 %). Owner's pick:
+   **hematite pigment k(650 nm) = 0.05 (source 0.2) and carnelian loading x 0.5**
+   (`varietyrender.optics_for`; `OpticsTable.hematite_red_k`), both `effective`,
+   *speculative*. Reason (*plausible*, untested): one wavelength per channel puts the red
+   channel beside hematite's 682 nm band (Scheinost Table 2, notes/n2-reading/
+   agate-optics2.md); real red light passes mostly through the window between hematite's
+   bands, so the source's k overstates the red absorption seen through thick stone. Only
+   the HEMATITE pigment takes it (carnelian, one iron palette); the IRON pigment of the
+   photo compare keeps the source's k, so ADR 0014's calibration stands. A later, fuller
+   fix: several wavelengths within each channel, for every pigment, then recheck
+   ADR 0014.
+
+Tests (tests/test_look.py), each with a negative control: glare off removes exactly
+F0 Ld; the look's exposure matches the compare's lightness; one fill serves a backlit
+slice sample for sample; the red setting touches only the HEMATITE pigment's red;
+carnelian alone takes the lighter loading.
+
 ## Consequences
 
 - Variety stones without open cavities render, with every ADR 0018 layer.

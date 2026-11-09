@@ -650,6 +650,46 @@ Specks are drawn per world-fixed cell from spawned streams, so previews match fu
 runs. **Cost:** measured as built; stand-in cuts about 6 s each. The owner sees
 look sheets before any statistic or render (memory: owner's eye over statistics).
 
+### 12. Dust built; look sheet to the owner (2026-11-09)
+
+Built as planned in s.11 (`nodule.dust`; wired into `VarietyLayers`). How, where
+s.11 left it open (all `effective` or assumptions):
+
+- **Boundaries are exact.** agatesim's bands are periods of growth time; a table of
+  each growth step's band, probed once per stone along 26 rays (0.2-0.7 s), gives
+  every boundary as a step. A point's distance to it is its step coordinate less the
+  boundary's, times the step's thickness (at the walls; wobble's slope cap keeps the
+  error under about a third).
+- **Area coverage.** Cuts pass their pixel size to the layers (`Specimen.cut`); a
+  dust line covers the share of a pixel its strip covers, so a 0.04 mm line shows
+  faintly in a 0.07 mm pixel. Dust per unit area agrees within 5 % from 0.02 to
+  0.08 mm pixels (test); pixel values differ by design.
+- **Specks and blobs** sit in world-fixed cells (0.15 and 0.25 mm), each cell's draws
+  a counter-based hash of a spawned stream's seed and the cell: the same in any batch
+  or resolution (test). A speck is a ball of its half-length cut to a strip of twice
+  its half-thickness on the host side of the boundary: an oval drawn out along the
+  band. Clusters thin the cells by smooth noise (1-3 mm).
+- **White bands:** pigment white, or milky (translucency < 0.35) with iron < 0.15.
+- **Pigment** from the stone's palette: hematite in it, red dust; otherwise hematite,
+  goethite or iron at random.
+- **A dusty stone shows dust:** with few bands the draw can pick no boundary; then
+  the eligible boundary with the lowest draw is kept.
+- **Sheet shares:** lines 6, specks 3, blobs 3 per 12 stones; never all three on a
+  stone; no lines or specks on the pebble.
+
+**Check** (`dust_on_bands`): dust read from the cut alone (impurity above its band's
+median). On sheet 1's stones: share of dust within 0.1 mm of a boundary 0.97-1.0,
+enrichment over area 2.4-3.9; negative control 1 (the same dust shuffled) 0.98-1.02,
+not flagged; negative control 2 (bands without dust) not flagged.
+
+**Cost** (measured): build +0.2-0.7 s, a 0.07 mm cut +0-0.4 s, peak under 0.4 GB.
+
+**Look sheet** (runs/dust-sheet-s11/, `python -m nodule.sheet --seed 1 --dust`): each
+dusty stone whole, then 12 mm without and with dust (0.03 mm pixels) and 4 mm with
+dust (0.01 mm), windows where its dust is densest (so not typical views). Dust is
+invisible at whole-stone scale, as expected from s.11. Hematite blobs on carnelian
+barely show (red on red). Awaiting the owner's verdict before any statistic or render.
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

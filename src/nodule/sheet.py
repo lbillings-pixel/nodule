@@ -16,16 +16,19 @@ import json
 import math
 import time
 import tracemalloc
+from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
 from agatesim import progress
 from agatesim.fields import Phase
 from agatesim.render import QUARTZ_CLEAR, QUARTZ_MILKY, chalcedony_colour
+from agatesim.volume.slicing import reshape_fields
 from numpy.typing import NDArray
 from PIL import Image, ImageDraw
 
-from nodule.specimen import SpecimenCut
+from nodule.dust import dust_excess
+from nodule.specimen import Specimen, SpecimenCut
 from nodule.variety import MAX_SLOPE, Roughness, StoneRecipe, build, cut_of, draw_sheet
 
 HOST_RGB = {  # effective: basalt grey, rhyolite pink-brown, sediment tan
@@ -176,6 +179,90 @@ def variant_sheet(
     return path
 
 
+def window_cut(
+    specimen: Specimen,
+    cut: SpecimenCut,
+    centre: tuple[float, float],
+    size_mm: float,
+    spacing_mm: float,
+) -> SpecimenCut:
+    """A square window of a cut's plane at its own spacing, pixel centres on integer
+    multiples of it (as `Specimen.cut`), so dust thinner than a whole-stone pixel shows."""
+    axes: list[NDArray[np.float64]] = []
+    for c in centre:
+        k0 = math.floor((c - size_mm / 2) / spacing_mm)
+        axes.append(
+            (np.arange(k0, k0 + round(size_mm / spacing_mm)) * spacing_mm).astype(np.float64)
+        )
+    s, t = axes
+    ss, tt = np.meshgrid(s, t)
+    fields, inside = specimen.evaluate(cut.plane.points(ss, tt), spacing_mm)
+    return SpecimenCut(
+        plane=cut.plane,
+        spacing_mm=spacing_mm,
+        s=s,
+        t=t,
+        fields=reshape_fields(fields, ss.shape),
+        inside=inside.reshape(ss.shape),
+        fracture_mm=np.full(ss.shape, np.inf),
+    )
+
+
+def dustiest(cut: SpecimenCut, size_mm: float) -> tuple[float, float]:
+    """Centre (s, t) of the window of a cut that holds the most dust: the place to
+    show the owner, not a typical one."""
+    f = cut.fields
+    banded = cut.inside & (f.phase == Phase.CHALCEDONY) & (f.band >= 0)
+    ex = dust_excess(f.impurity, f.band, banded)
+    k = max(1, round(size_mm / cut.spacing_mm))
+    c = np.cumsum(np.cumsum(np.pad(ex, ((1, 0), (1, 0))), 0), 1)
+    box = c[k:, k:] - c[:-k, k:] - c[k:, :-k] + c[:-k, :-k]
+    j, i = np.unravel_index(int(np.argmax(box)), box.shape)
+    return float(cut.s[i + k // 2]), float(cut.t[j + k // 2])
+
+
+def dust_sheet(seed: int, px: int, out: Path, tile: int = 300) -> Path:
+    """Each dusty stone of a sheet in a row (ADR 0018 s.11): whole stone with dust;
+    a 12 mm window without and with dust (0.03 mm pixels); a 4 mm window with dust
+    (0.01 mm pixels). Windows sit where the stone's dust is densest."""
+    recipes = [r for r in draw_sheet(seed) if r.dust is not None]
+    out.mkdir(parents=True, exist_ok=True)
+    head = 24
+    sheet = Image.new("RGB", (4 * tile, head + len(recipes) * (tile + 22)), (235, 235, 235))
+    draw = ImageDraw.Draw(sheet)
+    labels = ["whole stone", "12 mm, no dust", "12 mm, dust", "4 mm, dust"]
+    for k, label in enumerate(labels):
+        draw.text((k * tile + 6, 6), label, fill=(0, 0, 0))
+    for row, rec in enumerate(recipes):
+        t0 = time.perf_counter()
+        specimen, layers = build(rec)
+        lo, hi = specimen.volume.solid.bounds()
+        spacing = float(np.max(np.asarray(hi) - np.asarray(lo))) / px
+        cut = cut_of(specimen, rec, spacing)
+        plain = replace(specimen, layers=replace(layers, dust=None))
+        wide = dustiest(cut, 12.0)
+        whole = Image.fromarray(preview_rgb(cut, rec))
+        whole.thumbnail((tile, tile))
+        wide_cut = window_cut(specimen, cut, wide, 12.0, 0.03)
+        near = dustiest(wide_cut, 4.0)
+        tiles = [
+            whole,
+            Image.fromarray(preview_rgb(window_cut(plain, cut, wide, 12.0, 0.03), rec)),
+            Image.fromarray(preview_rgb(wide_cut, rec)),
+            Image.fromarray(preview_rgb(window_cut(specimen, cut, near, 4.0, 0.01), rec)),
+        ]
+        y = head + row * (tile + 22)
+        for k, im in enumerate(tiles):
+            if k:
+                im = im.resize((tile, tile), Image.Resampling.LANCZOS)
+            sheet.paste(im, (k * tile + (tile - im.width) // 2, y + (tile - im.height) // 2))
+        draw.text((6, y + tile + 4), f"stone {rec.index + 1}. {rec.summary()}", fill=(0, 0, 0))
+        print(f"stone {rec.index + 1}: {time.perf_counter() - t0:.1f} s; {rec.summary()}")
+    path = out / f"dust-sheet-seed{seed}.png"
+    sheet.save(path)
+    return path
+
+
 def slope_pairs(seed: int, caps: tuple[float, float], px: int, out: Path) -> Path:
     """Every warped stone of a sheet at two no-fold caps (mild-warp stones are
     under both clamps, so they do not change)."""
@@ -208,6 +295,7 @@ def main(argv: list[str] | None = None) -> None:
         metavar="SEED",
         help="instead of a sheet, the crenulated stones of these seeds with and without roughness",
     )
+    parser.add_argument("--dust", action="store_true", help="instead, the dust look sheet")
     parser.add_argument(
         "--pairs",
         type=float,
@@ -219,6 +307,8 @@ def main(argv: list[str] | None = None) -> None:
     t0 = time.perf_counter()
     if args.roughness_trial:
         path = roughness_trial(args.roughness_trial, args.px, args.out)
+    elif args.dust:
+        path = dust_sheet(args.seed, args.px, args.out)
     elif args.pairs:
         path = slope_pairs(args.seed, tuple(args.pairs), args.px, args.out)
     else:

@@ -120,9 +120,13 @@ class SpecimenCut:
 class Layers(Protocol):
     """Changes to the fields after growth, at world points (mm): quick feature layers
     that start in Nodule (ADR 0018 section 3). Present coordinates: a layer does not
-    move with fracture slip, so layered specimens keep their fractures slip-free."""
+    move with fracture slip, so layered specimens keep their fractures slip-free.
+    pixel_mm is the side of the pixel each point stands for (0: a point sample); a
+    layer that draws features thinner than a pixel draws them by area coverage."""
 
-    def __call__(self, points: FloatArray, fields: Fields, inside: BoolArray) -> Fields: ...
+    def __call__(
+        self, points: FloatArray, fields: Fields, inside: BoolArray, pixel_mm: float = 0.0
+    ) -> Fields: ...
 
 
 class Warp(Protocol):
@@ -153,8 +157,9 @@ class Specimen:
     def max_slip_mm(self) -> float:
         return sum(f.slip_mm for f in self.fractures)
 
-    def evaluate(self, points: FloatArray) -> tuple[Fields, BoolArray]:
-        """Fields at world points (n, 3), and which points lie in the stone."""
+    def evaluate(self, points: FloatArray, pixel_mm: float = 0.0) -> tuple[Fields, BoolArray]:
+        """Fields at world points (n, 3), and which points lie in the stone; pixel_mm
+        as for `Layers`."""
         if self.warp is not None:
             if self.fractures:
                 raise ValueError("a warped specimen takes no slipping fractures")
@@ -165,7 +170,7 @@ class Specimen:
                 self.volume.evaluate, self.volume.solid.contains, points, self.fractures
             )
         if self.layers is not None:
-            fields = self.layers(points, fields, inside)
+            fields = self.layers(points, fields, inside, pixel_mm)
         return fields, inside
 
     def growth_time(self, points: FloatArray) -> FloatArray:
@@ -214,7 +219,7 @@ class Specimen:
         n = len(points)
         for start in range(0, n, CHUNK_POINTS):
             progress.report(start / n, "cutting")
-            parts.append(self.evaluate(points[start : start + CHUNK_POINTS]))
+            parts.append(self.evaluate(points[start : start + CHUNK_POINTS], spacing_mm))
         progress.report(1.0, "cutting")
         fields = _concat([p[0] for p in parts])
         inside = np.concatenate([p[1] for p in parts])

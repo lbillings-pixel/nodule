@@ -37,6 +37,7 @@ from typing import Literal, NamedTuple
 import numpy as np
 from agatesim.fields import Fields, Phase, Pigment
 from agatesim.grid import FloatArray
+from agatesim.models.growth import TIME_STEPS, ProceduralGrowth
 from agatesim.volume.config import SliceConfig, SolidConfig, VolumeConfig
 from agatesim.volume.models import SmoothNoise3
 from agatesim.volume.slicing import Plane
@@ -45,6 +46,17 @@ from numpy.typing import NDArray
 from pydantic import BaseModel, ConfigDict, Field
 
 from nodule._scipy import largest_patch_size
+from nodule.dust import (
+    BLOB_SHARE,
+    BLOB_STRENGTH,
+    LINE_SHARE,
+    PIGMENT_AT,
+    SPECK_SHARE,
+    SPECK_STRENGTH,
+    Dust,
+    DustLayer,
+    draw_dust,
+)
 from nodule.specimen import Specimen, SpecimenConfig, SpecimenCut
 from nodule.thunderegg import ArmShape, ArmStyle, thunder_egg_outline
 
@@ -273,6 +285,7 @@ class StoneRecipe(BaseModel):
     mottle: Mottle | None = None
     fractures: tuple[FractureLayer, ...] = ()
     roughness: Roughness | None = None
+    dust: Dust | None = None  # band-following dust (`nodule.dust`, ADR 0018 s.11)
     cut: SliceConfig
 
     def summary(self) -> str:
@@ -297,6 +310,8 @@ class StoneRecipe(BaseModel):
         if self.roughness is not None:
             kind = "ridged" if self.roughness.ridged else "rough"
             parts.append(f"{kind} {self.roughness.amplitude_mm:.2f} mm")
+        if self.dust is not None:
+            parts.append(self.dust.summary())
         parts.append(f"bands {self.band_mm:.2f} mm")
         return ", ".join(parts)
 
@@ -348,6 +363,7 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     # Mottle kept on fewer stones: the first of the first draw (whose stones still
     # draw their mottle, so their other draws stand).
     kept = set(mottle_pool[: _scaled(plan, MOTTLE_STONES, n)].tolist())
+    dust = dust_plan(plan, outlines)
     return [
         draw_stone(
             i,
@@ -362,9 +378,35 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
             keep_mottle=i in kept,
             odd_cut=i in odd,
             full_wobble=i in full,
+            dust=dust[i],
         )
         for i in range(n)
     ]
+
+
+DustForms = tuple[bool, bool, bool]  # lines, specks, blobs
+
+
+def dust_plan(plan: np.random.Generator, outlines: list[str]) -> list[DustForms]:
+    """Which dust forms each stone takes (ADR 0018 s.11): lines on 1 stone in 2,
+    speck strings and coarse blobs on 1 in 4 each, never all three on one stone
+    (with the tinted band, that would be every form). Lines and specks follow bands,
+    so not on the nearly unbanded pebble. Drawn after the rest of the plan."""
+    n = len(outlines)
+    banded = [i for i, o in enumerate(outlines) if o != "pebble"]
+    lines = set(plan.permutation(banded)[: round(LINE_SHARE * n)].tolist())
+    specks = set(plan.permutation(banded)[: round(SPECK_SHARE * n)].tolist())
+    blobs = set(plan.permutation(n)[: round(BLOB_SHARE * n)].tolist())
+    for i in sorted(lines & specks & blobs):
+        free = [
+            j
+            for j in plan.permutation(n).tolist()
+            if j not in blobs and not (j in lines and j in specks)
+        ]
+        if free:
+            blobs.discard(i)
+            blobs.add(free[0])
+    return [(i in lines, i in specks, i in blobs) for i in range(n)]
 
 
 def _log_uniform(rng: np.random.Generator, lo: float, hi: float) -> float:
@@ -570,6 +612,7 @@ def draw_stone(
     keep_mottle: bool = True,
     odd_cut: bool = False,
     full_wobble: bool = False,
+    dust: DustForms = (False, False, False),
 ) -> StoneRecipe:
     solid_config, arms, arm_shape = solid_for(rng, outline)  # type: ignore[arg-type]
     solid = solid_config.build()
@@ -638,7 +681,13 @@ def draw_stone(
             cavity = (1 - w) * r + recipe.lining * w * r
         red = colour in ("iron", "carnelian")
         recipe = recipe.model_copy(update={"fractures": draw_fractures(rng, solid, red, cavity)})
-    return _refine(recipe, solid, r, odd_cut=odd_cut, keep_mottle=keep_mottle)
+    refined = _refine(recipe, solid, r, odd_cut=odd_cut, keep_mottle=keep_mottle)
+    if any(dust):  # drawn last, so the stone's other draws stand
+        lines, specks, blobs = dust
+        red = _palette(refined)[0].get("hematite", 0.0) > 0  # the stone's own palette
+        forms = draw_dust(rng, red, lines=lines, specks=specks, blobs=blobs)
+        refined = refined.model_copy(update={"dust": forms})
+    return refined
 
 
 def mottle_edge_noise(recipe: StoneRecipe, solid: Solid) -> SmoothNoise3:
@@ -1013,6 +1062,7 @@ class VarietyLayers:
     stain_noise: SmoothNoise3 | None
     rim_noise: SmoothNoise3 | None = None
     edge_noise: SmoothNoise3 | None = None
+    dust: DustLayer | None = None
 
     @classmethod
     def of(cls, recipe: StoneRecipe, solid: Solid, growth: Growth) -> VarietyLayers:
@@ -1088,7 +1138,9 @@ class VarietyLayers:
             out = np.minimum(out, self.crack_distance(i, points))
         return out
 
-    def __call__(self, points: FloatArray, fields: Fields, inside: BoolArray) -> Fields:
+    def __call__(
+        self, points: FloatArray, fields: Fields, inside: BoolArray, pixel_mm: float = 0.0
+    ) -> Fields:
         rec = self.recipe
         phase = fields.phase.copy()
         imp = np.nan_to_num(fields.impurity, nan=0.0).astype(np.float32)
@@ -1148,6 +1200,20 @@ class VarietyLayers:
                     imp[trace] = min(f.stain + IRON_TRACE, 0.8)
                     pig[trace] = Pigment.IRON
                     phase[trace] = Phase.CHALCEDONY
+
+        if self.dust is not None:
+            # Dust lies down with its band, before any later stain; drawn last here
+            # only because each layer adds to what lies at the point. Not in quartz,
+            # nor where a crack's trace replaced the chalcedony (an assumption).
+            line, speck, blob = self.dust.amount(
+                points, t, chal & (phase == Phase.CHALCEDONY), pixel_mm
+            )
+            d = self.dust.dust
+            dust = np.maximum.reduce(
+                [line * d.strength, speck * SPECK_STRENGTH, blob * BLOB_STRENGTH]
+            )
+            imp += (dust * (1 - imp)).astype(np.float32)
+            pig[dust > PIGMENT_AT] = self.dust.pigment
 
         return replace(fields, phase=phase, impurity=imp, translucency=trans, pigment=pig)
 
@@ -1237,6 +1303,19 @@ def build(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Specimen, 
     config, growth = volume_config(recipe, max_slope)
     specimen = Specimen.build(SpecimenConfig(volume=config))
     layers = VarietyLayers.of(recipe, specimen.volume.solid, growth)
+    if recipe.dust is not None:
+        tau = (np.arange(TIME_STEPS) + 0.5) / TIME_STEPS
+        assert isinstance(config.model, ProceduralGrowth)
+        supply = np.clip(config.model.schedules.silica.sample(tau), 0.0, 1.0)
+        dust = DustLayer.of(
+            recipe.dust,
+            specimen.volume,
+            growth.growth_mm * supply / TIME_STEPS,
+            layers.start,
+            layers.chalcedony_end,
+            recipe.seed,
+        )
+        layers = replace(layers, dust=dust)
     warp = None
     if recipe.roughness is not None:
         warp = BandRoughness.of(recipe.roughness, specimen.volume.solid, growth, recipe.seed)

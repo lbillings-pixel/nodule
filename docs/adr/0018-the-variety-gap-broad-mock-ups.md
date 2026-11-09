@@ -807,6 +807,19 @@ the linear tint change and full erasure of band colour inside a halo are assumpt
 Kile supports only that halos erase bands and that one plume can run orange to black
 [@kile2002, pp. 259-263] (*plausible*). Nodule's recipes do not use them yet.
 
+**Owner's choices for plumes in the recipes (2026-11-09):**
+- Frequency: about 1 stone in 4 on mock-up sheets while the plume look is honed, then
+  down to about 1 in 8 to 1 in 10 (a showing choice; sources range from under 1 % to
+  over 90 % by locality).
+- Direction: 3/4 up, 1/4 sideways, on condition that moss gets a broadly similar
+  ability to grow downward (drapes from the roof). agatesim's tilt already allows down
+  (`dendrite_tilt_deg` = 180), so the moss probe can use it.
+- Colour: Kile's mix [@kile2002, pp. 259-260] (*plausible*): about half black-brown,
+  a third orange base to black tips, the rest orange-gold, red about 1 in 20; plumes in
+  one stone differ a little.
+- Halos: about 3 in 4 plume stones, width 0.3-1 mm drawn per stone (assumption), on a
+  drawn share of their plumes.
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

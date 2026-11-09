@@ -122,7 +122,14 @@ class Layers(Protocol):
     that start in Nodule (ADR 0018 section 3). Present coordinates: a layer does not
     move with fracture slip, so layered specimens keep their fractures slip-free.
     pixel_mm is the side of the pixel each point stands for (0: a point sample); a
-    layer that draws features thinner than a pixel draws them by area coverage."""
+    layer that draws features thinner than a pixel draws them by area coverage.
+
+    Two parts, so a renderer can tell them apart (ADR 0019): `per_step` changes what
+    depends on growth time and phase alone (each growth step's own material, which
+    the renderer keeps in its record); the call adds what varies from place to place
+    (which the renderer bakes on its grid). `Specimen.evaluate` applies both."""
+
+    def per_step(self, fields: Fields) -> Fields: ...
 
     def __call__(
         self, points: FloatArray, fields: Fields, inside: BoolArray, pixel_mm: float = 0.0
@@ -160,6 +167,15 @@ class Specimen:
     def evaluate(self, points: FloatArray, pixel_mm: float = 0.0) -> tuple[Fields, BoolArray]:
         """Fields at world points (n, 3), and which points lie in the stone; pixel_mm
         as for `Layers`."""
+        fields, inside = self.step_fields(points)
+        if self.layers is not None:
+            fields = self.layers(points, fields, inside, pixel_mm)
+        return fields, inside
+
+    def step_fields(self, points: FloatArray) -> tuple[Fields, BoolArray]:
+        """Fields without the layers' place-to-place part: the growth model (read
+        through any warp) and the layers' `per_step` part, so each growth step keeps
+        one material (what a renderer's record holds)."""
         if self.warp is not None:
             if self.fractures:
                 raise ValueError("a warped specimen takes no slipping fractures")
@@ -170,7 +186,18 @@ class Specimen:
                 self.volume.evaluate, self.volume.solid.contains, points, self.fractures
             )
         if self.layers is not None:
-            fields = self.layers(points, fields, inside, pixel_mm)
+            fields = self.layers.per_step(fields)
+        return fields, inside
+
+    def restored_step_fields(self, points: FloatArray) -> tuple[Fields, BoolArray]:
+        """As `step_fields`, at RESTORED (pre-fracture) points: the growth model
+        read through any warp, with the layers' `per_step` part; no fracture map.
+        What a renderer's growth-time grid holds (`nodule.render.tgrid`)."""
+        inside = self.volume.solid.contains(points)
+        read = points if self.warp is None else self.warp(points, self.growth_time)
+        fields = self.volume.evaluate(read, inside)
+        if self.layers is not None:
+            fields = self.layers.per_step(fields)
         return fields, inside
 
     def growth_time(self, points: FloatArray) -> FloatArray:

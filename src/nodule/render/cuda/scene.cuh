@@ -14,6 +14,9 @@ struct Scene {
     const float* tube;  // ntube x 7: a, b, radius
     const float* frac;  // nfrac x 17: centre 3, frame rows e0 e1 e2 (9), slip, ra, rc, drag, steps
     const float* grid;  // (nw, nt, ns), NaN cells already filled
+    const float* level;  // (nw, nt, ns): the solid's signed level, for outlines other than
+                         // sphere unions (nsph 0); null: test the spheres (ADR 0019)
+    const float* absorb; // 3 x (nw, nt, ns): the layers' added absorption (mm^-1); null: none
 };
 
 __device__ __forceinline__ float bell(float s) { float c = fminf(s, 1.f); float q = 1.f - c * c; return q * q; }
@@ -62,6 +65,7 @@ __device__ __forceinline__ float tlookup(const Scene& S, float x, float y, float
 __device__ int classify(const Scene& S, float& x, float& y, float& z, float& t, int mode) {
     if (!(mode & 1)) restore(S, x, y, z);
     float lev = -1e30f;
+    if (S.level != nullptr) lev = grid_at(S, S.level, x, y, z);
     for (int i = 0; i < S.nsph; ++i) {
         const float* c = S.sph + 4 * i;
         float dx = x - c[0], dy = y - c[1], dz = z - c[2];

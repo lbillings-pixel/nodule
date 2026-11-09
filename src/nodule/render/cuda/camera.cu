@@ -60,6 +60,10 @@ __device__ Mat matid(const Scene& S, const Cam& C, const Shift& H, const unsigne
         else { int u = (int)floorf(t / C.dt); u = min(max(u, 0), C.nprof - 1); M.m = 2 + prof[u]; }
     }
     for (int c = 0; c < 3; ++c) M.a[c] = mua[3 * M.m + c];
+    if (S.absorb != nullptr && M.m >= 2) {                      // the layers (ADR 0019)
+        long long n = (long long)S.ns * S.nt * S.nw;
+        for (int c = 0; c < 3; ++c) M.a[c] = fmaxf(M.a[c] + grid_at(S, S.absorb + c * n, x, y, z), 0.f);
+    }
     if (H.band == nullptr || M.m < 2) return M;
     const float* B = H.band + 4 * M.m;
     if (!(B[0] >= 0.f)) return M;                               // takes no shift

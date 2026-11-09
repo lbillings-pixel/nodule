@@ -28,9 +28,10 @@ SCENE_DTYPE = np.dtype(
      ("s0", "<f4"), ("t0", "<f4"), ("w0", "<f4"), ("h", "<f4"),
      ("ns", "<i4"), ("nt", "<i4"), ("nw", "<i4"),
      ("nsph", "<i4"), ("ntube", "<i4"), ("nfrac", "<i4"),
-     ("sph", "<u8"), ("tube", "<u8"), ("frac", "<u8"), ("grid", "<u8")]
+     ("sph", "<u8"), ("tube", "<u8"), ("frac", "<u8"), ("grid", "<u8"),
+     ("level", "<u8"), ("absorb", "<u8")]
 )  # fmt: skip
-assert SCENE_DTYPE.itemsize == 120  # the CUDA struct's size, pointers 8-aligned
+assert SCENE_DTYPE.itemsize == 136  # the CUDA struct's size, pointers 8-aligned
 
 
 @dataclass(frozen=True)
@@ -45,12 +46,22 @@ class SceneArrays:
     # deepest slab (mm) the grid serves: its nodes reach this depth plus the fracture-slip
     # pad (`tgrid.grid_axes`); inf for the homogeneous scene, which never reads the grid
     covers_mm: float = math.inf
+    # The solid's level on the grid's nodes, for outlines other than sphere unions (no
+    # spheres then); None: the spheres are tested exactly (ADR 0019)
+    level: F32 | None = None
+    # The layers' added absorption per channel (3, nw, nt, ns), mm^-1, on the grid's nodes
+    # (`layerbake`); None: no layers. absorb_max: its largest value per channel (>= 0)
+    absorb: F32 | None = None
+    absorb_max: float = 0.0
 
 
-def pack(specimen: Specimen, grid: GrowthGrid, filled: F32 | None = None) -> SceneArrays:
+def pack(
+    specimen: Specimen, grid: GrowthGrid, filled: F32 | None = None, absorb: F32 | None = None
+) -> SceneArrays:
     solid = specimen.volume.solid
-    if not isinstance(solid, SphereUnion):
-        raise TypeError(f"the GPU scene handles a sphere-union solid, not {type(solid).__name__}")
+    exact = isinstance(solid, SphereUnion)
+    if not exact and grid.level is None:
+        raise ValueError(f"a {type(solid).__name__} solid needs the grid's level (GrowthGrid.fill)")
     rows: list[list[float]] = []
     for f in specimen.fractures:
         if f.along is not BELL or f.across is not BELL:
@@ -64,7 +75,11 @@ def pack(specimen: Specimen, grid: GrowthGrid, filled: F32 | None = None) -> Sce
     h["o"], h["u"], h["v"], h["n"] = plane.origin, plane.u, plane.v, plane.normal
     h["s0"], h["t0"], h["w0"], h["h"] = grid.s[0], grid.t[0], grid.w[0], grid.spacing_mm
     h["ns"], h["nt"], h["nw"] = len(grid.s), len(grid.t), len(grid.w)
-    spheres = np.c_[solid.centres, solid.radii].astype(np.float32)
+    spheres = (
+        np.c_[solid.centres, solid.radii].astype(np.float32)
+        if isinstance(solid, SphereUnion)
+        else np.zeros((0, 4), np.float32)
+    )
     tubes = np.asarray(specimen.volume.setting.tubes, np.float32).reshape(-1, 7)
     fractures = np.asarray(rows, np.float32).reshape(-1, 17)
     h["nsph"], h["ntube"], h["nfrac"] = len(spheres), len(tubes), len(fractures)
@@ -75,6 +90,9 @@ def pack(specimen: Specimen, grid: GrowthGrid, filled: F32 | None = None) -> Sce
         fractures=fractures,
         grid=grid.filled() if filled is None else filled,
         covers_mm=float(grid.w[-1]) - (specimen.max_slip_mm + grid.spacing_mm),
+        level=None if exact else grid.level,
+        absorb=absorb,
+        absorb_max=0.0 if absorb is None else max(float(absorb.max()), 0.0),
     )
 
 
@@ -96,6 +114,7 @@ class DeviceScene:
     struct: Any  # cupy uint8 array holding the struct bytes
     arrays: dict[str, Any]
     covers_mm: float = math.inf  # SceneArrays.covers_mm
+    absorb_max: float = 0.0  # SceneArrays.absorb_max, for the majorant
 
 
 def upload(scene: SceneArrays) -> DeviceScene:
@@ -103,12 +122,18 @@ def upload(scene: SceneArrays) -> DeviceScene:
 
     cp = _gpu.cupy()
     arrays: dict[str, Any] = {}
-    for key in ("spheres", "tubes", "fractures", "grid"):
-        a: F32 = getattr(scene, key)
-        arrays[key] = cp.asarray(a if a.size else np.zeros(1, np.float32), cp.float32)
+    for key in ("spheres", "tubes", "fractures", "grid", "level", "absorb"):
+        a: F32 | None = getattr(scene, key)
+        if a is None:
+            continue
+        arrays[key] = cp.asarray(
+            np.ascontiguousarray(a if a.size else np.zeros(1, np.float32)), cp.float32
+        )
     h = scene.header.copy()
     for field, key in (("sph", "spheres"), ("tube", "tubes"), ("frac", "fractures"),
-                       ("grid", "grid")):  # fmt: skip
-        h[field] = arrays[key].data.ptr
+                       ("grid", "grid"), ("level", "level"), ("absorb", "absorb")):  # fmt: skip
+        h[field] = arrays[key].data.ptr if key in arrays else 0
     struct = cp.asarray(np.frombuffer(h.tobytes(), np.uint8))
-    return DeviceScene(struct=struct, arrays=arrays, covers_mm=scene.covers_mm)
+    return DeviceScene(
+        struct=struct, arrays=arrays, covers_mm=scene.covers_mm, absorb_max=scene.absorb_max
+    )

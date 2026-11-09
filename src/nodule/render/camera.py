@@ -342,6 +342,8 @@ def render(
     mua, mus = cp.asarray(materials.mua), cp.asarray(kept_mus)
     ph, prof = cp.asarray(materials.phase_table()), cp.asarray(materials.profile)
     mb = majorant(materials, kept_mus, shift) if mubar is None else mubar
+    if mubar is None and scene.absorb_max > 0:  # the layers' absorption (ADR 0019)
+        mb = (mb + scene.absorb_max) * (1.0 + 1e-5)
     paths = view.nx * view.ny * spp
     if paths >= 2**63:
         raise ValueError("too many paths")

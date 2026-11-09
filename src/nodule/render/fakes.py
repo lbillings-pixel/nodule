@@ -71,7 +71,7 @@ def stone_record(
     out = BandRecord.empty()
     for a in range(0, points, CHUNK_POINTS):
         p = rng.uniform(lo, hi, (min(CHUNK_POINTS, points - a), 3))
-        f, inside = specimen.evaluate(p)
+        f, inside = specimen.step_fields(p)  # one material per step (ADR 0019)
         out = out.merge(BandRecord.of(f, inside))
     return out
 

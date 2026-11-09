@@ -50,7 +50,7 @@ from nodule.render.record import BandRecord
 from nodule.render.scene import pack, upload
 from nodule.render.shift import ShiftArrays, bake_drift, variation_of
 from nodule.render.shift import upload as shift_upload
-from nodule.render.tgrid import GrowthGrid
+from nodule.render.tgrid import GrowthGrid, Window
 from nodule.specimen import Specimen, SpecimenCut
 
 GRID_MM = 0.2  # ADR 0007 7c
@@ -111,6 +111,12 @@ class Rendering:
         return cls(Light("back"), record, kw.pop("depth_mm", L3_DEPTH_MM), **kw)
 
 
+def window_of(cut: SpecimenCut, pad_mm: float = 0.0) -> Window:
+    """The part of the plane a cut's pixels cover (mm), padded by pad_mm."""
+    p = cut.spacing_mm / 2 + pad_mm
+    return (float(cut.s[0]) - p, float(cut.s[-1]) + p), (float(cut.t[0]) - p, float(cut.t[-1]) + p)
+
+
 def view_of(cut: SpecimenCut) -> View:
     """The camera view whose pixel centres are the cut's sample points."""
     p = cut.spacing_mm
@@ -148,8 +154,13 @@ class CutRenderer:
     ) -> None:
         r = self.rendering = rendering
         t0 = time.perf_counter()
-        grid = GrowthGrid.fill(specimen, cut.plane, r.grid_mm, r.depth_mm)
-        packed = pack(specimen, grid)
+        # the grid covers the view, padded by the slab's depth for light that wanders
+        # sideways (a close-up's grid then covers its window, not the whole stone)
+        # with the layers' place-to-place part baked as absorption in the same pass (ADR 0019)
+        grid = GrowthGrid.fill(
+            specimen, cut.plane, r.grid_mm, r.depth_mm, window_of(cut, r.depth_mm), r.optics
+        )
+        packed = pack(specimen, grid, absorb=grid.absorb)
         self._dev = upload(packed)
         # materials that vary along the bands (ADR 0016), when the stone has them and the
         # record marks steps that take them (a fake's record carries them with its runs)

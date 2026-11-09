@@ -1138,9 +1138,43 @@ class VarietyLayers:
             out = np.minimum(out, self.crack_distance(i, points))
         return out
 
+    def depth(self, t: FloatArray) -> FloatArray:
+        """0 at the wall (and on the floor), 1 where the last chalcedony lies down."""
+        return np.clip((t - self.start) / (self.chalcedony_end - self.start), 0, 1)
+
+    def per_step(self, fields: Fields) -> Fields:
+        """What depends on the growth step alone: quartz low in iron, white bands
+        thinning inward. Applied to the step's own values too (`band_*`), so they
+        stay one per step."""
+        # the step's own time (t_dep, its centre), so each step keeps one translucency
+        depth = self.depth(np.nan_to_num(fields.t_dep, nan=0.0).astype(np.float64))
+        quartz = fields.phase == Phase.QUARTZ
+        chal = fields.phase == Phase.CHALCEDONY
+        fade = self.recipe.white_fade * depth
+
+        def iron(imp: NDArray[np.float32]) -> NDArray[np.float32]:
+            out = np.nan_to_num(imp, nan=0.0).astype(np.float32)
+            out[quartz] *= QUARTZ_IRON_RATIO
+            return out
+
+        def white(trans: NDArray[np.float32]) -> NDArray[np.float32]:
+            out = trans.copy()
+            out[chal] += (fade[chal] * (1 - out[chal])).astype(np.float32)
+            return out
+
+        bi, bt = fields.band_impurity, fields.band_translucency
+        return replace(
+            fields,
+            impurity=iron(fields.impurity),
+            translucency=white(fields.translucency),
+            band_impurity=None if bi is None else iron(bi),
+            band_translucency=None if bt is None else white(bt),
+        )
+
     def __call__(
         self, points: FloatArray, fields: Fields, inside: BoolArray, pixel_mm: float = 0.0
     ) -> Fields:
+        """The place-to-place part (after `per_step`): mottle, rim stain, cracks, dust."""
         rec = self.recipe
         phase = fields.phase.copy()
         imp = np.nan_to_num(fields.impurity, nan=0.0).astype(np.float32)
@@ -1155,10 +1189,7 @@ class VarietyLayers:
         chal = inside & (phase == Phase.CHALCEDONY)
         quartz = inside & (phase == Phase.QUARTZ)
 
-        imp[quartz] *= QUARTZ_IRON_RATIO
-        # 0 at the wall (and on the floor), 1 at the centre
-        depth = np.clip((t - self.start) / (self.chalcedony_end - self.start), 0, 1)
-        trans[chal] += (rec.white_fade * depth[chal] * (1 - trans[chal])).astype(np.float32)
+        depth = self.depth(t)
 
         def stain(mask: NDArray[np.bool_], amount: NDArray[np.float64], pigment: Pigment) -> None:
             a = np.clip(amount, 0, 1)

@@ -88,14 +88,24 @@ mean face colour (sRGB, red minus blue) 15-19 against a deep red stand-in (stone
 carnelian: render 93/84/79, stand-in 135/58/45). The cause predates this ADR: stone 11
 without layers or warp renders the same (122/113/102). **Tripling the loading darkens
 without reddening** (red minus blue falls, 15 to 7 on stone 10), so more pigment is not
-the fix: the hue is lost elsewhere (candidates, untested: the grey matrix absorption
-0.13 mm^-1, which ADR 0014 4e set at its bound; long multiple-scattering paths under the
-black bottom, which absorb every channel; the hematite k at 650 nm, 0.2 in go2022).
-B1: keep (ADR 0014 is closed; the stand-in may overstate colour). B2 (dropped by the
-measurement above): a stronger loading. B3: a diagnosis pass on a homogeneous red slab
-(single-scattering against multiple), then calibrate against the library's red-agate
-photos (machine tags; no owner labour). *Recommended: B3*, as no red stone can look
-red until it is done, and the owner's eye judges renders, not stand-ins.
+the fix. **Diagnosis** (same night, runs/variety-render-phi/): a homogeneous slab of the
+band's own optics (hematite, impurity 0.4, 2 mm, black bottom) reflects red, R/B 1.7 to
+3.7 at every translucency, so the material is red. Two things take the red away in the
+render: (i) **the face's glare**: the dome adds its mirror reflection, F0 = 4.5 % white
+(n 1.54), over body reflectance of only 1-3 % in translucent bands; removing it at the
+same mean lightness raises red minus blue from 15 to 44 (stone 11) and 14 to 50 (stone
+10); (ii) **the black bottom** (ADR 0014): translucent red bands return little light, so
+without glare carnelian reads dark brown, not red; red shows mostly where bands are
+milky. Both come from the lighting chosen for the photo compare (ADR 0008 7c, ADR 0014),
+not from the pigment.
+
+B1: keep (ADR 0014 is closed; the photo compare was matched under this lighting). B2
+(dropped by the measurement): a stronger loading. B3: a **look preset** for the owner's
+eye only, leaving the compare's settings alone: a light without the face's glare (as a
+photographer's polariser or dark surround gives) and a lighter bottom (a white backing
+or air), each tried and shown side by side. B4: reopen ADR 0014's lighting against the
+library's red-agate photos. *Recommended: B3*, cheap (a render setting, no new
+physics), and it keeps the closed calibration intact.
 
 ## Consequences
 

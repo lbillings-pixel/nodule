@@ -693,6 +693,61 @@ barely show (red on red).
 **Owner's verdict (2026-11-09):** "the dust looks good, for now". Kept as built;
 closed for now, like mottle (s.10).
 
+### 13. Plumes and moss: reading, choices and a first probe (2026-11-09)
+
+Second item of the owner's list. Reading by a helper agent, 2026-11-09
+(notes/n1-reading/plume-moss-reading.md, gitignored); grades per ADR 0002.
+Peer-reviewed work on plumes is thin; most of what follows is *plausible* at best.
+
+- **Three forms under two names.** Plumes: tufted or feathery growths rooted on the
+  wall, older than the bands that enclose them [@pabian1994, pp. 13, 23], read as
+  silica gardens [@goetze2020, §5.5] (*plausible*). Green moss: celadonite or smectite
+  filaments, each in its own silica sheath [@akahane2025; @zhang2026; @goetze2020b]
+  (*verified*). Black Mn dendrites ("Montana moss") in band partings, after the bands
+  [@pabian1994, p. 23] (*plausible*).
+- **Plumes on a face:** from one plume to a crowded row; about 8 x 12 mm in one figure
+  [@goetze2020, Fig. 34h] (*speculative*, by eye); orientation shared within a
+  locality, horizontal in one basalt, vertical in another (Zarins in [@pabian1994,
+  pp. 14-15]) (*plausible*); lab silica gardens lean upward [@mcmahon2019]. Colours
+  hematite red and limonite brown-yellow [@pabian1994, Table 1]; green, yellow, red,
+  white and orange, several in one stone [@salimi2019] (*plausible*). No source gives
+  black plumes.
+- **Rims:** a clear halo at a "fairly uniform distance" round each filament, with
+  dark-particle rings outside it following its curve [@brown1957, pp. 335-36]
+  (*plausible*); sheaths round moss filaments (*verified*, above).
+- **Moss:** visible strands are aggregates 0.05-0.5 mm thick, up to about 10 mm long
+  [@goetze2020b; @zhang2026] (*verified*); curved, uneven, with warty swellings
+  [@brown1957]; from the walls, heaviest on the floor, some hanging from the ceiling,
+  none growing upward [@goetze2020b] (*verified*); in clear chalcedony. No source says
+  moss agates lack bands; one stone shows moss, then wall-lining bands, then quartz
+  [@powolny2024, Fig. 2d].
+- **Bands, where sources disagree:** plumes and moss engulfed by later bands
+  [@pabian1994; @akahane2025]; filaments cutting flat bands in one thunder egg
+  [@brown1957, p. 335].
+- **Frequency:** limonite plumes in over 90 % of stones at one locality, rare (under
+  5 %) at others [@pabian1994, Table 1] (*plausible*); no peer-reviewed figure.
+- **Gaps, so assumptions:** no size distribution, count per stone, branching
+  statistics, halo width, moss area share or strand-length distribution. Asked of the
+  owner: [@kile2002] and [@hofmann2008] (full texts).
+
+**Owner's choices (2026-11-09):**
+- A3: plumes and moss come before wall-lining bands, which wrap them; in stones with
+  flat floor bands, moss may cut through those.
+- C2: plume direction per stone, upward most often.
+- B1: plumes and green moss first; black Mn dendrites later.
+- Render: baked colour first (the layers' route, ADR 0019); own material later only
+  if white plumes are wanted.
+
+**Probe (measured; synthetic only):** agatesim's own dendrite stage (agatesim ADR
+0025, 0061) placed before the bands in one sheet-10 stone, its plume settings
+(upward 0.9, from the lower 45 %). The bands wrap each plume with a pale rim, as the
+reading has it. At the default 4 M-cell lattice (0.27 mm cells): build 13 s, peak
+0.5 GB, but about 20 plumes cover 8 % of the face and drown the bands. At 32 M cells,
+spacing 14 mm, amount 0.02: three plumes, 3 % of the face, plume-agate-like, but
+build 99 s and peak 0.9 GB; the plumes show as loose speckle, not dense tufts.
+Limits found: agatesim's bias is upward only (sideways plumes, C2, need an agatesim
+change, which waits on GitHub); one stage per stone, so plume colour is one per stone.
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

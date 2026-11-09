@@ -25,7 +25,7 @@ licence = "CC-BY-4.0"
 checked = "sections"
 sections_read = ["1", "3", "4.1", "4.2.1", "4.2.3", "4.3", "5.1", "5.3", "5.4", "5.5", "6"]
 topics = ["mineralogy", "geochemistry", "genesis", "formation-temperature", "host-rocks", "quartz-transition", "spherulites", "moss", "plume", "tubes"]
-notes = """Primary overview, read 2026-10-15. Key points: crystallisation often starts with spherulitic chalcedony at the wall that continues into fibrous chalcedony (§4.1.2, §5.4, Fig. 29); wall-lining agates have three zones, spherulitic/granular rim, fibrous chalcedony, macrocrystalline quartz centre (§4.1.2); "Macrocrystalline quartz crystallizes when the SiO2 concentration in the mineralizing fluid is low" (§6), with a drop in impurities and defects at the chalcedony–quartz interface (§5.4); Uruguay bands from gravitational sedimentation of sols with flocculated silica particles, needing high silica concentration (§4.1.2); iron pigments are rejected by crystallising quartz and accumulate along the banding (§5.4); visible bands can contain up to 1000 micro-bands per mm (§4.1.2); colour banding governed by self-organisation of the silica matrix rather than Liesegang diffusion (§5.4); "infiltration channels"/"escape tubes" mostly deformation of plastic silica (§5.5); stalactitic SFF and moss agate filaments have Fe-silicate/zeolite cores with concentric chalcedony and possible biosignatures (§5.5); plume agate interpreted as silica-garden self-assembly from osmosis, reaction and buoyancy (§5.5). §5.3 (read 2026-10-17): silica in volcanic agates comes from alteration of the host rock; pathways for free flow are lacking in most rocks, so supply by diffusion of monomeric silicic acid through intergranular pore space is favoured; "The continuous supply of silicic acid results in the accumulation of silica and the filling of the cavities"; low solubility means much water must pass (Landmesser: up to 0.5 m3 for a 100 g agate at 250 mg/L). §4.1.2 re-read 2026-11-02 (p. 11): "visible macroscopic bands may consist of up to 1000 micro-bands per mm" carries no citation (the next sentence cites Holzhey [100] for particle sizes only), so the figure is the review's own, without a stated primary source; visible banding is attributed to changes in silica phase, crystal size and habit, porosity and Fe-oxide micro-inclusions (Fig. 10). A word search of the other sections found no band-width, spacing or fractal statistics; Holten 1998 is not cited. §4.3 read 2026-11-03 by a helper agent (p. 27): "laminated and lenticular agglomerates of very small hematite particles (<10 µm)" accumulated along the banding; no lens sizes given. §5.4 and §5.1 read 2026-11-08 by helper agents, key quote re-checked in the owner's PDF: colouring or discolouring along nodule rims or secondary cracks, "discordant to the agate banding", is "often called 'chromatography' effect" (p. 37, Fig. 33b,c); pigment random where banding is lacking (Figs 32a, 33a); red hematite, yellow goethite, shade from compound, amount and particle size (p. 37); amethyst and smoky quartz "frequently" in the agate centre (p. 37); fractures healed by a later agate or quartz generation (§5.1, Fig. 26a). Dust pass 2026-11-08 (helper agent): "more or less no visible fluid inclusions" in chalcedony (§4.2.3, p. 22); fine Fe-oxide lines along the micro-banding, some dashed (Fig. 10c; 4-12 µm thick measured on the figure, speculative); flattened hematite flakes in dashed rows along bands (Fig. 32b); coarse fuzzy or globular Fe-oxide aggregates up to several 100 µm at random in the inner chalcedony (p. 27)."""
+notes = """Primary overview, read 2026-10-15. Key points: crystallisation often starts with spherulitic chalcedony at the wall that continues into fibrous chalcedony (§4.1.2, §5.4, Fig. 29); wall-lining agates have three zones, spherulitic/granular rim, fibrous chalcedony, macrocrystalline quartz centre (§4.1.2); "Macrocrystalline quartz crystallizes when the SiO2 concentration in the mineralizing fluid is low" (§6), with a drop in impurities and defects at the chalcedony–quartz interface (§5.4); Uruguay bands from gravitational sedimentation of sols with flocculated silica particles, needing high silica concentration (§4.1.2); iron pigments are rejected by crystallising quartz and accumulate along the banding (§5.4); visible bands can contain up to 1000 micro-bands per mm (§4.1.2); colour banding governed by self-organisation of the silica matrix rather than Liesegang diffusion (§5.4); "infiltration channels"/"escape tubes" mostly deformation of plastic silica (§5.5); stalactitic SFF and moss agate filaments have Fe-silicate/zeolite cores with concentric chalcedony and possible biosignatures (§5.5); plume agate interpreted as silica-garden self-assembly from osmosis, reaction and buoyancy (§5.5). §5.3 (read 2026-10-17): silica in volcanic agates comes from alteration of the host rock; pathways for free flow are lacking in most rocks, so supply by diffusion of monomeric silicic acid through intergranular pore space is favoured; "The continuous supply of silicic acid results in the accumulation of silica and the filling of the cavities"; low solubility means much water must pass (Landmesser: up to 0.5 m3 for a 100 g agate at 250 mg/L). §4.1.2 re-read 2026-11-02 (p. 11): "visible macroscopic bands may consist of up to 1000 micro-bands per mm" carries no citation (the next sentence cites Holzhey [100] for particle sizes only), so the figure is the review's own, without a stated primary source; visible banding is attributed to changes in silica phase, crystal size and habit, porosity and Fe-oxide micro-inclusions (Fig. 10). A word search of the other sections found no band-width, spacing or fractal statistics; Holten 1998 is not cited. §4.3 read 2026-11-03 by a helper agent (p. 27): "laminated and lenticular agglomerates of very small hematite particles (<10 µm)" accumulated along the banding; no lens sizes given. §5.4 and §5.1 read 2026-11-08 by helper agents, key quote re-checked in the owner's PDF: colouring or discolouring along nodule rims or secondary cracks, "discordant to the agate banding", is "often called 'chromatography' effect" (p. 37, Fig. 33b,c); pigment random where banding is lacking (Figs 32a, 33a); red hematite, yellow goethite, shade from compound, amount and particle size (p. 37); amethyst and smoky quartz "frequently" in the agate centre (p. 37); fractures healed by a later agate or quartz generation (§5.1, Fig. 26a). Dust pass 2026-11-08 (helper agent): "more or less no visible fluid inclusions" in chalcedony (§4.2.3, p. 22); fine Fe-oxide lines along the micro-banding, some dashed (Fig. 10c; 4-12 µm thick measured on the figure, speculative); flattened hematite flakes in dashed rows along bands (Fig. 32b); coarse fuzzy or globular Fe-oxide aggregates up to several 100 µm at random in the inner chalcedony (p. 27). Fig. 34 seen 2026-11-09 by a helper agent (low resolution for g,h): e, a green moss filament tuft (Jalna); g,h, Kardzhali plume agate, a reddish-brown plume in chalcedony at the inner edge of the wall-lining bands (4 mm bar; plume about 8 x 12 mm by eye, speculative)."""
 
 [[references]]
 id = "moxon2020"
@@ -249,9 +249,9 @@ doi = "10.3390/min10060540"
 access = "open"
 licence = "CC-BY-4.0"
 checked = "sections"
-sections_read = ["Abstract", "Results: cavity description (Fig. 4)", "Conclusions"]
+sections_read = ["Abstract", "2.2", "4.1", "4.2.1", "4.3.2", "Results: cavity description (Fig. 4)", "Conclusions"]
 topics = ["moss", "filaments", "stalactites", "tubes", "biosignatures", "celadonite"]
-notes = """Filamentous fabrics in basalt cavities, from pseudo-stalactites to irregular mats, grow on a thread-like centre (fungal chitin found in the innermost core) and are wrapped in concentric layers: Fe-rich phases (Fe oxides, celadonite, smectite), then Ca zeolites, then silica (opal-CT, chalcedony, macrocrystalline quartz). Lengths up to 100 cm with constant diameters. In one cavity, filaments on the ceiling and walls partly show gravity-controlled elongation downward, while the floor holds randomly intergrown filaments embedded in chalcedony 'similar to the so-called moss agate', each with a green inner zone and a chalcedony crust up to 1 cm."""
+notes = """Filamentous fabrics in basalt cavities, from pseudo-stalactites to irregular mats, grow on a thread-like centre (fungal chitin found in the innermost core) and are wrapped in concentric layers: Fe-rich phases (Fe oxides, celadonite, smectite), then Ca zeolites, then silica (opal-CT, chalcedony, macrocrystalline quartz). Lengths up to 100 cm with constant diameters. In one cavity, filaments on the ceiling and walls partly show gravity-controlled elongation downward, while the floor holds randomly intergrown filaments embedded in chalcedony 'similar to the so-called moss agate', each with a green inner zone and a chalcedony crust up to 1 cm. Sections 2.2, 4.1, 4.2.1, 4.3.2 read 2026-11-09 by a helper agent: fabric types (Fig. 5); floor masses up to a few cm, ceiling crusts up to 1 cm, no upward-growing forms; a whole core filament 0.2-0.5 mm across, made of ~50 µm strands; innermost diameters 1-40 µm (means 1.3-4.7 µm)."""
 
 [[references]]
 id = "hou2025"
@@ -3271,7 +3271,7 @@ access = "open"
 licence = "cite only"
 checked = "full-text"
 topics = ["agate", "inclusions", "locality", "deformation", "eyes", "tubes", "iris", "outline"]
-notes = """Owner-supplied scan, read in full 2026-11-08 by a helper agent through OCR (683 s) plus viewing figures; the Fig. 1 map and about 4 lines on p. 3 were unreadable. Based on about 15,000 agates from 18 localities; its genesis model (ash-derived gels) is the authors' own and context only. Table 1 (pp. 4-5) rates features per locality (Abundant >90 %, Rare <5 %): flow or plastic deformation structures present at all 12 tabulated localities; host-rock weathering products rare in Lake Superior agates, abundant in Chihuahua and Alpine, Texas. "Almost every agate nodule has a pod of euhedral quartz" in the innermost band (p. 20, qualitative). Escape tubes: inner bands thin and converge (p. 20); diapiric pods truncate outer bands (Figs 34-35, p. 20). Basalt/andesite vesicles almond-shaped; rhyolite thunder-egg cavities star-shaped (pp. 11, 16). Eyes are surface hemispheres, most common in amygdaloidal agates, few in thunder eggs (pp. 21-22). Cristobalite membrane tubes 0.3-0.5 mm across, several cm long (p. 15); iris in about 7 % of agates (p. 22). No fracture or breccia data for nodules. Dust search 2026-11-09 (helper agent, the same OCR): hematite globules "quite common in banded agates" (p. 15); Fig. 22 (X120) shows a loose row where fibrous fans start plus scattered globules; earthy hematite or limonite "may collect at the bottom of a gas vesicle" before banding (pp. 13-14, Fig. 26); dendrites "in the tiny space between the bands" (p. 23); no counts, sizes or densities for band dust."""
+notes = """Owner-supplied scan, read in full 2026-11-08 by a helper agent through OCR (683 s) plus viewing figures; the Fig. 1 map and about 4 lines on p. 3 were unreadable. Based on about 15,000 agates from 18 localities; its genesis model (ash-derived gels) is the authors' own and context only. Table 1 (pp. 4-5) rates features per locality (Abundant >90 %, Rare <5 %): flow or plastic deformation structures present at all 12 tabulated localities; host-rock weathering products rare in Lake Superior agates, abundant in Chihuahua and Alpine, Texas. "Almost every agate nodule has a pod of euhedral quartz" in the innermost band (p. 20, qualitative). Escape tubes: inner bands thin and converge (p. 20); diapiric pods truncate outer bands (Figs 34-35, p. 20). Basalt/andesite vesicles almond-shaped; rhyolite thunder-egg cavities star-shaped (pp. 11, 16). Eyes are surface hemispheres, most common in amygdaloidal agates, few in thunder eggs (pp. 21-22). Cristobalite membrane tubes 0.3-0.5 mm across, several cm long (p. 15); iris in about 7 % of agates (p. 22). No fracture or breccia data for nodules. Dust search 2026-11-09 (helper agent, the same OCR): hematite globules "quite common in banded agates" (p. 15); Fig. 22 (X120) shows a loose row where fibrous fans start plus scattered globules; earthy hematite or limonite "may collect at the bottom of a gas vesicle" before banding (pp. 13-14, Fig. 26); dendrites "in the tiny space between the bands" (p. 23); no counts, sizes or densities for band dust. Plume passages re-read 2026-11-09 by a helper agent: in thunder eggs filaments are most common and plumes rarest (p. 10, citing Brown); plumes and moss are pre-banding and engulfed by the bands (pp. 13, 20, 23); relict plumes; Zarins: plume orientation is shared within a locality, horizontal in one basalt, vertical in another (pp. 14-15); Table 1: limonite plumes in over 90 % of Alpine (Texas) stones, hematite plumes common at Richardson (Oregon), rare (under 5 %) at Lake Superior and Botswana. Collectors' circular: plausible at most."""
 
 [[references]]
 id = "jebrak1997"
@@ -3354,3 +3354,89 @@ area % (R2 0.76, Fig. 6a; area 2-10 %); number density (~20-7500 /mm2, projected
 size has no clear effect on hue, saturation or brightness (Fig. 7); sample hue = 5.62 + 0.42 x aggregate hue (R2 0.95,
 Fig. 8). No data on fraction of bands with pigment, lines per mm, position within a growth layer, or floor bands.
 Small n; projected (through-focus) measures; not CIE Lab."""
+
+[[references]]
+id = "brown1957"
+kind = "book"
+authors = ["Brown, R. W."]
+year = 1957
+title = "Plantlike features in thunder-eggs and geodes"
+venue = "Annual Report of the Board of Regents of the Smithsonian Institution for 1956 (Publication 4278), 329-339"
+url = "https://archive.org/details/in.ernet.dli.2015.97601"
+access = "open"
+licence = "US government work (USGS-authorised); cite only"
+checked = "full-text"
+topics = ["moss", "plume", "filaments", "thunder-egg", "chemical-gardens", "halo"]
+notes = """Text read 2026-11-09 from the archive.org OCR (plates not seen). Not refereed; a USGS palaeobotanist's report: descriptions plausible, gel mechanism speculative. Filaments in thunder eggs are tubular, unsegmented, variable in diameter with erratic branching and warty swellings, grown in pulses at free ends (p. 331); read as silicate (chemical) gardens, not algae. They grew "from any part of the surrounding wall" (p. 334). In one specimen, chalcedony horizontally banded below and unbanded above; filaments hang from the upper wall and rise from the lower, and "penetrate the horizontal strata"; a narrow clear (white) halo at a fairly uniform distance surrounds each filament and runs round the cavity boundary, not crossed by the horizontal strata; dark-particle rings outside parallel the filaments' curves (pp. 335-36). Chalcedony fibres radial to the filaments (p. 336). Plumes occur from fully buried in chalcedony to exposed in partly filled cavities (p. 336)."""
+
+[[references]]
+id = "mcmahon2019"
+kind = "article"
+authors = ["McMahon, S."]
+year = 2019
+title = "Earth's earliest and deepest purported fossils may be iron-mineralized chemical gardens"
+venue = "Proceedings of the Royal Society B 286(1916), 20192410"
+doi = "10.1098/rspb.2019.2410"
+access = "open"
+licence = "CC-BY-4.0 (not confirmed); cite only"
+checked = "sections"
+sections_read = ["2(a)", "3(a)", "3(b)", "Fig. 1 captions"]
+topics = ["chemical-gardens", "filaments", "moss", "plume", "iron"]
+notes = """Read 2026-11-09 via Europe PMC (PMC6939263). Lab chemical gardens from Fe salts in silicate or carbonate solution: tube diameters median 3.9 µm, positively skewed, set mainly by seed grain size; silicate-grown filaments point in all directions with an initial bias towards the vertical and branch frequently; carbonate-grown ones show no clear branching; tubes darken from pale green to red-brown over 24-48 h; classic unconfined growth gives vertical chimneys several cm long, confined growth quasi-2D meandering filaments. Notes that filaments in some moss agates are surrounded by (commonly multiple) concentric sheath-like tubes (§3b). Mechanism context only."""
+
+[[references]]
+id = "powolny2024"
+kind = "article"
+authors = ["Powolny, T.", "Dumańska-Słowik, M.", "Szczerbowska-Boruchowska, M.", "Woszczyna, M."]
+year = 2024
+title = "Water and moganite participation in agates from Bou Hamza (Morocco)"
+venue = "Scientific Reports 14, 22473"
+doi = "10.1038/s41598-024-73136-x"
+access = "open"
+licence = "CC-BY-4.0 (not confirmed); cite only"
+checked = "sections"
+sections_read = ["Field description", "Solid inclusions", "Conclusions", "Figs 2, 5 captions"]
+topics = ["moss", "celadonite", "iron", "agate"]
+notes = """Read 2026-11-09 via Europe PMC (PMC11439072), first 100k characters. Moss-type samples, rich in celadonite and Fe and/or Mn oxides, are the lesser part of the locality. Fig. 2d: moss agate with celadonite and iron oxide, followed by wall-lining chalcedony and drusy quartz in the centre. Hematite red irregular aggregates, goethite orange-yellow; Fe oxides along the banding of wall-lining chalcedony. No sizes or densities for moss."""
+
+[[references]]
+id = "salimi2019"
+kind = "article"
+authors = ["Salimi, M. M.", "Renfro, N."]
+year = 2019
+title = "Plume agate from Iran"
+venue = "Gems & Gemology 55(2), Gem News International"
+url = "https://www.gia.edu/gems-gemology/summer-2019-gemnews-plume-agate-from-iran"
+access = "open"
+licence = "publisher copyright (GIA); cite only"
+checked = "full-text"
+topics = ["plume", "colour"]
+notes = """Read 2026-11-09 (web page). Short news item, editor-reviewed, not refereed: plausible at most. Ferdows field, Khorasan: plume structures green, yellow, red, white and orange; 'spring' stones mainly green, white and orange, 'autumn' stones red, yellow and green; plumes are elongate billowy inclusions like smoke clouds or feathers. No analysis, no position or orientation data, no mention of banding."""
+
+[[references]]
+id = "kile2002"
+kind = "article"
+authors = ["Kile, D. E."]
+year = 2002
+title = "Occurrence and genesis of thunder eggs containing plume and moss agate"
+venue = "Rocks & Minerals 77(4), 252-268"
+doi = "10.1080/00357529.2002.9925643"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "citation"
+topics = ["plume", "moss", "thunder-egg"]
+notes = "Del Norte, Colorado thunder eggs. Not read; asked of the owner 2026-11-09. Magazine with editorial review, not strictly refereed."
+
+[[references]]
+id = "hofmann2008"
+kind = "article"
+authors = ["Hofmann, B. A.", "Farmer, J. D.", "von Blanckenburg, F.", "Fallick, A. E."]
+year = 2008
+title = "Subsurface filamentous fabrics: an evaluation of origins based on morphological and geochemical criteria, with implications for exopaleontology"
+venue = "Astrobiology 8(1), 87-117"
+doi = "10.1089/ast.2007.0130"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "abstract"
+topics = ["moss", "filaments", "biosignatures", "morphometry"]
+notes = "Abstract: tubular filaments of median diameter 1.6 µm at high density, as irregular masses, matted fabrics and stalactite-like drapes; abiogenic forms differ in width distribution and have lower curvature and fewer direction changes. Full text asked of the owner 2026-11-09."

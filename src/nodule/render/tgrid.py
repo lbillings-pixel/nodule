@@ -7,6 +7,9 @@ ADR 0076 section 6), NaN outside the stone and in tubes. The renderer maps a
 present point back through the fractures and reads t here by trilinear
 interpolation; the stone and tube edges are tested exactly (scene.cuh), so the
 NaN cells are filled outward first (`fill_nan`) to define t up to those edges.
+An open cavity's nodes (`void`) take the growth time of the nearest filled node, its
+lining's, so the camera reads the lining's material there under the void's stand-in
+absorption (`fill_void`; ADR 0019 A1).
 
 Axes sit at integer multiples of the spacing in plane coordinates (as
 `Specimen.window`), so grids at different spacings share nodes. Known error
@@ -26,18 +29,20 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 import numpy as np
+from agatesim import _scipy as agatesim_scipy  # pyright: ignore[reportPrivateUsage]
 from agatesim import progress
 from agatesim.grid import FloatArray
 from agatesim.volume.slicing import Plane
 from agatesim.volume.solids import SphereUnion
 from numpy.typing import NDArray
 
-from nodule.render.record import BandRecord
+from nodule.render.record import BandRecord, void_points
 from nodule.specimen import Specimen
 
 if TYPE_CHECKING:
     from nodule.render.materials import OpticsTable
 
+VOID_PAD = 3  # nodes around a void's box searched for its lining (`fill_void`)
 CHUNK_POINTS = 500_000  # points per evaluation call; bounds peak memory
 FILL_SECONDS_PER_MPOINT = 2.1  # measured 2026-11-01 (n2-slice, RTX 4070 PC, CPU fill)
 
@@ -112,6 +117,8 @@ class GrowthGrid:
     # The layers' added absorption (3, nw, nt, ns), baked in the same pass when the fill
     # is given optics (`nodule.render.layerbake`); None: not baked or no layers
     absorb: F32 | None = None
+    # Nodes in an open cavity or hollow crystal (ADR 0019 A1); None: the grid has none
+    void: NDArray[np.bool_] | None = None
 
     @property
     def spacing_mm(self) -> float:
@@ -141,6 +148,7 @@ class GrowthGrid:
 
             bake = Baker.of(specimen, optics, spacing_mm, n)
         bands = BandRecord.empty()
+        void = np.zeros(n, bool)
         for a in range(0, n, CHUNK_POINTS):
             progress.report(a / n, "filling the growth-time grid")
             k, j, i = np.unravel_index(np.arange(a, min(a + CHUNK_POINTS, n)), shape)
@@ -152,6 +160,7 @@ class GrowthGrid:
             if level is not None:
                 level[a : a + len(p)] = solid.level(p)
             bands = bands.merge(BandRecord.of(f, inside))
+            void[a : a + len(p)] = void_points(f, inside)
             if bake is not None:
                 bake.chunk(a, p, f, inside)
         progress.report(1.0, "filling the growth-time grid")
@@ -166,10 +175,12 @@ class GrowthGrid:
             bands=bands,
             level=lv,
             absorb=absorb,
+            void=void.reshape(shape) if void.any() else None,
         )
 
     def filled(self, passes: int = 3, linear: bool = True) -> F32:
-        return fill_nan(self.values, passes=passes, linear=linear)
+        g = self.values if self.void is None else fill_void(self.values, self.void)
+        return fill_nan(g, passes=passes, linear=linear)
 
     def lookup(self, restored: FloatArray, values: F32 | None = None) -> FloatArray:
         """Trilinear t at RESTORED world points (n, 3) on the CPU; NaN where any
@@ -204,6 +215,27 @@ def _shift(g: F32, axis: int, k: int) -> F32:
     idx[axis] = slice(0, k) if k > 0 else slice(k, None)
     r[tuple(idx)] = np.nan
     return r
+
+
+def fill_void(grid: F32, void: NDArray[np.bool_]) -> F32:
+    """`grid` with each void node given the value of the nearest node that has one
+    (Euclidean, on the nodes): the cavity's lining. Worked in the void's bounding box
+    widened by VOID_PAD nodes, so it costs the cavity's size, not the grid's; the
+    lining surrounds the void, so the nearest filled node lies within that box."""
+    g = grid.astype(np.float32, copy=True)
+    idx = np.nonzero(void)
+    box = tuple(
+        slice(max(int(i.min()) - VOID_PAD, 0), min(int(i.max()) + VOID_PAD + 1, n))
+        for i, n in zip(idx, void.shape, strict=True)
+    )
+    sub = g[box]
+    missing = np.isnan(sub)
+    if missing.all():
+        raise ValueError("a void with no filled node near it")
+    near = agatesim_scipy.nearest_true_indices(~missing)  # works in 3D as in 2D
+    take = void[box]
+    sub[take] = sub[tuple(k[take] for k in near)]
+    return g
 
 
 def fill_nan(grid: F32, passes: int = 3, linear: bool = True) -> F32:

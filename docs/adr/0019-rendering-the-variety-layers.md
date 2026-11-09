@@ -1,8 +1,8 @@
 # 19. Rendering the variety layers
 
-- Status: **proposed** (built by Claude overnight, 2026-11-09, with the owner's leave to
-  choose the night's work; awaiting the owner's acceptance). Options in section 5 are
-  open for the owner.
+- Status: accepted (owner, 2026-11-09, after the decisions of section 6; built by
+  Claude overnight with the owner's leave to choose the night's work). Option A2 of
+  section 5 (air with refraction) stays open.
 - Date: 2026-11-09
 - Builds on: [ADR 0007](0007-renderer-cut-face-monte-carlo.md) (the GPU renderer and its
   growth-time grid), [ADR 0014](0014-optics-tuning-step-4-colour.md) (optics defaults, the iron
@@ -170,6 +170,36 @@ as now, no face glare, no glare plus a display curve, a backlit 3 mm slice) was 
    white, while plain clipping fails the same check (negative control); refused for
    the dome and for exposures that cannot exceed white.
 
+7. **Open cavities, option A1** (owner's order of work, 2026-11-09; look sheet
+   runs/void-look/, owner: "cavity looks right"). A void point (agatesim phase VOID, no growth time: an open cavity or a
+   hollow crystal) fills no growth step: the record leaves it out
+   (`record.void_points`) instead of refusing the stone; any other unfilled point is
+   still refused. The grid fill marks void nodes (`GrowthGrid.void`) and gives each the
+   growth time of its nearest filled node (`tgrid.fill_void`), the cavity's lining, so
+   the camera reads the lining's material there; a stand-in absorption is added at the
+   void nodes to the layers' absorption grid (`scene.with_void`), every channel alike,
+   placed within a grid cell (trilinear). `Rendering.void_mua`, `effective`:
+   **10 mm^-1 under the dome** (`cutface.VOID_MUA`; over the clear quartz lining, mus
+   0.05, an albedo under 1 %: the cavity reads dark, as the stand-in preview and a
+   lined geode's face often photograph), **0 under the back light** (the slice's hole
+   passes the light box, through the lining's clear material). Not air: no refraction
+   at the lining (A2). The void's absorption joins the majorant (bands' largest mu_t
+   ~16-28 mm^-1), so stones with a cavity render somewhat slower. The look's lightness
+   and the noise are measured over the face without the void, so a dark cavity does
+   not brighten the rest. The backlit view on the look's fill swaps only the absorption
+   grid (one more scene upload). `varietyrender` no longer skips quartz-lined stones.
+   Finding: on sheet 1 only stone 2's cut shows a clear cavity; stones 3, 4 and 9 are
+   quartz-lined by recipe but their cuts show a tiny void or none. The owner put why
+   low on the wait list.
+   Tests (tests/test_void.py), each with a negative control: the void fill takes the
+   lining's t (the edge fill alone leaves a cavity's middle at the first band); the
+   absorption lands on void nodes only (none without a void or a stand-in); sheet 1's
+   stone 2 fills its void with quartz-lining steps (control: its cut holds a void); its
+   look renders the cavity dark (luminance 0.00 against 0.40 around it) and its slice
+   bright (0.80 against 0.50), while the look without the stand-in shows it lit (0.33,
+   the control); the backlit view on the look's fill equals one on its own fill, sample
+   for sample. tests/test_materials.py: a void is left out, a non-void hole refused.
+
 Tests (tests/test_look.py), each with a negative control: glare off removes exactly
 F0 Ld; the look's exposure matches the compare's lightness; one fill serves a backlit
 slice sample for sample; the red setting touches only the HEMATITE pigment's red;
@@ -177,7 +207,7 @@ carnelian alone takes the lighter loading.
 
 ## Consequences
 
-- Variety stones without open cavities render, with every ADR 0018 layer.
+- Variety stones render with every ADR 0018 layer; open cavities with a stand-in (s.6.7).
 - `Layers` implementations must split their work (`per_step` and the call).
 - The renderer's record now holds white fade and quartz iron; earlier stones (no
   layers) are unchanged.

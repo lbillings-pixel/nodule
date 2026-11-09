@@ -56,8 +56,14 @@ class SceneArrays:
 
 
 def pack(
-    specimen: Specimen, grid: GrowthGrid, filled: F32 | None = None, absorb: F32 | None = None
+    specimen: Specimen,
+    grid: GrowthGrid,
+    filled: F32 | None = None,
+    absorb: F32 | None = None,
+    void_mua: float = 0.0,
 ) -> SceneArrays:
+    """void_mua: the absorption (mm^-1, every channel) added at the grid's void nodes,
+    the open cavity's stand-in material (ADR 0019 A1); 0 leaves the void as its lining."""
     solid = specimen.volume.solid
     exact = isinstance(solid, SphereUnion)
     if not exact and grid.level is None:
@@ -83,6 +89,7 @@ def pack(
     tubes = np.asarray(specimen.volume.setting.tubes, np.float32).reshape(-1, 7)
     fractures = np.asarray(rows, np.float32).reshape(-1, 17)
     h["nsph"], h["ntube"], h["nfrac"] = len(spheres), len(tubes), len(fractures)
+    absorb = with_void(absorb, grid, void_mua)
     return SceneArrays(
         header=h,
         spheres=spheres,
@@ -94,6 +101,19 @@ def pack(
         absorb=absorb,
         absorb_max=0.0 if absorb is None else max(float(absorb.max()), 0.0),
     )
+
+
+def with_void(absorb: F32 | None, grid: GrowthGrid, void_mua: float) -> F32 | None:
+    """The layers' absorption (3, nw, nt, ns) with void_mua added at the void nodes
+    (a new array; trilinear on the GPU, so the cavity's wall is placed within a cell)."""
+    if void_mua < 0.0:
+        raise ValueError("void_mua must be >= 0")
+    if grid.void is None or void_mua == 0.0:
+        return absorb
+    shape = (3, *grid.void.shape)
+    out = np.zeros(shape, np.float32) if absorb is None else absorb.astype(np.float32, copy=True)
+    out[:, grid.void] += np.float32(void_mua)
+    return out
 
 
 def homogeneous() -> SceneArrays:

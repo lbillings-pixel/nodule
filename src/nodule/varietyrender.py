@@ -1,8 +1,8 @@
 """Renders of a variety sheet's stones with their layers (ADR 0019): the first look at
 ADR 0018's features through the path tracer instead of the stand-in colours.
 
-Per stone the renderer can show (no open cavity yet: ADR 0019 option for the owner),
-two views of each cut, on one grid fill (owner's choice, ADR 0019 B3):
+Per stone, two views of each cut, on one grid fill (owner's choice, ADR 0019 B3); an
+open cavity renders dark in the look and as a hole in the slice (ADR 0019 A1):
 
 - **the look**: the dome (L1, ADR 0008 7c) over a grey matte bottom (ADR 0019 s.6.5)
   without the face's mirror reflection, at the photo compare's mean lightness
@@ -63,11 +63,6 @@ def optics_for(r: StoneRecipe, base: OpticsTable | None = None) -> OpticsTable:
     base = base or OpticsTable()
     phi = base.phi_iron_oxide * (CARNELIAN_LOADING if r.colour == "carnelian" else 1.0)
     return replace(base, hematite_red_k=HEMATITE_RED_K, phi_iron_oxide=phi)
-
-
-def renderable(r: StoneRecipe) -> bool:
-    """The GPU has no void material yet (ADR 0019): no open cavity."""
-    return r.centre != "quartz-lined"
 
 
 def render_stone(
@@ -161,7 +156,7 @@ def contact_sheet(out: Path, rows: list[dict[str, object]], tile: int = 300) -> 
 
 
 def main(argv: list[str] | None = None) -> None:
-    """Render a variety sheet's stones (those the renderer can show)."""
+    """Render a variety sheet's stones."""
     import argparse
 
     parser = argparse.ArgumentParser(description=main.__doc__)
@@ -184,7 +179,7 @@ def main(argv: list[str] | None = None) -> None:
         for line in log.read_text("utf-8").splitlines():
             row: dict[str, object] = json.loads(line)
             done[int(str(row["stone"]))] = row
-    recipes = [r for r in draw_sheet(args.seed) if renderable(r)]
+    recipes = draw_sheet(args.seed)
     if args.stones:
         recipes = [r for r in recipes if r.index + 1 in args.stones]
     for n, r in enumerate(recipes):

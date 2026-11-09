@@ -29,6 +29,15 @@ BoolArray = NDArray[np.bool_]
 FIELDS = ("phase", "pigment", "impurity", "translucency", "shifts")
 
 
+def void_points(f: Fields, inside: BoolArray) -> BoolArray:
+    """Points in the stone that agatesim leaves unfilled: an open cavity or a hollow
+    crystal (phase VOID, no growth time). The renderer gives them a stand-in material,
+    not a growth step's (ADR 0019 A1)."""
+    if f.t_smooth is None:
+        raise ValueError("the model gives no smooth growth time (agatesim ADR 0076 s. 6)")
+    return inside & (f.phase == Phase.VOID) & np.isnan(f.t_smooth)
+
+
 @dataclass(frozen=True)
 class BandRecord:
     """Per growth-time step k (length STEPS): what agatesim deposited then."""
@@ -54,20 +63,19 @@ class BandRecord:
 
     @classmethod
     def of(cls, f: Fields, inside: BoolArray) -> BandRecord:
-        """From fields at points (any shape) and which lie in the stone. Refuses what
-        the renderer cannot show: an unfilled point inside the stone (an open cavity or
-        a hollow crystal: no void material yet), an inclusion other than a tube
-        (dendrites), and a step whose properties differ between points. Where agatesim
-        varies materials along the bands, a step's properties are its band values."""
+        """From fields at points (any shape) and which lie in the stone. A void point
+        (an open cavity or a hollow crystal) fills no growth step: it is left out, and
+        the renderer shows it with its stand-in material (`void_points`; ADR 0019 A1).
+        Refuses what the renderer cannot show: any other unfilled point inside the
+        stone, an inclusion other than a tube (dendrites), and a step whose properties
+        differ between points. Where agatesim varies materials along the bands, a
+        step's properties are its band values."""
         if f.t_smooth is None:
             raise ValueError("the model gives no smooth growth time (agatesim ADR 0076 s. 6)")
         tube = inside & (f.phase == Phase.INCLUSION) & np.isnan(f.t_dep)
-        body = inside & ~tube
+        body = inside & ~tube & ~void_points(f, inside)
         if np.isnan(f.t_smooth[body]).any():
-            raise ValueError(
-                "unfilled space inside the stone (open cavity or hollow crystal): "
-                "the renderer has no void material yet"
-            )
+            raise ValueError("unfilled space inside the stone that is not a void")
         if (f.phase[body] == Phase.INCLUSION).any():
             raise ValueError("inclusions other than tubes (dendrites) are not rendered yet")
         k = np.clip(np.floor(f.t_dep[body] * STEPS).astype(np.intp), 0, STEPS - 1)

@@ -95,11 +95,14 @@ def test_record_refuses_properties_that_vary_within_a_step() -> None:
         BandRecord.of(fields(t, impurity=[0.1, 0.2]), np.ones(2, bool))
 
 
-def test_record_refuses_voids_and_dendrites_but_passes_tubes() -> None:
+def test_record_leaves_voids_out_refuses_dendrites_passes_tubes() -> None:
     inside = np.ones(2, bool)
     void = fields([steps_mid(1), np.nan], phase=[Phase.CHALCEDONY, Phase.VOID])
-    with pytest.raises(ValueError, match="no void material"):
-        BandRecord.of(void, inside)
+    assert np.flatnonzero(BandRecord.of(void, inside).seen).tolist() == [1]  # ADR 0019 A1
+    # Negative control: an unfilled point that agatesim does not call a void is refused
+    hole = fields([steps_mid(1), np.nan], phase=[Phase.CHALCEDONY, Phase.CHALCEDONY])
+    with pytest.raises(ValueError, match="not a void"):
+        BandRecord.of(hole, inside)
     dendrite = fields(steps_mid([1, 2]), phase=[Phase.CHALCEDONY, Phase.INCLUSION])
     with pytest.raises(ValueError, match="dendrites"):
         BandRecord.of(dendrite, inside)

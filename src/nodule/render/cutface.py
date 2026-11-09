@@ -34,6 +34,11 @@ so the face mask and quartz phase of the cut still apply.
   no longer renders black). For the eye only; the compare's renderings are unchanged.
 - **One fill, several lights** (`CutRenderer.on`): a grid filled for the deepest slab
   serves every rendering of the same record and optics, e.g. the look and a backlit slice.
+- **Open cavities** (ADR 0019 A1): a void in the stone renders as its lining's material
+  plus a stand-in absorption, `Rendering.void_mua`: VOID_MUA under the dome, so the
+  cavity reads dark, as a lined geode's face often photographs; 0 under the back light,
+  so a slice's hole passes the light box. Not air: no refraction at the cavity's lining
+  (A2). The look's lightness is matched over the stone's face without the void.
 
 Procedural images: never evidence for a formation mechanism (ADR 0002).
 """
@@ -45,7 +50,7 @@ from __future__ import annotations
 import copy
 import math
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any, Literal
 
 import numpy as np
@@ -63,8 +68,8 @@ from nodule.render.camera import (
     srgb,
 )
 from nodule.render.materials import OpticsTable
-from nodule.render.record import BandRecord
-from nodule.render.scene import pack, upload
+from nodule.render.record import BandRecord, void_points
+from nodule.render.scene import pack, upload, with_void
 from nodule.render.shift import ShiftArrays, bake_drift, variation_of
 from nodule.render.shift import upload as shift_upload
 from nodule.render.tgrid import GrowthGrid, Window
@@ -80,6 +85,11 @@ L3_DEPTH_MM = 3.0  # effective, owner (ADR 0007 amendment 5)
 # setting, not a property of the stone (ADR 0013). Refitted for the ADR 0014 optics on
 # four default (2 mm) cuts (4m; was 2.2). L3 keeps 1.0 until calibrated.
 REFLECTED_EXPOSURE = 1.54
+# The open cavity's stand-in absorption under reflected light (ADR 0019 A1), mm^-1:
+# `effective`. Over the clear lining (mus 0.05) it leaves an albedo under 1 %; it is
+# added to the majorant (the bands' largest mu_t is ~16-28), so a larger value slows
+# every sample of a stone with a void.
+VOID_MUA = 10.0
 FIRST_SPP = 256  # samples per pixel before the photo's blur is known (effective)
 MOST_SPP = 1024  # cost cap (effective); cuts left noisier than the photo are flagged
 # The render's noise after the photo's blur is brought below this share of the photo's,
@@ -115,6 +125,8 @@ class Rendering:
     # back light only: highlight roll-off from this knee, the bare light box white
     # (`camera.rolloff`; the backlit view's, ADR 0019 s.6.6); None: plain clipping
     rolloff_knee: float | None = None
+    # the open cavity's stand-in absorption (module docstring, ADR 0019 A1), mm^-1
+    void_mua: float = VOID_MUA
 
     def __post_init__(self) -> None:
         if self.match_lightness and self.light.kind != "dome":
@@ -132,6 +144,8 @@ class Rendering:
                 raise ValueError("roll-off needs 0 < knee < 1 < exposure")
         if self.drift not in ("baked", "exact"):
             raise ValueError(f"drift must be 'baked' or 'exact', not {self.drift!r}")
+        if self.void_mua < 0.0:
+            raise ValueError("void_mua must be >= 0")
         if self.bottom == "black" and self.light.kind == "back":
             raise ValueError("the back light shines through the bottom: no black bottom")
 
@@ -160,7 +174,9 @@ class Rendering:
 
     @classmethod
     def transmitted(cls, record: BandRecord, **kw: Any) -> Rendering:
-        """L3, the back light, for slabs in transmitted light (ADR 0008 7c)."""
+        """L3, the back light, for slabs in transmitted light (ADR 0008 7c); an open
+        cavity passes the light, as a hole through the slice does (void_mua 0)."""
+        kw.setdefault("void_mua", 0.0)
         return cls(Light("back"), record, kw.pop("depth_mm", L3_DEPTH_MM), **kw)
 
 
@@ -253,7 +269,8 @@ class CutRenderer:
             specimen, cut.plane, r.grid_mm, depth, window_of(cut, depth), r.optics
         )
         self._fill_depth = depth
-        packed = pack(specimen, grid, absorb=grid.absorb)
+        self._grid = grid
+        packed = self._packed = pack(specimen, grid, absorb=grid.absorb, void_mua=r.void_mua)
         self._dev = upload(packed)
         # materials that vary along the bands (ADR 0016), when the stone has them and the
         # record marks steps that take them (a fake's record carries them with its runs)
@@ -267,7 +284,8 @@ class CutRenderer:
             self._shift = shift_upload(host, self._mats, dgrid)
         self.fill_s = time.perf_counter() - t0  # the grid, and the drift baked on it
         self._view = view_of(cut)
-        self._face = cut.inside
+        # the stone's face without its open cavity: for the look's lightness and the noise
+        self._face = cut.inside & ~void_points(cut.fields, cut.inside)
         self._rng = rng
         self._sums = [np.zeros((self._view.ny, self._view.nx, 3)) for _ in range(2)]
         self.spp = 0  # in all, both halves
@@ -295,6 +313,13 @@ class CutRenderer:
         other.rgb = np.zeros_like(self.rgb)
         other.noise = math.inf
         other.exposure = rendering.exposure
+        if rendering.void_mua != r.void_mua and self._grid.void is not None:
+            # another stand-in for the void: only the absorption grid changes, but the
+            # scene is uploaded whole (one more copy of the grid on the GPU)
+            g = self._grid
+            a = with_void(g.absorb, g, rendering.void_mua)
+            amax = 0.0 if a is None else max(float(a.max()), 0.0)
+            other._dev = upload(replace(self._packed, absorb=a, absorb_max=amax))
         return other
 
     def more(self, spp: int) -> None:

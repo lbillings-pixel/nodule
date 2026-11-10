@@ -153,7 +153,8 @@ class GrowthGrid:
             progress.report(a / n, "filling the growth-time grid")
             k, j, i = np.unravel_index(np.arange(a, min(a + CHUNK_POINTS, n)), shape)
             p = to_world(plane, s[i], t[j], w[k])
-            f, inside = specimen.restored_step_fields(p)  # any warp; layers' per-step part
+            raw, inside = specimen.restored_fields(p)  # any warp
+            f = specimen.per_step(raw)  # one material per step: no halos; layers' per-step part
             if f.t_smooth is None:
                 raise ValueError("the model gives no smooth growth time (agatesim ADR 0076 s. 6)")
             out[a : a + len(p)] = f.t_smooth
@@ -162,7 +163,7 @@ class GrowthGrid:
             bands = bands.merge(BandRecord.of(f, inside))
             void[a : a + len(p)] = void_points(f, inside)
             if bake is not None:
-                bake.chunk(a, p, f, inside)
+                bake.chunk(a, p, raw, f, inside)
         progress.report(1.0, "filling the growth-time grid")
         lv = None if level is None else level.reshape(shape)
         absorb = None if bake is None else bake.out.reshape(3, *shape)

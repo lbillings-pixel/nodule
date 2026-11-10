@@ -897,6 +897,25 @@ starts or, in a solid stone, to where the last band lies down (about 1/1.3 of th
 walls' run). Reaches on sheet 1's plume stones: 6.7-13 mm; stone 9's centre now matches
 the stone without plumes.
 
+**Step 4, plumes in the renderer (2026-11-09; owner: go).** Appearance only.
+- The band record leaves plume points out, like open cavities (`record.plume_points`:
+  INCLUSION with a growth time; tubes have none). The plume stage's steps hold no silica,
+  so a plume renders as the nearest seen step's chalcedony.
+- Its colour is baked as absorption with the layers (ADR 0019): agatesim's tint read
+  through celadonite (0), goethite (0.3), hematite (0.5) and Mn oxide (1), linear between
+  (the stops of `plumes.INCLUSION_RAMP`), each scaled so its strongest channel absorbs
+  `layerbake.PLUME_MUA` = 10 mm^-1. `effective`, an ASSUMPTION by eye: over a ~0.2 mm
+  branch the hue still shows; far higher would turn every plume black.
+- A halo depends on place, so `Specimen.per_step` lifts it back to its step's values
+  (otherwise chunks with and without halos would disagree on the record), and the bake
+  adds it back as lost colour. Where agatesim varies materials along the bands (lenses,
+  drift; no variety stone does), halos stay unbaked.
+- Limits: scattering is not baked, so a halo loses colour but not milkiness, and a
+  plume scatters as the chalcedony round it (a stain, not an opaque mineral body);
+  branches finer than the grid (0.1 mm whole face) blur. Measured with a coarse 0.2 mm
+  grid, 0.6 mm deep: fill and bake 3-11 s, 0.54-0.64 GB peak. Tests:
+  tests/test_plumebake.py, each with its negative control.
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

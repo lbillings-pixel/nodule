@@ -34,6 +34,7 @@ import numpy as np
 from agatesim import progress
 from agatesim.fields import Fields
 from agatesim.grid import FloatArray
+from agatesim.models.growth import ProceduralGrowth
 from agatesim.volume.config import SliceConfig, VolumeConfig
 from agatesim.volume.fractures import BELL, FLAT, Fracture, evaluate_fractured
 from agatesim.volume.simulate import VolumeSimulation, prepare_volume
@@ -167,38 +168,76 @@ class Specimen:
     def evaluate(self, points: FloatArray, pixel_mm: float = 0.0) -> tuple[Fields, BoolArray]:
         """Fields at world points (n, 3), and which points lie in the stone; pixel_mm
         as for `Layers`."""
-        fields, inside = self.step_fields(points)
-        if self.layers is not None:
-            fields = self.layers(points, fields, inside, pixel_mm)
-        return fields, inside
+        fields, inside = self._read(points)
+        return self.placed(points, fields, inside, pixel_mm), inside
 
-    def step_fields(self, points: FloatArray) -> tuple[Fields, BoolArray]:
-        """Fields without the layers' place-to-place part: the growth model (read
-        through any warp) and the layers' `per_step` part, so each growth step keeps
-        one material (what a renderer's record holds)."""
+    def _read(self, points: FloatArray) -> tuple[Fields, BoolArray]:
+        """The growth model's own fields, read through any warp or fracture map."""
         if self.warp is not None:
             if self.fractures:
                 raise ValueError("a warped specimen takes no slipping fractures")
             inside = self.volume.solid.contains(points)
-            fields = self.volume.evaluate(self.warp(points, self.growth_time), inside)
-        else:
-            fields, inside = evaluate_fractured(
-                self.volume.evaluate, self.volume.solid.contains, points, self.fractures
-            )
-        if self.layers is not None:
-            fields = self.layers.per_step(fields)
-        return fields, inside
+            return self.volume.evaluate(self.warp(points, self.growth_time), inside), inside
+        return evaluate_fractured(
+            self.volume.evaluate, self.volume.solid.contains, points, self.fractures
+        )
 
-    def restored_step_fields(self, points: FloatArray) -> tuple[Fields, BoolArray]:
-        """As `step_fields`, at RESTORED (pre-fracture) points: the growth model
-        read through any warp, with the layers' `per_step` part; no fracture map.
-        What a renderer's growth-time grid holds (`nodule.render.tgrid`)."""
+    @cached_property
+    def varies_along_bands(self) -> bool:
+        """agatesim varies materials along the bands (lenses or drift, agatesim ADR
+        0078; its `_material_variation`), which the renderer works out itself (ADR 0016)."""
+        model = self.volume.config.model
+        return isinstance(model, ProceduralGrowth) and (
+            model.lens_strength > 0 or model.translucency_drift > 0
+        )
+
+    def per_step(self, fields: Fields) -> Fields:
+        """The growth model's fields as one material per growth step: plume halos
+        (agatesim ADR 0079) lifted back to their steps' own values, since a halo depends
+        on place, and the layers' `per_step` part. Halos are place-to-place, like the
+        layers' other part, and are baked with it (`nodule.render.layerbake`). Where
+        agatesim varies materials along the bands the step values stay with it, as the
+        renderer reads them (`BandRecord.of`)."""
+        if fields.band_impurity is not None and not self.varies_along_bands:
+            assert fields.band_translucency is not None
+            fields = replace(
+                fields,
+                impurity=fields.band_impurity,
+                translucency=fields.band_translucency,
+                band_impurity=None,
+                band_translucency=None,
+            )
+        return fields if self.layers is None else self.layers.per_step(fields)
+
+    def placed(
+        self, points: FloatArray, fields: Fields, inside: BoolArray, pixel_mm: float = 0.0
+    ) -> Fields:
+        """The growth model's fields as they lie at each point: halos kept, and the
+        layers' both parts (pixel_mm as for `Layers`)."""
+        if self.layers is None:
+            return fields
+        return self.layers(points, self.layers.per_step(fields), inside, pixel_mm)
+
+    def step_fields(self, points: FloatArray) -> tuple[Fields, BoolArray]:
+        """Fields without the place-to-place part (halos, the layers' mottle, cracks
+        and dust): the growth model (read through any warp) as `per_step` gives it, so
+        each growth step keeps one material (what a renderer's record holds)."""
+        fields, inside = self._read(points)
+        return self.per_step(fields), inside
+
+    def restored_fields(self, points: FloatArray) -> tuple[Fields, BoolArray]:
+        """The growth model's own fields at RESTORED (pre-fracture) points, read
+        through any warp; no fracture map, no layers. `per_step` and `placed` turn
+        them into what a renderer's grid holds and what lies there."""
         inside = self.volume.solid.contains(points)
         read = points if self.warp is None else self.warp(points, self.growth_time)
-        fields = self.volume.evaluate(read, inside)
-        if self.layers is not None:
-            fields = self.layers.per_step(fields)
-        return fields, inside
+        return self.volume.evaluate(read, inside), inside
+
+    def restored_step_fields(self, points: FloatArray) -> tuple[Fields, BoolArray]:
+        """As `step_fields`, at RESTORED (pre-fracture) points: no fracture map.
+        What a renderer's growth-time grid holds (`nodule.render.tgrid`)."""
+        fields, inside = self.restored_fields(points)
+        return self.per_step(fields), inside
 
     def growth_time(self, points: FloatArray) -> FloatArray:
         """The unwarped growth time at world points: smooth where the model gives

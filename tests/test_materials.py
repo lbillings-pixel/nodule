@@ -95,7 +95,7 @@ def test_record_refuses_properties_that_vary_within_a_step() -> None:
         BandRecord.of(fields(t, impurity=[0.1, 0.2]), np.ones(2, bool))
 
 
-def test_record_leaves_voids_out_refuses_dendrites_passes_tubes() -> None:
+def test_record_leaves_voids_and_plumes_out_passes_tubes() -> None:
     inside = np.ones(2, bool)
     void = fields([steps_mid(1), np.nan], phase=[Phase.CHALCEDONY, Phase.VOID])
     assert np.flatnonzero(BandRecord.of(void, inside).seen).tolist() == [1]  # ADR 0019 A1
@@ -104,8 +104,8 @@ def test_record_leaves_voids_out_refuses_dendrites_passes_tubes() -> None:
     with pytest.raises(ValueError, match="not a void"):
         BandRecord.of(hole, inside)
     dendrite = fields(steps_mid([1, 2]), phase=[Phase.CHALCEDONY, Phase.INCLUSION])
-    with pytest.raises(ValueError, match="dendrites"):
-        BandRecord.of(dendrite, inside)
+    # plumes fill steps of their own and are baked, not recorded (ADR 0018 s.13)
+    assert np.flatnonzero(BandRecord.of(dendrite, inside).seen).tolist() == [1]
     tube = fields([steps_mid(1), np.nan], phase=[Phase.CHALCEDONY, Phase.INCLUSION])
     assert BandRecord.of(tube, inside).seen.sum() == 1
     outside = fields([steps_mid(1), np.nan], phase=[Phase.CHALCEDONY, Phase.HOST])

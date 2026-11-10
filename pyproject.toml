@@ -22,9 +22,7 @@ gpu = [
 
 [tool.uv.sources]
 # agatesim is used as a library, pinned to a commit (ADR 0002).
-# LOCAL while GitHub is suspended (2026-11-09): point back at https://github.com/lbillings-pixel/agatesim
-# (same rev) BEFORE pushing nodule.
-agatesim = { git = "file:///C:/Users/Lee/Projects/agatesim", rev = "6dad2c24d5bdda475738551086de466df2dc00a7" }
+agatesim = { git = "https://github.com/lbillings-pixel/agatesim", rev = "b615962374978cf82c0ad53fd473af3581d719f4" }
 
 [build-system]
 requires = ["hatchling>=1.33.0"]

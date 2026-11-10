@@ -3,8 +3,9 @@
 Screening only, for the owner's eye before any render: chalcedony takes agatesim's
 stand-in colour (`chalcedony_colour`, as `nodule.descriptors.stand_in_rgb`), quartz
 a glassy grey shaded per grain (tinted for amethyst or smoky centres), open space
-near black, and the host a flat colour by setting. No glow, sub-banding or rind:
-a render differs. Appearance only (ADR 0002); every colour here is `effective`.
+near black, plumes by their tint (`nodule.plumes`), and the host a flat colour by
+setting. No glow, sub-banding or rind: a render differs. Appearance only (ADR
+0002); every colour here is `effective`.
 
 Run: `uv run --no-sync python -m nodule.sheet --seed 1 --out runs/variety-sheet`.
 Reports time and peak traced memory per stone (CLAUDE.md).
@@ -14,6 +15,7 @@ from __future__ import annotations
 
 import json
 import math
+import textwrap
 import time
 import tracemalloc
 from dataclasses import replace
@@ -28,6 +30,7 @@ from numpy.typing import NDArray
 from PIL import Image, ImageDraw
 
 from nodule.dust import dust_excess
+from nodule.plumes import inclusion_rgb
 from nodule.specimen import Specimen, SpecimenCut
 from nodule.variety import MAX_SLOPE, Roughness, StoneRecipe, build, cut_of, draw_sheet
 
@@ -37,6 +40,8 @@ HOST_RGB = {  # effective: basalt grey, rhyolite pink-brown, sediment tan
     "sedimentary": (148, 128, 104),
 }
 VOID_RGB = (16, 16, 20)
+LABEL_H = 64  # label rows under each stone: summary on up to 3 lines, scale bar
+LABEL_CHARS = 64  # characters per label line in a 400 px tile
 TINT = {"amethyst": np.array([1.0, 0.82, 1.08]), "smoky": np.array([0.72, 0.68, 0.64])}
 
 
@@ -53,7 +58,10 @@ def preview_rgb(cut: SpecimenCut, recipe: StoneRecipe) -> NDArray[np.uint8]:
             0.55 - 0.35 * shade[:, None]
         ) * QUARTZ_MILKY
         rgb[quartz] = q * TINT.get(recipe.tint, 1.0)
-    rgb[cut.inside & ((f.phase == Phase.VOID) | (f.phase == Phase.INCLUSION))] = VOID_RGB
+    rgb[cut.inside & (f.phase == Phase.VOID)] = VOID_RGB
+    # Plumes (and tubes) by their tint through nodule's ramp (`nodule.plumes`).
+    inclusion = cut.inside & (f.phase == Phase.INCLUSION)
+    rgb[inclusion] = inclusion_rgb(f.impurity[inclusion])
     host = (
         "thunder-egg"
         if recipe.outline == "thunder-egg"
@@ -67,14 +75,32 @@ def extent(cut_shape: tuple[int, int], spacing_mm: float) -> float:
     return max(cut_shape) * spacing_mm
 
 
+def plume_recipes(seed: int, n: int) -> list[StoneRecipe]:
+    """The first n plume stones of the sheets from `seed` on (ADR 0018 s.13), for a
+    look sheet of plumes alone."""
+    found: list[StoneRecipe] = []
+    while len(found) < n:
+        found += [r for r in draw_sheet(seed) if r.plumes is not None]
+        seed += 1
+    return found[:n]
+
+
 def make_sheet(
-    seed: int, n: int, px: int, out: Path, tile: int = 400, max_slope: float = MAX_SLOPE
+    seed: int,
+    n: int,
+    px: int,
+    out: Path,
+    tile: int = 400,
+    max_slope: float = MAX_SLOPE,
+    recipes: list[StoneRecipe] | None = None,
+    name: str | None = None,
 ) -> Path:
-    recipes = draw_sheet(seed, n)
+    recipes = draw_sheet(seed, n) if recipes is None else recipes
+    n = len(recipes)
     out.mkdir(parents=True, exist_ok=True)
     cols = min(4, n)
     rows = math.ceil(n / cols)
-    sheet = Image.new("RGB", (cols * tile, rows * (tile + 50)), (235, 235, 235))
+    sheet = Image.new("RGB", (cols * tile, rows * (tile + LABEL_H)), (235, 235, 235))
     log: list[dict[str, object]] = []
     for i, rec in enumerate(recipes):
         progress.report(i / n, f"stone {i + 1} of {n}")
@@ -92,16 +118,18 @@ def make_sheet(
         img.save(out / f"stone-{i + 1:02d}.png")
         full_width = img.width
         img.thumbnail((tile, tile))
-        x, y = (i % cols) * tile, (i // cols) * (tile + 50)
+        x, y = (i % cols) * tile, (i // cols) * (tile + LABEL_H)
         sheet.paste(img, (x + (tile - img.width) // 2, y + (tile - img.height) // 2))
         draw = ImageDraw.Draw(sheet)
         bar = round(10.0 / spacing * img.width / full_width)  # 10 mm scale bar
         right = x + 8 + bar
-        draw.rectangle((x + 8, y + tile + 36, right, y + tile + 40), fill=(0, 0, 0))
-        draw.text((right + 4, y + tile + 32), "10 mm", fill=(0, 0, 0))
+        draw.rectangle((x + 8, y + tile + 50, right, y + tile + 54), fill=(0, 0, 0))
+        draw.text((right + 4, y + tile + 46), "10 mm", fill=(0, 0, 0))
         words = rec.summary().split(", ")
         draw.text((x + 6, y + tile + 2), f"{i + 1}. " + ", ".join(words[:3]), fill=(0, 0, 0))
-        draw.text((x + 6, y + tile + 16), ", ".join(words[3:]), fill=(60, 60, 60))
+        rest = textwrap.wrap(", ".join(words[3:]), LABEL_CHARS)[:2]
+        for k, line in enumerate(rest):
+            draw.text((x + 6, y + tile + 16 + 14 * k), line, fill=(60, 60, 60))
         size_mm = float(np.max(np.asarray(hi) - np.asarray(lo)))
         print(
             f"stone {i + 1}: build {t1 - t0:.1f} s, cut+colour {t2 - t1:.1f} s, "
@@ -117,9 +145,9 @@ def make_sheet(
         )
     progress.report(1.0, "sheet done")
     tag = "" if max_slope == MAX_SLOPE else f"-cap{max_slope:g}"
-    path = out / f"sheet-seed{seed}{tag}.png"
+    path = out / (name or f"sheet-seed{seed}{tag}.png")
     sheet.save(path)
-    (out / f"sheet-seed{seed}{tag}.json").write_text(json.dumps(log, indent=1), "utf-8")
+    path.with_suffix(".json").write_text(json.dumps(log, indent=1), "utf-8")
     return path
 
 
@@ -297,6 +325,9 @@ def main(argv: list[str] | None = None) -> None:
     )
     parser.add_argument("--dust", action="store_true", help="instead, the dust look sheet")
     parser.add_argument(
+        "--plumes", action="store_true", help="instead, n plume stones from sheets seed on"
+    )
+    parser.add_argument(
         "--pairs",
         type=float,
         nargs=2,
@@ -307,6 +338,10 @@ def main(argv: list[str] | None = None) -> None:
     t0 = time.perf_counter()
     if args.roughness_trial:
         path = roughness_trial(args.roughness_trial, args.px, args.out)
+    elif args.plumes:
+        recipes = plume_recipes(args.seed, args.n)
+        name = f"sheet-plumes-seed{args.seed}.png"
+        path = make_sheet(args.seed, args.n, args.px, args.out, recipes=recipes, name=name)
     elif args.dust:
         path = dust_sheet(args.seed, args.px, args.out)
     elif args.pairs:

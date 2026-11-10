@@ -57,6 +57,9 @@ from nodule.dust import (
     DustLayer,
     draw_dust,
 )
+from nodule.plumes import STAGE as PLUME_STAGE
+from nodule.plumes import Plumes, draw_plumes, plume_plan
+from nodule.plumes import reach_mm as plume_reach_mm
 from nodule.specimen import Specimen, SpecimenConfig, SpecimenCut
 from nodule.thunderegg import ArmShape, ArmStyle, thunder_egg_outline
 
@@ -286,6 +289,7 @@ class StoneRecipe(BaseModel):
     fractures: tuple[FractureLayer, ...] = ()
     roughness: Roughness | None = None
     dust: Dust | None = None  # band-following dust (`nodule.dust`, ADR 0018 s.11)
+    plumes: Plumes | None = None  # grown before the bands (`nodule.plumes`, ADR 0018 s.13)
     cut: SliceConfig
 
     def summary(self) -> str:
@@ -312,6 +316,8 @@ class StoneRecipe(BaseModel):
             parts.append(f"{kind} {self.roughness.amplitude_mm:.2f} mm")
         if self.dust is not None:
             parts.append(self.dust.summary())
+        if self.plumes is not None:
+            parts.append(self.plumes.summary())
         parts.append(f"bands {self.band_mm:.2f} mm")
         return ", ".join(parts)
 
@@ -364,7 +370,7 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     # draw their mottle, so their other draws stand).
     kept = set(mottle_pool[: _scaled(plan, MOTTLE_STONES, n)].tolist())
     dust = dust_plan(plan, outlines)
-    return [
+    stones = [
         draw_stone(
             i,
             np.random.default_rng(stone_seqs[i]),
@@ -381,6 +387,15 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
             dust=dust[i],
         )
         for i in range(n)
+    ]
+    # Plumes from their own stream, spawned after the stones' streams, so every
+    # earlier draw stands (ADR 0018 s.13).
+    plume_rng = np.random.default_rng(root.spawn(1)[0])
+    plumed = plume_plan(plume_rng, outlines)
+    plume_streams = plume_rng.spawn(n)
+    return [
+        r.model_copy(update={"plumes": draw_plumes(plume_streams[i])}) if i in plumed else r
+        for i, r in enumerate(stones)
     ]
 
 
@@ -901,6 +916,7 @@ class Growth:
     growth_mm: float
     quartz_at: float | None
     start: float = 0.0  # growth time at which the walls start (after a floor)
+    plumes_end: float = 0.0  # growth time at which the plume stage ends (none: 0)
 
     @property
     def chalcedony_end(self) -> float:
@@ -918,6 +934,16 @@ class Growth:
         w = pre / g
         quartz_at = None if self.quartz_at is None else w + (1 - w) * self.quartz_at
         return Growth(g, quartz_at, w)
+
+    def with_plumes(self, span: float) -> Growth:
+        """This run with a plume stage of `span` first: no band grows during it
+        (agatesim's dendrite stage lays no silica), so the run lengthens by the same
+        share and its times shift, leaving floor and walls as they were."""
+        if self.plumes_end:
+            raise ValueError("a run takes one plume stage")
+        g = self.growth_mm / (1 - span)
+        quartz_at = None if self.quartz_at is None else span + (1 - span) * self.quartz_at
+        return Growth(g, quartz_at, span + (1 - span) * self.start, span)
 
 
 def growth_for(recipe: StoneRecipe, r: float) -> Growth:
@@ -961,6 +987,8 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
         growth = growth_for(recipe, left).after_floor(
             floor_growth_mm(recipe.floor, r), recipe.floor_supply
         )
+    if recipe.plumes is not None:
+        growth = growth.with_plumes(PLUME_STAGE)
     g = growth.growth_mm
     model: dict[str, object] = {
         "kind": "procedural-growth",
@@ -990,10 +1018,28 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
         # A settling pulse first: floor first [@moxon2020, p. 16]. Settling takes
         # precedence over quartz in agatesim, so supply may drop below the quartz
         # threshold here; low supply gives thin floor bands (THICK_FLOOR_CHANCE).
-        pulse: dict[str, object] = {"type": "pulse", "at": 0.0, "width": growth.start}
+        end = growth.plumes_end  # the floor settles after any plume stage
+        pulse: dict[str, object] = {"type": "pulse", "at": end, "width": growth.start - end}
         schedules["settling"] = {"base": 0.0, "events": [pulse | {"value": 1.0}]}
         if recipe.floor_supply < 1:
             silica.append(pulse | {"value": recipe.floor_supply})
+    if recipe.plumes is not None:
+        # The dendrite stage over the first PLUME_STAGE of the run (it overrides
+        # every other mode there); the bands that follow wrap the plumes (A3).
+        model |= recipe.plumes.model_params()
+        # Plumes stop short of the centre: wall growth to where quartz starts or, in a
+        # solid stone, to where the last band lies down (about 1/1.3 of the walls' run,
+        # as `VarietyLayers` takes it).
+        if growth.quartz_at is None:
+            centre_mm = g * (1.0 - growth.start) / 1.3
+        else:
+            centre_mm = g * (growth.quartz_at - growth.start)
+        wobble = float(model["wobble_mm"])  # type: ignore[arg-type]
+        model["dendrite_reach_mm"] = plume_reach_mm(
+            centre_mm, recipe.plumes.wrap_rate, wobble, solid=growth.quartz_at is None
+        )
+        stage = {"type": "step", "at": growth.plumes_end, "value": 0.0}
+        schedules["dendrite"] = {"base": 1.0, "events": [stage]}
     palette, iron = _palette(recipe)
     schedules["iron"] = {"base": iron}
     model["palette"] = palette

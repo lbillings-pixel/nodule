@@ -820,6 +820,83 @@ Kile supports only that halos erase bands and that one plume can run orange to b
 - Halos: about 3 in 4 plume stones, width 0.3-1 mm drawn per stone (assumption), on a
   drawn share of their plumes.
 
+**Colour is the mineral, not the form (the owner, 2026-11-09).** The owner asked why
+green was kept for moss alone. The sources agree it should not be: green plumes are
+reported, with several colours in one stone ("autumn" stones) [@salimi2019]
+(*plausible*), and moss agates are "black, green, or red" [@akahane2025] (*verified*
+as stated) or white, yellow, brown and black [@kile2002] (*plausible*). Plumes and
+moss differ in form and growth, not colour; Kile's mix is one locality's. Chosen: one
+colour ramp for both (green, orange-gold, red, brown, black), each form with its own
+mix. Plumes: Kile's mix scaled to 0.9, plus green and autumn stones, 1 in 20 each.
+Moss (for the moss probe): mostly green, some yellow-brown, about 1 moss stone in 10
+each red and black. The added shares are assumptions. White (opal) waits for its own
+render material; black Mn dendrites in band partings stay a later, separate item.
+
+**Step 3, plumes in the recipes (2026-11-09; `nodule.plumes`).** All `effective`.
+- About 3 stones in 12 per sheet, never the pebble, drawn from their own stream after
+  every other draw, so all earlier draws stand. Checked: the 144 recipes of sheets 1-12
+  and their growth configs are byte-identical without their plumes.
+- Look L on 2 in 3 plume stones, R on 1 in 3 (assumption, accepted by the owner).
+  Settings as the probe: spacing 14 mm, amount 0.02, upward 0.9, from the lower 45 %,
+  8 M cells.
+- Timing: agatesim's dendrite stage over the first 2 of 400 time steps, before any
+  floor and all bands. No silica is laid during it, so the run is lengthened by the
+  same share and its times shifted (`Growth.with_plumes`): floors and walls keep their
+  thickness. Floor stones settle after the plumes, so floor bands cut through them, as
+  filaments stick out of flat layers [@hofmann2008, p. 110] (A3).
+- Colour per stone: base tint and base-to-tip change drawn per colour class on
+  agatesim's tint scale; plumes in a stone differ by up to 0.05 (autumn: 0.15). Nodule
+  reads the tint through its own ramp (`plumes.INCLUSION_RAMP`), which puts orange-gold
+  at 0.3 (by eye).
+- The preview paints plumes by their tint (they were drawn as open space before).
+- Fixed on the way: a cut is evaluated in chunks, and halos give only some chunks a
+  step's own values (`band_impurity`, agatesim ADR 0078). Joining them failed, or, when
+  the first chunk had none, dropped them for the whole cut. Missing step values now
+  take the point's own values, as agatesim's `Fields` defines them.
+- Measured: a sideways sparse stone built in 16 s at 0.52 GB peak; a floor stone with
+  dense plumes in 36 s at 0.55 GB (cut 2-13 s at 0.06 mm).
+- Not yet: the render. `record.py` still refuses plumes; the plan is to bake plume
+  colour and halos as absorption in the layers' route (ADR 0019).
+
+**Look sheet 1 and the wrap rate (2026-11-09).** A sheet of 12 plume stones
+(runs/variety-sheet-plumes, 18 min; dense stones about 100 s each under the sheet's
+memory tracer) showed two faults. In agatesim, bands grew round plumes as fast as from
+the wall, so plumes reaching into the cavity filled it: no quartz-lined plume stone
+showed its centre (stone 1 measured: 58 mm² of cavity and 60 mm² of quartz on the cut
+without plumes, none with them; stone 2 shows none even without plumes, the wait-list
+question). And each plume crossed by the cut carried its own set of rings, reading as
+orbicular agate. Options put to the owner: A, plumes on solid centres only; B, slower
+band growth round plumes (an agatesim change); C, accept. **Owner: B**, with agatesim
+work granted for the session. Done as agatesim ADR 0080 (`dendrite_wrap_rate`, default 1,
+byte-identical). Measured on stone 1: at rate 0.3 the cavity shrinks to 22 mm²; at 0.15
+it keeps 54 mm² of cavity and 64 mm² of quartz, the bands run concentric again and the
+plume sits in a thin coat. The owner then asked for a spread "for a helpfully wider
+diversity of emergent forms": the rate is drawn per stone in 0.15-0.3, leaning low
+(0.15 + 0.15 u^1.5, median 0.20; `plumes.WRAP_RATE`), for plumes and later moss. An
+assumption; no run-time cost (one number per stone). Rates differing between plumes of
+one stone would need a further agatesim change.
+
+**Look sheet 2 and the plume reach (2026-11-09).** With drawn wrap rates the owner judged
+the sheet "pretty good" except for "weird artifacts towards and at the center" of stone 1:
+quartz islands in its open cavity and a tongue of coat rings curling toward it. In 3D
+nothing floated: a plume rose close to the centre, its coat bulged past the point where
+the wall's bands leave the centre, and quartz grew on the bulge. Owner: fix it. Done as
+agatesim ADR 0081 (`dendrite_reach_mm`, default 0 = anywhere, byte-identical): plumes
+grow only within reach of the wall. Nodule sets it in stones with a quartz or open
+centre: a tip at wall distance d gets a coat reaching the centre if d > (1 - wrap) T,
+with T the wall growth before quartz, so reach = (1 - wrap) T - 1 mm - the stone's
+wobble, at least 0.5 mm (`plumes.reach_mm`; the margin is an assumption). Solid stones
+keep no limit. Stone 1 (T 12.7 mm, reach 9.0 mm): islands and tongue gone, edge clean.
+
+**Stop short of the centre (owner, 2026-11-09; may be revisited).** On the next sheet a
+plume tip sat beside stone 9's centre in its own set of thin coat rings, an eye against
+the wide central band (stone 9 is quartz-lined; the cut misses its quartz). The owner:
+"stop plumes short of the center". Now in every plume stone the reach is also at most
+two thirds of the way to the centre (`plumes.CENTRE_SHARE`): wall growth to where quartz
+starts or, in a solid stone, to where the last band lies down (about 1/1.3 of the
+walls' run). Reaches on sheet 1's plume stones: 6.7-13 mm; stone 9's centre now matches
+the stone without plumes.
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

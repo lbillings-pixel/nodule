@@ -320,7 +320,19 @@ def _concat(parts: list[Fields]) -> Fields:
     update: dict[str, object] = {}
     for f in fields(first):
         values = [getattr(p, f.name) for p in parts]
-        update[f.name] = None if values[0] is None else np.concatenate(values)
+        if all(v is None for v in values):
+            update[f.name] = None
+            continue
+        if any(v is None for v in values):
+            # A step's own values (band_*, agatesim ADR 0078) come only where some
+            # point differs from them (e.g. a plume's halo); elsewhere they equal
+            # the point's own values.
+            if not f.name.startswith("band_"):
+                raise ValueError(f"field {f.name} is missing from some chunks")
+            own = f.name.removeprefix("band_")
+            pairs = zip(parts, values, strict=True)
+            values = [getattr(p, own) if v is None else v for p, v in pairs]
+        update[f.name] = np.concatenate(values)
     return replace(first, **update)
 
 

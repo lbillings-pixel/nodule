@@ -20,8 +20,7 @@ from nodule.render.fakes import stone_record
 from nodule.render.record import BandRecord, void_points
 from nodule.render.scene import with_void
 from nodule.render.tgrid import GrowthGrid, fill_nan, fill_void
-from nodule.sheet import window_cut
-from nodule.specimen import Specimen, SpecimenCut
+from nodule.specimen import Specimen, SpecimenCut, window_cut
 from nodule.variety import build, cut_of, draw_sheet
 
 gpu = pytest.mark.skipif(not _gpu.available(), reason="needs a CUDA GPU and CuPy")

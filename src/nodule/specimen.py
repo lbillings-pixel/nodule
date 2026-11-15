@@ -300,6 +300,35 @@ class Specimen:
         )
 
 
+def window_cut(
+    specimen: Specimen,
+    cut: SpecimenCut,
+    centre: tuple[float, float],
+    size_mm: float,
+    spacing_mm: float,
+) -> SpecimenCut:
+    """A square window of a cut's plane at its own spacing, pixel centres on integer
+    multiples of it (as `Specimen.cut`), so dust thinner than a whole-stone pixel shows."""
+    axes: list[NDArray[np.float64]] = []
+    for c in centre:
+        k0 = math.floor((c - size_mm / 2) / spacing_mm)
+        axes.append(
+            (np.arange(k0, k0 + round(size_mm / spacing_mm)) * spacing_mm).astype(np.float64)
+        )
+    s, t = axes
+    ss, tt = np.meshgrid(s, t)
+    fields, inside = specimen.evaluate(cut.plane.points(ss, tt), spacing_mm)
+    return SpecimenCut(
+        plane=cut.plane,
+        spacing_mm=spacing_mm,
+        s=s,
+        t=t,
+        fields=reshape_fields(fields, ss.shape),
+        inside=inside.reshape(ss.shape),
+        fracture_mm=np.full(ss.shape, np.inf),
+    )
+
+
 def diagnostic_image(cut: SpecimenCut) -> NDArray[np.uint8]:
     """A false-colour picture for checking geometry, not a rendering: alternate
     bands light and dark, shaded by growth time; tube cores green; the stone's

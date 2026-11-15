@@ -13,7 +13,6 @@ from agatesim.fields import Phase
 from agatesim.volume.config import SliceConfig, SolidConfig, VolumeConfig
 from agatesim.volume.slicing import Plane
 
-from nodule import variety
 from nodule.specimen import Specimen, SpecimenConfig, SpecimenCut
 from nodule.variety import (
     CLEAN_CUT,
@@ -59,6 +58,7 @@ from nodule.variety import (
     has_cavity,
     inradius,
     largest_patch,
+    layers,
     lining_roughness,
     quota,
     rim_point,
@@ -312,7 +312,7 @@ def test_frame_lattice_matches_the_direct_frame_and_its_negative_control(
     assert np.quantile(off, 0.999) < 0.005
     # Negative control: without the turn test, cells the lattice is too coarse for are
     # read from it all the same, and points land visibly elsewhere.
-    monkeypatch.setattr(variety, "FRAME_TURN", np.inf)
+    monkeypatch.setattr(layers, "FRAME_TURN", np.inf)
     coarse = dc_replace(warp, lattice=FrameLattice.over(specimen.volume.solid))
     off = np.linalg.norm(coarse(pts, specimen.growth_time) - direct, axis=1)
     assert off.max() > 0.03

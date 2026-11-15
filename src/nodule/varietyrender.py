@@ -34,8 +34,8 @@ from nodule.render.cutface import CutRenderer, Rendering
 from nodule.render.fakes import stone_record
 from nodule.render.materials import OpticsTable
 from nodule.render.record import BandRecord
-from nodule.sheet import dustiest, preview_rgb, window_cut
-from nodule.specimen import Specimen, SpecimenCut
+from nodule.sheet import dustiest, preview_rgb
+from nodule.specimen import Specimen, SpecimenCut, window_cut
 from nodule.variety import StoneRecipe, build, cut_of, draw_sheet
 
 WHOLE_PX = 600  # pixels across the stone's box

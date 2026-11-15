@@ -24,7 +24,8 @@ before any statistics.
   sub-sampling. Measure before and after.
 - [x] 4. (8.6 x per point; ADR 0018 s.13 step 4a) Measure the cost of band roughness (ideas doc: about 7 x per point,
   because its frame reads growth time seven times). Measurement only.
-- [ ] 5. Re-render the three plume stones with the owner's pick.
+- [x] 5. (rendered 2026-11-15, 607 s for the three; local `runs/plume-render-b/`,
+  awaiting the owner's look) Re-render the three plume stones with the owner's pick.
 
 ## Batch 2: short tasks (about one session each)
 
@@ -32,7 +33,10 @@ before any statistics.
   103 s; ADR 0018 s.13 step 4a) Roughness cache (a coarse cached grid of the growth-time gradient),
   only if item 4 shows it pays. If the code sits in agatesim, ask the owner
   first.
-- [ ] 7. Split `variety.py` (about 1,700 lines) into recipe, cracks, mottle and
+- [x] 7. (done 2026-11-15: package `nodule.variety` with `recipe`, `cracks`,
+  `mottle`, `draw`, `layers`, `checks`; `window_cut` now in `nodule.specimen`;
+  recipes of seeds 1-3 and one cut identical to the old module)
+  Split `variety.py` (about 1,700 lines) into recipe, cracks, mottle and
   checks, and move `window_cut` from `sheet.py` beside `Specimen.cut`. No
   behaviour change.
 - [ ] 8. Moss probe and look sheet: roof drapes growing down

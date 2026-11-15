@@ -25,13 +25,12 @@ import numpy as np
 from agatesim import progress
 from agatesim.fields import Phase
 from agatesim.render import QUARTZ_CLEAR, QUARTZ_MILKY, chalcedony_colour
-from agatesim.volume.slicing import reshape_fields
 from numpy.typing import NDArray
 from PIL import Image, ImageDraw
 
 from nodule.dust import dust_excess
 from nodule.plumes import inclusion_rgb
-from nodule.specimen import Specimen, SpecimenCut
+from nodule.specimen import SpecimenCut, window_cut
 from nodule.variety import MAX_SLOPE, Roughness, StoneRecipe, build, cut_of, draw_sheet
 
 HOST_RGB = {  # effective: basalt grey, rhyolite pink-brown, sediment tan
@@ -205,35 +204,6 @@ def variant_sheet(
         print(f"stone {rec.index + 1} done")
     sheet.save(path)
     return path
-
-
-def window_cut(
-    specimen: Specimen,
-    cut: SpecimenCut,
-    centre: tuple[float, float],
-    size_mm: float,
-    spacing_mm: float,
-) -> SpecimenCut:
-    """A square window of a cut's plane at its own spacing, pixel centres on integer
-    multiples of it (as `Specimen.cut`), so dust thinner than a whole-stone pixel shows."""
-    axes: list[NDArray[np.float64]] = []
-    for c in centre:
-        k0 = math.floor((c - size_mm / 2) / spacing_mm)
-        axes.append(
-            (np.arange(k0, k0 + round(size_mm / spacing_mm)) * spacing_mm).astype(np.float64)
-        )
-    s, t = axes
-    ss, tt = np.meshgrid(s, t)
-    fields, inside = specimen.evaluate(cut.plane.points(ss, tt), spacing_mm)
-    return SpecimenCut(
-        plane=cut.plane,
-        spacing_mm=spacing_mm,
-        s=s,
-        t=t,
-        fields=reshape_fields(fields, ss.shape),
-        inside=inside.reshape(ss.shape),
-        fracture_mm=np.full(ss.shape, np.inf),
-    )
 
 
 def dustiest(cut: SpecimenCut, size_mm: float) -> tuple[float, float]:

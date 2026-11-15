@@ -30,7 +30,7 @@ from __future__ import annotations
 
 import math
 from collections.abc import Callable
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
 from statistics import NormalDist
 from typing import Literal, NamedTuple
 
@@ -1298,6 +1298,75 @@ class VarietyLayers:
 RIDGE_MEAN = math.sqrt(2 / math.pi)  # mean of |n| for unit normal noise
 
 
+FRAME_LATTICE_MM = 0.5  # spacing of the cached frame lattice; world-fixed
+FRAME_TURN = 0.2  # largest change of the gradient within a cell, as a share of it
+_CORNERS = np.array([(i, j, k) for i in (0, 1) for j in (0, 1) for k in (0, 1)])
+
+
+@dataclass(eq=False)
+class FrameLattice:
+    """Growth time and its gradient (`BandRoughness.raw`) kept on a world-fixed
+    lattice (nodes at whole multiples of FRAME_LATTICE_MM, so a preview and a full
+    run read the same values), filled only where points ask and read trilinearly.
+    Both vary slowly beside the roughness itself, and the gradient is already a
+    difference over 0.5 mm; reading them here costs one look-up where the direct way
+    reads the growth model seven times a point (measured 2026-11-15: 8.6 x the time
+    of an unwarped read). Points whose cell has a node without a value (outside the
+    stone, in quartz or a void, or beyond the lattice) are read the direct way."""
+
+    lo: NDArray[np.int64]  # lattice index of the first node, per axis
+    shape: tuple[int, int, int]
+    values: NDArray[np.float32]  # (nodes, 4): growth time, gradient
+    filled: NDArray[np.bool_]
+    owner: object = None  # whose growth time the values are
+
+    @classmethod
+    def over(cls, solid: Solid) -> FrameLattice:
+        lo, hi = (np.asarray(b, dtype=np.float64) for b in solid.bounds())
+        first = np.floor(lo / FRAME_LATTICE_MM).astype(np.int64) - 1
+        last = np.ceil(hi / FRAME_LATTICE_MM).astype(np.int64) + 1
+        shape = tuple(int(n) for n in last - first + 1)
+        n = math.prod(shape)
+        return cls(first, (shape[0], shape[1], shape[2]),
+                   np.full((n, 4), np.nan, np.float32), np.zeros(n, bool))  # fmt: skip
+
+    def read(
+        self, points: FloatArray, raw: Callable[[FloatArray], tuple[FloatArray, FloatArray]]
+    ) -> tuple[FloatArray, FloatArray]:
+        """(growth time, gradient) at points; `raw` gives them the direct way."""
+        u = points / FRAME_LATTICE_MM
+        base = np.floor(u)
+        frac = u - base
+        cell = base.astype(np.int64) - self.lo
+        within = ((cell >= 0) & (cell < np.asarray(self.shape) - 1)).all(axis=1)
+        c = cell[within][:, None, :] + _CORNERS[None, :, :]  # (m, 8, 3)
+        flat = (c[..., 0] * self.shape[1] + c[..., 1]) * self.shape[2] + c[..., 2]
+        new = np.unique(flat)
+        new = new[~self.filled[new]]
+        if len(new):
+            ijk = np.stack(np.unravel_index(new, self.shape), axis=1) + self.lo
+            t, grad = raw(ijk * FRAME_LATTICE_MM)
+            self.values[new, 0] = t
+            self.values[new, 1:] = grad
+            self.filled[new] = True
+        f = frac[within][:, None, :]
+        w = np.where(_CORNERS[None, :, :] == 1, f, 1 - f).prod(axis=2)  # (m, 8)
+        out = np.full((len(points), 4), np.nan)
+        corners = self.values[flat].astype(np.float64)
+        mean = (corners * w[..., None]).sum(axis=1)
+        # where the gradient turns within the cell (beside a plume, at a centre line)
+        # the lattice is too coarse: those points are read the direct way
+        turn = np.linalg.norm(corners[..., 1:] - mean[:, None, 1:], axis=2).max(axis=1)
+        steady = turn <= FRAME_TURN * np.linalg.norm(mean[:, 1:], axis=1)
+        out[within] = np.where(steady[:, None], mean, np.nan)
+        direct = ~np.isfinite(out).all(axis=1)
+        if direct.any():
+            t, grad = raw(points[direct])
+            out[direct, 0] = t
+            out[direct, 1:] = grad
+        return out[:, 0], out[:, 1:]
+
+
 @dataclass(frozen=True, eq=False)
 class BandRoughness:
     """Reads the growth model at points shifted along the local band normal
@@ -1324,12 +1393,15 @@ class BandRoughness:
     quartz_at: float | None = None  # growth time at which quartz starts, if it does
     start: float = 0.0  # growth time at which the walls start; the floor stays flat
     step_mm: float = 0.5
+    # The frame's cache (`FrameLattice`); None reads the growth model at every point
+    lattice: FrameLattice | None = field(default=None, repr=False)
 
     @classmethod
     def of(cls, roughness: Roughness, solid: Solid, growth: Growth, seed: int) -> BandRoughness:
         rng = np.random.default_rng(np.random.SeedSequence(seed).spawn(3)[2])
         noise = SmoothNoise3(solid, roughness.scale_mm, rng)
-        return cls(roughness, growth.growth_mm, noise, _unit(rng), growth.quartz_at, growth.start)
+        return cls(roughness, growth.growth_mm, noise, _unit(rng), growth.quartz_at,
+                   growth.start, lattice=FrameLattice.over(solid))  # fmt: skip
 
     def __call__(
         self, points: FloatArray, growth_time: Callable[[FloatArray], FloatArray]
@@ -1347,7 +1419,24 @@ class BandRoughness:
     ) -> tuple[FloatArray, FloatArray, FloatArray]:
         """Unit inward normal g, depth from the wall (mm) and the shift's weight
         (0 where growth time is undefined or near the centre line, else up to 1).
-        Differences are one-sided where one side has no growth time (quartz, voids)."""
+        Growth time and its gradient come from the lattice when there is one."""
+        lattice = self.lattice
+        if lattice is None:
+            t, grad = self.raw(points, growth_time)
+        else:
+            owner = getattr(growth_time, "__self__", growth_time)
+            if lattice.owner is not owner:  # another stone's growth time: start again
+                lattice.values[:] = np.nan
+                lattice.filled[:] = False
+                lattice.owner = owner
+            t, grad = lattice.read(points, lambda q: self.raw(q, growth_time))
+        return self.finish(t, grad)
+
+    def raw(
+        self, points: FloatArray, growth_time: Callable[[FloatArray], FloatArray]
+    ) -> tuple[FloatArray, FloatArray]:
+        """Growth time and its gradient by differences over step_mm, one-sided where
+        one side has no growth time (quartz, voids); NaN where there is none."""
         h = self.step_mm
         t = growth_time(points)
         grad = np.full_like(points, np.nan)
@@ -1359,6 +1448,9 @@ class BandRoughness:
             grad[:, k] = np.where(
                 both, (up - down) / (2 * h), np.where(np.isfinite(up), up - t, t - down) / h
             )
+        return t, grad
+
+    def finish(self, t: FloatArray, grad: FloatArray) -> tuple[FloatArray, FloatArray, FloatArray]:
         size = np.linalg.norm(grad, axis=1)
         ok = np.isfinite(t) & np.isfinite(size) & (size > 0)
         g = np.where(ok[:, None], grad / np.where(ok, size, 1.0)[:, None], 0.0)

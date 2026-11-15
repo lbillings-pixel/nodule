@@ -13,6 +13,7 @@ from agatesim.fields import Phase
 from agatesim.volume.config import SliceConfig, SolidConfig, VolumeConfig
 from agatesim.volume.slicing import Plane
 
+from nodule import variety
 from nodule.specimen import Specimen, SpecimenConfig, SpecimenCut
 from nodule.variety import (
     CLEAN_CUT,
@@ -31,6 +32,7 @@ from nodule.variety import (
     STRAIGHT_SHARE,
     BandRoughness,
     FractureLayer,
+    FrameLattice,
     Growth,
     Mottle,
     Roughness,
@@ -285,6 +287,47 @@ def test_quartz_contact_stays_sharp_and_its_negative_control() -> None:
     assert isinstance(specimen.warp, BandRoughness)
     unfaded = dc_replace(specimen, warp=dc_replace(specimen.warp, quartz_at=None))
     assert stray_quartz(cut_of(unfaded, lined, SPACING)) > 0.015  # scattered contact
+
+
+def _inner_points(specimen: Specimen, n: int, seed: int = 0) -> np.ndarray:
+    solid = specimen.volume.solid
+    lo, hi = (np.asarray(v, dtype=np.float64) for v in solid.bounds())
+    pts = lo + np.random.default_rng(seed).uniform(size=(n, 3)) * (hi - lo)
+    return pts[solid.contains(pts)]
+
+
+def test_frame_lattice_matches_the_direct_frame_and_its_negative_control(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    lined = LINED.model_copy(update={"roughness": ROUGH})
+    specimen, _ = build(lined)
+    warp = specimen.warp
+    assert isinstance(warp, BandRoughness)
+    assert warp.lattice is not None
+    pts = _inner_points(specimen, 20000)
+    direct = dc_replace(warp, lattice=None)(pts, specimen.growth_time)
+    assert np.linalg.norm(direct - pts, axis=1).max() > 0.05  # the roughness moves points
+    off = np.linalg.norm(warp(pts, specimen.growth_time) - direct, axis=1)
+    assert off.max() < 0.03
+    assert np.quantile(off, 0.999) < 0.005
+    # Negative control: without the turn test, cells the lattice is too coarse for are
+    # read from it all the same, and points land visibly elsewhere.
+    monkeypatch.setattr(variety, "FRAME_TURN", np.inf)
+    coarse = dc_replace(warp, lattice=FrameLattice.over(specimen.volume.solid))
+    off = np.linalg.norm(coarse(pts, specimen.growth_time) - direct, axis=1)
+    assert off.max() > 0.03
+
+
+def test_frame_lattice_reads_the_same_alone_or_in_company() -> None:
+    lined = LINED.model_copy(update={"roughness": ROUGH})
+    specimen, _ = build(lined)
+    pts = _inner_points(specimen, 6000)
+    alone, _ = build(lined)
+    assert specimen.warp is not None
+    assert alone.warp is not None
+    np.testing.assert_array_equal(
+        alone.warp(pts[:500], alone.growth_time), specimen.warp(pts, specimen.growth_time)[:500]
+    )
 
 
 # --- the owner's notes on the plain stones and the roughness trial (ADR 0018 s.9) ---

@@ -916,6 +916,27 @@ the stone without plumes.
   grid, 0.6 mm deep: fill and bake 3-11 s, 0.54-0.64 GB peak. Tests:
   tests/test_plumebake.py, each with its negative control.
 
+**Step 4a, costs measured and a cache for the roughness frame (2026-11-15).**
+Engineering only: no claim about stones.
+- Measured on sheet 1: band roughness (s.8) costs 8.6 x an unwarped read per point
+  (stones 3 and 6; 7.6 x on stone 2), because its frame reads the growth model seven
+  times a point; plumes themselves add little. Plume halos are not the cost: nodes
+  touched by a halo alone are 0.3 % of a close-up's grid, so no halo shortcut is built.
+- `variety.FrameLattice`: growth time and its gradient kept on a world-fixed 0.5 mm
+  lattice (nodes at whole multiples of the spacing, so previews and full runs agree),
+  filled where points ask and read trilinearly. Cells where the gradient turns by more
+  than a fifth of itself (`FRAME_TURN`; beside plumes and centre lines), or with a node
+  without growth time, are read the direct way. Both constants are `effective`.
+- Against the direct frame, 99.9 % of points land within 0.003 mm and the worst seen is
+  0.037 mm (sheet 1 stones 2, 3, 6; 300,000 points each); without the turn test the
+  worst is 0.15-0.25 mm, which the test's negative control rejects.
+- Whole-stone grid fill with bake, 0.1 mm grid: stone 3 (plumes) 218 s -> 103 s;
+  stone 6 (no plumes) 88 s -> 62 s. Lattice memory 6-12 MB a stone.
+- A 12 mm close-up of a plume stone on a 0.03 mm grid fills 37.6 M nodes: about 27 min
+  before the cache, not the 1-2 min first assumed. Colour trials now read the stone
+  once and share the fill between variants (`runs/plume-closeups/closeups.py`, 0.05 mm
+  grid: one fill 417 s before the cache, then 75 s a variant).
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

@@ -141,7 +141,7 @@ changes nothing in the defaults.
 absorption over a lossless mirror bottom must render near-white. The
 look comparison must then flag it as too light.
 
-**Sources.** Götze et al. 2012 was supplied by the owner and read (above).
+**Sources.** Götze et al. 2012 was read (above).
 Rossman 1994 (*Rev. Mineral.* 29) could not be obtained. The
 supplementary tables of Zhou et al. 2022 (doi 10.3390/min12060677) and
 Zhang et al. 2025 (doi 10.3389/feart.2025.1548167) are optional.
@@ -178,7 +178,7 @@ The forward slab gained an optional bottom index for this check.
 - Open items carried forward: what darkens clear bands (section 4), edge
   coherence C16 (photos' 98th percentile), and L\* sd a little low (8.8
   against 9.7).
-- References added: goetze2012, zhou2022, zhang2025 (owner PDFs, read in full; notes/n2-reading/goetze2012-onyx.md, step4-zhou-zhang.md).
+- References added: goetze2012, zhou2022, zhang2025 (local PDFs, read in full; notes/n2-reading/goetze2012-onyx.md, step4-zhou-zhang.md).
   lorenzi2022, jayaraman1953 and jensen2001 were already catalogued, read
   in full. The step-4 note's other sources wait for the decision.
 
@@ -291,7 +291,7 @@ Zhang et al. 2025 in full (notes/n2-reading/step4-zhou-zhang.md).
 
 ### 4d. Zhou's supplement (read 2026-11-03)
 
-The owner fetched Zhou's supplement (Tables S1–S5, per-sample colour, XRF,
+Zhou's supplement was read (Tables S1–S5, per-sample colour, XRF,
 moganite, spectral troughs and heating) [@zhou2022]. Refitting S1 lightness
 against S2 iron reproduces Fig. 3a exactly. Three findings change A2:
 

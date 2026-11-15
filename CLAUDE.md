@@ -8,7 +8,7 @@
   grades, stack). Record them as ADRs in docs/adr/.
 - Literature first: ground each step in peer-reviewed sources read beyond the
   abstract. When a paper or image is bot-blocked or paywalled, ask the owner to
-  obtain it (they download to `C:\Users\Lee\Downloads`); never settle for the
+  obtain it (they download to their Downloads folder); never settle for the
   abstract.
 
 ## Working efficiently (owner-approved)
@@ -21,7 +21,7 @@
   (papers, many-file surveys) so only their summary enters the session.
 
 ## Relation to agatesim
-- agatesim (`C:\Users\Lee\Projects\agatesim`, github.com/lbillings-pixel/agatesim)
+- agatesim (sibling folder `..\agatesim`, github.com/lbillings-pixel/agatesim)
   is the first project and this one's library, pinned to a commit in
   pyproject.toml (`[tool.uv.sources]`). To use a newer agatesim, fix it there,
   push, and move the pin.

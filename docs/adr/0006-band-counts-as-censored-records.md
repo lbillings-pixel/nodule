@@ -783,14 +783,14 @@ suffices and two are met. What follows:
   [@jamba2025], [@arcusa2022] and [@vandenbulcke2019] at abstract level,
   having been seen only through a summarising fetch. Its report is in
   `notes/n1-reading/adr0006-search.md` (unreviewed agent output).
-- Read in full after acceptance (2026-10-29), from the owner's downloads:
+- Read in full after acceptance (2026-10-29), from local copies:
   [@jayaraman1953], [@andersen2006] and [@damci2016] (reports
   `notes/n1-reading/tier1-*.md`, unreviewed agent output). They change no
   decision or grade. They correct where the ½ ± ½ rule comes from (Andersen
   et al. take it from [@rasmussen2006]), back the lighting rule and the
   definition of *L* with published cases, widen the photo-limit arithmetic,
   and add one candidate (the pixel floor). Cue (c) stays speculative.
-- Read in full next (2026-10-29), from the owner's downloads or fetched
+- Read in full next (2026-10-29), from local copies or fetched
   open access with the owner's agreement: [@rasmussen2006], [@raman1953],
   [@raman1955], [@graetsch1985], [@ojala2002], [@ojala2012],
   [@zolitschka2015] (its applications section skimmed), [@vandenbulcke2019]

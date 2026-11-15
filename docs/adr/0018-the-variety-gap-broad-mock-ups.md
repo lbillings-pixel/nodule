@@ -111,7 +111,7 @@ flagged before it starts. `render_cuts` must take the preset for any rerun.
 
 ### 7. Reading for features 1 to 5 (2026-11-08)
 
-Five helper agents read the catalogue's notes, the owner's PDFs and open web pages;
+Five helper agents read the catalogue's notes, local PDFs and open web pages;
 claims below stay within each source's `checked` level. No source counts how often
 any of these features occurs, so every share in the recipe is `effective`, to be
 judged on the owner's sheets. Figure readings are a helper's measurement against a

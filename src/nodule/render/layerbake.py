@@ -16,8 +16,8 @@ sub-point spacing, and their absorption gains averaged; other nodes gain nothing
 Plumes (ADR 0018 s.13) are baked the same way. A plume point renders as the nearest
 step's chalcedony (`record.plume_points`) and gains its mineral's absorption: agatesim's
 tint (0 green Fe-silicate, 0.5 red-brown Fe oxide, 1 black Mn oxide) read through
-PLUME_STOPS, the pigments at the stops of `nodule.plumes.INCLUSION_RAMP`, each scaled so
-its strongest channel absorbs PLUME_MUA. A plume's clear halo (agatesim ADR 0079) is
+PLUME_STOPS, the pigment mixes at the stops of `nodule.plumes.INCLUSION_RAMP`, each scaled
+so its strongest channel absorbs PLUME_MUA. A plume's clear halo (agatesim ADR 0079) is
 lost colour: the band's own absorption minus the halo's (`Specimen.per_step` gives the
 grid the band's values; `Specimen.placed` the halo's).
 
@@ -49,19 +49,22 @@ F32 = NDArray[np.float32]
 F64 = NDArray[np.float64]
 SUB = 2  # sub-samples per node along each axis
 LEVELS = 2000  # impurity steps in the absorption table (nearest; the floor is a step)
-# A plume's mineral over agatesim's tint: celadonite (green), goethite (orange-gold,
-# yellow-brown), hematite (red), manganese oxide (black); between stops the absorptions
-# mix linearly (0.75: half hematite, half Mn, the ramp's dark brown). `effective`.
-PLUME_STOPS = (
-    (0.0, Pigment.CELADONITE),
-    (0.3, Pigment.GOETHITE),
-    (0.5, Pigment.HEMATITE),
-    (1.0, Pigment.MANGANESE),
+# A plume's mineral over agatesim's tint: celadonite (green), goethite with hematite
+# (orange-gold, yellow-brown), hematite (red), manganese oxide (black); between stops the
+# absorptions mix linearly (0.75: half hematite, half Mn, the ramp's dark brown).
+# `effective`. The 0.3 stop is half goethite, half hematite by absorption shape: goethite
+# alone absorbs red about as much as green and rendered olive (owner's pick B of the
+# close-ups, 2026-11-15; ADR 0018 s.13 step 4).
+PLUME_STOPS: tuple[tuple[float, tuple[tuple[Pigment, float], ...]], ...] = (
+    (0.0, ((Pigment.CELADONITE, 1.0),)),
+    (0.3, ((Pigment.GOETHITE, 0.5), (Pigment.HEMATITE, 0.5))),
+    (0.5, ((Pigment.HEMATITE, 1.0),)),
+    (1.0, ((Pigment.MANGANESE, 1.0),)),
 )
-# Absorption (mm^-1) of a plume's strongest channel: `effective`, an ASSUMPTION by eye.
-# Over a ~0.2 mm branch it passes ~e^-2 of that channel and more of the others, so the
-# hue shows; much higher and every plume turns black.
-PLUME_MUA = 10.0
+# Absorption (mm^-1) of a plume's strongest channel: `effective`, set by the owner's eye
+# (pick B, 2026-11-15; 10 before, which rendered the plumes near black). Over a ~0.2 mm
+# branch it passes ~e^-0.8 of that channel and more of the others, so the hue shows.
+PLUME_MUA = 4.0
 
 
 def absorption_table(optics: OpticsTable) -> F64:
@@ -88,10 +91,17 @@ def absorption(table: F64, f: Fields) -> F64:
 
 
 def plume_stops(optics: OpticsTable) -> F64:
-    """(stop, channel): each PLUME_STOPS pigment's absorption shape, its strongest
-    channel at PLUME_MUA."""
-    rows = [optics.pigment_mua(int(p), 1.0) for _, p in PLUME_STOPS]
-    return np.array([PLUME_MUA * r / r.max() for r in rows])
+    """(stop, channel): each PLUME_STOPS mix's absorption shape (its pigments' shapes,
+    each with its strongest channel at 1, in their shares), its strongest channel at
+    PLUME_MUA."""
+    rows: list[F64] = []
+    for _, mix in PLUME_STOPS:
+        r = np.zeros(3)
+        for p, share in mix:
+            shape = np.asarray(optics.pigment_mua(int(p), 1.0), np.float64)
+            r += share * shape / shape.max()
+        rows.append(PLUME_MUA * r / r.max())
+    return np.array(rows)
 
 
 def plume_absorption(stops: F64, f: Fields, inside: NDArray[np.bool_]) -> F64:

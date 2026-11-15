@@ -916,6 +916,15 @@ the stone without plumes.
   grid, 0.6 mm deep: fill and bake 3-11 s, 0.54-0.64 GB peak. Tests:
   tests/test_plumebake.py, each with its negative control.
 
+**Step 4, the owner's colour pick (2026-11-15).** Orange-gold plumes rendered olive to
+black (goethite absorbs red about as much as green; 10 mm^-1 was too strong). The owner
+chose option C (weaker and warmer, 2026-11-09), then pick B of four 12 mm close-ups of
+sheet 1 stone 3 (`runs/plume-closeups/variants.png`: as it was; 4 mm^-1 with a quarter
+hematite; 4 with half; 6 with half): `PLUME_MUA` = 4 mm^-1 and the 0.3 stop half
+goethite, half hematite by absorption shape. Both `effective`, set by eye. It weakens
+every plume colour, so black-brown plumes may read dark grey-brown: to check on the
+re-rendered stones.
+
 **Step 4a, costs measured and a cache for the roughness frame (2026-11-15).**
 Engineering only: no claim about stones.
 - Measured on sheet 1: band roughness (s.8) costs 8.6 x an unwarped read per point

@@ -8,7 +8,7 @@ from functools import cache
 
 import numpy as np
 import pytest
-from agatesim.fields import Fields, Phase
+from agatesim.fields import Fields, Phase, Pigment
 from agatesim.volume.config import SliceConfig, SolidConfig
 
 from nodule import plumes
@@ -127,9 +127,19 @@ def test_the_grid_bakes_the_plumes() -> None:
         grid = tgrid.GrowthGrid.fill(sp, sp.plane(recipe().cut), 0.2, 0.4, optics=OpticsTable())
         assert grid.absorb is not None
         assert grid.bands is not None
-        out.append(int((grid.absorb.max(0) > 5).sum()))
+        out.append(int((grid.absorb.max(0) > 0.5 * PLUME_MUA).sum()))
     assert out[0] > 5  # this cut crosses a few branches (13 nodes at seed 11)
     assert out[1] == 0
+
+
+def test_orange_gold_passes_red_better_than_green_and_its_negative_control() -> None:
+    optics = OpticsTable()
+    gold = plume_stops(optics)[1]  # the 0.3 stop; channels blue, green, red
+    assert gold[0] == pytest.approx(PLUME_MUA)  # blue absorbed most
+    assert gold[2] < 0.65 * gold[1]  # red passes well below green: orange, not olive
+    # Control: goethite alone absorbs red nearly as much as green (it rendered olive).
+    goethite = np.asarray(optics.pigment_mua(int(Pigment.GOETHITE), 1.0))
+    assert goethite[2] > 0.65 * goethite[1]
 
 
 def test_the_ramp_runs_green_red_black_and_skips_silica() -> None:

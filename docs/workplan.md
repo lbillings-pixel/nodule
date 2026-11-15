@@ -13,8 +13,8 @@ before any statistics.
 
 - [x] 1. Trim HANDOFF.md to its cap; delete the merged `render-layers` branch
   (owner agreed 2026-11-15).
-- [ ] 2. (rendered 2026-11-15, `runs/plume-closeups/variants.png`; awaits the owner's
-  pick) Plume colour close-ups (ADR 0018 s.13 step 4, owner's option C): three
+- [x] 2. (owner picked B, 2026-11-15: `PLUME_MUA` 4, the 0.3 stop half hematite)
+  Plume colour close-ups (ADR 0018 s.13 step 4, owner's option C): three
   variants of weaker plume absorption plus a warmer orange-gold, side by side
   on 12 mm close-ups of sheet 1 stone 3. The owner picks; record the pick in
   the ADR.

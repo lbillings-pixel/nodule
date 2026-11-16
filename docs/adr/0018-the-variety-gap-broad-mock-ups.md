@@ -952,6 +952,70 @@ Engineering only: no claim about stones.
   once and share the fill between variants (`runs/plume-closeups/closeups.py`, 0.05 mm
   grid: one fill 417 s before the cache, then 75 s a variant).
 
+### 14. Moss: probe, look sheets and the recipes (2026-11-15)
+
+Work plan item 8. No new reading: s.13 covers it. Appearance only (ADR 0002); every
+value below is `effective`, chosen by eye on the owner's look sheets
+(`runs/moss-probe/`, local) unless a source is cited.
+
+**Probe (looks A-G).** Moss is agatesim's dendrite stage tilted to grow down
+(`dendrite_tilt_deg` 180), so roof drapes hang from the walls, as in [@goetze2020b]
+(*verified*: some hanging from the ceiling, none growing upward). The owner liked short
+look C (strong downward lean, small tufts at the wall) best of the short looks, E (long
+drapes) as the default long look and G (dense, bulky) as an occasional variant; moss
+belongs in ordinary banded agates too, not only in "moss stones".
+
+**Look sheets 1-4, the owner's verdicts.**
+- Sheet 1: rings of wrapping bands round every strand looked busy. Moss now sits in a
+  clear sheath (s.13: sheaths round moss filaments, *verified*). The owner asked that it
+  keep faint bands: agatesim ADR 0085, `dendrite_halo_clearing`, drawn 0.4-0.6 of the band
+  colour cleared ("good").
+- Sheet 2: short moss was too even. C now grows toward E as the centre shrinks,
+  k = clip((0.5 - centre width) / 0.4, 0, 1), with plain C kept on 1 stone in 5; fewer,
+  patchier starts (spacing 3 x 3^u mm, start height 0.35-1).
+- Sheet 3: moss was the same size in a small side lobe as in the main one, and above a
+  floor as in the floor region. agatesim ADR 0086: reach a share of the local depth (the
+  half-width of the lobe or pocket a place lies in), measured above a floor in the
+  cavity left there; share 0.9 in solid stones, 0.6 x (1 - centre width) otherwise.
+- Sheet 4: the owner asked for stronger lobe contrast. `dendrite_reach_contrast`
+  (ADR 0086) scales the share by (depth / deepest)^p. Compared at p = 0, 1, 2 on six
+  lobed stones (`runs/moss-probe/out/moss-lobe-contrast-compare.png`); the owner chose
+  p = 2. Stones whose moss is short everywhere (sheet 3 stone 5) change little, since
+  their moss rarely grows long enough to meet the limit; the owner left them so.
+- Moss look sheet (`sheet --moss`, 2026-11-16): in both thunder eggs, contrast 2 crowded
+  the moss into the centre and left the narrow arms almost bare; the owner judged the
+  divide "very unphysical/artificial". Compared at p = 0, 0.5, 1, 2
+  (`runs/moss-probe/out/thunderegg-contrast.png`): even 0.5 empties the arms. Thunder
+  eggs now take p = 0 (`moss.THUNDER_EGG_CONTRAST`), so each arm keeps moss in
+  proportion to its own width; other outlines keep 2.
+
+**In the recipes (`nodule.moss`).** About 1 stone in 6 on a sheet (2 of 12), never the
+pebble and never a plume stone: agatesim runs one dendrite stage a stone
+(`MOSS_SHARE`, an ASSUMPTION while the look is honed; work plan item 11 then lowers
+plumes to 1 in 8-10). Solid stones take E, or G on 1 in 3, reaching the centre
+(centre share 1); quartz-lined or quartz-filled stones take short moss, C toward E as
+above, stopping at two thirds of the way in (as plumes). Colour as chosen in s.13:
+green 0.7, yellow-brown, red and black 0.1 each. Sheath 0.5-2 mm in solid stones,
+0.3-1.5 mm otherwise (wider as k grows); wrap rate as plumes. Moss is drawn from its own
+stream after the plumes', so every earlier draw stands.
+
+**Check (`variety.vertical_share`, `moss_vertical`).** Of elongated inclusion patches on
+the side walls of a vertical cut (where the inward normal lies within 45 degrees of
+level), the share whose long axis runs closer to vertical than to the normal. Negative
+control, after [@hofmann2008, p. 107, Table 8] (mineral fibres are straight radial
+sprays): a synthetic radial spray scores 0, hanging strands 1. A built moss stone
+scores 1.0 (29 patches); sideways plumes across the cut score 0.0. The axis has no
+sign, so the check does not tell hanging from rising: the tilt does that.
+
+**Costs.** Probe stones (moss alone) built and cut in 12-32 s at 0.06 mm (CPU); the
+local depth adds about 1 s. With every other feature of their recipes, the first 8
+moss stones from sheet 0 on built in 11-172 s (median ~100 s, like plume stones),
+peak 0.40-0.41 GB; the look sheet took 803 s (`sheet --moss`).
+
+**Open.** Floor mats, which [@goetze2020b] makes heaviest, are not drawn: with the
+start heights above, moss grows from the upper walls only. Not rendered yet through the
+renderer (ADR 0019); the preview dulls moss inside its sheath.
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

@@ -14,10 +14,67 @@ from agatesim.fields import Phase
 from agatesim.grid import FloatArray
 from numpy.typing import NDArray
 
+from nodule._scipy import distance_inside, label_patches
 from nodule.specimen import Specimen, SpecimenCut
 from nodule.variety.cracks import LONG_RADIUS
 from nodule.variety.layers import BandRoughness, VarietyLayers
 from nodule.variety.recipe import FractureLayer
+
+
+def vertical_share(
+    inclusion: NDArray[np.bool_],
+    inside: NDArray[np.bool_],
+    up: tuple[float, float],
+    least_px: int = 12,
+    elongation: float = 2.0,
+) -> float:
+    """Moss check (ADR 0018 s.14): of the elongated inclusion patches on the side walls,
+    the share (by pixels) whose long axis runs closer to vertical than to the wall's
+    inward normal. Moss hangs down the walls (near 1); a straight radial spray runs
+    along the normal (near 0). The axis has no sign, so this does not tell hanging from
+    rising. Side walls: where the normal at a patch's point nearest the wall lies within
+    45 degrees of level (on the roof and floor the two directions agree). `up` is world
+    up in (row, column) pixel steps. NaN without such patches."""
+    d = distance_inside(inside)
+    g_row, g_col = np.gradient(d)
+    labels, n = label_patches(inclusion)
+    if n == 0:
+        return math.nan
+    flat = labels.ravel()
+    order = np.argsort(flat, kind="stable")
+    starts = np.searchsorted(flat[order], np.arange(1, n + 2))
+    rows, cols = np.divmod(order, labels.shape[1])
+    u = np.array(up, dtype=np.float64)
+    u /= float(np.linalg.norm(u))
+    hanging = counted = 0
+    for i in range(n):
+        idx = slice(int(starts[i]), int(starts[i + 1]))
+        r, c = rows[idx], cols[idx]
+        if len(r) < least_px:
+            continue
+        a = int(np.argmin(d[r, c]))
+        normal = np.array([g_row[r[a], c[a]], g_col[r[a], c[a]]])
+        norm = float(np.linalg.norm(normal))
+        if norm == 0 or abs(float(normal @ u)) / norm > math.sqrt(0.5):
+            continue  # roof or floor
+        normal /= norm
+        values, vectors = np.linalg.eigh(np.cov(np.stack([r, c]).astype(np.float64)))
+        if values[1] < elongation**2 * max(float(values[0]), 1e-9):
+            continue  # too round to have a direction
+        axis = vectors[:, 1]
+        counted += len(r)
+        if abs(float(axis @ u)) > abs(float(axis @ normal)):
+            hanging += len(r)
+    return hanging / counted if counted else math.nan
+
+
+def moss_vertical(cut: SpecimenCut) -> float:
+    """`vertical_share` of a cut's inclusions; NaN in a plane without world up."""
+    up = cut.plane.in_plane(np.array([0.0, 0.0, 1.0]))
+    if float(np.linalg.norm(up)) < 0.5:
+        return math.nan
+    inclusion = cut.inside & (cut.fields.phase == Phase.INCLUSION)
+    return vertical_share(inclusion, cut.inside, (float(up[1]), float(up[0])))
 
 
 def has_cavity(cut: SpecimenCut, least: float = 0.002) -> bool:

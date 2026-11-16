@@ -25,7 +25,7 @@ before any statistics.
 - [x] 4. (8.6 x per point; ADR 0018 s.13 step 4a) Measure the cost of band roughness (ideas doc: about 7 x per point,
   because its frame reads growth time seven times). Measurement only.
 - [x] 5. (rendered 2026-11-15, 607 s for the three; local `runs/plume-render-b/`,
-  awaiting the owner's look) Re-render the three plume stones with the owner's pick.
+  the owner found green too faint, `GREEN_STRENGTH` 1.5, then "it's ok"; bd09109) Re-render the three plume stones with the owner's pick.
 
 ## Batch 2: short tasks (about one session each)
 
@@ -39,7 +39,8 @@ before any statistics.
   Split `variety.py` (about 1,700 lines) into recipe, cracks, mottle and
   checks, and move `window_cut` from `sheet.py` beside `Specimen.cut`. No
   behaviour change.
-- [ ] 8. Moss probe and look sheet: roof drapes growing down
+- [x] 8. (2026-11-16; ADR 0018 s.14, agatesim ADR 0085-0086; moss now in the recipes,
+  1 stone in 6; floor mats not drawn) Moss probe and look sheet: roof drapes growing down
   (`dendrite_tilt_deg` 180) and floor mats; mostly green, some yellow-brown,
   about 1 in 10 each red and black; same wrap draw as plumes. Negative
   control: a straight radial spray must be rejected.
@@ -50,7 +51,8 @@ before any statistics.
 
 ## Batch 3: medium (one or two sessions each)
 
-- [ ] 11. Moss in the recipes and the renderer; then drop plume frequency from
+- [ ] 11. (recipes done with item 8; renderer and plume share left) Moss in the recipes
+  and the renderer; then drop plume frequency from
   1 in 4 to about 1 in 8-10 (owner, 2026-11-09). The owner's 3/4-up plume
   split depends on moss growing downward.
 - [ ] 12. Previews made from the renderer's own colour model, so the owner's

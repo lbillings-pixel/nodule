@@ -13,11 +13,12 @@ import numpy as np
 from agatesim.grid import FloatArray
 from agatesim.volume.config import SliceConfig, SolidConfig
 from agatesim.volume.solids import Solid
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from nodule.dust import (
     Dust,
 )
+from nodule.moss import Moss
 from nodule.plumes import Plumes
 from nodule.thunderegg import ArmShape, ArmStyle, thunder_egg_outline
 
@@ -237,7 +238,19 @@ class StoneRecipe(BaseModel):
     roughness: Roughness | None = None
     dust: Dust | None = None  # band-following dust (`nodule.dust`, ADR 0018 s.11)
     plumes: Plumes | None = None  # grown before the bands (`nodule.plumes`, ADR 0018 s.13)
+    moss: Moss | None = None  # grown down before the bands (`nodule.moss`, ADR 0018 s.14)
     cut: SliceConfig
+
+    @model_validator(mode="after")
+    def _one_dendrite_stage(self) -> StoneRecipe:
+        if self.plumes is not None and self.moss is not None:
+            raise ValueError("plumes or moss, not both: agatesim runs one dendrite stage")
+        return self
+
+    @property
+    def inclusions(self) -> Plumes | Moss | None:
+        """The stone's branched inclusions (plumes or moss), if any."""
+        return self.plumes if self.plumes is not None else self.moss
 
     def summary(self) -> str:
         parts = [
@@ -263,8 +276,8 @@ class StoneRecipe(BaseModel):
             parts.append(f"{kind} {self.roughness.amplitude_mm:.2f} mm")
         if self.dust is not None:
             parts.append(self.dust.summary())
-        if self.plumes is not None:
-            parts.append(self.plumes.summary())
+        if self.inclusions is not None:
+            parts.append(self.inclusions.summary())
         parts.append(f"bands {self.band_mm:.2f} mm")
         return ", ".join(parts)
 

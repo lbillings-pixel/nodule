@@ -19,6 +19,7 @@ from nodule.dust import (
     SPECK_SHARE,
     draw_dust,
 )
+from nodule.moss import draw_moss, moss_plan
 from nodule.plumes import draw_plumes, plume_plan
 from nodule.variety.cracks import CRACK_CUT_ANGLE, draw_fractures
 from nodule.variety.layers import palette_of
@@ -117,8 +118,29 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     plume_rng = np.random.default_rng(root.spawn(1)[0])
     plumed = plume_plan(plume_rng, outlines)
     plume_streams = plume_rng.spawn(n)
-    return [
+    stones = [
         r.model_copy(update={"plumes": draw_plumes(plume_streams[i])}) if i in plumed else r
+        for i, r in enumerate(stones)
+    ]
+    # Moss from a stream spawned after the plumes', on stones without plumes (ADR 0018
+    # s.14).
+    moss_rng = np.random.default_rng(root.spawn(1)[0])
+    mossy = moss_plan(moss_rng, outlines, plumed)
+    moss_streams = moss_rng.spawn(n)
+    return [
+        r.model_copy(
+            update={
+                "moss": draw_moss(
+                    moss_streams[i],
+                    r.centre == "solid",
+                    r.centre_width,
+                    r.floor,
+                    thunder_egg=r.outline == "thunder-egg",
+                )
+            }
+        )
+        if i in mossy
+        else r
         for i, r in enumerate(stones)
     ]
 

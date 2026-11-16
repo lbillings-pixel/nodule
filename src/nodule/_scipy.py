@@ -41,6 +41,11 @@ def hole_free_patches(mask: NDArray[np.bool_]) -> int:
     )
 
 
+def label_patches(mask: NDArray[np.bool_]) -> tuple[NDArray[np.int32], int]:
+    """4-connected patches of a 2D mask, numbered 1..n (0 outside them)."""
+    return cast("tuple[NDArray[np.int32], int]", ndimage.label(mask))
+
+
 def largest_patch_size(mask: NDArray[np.bool_]) -> int:
     """Pixels in the largest 4-connected patch of a 2D mask; 0 if none."""
     found, n = cast("tuple[NDArray[np.int32], int]", ndimage.label(mask))

@@ -26,6 +26,7 @@ from nodule.dust import (
     SPECK_STRENGTH,
     DustLayer,
 )
+from nodule.plumes import CENTRE_SHARE as PLUME_CENTRE_SHARE
 from nodule.plumes import STAGE as PLUME_STAGE
 from nodule.plumes import reach_mm as plume_reach_mm
 from nodule.specimen import Specimen, SpecimenConfig, SpecimenCut
@@ -130,7 +131,8 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
         growth = growth_for(recipe, left).after_floor(
             floor_growth_mm(recipe.floor, r), recipe.floor_supply
         )
-    if recipe.plumes is not None:
+    inclusions = recipe.inclusions  # plumes or moss: one dendrite stage
+    if inclusions is not None:
         growth = growth.with_plumes(PLUME_STAGE)
     g = growth.growth_mm
     model: dict[str, object] = {
@@ -166,10 +168,10 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
         schedules["settling"] = {"base": 0.0, "events": [pulse | {"value": 1.0}]}
         if recipe.floor_supply < 1:
             silica.append(pulse | {"value": recipe.floor_supply})
-    if recipe.plumes is not None:
+    if inclusions is not None:
         # The dendrite stage over the first PLUME_STAGE of the run (it overrides
-        # every other mode there); the bands that follow wrap the plumes (A3).
-        model |= recipe.plumes.model_params()
+        # every other mode there); the bands that follow wrap the plumes or moss (A3).
+        model |= inclusions.model_params()
         # Plumes stop short of the centre: wall growth to where quartz starts or, in a
         # solid stone, to where the last band lies down (about 1/1.3 of the walls' run,
         # as `VarietyLayers` takes it).
@@ -178,8 +180,9 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
         else:
             centre_mm = g * (growth.quartz_at - growth.start)
         wobble = float(model["wobble_mm"])  # type: ignore[arg-type]
+        share = PLUME_CENTRE_SHARE if recipe.moss is None else recipe.moss.centre_share
         model["dendrite_reach_mm"] = plume_reach_mm(
-            centre_mm, recipe.plumes.wrap_rate, wobble, solid=growth.quartz_at is None
+            centre_mm, inclusions.wrap_rate, wobble, growth.quartz_at is None, share
         )
         stage = {"type": "step", "at": growth.plumes_end, "value": 0.0}
         schedules["dendrite"] = {"base": 1.0, "events": [stage]}

@@ -199,12 +199,18 @@ def inclusion_rgb(tint: NDArray[np.floating]) -> NDArray[np.float64]:
     )
 
 
-def reach_mm(centre_mm: float, wrap_rate: float, wobble_mm: float, solid: bool) -> float:
-    """How far from the wall plumes may grow, in a stone whose centre lies `centre_mm`
-    of wall growth in: CENTRE_SHARE of that; and where the centre is quartz or open,
-    no farther than lets their coats (wrap_rate x that growth) stay clear of it, by
-    REACH_MARGIN_MM plus the bands' wobble. At least half a millimetre."""
-    reach = CENTRE_SHARE * centre_mm
+def reach_mm(
+    centre_mm: float,
+    wrap_rate: float,
+    wobble_mm: float,
+    solid: bool,
+    centre_share: float = CENTRE_SHARE,
+) -> float:
+    """How far from the wall plumes (or moss) may grow, in a stone whose centre lies
+    `centre_mm` of wall growth in: `centre_share` of that; and where the centre is
+    quartz or open, no farther than lets their coats (wrap_rate x that growth) stay
+    clear of it, by REACH_MARGIN_MM plus the bands' wobble. At least half a millimetre."""
+    reach = centre_share * centre_mm
     if not solid:
         reach = min(reach, (1 - wrap_rate) * centre_mm - REACH_MARGIN_MM - wobble_mm)
     return max(reach, 0.5)

@@ -42,8 +42,10 @@ from nodule.variety.checks import (
     graded_share,
     has_cavity,
     lining_roughness,
+    moss_vertical,
     shift_by_depth,
     stray_quartz,
+    vertical_share,
 )
 from nodule.variety.cracks import (
     CAVITY_MARGIN_MM,
@@ -255,6 +257,7 @@ __all__ = [
     "largest_patch",
     "lining_roughness",
     "log_uniform",
+    "moss_vertical",
     "mottle_edge_noise",
     "mottle_fields",
     "mottle_size",
@@ -269,5 +272,6 @@ __all__ = [
     "stray_quartz",
     "thunder_egg_cut",
     "unit_vector",
+    "vertical_share",
     "volume_config",
 ]

@@ -74,12 +74,12 @@ def extent(cut_shape: tuple[int, int], spacing_mm: float) -> float:
     return max(cut_shape) * spacing_mm
 
 
-def plume_recipes(seed: int, n: int) -> list[StoneRecipe]:
-    """The first n plume stones of the sheets from `seed` on (ADR 0018 s.13), for a
-    look sheet of plumes alone."""
+def plume_recipes(seed: int, n: int, moss: bool = False) -> list[StoneRecipe]:
+    """The first n plume (or moss) stones of the sheets from `seed` on (ADR 0018 s.13,
+    s.14), for a look sheet of plumes or moss alone."""
     found: list[StoneRecipe] = []
     while len(found) < n:
-        found += [r for r in draw_sheet(seed) if r.plumes is not None]
+        found += [r for r in draw_sheet(seed) if (r.moss if moss else r.plumes) is not None]
         seed += 1
     return found[:n]
 
@@ -298,6 +298,9 @@ def main(argv: list[str] | None = None) -> None:
         "--plumes", action="store_true", help="instead, n plume stones from sheets seed on"
     )
     parser.add_argument(
+        "--moss", action="store_true", help="instead, n moss stones from sheets seed on"
+    )
+    parser.add_argument(
         "--pairs",
         type=float,
         nargs=2,
@@ -308,9 +311,9 @@ def main(argv: list[str] | None = None) -> None:
     t0 = time.perf_counter()
     if args.roughness_trial:
         path = roughness_trial(args.roughness_trial, args.px, args.out)
-    elif args.plumes:
-        recipes = plume_recipes(args.seed, args.n)
-        name = f"sheet-plumes-seed{args.seed}.png"
+    elif args.plumes or args.moss:
+        recipes = plume_recipes(args.seed, args.n, moss=args.moss)
+        name = f"sheet-{'moss' if args.moss else 'plumes'}-seed{args.seed}.png"
         path = make_sheet(args.seed, args.n, args.px, args.out, recipes=recipes, name=name)
     elif args.dust:
         path = dust_sheet(args.seed, args.px, args.out)

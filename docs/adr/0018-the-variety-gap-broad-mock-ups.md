@@ -1206,6 +1206,50 @@ bands, showing only as the bands' bumps; fine needles, 0.15 mm wide, vanish on t
 0.1 mm render grid of a whole face, sheet 0 stone 2); late patches that
 cut across bands; true radial needle sprays (would need agatesim).
 
+### 16. Host rind and host specks: reading and the owner's choices (2026-11-16)
+
+Work plan item 13. Appearance only (ADR 0002). Reading by a helper
+(`notes/n1-reading/item13-rind-host-bleed.md`, local), from sources already in the
+catalogue.
+
+**Rind.** Basalt geodes are each rimmed by a few millimetres of green clay
+(celadonite), which helps free them from the host [@proust2007, pp. 732-734]
+(*verified*, one locality); in Botswana the green coat erodes easily [@jain2013]
+(*plausible*). Thunder eggs: almost all carry adhering pitchstone with perlitic
+cracks, set in clay [@goetze2024, p. 30, Fig. 4e/f] (*verified*); the shell is
+the spherulite itself, with a cauliflower-like outside [@ross1941, p. 731]
+(*verified*), mottled brown with tints of green [@kile2002, p. 255] (*plausible*:
+the helper's reading, not yet in the catalogue notes). No source gives the pitchstone
+rind's thickness, how often a rind is present, or whether it meets the bands sharply.
+In a thunder egg the brown-green shell and the adhering pitchstone lie on the outside
+of the rhyolite ball, which Nodule does not model (its thunder-egg host is that
+rhyolite); a rind at the star cavity's wall is the owner's eye, an assumption, not
+these sources.
+
+**Host next to the agate.** Rhyolite: a yellowish-white groundmass with 5-20 %
+phenocrysts about 1 mm across [@goetze2024, pp. 27-29] (*verified*, for the
+lithophysa body and massive rhyolite). Basalt: vesicles of mean radius 0.7-1.2 mm
+(11-28 % by area) in the vesicular zones, but the geode level itself is massive and
+vesicle-free [@proust2007a, Table 2; @proust2007, p. 732] (*verified*, one flow).
+No source gives basalt groundmass grain or colour beside an agate, nor the fill of
+vesicles there: sparse filled holes (white or green) beside the agate are an
+assumption (the question put to the owner said papers give white or green fills;
+they do not).
+
+**Pigment bleed into the host.** No agate source describes staining that spreads
+outward into the host; the only analogue is sea-floor basalt fracture halos (ODP
+shipboard reports; *speculative* for agate). The owner: skip it.
+
+**The owner's choices.**
+- Rind: one model for basalt and thunder-egg stones alike, spanning the thin green
+  clay rim, the mottled brown-green shell with patches of adhering host, and the
+  gradations between, intermixed across those stone types rather than two fixed
+  kinds. Windows: on about 1 nodule in 12-15 (the owner's experience), small patches
+  of the agate reach the nodule's outside, where the rind is missing.
+- Host specks: both, from the papers (rhyolite specks; sparse filled vesicles in
+  basalt; sediment hosts lightly mottled, an assumption).
+- Look sheet before any value is fixed.
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

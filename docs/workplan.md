@@ -44,7 +44,8 @@ before any statistics.
   (`dendrite_tilt_deg` 180) and floor mats; mostly green, some yellow-brown,
   about 1 in 10 each red and black; same wrap draw as plumes. Negative
   control: a straight radial spray must be rejected.
-- [ ] 9 + 10 (merged 2026-11-16, the owner's pick). Early crystals: blades
+- [x] 9 + 10 (merged 2026-11-16, the owner's pick; closed 2026-11-16 with 59ab2d3,
+  combinations on 1 in ~150 crystal stones, ADR 0018 s.15). Early crystals: blades
   (calcite?) and fine needles (zeolite?) grown on the wall before the bands
   (agatesim's stick stage, wrapped at full rate), left white, turned to clear
   silica or dissolved to moulds. Reading done; probe and look sheet 1 done (all
@@ -52,10 +53,12 @@ before any statistics.
   centre and floor compensation, wrap check with its negative control and ADR 0018
   s.15 done 2026-11-16; look sheet 2 judged "okay" 2026-11-16, share now 1 in 9.
   Owner's follow-ups (2026-11-16): thunder-egg length cap by arm width (knocked on:
-  thunder eggs take needles only, done); agatesim floor fix (approved); a small share
-  of crystals with plumes or moss.
-  Still open afterwards: late white patches that cut across bands (a
-  mottle-like layer), true radial needle sprays (would need agatesim).
+  thunder eggs take needles only, done); agatesim floor fix (done, agatesim ADR 0087);
+  a small share of crystals with plumes or moss (done; plume halos now keep faint
+  bands, dda6964, s.13). Before a combination stone is rendered: plume roots take the
+  crystals' material (`nearest_seen`, s.15); fix first.
+  Still open afterwards (for the owner, s.15): late white patches that cut across
+  bands (a mottle-like layer), true radial needle sprays (would need agatesim).
 
 ## Batch 3: medium (one or two sessions each)
 

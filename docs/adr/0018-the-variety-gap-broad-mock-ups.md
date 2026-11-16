@@ -1194,9 +1194,10 @@ not a thunder egg: about half, 8 of 17 on sheets 0-11), so about 1 in 150 crysta
 stones; plumes or moss half each (assumption). Drawn from a stream spawned after the
 crystals', every stone drawing its numbers whether it qualifies or not (`combo_plan`),
 so no earlier draw moves (sheets 0-11 checked identical; at this rate they deal none).
-Render limit, read from the code and not measured: `BandRecord.nearest_seen` would give
-the first plume step the crystals' material, not the first band's; to fix before a
-combination stone is rendered.
+Render limit, checked on the step indices (`runs/crystal-probe/nearest_check.py`, local;
+no stone rendered): the stage is 2 of 400 steps, and `BandRecord.nearest_seen` gives the
+first of the 2 plume steps (the plumes' roots) the crystals' material, not the first
+band's; to fix before a combination stone is rendered.
 
 **Open, for the owner.** The fill and habit mixes (accepted as they are); the white in renders (the renderer takes white remnants
 as milky chalcedony, through the layers: rendered 2026-11-16, `runs/variety-render-moss/`,

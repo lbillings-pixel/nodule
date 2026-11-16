@@ -1088,13 +1088,16 @@ owner kept agatesim's full-rate wrap (no agatesim change).
 - Thunder eggs: the length cap uses the inradius, which does not see the arms' width.
   Large blades forced onto a quartz-lined thunder egg (capped to 2.5 mm) stick out
   across the narrow arms and fill them with bumps (looked at 2026-11-16; not changed).
-  Seeds 0-11 draw one thunder-egg crystal stone, with fine needles, which look right.
-  Options for the owner: needles only in thunder eggs, or a cap by arm width.
+  Seeds 0-11 drew three thunder-egg crystal stones (correction, 2026-11-16 afternoon:
+  this line first said one): 4-9 with fine needles, which look right, but also 6-6 with
+  large blades and 8-8 with small blades (0-based), so the fault was live on dealt
+  stones. Options for the owner: needles only in thunder eggs, or a cap by arm width.
   The owner chose the cap, with needles only as the fallback if it knocked on
   (2026-11-16). Measured: arm half-width (median distance to the wall along the ridge
   of the mid-depth section; a 6 mm strip gives 2.90 mm) 1.1-3.1 mm, median 1.7, over
-  the 48 thunder eggs of sheets 0-23, so a quarter of it caps every habit at 0.2-0.7
-  mm. On the two thunder-egg crystal stones of sheets 0-11 (6-6 jagged with large
+  the 48 thunder eggs of sheets 0-23, so the cap tried (a quarter of it, the same
+  `MOST_REACH_SHARE` as elsewhere) caps every habit at 0.2-0.7 mm. Untried: a looser
+  cap, about half the half-width (some 0.85 mm), for the owner to ask for. On the two thunder-egg crystal stones of sheets 0-11 (6-6 jagged with large
   blades, 8-8 winding with small blades; `runs/crystal-probe/thunderegg_cap.py`,
   local, `out/thunderegg-cap/`): capped blades are specks on the whole face, 113-128 s
   to build against 12-16 s, up to 1.28 GB, and on 6-6 too thin for the wrap check.
@@ -1150,6 +1153,15 @@ Owner also asked for: a small share of stones with crystals and plumes or moss
 together, a cap on crystal length by a thunder egg's arm width (needles only there
 if that knocks on: it did, so needles only, under Centre and floor compensation
 below), and approved an agatesim fix for floors over early stages.
+
+**Floors over early stages: agatesim fix (ADR 0087, 2026-11-16; local, awaiting the
+owner's push OK).** agatesim now sizes a settling floor by the wall's surface alone,
+leaving inclusions out. Floor rows share on the same stones (0-based; nodule's
+`FLOOR_VOLUME` off; `runs/crystal-probe/floor_fix.py`, local), bare / old agatesim /
+fixed: needles 0-1 0.49 / 1.00 / 0.51; blades 0-9 0.49 / 0.77 / 0.49, 1-9 0.51 / 0.82
+/ 0.51, 2-8 0.28 / 0.40 / 0.28; plumes 2-0 0.33 / 0.35 / 0.34, 5-3 0.37 / 0.42 / 0.38;
+moss 5-6 0.55 / 0.66 / 0.57, 6-4 0.47 / 1.00 / 0.51. Every stone within 0.04 of its
+bare twin, so `FLOOR_VOLUME` goes when the pin moves.
 
 **Open, for the owner.** The fill and habit mixes (accepted as they are); crystals with
 plumes or moss on one stone; the white in renders (the renderer takes white remnants

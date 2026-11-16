@@ -952,6 +952,17 @@ Engineering only: no claim about stones.
   once and share the fill between variants (`runs/plume-closeups/closeups.py`, 0.05 mm
   grid: one fill 417 s before the cache, then 75 s a variant).
 
+**Halos keep faint bands (the owner, 2026-11-16 evening).** Seeing a plume stone beside
+a moss stone (s.15, combinations), the owner asked whether plumes, too, sit in clear,
+faintly banded chalcedony. Kile's halos are clear chalcedony that commonly enclose
+plumes [@kile2002, p. 259] (*plausible*); the faint bands, as for moss (s.14), are the
+owner's eye (an assumption). Picked: halos on the same stones as before (about 3 in
+4 plume stones, a drawn share of their plumes, 0.3-1 mm), each now clearing 40-60 % of
+the band colour (`HALO_CLEARING`, drawn last of a stone's plume values, so nothing else
+moves; sheets 0-11 checked: only the 10 halo stones change, and only in this value).
+Recipes saved before keep full clearing (`clearing` defaults to 1). Look sheet before
+and after: `runs/crystal-probe/halo_probe.py` (local).
+
 ### 14. Moss: probe, look sheets and the recipes (2026-11-15)
 
 Work plan item 8. No new reading: s.13 covers it. Appearance only (ADR 0002); every
@@ -1163,8 +1174,30 @@ fixed: needles 0-1 0.49 / 1.00 / 0.51; blades 0-9 0.49 / 0.77 / 0.49, 1-9 0.51 /
 moss 5-6 0.55 / 0.66 / 0.57, 6-4 0.47 / 1.00 / 0.51. Every stone within 0.04 of its
 bare twin, so `FLOOR_VOLUME` goes when the pin moves.
 
-**Open, for the owner.** The fill and habit mixes (accepted as they are); crystals with
-plumes or moss on one stone; the white in renders (the renderer takes white remnants
+**Combinations: crystals, then plumes or moss (2026-11-16, evening).** No agatesim
+change: agatesim lets sticks override dendrites, so a combination stone runs the stick
+stage over the first `PLUME_STAGE` (2 of agatesim's 400 steps), the dendrite stage over
+the next, then the walls (`Growth.with_plumes(2 x PLUME_STAGE)`); the walls grow as on
+the crystal-only stone. Plumes and moss together stay barred (one dendrite stage).
+agatesim seeds a dendrite stage on the growth surface so far, which includes the
+crystals, so plumes or moss may root on a crystal; crystals are a small share of that
+surface, and on the probe's cuts none did. Rooting on crystals is an assumption (no
+source read gives it). Probe (`runs/crystal-probe/combos.py`, local; 0-based keys):
+4-3 (large white blades) + plumes and 1-5 (small white blades) + moss, each beside its
+crystal-only twin; bands wrap every crystal (`crystal_wrap` 1.000 on all four); 4-3 +
+plumes built and cut in 145 s, the rest in 16-45 s, peak under 0.45 GB. The owner: B
+(moss) looked better than A (plumes); combinations on **1 in 100-200 crystal stones**
+(asked and confirmed: of crystal stones, not of all stones); floors and thunder eggs
+left out for now. Done as `COMBO_CHANCE` 1 in 75 per qualifying crystal stone (no floor,
+not a thunder egg: about half, 8 of 17 on sheets 0-11), so about 1 in 150 crystal
+stones; plumes or moss half each (assumption). Drawn from a stream spawned after the
+crystals', every stone drawing its numbers whether it qualifies or not (`combo_plan`),
+so no earlier draw moves (sheets 0-11 checked identical; at this rate they deal none).
+Render limit, read from the code and not measured: `BandRecord.nearest_seen` would give
+the first plume step the crystals' material, not the first band's; to fix before a
+combination stone is rendered.
+
+**Open, for the owner.** The fill and habit mixes (accepted as they are); the white in renders (the renderer takes white remnants
 as milky chalcedony, through the layers: rendered 2026-11-16, `runs/variety-render-moss/`,
 local; on a neutral stone, sheet 1 stone 6, small blades merge with the milky first
 bands, showing only as the bands' bumps; fine needles, 0.15 mm wide, vanish on the

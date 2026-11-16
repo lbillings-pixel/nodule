@@ -1,5 +1,5 @@
-"""Early crystals in the recipes (ADR 0018 s.15): the owner's looks, one early stage per
-stone, the run's timing and centre compensation, white remnants, and the wrap check
+"""Early crystals in the recipes (ADR 0018 s.15): the owner's looks, crystals before any
+plumes or moss, the run's timing and centre compensation, white remnants, and the wrap check
 with its negative control (crystals pasted on finished bands)."""
 
 from __future__ import annotations
@@ -9,24 +9,29 @@ from collections import Counter
 import numpy as np
 import pytest
 from agatesim.fields import Phase
-from agatesim.models.growth import ProceduralGrowth
+from agatesim.models.growth import TIME_STEPS, Mode, ProceduralGrowth, growth_modes
 from agatesim.volume.config import SliceConfig, SolidConfig
 
 from nodule._scipy import distance_inside
 from nodule.crystals import (
+    COMBO_CHANCE,
+    COMBO_PLUMES,
     CRYSTAL_SHARE,
     FILLS,
     HABIT_SHARES,
     HABITS,
     MOST_REACH_SHARE,
     NEEDLES_ONLY,
+    NO_COMBOS,
     NO_CRYSTALS,
     SIZE_SPREAD,
     Crystals,
+    combo_plan,
     crystal_plan,
     draw_crystals,
     stage_mask,
 )
+from nodule.moss import draw_moss
 from nodule.plumes import STAGE, draw_plumes
 from nodule.variety import (
     CENTRE_SHIFT,
@@ -139,12 +144,65 @@ BLADES = Crystals(habit="small blades", fill="white", spacing_mm=2.5, length_mm=
                   elongation=6.0, scatter_deg=30.0)  # fmt: skip
 
 
-def test_one_early_stage_per_stone() -> None:
-    with pytest.raises(ValueError, match="one early stage"):
+def test_crystals_then_plumes_on_one_stone() -> None:
+    """A combination stone runs the stick stage, then the dendrite stage, then the
+    walls (sticks override dendrites in agatesim, so the order rests on the steps)."""
+    plumes = draw_plumes(np.random.default_rng(1))
+    stone = StoneRecipe.model_validate(
+        _stone(centre="quartz-filled", centre_width=0.3).model_dump()
+        | {"plumes": plumes, "crystals": BLADES}
+    )
+    config, growth = volume_config(stone)
+    model = config.model
+    assert isinstance(model, ProceduralGrowth)
+    tau = (np.arange(TIME_STEPS) + 0.5) / TIME_STEPS
+    modes = [Mode(int(m)) for m in growth_modes(model, tau)[:6]]
+    assert modes == [Mode.STICK] * 2 + [Mode.DENDRITE] * 2 + [Mode.LINING] * 2
+    assert growth.plumes_end == pytest.approx(2 * STAGE) == growth.start
+    # The walls grow as on the crystal-only stone; only the early stages lengthen.
+    _, alone = volume_config(stone.model_copy(update={"plumes": None}))
+    walls = growth.growth_mm * (growth.chalcedony_end - growth.start)
+    assert walls == pytest.approx(alone.growth_mm * (alone.chalcedony_end - alone.start))
+    with pytest.raises(ValueError, match="not both"):  # still one dendrite stage
         StoneRecipe.model_validate(
-            _stone().model_dump()
-            | {"plumes": draw_plumes(np.random.default_rng(1)), "crystals": BLADES}
+            stone.model_dump() | {"moss": draw_moss(np.random.default_rng(1), False, 0.3, 0.0)}
         )
+
+
+def test_combinations_only_on_qualifying_crystal_stones() -> None:
+    """The plan's rate and split, and its negative control: a stone that does not
+    qualify never takes a combination, even at chance 1."""
+    eligible = [True, False] * 6
+    every = combo_plan(np.random.default_rng(0), eligible, chance=1.0)
+    assert sorted(every) == [i for i, ok in enumerate(eligible) if ok]
+    rng = np.random.default_rng(1)
+    plans = [combo_plan(rng, [True] * 12) for _ in range(5000)]
+    kinds = Counter(k for p in plans for k in p.values())
+    assert sum(kinds.values()) / (5000 * 12) == pytest.approx(COMBO_CHANCE, rel=0.1)
+    assert kinds["plumes"] / sum(kinds.values()) == pytest.approx(COMBO_PLUMES, abs=0.05)
+
+
+def test_a_sheet_deals_combinations_after_everything_else(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Forced on, combinations land on every crystal stone without a floor and not a
+    thunder egg, and nothing else on the sheet moves."""
+    import nodule.variety.draw as draw
+
+    def always(rng: np.random.Generator, ok: list[bool]) -> dict[int, str]:
+        return dict(combo_plan(rng, ok, chance=1.0))
+
+    plain = draw_sheet(3)
+    monkeypatch.setattr(draw, "combo_plan", always)
+    forced = draw.draw_sheet(3)
+    for a, b in zip(plain, forced, strict=True):
+        qualifies = a.crystals is not None and not a.floor and a.outline not in NO_COMBOS
+        assert (b.inclusions is not None) == (qualifies or a.inclusions is not None)
+        if qualifies:
+            assert a.inclusions is None
+            StoneRecipe.model_validate(b.model_dump())
+            b = b.model_copy(update={"plumes": None, "moss": None})
+        assert a == b
 
 
 def test_the_stick_stage_comes_first_and_the_centre_keeps_its_width() -> None:

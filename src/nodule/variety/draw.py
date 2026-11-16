@@ -13,7 +13,7 @@ from agatesim.volume.config import SliceConfig
 from agatesim.volume.slicing import Plane
 from agatesim.volume.solids import Rotated, Solid, SphereUnion
 
-from nodule.crystals import NEEDLES_ONLY, crystal_plan, draw_crystals
+from nodule.crystals import NEEDLES_ONLY, NO_COMBOS, combo_plan, crystal_plan, draw_crystals
 from nodule.dust import (
     BLOB_SHARE,
     LINE_SHARE,
@@ -158,6 +158,19 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
             c = c.as_needles() if r.outline in NEEDLES_ONLY else c
             r = r.model_copy(update={"crystals": c.capped(chalcedony_mm(r))})
         out.append(r)
+    # Combinations from a stream spawned after the crystals', so every earlier draw
+    # stands (ADR 0018 s.15): a few crystal stones also carry plumes or moss.
+    combo_rng = np.random.default_rng(root.spawn(1)[0])
+    eligible = [r.crystals is not None and not r.floor and r.outline not in NO_COMBOS for r in out]
+    combos = combo_plan(combo_rng, eligible)
+    combo_streams = combo_rng.spawn(n)
+    for i, kind in combos.items():
+        r, s = out[i], combo_streams[i]
+        if kind == "plumes":
+            out[i] = r.model_copy(update={"plumes": draw_plumes(s)})
+        else:
+            moss = draw_moss(s, r.centre == "solid", r.centre_width, r.floor)
+            out[i] = r.model_copy(update={"moss": moss})
     return out
 
 

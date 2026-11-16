@@ -248,8 +248,6 @@ class StoneRecipe(BaseModel):
     def _one_dendrite_stage(self) -> StoneRecipe:
         if self.plumes is not None and self.moss is not None:
             raise ValueError("plumes or moss, not both: agatesim runs one dendrite stage")
-        if self.crystals is not None and self.inclusions is not None:
-            raise ValueError("early crystals or plumes or moss, one: nodule has one early stage")
         return self
 
     @property

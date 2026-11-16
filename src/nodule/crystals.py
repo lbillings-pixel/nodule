@@ -23,9 +23,11 @@ size. All values `effective`, chosen by eye:
 - fine needles: 1.0 mm, 0.9 mm, 12, 45 deg; white or hollow (clear not shown);
 - large blades: 4.0 mm, 3.0 mm, 8, 30 deg; white (the only fill shown).
 
-A stone carries one early stage: crystals, plumes or moss, not two (nodule's one stage
-slot; agatesim could run more, untested). Appearance only: never evidence for a
-formation mechanism (ADR 0002).
+Crystals may share a stone with plumes or moss (the owner, 2026-11-16: "some combos"):
+the stick stage comes first and the dendrite stage follows, seeding on the wall and the
+crystals both, so plumes or moss may root on crystals (an assumption, by eye; no
+source read gives it). Appearance only: never evidence for a formation mechanism
+(ADR 0002).
 """
 
 from __future__ import annotations
@@ -47,6 +49,13 @@ CrystalFill = Literal["white", "clear", "hollow"]
 CRYSTAL_SHARE = 1 / 9
 POOL_SHARE = 1 / 6
 NO_CRYSTALS = ("pebble",)  # small and nearly unbanded (ADR 0018 s.7)
+# Combinations (the owner, 2026-11-16 evening): 1 in 100-200 crystal stones also carry
+# plumes or moss. Only stones without a floor and not thunder eggs qualify for now (about
+# half of crystal stones: 8 of 17 on sheets 0-11), so each qualifying stone takes one
+# with this chance: about 1 in 150 crystal stones. Plumes or moss, half each (assumption).
+COMBO_CHANCE = 1 / 75
+COMBO_PLUMES = 0.5
+NO_COMBOS = ("thunder-egg",)
 
 # Per habit: spacing (mm), length (mm), elongation, axis scatter (deg); the probe's.
 HABITS: dict[str, tuple[float, float, float, float]] = {
@@ -147,6 +156,20 @@ def crystal_plan(rng: np.random.Generator, outlines: list[str], taken: set[int])
     return thinned(rng, ok, POOL_SHARE, CRYSTAL_SHARE, len(outlines))[1]
 
 
+def combo_plan(
+    rng: np.random.Generator, eligible: list[bool], chance: float = COMBO_CHANCE
+) -> dict[int, Literal["plumes", "moss"]]:
+    """Which crystal stones of a sheet also carry plumes or moss, and which. Every stone
+    draws its numbers, eligible or not, so widening the pool later moves no stone's
+    draw."""
+    u, kind = rng.random(len(eligible)), rng.random(len(eligible))
+    return {
+        i: "plumes" if kind[i] < COMBO_PLUMES else "moss"
+        for i, ok in enumerate(eligible)
+        if ok and u[i] < chance
+    }
+
+
 def draw_crystals(rng: np.random.Generator) -> Crystals:
     u = rng.random(3)
     habit = _pick(float(u[0]), HABIT_SHARES)
@@ -166,10 +189,10 @@ def draw_crystals(rng: np.random.Generator) -> Crystals:
 
 def stage_mask(fields: Fields, inside: NDArray[np.bool_]) -> NDArray[np.bool_]:
     """Crystals laid down in the early stage (white or clear): growth time within the
-    stage's span, not an inclusion. Only in a crystal stone are these the crystals (one
-    early stage per stone; elsewhere the first bands lie there). Hollow moulds carry no
-    growth time and are not found here; the same stone drawn clear has its crystals at
-    the same points (the fill only changes the phase)."""
+    stage's span (always the first early stage), not an inclusion. Only in a crystal
+    stone are these the crystals (elsewhere plumes, moss or the first bands lie there).
+    Hollow moulds carry no growth time and are not found here; the same stone drawn
+    clear has its crystals at the same points (the fill only changes the phase)."""
     t = np.nan_to_num(fields.t_dep, nan=np.inf)
     return inside & (t <= STAGE + 1e-6) & (fields.phase != Phase.INCLUSION)
 

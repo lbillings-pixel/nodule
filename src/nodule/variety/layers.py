@@ -161,10 +161,12 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
             floor_growth_mm(recipe.floor, r), recipe.floor_supply
         )
     inclusions = recipe.inclusions  # plumes or moss: one dendrite stage
-    if inclusions is not None or recipe.crystals is not None:
-        # One early stage (plumes, moss or crystals) over the first PLUME_STAGE of the
-        # run; no silica lies down in it.
-        growth = growth.with_plumes(PLUME_STAGE)
+    early = (inclusions is not None) + (recipe.crystals is not None)
+    if early:
+        # The early stages (crystals, then plumes or moss) each over PLUME_STAGE of the
+        # run; no silica lies down in them. Crystals come first, so a dendrite stage
+        # seeds on the wall and the crystals both (ADR 0018 s.15).
+        growth = growth.with_plumes(early * PLUME_STAGE)
     g = growth.growth_mm
     model: dict[str, object] = {
         "kind": "procedural-growth",
@@ -200,8 +202,9 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
         if recipe.floor_supply < 1:
             silica.append(pulse | {"value": recipe.floor_supply})
     if inclusions is not None:
-        # The dendrite stage over the first PLUME_STAGE of the run (it overrides
-        # every other mode there); the bands that follow wrap the plumes or moss (A3).
+        # The dendrite stage over the last PLUME_STAGE of the early stages (it
+        # overrides every mode but sticks there); the bands that follow wrap the plumes
+        # or moss (A3).
         model |= inclusions.model_params()
         # Plumes stop short of the centre: wall growth to where quartz starts or, in a
         # solid stone, to where the last band lies down (about 1/1.3 of the walls' run,
@@ -218,10 +221,11 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
         stage = {"type": "step", "at": growth.plumes_end, "value": 0.0}
         schedules["dendrite"] = {"base": 1.0, "events": [stage]}
     if recipe.crystals is not None:
-        # agatesim's stick stage in the same slot; bands wrap the crystals at the
-        # wall's full rate (agatesim's fixed rate, kept by the owner, 2026-11-16).
+        # agatesim's stick stage over the first PLUME_STAGE (sticks override dendrites,
+        # so on a stone with both the dendrite stage follows); bands wrap the crystals
+        # at the wall's full rate (agatesim's fixed rate, kept by the owner, 2026-11-16).
         model |= recipe.crystals.model_params()
-        stage = {"type": "step", "at": growth.plumes_end, "value": 0.0}
+        stage = {"type": "step", "at": PLUME_STAGE, "value": 0.0}
         schedules["sticks"] = {"base": 1.0, "events": [stage]}
     palette, iron = palette_of(recipe)
     schedules["iron"] = {"base": iron}

@@ -1250,6 +1250,28 @@ shipboard reports; *speculative* for agate). The owner: skip it.
   basalt; sediment hosts lightly mottled, an assumption).
 - Look sheet before any value is fixed.
 
+**Amended by the owner (2026-11-16, late).**
+- Thunder eggs: no rind at the star cavity's wall (the assumption above is dropped).
+  A rind belongs on the ball's outside, which Nodule does not model, so it is deferred
+  until that surface is modelled. Thunder-egg stones keep the rhyolite host specks.
+- Volcanic stones (vesicle, prolate): the full range above, from the thin green clay
+  rim to the mottled brown-green shell with adhering host. The owner finds basalt rinds
+  more complex and more varied than any other kind. The sources above give the shell end
+  only for thunder-egg outsides, so on basalt it is the owner's eye (an assumption). The
+  look sheet decides. Windows apply to these stones only.
+- Sediment stones (irregular, and the small pebble, both drawn in a sediment host):
+  sometimes a very thin rind, under 1 mm and as thin as 0.05-0.1 mm, light tan to
+  almost beige, with none of the basalt rind's inner structure. This is the owner's
+  observation (*plausible* as a look), with no catalogue source yet. A time-boxed
+  search was offered (chert and flint nodules in carbonate rock are said to carry
+  a pale cortex, but none of that has been read).
+  How often the rind appears and how thick it is are left for the look sheet; Claude
+  proposes defaults there.
+- Drawing: the thin end of the sediment rind is narrower than one whole-face sheet
+  pixel (about 0.06-0.1 mm on irregular stones). It is drawn by the share of each
+  pixel it covers, from distance in world coordinates (so previews match full runs),
+  and shown in a close-up as well.
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

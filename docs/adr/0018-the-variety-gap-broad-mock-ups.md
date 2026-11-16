@@ -1052,12 +1052,14 @@ into one layer of crystals grown on the wall before the bands. Appearance only (
   Ottens does not state the colour of calcite I or zeolite I.
 - Paraná basalt geodes (read 2026-11-16 night, owner-supplied PDFs; helper report
   `notes/n1-reading/item13-downloads-brazil.md`, local). From wall to centre: green
-  celadonite clay rim, banded agate, quartz and amethyst, whitish calcite, then gypsum
-  and rare barite [@gilg2014, pp. 864-865; @morteani2010, p. 933] (*verified*, amethyst
-  geodes at two localities). Anhydrite comes after the agate, in the amethyst stage, as
-  tiny tabular inclusions or large partly silicified bodies [@gilg2014, p. 865]
-  (*verified*). Neither paper reports casts, moulds or needles of any mineral inside the
-  chalcedony. On calcite the two disagree, so both readings stand: calcite seen beside
+  celadonite clay rim, banded agate, quartz and amethyst, whitish calcite
+  [@gilg2014, pp. 864-865; @morteani2010, p. 933] (*verified*, amethyst geodes at two
+  localities); at Ametista only, gypsum and rare barite come last [@gilg2014, p. 865]
+  (*verified*; no sulphates at Artigas, [@morteani2010, pp. 933, 941]). Anhydrite is
+  "rare" and comes after the agate, in the amethyst stage, as tiny tabular inclusions or
+  large partly silicified bodies [@gilg2014, p. 865] (*verified*). Neither paper's text
+  reports casts, moulds or needles of any mineral inside the chalcedony (figures not
+  viewed; Gilg's Fig. 3e shows the silicified anhydrite). On calcite the two disagree, so both readings stand: calcite seen beside
   the rim and agate is late, by its luminescence and fluid inclusions [@gilg2014,
   pp. 864-865] (*verified*); or "in some cases the lower part of the calcite crystals is
   included in the celadonite rim and the banded agate" [@morteani2010, p. 933]
@@ -1249,7 +1251,8 @@ vesicle-free [@proust2007a, Table 2; @proust2007, p. 732] (*verified*, one flow)
 No source gives basalt groundmass grain or colour beside an agate, nor the fill of
 vesicles there: sparse filled holes (white or green) beside the agate are an
 assumption (the question put to the owner said papers give white or green fills;
-they do not).
+they do not). Later reading found green-rimmed vesicles in a geode-bearing flow (see
+"Reading of the owner's downloads" below).
 
 **Pigment bleed into the host.** No agate source describes staining that spreads
 outward into the host; the only analogue is sea-floor basalt fracture halos (ODP
@@ -1322,9 +1325,10 @@ was not obtained: the download was blank (owner). Milliken 1979 was not obtained
   with "a few millimetres" at Ametista [@proust2007]: two readings, not one range. At
   Ametista the rim is greenish clay, celadonite with saponite and nontronite, thickness
   not given [@gilg2014, p. 864] (*verified*). Neither paper says whether the rim is
-  mottled or even, or sharp or graded. No halo in the basalt round the geode: "the
-  absence of reactions rims around the geodes" [@morteani2010, p. 942] (*verified*,
-  Artigas); the reddening and green celadonite in the host run through the whole flow.
+  mottled or even, or sharp or graded. No halo in the basalt round the geode is
+  described; the authors note "the absence of reactions rims around the geodes"
+  [@morteani2010, p. 942] (*verified* as a statement, Artigas; not a measurement); the
+  reddening and green celadonite in the host run through the whole flow.
   Broken wall pieces of basalt with the rim still attached lie inside some geodes
   [@morteani2010, p. 933], so the rim can stay on the host (*plausible*). The freed
   geode's outside is not described, so the brown-green shell end on basalt is still the
@@ -1332,22 +1336,26 @@ was not obtained: the download was blank (owner). Milliken 1979 was not obtained
 - *Basalt host face.* Intersertal, glassy basalt with plagioclase, pyroxene and opaque
   oxide phenocrysts; interstitial light to dark green celadonite; slightly red;
   small vesicles rimmed by dark to very pale green celadonite with agate or iron
-  hydroxide cores [@morteani2010, p. 931] (*verified*, Artigas; no sizes in mm). This
-  now supports green-rimmed filled holes beside the agate; white fills stay an
+  hydroxide cores [@morteani2010, p. 931] (*verified*, Artigas; no sizes in mm). These
+  vesicles are in the host flow; their position relative to the geodes is not stated,
+  and the geode level elsewhere is massive and vesicle-free [@proust2007, p. 732]. So
+  green-rimmed filled holes beside the agate are *plausible*; white fills stay an
   assumption.
 - *Sediment rind, option B.* Quartz geodes from replaced anhydrite have an outer layer
   of fibrous silica: length-slow spherulitic chalcedony, spherules 2-5 mm, grading
   inward to megaquartz [@maliva1987, p. 1056] (*verified*, southern Indiana); "a rind
   of fibrous quartz which grades inward to megaquartz", quartzine spherules, from
   "10% or less of the volume" to nearly all of it [@milliken1977, pp. 40-42]
-  (*verified*, Kentucky and Tennessee). That is about 1 mm or more on 5-10 cm nodules
-  (*plausible*, arithmetic), structured, not plain. Colour not given.
+  (*verified*, Kentucky and Tennessee). At 10 % that is about 1-2 mm on 5-10 cm nodules,
+  and "or less" goes thinner (*plausible*, arithmetic); structured, not plain. Colour
+  not given.
 - *Sediment rind, option A.* Chalk-flint cortex by type: "very thin (under 1 mm) and
   whitish" with an "abrupt transition to the flint", or 1 mm, or 2-3 mm and thicker,
-  often with a white zone under it [@degrooth2017, pp. 2-4] (*verified*, flint). One
-  type's cortex is "very thin (under 1 mm) and either white (primary geological
-  position) or beige (residual loams)" [@degrooth2017, p. 12]; at another, iron from
-  overlying sands turned the outer part brown [@degrooth2017, p. 5] (*verified*, flint).
+  often with a white zone under it [@degrooth2017, pp. 2-4 of the appendix PDF]
+  (*verified*, flint). One type's cortex is "very thin (under 1 mm) and either white (on
+  material from a primary geological position) or beige (on material from residual
+  loams)" [@degrooth2017, p. 12 of the PDF]; at another, iron from sands in the clays
+  stained the outer part brown [@degrooth2017, p. 5 of the PDF] (*verified*, flint).
   This is the nearest source to the owner's thin tan rind, on flint, not agate.
 - *Other thin layers seen.* A zone of coarse calcite about 0.3-0.6 mm wide between host
   and nodule in some geodes [@milliken1977, p. 63, Fig. 46] (*verified* that it exists;

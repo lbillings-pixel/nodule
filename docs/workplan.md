@@ -48,7 +48,9 @@ before any statistics.
   (calcite?) and fine needles (zeolite?) grown on the wall before the bands
   (agatesim's stick stage, wrapped at full rate), left white, turned to clear
   silica or dissolved to moulds. Reading done; probe and look sheet 1 done (all
-  looks accepted). Next: recipe wiring, check with negative control, ADR section.
+  looks accepted). Recipe wiring (`nodule.crystals`, 1 stone in 6, an assumption),
+  centre and floor compensation, wrap check with its negative control and ADR 0018
+  s.15 done 2026-11-16; look sheet 2 (`sheet --crystals`) waits for the owner.
   Still open afterwards: late white patches that cut across bands (a
   mottle-like layer), true radial needle sprays (would need agatesim).
 

@@ -15,9 +15,10 @@ from agatesim.grid import FloatArray
 from numpy.typing import NDArray
 
 from nodule._scipy import distance_inside, label_patches
+from nodule.crystals import stage_mask
 from nodule.specimen import Specimen, SpecimenCut
 from nodule.variety.cracks import LONG_RADIUS
-from nodule.variety.layers import BandRoughness, VarietyLayers
+from nodule.variety.layers import BandRoughness, Growth, VarietyLayers
 from nodule.variety.recipe import FractureLayer
 
 
@@ -350,6 +351,51 @@ def fold_share(
     w0, w1 = gt(warp(pts, gt)), gt(warp(ahead, gt))
     folded = rising & np.isfinite(w0) & np.isfinite(w1) & (w1 < w0)
     return float(folded.sum() / rising.sum())
+
+
+WRAP_RING_PX = 2  # the ring of band pixels judged round each crystal
+WRAP_TOLERANCE_MM = 0.15  # band growth allowed beyond the ring's width (wobble, steps)
+WRAP_LEAST_WIDTH_PX = 2.0  # crystals narrower than this cannot be judged
+
+
+def wrap_share(
+    grown_mm: FloatArray,
+    crystal: NDArray[np.bool_],
+    band: NDArray[np.bool_],
+    spacing_mm: float,
+    ring_px: int = WRAP_RING_PX,
+    tolerance_mm: float = WRAP_TOLERANCE_MM,
+) -> float:
+    """Early-crystal check (ADR 0018 s.15): of the band pixels within ring_px of a
+    crystal, the share laid down within the ring's width (plus a tolerance) of the
+    start of banding. Bands that grew round a crystal touch it with their first
+    layers (near 1); a crystal pasted on finished bands cuts across later ones, so the
+    ring along its flanks holds bands grown up to its length (well under 1).
+    `grown_mm` is how far the bands had grown when each pixel lay down; `band` marks
+    the wall bands judged. NaN without such pixels."""
+    near = distance_inside(~crystal) <= ring_px
+    ring = near & ~crystal & band & np.isfinite(grown_mm)
+    if not ring.any():
+        return math.nan
+    return float((grown_mm[ring] <= ring_px * spacing_mm + tolerance_mm).mean())
+
+
+def crystal_wrap(cut: SpecimenCut, growth: Growth, crystal_mm: float | None = None) -> float:
+    """`wrap_share` of a crystal stone's cut (white or clear crystals; judge a hollow
+    stone on its clear twin), against the wall bands (a floor buries crystals rather
+    than wraps them, so it is left out). NaN without crystals, or where they are
+    narrower than WRAP_LEAST_WIDTH_PX on this cut (`crystal_mm`, a crystal's width, if
+    known)."""
+    f = cut.fields
+    crystal = stage_mask(f, cut.inside)
+    if not crystal.any():
+        return math.nan
+    if crystal_mm is not None and crystal_mm < WRAP_LEAST_WIDTH_PX * cut.spacing_mm:
+        return math.nan
+    t = np.asarray(f.t_dep, dtype=np.float64)
+    grown = (t - growth.start) * growth.growth_mm
+    band = cut.inside & (f.phase == Phase.CHALCEDONY) & ~crystal & (t >= growth.start)
+    return wrap_share(grown, crystal, band, cut.spacing_mm)
 
 
 def stray_quartz(cut: SpecimenCut) -> float:

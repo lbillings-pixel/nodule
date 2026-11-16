@@ -35,6 +35,7 @@ from nodule.variety.checks import (
     crack_mix,
     crack_traces,
     crack_wiggle,
+    crystal_wrap,
     flat_bands,
     floor_bands,
     fold_share,
@@ -46,6 +47,7 @@ from nodule.variety.checks import (
     shift_by_depth,
     stray_quartz,
     vertical_share,
+    wrap_share,
 )
 from nodule.variety.cracks import (
     CAVITY_MARGIN_MM,
@@ -71,6 +73,7 @@ from nodule.variety.draw import (
     CLEAN_CUT,
     CUT_TRIES,
     ODD_CUTS,
+    chalcedony_mm,
     clean_cut,
     crack_cut_angle,
     cut_obliqueness,
@@ -80,6 +83,7 @@ from nodule.variety.draw import (
     thunder_egg_cut,
 )
 from nodule.variety.layers import (
+    CENTRE_SHIFT,
     FRAME_LATTICE_MM,
     FRAME_TURN,
     RIDGE_MEAN,
@@ -88,6 +92,7 @@ from nodule.variety.layers import (
     Growth,
     VarietyLayers,
     build,
+    centre_shift_mm,
     cut_of,
     floor_growth_mm,
     growth_for,
@@ -160,6 +165,7 @@ from nodule.variety.recipe import (
 __all__ = [
     "CAVITY_MARGIN_MM",
     "CENTRE_SHARES",
+    "CENTRE_SHIFT",
     "CLEAN_CUT",
     "COLOUR_SHARES",
     "CRACK_CUT_ANGLE",
@@ -232,12 +238,15 @@ __all__ = [
     "Warp",
     "band_swelling",
     "build",
+    "centre_shift_mm",
+    "chalcedony_mm",
     "clean_cut",
     "crack_bend",
     "crack_cut_angle",
     "crack_mix",
     "crack_traces",
     "crack_wiggle",
+    "crystal_wrap",
     "cut_obliqueness",
     "cut_of",
     "draw_fractures",
@@ -274,4 +283,5 @@ __all__ = [
     "unit_vector",
     "vertical_share",
     "volume_config",
+    "wrap_share",
 ]

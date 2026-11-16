@@ -3,9 +3,10 @@
 Screening only, for the owner's eye before any render: chalcedony takes agatesim's
 stand-in colour (`chalcedony_colour`, as `nodule.descriptors.stand_in_rgb`), quartz
 a glassy grey shaded per grain (tinted for amethyst or smoky centres), open space
-near black, plumes by their tint (`nodule.plumes`), and the host a flat colour by
-setting. No glow, sub-banding or rind: a render differs. Appearance only (ADR
-0002); every colour here is `effective`.
+near black, plumes by their tint (`nodule.plumes`), white early crystals as milky
+chalcedony (`nodule.crystals`), and the host a flat colour by setting. No glow,
+sub-banding or rind: a render differs. Appearance only (ADR 0002); every colour here is
+`effective`.
 
 Run: `uv run --no-sync python -m nodule.sheet --seed 1 --out runs/variety-sheet`.
 Reports time and peak traced memory per stone (CLAUDE.md).
@@ -74,12 +75,16 @@ def extent(cut_shape: tuple[int, int], spacing_mm: float) -> float:
     return max(cut_shape) * spacing_mm
 
 
-def plume_recipes(seed: int, n: int, moss: bool = False) -> list[StoneRecipe]:
-    """The first n plume (or moss) stones of the sheets from `seed` on (ADR 0018 s.13,
-    s.14), for a look sheet of plumes or moss alone."""
+def plume_recipes(
+    seed: int, n: int, moss: bool = False, kind: str | None = None
+) -> list[StoneRecipe]:
+    """The first n plume, moss or early-crystal stones (`kind`; `moss` is the older
+    switch) of the sheets from `seed` on (ADR 0018 s.13-s.15), for a look sheet of that
+    feature alone."""
+    kind = kind or ("moss" if moss else "plumes")
     found: list[StoneRecipe] = []
     while len(found) < n:
-        found += [r for r in draw_sheet(seed) if (r.moss if moss else r.plumes) is not None]
+        found += [r for r in draw_sheet(seed) if getattr(r, kind) is not None]
         seed += 1
     return found[:n]
 
@@ -301,6 +306,11 @@ def main(argv: list[str] | None = None) -> None:
         "--moss", action="store_true", help="instead, n moss stones from sheets seed on"
     )
     parser.add_argument(
+        "--crystals",
+        action="store_true",
+        help="instead, n early-crystal stones from sheets seed on",
+    )
+    parser.add_argument(
         "--pairs",
         type=float,
         nargs=2,
@@ -311,9 +321,10 @@ def main(argv: list[str] | None = None) -> None:
     t0 = time.perf_counter()
     if args.roughness_trial:
         path = roughness_trial(args.roughness_trial, args.px, args.out)
-    elif args.plumes or args.moss:
-        recipes = plume_recipes(args.seed, args.n, moss=args.moss)
-        name = f"sheet-{'moss' if args.moss else 'plumes'}-seed{args.seed}.png"
+    elif args.plumes or args.moss or args.crystals:
+        kind = "crystals" if args.crystals else ("moss" if args.moss else "plumes")
+        recipes = plume_recipes(args.seed, args.n, kind=kind)
+        name = f"sheet-{kind}-seed{args.seed}.png"
         path = make_sheet(args.seed, args.n, args.px, args.out, recipes=recipes, name=name)
     elif args.dust:
         path = dust_sheet(args.seed, args.px, args.out)

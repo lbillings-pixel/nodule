@@ -20,6 +20,7 @@ from agatesim.volume.models import SmoothNoise3
 from agatesim.volume.solids import BoolArray, Solid
 from numpy.typing import NDArray
 
+from nodule.crystals import stage_mask, white_translucency
 from nodule.dust import (
     BLOB_STRENGTH,
     PIGMENT_AT,
@@ -50,6 +51,26 @@ from nodule.variety.recipe import (
     inradius,
     unit_vector,
 )
+
+# How far early crystals move the bands inward, per mm of crystal length, on average
+# over the wall: the centre (quartz or open) shrinks by about this much without the
+# compensation in `growth_for`. Measured per habit on sheet 0 stone 0 (quartz-filled,
+# 0.06 mm cut; equivalent radius 9.05 mm without crystals, less 1.68, 0.90 and 3.39 mm
+# with them; ADR 0018 s.15). Near the crystals' reach, length plus tip radius
+# (1 + 1 / elongation): the bands' front runs along the crystal tips. `effective`.
+CENTRE_SHIFT: dict[str, float] = {"small blades": 1.12, "fine needles": 1.0, "large blades": 1.13}
+# A floor settles after the crystal stage, and agatesim sizes it as growth times the
+# open surface, which the crystals enlarge: at the same growth the floor holds this many
+# times the volume (sheet 0 stone 7: drawn height 0.40 rose to 0.60, 0.69 and 0.61;
+# divided by these factors, 0.41 for each habit, and on four floor stones with their
+# drawn crystals within 0.03 of the stone without; ADR 0018 s.15). The floor's growth
+# is divided by it, so it keeps its drawn height.
+# Measured at the habits' own sizes; smaller crystals add relatively more surface, so
+# capped ones leave the floor a little high. `effective`.
+FLOOR_VOLUME: dict[str, float] = {"small blades": 1.8, "fine needles": 2.1, "large blades": 1.85}
+# Above a floor, the floor's top bounds much of the cavity and carries no crystals, so
+# the bands there are not shifted: a floor stone takes this share of the shift.
+FLOOR_SHIFT_SHARE = 0.5
 
 
 @dataclass(frozen=True)
@@ -90,10 +111,13 @@ class Growth:
         return Growth(g, quartz_at, span + (1 - span) * self.start, span)
 
 
-def growth_for(recipe: StoneRecipe, r: float) -> Growth:
+def growth_for(recipe: StoneRecipe, r: float, shift_mm: float = 0.0) -> Growth:
     """Chalcedony to (1 - w) r, then quartz (assumes the agatesim growth rate
-    scales with supply, as its quartz-geode preset does)."""
+    scales with supply, as its quartz-geode preset does). `shift_mm` is how far
+    early crystals move the bands inward (`centre_shift_mm`): the chalcedony grows
+    that much less, so the centre keeps its width (at most half the chalcedony)."""
     w = recipe.centre_width
+    chalcedony = (1 - w) * r - min(shift_mm, 0.5 * (1 - w) * r)
     match recipe.centre:
         case "solid":
             # 1.3 r fills any cavity whose inradius is at most r; the last band
@@ -101,13 +125,23 @@ def growth_for(recipe: StoneRecipe, r: float) -> Growth:
             return Growth(1.3 * r, None)
         case "quartz-filled":
             g = 3.0 * r  # quartz at 0.3 supply then outgrows the centre for w <= 0.6
-            return Growth(g, (1 - w) * r / g)
+            return Growth(g, chalcedony / g)
         case "quartz-lined":
             # The run ends as the lining reaches its thickness, leaving the rest
             # open (agatesim allows no stage after quartz, so supply cannot stop).
             quartz = recipe.lining * w * r
-            g = (1 - w) * r + quartz / QUARTZ_SUPPLY
-            return Growth(g, (1 - w) * r / g)
+            g = chalcedony + quartz / QUARTZ_SUPPLY
+            return Growth(g, chalcedony / g)
+
+
+def centre_shift_mm(recipe: StoneRecipe) -> float:
+    """How far a stone's early crystals move its bands inward, on average over the
+    wall (measured per habit, `CENTRE_SHIFT`); 0 without crystals."""
+    c = recipe.crystals
+    if c is None:
+        return 0.0
+    share = FLOOR_SHIFT_SHARE if recipe.floor else 1.0
+    return share * CENTRE_SHIFT[c.habit] * c.length_mm
 
 
 def floor_growth_mm(share: float, r: float) -> float:
@@ -122,17 +156,21 @@ def floor_growth_mm(share: float, r: float) -> float:
 def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[VolumeConfig, Growth]:
     solid = recipe.solid.build()
     r = inradius(solid)
-    growth = growth_for(recipe, r)
+    shift = centre_shift_mm(recipe)
+    growth = growth_for(recipe, r, shift)
     if recipe.floor:
         # The walls are sized to the cavity left above the floor: in a sphere of
         # radius r, a floor at a share f of the height leaves room for a sphere of
         # radius r (1 - f) exactly; for other outlines an approximation.
         left = r * max(1.0 - recipe.floor, 0.1)
-        growth = growth_for(recipe, left).after_floor(
-            floor_growth_mm(recipe.floor, r), recipe.floor_supply
+        volume = 1.0 if recipe.crystals is None else FLOOR_VOLUME[recipe.crystals.habit]
+        growth = growth_for(recipe, left, shift).after_floor(
+            floor_growth_mm(recipe.floor, r) / volume, recipe.floor_supply
         )
     inclusions = recipe.inclusions  # plumes or moss: one dendrite stage
-    if inclusions is not None:
+    if inclusions is not None or recipe.crystals is not None:
+        # One early stage (plumes, moss or crystals) over the first PLUME_STAGE of the
+        # run; no silica lies down in it.
         growth = growth.with_plumes(PLUME_STAGE)
     g = growth.growth_mm
     model: dict[str, object] = {
@@ -186,6 +224,12 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
         )
         stage = {"type": "step", "at": growth.plumes_end, "value": 0.0}
         schedules["dendrite"] = {"base": 1.0, "events": [stage]}
+    if recipe.crystals is not None:
+        # agatesim's stick stage in the same slot; bands wrap the crystals at the
+        # wall's full rate (agatesim's fixed rate, kept by the owner, 2026-11-16).
+        model |= recipe.crystals.model_params()
+        stage = {"type": "step", "at": growth.plumes_end, "value": 0.0}
+        schedules["sticks"] = {"base": 1.0, "events": [stage]}
     palette, iron = palette_of(recipe)
     schedules["iron"] = {"base": iron}
     model["palette"] = palette
@@ -378,8 +422,18 @@ class VarietyLayers:
         )
         t_src = fields.t_smooth if fields.t_smooth is not None else fields.t_dep
         t = np.nan_to_num(t_src, nan=0.0).astype(np.float64)
-        chal = inside & (phase == Phase.CHALCEDONY)
-        quartz = inside & (phase == Phase.QUARTZ)
+        early = np.zeros(len(points), dtype=bool)
+        if rec.crystals is not None and rec.crystals.fill == "white":
+            # White remnants: milky, unstained, a little varied per crystal (the white
+            # is an assumption, set by the owner's eye; ADR 0018 s.15). They take no
+            # later stain below, but a crack may still cross them.
+            early = stage_mask(fields, inside) & (phase == Phase.QUARTZ)
+            phase[early] = Phase.CHALCEDONY
+            trans[early] = white_translucency(fields.grain[early])
+            imp[early] = 0.0
+            pig[early] = Pigment.IRON
+        chal = inside & (phase == Phase.CHALCEDONY) & ~early
+        quartz = inside & ((phase == Phase.QUARTZ) | early)
 
         depth = self.depth(t)
 

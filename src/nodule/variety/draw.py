@@ -13,6 +13,7 @@ from agatesim.volume.config import SliceConfig
 from agatesim.volume.slicing import Plane
 from agatesim.volume.solids import Rotated, Solid, SphereUnion
 
+from nodule.crystals import crystal_plan, draw_crystals
 from nodule.dust import (
     BLOB_SHARE,
     LINE_SHARE,
@@ -127,7 +128,7 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     moss_rng = np.random.default_rng(root.spawn(1)[0])
     mossy = moss_plan(moss_rng, outlines, plumed)
     moss_streams = moss_rng.spawn(n)
-    return [
+    stones = [
         r.model_copy(
             update={
                 "moss": draw_moss(
@@ -143,6 +144,26 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
         else r
         for i, r in enumerate(stones)
     ]
+    # Early crystals from a stream spawned after the moss's, on stones with neither
+    # plumes nor moss (ADR 0018 s.15).
+    crystal_rng = np.random.default_rng(root.spawn(1)[0])
+    crystal = crystal_plan(crystal_rng, outlines, plumed | mossy)
+    crystal_streams = crystal_rng.spawn(n)
+    return [
+        r.model_copy(
+            update={"crystals": draw_crystals(crystal_streams[i]).capped(chalcedony_mm(r))}
+        )
+        if i in crystal
+        else r
+        for i, r in enumerate(stones)
+    ]
+
+
+def chalcedony_mm(recipe: StoneRecipe) -> float:
+    """Rough thickness of a stone's chalcedony from the wall (mm): the inradius left
+    above any floor, less the centre."""
+    r = inradius(recipe.solid.build()) * max(1.0 - recipe.floor, 0.1)
+    return (1.0 - recipe.centre_width) * r
 
 
 def dust_plan(plan: np.random.Generator, outlines: list[str]) -> list[DustForms]:

@@ -15,6 +15,7 @@ from agatesim.volume.config import SliceConfig, SolidConfig
 from agatesim.volume.solids import Solid
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from nodule.crystals import Crystals
 from nodule.dust import (
     Dust,
 )
@@ -239,12 +240,16 @@ class StoneRecipe(BaseModel):
     dust: Dust | None = None  # band-following dust (`nodule.dust`, ADR 0018 s.11)
     plumes: Plumes | None = None  # grown before the bands (`nodule.plumes`, ADR 0018 s.13)
     moss: Moss | None = None  # grown down before the bands (`nodule.moss`, ADR 0018 s.14)
+    # on the wall before the bands (`nodule.crystals`, ADR 0018 s.15)
+    crystals: Crystals | None = None
     cut: SliceConfig
 
     @model_validator(mode="after")
     def _one_dendrite_stage(self) -> StoneRecipe:
         if self.plumes is not None and self.moss is not None:
             raise ValueError("plumes or moss, not both: agatesim runs one dendrite stage")
+        if self.crystals is not None and self.inclusions is not None:
+            raise ValueError("early crystals or plumes or moss, one: nodule has one early stage")
         return self
 
     @property
@@ -278,6 +283,8 @@ class StoneRecipe(BaseModel):
             parts.append(self.dust.summary())
         if self.inclusions is not None:
             parts.append(self.inclusions.summary())
+        if self.crystals is not None:
+            parts.append(self.crystals.summary())
         parts.append(f"bands {self.band_mm:.2f} mm")
         return ", ".join(parts)
 

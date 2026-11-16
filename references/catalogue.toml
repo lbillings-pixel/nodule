@@ -3440,3 +3440,36 @@ licence = "publisher copyright; cite only"
 checked = "full-text"
 topics = ["moss", "filaments", "biosignatures", "morphometry"]
 notes = "Full text read 2026-11-09 (notes/n1-reading/hofmann2008-reading.md): Table 2 morphometry, fabrics (masses, mats, drapes), Fe-hydroxide crusts, filaments sticking out of Uruguay-type layers (p. 110). Abstract: tubular filaments of median diameter 1.6 µm at high density, as irregular masses, matted fabrics and stalactite-like drapes; abiogenic forms differ in width distribution and have lower curvature and fewer direction changes."
+
+# --- Early crystals: wall calcite and zeolites (reading pass, 2026-11-16) -----
+
+[[references]]
+id = "ottens2019"
+kind = "article"
+authors = ["Ottens, B.", "Götze, J.", "Schuster, R.", "Krenn, K.", "Hauzenberger, C.", "Benkó, Z.", "Vennemann, T."]
+year = 2019
+title = "Exceptional Multi Stage Mineralization of Secondary Minerals in Cavities of Flood Basalts from the Deccan Volcanic Province, India"
+venue = "Minerals 9(6), 351"
+doi = "10.3390/min9060351"
+url = "https://www.mdpi.com/2075-163X/9/6/351"
+access = "open"
+licence = "CC-BY-4.0"
+checked = "full-text"
+topics = ["paragenesis", "calcite", "zeolite", "mordenite", "pseudomorph", "timing", "filaments"]
+notes = "Read 2026-11-16 in Chrome (HTML, no page numbers), in two passes: all text and captions; figure images (incl. the Fig. 17 sequence chart) not looked at. Setting: large cavities (to 50-100 cm) in one Savda flow core, not banded nodules; s. 5.8 limits the model to those. Calcite I 'always overgrown by a 0.5 to 20 mm thick chalcedony layer' (s. 4.2.3), preserved, only corroded at the contact; zeolite I crystals at most 0.5 mm (s. 4.2.5), under 1 mm (s. 4.2.7); no size for mordenite needles; colour of calcite I and zeolite I not stated; frequencies qualitative only. Large Deccan cavities: clay lining, then calcite I (bladed twinned scalenohedra, to 15 cm) and zeolite I (mordenite needles, heulandite, stilbite) all overgrown by a 0.5-20 mm chalcedony crust that corrodes calcite at the contact (Figs 2, 12c-d); then calcite II, heulandite, stilbite, calcite III, apophyllite. Mordenite needles enclosed in chalcedony/quartz at the wall (Figs 5b, 13b). Crusts, not banded nodules. Authors checked against the article header and acknowledgments (Benkó, Z.; seven authors). Helper report: notes/n1-reading/white-needle-reading.md."
+
+[[references]]
+id = "powolny2026"
+kind = "article"
+authors = ["Powolny, T.", "Dumańska-Słowik, M.", "Asadi, A.", "Hosseinzadeh, M. R.", "Krzątała, A."]
+year = 2026
+title = "Resolving colouration mechanisms in gem-quality chalcedony: mineralogical and spectroscopic constraints"
+venue = "Mineralogy and Petrology 120, 1-22 (online 2025-09-22)"
+doi = "10.1007/s00710-025-00953-x"
+url = "https://link.springer.com/article/10.1007/s00710-025-00953-x"
+access = "open"
+licence = "CC-BY (check)"
+checked = "sections"
+sections_read = ["abstract", "introduction", "materials", "results", "discussion (nature of colour; formation)"]
+topics = ["white", "opal", "sepiolite", "calcite-mould", "zeolite", "colour"]
+notes = "Read 2026-11-16 in Chrome. Iranian chalcedony bodies: white zones are opal + dispersed sepiolite (+ dolomite), interpenetrating with translucent microquartz, edges abrupt or diffuse; two origins offered (separate stage vs partial recrystallisation of an opal-rich body). Soft white sepiolite cortex on type II. Banded type IV: opal-CT rim <=1 mm with random tabular Na-heulandite; early scalenohedral calcite partly dissolved (Fig. 2D). Helper report: notes/n1-reading/white-needle-reading.md."

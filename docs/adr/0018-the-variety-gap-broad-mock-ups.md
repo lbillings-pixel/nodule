@@ -1016,6 +1016,94 @@ peak 0.40-0.41 GB; the look sheet took 803 s (`sheet --moss`).
 start heights above, moss grows from the upper walls only. Not rendered yet through the
 renderer (ADR 0019); the preview dulls moss inside its sheath.
 
+### 15. Early crystals: blades and needles the bands wrap (2026-11-16)
+
+Work plan items 9 (white patches) and 10 (needles), merged by the owner (2026-11-16)
+into one layer of crystals grown on the wall before the bands. Appearance only (ADR
+0002); every value is `effective` unless a source is cited. Reading:
+`notes/n1-reading/white-needle-reading.md` (local; helper report).
+
+**Sources and grades.**
+- In large Deccan cavities, wall calcite and zeolites were "always overgrown" by a
+  chalcedony crust 0.5-20 mm thick [@ottens2019, s. 4.2.3] (*verified* there); early
+  zeolites are under 1 mm (s. 4.2.5, 4.2.7) (*verified*). The paper describes crusts in
+  one lava flow's large cavities, not banded nodules, so concentric agate bands draping
+  early crystals in nodules is *plausible* only.
+- Silica pseudomorphs after calcite, zeolites and other minerals are frequent in agate,
+  the originals mostly replaced and known by crystal shape alone [@goetze2020, p. 27]
+  (*verified*); early scalenohedral calcite, partly dissolved, is shown by [@powolny2026, Fig. 2D] (*verified*), the nearest source for hollow moulds.
+- A late kind also exists: calcite replacing banded chalcedony across the bands
+  [@goetze2020, Fig. 21b-c] (*verified*, one figure). It is not drawn here. Claude told
+  the owner it is rarer than the early kind: that was an overstatement, since no source
+  gives either frequency (an ASSUMPTION at most).
+- White colour of a remnant: no source gives it (an ASSUMPTION, set by the owner's eye).
+  Ottens does not state the colour of calcite I or zeolite I.
+
+**Probe and the owner's look sheet 1** (`runs/crystal-probe/`, local). agatesim's stick
+stage (rods of length L and radius L / elongation from points on the wall, then wrapped
+by the bands at the wall's full rate) run in nodule's plume slot. The owner judged all
+six rows realistic: small blades (spacing 2.5 mm, length 1.5 mm, elongation 6, axis
+scatter 30 degrees) left white, turned to clear silica or dissolved to hollow moulds;
+fine needles (1.0, 0.9, 12, 45) white or hollow; large blades (4, 3, 8, 30) white. The
+owner kept agatesim's full-rate wrap (no agatesim change).
+
+**In the recipes (`nodule.crystals`).**
+- About 1 stone in 6 (2 of 12), never the pebble and never with plumes or moss
+  (`CRYSTAL_SHARE`, an ASSUMPTION; to the owner). One early stage per stone: agatesim
+  could run a stick and a dendrite stage in turn, but nodule's `Growth` takes one, and
+  the two together are untried (option for the owner).
+- Habit: small blades 0.4, fine needles 0.4, large blades 0.2 (ASSUMPTION). Fill only
+  among those the owner saw: blades white 0.5, clear 0.25, hollow 0.25; needles white or
+  hollow, even; large blades white (ASSUMPTION).
+- Size: a log-uniform factor 0.8-1.25 on spacing and length together (ASSUMPTION); and
+  crystals reach at most a quarter of the chalcedony's thickness (`MOST_REACH_SHARE`),
+  shrinking spacing with length so the look stays.
+- Drawn from a stream spawned after the moss's: every earlier draw stands (checked on
+  sheets 0-3, all other stones identical).
+- White remnants: the crystal points become milky chalcedony (translucency 0.04-0.10 per
+  crystal, about the probe's chalky white), take no mottle, rim stain or dust, but a
+  crack may cross them. Clear: agatesim's quartz pseudomorph as it stands. Hollow:
+  agatesim's moulds.
+
+**Centre and floor compensation (measured).**
+- The bands' front runs along the crystal tips, so a quartz or open centre shrinks by
+  about the crystals' reach. Sheet 0 stone 0 (quartz-filled, cut at 0.06 mm): centre
+  equivalent radius 9.05 mm, 7.37 with small blades, 8.15 with fine needles, 5.66 with
+  large blades: shifts of 1.12, 1.00 and 1.13 x L, close to L (1 + 1 / elongation).
+  The chalcedony now grows that much less (`CENTRE_SHIFT`): 8.84-8.85 mm with either
+  blade; drawn stones without floors 1.25 against 1.23 mm and 5.62 against 5.55 mm.
+- A floor settles after the crystal stage, and agatesim sizes a settling floor as
+  growth times the open surface, which crystals enlarge: on stone 0-7 a floor drawn at
+  0.40 of the height rose to 0.60-0.69 (on stone 0-1 needles filled the whole stone
+  with floor, and the quartz centre vanished). The floor's growth is now divided by a
+  measured factor (`FLOOR_VOLUME`: 1.8 small blades, 2.1 needles, 1.85 large blades):
+  floors at 0.41 for 0.40, 0.51 for 0.49, 0.49, 0.51 and 0.28 as drawn, on five stones.
+  The look sheet 1 floor stone (probe stone 7) had this too-high floor.
+- Above a floor, whose top carries no crystals, half the centre shift
+  (`FLOOR_SHIFT_SHARE`): centre areas 0.8-1.5 x the stone without crystals on four
+  floor stones (these centres are small, 0.8-2.7 mm), against 0-7 x at full or no shift.
+- Smaller (capped or jittered) crystals add relatively more surface, so their floors
+  sit a little high; not corrected.
+
+**Check (`variety.crystal_wrap`, `wrap_share`).** Of the wall-band pixels within two
+pixels of a crystal, the share laid down within the ring's width plus 0.15 mm of the
+start of banding: bands that grew round a crystal touch it with their first layers.
+Negative control (from the reading's rule): the same crystal outline pasted on finished
+bands. A built solid stone with small blades scores 1.0; the same stone without
+crystals, the outline pasted on, 0.19 (0.16-0.24 for rings of 1-3 px); synthetic blades
+score above 0.9 wrapped and below 0.5 pasted. Floor pixels are left out (a floor buries
+crystals). Crystals under two pixels wide are not judged (NaN). Hollow moulds carry no
+growth time: judge their clear twin (same points).
+
+**Costs.** Stones with blades build and cut in 20-30 s at 0.06 mm; fine needles up to
+130 s (sheet 0 stone 0), as in the probe. The look sheet: see the log
+(`runs/variety-sheet-crystals/`).
+
+**Open, for the owner.** The share (1 in 6), the fill and habit mixes; crystals with
+plumes or moss on one stone; the white for the renderer (not wired: the render takes
+white remnants as milky chalcedony unless told otherwise; untested); late patches that
+cut across bands; true radial needle sprays (would need agatesim).
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

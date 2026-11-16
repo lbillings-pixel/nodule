@@ -56,12 +56,22 @@ before any statistics.
 
 ## Batch 3: medium (one or two sessions each)
 
-- [ ] 11. (recipes done with item 8; renderer and plume share left) Moss in the recipes
+- [ ] 11. (recipes done with item 8; moss rendered 2026-11-16, sheet 0 stones 9 and 11,
+  `runs/variety-render-moss/`, local: green tufts and red drapes show in their sheaths;
+  waits for the owner's eye; amethyst centres render grey in the look, seen, not fixed;
+  plume share left for the owner) Moss in the recipes
   and the renderer; then drop plume frequency from
   1 in 4 to about 1 in 8-10 (owner, 2026-11-09). The owner's 3/4-up plume
   split depends on moss growing downward.
 - [ ] 12. Previews made from the renderer's own colour model, so the owner's
-  eye on sheets carries over to renders.
+  eye on sheets carries over to renders. Measured 2026-11-16 (7 pixel-aligned
+  preview/look pairs, leave one stone out; `runs/preview-vs-render/`, local): the
+  preview sits a median dE 11-20 from the look; neither one colour map nor a lookup on
+  the cut's own fields (phase, pigment, translucency, impurity, also blurred over 1 mm)
+  closes it (dE 10-20 after). So no cheap fix: the gap comes from what the fields do
+  not hold (the look's per-stone exposure, each pigment's optics, light from beneath).
+  Options: model the renderer's materials in the preview (1-2 sessions), or judge looks
+  on quick renders (whole face 1.5-5.5 min a stone on the GPU).
 - [ ] 13. Host rind, host speckle and pigment bleed into the host.
 - [ ] 14. Black manganese dendrites in band partings.
 - [ ] 15. Eyes and escape tubes.

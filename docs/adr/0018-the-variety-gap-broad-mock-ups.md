@@ -1084,6 +1084,13 @@ owner kept agatesim's full-rate wrap (no agatesim change).
   floor stones (these centres are small, 0.8-2.7 mm), against 0-7 x at full or no shift.
 - Smaller (capped or jittered) crystals add relatively more surface, so their floors
   sit a little high; not corrected.
+- The same happens with plumes and moss (measured 2026-11-16, not changed: those looks
+  are the owner's): floor share with and without the inclusions, plume stones 2-1 0.35
+  against 0.33 and 5-4 0.42 against 0.37; moss stones 5-7 0.66 against 0.55, and 6-5
+  1.00 against 0.47 (the floor fills the whole stone). Moss has much surface and no
+  constant factor fits. Options for the owner: a per-stone correction, the early stage
+  after the floor (exact, but nothing then hangs into the floor region), or an agatesim
+  change sizing a settling floor by the wall's surface alone (needs approval).
 
 **Check (`variety.crystal_wrap`, `wrap_share`).** Of the wall-band pixels within two
 pixels of a crystal, the share laid down within the ring's width plus 0.15 mm of the
@@ -1091,17 +1098,26 @@ start of banding: bands that grew round a crystal touch it with their first laye
 Negative control (from the reading's rule): the same crystal outline pasted on finished
 bands. A built solid stone with small blades scores 1.0; the same stone without
 crystals, the outline pasted on, 0.19 (0.16-0.24 for rings of 1-3 px); synthetic blades
-score above 0.9 wrapped and below 0.5 pasted. Floor pixels are left out (a floor buries
+score above 0.9 wrapped and below 0.5 pasted. On the 8 stones of look sheet 2 and the
+first thunder-egg crystal stone (sheets 0-11; floors, lobed and rough bands, cracks;
+the hollow stone on its clear twin) every score is 1.000, at 0.06 mm (needles 2-3 px
+wide). Floor pixels are left out (a floor buries
 crystals). Crystals under two pixels wide are not judged (NaN). Hollow moulds carry no
 growth time: judge their clear twin (same points).
 
 **Costs.** Stones with blades build and cut in 20-30 s at 0.06 mm; fine needles up to
-130 s (sheet 0 stone 0), as in the probe. The look sheet: see the log
-(`runs/variety-sheet-crystals/`).
+130 s (sheet 0 stone 0), as in the probe. Look sheet 2 (`sheet --crystals --seed 0
+--n 8`, the first 8 crystal stones with all their other features): 256 s, 16-99 s a
+stone, peak traced memory 0.18-0.39 GB (`runs/variety-sheet-crystals/`, local). Needles
+are 1-2 px wide on the sheet, so 8 mm close-ups at 0.03 mm where crystals are densest
+sit beside it (`close/crystal-close-ups.png`).
 
 **Open, for the owner.** The share (1 in 6), the fill and habit mixes; crystals with
-plumes or moss on one stone; the white for the renderer (not wired: the render takes
-white remnants as milky chalcedony unless told otherwise; untested); late patches that
+plumes or moss on one stone; the white in renders (the renderer takes white remnants
+as milky chalcedony, through the layers: rendered 2026-11-16, `runs/variety-render-moss/`,
+local; on a neutral stone, sheet 1 stone 6, small blades merge with the milky first
+bands, showing only as the bands' bumps; fine needles, 0.15 mm wide, vanish on the
+0.1 mm render grid of a whole face, sheet 0 stone 2); late patches that
 cut across bands; true radial needle sprays (would need agatesim).
 
 ## Limits

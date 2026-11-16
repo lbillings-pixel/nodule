@@ -65,6 +65,10 @@ PLUME_STOPS: tuple[tuple[float, tuple[tuple[Pigment, float], ...]], ...] = (
 # (pick B, 2026-11-15; 10 before, which rendered the plumes near black). Over a ~0.2 mm
 # branch it passes ~e^-0.8 of that channel and more of the others, so the hue shows.
 PLUME_MUA = 4.0
+# The green stop's strength over PLUME_MUA: `effective`. At 1 the owner judged green
+# plumes a little too faint (2026-11-15, the re-render with pick B); at 2.5 (the old 10)
+# "maybe a little dark".
+GREEN_STRENGTH = 1.5
 
 
 def absorption_table(optics: OpticsTable) -> F64:
@@ -93,14 +97,14 @@ def absorption(table: F64, f: Fields) -> F64:
 def plume_stops(optics: OpticsTable) -> F64:
     """(stop, channel): each PLUME_STOPS mix's absorption shape (its pigments' shapes,
     each with its strongest channel at 1, in their shares), its strongest channel at
-    PLUME_MUA."""
+    PLUME_MUA (the green stop's at GREEN_STRENGTH times that)."""
     rows: list[F64] = []
-    for _, mix in PLUME_STOPS:
+    for at, mix in PLUME_STOPS:
         r = np.zeros(3)
         for p, share in mix:
             shape = np.asarray(optics.pigment_mua(int(p), 1.0), np.float64)
             r += share * shape / shape.max()
-        rows.append(PLUME_MUA * r / r.max())
+        rows.append((GREEN_STRENGTH if at == 0.0 else 1.0) * PLUME_MUA * r / r.max())
     return np.array(rows)
 
 

@@ -15,7 +15,13 @@ from nodule import plumes
 from nodule.plumes import Plumes
 from nodule.render import tgrid
 from nodule.render.fakes import stone_record
-from nodule.render.layerbake import PLUME_MUA, Baker, plume_absorption, plume_stops
+from nodule.render.layerbake import (
+    GREEN_STRENGTH,
+    PLUME_MUA,
+    Baker,
+    plume_absorption,
+    plume_stops,
+)
 from nodule.render.materials import OpticsTable
 from nodule.render.record import BandRecord, plume_points
 from nodule.specimen import Specimen
@@ -158,6 +164,7 @@ def test_the_ramp_runs_green_red_black_and_skips_silica() -> None:
     a = plume_absorption(stops, f, np.ones(n, bool))
     green, red, black, silica = a
     assert green[1] < min(green[0], green[2])  # passes green
+    assert green.max() == pytest.approx(GREEN_STRENGTH * PLUME_MUA)  # the owner's nudge
     assert red[0] > 5 * red[2]  # passes red
     assert np.allclose(black, black[0])  # neutral
     assert black[0] == pytest.approx(PLUME_MUA)  # and dark

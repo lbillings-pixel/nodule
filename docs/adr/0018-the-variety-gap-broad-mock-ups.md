@@ -925,6 +925,12 @@ goethite, half hematite by absorption shape. Both `effective`, set by eye. It we
 every plume colour, so black-brown plumes may read dark grey-brown: to check on the
 re-rendered stones.
 
+Re-render of the three plume stones (2026-11-15, 607 s; sheet 1 stones 2 and 3, sheet 3
+stone 4): black-brown stayed black-brown and orange-gold reads gold-brown, but the owner
+judged the green "a little too faint" and asked for a small nudge up. The green stop
+alone now absorbs `GREEN_STRENGTH` = 1.5 x `PLUME_MUA` (6 mm^-1; `effective`, by eye,
+between the pick's 4 and the first 10, which was "maybe a little dark").
+
 **Step 4a, costs measured and a cache for the roughness frame (2026-11-15).**
 Engineering only: no claim about stones.
 - Measured on sheet 1: band roughness (s.8) costs 8.6 x an unwarped read per point

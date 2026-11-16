@@ -1154,8 +1154,8 @@ together, a cap on crystal length by a thunder egg's arm width (needles only the
 if that knocks on: it did, so needles only, under Centre and floor compensation
 below), and approved an agatesim fix for floors over early stages.
 
-**Floors over early stages: agatesim fix (ADR 0087, 2026-11-16; local, awaiting the
-owner's push OK).** agatesim now sizes a settling floor by the wall's surface alone,
+**Floors over early stages: agatesim fix (ADR 0087, 2026-11-16; pushed with the
+owner's OK, pin b9fb198; `FLOOR_VOLUME` removed).** agatesim now sizes a settling floor by the wall's surface alone,
 leaving inclusions out. Floor rows share on the same stones (0-based; nodule's
 `FLOOR_VOLUME` off; `runs/crystal-probe/floor_fix.py`, local), bare / old agatesim /
 fixed: needles 0-1 0.49 / 1.00 / 0.51; blades 0-9 0.49 / 0.77 / 0.49, 1-9 0.51 / 0.82

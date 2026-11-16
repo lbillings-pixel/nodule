@@ -59,15 +59,9 @@ from nodule.variety.recipe import (
 # with them; ADR 0018 s.15). Near the crystals' reach, length plus tip radius
 # (1 + 1 / elongation): the bands' front runs along the crystal tips. `effective`.
 CENTRE_SHIFT: dict[str, float] = {"small blades": 1.12, "fine needles": 1.0, "large blades": 1.13}
-# A floor settles after the crystal stage, and agatesim sizes it as growth times the
-# open surface, which the crystals enlarge: at the same growth the floor holds this many
-# times the volume (sheet 0 stone 7: drawn height 0.40 rose to 0.60, 0.69 and 0.61;
-# divided by these factors, 0.41 for each habit, and on four floor stones with their
-# drawn crystals within 0.03 of the stone without; ADR 0018 s.15). The floor's growth
-# is divided by it, so it keeps its drawn height.
-# Measured at the habits' own sizes; smaller crystals add relatively more surface, so
-# capped ones leave the floor a little high. `effective`.
-FLOOR_VOLUME: dict[str, float] = {"small blades": 1.8, "fine needles": 2.1, "large blades": 1.85}
+# A floor settling after the crystal stage keeps its drawn volume: agatesim sizes it by
+# the wall's surface alone (agatesim ADR 0087), not the crystals' too, so the earlier
+# per-habit FLOOR_VOLUME factor is gone (ADR 0018 s.15).
 # Above a floor, the floor's top bounds much of the cavity and carries no crystals, so
 # the bands there are not shifted: a floor stone takes this share of the shift.
 FLOOR_SHIFT_SHARE = 0.5
@@ -163,9 +157,8 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
         # radius r, a floor at a share f of the height leaves room for a sphere of
         # radius r (1 - f) exactly; for other outlines an approximation.
         left = r * max(1.0 - recipe.floor, 0.1)
-        volume = 1.0 if recipe.crystals is None else FLOOR_VOLUME[recipe.crystals.habit]
         growth = growth_for(recipe, left, shift).after_floor(
-            floor_growth_mm(recipe.floor, r) / volume, recipe.floor_supply
+            floor_growth_mm(recipe.floor, r), recipe.floor_supply
         )
     inclusions = recipe.inclusions  # plumes or moss: one dendrite stage
     if inclusions is not None or recipe.crystals is not None:

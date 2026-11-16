@@ -41,7 +41,7 @@ from nodule.variety import (
     volume_config,
     wrap_share,
 )
-from nodule.variety.layers import FLOOR_SHIFT_SHARE, FLOOR_VOLUME
+from nodule.variety.layers import FLOOR_SHIFT_SHARE
 
 
 @pytest.fixture(scope="module")
@@ -162,14 +162,14 @@ def test_the_stick_stage_comes_first_and_the_centre_keeps_its_width() -> None:
     walls = growth.growth_mm * (growth.chalcedony_end - growth.plumes_end)
     want = before.growth_mm * before.chalcedony_end - CENTRE_SHIFT["small blades"] * 1.5
     assert walls == pytest.approx(want)
-    # Above a floor, half the shift; the floor's growth is divided by the crystals'
-    # extra surface (FLOOR_VOLUME), so it keeps its drawn height.
+    # Above a floor, half the shift; the floor's growth is as without crystals, since
+    # agatesim sizes it by the wall's surface alone (agatesim ADR 0087).
     floored = _stone(centre="quartz-filled", centre_width=0.3, floor=0.4, floor_supply=0.2)
     _, g2 = volume_config(floored.model_copy(update={"crystals": BLADES}))
     _, g1 = volume_config(floored)
     r = inradius(floored.solid.build())
     floor_mm = g2.growth_mm * (g2.start - g2.plumes_end) * 0.2
-    assert floor_mm == pytest.approx(floor_growth_mm(0.4, r) / FLOOR_VOLUME["small blades"])
+    assert floor_mm == pytest.approx(floor_growth_mm(0.4, r))
     assert g1.growth_mm * g1.start * 0.2 == pytest.approx(floor_growth_mm(0.4, r))
     walls = g2.growth_mm * (g2.chalcedony_end - g2.start)
     want = g1.growth_mm * (g1.chalcedony_end - g1.start) - FLOOR_SHIFT_SHARE * 1.12 * 1.5

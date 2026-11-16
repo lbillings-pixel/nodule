@@ -13,6 +13,7 @@ from agatesim.models.growth import ProceduralGrowth
 from nodule.plumes import (
     CENTRE_SHARE,
     COLOUR_SHARES,
+    HALO_CLEARING,
     INCLUSION_RAMP,
     NO_PLUMES,
     PLUME_SHARE,
@@ -76,6 +77,16 @@ def test_draws_follow_the_owners_shares() -> None:
     assert wraps.min() >= 0.15
     assert wraps.max() <= 0.3
     assert 0.19 < float(np.median(wraps)) < 0.215  # leaning to the low end
+    # halos keep faint bands (40-60 % cleared); halo-less stones keep the default
+    clearing = np.array([p.clearing for p in draws if p.halo_mm > 0])
+    assert clearing.min() >= HALO_CLEARING[0]
+    assert clearing.max() <= sum(HALO_CLEARING)
+    assert all(p.clearing == 1.0 for p in draws if p.halo_mm == 0)
+    haloed = next(p for p in draws if p.halo_mm > 0)
+    assert haloed.model_params()["dendrite_halo_clearing"] == haloed.clearing
+    # negative control: a recipe saved before the change (clearing 1) passes none
+    old = haloed.model_copy(update={"clearing": 1.0})
+    assert "dendrite_halo_clearing" not in old.model_params()
 
 
 def test_plume_stage_leaves_the_walls_run_alone() -> None:

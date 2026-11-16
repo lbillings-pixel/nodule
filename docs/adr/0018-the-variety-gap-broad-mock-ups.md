@@ -961,7 +961,8 @@ owner's eye (an assumption). Picked: halos on the same stones as before (about 3
 the band colour (`HALO_CLEARING`, drawn last of a stone's plume values, so nothing else
 moves; sheets 0-11 checked: only the 10 halo stones change, and only in this value).
 Recipes saved before keep full clearing (`clearing` defaults to 1). Look sheet before
-and after: `runs/crystal-probe/halo_probe.py` (local).
+and after: `runs/crystal-probe/halo_probe.py` (local). The owner: "the faint bands look
+good" (2026-11-16 evening); fixed.
 
 ### 14. Moss: probe, look sheets and the recipes (2026-11-15)
 

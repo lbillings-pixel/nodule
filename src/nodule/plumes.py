@@ -15,7 +15,9 @@ The owner's choices (2026-11-09, ADR 0018 s.13); all values `effective`:
   ("autumn") stones added on about 1 plume stone in 10 after [@salimi2019]
   (*plausible*; the share is an assumption);
 - halos on about 3 in 4 plume stones, 0.3-1 mm wide (an assumption: no source gives a
-  width), on a drawn share of their plumes;
+  width), on a drawn share of their plumes; a halo keeps faint bands, clearing 40-60 %
+  of the band colour as moss's sheath does (2026-11-16 evening; Kile's halos are
+  "clear" [@kile2002, p. 259], so the faint bands are the owner's eye, an assumption);
 - bands grow round plumes slowly, at 0.15-0.3 of their rate from the wall, drawn per
   stone leaning low (`WRAP_RATE`), so they wrap them in thin coats (B, 2026-11-09).
 
@@ -51,6 +53,9 @@ SIDEWAYS_SHARE = 1 / 4
 HALO_STONES = 3 / 4
 HALO_MM = (0.3, 1.0)  # assumption (ADR 0018 s.13)
 HALO_PLUMES = (0.5, 1.0)  # share of a halo stone's plumes with a halo (assumption)
+# A halo keeps faint bands, as moss's sheath does (`nodule.moss.CLEARING`): 40-60 % of
+# the band colour cleared (the owner, 2026-11-16 evening; full clearing looked flat).
+HALO_CLEARING = (0.4, 0.2)  # 0.4 + 0.2 u
 
 # Kile's mix [@kile2002, pp. 259-260]: about half black-brown, a third orange base to
 # black tips, the rest orange-gold with red about 1 in 20; scaled to 0.9 and joined by
@@ -131,6 +136,8 @@ class Plumes(BaseModel):
     halo_mm: float = Field(ge=0)
     halo_share: float = Field(ge=0, le=1)
     wrap_rate: float = Field(gt=0, le=1, description="Band growth round plumes / wall's.")
+    # 1 (all band colour cleared) in recipes drawn before 2026-11-16 evening
+    clearing: float = Field(default=1.0, ge=0, le=1, description="Band colour a halo clears.")
 
     def model_params(self) -> dict[str, object]:
         density, sticking = LOOKS[self.look]
@@ -151,6 +158,8 @@ class Plumes(BaseModel):
         }
         if self.halo_mm > 0:
             params |= {"dendrite_halo_mm": self.halo_mm, "dendrite_halo_share": self.halo_share}
+            if self.clearing < 1:
+                params["dendrite_halo_clearing"] = self.clearing
         return params
 
     def summary(self) -> str:
@@ -198,6 +207,8 @@ def draw_plumes(rng: np.random.Generator) -> Plumes:
     share = float(rng.uniform(*HALO_PLUMES)) if halo else 1.0
     lo, hi = WRAP_RATE
     wrap = lo + (hi - lo) * float(rng.random()) ** WRAP_LEAN
+    # Drawn last, so every earlier value of a stone's plumes stands.
+    clearing = HALO_CLEARING[0] + HALO_CLEARING[1] * float(rng.random()) if halo else 1.0
     return Plumes(
         look=look,
         colour=cast(PlumeColour, colour),
@@ -209,6 +220,7 @@ def draw_plumes(rng: np.random.Generator) -> Plumes:
         halo_mm=halo_mm,
         halo_share=share,
         wrap_rate=wrap,
+        clearing=clearing,
     )
 
 

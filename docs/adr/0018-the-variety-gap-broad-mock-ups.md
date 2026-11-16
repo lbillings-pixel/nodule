@@ -1264,8 +1264,25 @@ shipboard reports; *speculative* for agate). The owner: skip it.
 - Sediment stones (irregular, and the small pebble, both drawn in a sediment host):
   sometimes a very thin rind, under 1 mm and as thin as 0.05-0.1 mm, light tan to
   almost beige, with none of the basalt rind's inner structure. This is the owner's
-  observation (*plausible* as a look), with no catalogue source yet. A time-boxed
-  search was offered.
+  observation (*plausible* as a look). A time-boxed search (2026-11-16, helper report
+  `notes/n1-reading/item13-sediment-rind.md`, local) found no source for a thin,
+  structureless tan skin. The nearest sources point two ways, offered as options:
+  - *A, pale host zone.* Chalk flints often have a paler, porous cortex of partly
+    silicified host, "porcellaneous to gritty", from "practically nothing" to wider
+    than the core, its outer edge "transitional to, or sharply defined from" the host;
+    present or not by flint group [@jeans2025, pp. 6-10] (*verified*; flint, not agate;
+    no mm figures). Young chert nodules: "a several mm thick rim" [@zijlstra1987, p. 343]
+    (*plausible*, quoting an older source).
+  - *B, a distinct first layer.* In Dryhead agate (shale and siltstone) the outermost
+    layer is grey chalcedony up to about 800 µm with hematite needles found only there
+    [@goetze2009, pp. 677, 680] (*verified*; the PDF text prints "mm", read as µm from
+    context). Iron oxides often sit at the host contact or in the outermost layer
+    [@goetze2020, p. 26] (*plausible* here: general, not sediment-specific).
+  Keokuk geodes have a chalcedony shell making up most of the geode, with no outer
+  skin described [@mahaffey2022] (*verified*, one specimen). The tan colour, the
+  0.05-0.1 mm end and how often the rind appears stay the owner's observation.
+  Papers that might give numbers wait on the owner: Hayes 1964 (Keokuk geodes), a
+  Dutch-Belgian chalk flint volume said to give cortex thickness by type.
   How often the rind appears and how thick it is are left for the look sheet; Claude
   proposes defaults there.
 - Drawing: the thin end of the sediment rind is narrower than one whole-face sheet

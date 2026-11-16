@@ -3473,3 +3473,46 @@ checked = "sections"
 sections_read = ["abstract", "introduction", "materials", "results", "discussion (nature of colour; formation)"]
 topics = ["white", "opal", "sepiolite", "calcite-mould", "zeolite", "colour"]
 notes = "Read 2026-11-16 in Chrome. Iranian chalcedony bodies: white zones are opal + dispersed sepiolite (+ dolomite), interpenetrating with translucent microquartz, edges abrupt or diffuse; two origins offered (separate stage vs partial recrystallisation of an opal-rich body). Soft white sepiolite cortex on type II. Banded type IV: opal-CT rim <=1 mm with random tabular Na-heulandite; early scalenohedral calcite partly dissolved (Fig. 2D). Helper report: notes/n1-reading/white-needle-reading.md."
+[[references]]
+id = "mahaffey2022"
+kind = "article"
+authors = ["Mahaffey, N.", "Finkelman, R. B."]
+year = 2022
+title = "The Extraordinary Variety and Complexity of Minerals in a Single Keokuk Geode from the Lower Warsaw Formation, Hamilton, Illinois, USA"
+venue = "Minerals 12(7), 914"
+doi = "10.3390/min12070914"
+access = "open"
+licence = "CC BY 4.0"
+checked = "full-text"
+topics = ["sedimentary", "geode", "rind"]
+notes = "Read in full 2026-11-16 (open HTML, helper; report notes/n1-reading/item13-sediment-rind.md). One Keokuk geode: 'the characteristic chalcedony shell' around druzy quartz (s.3); the shell 'constitutes the largest volume of the geode', pseudo-fibrous with chevron growth lines, inclusions of siderite, pyrite, barite, celestine (s.4.1.1); barite, celestine and dolomite in the outermost parts of the shell (s.4.1.11, 5.4). No exterior skin, colour, thickness or host contact described. Single specimen."
+
+[[references]]
+id = "jeans2025"
+kind = "article"
+authors = ["Jeans, C. V.", "Wray, D.", "Lampronti, G. I.", "Sheikh, H. A.", "Evtushenko, A."]
+year = 2025
+title = "Origin of flints in the Upper Cretaceous and Danian Chalk of England, Denmark and the North Sea: Evidence from their geological setting, mineralogy, geochemistry, paramagnetic properties and ultrastructure"
+venue = "Acta Geologica Polonica 75(4), e56"
+doi = "10.24425/agp.2025.155950"
+access = "open"
+licence = "open access; licence not confirmed (Crossref lists none); cite only"
+checked = "sections"
+sections_read = ["pp. 5-12", "pp. 20-21", "pp. 26-28"]
+topics = ["sedimentary", "flint", "cortex", "rind", "moganite"]
+notes = "Read 2026-11-16 (helper; report notes/n1-reading/item13-sediment-rind.md). Flints have 'a dense vitreous core' often surrounded 'by a more porous cortex of paler colour', 'porcellaneous to gritty'; the outer cortex 'may appear macroscopically transitional to, or sharply defined from, the surrounding strata' (p.6). Model cortex = partly silicified host sediment; 'The width of the cortex ranges from practically nothing to being wider than the core'; some flints all cortex (p.7; growth model is the authors' interpretation). Cortex is not weathering patina (p.7). Presence by group: black flints 'may or may not be present', grey flints 'usually present', grey carious flints poorly differentiated; Fig. 12C 'very thin cortex'; Maastrichtian black flints narrow cortices (pp.8-10). Some cortices two-zoned, inner pale grey (CX1) and outer white (CX2) (p.6, Figs 4D, 5E; p.21). No mm thicknesses. Quartz flints (alpha-quartz + moganite), not opal-CT."
+
+[[references]]
+id = "zijlstra1987"
+kind = "article"
+authors = ["Zijlstra, H. J. P."]
+year = 1987
+title = "Early diagenetic silica precipitation, in relation to redox boundaries and bacterial metabolism, in late cretaceous chalk of the Maastrichtian type locality"
+venue = "Geologie en Mijnbouw 66, 343-355"
+url = "https://njgjournal.nl/index.php/njg/article/download/13117/19816"
+access = "open"
+licence = "publisher copyright; cite only"
+checked = "sections"
+sections_read = ["abstract", "introduction (p.343)", "p.351"]
+topics = ["sedimentary", "chert", "rind"]
+notes = "Read 2026-11-16 (scanned PDF text, helper). p.343 quotes Wise & Weaver (1974): young chert nodules have a quartz core and 'a several mm thick rim' of isotropic quartz (cristobalite and cryptocrystalline chalcedony), in a host zone with cristobalite lepispheres in its pores (secondary quotation: plausible). The model ends in 'dense, sharp rimmed nodules' (abstract, p.351; speculative)."

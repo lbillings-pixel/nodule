@@ -1256,21 +1256,29 @@ shipboard reports; *speculative* for agate). The owner: skip it.
   until that surface is modelled. Thunder-egg stones keep the rhyolite host specks.
 - Volcanic stones (vesicle, prolate): the full range above, from the thin green clay
   rim to the mottled brown-green shell with adhering host. The owner finds basalt rinds
-  more complex and more varied than any other kind. The sources above give the shell end
+  more complex and more varied than the sediment rind below. Keeping the shell end on
+  basalt is Claude's reading of the owner's note, to be confirmed on the look sheet.
+  The sources above give the shell end
   only for thunder-egg outsides, so on basalt it is the owner's eye (an assumption). The
   look sheet decides. Windows apply to these stones only.
 - Sediment stones (irregular, and the small pebble, both drawn in a sediment host):
   sometimes a very thin rind, under 1 mm and as thin as 0.05-0.1 mm, light tan to
   almost beige, with none of the basalt rind's inner structure. This is the owner's
   observation (*plausible* as a look), with no catalogue source yet. A time-boxed
-  search was offered (chert and flint nodules in carbonate rock are said to carry
-  a pale cortex, but none of that has been read).
+  search was offered.
   How often the rind appears and how thick it is are left for the look sheet; Claude
   proposes defaults there.
 - Drawing: the thin end of the sediment rind is narrower than one whole-face sheet
   pixel (about 0.06-0.1 mm on irregular stones). It is drawn by the share of each
   pixel it covers, from distance in world coordinates (so previews match full runs),
   and shown in a close-up as well.
+- Distance outside the wall (probe, 2026-11-16, local `runs/host-probe/`): the solids'
+  level runs short of or beyond true distance by its slope at the wall, which varies by
+  place (0.80-1.00 on ellipsoids, 1.02-1.40 on prolate solids of revolution, 1.00 on
+  sphere unions, over every such stone on sheets 0-1). Uncorrected, a rind would be
+  up to 25 % thicker at an egg's long ends. Rinds therefore use level divided by its
+  slope, which matched an exact distance transform within 0.01-0.05 mm on the patches
+  tested (four a stone, sheet 0).
 
 ## Limits
 

@@ -44,10 +44,13 @@ before any statistics.
   (`dendrite_tilt_deg` 180) and floor mats; mostly green, some yellow-brown,
   about 1 in 10 each red and black; same wrap draw as plumes. Negative
   control: a straight radial spray must be rejected.
-- [ ] 9. White opaque patches (calcite or zeolite remnants): a mottle-like
-  layer. Short reading pass first.
-- [ ] 10. Needle inclusions (sagenite-like): a crack-like layer. Short reading
-  pass first.
+- [ ] 9 + 10 (merged 2026-11-16, the owner's pick). Early crystals: blades
+  (calcite?) and fine needles (zeolite?) grown on the wall before the bands
+  (agatesim's stick stage, wrapped at full rate), left white, turned to clear
+  silica or dissolved to moulds. Reading done; probe and look sheet 1 done (all
+  looks accepted). Next: recipe wiring, check with negative control, ADR section.
+  Still open afterwards: late white patches that cut across bands (a
+  mottle-like layer), true radial needle sprays (would need agatesim).
 
 ## Batch 3: medium (one or two sessions each)
 

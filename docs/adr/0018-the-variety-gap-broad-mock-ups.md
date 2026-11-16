@@ -810,7 +810,7 @@ Kile supports only that halos erase bands and that one plume can run orange to b
 **Owner's choices for plumes in the recipes (2026-11-09):**
 - Frequency: about 1 stone in 4 on mock-up sheets while the plume look is honed, then
   down to about 1 in 8 to 1 in 10 (a showing choice; sources range from under 1 % to
-  over 90 % by locality).
+  over 90 % by locality). Done 2026-11-16: 1 in 9 (s.15, owner's decisions).
 - Direction: 3/4 up, 1/4 sideways, on condition that moss gets a broadly similar
   ability to grow downward (drapes from the roof). agatesim's tilt already allows down
   (`dendrite_tilt_deg` = 180), so the moss probe can use it.
@@ -1049,7 +1049,8 @@ owner kept agatesim's full-rate wrap (no agatesim change).
 
 **In the recipes (`nodule.crystals`).**
 - About 1 stone in 6 (2 of 12), never the pebble and never with plumes or moss
-  (`CRYSTAL_SHARE`, an ASSUMPTION; to the owner). One early stage per stone: agatesim
+  (`CRYSTAL_SHARE`, an ASSUMPTION; to the owner; 1 in 9 since the owner's decisions
+  below). One early stage per stone: agatesim
   could run a stick and a dendrite stage in turn, but nodule's `Growth` takes one, and
   the two together are untried (option for the owner).
 - Habit: small blades 0.4, fine needles 0.4, large blades 0.2 (ASSUMPTION). Fill only
@@ -1089,6 +1090,19 @@ owner kept agatesim's full-rate wrap (no agatesim change).
   across the narrow arms and fill them with bumps (looked at 2026-11-16; not changed).
   Seeds 0-11 draw one thunder-egg crystal stone, with fine needles, which look right.
   Options for the owner: needles only in thunder eggs, or a cap by arm width.
+  The owner chose the cap, with needles only as the fallback if it knocked on
+  (2026-11-16). Measured: arm half-width (median distance to the wall along the ridge
+  of the mid-depth section; a 6 mm strip gives 2.90 mm) 1.1-3.1 mm, median 1.7, over
+  the 48 thunder eggs of sheets 0-23, so a quarter of it caps every habit at 0.2-0.7
+  mm. On the two thunder-egg crystal stones of sheets 0-11 (6-6 jagged with large
+  blades, 8-8 winding with small blades; `runs/crystal-probe/thunderegg_cap.py`,
+  local, `out/thunderegg-cap/`): capped blades are specks on the whole face, 113-128 s
+  to build against 12-16 s, up to 1.28 GB, and on 6-6 too thin for the wrap check.
+  Uncapped blades lump across the arms; fine needles at their own size (0.9 mm) show
+  as fine ticks and leave the arms' form (wrap 1.000, 35-53 s, up to 0.59 GB). So the
+  fallback: thunder eggs take fine needles only (`NEEDLES_ONLY`), turned from the
+  stone's own draw (same size factor; white unless drawn hollow), so no stream moves;
+  only 6-6 and 8-8 change on sheets 0-11.
 - The moss floor finding below was checked by pixels: on 6-5, 0.92 of the face is floor
   with moss against 0.47 without, the whole face in level layers. Floored moss stones
   sit on sheets 5-11 (5-7, 6-5, 8-11, 10-9, 10-10, 11-10), none on the moss look sheet
@@ -1123,7 +1137,21 @@ stone, peak traced memory 0.18-0.39 GB (`runs/variety-sheet-crystals/`, local). 
 are 1-2 px wide on the sheet, so 8 mm close-ups at 0.03 mm where crystals are densest
 sit beside it (`close/crystal-close-ups.png`).
 
-**Open, for the owner.** The share (1 in 6), the fill and habit mixes; crystals with
+**Owner's decisions (2026-11-16, morning, on look sheet 2).** Crystals "look okay";
+the habit and fill mixes stay. White crystals that barely show on neutral stones are
+accepted (real stones have subtle features). Shares: crystals and plumes about 1 in
+8-10, moss stays 1 in 6. Done as 1 in 9 each (`CRYSTAL_SHARE`, `PLUME_SHARE`): a sheet
+of 12 takes 1 stone, or 2 with a chance of 1 in 3 (`share_count`). Both thin the
+earlier deal (the first 1 or 2 of its shuffle; `thinned`), and moss and crystals are
+still dealt around the whole earlier plume pool, so every stone that keeps an early
+stage keeps it exactly, moss is unchanged, and no other draw moves (checked on sheets
+0-11: plumes 36 to 13 stones, crystals 24 to 17, moss 24, all else identical).
+Owner also asked for: a small share of stones with crystals and plumes or moss
+together, a cap on crystal length by a thunder egg's arm width (needles only there
+if that knocks on: it did, so needles only, under Centre and floor compensation
+below), and approved an agatesim fix for floors over early stages.
+
+**Open, for the owner.** The fill and habit mixes (accepted as they are); crystals with
 plumes or moss on one stone; the white in renders (the renderer takes white remnants
 as milky chalcedony, through the layers: rendered 2026-11-16, `runs/variety-render-moss/`,
 local; on a neutral stone, sheet 1 stone 6, small blades merge with the milky first

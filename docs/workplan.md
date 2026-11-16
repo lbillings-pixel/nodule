@@ -50,7 +50,10 @@ before any statistics.
   silica or dissolved to moulds. Reading done; probe and look sheet 1 done (all
   looks accepted). Recipe wiring (`nodule.crystals`, 1 stone in 6, an assumption),
   centre and floor compensation, wrap check with its negative control and ADR 0018
-  s.15 done 2026-11-16; look sheet 2 (`sheet --crystals`) waits for the owner.
+  s.15 done 2026-11-16; look sheet 2 judged "okay" 2026-11-16, share now 1 in 9.
+  Owner's follow-ups (2026-11-16): thunder-egg length cap by arm width (knocked on:
+  thunder eggs take needles only, done); agatesim floor fix (approved); a small share
+  of crystals with plumes or moss.
   Still open afterwards: late white patches that cut across bands (a
   mottle-like layer), true radial needle sprays (would need agatesim).
 
@@ -59,7 +62,7 @@ before any statistics.
 - [ ] 11. (recipes done with item 8; moss rendered 2026-11-16, sheet 0 stones 9 and 11,
   `runs/variety-render-moss/`, local: green tufts and red drapes show in their sheaths;
   waits for the owner's eye; amethyst centres render grey in the look, seen, not fixed;
-  plume share left for the owner) Moss in the recipes
+  plume share 1 in 9 since 2026-11-16, the owner's pick) Moss in the recipes
   and the renderer; then drop plume frequency from
   1 in 4 to about 1 in 8-10 (owner, 2026-11-09). The owner's 3/4-up plume
   split depends on moss growing downward.

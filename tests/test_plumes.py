@@ -15,11 +15,14 @@ from nodule.plumes import (
     COLOUR_SHARES,
     INCLUSION_RAMP,
     NO_PLUMES,
+    PLUME_SHARE,
     REACH_MARGIN_MM,
     STAGE,
     draw_plumes,
     inclusion_rgb,
+    plume_plan,
     reach_mm,
+    share_count,
 )
 from nodule.specimen import _concat  # pyright: ignore[reportPrivateUsage]
 from nodule.variety import Growth, StoneRecipe, draw_sheet, volume_config
@@ -30,10 +33,29 @@ def sheets() -> list[StoneRecipe]:
     return [r for seed in range(12) for r in draw_sheet(seed)]
 
 
-def test_about_one_stone_in_four_has_plumes_never_a_pebble(sheets: list[StoneRecipe]) -> None:
+def test_about_one_stone_in_nine_has_plumes_never_a_pebble(sheets: list[StoneRecipe]) -> None:
     plumed = [r for r in sheets if r.plumes is not None]
-    assert len(plumed) == 12 * 3  # 3 of 12 per sheet
+    assert len(plumed) == 13  # 1 or 2 of 12 per sheet (seeds 0-11)
     assert not any(r.outline in NO_PLUMES for r in plumed)
+
+
+def test_thinned_shares_hold_and_keep_a_subset_of_the_pool() -> None:
+    outlines = ["vesicle"] * 11 + ["pebble"]
+    found: list[int] = []
+    for s in range(3000):
+        pool, kept = plume_plan(np.random.default_rng(s), outlines)
+        assert kept <= pool
+        assert len(pool) == 3
+        assert len(kept) in (1, 2)
+        found.append(len(kept))
+    assert abs(np.mean(found) / 12 - PLUME_SHARE) < 0.005
+    # the pool is the earlier deal: the same shuffle, before the extra draw
+    rng = np.random.default_rng(1)
+    old = set(rng.permutation(11)[:3].tolist())
+    assert plume_plan(np.random.default_rng(1), outlines)[0] == old
+    # and the count draw is fair at the edges
+    assert share_count(np.random.default_rng(0), 1 / 4, 12) == 3
+    assert share_count(np.random.default_rng(0), 0.0, 12) == 0
 
 
 def test_draws_follow_the_owners_shares() -> None:
@@ -82,7 +104,10 @@ def _on(model: object, name: str) -> np.ndarray:
 def test_plume_stones_get_the_stage_first_and_floors_after_it(
     sheets: list[StoneRecipe],
 ) -> None:
-    floored = next(r for r in sheets if r.plumes is not None and r.floor)
+    # A floored stone with no early stage, given plumes (seeds 0-11 deal none at 1 in 9).
+    floored = next(
+        r for r in sheets if r.floor and r.crystals is None and r.inclusions is None
+    ).model_copy(update={"plumes": draw_plumes(np.random.default_rng(3))})
     assert floored.plumes is not None
     config, _ = volume_config(floored)
     on, settle = _on(config.model, "dendrite"), _on(config.model, "settling")

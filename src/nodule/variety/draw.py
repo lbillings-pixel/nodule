@@ -13,7 +13,7 @@ from agatesim.volume.config import SliceConfig
 from agatesim.volume.slicing import Plane
 from agatesim.volume.solids import Rotated, Solid, SphereUnion
 
-from nodule.crystals import crystal_plan, draw_crystals
+from nodule.crystals import NEEDLES_ONLY, crystal_plan, draw_crystals
 from nodule.dust import (
     BLOB_SHARE,
     LINE_SHARE,
@@ -117,7 +117,9 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     # Plumes from their own stream, spawned after the stones' streams, so every
     # earlier draw stands (ADR 0018 s.13).
     plume_rng = np.random.default_rng(root.spawn(1)[0])
-    plumed = plume_plan(plume_rng, outlines)
+    # Moss and crystals are dealt around the whole plume pool, as before the plume
+    # share fell, so their draws stand (ADR 0018 s.15).
+    plume_pool, plumed = plume_plan(plume_rng, outlines)
     plume_streams = plume_rng.spawn(n)
     stones = [
         r.model_copy(update={"plumes": draw_plumes(plume_streams[i])}) if i in plumed else r
@@ -126,7 +128,7 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     # Moss from a stream spawned after the plumes', on stones without plumes (ADR 0018
     # s.14).
     moss_rng = np.random.default_rng(root.spawn(1)[0])
-    mossy = moss_plan(moss_rng, outlines, plumed)
+    mossy = moss_plan(moss_rng, outlines, plume_pool)
     moss_streams = moss_rng.spawn(n)
     stones = [
         r.model_copy(
@@ -145,18 +147,18 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
         for i, r in enumerate(stones)
     ]
     # Early crystals from a stream spawned after the moss's, on stones with neither
-    # plumes nor moss (ADR 0018 s.15).
+    # plumes nor moss (ADR 0018 s.15). Thunder eggs turn their draw into needles.
     crystal_rng = np.random.default_rng(root.spawn(1)[0])
-    crystal = crystal_plan(crystal_rng, outlines, plumed | mossy)
+    crystal = crystal_plan(crystal_rng, outlines, plume_pool | mossy)
     crystal_streams = crystal_rng.spawn(n)
-    return [
-        r.model_copy(
-            update={"crystals": draw_crystals(crystal_streams[i]).capped(chalcedony_mm(r))}
-        )
-        if i in crystal
-        else r
-        for i, r in enumerate(stones)
-    ]
+    out: list[StoneRecipe] = []
+    for i, r in enumerate(stones):
+        if i in crystal:
+            c = draw_crystals(crystal_streams[i])
+            c = c.as_needles() if r.outline in NEEDLES_ONLY else c
+            r = r.model_copy(update={"crystals": c.capped(chalcedony_mm(r))})
+        out.append(r)
+    return out
 
 
 def chalcedony_mm(recipe: StoneRecipe) -> float:

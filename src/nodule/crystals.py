@@ -37,12 +37,15 @@ from agatesim.fields import Fields, Phase
 from numpy.typing import NDArray
 from pydantic import BaseModel, ConfigDict, Field
 
-from nodule.plumes import STAGE
+from nodule.plumes import STAGE, thinned
 
 Habit = Literal["small blades", "fine needles", "large blades"]
 CrystalFill = Literal["white", "clear", "hollow"]
 
-CRYSTAL_SHARE = 1 / 6  # of a sheet's stones, among those free (assumption)
+# Of a sheet's stones, among those free: 1 in 9 (the owner, 2026-11-16: "1 in 8-10"),
+# a thinning of the 1 in 6 of look sheet 2 (`POOL_SHARE`), so kept stones stand.
+CRYSTAL_SHARE = 1 / 9
+POOL_SHARE = 1 / 6
 NO_CRYSTALS = ("pebble",)  # small and nearly unbanded (ADR 0018 s.7)
 
 # Per habit: spacing (mm), length (mm), elongation, axis scatter (deg); the probe's.
@@ -63,8 +66,13 @@ FILLS: dict[str, dict[str, float]] = {  # only the fills the owner saw; shares a
 }
 SIZE_SPREAD = (0.8, 1.25)  # log-uniform factor on spacing and length (assumption)
 # Crystals reach at most this share of the chalcedony's thickness, so large blades
-# stay off the centre of a small stone, a wide centre or a thunder egg's arm.
+# stay off the centre of a small stone or a wide centre (thunder eggs: NEEDLES_ONLY).
 MOST_REACH_SHARE = 0.25
+# Thunder eggs take fine needles only (the owner's fallback, 2026-11-16): blades lump
+# across the narrow arms (half-width 1.1-3.1 mm, median 1.7, over 48 stones), and a
+# length cap by arm width shrinks every habit to 0.2-0.7 mm, specks on the face at
+# 8-10 x the build time (runs/crystal-probe/thunderegg_cap.py; ADR 0018 s.15).
+NEEDLES_ONLY = ("thunder-egg",)
 
 # A white remnant: milky chalcedony's stand-in at this translucency, a little varied
 # per crystal (the probe's chalky white, 210-226 grey; `effective`, by eye).
@@ -103,6 +111,22 @@ class Crystals(BaseModel):
             update={"length_mm": self.length_mm * k, "spacing_mm": self.spacing_mm * k}
         )
 
+    def as_needles(self) -> Crystals:
+        """The same draw as fine needles: the same size factor, and white unless the
+        draw was hollow (clear needles were not on the owner's sheet)."""
+        if self.habit == "fine needles":
+            return self
+        k = self.length_mm / HABITS[self.habit][1]
+        spacing, length, elongation, scatter = HABITS["fine needles"]
+        return Crystals(
+            habit="fine needles",
+            fill="hollow" if self.fill == "hollow" else "white",
+            spacing_mm=spacing * k,
+            length_mm=length * k,
+            elongation=elongation,
+            scatter_deg=scatter,
+        )
+
     def summary(self) -> str:
         return f"{self.fill} {self.habit} {self.length_mm:.1f} mm"
 
@@ -120,7 +144,7 @@ def crystal_plan(rng: np.random.Generator, outlines: list[str], taken: set[int])
     """Which stones of a sheet carry early crystals: never a pebble, nor a stone with
     plumes or moss."""
     ok = [i for i, o in enumerate(outlines) if o not in NO_CRYSTALS and i not in taken]
-    return set(rng.permutation(ok)[: round(CRYSTAL_SHARE * len(outlines))].tolist())
+    return thinned(rng, ok, POOL_SHARE, CRYSTAL_SHARE, len(outlines))[1]
 
 
 def draw_crystals(rng: np.random.Generator) -> Crystals:

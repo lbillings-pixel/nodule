@@ -6,8 +6,8 @@ the bands that follow wrap each plume (the owner's A3; [@pabian1994, pp. 13, 23]
 a little from plume to plume, and carry a clear halo (agatesim ADR 0079).
 
 The owner's choices (2026-11-09, ADR 0018 s.13); all values `effective`:
-- about 1 stone in 4 on mock-up sheets while the look is honed (later 1 in 8-10);
-  never the small unbanded pebble;
+- about 1 stone in 4 on mock-up sheets while the look was honed; 1 in 9 since
+  2026-11-16 (the owner: 1 in 8-10); never the small unbanded pebble;
 - look L (dense tufts) by default, R (sparse, fine) on a third of plume stones (the
   third is an assumption, accepted by the owner);
 - direction: 3 in 4 up, 1 in 4 sideways;
@@ -39,7 +39,12 @@ from pydantic import BaseModel, ConfigDict, Field
 Look = Literal["dense", "sparse"]
 PlumeColour = Literal["black-brown", "orange-black", "orange-gold", "red", "green", "autumn"]
 
-PLUME_SHARE = 1 / 4  # of a sheet's stones (the owner, while the look is honed)
+# Of a sheet's stones: 1 in 9 (the owner, 2026-11-16: "1 in 8-10", now the look is
+# honed). Drawn as a thinning of the 1 in 4 the look was honed on (`POOL_SHARE`), so
+# the stones that keep plumes keep them as they were, and moss, dealt around that
+# pool, stands.
+PLUME_SHARE = 1 / 9
+POOL_SHARE = 1 / 4
 NO_PLUMES = ("pebble",)  # small and nearly unbanded (ADR 0018 s.7)
 SPARSE_SHARE = 1 / 3  # look R among plume stones (assumption)
 SIDEWAYS_SHARE = 1 / 4
@@ -155,10 +160,27 @@ class Plumes(BaseModel):
         return f"{self.colour}{look} plumes{way}{halo}, wrap {self.wrap_rate:.2f}"
 
 
-def plume_plan(rng: np.random.Generator, outlines: list[str]) -> set[int]:
-    """Which stones of a sheet carry plumes."""
+def share_count(rng: np.random.Generator, share: float, n: int) -> int:
+    """How many of `n` stones take a feature with this share: the whole part, plus
+    one more with the chance of the fraction (1 in 9 of 12: 1 or 2, mean 4/3)."""
+    whole = int(share * n)
+    return whole + int(rng.random() < share * n - whole)
+
+
+def thinned(
+    rng: np.random.Generator, ok: list[int], pool_share: float, share: float, n: int
+) -> tuple[set[int], set[int]]:
+    """A pool dealt at `pool_share` of `n` stones (as before thinning) and its first
+    `share_count` stones: the kept ones are a subset of the pool, which stands."""
+    pool = rng.permutation(ok)[: round(pool_share * n)].tolist()
+    return set(pool), set(pool[: share_count(rng, share, n)])
+
+
+def plume_plan(rng: np.random.Generator, outlines: list[str]) -> tuple[set[int], set[int]]:
+    """Which stones of a sheet carry plumes: the pool of the earlier deal (1 in 4,
+    which moss avoids so its deal stands) and the plume stones drawn from it."""
     ok = [i for i, o in enumerate(outlines) if o not in NO_PLUMES]
-    return set(rng.permutation(ok)[: round(PLUME_SHARE * len(outlines))].tolist())
+    return thinned(rng, ok, POOL_SHARE, PLUME_SHARE, len(outlines))
 
 
 def draw_plumes(rng: np.random.Generator) -> Plumes:

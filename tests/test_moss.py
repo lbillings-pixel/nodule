@@ -44,7 +44,7 @@ def test_moss_on_a_sixth_of_stones_never_a_pebble_or_with_plumes(
     assert len(mossy) == 12 * round(12 * MOSS_SHARE)
     assert not any(r.outline in NO_MOSS for r in mossy)
     assert not any(r.plumes is not None for r in mossy)
-    assert sum(r.plumes is not None for r in sheets) == 12 * 3  # plumes unchanged
+    assert sum(r.plumes is not None for r in sheets) == 13  # 1 in 9 since 2026-11-16
     for r in mossy:
         assert r.moss is not None
         assert r.moss.reach_floor == r.floor

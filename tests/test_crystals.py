@@ -14,13 +14,16 @@ from agatesim.volume.config import SliceConfig, SolidConfig
 
 from nodule._scipy import distance_inside
 from nodule.crystals import (
+    CRYSTAL_SHARE,
     FILLS,
     HABIT_SHARES,
     HABITS,
     MOST_REACH_SHARE,
+    NEEDLES_ONLY,
     NO_CRYSTALS,
     SIZE_SPREAD,
     Crystals,
+    crystal_plan,
     draw_crystals,
     stage_mask,
 )
@@ -46,17 +49,44 @@ def sheets() -> list[StoneRecipe]:
     return [r for seed in range(12) for r in draw_sheet(seed)]
 
 
-def test_crystals_on_a_sixth_of_stones_alone_in_their_stage(sheets: list[StoneRecipe]) -> None:
+def test_crystals_on_a_ninth_of_stones_alone_in_their_stage(sheets: list[StoneRecipe]) -> None:
     found = [r for r in sheets if r.crystals is not None]
-    assert len(found) == 12 * 2
+    assert len(found) == 17  # 1 or 2 of 12 per sheet (seeds 0-11)
     assert not any(r.outline in NO_CRYSTALS for r in found)
     assert not any(r.inclusions is not None for r in found)
     # Drawn last, from their own stream: plumes and moss as before.
-    assert sum(r.plumes is not None for r in sheets) == 12 * 3
+    assert sum(r.plumes is not None for r in sheets) == 13
     assert sum(r.moss is not None for r in sheets) == 12 * 2
     for r in found:
         assert r.crystals is not None
         assert r.crystals.length_mm <= MOST_REACH_SHARE * chalcedony_mm(r) + 1e-9
+
+
+def test_crystal_stones_thin_the_look_sheet_deal() -> None:
+    outlines = ["vesicle"] * 12
+    counts: list[int] = []
+    for s in range(3000):
+        kept = crystal_plan(np.random.default_rng(s), outlines, {0})
+        old = set(np.random.default_rng(s).permutation(list(range(1, 12)))[:2].tolist())
+        assert kept <= old  # the 1 in 6 of look sheet 2, thinned
+        counts.append(len(kept))
+    assert abs(np.mean(counts) / 12 - CRYSTAL_SHARE) < 0.005
+
+
+def test_thunder_eggs_take_needles_at_the_draws_size(sheets: list[StoneRecipe]) -> None:
+    eggs = [r for r in sheets if r.crystals is not None and r.outline in NEEDLES_ONLY]
+    assert eggs  # 6-6 and 8-8 (blades as drawn)
+    assert all(r.crystals is not None and r.crystals.habit == "fine needles" for r in eggs)
+    blades = Crystals(habit="large blades", fill="white", spacing_mm=4.4, length_mm=3.3,
+                      elongation=8, scatter_deg=30)  # fmt: skip
+    needles = blades.as_needles()
+    assert needles.length_mm == pytest.approx(0.9 * 1.1)  # the draw's size factor
+    assert needles.spacing_mm == pytest.approx(1.0 * 1.1)
+    assert (needles.elongation, needles.scatter_deg) == (12, 45)
+    clear = blades.model_copy(update={"fill": "clear"}).as_needles()
+    assert clear.fill == "white"  # needles were shown white or hollow only
+    assert blades.model_copy(update={"fill": "hollow"}).as_needles().fill == "hollow"
+    assert needles.as_needles() == needles
 
 
 def test_draws_keep_to_the_looks_the_owner_saw() -> None:

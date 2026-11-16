@@ -23,9 +23,9 @@ doi = "10.3390/min10111037"
 access = "open"
 licence = "CC-BY-4.0"
 checked = "sections"
-sections_read = ["1", "3", "4.1", "4.2.1", "4.2.3", "4.3", "5.1", "5.3", "5.4", "5.5", "6"]
+sections_read = ["1", "2", "3", "4.1", "4.2.1", "4.2.3", "4.3", "5.1", "5.3", "5.4", "5.5", "6"]
 topics = ["mineralogy", "geochemistry", "genesis", "formation-temperature", "host-rocks", "quartz-transition", "spherulites", "moss", "plume", "tubes"]
-notes = """Primary overview, read 2026-10-15. Key points: crystallisation often starts with spherulitic chalcedony at the wall that continues into fibrous chalcedony (§4.1.2, §5.4, Fig. 29); wall-lining agates have three zones, spherulitic/granular rim, fibrous chalcedony, macrocrystalline quartz centre (§4.1.2); "Macrocrystalline quartz crystallizes when the SiO2 concentration in the mineralizing fluid is low" (§6), with a drop in impurities and defects at the chalcedony–quartz interface (§5.4); Uruguay bands from gravitational sedimentation of sols with flocculated silica particles, needing high silica concentration (§4.1.2); iron pigments are rejected by crystallising quartz and accumulate along the banding (§5.4); visible bands can contain up to 1000 micro-bands per mm (§4.1.2); colour banding governed by self-organisation of the silica matrix rather than Liesegang diffusion (§5.4); "infiltration channels"/"escape tubes" mostly deformation of plastic silica (§5.5); stalactitic SFF and moss agate filaments have Fe-silicate/zeolite cores with concentric chalcedony and possible biosignatures (§5.5); plume agate interpreted as silica-garden self-assembly from osmosis, reaction and buoyancy (§5.5). §5.3 (read 2026-10-17): silica in volcanic agates comes from alteration of the host rock; pathways for free flow are lacking in most rocks, so supply by diffusion of monomeric silicic acid through intergranular pore space is favoured; "The continuous supply of silicic acid results in the accumulation of silica and the filling of the cavities"; low solubility means much water must pass (Landmesser: up to 0.5 m3 for a 100 g agate at 250 mg/L). §4.1.2 re-read 2026-11-02 (p. 11): "visible macroscopic bands may consist of up to 1000 micro-bands per mm" carries no citation (the next sentence cites Holzhey [100] for particle sizes only), so the figure is the review's own, without a stated primary source; visible banding is attributed to changes in silica phase, crystal size and habit, porosity and Fe-oxide micro-inclusions (Fig. 10). A word search of the other sections found no band-width, spacing or fractal statistics; Holten 1998 is not cited. §4.3 read 2026-11-03 by a helper agent (p. 27): "laminated and lenticular agglomerates of very small hematite particles (<10 µm)" accumulated along the banding; no lens sizes given. §5.4 and §5.1 read 2026-11-08 by helper agents, key quote re-checked in the local PDF: colouring or discolouring along nodule rims or secondary cracks, "discordant to the agate banding", is "often called 'chromatography' effect" (p. 37, Fig. 33b,c); pigment random where banding is lacking (Figs 32a, 33a); red hematite, yellow goethite, shade from compound, amount and particle size (p. 37); amethyst and smoky quartz "frequently" in the agate centre (p. 37); fractures healed by a later agate or quartz generation (§5.1, Fig. 26a). Dust pass 2026-11-08 (helper agent): "more or less no visible fluid inclusions" in chalcedony (§4.2.3, p. 22); fine Fe-oxide lines along the micro-banding, some dashed (Fig. 10c; 4-12 µm thick measured on the figure, speculative); flattened hematite flakes in dashed rows along bands (Fig. 32b); coarse fuzzy or globular Fe-oxide aggregates up to several 100 µm at random in the inner chalcedony (p. 27). Fig. 34 seen 2026-11-09 by a helper agent (low resolution for g,h): e, a green moss filament tuft (Jalna); g,h, Kardzhali plume agate, a reddish-brown plume in chalcedony at the inner edge of the wall-lining bands (4 mm bar; plume about 8 x 12 mm by eye, speculative)."""
+notes = """Primary overview, read 2026-10-15. Key points: crystallisation often starts with spherulitic chalcedony at the wall that continues into fibrous chalcedony (§4.1.2, §5.4, Fig. 29); wall-lining agates have three zones, spherulitic/granular rim, fibrous chalcedony, macrocrystalline quartz centre (§4.1.2); "Macrocrystalline quartz crystallizes when the SiO2 concentration in the mineralizing fluid is low" (§6), with a drop in impurities and defects at the chalcedony–quartz interface (§5.4); Uruguay bands from gravitational sedimentation of sols with flocculated silica particles, needing high silica concentration (§4.1.2); iron pigments are rejected by crystallising quartz and accumulate along the banding (§5.4); visible bands can contain up to 1000 micro-bands per mm (§4.1.2); colour banding governed by self-organisation of the silica matrix rather than Liesegang diffusion (§5.4); "infiltration channels"/"escape tubes" mostly deformation of plastic silica (§5.5); stalactitic SFF and moss agate filaments have Fe-silicate/zeolite cores with concentric chalcedony and possible biosignatures (§5.5); plume agate interpreted as silica-garden self-assembly from osmosis, reaction and buoyancy (§5.5). §5.3 (read 2026-10-17): silica in volcanic agates comes from alteration of the host rock; pathways for free flow are lacking in most rocks, so supply by diffusion of monomeric silicic acid through intergranular pore space is favoured; "The continuous supply of silicic acid results in the accumulation of silica and the filling of the cavities"; low solubility means much water must pass (Landmesser: up to 0.5 m3 for a 100 g agate at 250 mg/L). §4.1.2 re-read 2026-11-02 (p. 11): "visible macroscopic bands may consist of up to 1000 micro-bands per mm" carries no citation (the next sentence cites Holzhey [100] for particle sizes only), so the figure is the review's own, without a stated primary source; visible banding is attributed to changes in silica phase, crystal size and habit, porosity and Fe-oxide micro-inclusions (Fig. 10). A word search of the other sections found no band-width, spacing or fractal statistics; Holten 1998 is not cited. §4.3 read 2026-11-03 by a helper agent (p. 27): "laminated and lenticular agglomerates of very small hematite particles (<10 µm)" accumulated along the banding; no lens sizes given. §5.4 and §5.1 read 2026-11-08 by helper agents, key quote re-checked in the local PDF: colouring or discolouring along nodule rims or secondary cracks, "discordant to the agate banding", is "often called 'chromatography' effect" (p. 37, Fig. 33b,c); pigment random where banding is lacking (Figs 32a, 33a); red hematite, yellow goethite, shade from compound, amount and particle size (p. 37); amethyst and smoky quartz "frequently" in the agate centre (p. 37); fractures healed by a later agate or quartz generation (§5.1, Fig. 26a). Dust pass 2026-11-08 (helper agent): "more or less no visible fluid inclusions" in chalcedony (§4.2.3, p. 22); fine Fe-oxide lines along the micro-banding, some dashed (Fig. 10c; 4-12 µm thick measured on the figure, speculative); flattened hematite flakes in dashed rows along bands (Fig. 32b); coarse fuzzy or globular Fe-oxide aggregates up to several 100 µm at random in the inner chalcedony (p. 27). Fig. 34 seen 2026-11-09 by a helper agent (low resolution for g,h): e, a green moss filament tuft (Jalna); g,h, Kardzhali plume agate, a reddish-brown plume in chalcedony at the inner edge of the wall-lining bands (4 mm bar; plume about 8 x 12 mm by eye, speculative). Full PDF supplied by the owner 2026-11-16 (helper read, notes/n1-reading/item13-downloads-sediment.md): §2 (Materials and Methods) has more than 300 samples including agates from sedimentary host rocks, with no rind results; sedimentary agates are 'relatively rare' (§3, p. 6). Petránek 2009 (ref. 42) is cited only for the replacement origin and mineral association of sedimentary agates (§4.3 p. 25, §5.1 p. 30), not for rinds. The Fig. 33 caption (p. 38) shows secondary discoloration in volcanic Argentine and Chinese agates."""
 
 [[references]]
 id = "moxon2020"
@@ -3516,3 +3516,78 @@ checked = "sections"
 sections_read = ["abstract", "introduction (p.343)", "p.351"]
 topics = ["sedimentary", "chert", "rind"]
 notes = "Read 2026-11-16 (scanned PDF text, helper). p.343 quotes Wise & Weaver (1974): young chert nodules have a quartz core and 'a several mm thick rim' of isotropic quartz (cristobalite and cryptocrystalline chalcedony), in a host zone with cristobalite lepispheres in its pores (secondary quotation: plausible). The model ends in 'dense, sharp rimmed nodules' (abstract, p.351; speculative)."
+
+# --- Owner-supplied PDFs for item 13 and items 9-10 (reading, 2026-11-16) ------
+
+[[references]]
+id = "gilg2014"
+kind = "article"
+authors = ["Gilg, H. A.", "Krüger, Y.", "Taubald, H.", "van den Kerkhof, A. M.", "Frenz, M.", "Morteani, G."]
+year = 2014
+title = "Mineralisation of amethyst-bearing geodes in Ametista do Sul (Brazil) from low-temperature sedimentary brines: evidence from monophase liquid inclusions and stable isotopes"
+venue = "Mineralium Deposita 49, 861–877"
+doi = "10.1007/s00126-014-0522-7"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "sections"
+sections_read = ["abstract", "introduction", "geological setting and paragenesis", "materials and methods", "petrography", "fluid inclusions (parts)", "sulphur", "discussion", "conclusions"]
+topics = ["paragenesis", "parana", "basalt", "amethyst", "celadonite", "anhydrite", "calcite", "formation-temperature"]
+notes = "Read 2026-11-16 (owner-supplied PDF, helper; report notes/n1-reading/item13-downloads-brazil.md). Amethyst geodes, Ti-rich basalt flow. 'The rim of the geodes is coated by greenish clay minerals dominated by celadonite and in part also expandable clay minerals, including saponite and nontronite', 'followed by partly banded microcrystalline quartz (chalcedony or agate)' (p.864); no rim thickness. Four stages: I celadonite, chalcedony, pyrite; II amethyst, goethite, anhydrite; III calcite; IV barite, late calcite, gypsum (pp.861, 865). Calcite next to celadonite and chalcedony, first read as early, is late by red CL and fluid inclusions (pp.864-865); early stage II calcite sits at the base of the quartz and as micro-inclusions in amethyst (p.865, citing Gilg 2003). Anhydrite 'rare but sometimes occurs as tiny tabular inclusions in amethyst or as pinkish silicified sheaths with lengths of more than 10 cm' (p.865). The celadonite-chalcedony-quartz sequence is sometimes repeated (p.865). Pyrite rarely replaces ilmenite laths at the basalt contact (p.864). Quartz and amethyst 40-90 C in pulses; calcites and gypsum below 45 C; infill began 20-30 Myr after eruption and lasted over 10 Myr (secondhand). No casts or moulds in chalcedony reported. Figures read as captions only."
+
+[[references]]
+id = "morteani2010"
+kind = "article"
+authors = ["Morteani, G.", "Kostitsyn, Y.", "Preinfalk, C.", "Gilg, H. A."]
+year = 2010
+title = "The genesis of the amethyst geodes at Artigas (Uruguay) and the paleohydrology of the Guaraní aquifer: structural, geochemical, oxygen, carbon, strontium isotope and fluid inclusion study"
+venue = "International Journal of Earth Sciences 99, 927–947"
+doi = "10.1007/s00531-009-0439-z"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "sections"
+sections_read = ["abstract", "introduction", "analytical techniques", "geology and petrography", "fluid inclusions", "oxygen and carbon isotopes", "discussion", "conclusion"]
+topics = ["paragenesis", "parana", "basalt", "amethyst", "celadonite", "rind", "host-texture", "calcite", "formation-temperature"]
+notes = "Read 2026-11-16 (owner-supplied PDF, helper; report notes/n1-reading/item13-downloads-brazil.md). Artigas, Uruguay (online 2009); geodes a few cm to 60 cm. 'The geodes are surrounded by a dark green rim consisting of massive, but rather soft, celadonite'; it 'barely reaches 5 mm in thickness and only in very rare cases 2 cm', 'much smaller' than at Ametista do Sul (no Brazil figure) (p.933). 'The outer rim of the geodes proper is always constituted by a shell of concentrically banded agate', often with horizontal bands at the bottom; then quartz, amethyst, whitish calcite (p.933). 'In some cases the lower part of the calcite crystals is included in the celadonite rim and the banded agate' (p.933, one sentence, no figure). No sulphates at Artigas (pp.933, 941). Basalt wall fragments with the rim attached found inside geodes (p.933). 'the absence of reactions rims around the geodes' (p.942). Host: intersertal, vitrophyric basalt, phenocrysts plagioclase, pyroxene, opaque oxides, interstitial light to dark green celadonite, slightly red flow-wide; small vesicles rimmed by dark to very pale green celadonite with agate or Fe-hydroxide cores (p.931); no mm sizes. Calcite in two isotopic groups (Table 6). Figures read as captions only."
+
+[[references]]
+id = "maliva1987"
+kind = "article"
+authors = ["Maliva, R. G."]
+year = 1987
+title = "Quartz geodes: early diagenetic silicified anhydrite nodules related to dolomitization"
+venue = "Journal of Sedimentary Petrology 57(6), 1054–1059"
+doi = "10.1306/212F8CE7-2B24-11D7-8648000102C1865D"
+access = "closed"
+licence = "publisher copyright (SEPM); cite only"
+checked = "full-text"
+topics = ["geodes", "sedimentary", "anhydrite-replacement", "rind"]
+notes = "Read 2026-11-16 (owner-supplied PDF, helper; report notes/n1-reading/item13-downloads-sediment.md). Southern Indiana (Ramp Creek Fm, Harrodsburg Ls). 'The outermost silica of the geodes consists of length-slow chalcedony. The chalcedony commonly has a spherulitic fabric, with individual spherules ranging from 2 to 5 mm in diameter' and grades inward to granular megaquartz (p.1056). Anhydrite inclusions 10-100 um, most common in the megaquartz of the outer 2 cm (p.1056). Soft-sediment deformation around some geodes; a thin mudstone layer above one (Fig. 4). Geodes 1 to >20 cm, almost always with dolomite (pp.1055, 1057). No host halo or rind colour described."
+
+[[references]]
+id = "milliken1977"
+kind = "book"
+authors = ["Milliken, K. L."]
+year = 1977
+title = "Silicified evaporite nodules from the Mississippian rocks of southern Kentucky and northern Tennessee"
+venue = "MA thesis, University of Texas at Austin"
+url = "https://repositories.lib.utexas.edu/handle/2152/62091"
+access = "open"
+licence = "not stated on the copy read; cite only"
+checked = "sections"
+sections_read = ["abstract", "I", "III (pp. 7-8, 21-28, 34-39)", "IV", "V", "VI"]
+topics = ["geodes", "sedimentary", "anhydrite-replacement", "rind", "quartzine"]
+notes = "Read 2026-11-16 (owner-supplied scan, helper; report notes/n1-reading/item13-downloads-sediment.md; OCR drops the micro sign). 'the nodules consist of a rind of fibrous quartz which grades inward to megaquartz' (p.40); quartzine spherules the commonest rind texture (p.42); the rind is '10% or less of the volume' up to almost the whole nodule, no mm figure (p.40); inner boundary abrupt in some (p.44). Nodules <2 to 25 cm, mean 5-10 cm, mostly collected from soil. In some nodules 'a zone of coarse, equant calcite lies between the host rock and the first zone of silicification' (p.63, Fig. 46; about 0.3-0.6 mm on the micrograph, helper's measurement). Limonite, hematite, goethite with clay as soil-derived crusts on nodule surfaces, no thickness (p.34). Bedding drapes the nodules (pp.68-70). Black-and-white plates: no colours."
+
+[[references]]
+id = "degrooth2017"
+kind = "book"
+authors = ["de Grooth, M."]
+year = 2017
+title = "Appendix: Overview of geological outcrops, extraction sites and flint types"
+venue = "Propylaeum (Heidelberg University Library) e-book 199, ISBN 978-3-946654-42-1, chapter 21; book title, editors and pages not yet confirmed"
+url = "https://books.ub.uni-heidelberg.de/propylaeum/catalog/view/199/267/76624"
+access = "open"
+licence = "open access; licence not checked; cite only"
+checked = "full-text"
+topics = ["flint", "cortex", "chalk", "sedimentary", "weathering", "iron"]
+notes = "Read 2026-11-16 (14-page appendix PDF, helper; report notes/n1-reading/item13-downloads-sediment.md). Year is the PDF's creation date (2017-01-18), not confirmed from the book; author from the PDF metadata (first-person text). Pages are those of the 14-page PDF. Cortex by Dutch-Belgian chalk flint type: 'very thin (under 1 mm) and whitish' with 'abrupt transition to the flint' (Zeven Wegen, p.2); 'thin (1 mm), rough and whitish' (Lanaye 10, p.3); 'rough, thick (2-3 mm), off-white or brownish', often a white zone beneath (Lixhe, p.2); Lousberg 2-11+ mm brown; Simpelveld 2-20+ mm. Hesbaye fine: 'very thin (under 1 mm) and either white (primary geological position) or beige (residual loams)' (p.12). Rullen (eluvial): 'mostly brown, rarely white; mostly thin (1 mm)', the brown from iron oxides of Oligocene sands, saturated colours 'limited to the outer part of the nodules' (p.5). Figures not in the file."

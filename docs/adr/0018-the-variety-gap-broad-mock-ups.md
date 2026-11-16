@@ -1050,6 +1050,21 @@ into one layer of crystals grown on the wall before the bands. Appearance only (
   gives either frequency (an ASSUMPTION at most).
 - White colour of a remnant: no source gives it (an ASSUMPTION, set by the owner's eye).
   Ottens does not state the colour of calcite I or zeolite I.
+- Paraná basalt geodes (read 2026-11-16 night, owner-supplied PDFs; helper report
+  `notes/n1-reading/item13-downloads-brazil.md`, local). From wall to centre: green
+  celadonite clay rim, banded agate, quartz and amethyst, whitish calcite, then gypsum
+  and rare barite [@gilg2014, pp. 864-865; @morteani2010, p. 933] (*verified*, amethyst
+  geodes at two localities). Anhydrite comes after the agate, in the amethyst stage, as
+  tiny tabular inclusions or large partly silicified bodies [@gilg2014, p. 865]
+  (*verified*). Neither paper reports casts, moulds or needles of any mineral inside the
+  chalcedony. On calcite the two disagree, so both readings stand: calcite seen beside
+  the rim and agate is late, by its luminescence and fluid inclusions [@gilg2014,
+  pp. 864-865] (*verified*); or "in some cases the lower part of the calcite crystals is
+  included in the celadonite rim and the banded agate" [@morteani2010, p. 933]
+  (*verified* as one sentence, no figure), which would be early calcite the agate grew
+  round (*plausible*). The early-crystal layer above rests on [@ottens2019] and
+  [@goetze2020]; these papers neither add to it nor rule it out, and the owner's choice
+  stands.
 
 **Probe and the owner's look sheet 1** (`runs/crystal-probe/`, local). agatesim's stick
 stage (rods of length L and radius L / elongation from points on the wall, then wrapped
@@ -1275,15 +1290,14 @@ shipboard reports; *speculative* for agate). The owner: skip it.
     (*plausible*, quoting an older source).
   - *B, a distinct first layer.* In Dryhead agate (shale and siltstone) the outermost
     layer is grey chalcedony up to about 800 µm with hematite needles found only there
-    [@goetze2009, pp. 677, 680] (*verified*; the PDF text prints "mm", read as µm from
-    context). Iron oxides often sit at the host contact or in the outermost layer
+    [@goetze2009, pp. 677, 680] (*verified*; the PDF text layer prints "mm", but the
+    owner checked the printed page 677 on 2026-11-16: it reads µm). Iron oxides often sit at the host contact or in the outermost layer
     [@goetze2020, p. 26] (*plausible* here: general, not sediment-specific).
   Keokuk geodes have a chalcedony shell making up most of the geode, with no outer
   skin described [@mahaffey2022] (*verified*, one specimen). The tan colour, the
   0.05-0.1 mm end and how often the rind appears stay the owner's observation.
-  Papers that might give numbers wait on the owner: Hayes 1964 (Keokuk geodes), a
-  Dutch-Belgian chalk flint volume said to give cortex thickness by type.
-  How often the rind appears and how thick it is are left for the look sheet; Claude
+  The owner fetched the papers that might give numbers; what they add is under
+  "Reading of the owner's downloads" below. How often the rind appears and how thick it is are left for the look sheet; Claude
   proposes defaults there.
 - Drawing: the thin end of the sediment rind is narrower than one whole-face sheet
   pixel (about 0.06-0.1 mm on irregular stones). It is drawn by the share of each
@@ -1296,6 +1310,55 @@ shipboard reports; *speculative* for agate). The owner: skip it.
   up to 25 % thicker at an egg's long ends. Rinds therefore use level divided by its
   slope, which matched an exact distance transform within 0.01-0.05 mm on the patches
   tested (four a stone, sheet 0).
+
+**Reading of the owner's downloads (2026-11-16, night).** Helper reports
+`notes/n1-reading/item13-downloads-{sediment,brazil}.md` (local). Hayes 1964 (Keokuk)
+was not obtained: the download was blank (owner). Milliken 1979 was not obtained; her
+1977 thesis covers the same nodules.
+- *Basalt rind.* At Artigas (Uruguay) the geodes are "surrounded by a dark green rim
+  consisting of massive, but rather soft, celadonite", which "barely reaches 5 mm in
+  thickness and only in very rare cases 2 cm", and is "much smaller" than at Ametista do
+  Sul, Brazil [@morteani2010, p. 933] (*verified*, one district). That sits uneasily
+  with "a few millimetres" at Ametista [@proust2007]: two readings, not one range. At
+  Ametista the rim is greenish clay, celadonite with saponite and nontronite, thickness
+  not given [@gilg2014, p. 864] (*verified*). Neither paper says whether the rim is
+  mottled or even, or sharp or graded. No halo in the basalt round the geode: "the
+  absence of reactions rims around the geodes" [@morteani2010, p. 942] (*verified*,
+  Artigas); the reddening and green celadonite in the host run through the whole flow.
+  Broken wall pieces of basalt with the rim still attached lie inside some geodes
+  [@morteani2010, p. 933], so the rim can stay on the host (*plausible*). The freed
+  geode's outside is not described, so the brown-green shell end on basalt is still the
+  owner's eye.
+- *Basalt host face.* Intersertal, glassy basalt with plagioclase, pyroxene and opaque
+  oxide phenocrysts; interstitial light to dark green celadonite; slightly red;
+  small vesicles rimmed by dark to very pale green celadonite with agate or iron
+  hydroxide cores [@morteani2010, p. 931] (*verified*, Artigas; no sizes in mm). This
+  now supports green-rimmed filled holes beside the agate; white fills stay an
+  assumption.
+- *Sediment rind, option B.* Quartz geodes from replaced anhydrite have an outer layer
+  of fibrous silica: length-slow spherulitic chalcedony, spherules 2-5 mm, grading
+  inward to megaquartz [@maliva1987, p. 1056] (*verified*, southern Indiana); "a rind
+  of fibrous quartz which grades inward to megaquartz", quartzine spherules, from
+  "10% or less of the volume" to nearly all of it [@milliken1977, pp. 40-42]
+  (*verified*, Kentucky and Tennessee). That is about 1 mm or more on 5-10 cm nodules
+  (*plausible*, arithmetic), structured, not plain. Colour not given.
+- *Sediment rind, option A.* Chalk-flint cortex by type: "very thin (under 1 mm) and
+  whitish" with an "abrupt transition to the flint", or 1 mm, or 2-3 mm and thicker,
+  often with a white zone under it [@degrooth2017, pp. 2-4] (*verified*, flint). One
+  type's cortex is "very thin (under 1 mm) and either white (primary geological
+  position) or beige (residual loams)" [@degrooth2017, p. 12]; at another, iron from
+  overlying sands turned the outer part brown [@degrooth2017, p. 5] (*verified*, flint).
+  This is the nearest source to the owner's thin tan rind, on flint, not agate.
+- *Other thin layers seen.* A zone of coarse calcite about 0.3-0.6 mm wide between host
+  and nodule in some geodes [@milliken1977, p. 63, Fig. 46] (*verified* that it exists;
+  width measured on the micrograph by the helper, *plausible*); likely pale, not tan.
+  Soil-derived crusts of iron oxides and clay on weathered-out nodules, no thickness
+  [@milliken1977, p. 34] (*verified*).
+- *So:* tan or beige on a sediment stone fits a weathering or iron-stained surface
+  (*plausible*, by analogy with flint); no source puts a plain tan skin on agate. Both
+  options stay on the look sheet as the owner asked, with the tan colour as the owner's
+  observation. No source gives specks or mottle in the sediment host beside a nodule
+  (only bedding draped round it), so light mottle there stays an assumption.
 
 ## Limits
 

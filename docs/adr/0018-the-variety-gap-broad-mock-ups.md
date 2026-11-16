@@ -1080,8 +1080,19 @@ owner kept agatesim's full-rate wrap (no agatesim change).
   floors at 0.41 for 0.40, 0.51 for 0.49, 0.49, 0.51 and 0.28 as drawn, on five stones.
   The look sheet 1 floor stone (probe stone 7) had this too-high floor.
 - Above a floor, whose top carries no crystals, half the centre shift
-  (`FLOOR_SHIFT_SHARE`): centre areas 0.8-1.5 x the stone without crystals on four
-  floor stones (these centres are small, 0.8-2.7 mm), against 0-7 x at full or no shift.
+  (`FLOOR_SHIFT_SHARE`): centre areas 0.8-1.5 x the stone without crystals on the four
+  floor stones it was chosen on (0-1, 0-9, 1-9, 2-8; these centres are small, 0.8-2.7
+  mm), against 0-7 x at full or no shift; checked on two it was not chosen on, 5-8 and
+  9-12: 1.27 and 0.96 x.
+- Thunder eggs: the length cap uses the inradius, which does not see the arms' width.
+  Large blades forced onto a quartz-lined thunder egg (capped to 2.5 mm) stick out
+  across the narrow arms and fill them with bumps (looked at 2026-11-16; not changed).
+  Seeds 0-11 draw one thunder-egg crystal stone, with fine needles, which look right.
+  Options for the owner: needles only in thunder eggs, or a cap by arm width.
+- The moss floor finding below was checked by pixels: on 6-5, 0.92 of the face is floor
+  with moss against 0.47 without, the whole face in level layers. Floored moss stones
+  sit on sheets 5-11 (5-7, 6-5, 8-11, 10-9, 10-10, 11-10), none on the moss look sheet
+  the owner judged (sheets 0-3).
 - Smaller (capped or jittered) crystals add relatively more surface, so their floors
   sit a little high; not corrected.
 - The same happens with plumes and moss (measured 2026-11-16, not changed: those looks

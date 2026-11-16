@@ -68,8 +68,9 @@ before any statistics.
   preview/look pairs, leave one stone out; `runs/preview-vs-render/`, local): the
   preview sits a median dE 11-20 from the look; neither one colour map nor a lookup on
   the cut's own fields (phase, pigment, translucency, impurity, also blurred over 1 mm)
-  closes it (dE 10-20 after). So no cheap fix: the gap comes from what the fields do
-  not hold (the look's per-stone exposure, each pigment's optics, light from beneath).
+  closes it (dE 10-20 after). So no cheap fix: the gap likely comes from what the fields
+  do not hold (the look's per-stone exposure, each pigment's optics, light from
+  beneath; not yet separated).
   Options: model the renderer's materials in the preview (1-2 sessions), or judge looks
   on quick renders (whole face 1.5-5.5 min a stone on the GPU).
 - [ ] 13. Host rind, host speckle and pigment bleed into the host.

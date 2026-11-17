@@ -23,6 +23,7 @@ from nodule.moss import Moss
 from nodule.plumes import Plumes
 from nodule.rind import SEDIMENT, VOLCANIC, Rind
 from nodule.thunderegg import ArmShape, ArmStyle, thunder_egg_outline
+from nodule.tubes import NO_TUBES, Channel
 
 Centre = Literal["solid", "quartz-filled", "quartz-lined"]
 
@@ -246,6 +247,8 @@ class StoneRecipe(BaseModel):
     cut: SliceConfig
     # outside the wall, previews only (`nodule.rind`, ADR 0018 s.16)
     rind: Rind | None = None
+    # an escape tube: agatesim's wall channel (`nodule.tubes`, ADR 0018 s.18)
+    channel: Channel | None = None
 
     @model_validator(mode="after")
     def _one_dendrite_stage(self) -> StoneRecipe:
@@ -264,6 +267,12 @@ class StoneRecipe(BaseModel):
             raise ValueError("the pale rind belongs on a sediment stone (irregular, pebble)")
         if r.window is not None and r.kind != "volcanic":
             raise ValueError("windows only on volcanic rinds")
+        return self
+
+    @model_validator(mode="after")
+    def _no_tube_on_a_pebble(self) -> StoneRecipe:
+        if self.channel is not None and self.outline in NO_TUBES:
+            raise ValueError("no escape tube on a pebble (Walger: none below cherry size)")
         return self
 
     @property
@@ -301,6 +310,8 @@ class StoneRecipe(BaseModel):
             parts.append(self.crystals.summary())
         if self.rind is not None:
             parts.append(self.rind.summary())
+        if self.channel is not None:
+            parts.append(self.channel.summary())
         parts.append(f"bands {self.band_mm:.2f} mm")
         return ", ".join(parts)
 

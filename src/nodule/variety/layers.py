@@ -227,6 +227,10 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
         model |= recipe.crystals.model_params()
         stage = {"type": "step", "at": PLUME_STAGE, "value": 0.0}
         schedules["sticks"] = {"base": 1.0, "events": [stage]}
+    if recipe.channel is not None:
+        # An escape tube: agatesim's wall channel, placed from its own feature stream, so
+        # no other part of the stone moves (agatesim ADR 0077; ADR 0018 s.18).
+        model |= recipe.channel.model_params()
     palette, iron = palette_of(recipe)
     schedules["iron"] = {"base": iron}
     model["palette"] = palette

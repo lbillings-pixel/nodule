@@ -53,7 +53,8 @@ def test_rinds_follow_the_host(sheets: list[StoneRecipe]) -> None:
     assert len(windows) == 6
     assert all(r.outline in VOLCANIC for r in windows)
     chars = [r.rind.character for r in sheets if r.rind is not None and r.rind.kind == "volcanic"]
-    assert np.median(chars) < 0.35  # most stones towards the thin end
+    # about two thirds of the stones at the thin end (the owner, 2026-11-17)
+    assert 0.55 < np.mean(np.array(chars) < 0.25) < 0.8
     for r in sheets:
         if r.rind is not None and r.rind.kind == "volcanic":
             assert 0.6 - 1e-9 <= r.rind.thickness_mm <= 4.0 + 1e-9

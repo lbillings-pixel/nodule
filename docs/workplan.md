@@ -82,11 +82,12 @@ before any statistics.
 - [x] 13. (2026-11-17, ADR 0018 s.16 "Built"; `nodule.rind`, sheets only, renders draw
   neither yet; no bleed, the owner's choice) Host rind, host speckle and pigment bleed
   into the host.
-- [ ] 14. (reading done 2026-11-17, ADR 0018 s.17: no agate study found; sites, view and
-  rate wait for the owner) Black manganese dendrites in band partings.
-- [ ] 15. (reading done 2026-11-17, ADR 0018 s.18; tube look sheet from agatesim's wall
-  channels, local `runs/tube-probe/`, waits for the owner's verdict; eyes wait for the
-  owner's choice of view) Eyes and escape tubes.
+- [ ] 14. (reading done 2026-11-17, ADR 0018 s.17: no agate study found; the owner's
+  choices the same day: mostly from the rind inward and on cracks, thin-line view, at most
+  5 % of stones; probe next) Black manganese dendrites in band partings.
+- [ ] 15. (reading done 2026-11-17, ADR 0018 s.18; tubes BUILT 2026-11-17, 1 in 6
+  non-pebble stones, `nodule.tubes`; eyes wait for the owner's choice of view, to be
+  shown as a sketch) Eyes and escape tubes.
 - [ ] 16. Depth through clear bands (a render test).
 
 ## Batch 4: large (several sessions each)

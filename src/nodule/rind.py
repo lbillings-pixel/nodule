@@ -10,9 +10,10 @@ The owner's choices (look sheet, 2026-11-17; ADR 0018 s.16):
 - Volcanic stones (vesicle, prolate): always a rind, from the thin green clay rim
   (character 0, about 0.6 mm; [@proust2007], [@morteani2010]: *verified*) to the
   mottled brown-green shell with host-coloured bites at its outer edge (character 1,
-  about 4 mm; the owner's eye on basalt, an assumption), most stones towards the thin
-  end. Width capped at 6 mm [@morteani2010]. On about 1 nodule in 13 (the owner's
-  experience) a window: a patch of the wall with no rind.
+  about 4 mm; the owner's eye on basalt, an assumption), about two thirds of the stones
+  at the thin end (the owner, 2026-11-17). Width capped at 6 mm [@morteani2010]. On
+  about 1 nodule in 13 (the owner's experience) a window: a patch of the wall with no
+  rind, at a random place (the owner kept it random, 2026-11-17).
 - Rind colour: half the stones echo their own colour class, the rest draw one of five
   muted colours (the owner's observation; *plausible* as a look).
 - Sediment stones (irregular, pebble): on about half, option A, a pale tan host zone
@@ -50,9 +51,9 @@ PALE_CHANCE = 0.5  # sediment stones with the pale rind (owner: "sometimes"; pro
 PALE_MM = (0.05, 1.0)  # log-uniform: median about 0.22 mm (owner's observation)
 PALE_SPREAD = 1.6  # the pale rind's widest, as a multiple of its typical width
 THIN_MM, SHELL_MM = 0.6, 4.0  # rind width at character 0 and 1 (the look sheet's)
-# Character u**THIN_BIAS for u uniform: half the stones below 0.25 ("most stones towards
-# the thin end", the owner; the exponent is an assumption).
-THIN_BIAS = 2.0
+# Character u**THIN_BIAS for u uniform: two thirds of the stones below 0.25, the thin-rim
+# end (the owner, 2026-11-17: "about two-thirds"; 0.25 ** (1 / 3.42) = 0.667).
+THIN_BIAS = 3.42
 ECHO_CHANCE = 0.5
 WINDOW_CHANCE = 1 / 13.5  # owner: about 1 nodule in 12-15
 WINDOW_MM = (1.5, 4.0)  # window radius on the wall, log-uniform (assumption)

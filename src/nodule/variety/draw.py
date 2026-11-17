@@ -7,9 +7,13 @@ Appearance only: never evidence for a formation mechanism (ADR 0002).
 from __future__ import annotations
 
 import math
+import warnings
 
 import numpy as np
+from agatesim.models.growth import ProceduralGrowth
 from agatesim.volume.config import SliceConfig
+from agatesim.volume.features import wall_features
+from agatesim.volume.models import Setting
 from agatesim.volume.slicing import Plane
 from agatesim.volume.solids import Rotated, Solid, SphereUnion
 
@@ -23,8 +27,9 @@ from nodule.dust import (
 from nodule.moss import draw_moss, moss_plan
 from nodule.plumes import draw_plumes, plume_plan
 from nodule.rind import draw_rind
+from nodule.tubes import draw_channel
 from nodule.variety.cracks import CRACK_CUT_ANGLE, draw_fractures
-from nodule.variety.layers import palette_of
+from nodule.variety.layers import palette_of, volume_config
 from nodule.variety.mottle import MOTTLE_SHARE, MOTTLE_STONES, mottle_size
 from nodule.variety.recipe import (
     CENTRE_SHARES,
@@ -176,10 +181,39 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     # stands (ADR 0018 s.16); every stone draws its numbers, eligible or not.
     # Validated (model_copy would skip the recipe's check that the rind fits the host).
     rind_streams = np.random.default_rng(root.spawn(1)[0]).spawn(n)
-    return [
-        StoneRecipe.model_validate(r.model_dump() | {"rind": draw_rind(rind_streams[i], r.outline)})
-        for i, r in enumerate(out)
-    ]
+    # Escape tubes from a stream spawned after the rinds' (ADR 0018 s.18), on the same terms.
+    tube_streams = np.random.default_rng(root.spawn(1)[0]).spawn(n)
+    final: list[StoneRecipe] = []
+    for i, r in enumerate(out):
+        rec = StoneRecipe.model_validate(
+            r.model_dump()
+            | {
+                "rind": draw_rind(rind_streams[i], r.outline),
+                "channel": draw_channel(tube_streams[i], r.outline, chalcedony_mm(r)),
+            }
+        )
+        if rec.channel is not None and not channel_fits(rec):
+            rec = StoneRecipe.model_validate(rec.model_dump() | {"channel": None})
+        final.append(rec)
+    return final
+
+
+def channel_fits(recipe: StoneRecipe) -> bool:
+    """Whether agatesim places the stone's channel soundly (placement only, about 0.7 s;
+    no growth). False when it finds no place, or when a piece of the line cuts a chord
+    across a concave stretch of wall: its midpoint lies outside the cavity, where the
+    level's gradient is zero, so the piece's side direction is NaN and the stone opens a
+    void (2 of 23 tube stones on sheets 0-11, about 15 % of the stone; ADR 0018 s.18)."""
+    cfg = volume_config(recipe)[0]
+    assert isinstance(cfg.model, ProceduralGrowth)
+    setting = Setting.build(cfg.solid.build(), cfg.gravity.vector(), cfg.solid.filament_array())
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", RuntimeWarning)  # agatesim's 0/0 on the bad piece
+        try:
+            found = wall_features(cfg.model, setting, np.random.default_rng(cfg.seed))
+        except ValueError:  # "no place on this cavity's wall can hold a channel"
+            return False
+    return all(bool(np.isfinite(c.sides).all()) for c in found.channels)
 
 
 def chalcedony_mm(recipe: StoneRecipe) -> float:

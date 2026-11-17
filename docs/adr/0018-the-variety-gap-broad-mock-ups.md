@@ -1448,6 +1448,11 @@ up to a tenth wider than drawn on such stones. Port check (local
 `runs/host-probe/port_check.py`): `framed_rgb` matches the probe's picture within one
 grey level on two volcanic stones, and on a sediment stone once the clip below is
 switched off.
+*The owner's follow-up (2026-11-17).* About two thirds of the volcanic stones at the
+thin end (character u^3.42, so two thirds below 0.25; was u^2); windows stay at random
+places; the pale rind on about half the sediment stones and the specks at 4.8 % kept.
+The rind should go into renders, and the specks too if the cost is small, but never into
+backlit transmission slices.
 *Correction:* the rhyolite specks cover 4.8 % of the host on average (1,000,000 random
 points, three keys), not the 7 % recorded above, and the first sheet's about 10 %, not
 15 %: the probe measured them on the small patch of host round one stone. The look the
@@ -1503,6 +1508,12 @@ Fetch list (for the owner, if wanted; nothing downloaded): Van Straaten 1978 (J.
 Soc. 135, 137-151; the fullest description of planar dendrites), Chopard et al. 1991
 (Nature 353, 409), Garcia-Ruiz et al. 1994 (Springer), Xu et al. 2010 (Am. Mineral. 95,
 556), Tharalson et al. 2023 (Miner. Deposita; may be open: a helper can try).
+
+*The owner's choices (2026-11-17).* A mix of sites, with growth inward from the rind and
+on or from cracks the large majority (over 90 %), band partings and 3D shrubs the rest;
+the thin-line trace a flat cut shows is enough for now (the see-through view after item
+16); dendrites are uncommon in the owner's experience, so at most 5 % of stones. Next: a
+probe and look sheet.
 
 ### 18. Eyes and escape tubes: reading and options (2026-11-17, proposed)
 
@@ -1560,6 +1571,28 @@ Proposed defaults, all assumptions, for the owner's verdict: no channel on pebbl
 Pabian's Table 1 marks tubes common at Richardson Ranch, a thunder-egg locality, while
 channels "predominantly occur in agates of mafic volcanic rocks" [@goetze2020, p. 38],
 and the star's narrow arms may hold no channel (not tried).
+
+*The owner's choices (2026-11-17).* Tubes: none on pebbles; about 1 in 6 of the other
+stones (cut from the proposed 1 in 2); stack depth 3-10 mm. Built the same day
+(`nodule.tubes`, `StoneRecipe.channel`, a stream spawned after the rinds'; the depth
+capped at half the chalcedony's thickness; thunder eggs included, as Claude's reading of
+the owner's reply, shown to them on `runs/tube-probe/look/recipe-tubes.png`). A fault in
+agatesim's placement: on 2 of 23 tube stones of sheets 0-11 (a vesicle and a thunder
+egg) a piece of the channel's line cuts a chord across a concave stretch of wall, its
+midpoint outside the cavity where the level's gradient is zero, so the piece's side
+direction is NaN and the stone opens a void of about 15 % (100,000 random points;
+local `runs/tube-probe/void_check.py`). The other 21 gain at most 55 void points (of
+about 37,000-52,000 inside), where a tube meets an open centre, at depths up to 8.1 mm:
+the depth cap holds. Nodule checks placement alone when dealing (`channel_fits`, about
+0.7 s a tube stone, no growth) and deals no tube where it fails; a fix in agatesim
+waits for the owner's approval. Over sheets 0-99 (local `runs/tube-probe/
+placement_scan.py`, placement only): 174 tube stones, no placement failure, 18 with such
+a piece (vesicles 5 of 105, irregular 3 of 16, thunder eggs 10 of 36), every one with its
+midpoint outside the cavity and a zero gradient; 0.8 s median a stone. So until the fix,
+thunder eggs keep about 3 in 4 of their tubes. Eyes: the owner did not follow the question (both views are cuts); it
+will be asked again with a sketch of the two views: a slab through the stone cuts each
+dome through its middle (stacked half-rings at the rim), a cut just under the skin looks
+down on it (full rings, as Pabian's Fig. 38).
 Fetch list: Shaub 1955 (Am. J. Sci. 253, 117-120), Landmesser 1984, 1988 and 1992,
 Pabian 1978 (Gems & Gemology 16, 16-28), two zobodat/Stuttgart PDFs the helper could not
 open (see the report).

@@ -26,12 +26,7 @@ from nodule.plumes import (
     share_count,
 )
 from nodule.specimen import _concat  # pyright: ignore[reportPrivateUsage]
-from nodule.variety import Growth, StoneRecipe, draw_sheet, volume_config
-
-
-@pytest.fixture(scope="module")
-def sheets() -> list[StoneRecipe]:
-    return [r for seed in range(12) for r in draw_sheet(seed)]
+from nodule.variety import Growth, StoneRecipe, volume_config
 
 
 def test_about_one_stone_in_nine_has_plumes_never_a_pebble(sheets: list[StoneRecipe]) -> None:

@@ -15,10 +15,13 @@ through them and rendered images. Its goals, in order:
 It describes what is seen before trying to explain it: things that look
 alike need not share an origin.
 
-> **Status.** Founded 2026-10-26. No models yet: the first steps are a
-> characterization schema (ten domains), then the 3D representation and one
-> simple nodule built end to end. See the [scope brief](docs/scope.md), the
-> [roadmap](docs/roadmap.md), the
+> **Status.** Founded 2026-10-26. 3D specimens built on agatesim, cut and
+> rendered on the GPU; broad mock-ups of many features varied per stone
+> (outlines, centres, floors, cracks, mottle, dust, plumes, moss, early
+> crystals, host rind), shown on preview sheets for the owner's eye
+> ([ADR 0018](docs/adr/0018-the-variety-gap-broad-mock-ups.md); order of work in
+> [docs/workplan.md](docs/workplan.md)). See also the
+> [scope brief](docs/scope.md), the [roadmap](docs/roadmap.md), the
 > [founding decision](docs/adr/0002-founding-nodule.md) and the
 > [scope decision](docs/adr/0003-scope-a-3d-specimen-simulator.md).
 
@@ -60,7 +63,7 @@ uv run ruff check; uv run ruff format; uv run pyright
 ## Project layout
 
 ```
-src/nodule/        the package (empty until the architecture ADR)
+src/nodule/        the package (specimens, variety recipes, preview sheets, renderer)
 tests/             pytest suite
 docs/adr/          architecture decision records
 docs/roadmap.md    milestones

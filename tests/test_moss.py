@@ -25,16 +25,10 @@ from nodule.variety import (
     StoneRecipe,
     build,
     cut_of,
-    draw_sheet,
     moss_vertical,
     vertical_share,
     volume_config,
 )
-
-
-@pytest.fixture(scope="module")
-def sheets() -> list[StoneRecipe]:
-    return [r for seed in range(12) for r in draw_sheet(seed)]
 
 
 def test_moss_on_a_sixth_of_stones_never_a_pebble_or_with_plumes(

@@ -29,12 +29,7 @@ from nodule.rind import (
     wall_distance,
 )
 from nodule.sheet import framed_rgb, preview_rgb
-from nodule.variety import StoneRecipe, build, cut_of, draw_sheet, rim_point
-
-
-@pytest.fixture(scope="module")
-def sheets() -> list[StoneRecipe]:
-    return [r for seed in range(12) for r in draw_sheet(seed)]
+from nodule.variety import StoneRecipe, build, cut_of, rim_point
 
 
 def test_value_noise_scale_constant() -> None:

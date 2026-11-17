@@ -49,11 +49,6 @@ from nodule.variety import (
 from nodule.variety.layers import FLOOR_SHIFT_SHARE
 
 
-@pytest.fixture(scope="module")
-def sheets() -> list[StoneRecipe]:
-    return [r for seed in range(12) for r in draw_sheet(seed)]
-
-
 def test_crystals_on_a_ninth_of_stones_alone_in_their_stage(sheets: list[StoneRecipe]) -> None:
     found = [r for r in sheets if r.crystals is not None]
     assert len(found) == 17  # 1 or 2 of 12 per sheet (seeds 0-11)

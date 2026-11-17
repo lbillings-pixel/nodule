@@ -3,6 +3,7 @@ from pathlib import Path
 import pytest
 
 from nodule.specimen import Specimen, SpecimenConfig, load_preset
+from nodule.variety import StoneRecipe, draw_sheet
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -19,6 +20,13 @@ def plain_config() -> SpecimenConfig:
     model = cfg.volume.model.model_copy(update=dict(lens_strength=0.0, translucency_drift=0.0))
     volume = cfg.volume.model_copy(update={"model": model})
     return cfg.model_copy(update={"volume": volume})
+
+
+@pytest.fixture(scope="session")
+def sheets() -> list[StoneRecipe]:
+    """The recipes of variety sheets 0-11 (144 stones, about 9 s), drawn once for the
+    whole run; recipes are frozen, so tests share them safely."""
+    return [r for seed in range(12) for r in draw_sheet(seed)]
 
 
 @pytest.fixture

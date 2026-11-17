@@ -62,7 +62,9 @@ before any statistics.
 
 ## Batch 3: medium (one or two sessions each)
 
-- [ ] 11. (recipes done with item 8; moss rendered 2026-11-16, sheet 0 stones 9 and 11,
+- [ ] 11. (owner, 2026-11-17, on the moss renders: fix amethyst centres rendering grey; fix
+  fine needles vanishing at whole face unless that proves resource-prohibitive, then skip it.
+  Recipes done with item 8; moss rendered 2026-11-16, sheet 0 stones 9 and 11,
   `runs/variety-render-moss/`, local: green tufts and red drapes show in their sheaths;
   waits for the owner's eye; amethyst centres render grey in the look, seen, not fixed;
   plume share 1 in 9 since 2026-11-16, the owner's pick) Moss in the recipes

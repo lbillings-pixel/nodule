@@ -1589,10 +1589,12 @@ waits for the owner's approval. Over sheets 0-99 (local `runs/tube-probe/
 placement_scan.py`, placement only): 174 tube stones, no placement failure, 18 with such
 a piece (vesicles 5 of 105, irregular 3 of 16, thunder eggs 10 of 36), every one with its
 midpoint outside the cavity and a zero gradient; 0.8 s median a stone. So until the fix,
-thunder eggs keep about 3 in 4 of their tubes. Eyes: the owner did not follow the question (both views are cuts); it
-will be asked again with a sketch of the two views: a slab through the stone cuts each
-dome through its middle (stacked half-rings at the rim), a cut just under the skin looks
-down on it (full rings, as Pabian's Fig. 38).
+thunder eggs keep about 3 in 4 of their tubes.
+Eyes: shown as a sketch of the two views (local `runs/eye-sketch/`): A, a slab through
+the stone cuts each dome through its middle (stacked half-rings at the rim); B, a cut
+just under the skin looks down on it (full rings, as Pabian's Fig. 38). The owner's
+choice (2026-11-17): cut B when eyes are what is being evaluated, cut A as usual whenever
+eyes are incidental.
 Fetch list: Shaub 1955 (Am. J. Sci. 253, 117-120), Landmesser 1984, 1988 and 1992,
 Pabian 1978 (Gems & Gemology 16, 16-28), two zobodat/Stuttgart PDFs the helper could not
 open (see the report).

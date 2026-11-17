@@ -81,8 +81,8 @@ before any statistics.
   beneath; not yet separated).
   Options: model the renderer's materials in the preview (1-2 sessions), or judge looks
   on quick renders (whole face 1.5-5.5 min a stone on the GPU).
-- [x] 13. (2026-11-17, ADR 0018 s.16 "Built"; `nodule.rind`, sheets only, renders draw
-  neither yet; no bleed, the owner's choice) Host rind, host speckle and pigment bleed
+- [x] 13. (2026-11-17, ADR 0018 s.16 "Built"; `nodule.rind`; on the renders'
+  look too, host redrawn in sheet colours, ADR 0019 s.6.8; no bleed, the owner's choice) Host rind, host speckle and pigment bleed
   into the host.
 - [ ] 14. (reading done 2026-11-17, ADR 0018 s.17: no agate study found; the owner's
   choices the same day: mostly from the rind inward and on cracks, thin-line view, at most

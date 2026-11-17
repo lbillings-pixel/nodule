@@ -34,7 +34,7 @@ from nodule.render.cutface import CutRenderer, Rendering
 from nodule.render.fakes import stone_record
 from nodule.render.materials import OpticsTable
 from nodule.render.record import BandRecord
-from nodule.sheet import dustiest, preview_rgb
+from nodule.sheet import dressed_look, dustiest, preview_rgb
 from nodule.specimen import Specimen, SpecimenCut, window_cut
 from nodule.variety import StoneRecipe, build, cut_of, draw_sheet
 
@@ -77,16 +77,18 @@ def render_stone(
     specimen, _ = build(r)
     lo, hi = specimen.volume.solid.bounds()
     spacing = float(np.max(np.asarray(hi) - np.asarray(lo))) / WHOLE_PX
-    cut = cut_of(specimen, r, spacing)
+    # room round the stone for its rind, drawn on the look after the render
+    pad = r.rind.reach_mm() if r.rind is not None else 0.0
+    cut = cut_of(specimen, r, spacing, pad)
     record = stone_record(specimen, np.random.default_rng(r.seed))
     rng = np.random.default_rng(r.seed + 1)
     row: dict[str, object] = {"stone": r.index + 1, "summary": r.summary()}
     name = f"stone-{r.index + 1:02d}"
-    row |= views(specimen, cut, record, WHOLE_GRID_MM, optics, spp, rng, out / name, "whole")
+    row |= views(specimen, cut, r, record, WHOLE_GRID_MM, optics, spp, rng, out / name, "whole")
     Image.fromarray(preview_rgb(cut, r)).save(out / f"{name}-preview.png")
     if r.dust is not None and close_ups:
         near = window_cut(specimen, cut, dustiest(cut, CLOSE_MM), CLOSE_MM, CLOSE_PIXEL_MM)
-        row |= views(specimen, near, record, CLOSE_GRID_MM, optics, spp, rng,
+        row |= views(specimen, near, r, record, CLOSE_GRID_MM, optics, spp, rng,
                      out / f"{name}-close", "close")  # fmt: skip
         Image.fromarray(preview_rgb(near, r)).save(out / f"{name}-close-preview.png")
     row["seconds"] = round(time.perf_counter() - t0, 1)
@@ -96,6 +98,7 @@ def render_stone(
 def views(
     specimen: Specimen,
     cut: SpecimenCut,
+    recipe: StoneRecipe,
     record: BandRecord,
     grid_mm: float,
     optics: OpticsTable,
@@ -105,7 +108,8 @@ def views(
     key: str,
 ) -> dict[str, object]:
     """The look and the backlit slice of one cut, on one grid fill; saves
-    `<stem>-look.png` and `<stem>-backlit.png`."""
+    `<stem>-look.png` (host, specks and rind drawn on, `dressed_look`) and
+    `<stem>-backlit.png` (as rendered)."""
     look = CutRenderer(specimen, cut, Rendering.look(record, grid_mm=grid_mm, optics=optics),
                        rng, fill_depth_mm=SLICE_MM)  # fmt: skip
     back = look.on(Rendering.transmitted(record, grid_mm=grid_mm, depth_mm=SLICE_MM,
@@ -114,7 +118,8 @@ def views(
     row: dict[str, object] = {f"{key}_fill_s": round(look.fill_s, 1)}
     for view, cr in zip(VIEWS, (look, back), strict=True):
         cr.more(spp)
-        Image.fromarray(cr.rgb[::-1]).save(f"{stem}-{view}.png")
+        rgb = dressed_look(specimen, cut, recipe, cr.rgb) if view == "look" else cr.rgb
+        Image.fromarray(rgb[::-1]).save(f"{stem}-{view}.png")
         row |= {f"{key}_{view}_s": round(cr.render_s, 1), f"{key}_{view}_noise": round(cr.noise, 2)}
     row[f"{key}_look_exposure"] = round(look.exposure, 2)
     return row

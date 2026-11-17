@@ -200,6 +200,31 @@ as now, no face glare, no glare plus a display curve, a backlit 3 mm slice) was 
    the control); the backlit view on the look's fill equals one on its own fill, sample
    for sample. tests/test_materials.py: a void is left out, a non-void hole refused.
 
+8. **Host rind and specks on the look, option B** (owner's pick, 2026-11-17; probe
+   runs/rind-render-probe/, look sheet rind-render-sheet.png). The renderer has one
+   host material (`OpticsTable.host`, a tan scatterer) for every stone, and draws
+   neither rind nor specks (ADR 0018 s.16). Options probed on four existing renders
+   (outlines matched the saved previews to the pixel, tubes stripped as the renders
+   predate them):
+   - A, the render's host kept, rind and specks at one scalar gain per stone (render
+     host lightness / sheet host lightness): the gain was 3.4-7.2 on volcanic stones
+     (render host sRGB ~140-200 against the sheet's basalt 68), so rinds glowed and
+     basalt stayed tan. Rejected.
+   - **B, the host redrawn** (`sheet.dressed_look`): host, specks and rind in the
+     sheets' colours (`sheet.dress`, shared with `framed_rgb`), one gain for every
+     stone (the sheet's values as displayed, `effective`), times the render's own
+     grain there (pixel / the host's median); the rind's share of each edge pixel
+     blended in linear light; agate clear of the rind kept as rendered. CPU, about
+     2 s a stone. *Assumption*: no light passes between agate and rind (the render's
+     own bleed into its host is kept only as grain).
+   - Only on the look; never on the backlit slice (owner): its host is opaque black,
+     so the slice is unchanged.
+   - Room for the rind: `varietyrender` pads the cut by the rind's reach
+     (`Specimen.cut(pad_mm=)`), so the frame no longer clips it (it did on seed 1
+     stone 6's 3 mm shell). Sheets are unchanged (`framed_rgb` pads its own picture).
+   Test (tests/test_rind.py): on a flat stand-in render, host pixels equal the sheet
+   picture's to rounding, not the render's tan, and agate clear of the rind is kept.
+
 Tests (tests/test_look.py), each with a negative control: glare off removes exactly
 F0 Ld; the look's exposure matches the compare's lightness; one fill serves a backlit
 slice sample for sample; the red setting touches only the HEMATITE pigment's red;
@@ -207,7 +232,8 @@ carnelian alone takes the lighter loading.
 
 ## Consequences
 
-- Variety stones render with every ADR 0018 layer; open cavities with a stand-in (s.6.7).
+- Variety stones render with every ADR 0018 layer; open cavities with a stand-in (s.6.7);
+  the host rind and specks are drawn on the look after the render (s.6.8).
 - `Layers` implementations must split their work (`per_step` and the call).
 - The renderer's record now holds white fade and quartz iron; earlier stones (no
   layers) are unchanged.

@@ -26,6 +26,7 @@ from pathlib import Path
 import numpy as np
 from agatesim import progress
 from agatesim.fields import Phase
+from agatesim.grid import FloatArray
 from agatesim.render import QUARTZ_CLEAR, QUARTZ_MILKY, chalcedony_colour
 from numpy.typing import NDArray
 from PIL import Image, ImageDraw
@@ -89,9 +90,6 @@ def framed_rgb(specimen: Specimen, cut: SpecimenCut, recipe: StoneRecipe) -> NDA
     picture is padded, not re-evaluated, and the cut's own agate pixels keep their
     colour except where a rind pixel's share covers them."""
     rind = recipe.rind
-    if rind is not None and specimen.max_slip_mm > 0:
-        # the rind follows the unslipped solid's level, the cut the slipped stone
-        raise ValueError("a rind on a stone with slipping fractures is not drawn")
     h = cut.spacing_mm
     k = math.ceil((rind.reach_mm() + h) / h) if rind is not None else 0
     s = np.concatenate(
@@ -100,30 +98,88 @@ def framed_rgb(specimen: Specimen, cut: SpecimenCut, recipe: StoneRecipe) -> NDA
     t = np.concatenate(
         [cut.t[0] + h * np.arange(-k, 0), cut.t, cut.t[-1] + h * np.arange(1, k + 1)]
     )
-    host = host_kind(recipe)
     rgb = np.empty((len(t), len(s), 3))
-    rgb[:] = HOST_RGB[host]
     inside = np.zeros((len(t), len(s)), bool)
     core = (slice(k, k + len(cut.t)), slice(k, k + len(cut.s)))
     rgb[core] = preview_rgb(cut, recipe)[::-1]
     inside[core] = cut.inside
     ss, tt = np.meshgrid(s, t)
-    pts = cut.plane.points(ss, tt).reshape(-1, 3)
-    flat, ins = rgb.reshape(-1, 3), inside.reshape(-1)
+    dress(rgb.reshape(-1, 3), cut.plane.points(ss, tt).reshape(-1, 3), inside.reshape(-1), h,
+          specimen, recipe)  # fmt: skip
+    return np.clip(np.rint(rgb), 0, 255).astype(np.uint8)[::-1]
+
+
+def dress(
+    flat: NDArray[np.float64],
+    pts: FloatArray,
+    ins: NDArray[np.bool_],
+    h: float,
+    specimen: Specimen,
+    recipe: StoneRecipe,
+) -> NDArray[np.float64]:
+    """Host, host specks and the stone's rind on rgb (n, 3) float (sheet colours,
+    0-255) in place: host pixels (~ins) are overwritten; agate pixels keep theirs
+    except for a rind pixel's share. Returns each pixel's non-agate share (1 on host
+    pixels, the rind's share on agate pixels)."""
+    rind = recipe.rind
+    if rind is not None and specimen.max_slip_mm > 0:
+        # the rind follows the unslipped solid's level, the cut the slipped stone
+        raise ValueError("a rind on a stone with slipping fractures is not drawn")
+    host = host_kind(recipe)
     out = np.flatnonzero(~ins)
+    flat[out] = HOST_RGB[host]
     host_part = flat[out]
     host_specks(host_part, pts[out], host, recipe.seed)
     flat[out] = host_part
+    share = (~ins).astype(np.float64)
     if rind is not None:
         solid = specimen.volume.solid
         window_at = None
         if rind.window is not None:
             window_at = solid.centre() + rim_point(solid, np.asarray(rind.window))
-        draw_rind_rgb(
+        sel, _, cov = draw_rind_rgb(
             flat, pts, ins, h, solid, rind, rind.colour(recipe.colour), flat.copy(),
             recipe.seed, window_at,
         )  # fmt: skip
-    return np.clip(np.rint(rgb), 0, 255).astype(np.uint8)[::-1]
+        on = ins[sel]
+        share[sel[on]] = cov[on]
+    return share
+
+
+def dressed_look(
+    specimen: Specimen, cut: SpecimenCut, recipe: StoneRecipe, look: NDArray[np.uint8]
+) -> NDArray[np.uint8]:
+    """A look render (8-bit sRGB, the cut's row order) with its host redrawn in the
+    sheet's colours, specks and rind (owner's pick B, 2026-11-17; ADR 0019 s.6.8). The
+    renderer has one tan host material for every stone; here each host kind takes its
+    sheet colour (one gain for all stones: the sheet's values as displayed) times the
+    render's own grain there (pixel / the host's median), and the rind's share of each
+    edge pixel is blended in linear light. Agate pixels clear of the rind are kept as
+    rendered. Never for a backlit slice: the host there is opaque (owner)."""
+    ss, tt = np.meshgrid(cut.s, cut.t)
+    ins = cut.inside.reshape(-1)
+    layer = np.zeros((ins.size, 3))
+    share = dress(layer, cut.plane.points(ss, tt).reshape(-1, 3), ins, cut.spacing_mm,
+                  specimen, recipe)[:, None]  # fmt: skip
+    col = np.where(share > 0, layer / np.maximum(share, 1e-12), 0.0)  # un-premultiplied
+    lin = srgb_to_linear(look.reshape(-1, 3))
+    host = lin[~ins]
+    grain = np.ones_like(lin)
+    if len(host):
+        grain[~ins] = host / np.maximum(np.median(host, axis=0), 1e-6)
+    mixed = share * srgb_to_linear(col) * grain + (1 - share) * lin
+    return linear_to_srgb(mixed).reshape(look.shape)
+
+
+def srgb_to_linear(c: NDArray[np.generic]) -> NDArray[np.float64]:
+    x = np.asarray(c, np.float64) / 255
+    return np.where(x <= 0.04045, x / 12.92, ((x + 0.055) / 1.055) ** 2.4)
+
+
+def linear_to_srgb(x: NDArray[np.float64]) -> NDArray[np.uint8]:
+    y = np.clip(x, 0.0, 1.0)
+    y = np.where(y <= 0.0031308, 12.92 * y, 1.055 * y ** (1 / 2.4) - 0.055)
+    return (y * 255 + 0.5).astype(np.uint8)
 
 
 def plume_recipes(

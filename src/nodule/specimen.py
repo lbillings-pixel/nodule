@@ -259,14 +259,17 @@ class Specimen:
     def plane(self, cut: SliceConfig) -> Plane:
         return Plane.of(cut, self.volume.solid.centre())
 
-    def window(self, plane: Plane, spacing_mm: float) -> tuple[FloatArray, FloatArray]:
+    def window(
+        self, plane: Plane, spacing_mm: float, pad_mm: float = 0.0
+    ) -> tuple[FloatArray, FloatArray]:
         """Pixel centres (s, t) covering the stone's bounding box in the plane,
-        padded by the total slip, at integer multiples of the spacing."""
+        padded by the total slip and `pad_mm` (room for a rind), at integer multiples
+        of the spacing."""
         lo, hi = self.volume.solid.bounds()
         corners = np.array([[x, y, z] for x in (lo[0], hi[0]) for y in (lo[1], hi[1])
                             for z in (lo[2], hi[2])])  # fmt: skip
         rel = corners - plane.origin
-        pad = self.max_slip_mm + spacing_mm
+        pad = self.max_slip_mm + spacing_mm + pad_mm
         axes: list[FloatArray] = []
         for d in (plane.u, plane.v):
             c = rel @ d
@@ -275,10 +278,10 @@ class Specimen:
             axes.append(np.arange(k0, k1 + 1) * spacing_mm)
         return axes[0], axes[1]
 
-    def cut(self, plane: Plane, spacing_mm: float) -> SpecimenCut:
+    def cut(self, plane: Plane, spacing_mm: float, pad_mm: float = 0.0) -> SpecimenCut:
         if not spacing_mm > 0:
             raise ValueError("spacing_mm must be positive")
-        s, t = self.window(plane, spacing_mm)
+        s, t = self.window(plane, spacing_mm, pad_mm)
         ss, tt = np.meshgrid(s, t)
         points = plane.points(ss, tt)
         parts: list[tuple[Fields, BoolArray]] = []

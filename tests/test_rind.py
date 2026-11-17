@@ -28,7 +28,7 @@ from nodule.rind import (
     value_noise,
     wall_distance,
 )
-from nodule.sheet import framed_rgb, preview_rgb
+from nodule.sheet import HOST_RGB, dressed_look, framed_rgb, host_kind, preview_rgb
 from nodule.variety import StoneRecipe, build, cut_of, rim_point
 
 
@@ -186,3 +186,31 @@ def test_sheet_picture_pads_round_the_cut_and_keeps_the_agate(sheets: list[Stone
     assert np.array_equal(core[deep], base[deep])  # agate away from the wall untouched
     # the rind shows: host-side pixels next to the wall differ from the flat host
     assert np.any(np.any(core[~cut.inside[::-1]] != base[~cut.inside[::-1]], axis=1))
+
+
+def test_look_takes_the_sheet_host_and_rind_and_keeps_the_agate(
+    sheets: list[StoneRecipe],
+) -> None:
+    """dressed_look (owner's pick B): on a flat stand-in render, host pixels take the
+    sheet picture's colours (the grain is 1), not the render's tan; agate clear of the
+    rind keeps the render."""
+    rec = next(r for r in sheets if r.outline == "pebble" and r.rind is not None)
+    assert rec.rind is not None
+    specimen, _ = build(rec)
+    lo, hi = specimen.volume.solid.bounds()
+    spacing = float(np.max(np.asarray(hi) - np.asarray(lo))) / 120
+    cut = cut_of(specimen, rec, spacing, rec.rind.reach_mm())
+    look = np.full((*cut.inside.shape, 3), 120, np.uint8)
+    look[~cut.inside] = (198, 163, 133)  # the render's tan host
+    out = dressed_look(specimen, cut, rec, look)
+    sheet = framed_rgb(specimen, cut, rec)[::-1]  # pads by k on each side
+    k = (sheet.shape[0] - cut.inside.shape[0]) // 2
+    sheet = sheet[k:-k, k:-k].astype(int)
+    host = ~cut.inside
+    assert np.abs(out[host].astype(int) - sheet[host]).max() <= 1  # rounding only
+    ss, tt = np.meshgrid(cut.s, cut.t)
+    lev = specimen.volume.solid.level(cut.plane.points(ss, tt).reshape(-1, 3))
+    deep = lev.reshape(cut.inside.shape) > 2 * spacing
+    assert np.array_equal(out[deep], look[deep])
+    # the rind's tan differs from the sedimentary host: some host pixels are not host
+    assert np.any(np.any(out[host] != HOST_RGB[host_kind(rec)], axis=1))

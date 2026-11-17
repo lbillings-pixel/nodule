@@ -696,5 +696,7 @@ def build(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Specimen, 
     return replace(specimen, layers=layers, warp=warp), layers
 
 
-def cut_of(specimen: Specimen, recipe: StoneRecipe, spacing_mm: float) -> SpecimenCut:
-    return specimen.cut(specimen.plane(recipe.cut), spacing_mm)
+def cut_of(
+    specimen: Specimen, recipe: StoneRecipe, spacing_mm: float, pad_mm: float = 0.0
+) -> SpecimenCut:
+    return specimen.cut(specimen.plane(recipe.cut), spacing_mm, pad_mm)

@@ -1378,6 +1378,30 @@ rind draws a muted colour, often taken from its own palette (coupling: the owner
 observation), and the look sheet shows the range. The thin tan-to-beige sediment rind
 stays as the owner described it unless the look sheet says otherwise.
 
+**Look sheet and the owner's verdict (2026-11-17).** Probe (local
+`runs/host-probe/look_sheet.py`, 60 s, 0.45 GB for three stones): the rind is drawn
+outside the wall from level divided by its slope (checked by offsetting along the
+normal: under 0.05 mm short at 10 mm on a vesicle, 0.18 mm at 5 mm on a prolate
+stone), with width and textures from hashed noise and hashed grains in world
+coordinates; a rind thinner than a pixel is drawn by the share of the pixel it covers
+(within 0.003 mm of its width). The owner accepted every proposal but the specks:
+- Volcanic stones: the full range, from the thin green clay rim (about 0.6 mm) to the
+  mottled brown-green shell (typical about 3.5 mm) with host-coloured bites at its
+  outer edge (in-situ view), most stones towards the thin end (the end the sources
+  describe). Width capped at 6 mm [@morteani2010]. The shell end on basalt is
+  confirmed as the owner's eye. Windows as before.
+- Rind colour: about half the stones echo their own colour class, the rest draw from
+  five muted colours (green, brown-green, brown, red-brown, yellow-ochre); all
+  `effective`.
+- Sediment stones: option A (pale host zone) in the owner's tan, on about half the
+  stones, thickness spread over 0.05-1 mm, typically about 0.2 mm.
+- Host specks: rhyolite specks were too big and too dense on the first sheet (about
+  1 mm, 15 % of the host); the owner asked for 10-15 % smaller and 25-35 % fewer.
+  Now grains 0.5-1.0 mm across (blocky feldspar, rounded quartz, a few dark flakes),
+  about 7 % of the host face, inside the 5-20 % of [@goetze2024]. The rhyolite ground
+  colour stays unsourced. Basalt: sparse filled holes, green rims (*plausible*),
+  white cores an assumption; sediment host lightly mottled (assumption).
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

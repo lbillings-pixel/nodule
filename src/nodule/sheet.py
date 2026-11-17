@@ -126,10 +126,6 @@ def framed_rgb(specimen: Specimen, cut: SpecimenCut, recipe: StoneRecipe) -> NDA
     return np.clip(np.rint(rgb), 0, 255).astype(np.uint8)[::-1]
 
 
-def extent(cut_shape: tuple[int, int], spacing_mm: float) -> float:
-    return max(cut_shape) * spacing_mm
-
-
 def plume_recipes(
     seed: int, n: int, moss: bool = False, kind: str | None = None
 ) -> list[StoneRecipe]:

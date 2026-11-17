@@ -31,7 +31,7 @@ deep and `MIN_CONCAVITY_PX` pixels deep (both `effective`).
 from __future__ import annotations
 
 import math
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 
 import numpy as np
 from agatesim import _scipy as agatesim_scipy  # pyright: ignore[reportPrivateUsage]
@@ -52,9 +52,6 @@ class Outline:
     circularity: float  # C2: Riley √(Di/Dc)
     irregularity: float  # C3: I(2D)
     concavities: int  # how many concavities C3 summed over
-
-    def to_json(self) -> dict[str, float | int]:
-        return {k: round(v, 4) if isinstance(v, float) else v for k, v in asdict(self).items()}
 
 
 def filled(mask: NDArray[np.bool_]) -> NDArray[np.bool_]:

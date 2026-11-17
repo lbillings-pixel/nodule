@@ -33,9 +33,6 @@ from nodule.render.tgrid import GrowthGrid
 if TYPE_CHECKING:
     from nodule.render.shift import DeviceShift
 
-# ADR 0007 amendment 4: forward-peak cut for renders under the L2 disc lamp (effective). Dome
-# and other diffuse-light renders show no sparkle and use the full phase function (0).
-L2_CUT_DEG = 4.0
 N_CHALCEDONY = 1.54  # physical: bulk chalcedony 1.53-1.539 [@lorenzi2022; @white1961]
 F32 = NDArray[np.float32]
 F64 = NDArray[np.float64]
@@ -284,10 +281,6 @@ class Rendered:
     paths: int
     events: float  # tentative collisions per path
     real: float  # real collisions per path
-
-    @property
-    def mpaths_per_s(self) -> float:
-        return self.paths / self.seconds / 1e6
 
 
 CAM_DTYPE = np.dtype(

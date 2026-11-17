@@ -272,7 +272,9 @@ Measured here (*verified* as numbers; the cut is `effective`):
 - Speed: unchanged, 1.15 M paths/s (about 3.7 min for 1 Mpx at 256
   samples).
 
-`L2_CUT_DEG` = 4° is used with L2 only. Dome and diffuse renders are clean
+`L2_CUT_DEG` = 4° is used with L2 only. (2026-11-17: the constant was removed as
+unused, since renders moved to the no-glare look (ADR 0019) and no caller passed it; a
+disc-lamp render would pass `cut_deg=4.0` itself.) Dome and diffuse renders are clean
 without a cut and keep the full phase function. L3 looks toward its light,
 which is where truncation fails in Buras and Mayer. L3 therefore needs its
 own check before any cut is used with it.

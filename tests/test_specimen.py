@@ -11,6 +11,7 @@ from agatesim.volume.config import SliceConfig
 
 from nodule.specimen import FractureConfig, Specimen, SpecimenConfig, load_preset, look_preset
 from nodule.specimen_checks import (
+    TIP_TOLERANCE_MM,
     coincident_agreement,
     fold_check,
     overlap_counts,
@@ -111,7 +112,7 @@ def test_fold_check_rejects_an_uncapped_steep_wobble(config: SpecimenConfig) -> 
 
 
 def test_fracture_offset_is_zero_at_its_tip(specimen: Specimen) -> None:
-    assert all(v < 1e-9 for v in tip_offsets_mm(specimen))
+    assert all(v < TIP_TOLERANCE_MM for v in tip_offsets_mm(specimen))
 
 
 def test_tip_check_rejects_constant_slip_ending_in_the_stone(config: SpecimenConfig) -> None:

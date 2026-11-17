@@ -1588,8 +1588,12 @@ the depth cap holds. Nodule checks placement alone when dealing (`channel_fits`,
 waits for the owner's approval. Over sheets 0-99 (local `runs/tube-probe/
 placement_scan.py`, placement only): 174 tube stones, no placement failure, 18 with such
 a piece (vesicles 5 of 105, irregular 3 of 16, thunder eggs 10 of 36), every one with its
-midpoint outside the cavity and a zero gradient; 0.8 s median a stone. So until the fix,
-thunder eggs keep about 3 in 4 of their tubes.
+midpoint outside the cavity and a zero gradient; 0.8 s median a stone. Fixed the same day
+in agatesim with the owner's approval (agatesim ADR 0088, 6d46d9d; pin moved): such a
+piece takes the mean slope at its two ends; sound channels are unchanged. Both stones
+now keep their tubes and gain no void (100,000 points: 36 -> 36 and 0 -> 0). The
+placement check stays as a guard (all 23 tube stones of sheets 0-11 pass); tubes on
+thunder eggs were judged "okay" by the owner (2026-11-17).
 Eyes: shown as a sketch of the two views (local `runs/eye-sketch/`): A, a slab through
 the stone cuts each dome through its middle (stacked half-rings at the rim); B, a cut
 just under the skin looks down on it (full rings, as Pabian's Fig. 38). The owner's

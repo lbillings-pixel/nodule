@@ -19,7 +19,7 @@ from nodule.variety.draw import channel_fits
 def test_tubes_on_a_sixth_of_the_stones_never_on_pebbles(sheets: list[StoneRecipe]) -> None:
     tubes = [r for r in sheets if r.channel is not None]
     eligible = [r for r in sheets if r.outline not in NO_TUBES]
-    assert len(tubes) == 21  # about 1 in 6 of the 132 eligible stones, less 2 unsound
+    assert len(tubes) == 23  # about 1 in 6 of the 132 eligible stones
     assert 0.1 < len(tubes) / len(eligible) < 0.25
     for r in tubes:
         assert r.channel is not None
@@ -77,21 +77,18 @@ def _void_share(rec: StoneRecipe) -> float:
     return int(np.count_nonzero(phase == Phase.VOID)) / max(len(phase), 1)
 
 
-@pytest.mark.filterwarnings("ignore:invalid value encountered in divide:RuntimeWarning")
-def test_unsound_channels_are_not_dealt(sheets: list[StoneRecipe]) -> None:
-    """Stones 2-0 and 4-9 would get a channel whose line cuts a chord outside the cavity
-    (NaN side directions); unguarded (negative control) it opens a void of over 10 % of
-    the stone. The deal drops it; a sound tube stone keeps its channel and its voids."""
+def test_tubes_round_a_concave_wall_open_no_void(sheets: list[StoneRecipe]) -> None:
+    """Stones 2-0 and 4-9 have a channel line that bends round a concave stretch of
+    wall; before agatesim ADR 0088 a piece's side was NaN there and stone 2-0 opened a
+    void of about 15 % (agatesim's test carries that negative control). Now both are
+    dealt their tubes, placement passes, and the tube adds almost no void."""
     for s, i in ((2, 0), (4, 9)):
         rec = sheets[12 * s + i]
-        assert rec.channel is None
-        forced = StoneRecipe.model_validate(rec.model_dump() | {"channel": {"depth_mm": 3.2}})
-        assert not channel_fits(forced)
-        if (s, i) == (2, 0):  # one build pair (about 3 s): the damage the guard prevents
-            assert _void_share(forced) - _void_share(rec) > 0.10
-    sound = sheets[0]
-    assert sound.channel is not None
-    assert channel_fits(sound)
+        assert rec.channel is not None
+        assert channel_fits(rec)
+    rec = sheets[24]  # 2-0, about 3 s for the pair
+    plain = rec.model_copy(update={"channel": None})
+    assert _void_share(rec) - _void_share(plain) < 0.001
 
 
 def test_channel_settings_reach_the_model() -> None:

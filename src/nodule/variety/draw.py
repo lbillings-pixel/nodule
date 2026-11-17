@@ -199,11 +199,12 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
 
 
 def channel_fits(recipe: StoneRecipe) -> bool:
-    """Whether agatesim places the stone's channel soundly (placement only, about 0.7 s;
-    no growth). False when it finds no place, or when a piece of the line cuts a chord
-    across a concave stretch of wall: its midpoint lies outside the cavity, where the
-    level's gradient is zero, so the piece's side direction is NaN and the stone opens a
-    void (2 of 23 tube stones on sheets 0-11, about 15 % of the stone; ADR 0018 s.18)."""
+    """Whether agatesim places the stone's channel soundly (placement only, about 0.8 s;
+    no growth). False when it finds no place on the wall, or when a piece's side
+    direction is not finite. Before agatesim ADR 0088 a piece cutting a chord across a
+    concave stretch of wall had a NaN side and the stone opened a void (18 of 174 tube
+    stones on sheets 0-99; ADR 0018 s.18); kept as a guard, it passes every tube stone
+    of sheets 0-11 since."""
     cfg = volume_config(recipe)[0]
     assert isinstance(cfg.model, ProceduralGrowth)
     setting = Setting.build(cfg.solid.build(), cfg.gravity.vector(), cfg.solid.filament_array())

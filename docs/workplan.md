@@ -62,7 +62,7 @@ before any statistics.
 
 ## Batch 3: medium (one or two sessions each)
 
-- [ ] 11. (owner, 2026-11-17, on the moss renders: fix amethyst centres rendering grey; fix
+- [x] 11. (owner, 2026-11-17, on the moss renders: fix amethyst centres rendering grey; fix
   fine needles vanishing at whole face unless that proves resource-prohibitive, then skip it.
   2026-11-17: both fixed, the owner's picks taken (ADR 0018 s.15 correction; ADR 0019
   s.6.9): white remnants now milky in the render's record; white needles on a 0.05 mm

@@ -56,7 +56,7 @@ before any statistics.
   thunder eggs take needles only, done); agatesim floor fix (done, agatesim ADR 0087);
   a small share of crystals with plumes or moss (done; plume halos now keep faint
   bands, dda6964, s.13). Before a combination stone is rendered: plume roots take the
-  crystals' material (`nearest_seen`, s.15); fix first.
+  crystals' material (`nearest_seen`, s.15); fixed 2026-11-17 (`BandRecord.plume`).
   Still open afterwards (for the owner, s.15): late white patches that cut across
   bands (a mottle-like layer), true radial needle sprays (would need agatesim).
 
@@ -82,8 +82,11 @@ before any statistics.
 - [x] 13. (2026-11-17, ADR 0018 s.16 "Built"; `nodule.rind`, sheets only, renders draw
   neither yet; no bleed, the owner's choice) Host rind, host speckle and pigment bleed
   into the host.
-- [ ] 14. Black manganese dendrites in band partings.
-- [ ] 15. Eyes and escape tubes.
+- [ ] 14. (reading done 2026-11-17, ADR 0018 s.17: no agate study found; sites, view and
+  rate wait for the owner) Black manganese dendrites in band partings.
+- [ ] 15. (reading done 2026-11-17, ADR 0018 s.18; tube look sheet from agatesim's wall
+  channels, local `runs/tube-probe/`, waits for the owner's verdict; eyes wait for the
+  owner's choice of view) Eyes and escape tubes.
 - [ ] 16. Depth through clear bands (a render test).
 
 ## Batch 4: large (several sessions each)

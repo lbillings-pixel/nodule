@@ -1215,7 +1215,13 @@ so no earlier draw moves (sheets 0-11 checked identical; at this rate they deal 
 Render limit, checked on the step indices (`runs/crystal-probe/nearest_check.py`, local;
 no stone rendered): the stage is 2 of 400 steps, and `BandRecord.nearest_seen` gives the
 first of the 2 plume steps (the plumes' roots) the crystals' material, not the first
-band's; to fix before a combination stone is rendered.
+band's; to fix before a combination stone is rendered. Fixed 2026-11-17 in nodule's
+renderer (`BandRecord.plume`): the steps plumes or moss fill, and the whole unseen run
+round them, take the next seen step, the first band (index check now 0 of 2; tests with
+the unmarked record as negative control). Stones without crystals are unchanged: on
+synthetic records, and on three real ones (a plume stone at 120 and 240 px, by the
+independent review; a moss thunder egg and a moss vesicle with a floor, 400,000 points
+each: 0 steps changed). No combination stone has been rendered yet.
 
 **Open, for the owner.** The fill and habit mixes (accepted as they are); the white in renders (the renderer takes white remnants
 as milky chalcedony, through the layers: rendered 2026-11-16, `runs/variety-render-moss/`,
@@ -1424,7 +1430,8 @@ left open, all assumptions (`effective`), for the owner to check:
 - *Sediment:* the pale rind on half the sediment stones (11 of 24 on sheets 0-11),
   0.05-1 mm log-uniform (median 0.22 mm); its width along the wall is clipped at 1.6
   times the typical (1-3 % of the wall), so its outer edge does not move with the pixel
-  size (found by an independent review, 2026-11-17).
+  size (found by an independent review, 2026-11-17). `draw_sheet` now validates each
+  recipe with its rind, so sheets 0-11 draw in 13 s instead of 10 s.
 Checks (local `runs/host-probe/src_check.py`, every stone of sheets 0-1 at 600 px):
 level > 0 matches the cut's inside on every pixel, slip is 0, and no agate pixel more than
 1.5 px from the wall changes; the padded picture costs 1-7 s and under 0.21 GB a stone.
@@ -1435,8 +1442,9 @@ half), and the specks fixed in world coordinates. On a prolate stone (a solid of
 revolution) the level's slope is 1.02-1.40 at the wall but 1.00 by 2 mm out, so the
 correction acts on thin rinds only; further out the distance runs short of the offset by
 up to 0.20 mm at 2 mm (p5 0.12) and 0.51 mm at 6 mm (p5 0.28). The one-sided offset
-test cannot tell whether that is the level or a concave stretch of the profile, so the
-widest shells may read up to a tenth thin on such stones. Port check (local
+test cannot tell whether that is the level or a concave stretch of the profile. Where it
+is the level, a pixel truly at w + d is taken to lie at w, so the widest shells may reach
+up to a tenth wider than drawn on such stones. Port check (local
 `runs/host-probe/port_check.py`): `framed_rgb` matches the probe's picture within one
 grey level on two volcanic stones, and on a sediment stone once the clip below is
 switched off.
@@ -1538,10 +1546,11 @@ irregular stone), each with one wall channel (its own stream: no other draw move
 lateral 8 mm, length 10 mm (as on n2-slice), at stack depths 3, 8 and 15 mm, cut across
 the channel's line. Findings:
 - At 3 and 8 mm the bands arch and thin to a focus at the wall, Walger's form.
-- At 15 mm three of the four stones open a black void where the thinned bands run out
-  of chalcedony; Walger's onion fills with clear quartz instead. A depth cap by the
-  chalcedony's thickness (as for crystals, s.15) would avoid it.
-- On the prolate stone the channel hardly shows at sheet scale (a small fleck).
+- At 15 mm three of the four stones open a black void at the channel; Walger's onion
+  fills with clear quartz instead. That the thinned stack runs out of chalcedony there is
+  Claude's reading, not checked; if so, a depth cap by the chalcedony's thickness (as for
+  crystals, s.15) would avoid it.
+- On the prolate stone the channel shows only as small black flecks at 8 and 15 mm.
 - One channel is crossed within 2 mm by 19-48 % of random cuts through the centre (2,000
   planes a stone), in line with Walger's "random sections" often missing them.
 Proposed defaults, all assumptions, for the owner's verdict: no channel on pebbles

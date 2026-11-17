@@ -1447,6 +1447,114 @@ owner judged is unchanged; 4.8 % sits at the low edge of the 5-20 % of [@goetze2
 (*verified*). Raising the chance from 0.7 to 1.0 gives about 6.8 %, if the owner wants
 the share inside the sourced range.
 
+### 17. Black manganese dendrites: reading and options (2026-11-17, proposed)
+
+Work plan item 14. Reading by a helper (`notes/n1-reading/item14-mn-dendrites.md`,
+local). Appearance only (ADR 0002). **No peer-reviewed study of Mn dendrites in agate
+was found**; research on dendrites in agate "remain[s] remarkably limited" [@hou2025,
+s. 2.3], and [@goetze2020] never uses the word. What follows comes from a collectors'
+circular, one nodule, and dendrites in other rocks used as analogues.
+
+**Where they sit: the sources differ, so options for the owner.**
+- *A, band partings.* Planar dendrites "often confined to the tiny space between the
+  bands", oriented by them, formed after the bands [@pabian1994, p. 23] (*plausible*);
+  Montana "moss" agate as the example [@kile2002, p. 252] (*plausible*).
+- *B, three-dimensional shrubs* in clear chalcedony, "shrub-like deposits in moss agates"
+  of a different origin from planar ones [@swartzlow1934, p. 403] (*plausible*: one
+  sentence).
+- *C, from the rind inward*: dendrites grow from the nodule's outer surface towards its
+  centre in one dendritic agate nodule [@bayirli2017] (*verified*, one stone).
+- *D, cracks*: on joints and fractures in other rocks they start at a crack edge
+  [@swartzlow1934; @ngteh2009] (*verified*, not agate); in agate only by analogy.
+- Pabian's Montana example is a dense radiating "sunburst" about 12 mm across, which the
+  authors call common in Montana agates (Figs 46-47; *plausible*), not a thin fern.
+
+**Look.** Black to brown; in other rocks romanechite or hollandite-group oxides, never
+pyrolusite, with only traces of iron [@potter1979] (*verified*, not agate). No halo: the
+Mn stays inside the dendrite, edge sharp [@hou2025, s. 4.1.1] (*verified*, other
+hosts). Box-counting dimension 1.57-1.88 (mean 1.75), fill factor 0.18-0.87 (mean 0.48)
+[@ngteh2009, Table 2] (*verified*, vein quartz); 1.63 on the one agate [@bayirli2017];
+side branches at 35-55 degrees (Van Straaten 1978 via [@hou2025]; *plausible*); tips
+mostly rounded; narrow gaps give complex forms, wide ones solid deposits
+[@swartzlow1934] (*verified*, not agate).
+
+**What a cut shows: a gap that decides the build.** No source describes a section
+through a dendrite plane. On a flat cut, a dendrite on a parting the cut crosses would
+show only as a short dark line along a band (an inference, *speculative*). The fern or
+tree look in collectors' photos is seen face-on through translucent chalcedony
+[@pabian1994, Figs 44, 47] (*speculative*, by eye), which needs depth in the render
+(work plan item 16), or a cut laid along a parting (the cutter's choice). No source gives
+how often agates carry dendrites, by locality or overall.
+
+**Questions for the owner before a probe.**
+1. Which sites: A (partings), B (3D shrubs), C (from the rind), D (cracks), or a mix?
+2. Which view matters most: the trace on a flat cut (cheap, a layer like dust), or the
+   fern seen through the stone (needs item 16's depth first), or a cut along a parting?
+3. How often, from the owner's experience (no source gives a rate)?
+Fetch list (for the owner, if wanted; nothing downloaded): Van Straaten 1978 (J. Geol.
+Soc. 135, 137-151; the fullest description of planar dendrites), Chopard et al. 1991
+(Nature 353, 409), Garcia-Ruiz et al. 1994 (Springer), Xu et al. 2010 (Am. Mineral. 95,
+556), Tharalson et al. 2023 (Miner. Deposita; may be open: a helper can try).
+
+### 18. Eyes and escape tubes: reading and options (2026-11-17, proposed)
+
+Work plan item 15. Reading by a helper (`notes/n1-reading/item15-eyes-tubes.md`, local).
+Appearance only (ADR 0002); the mechanism is context, never chosen.
+
+**Eyes.** Only Pabian describes them: "concentrically arranged bands that form a
+hemisphere with its flat surface showing usually on the exterior of the agate nodule"
+(p. 21), "normally confined to the surface" (Fig. 38), most common in amygdaloidal
+agates, "very few" in thunder eggs and none in sedimentary agates [@pabian1994, pp.
+21-22] (*plausible*, collectors' circular). On Fig. 38 (a face-on Lake Superior stone,
+X2) eyes are 4-8 mm across with a dark core about 3 mm and 4-8 pale rings about 0.4 mm
+apart; neighbours touch and merge (*plausible*, by eye). What an eye is, as options:
+an early wall spherulite (described by [@frondel1978; @heaney1993; @goetze2020, Fig. 29;
+@thewalt2014], none of which calls it an eye: the link is an inference); agate replacing
+a zeolite; or a chemical wave front (Pabian's two views). No source shows an eye in
+section or says whether later bands drape over it, and Nodule's cuts pass through the
+stone, where eyes (surface features) would show only near the rim. **Proposed: no probe
+until the owner says which view (a face-on rim view, or the section) to show.**
+
+**Escape tubes and infiltration channels.** How often is disputed: "present and common"
+at all 12 localities of Pabian's Table 1 and "a common feature" [@howard2018, p. 99],
+against "not observed more frequently" and often missed by random sections
+[@walger2009, pp. 127-128] and many sections without any [@moxon2020, p. 14] (all
+*verified* as each source's words). Walger's size rule: none below cherry size, often
+one at fist size, several above 1 dm³ (*verified*). Shape: an onion-shaped section a few
+mm to 2-2.5 cm deep, the wall layers thinning "to zero" toward a focus at a fissure
+through a first layer about 2.5 mm thick [@walger2009, pp. 117, 125] (*verified*);
+an opening at the wall of 1-1.5 cm with unbanded chalcedony and red specks
+[@howard2018, Fig. 6] (*plausible*, by eye); a keyhole across a whole radius
+[@goetze2020, Fig. 34a] (*plausible*). The sources disagree on geometry (focus at the
+wall [@walger2009]; channels that never reach the outer boundary [@kigai2019, p. 872];
+inner bands piercing outer ones [@pabian1994, p. 20]) and on mechanism (inflow, outflow,
+squeezed gel, deformation); all are options. agatesim already builds Walger's form (wall
+channels, agatesim ADR 0077; ADR 0015 s.6), so a look sheet needs no agatesim change;
+Howard's and Kigai's forms would.
+
+*Probe (2026-11-17, local `runs/tube-probe/look_sheet.py`, 159 s, 0.37 GB; look sheet
+`runs/tube-probe/look/channels.png`).* Four variety stones (two vesicles, a prolate, an
+irregular stone), each with one wall channel (its own stream: no other draw moves),
+lateral 8 mm, length 10 mm (as on n2-slice), at stack depths 3, 8 and 15 mm, cut across
+the channel's line. Findings:
+- At 3 and 8 mm the bands arch and thin to a focus at the wall, Walger's form.
+- At 15 mm three of the four stones open a black void where the thinned bands run out
+  of chalcedony; Walger's onion fills with clear quartz instead. A depth cap by the
+  chalcedony's thickness (as for crystals, s.15) would avoid it.
+- On the prolate stone the channel hardly shows at sheet scale (a small fleck).
+- One channel is crossed within 2 mm by 19-48 % of random cuts through the centre (2,000
+  planes a stone), in line with Walger's "random sections" often missing them.
+Proposed defaults, all assumptions, for the owner's verdict: no channel on pebbles
+(Walger: none below cherry size); one channel on about 1 stone in 2 otherwise (Walger:
+"often one" at fist size; Nodule's stones are 30-70 mm); stack depth 3-10 mm
+(log-uniform), capped at half the chalcedony's thickness; thunder eggs left open:
+Pabian's Table 1 marks tubes common at Richardson Ranch, a thunder-egg locality, while
+channels "predominantly occur in agates of mafic volcanic rocks" [@goetze2020, p. 38],
+and the star's narrow arms may hold no channel (not tried).
+Fetch list: Shaub 1955 (Am. J. Sci. 253, 117-120), Landmesser 1984, 1988 and 1992,
+Pabian 1978 (Gems & Gemology 16, 16-28), two zobodat/Stuttgart PDFs the helper could not
+open (see the report).
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

@@ -1368,6 +1368,16 @@ was not obtained: the download was blank (owner). Milliken 1979 was not obtained
   observation. No source gives specks or mottle in the sediment host beside a nodule
   (only bedding draped round it), so light mottle there stays an assumption.
 
+**Rind colour (the owner, 2026-11-16, late night).** Agate rinds come in a wide range of
+colours, usually muted, often echoing the stone's interior colouring: shades of red,
+yellow, brown and green (the owner's observation from collecting and from a friend's
+videos; *plausible* as a look). The papers above describe green celadonite only because
+they cover a few basalt districts; that is a gap in the reading, not a limit on rind
+colour. So rind colour is no longer restricted to green and brown-green: each stone's
+rind draws a muted colour, often taken from its own palette (coupling: the owner's
+observation), and the look sheet shows the range. The thin tan-to-beige sediment rind
+stays as the owner described it unless the look sheet says otherwise.
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

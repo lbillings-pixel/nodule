@@ -703,8 +703,9 @@ Peer-reviewed work on plumes is thin; most of what follows is *plausible* at bes
   wall, older than the bands that enclose them [@pabian1994, pp. 13, 23], read as
   silica gardens [@goetze2020, §5.5] (*plausible*). Green moss: celadonite or smectite
   filaments, each in its own silica sheath [@akahane2025; @zhang2026; @goetze2020b]
-  (*verified*). Black Mn dendrites ("Montana moss") in band partings, after the bands
-  [@pabian1994, p. 23] (*plausible*).
+  (*verified*). Black Mn dendrites in band partings, after the bands [@pabian1994,
+  p. 23] (*plausible*); "Montana moss" as the example comes from [@kile2002, p. 252],
+  not Pabian (corrected 2026-11-17, s.17).
 - **Plumes on a face:** from one plume to a crowded row; about 8 x 12 mm in one figure
   [@goetze2020, Fig. 34h] (*speculative*, by eye); orientation shared within a
   locality, horizontal in one basalt, vertical in another (Zarins in [@pabian1994,
@@ -1418,7 +1419,8 @@ left open, all assumptions (`effective`), for the owner to check:
 - *Windows:* 1 volcanic stone in 13.5; radius 1.5-4 mm (log-uniform), fading over
   0.6 mm at the edge, at a random place on the wall. A cut shows a window only when it
   passes near that place, so far fewer faces than 1 in 13 show one (6 windows on sheets
-  0-11; one on sheet 1, stone 1).
+  0-11; sheet 1, stone 1 has one, but it lies 4.5 mm off the cut with a 3.6 mm radius,
+  so the face does not show it).
 - *Sediment:* the pale rind on half the sediment stones (11 of 24 on sheets 0-11),
   0.05-1 mm log-uniform (median 0.22 mm); its width along the wall is clipped at 1.6
   times the typical (1-3 % of the wall), so its outer edge does not move with the pixel
@@ -1430,10 +1432,14 @@ Tests (`tests/test_rind.py`) keep the distance by slope on an ellipsoid within 0
 per mm out (negative control: the raw level, short by over 15 %), the sub-pixel width
 exact at any phase of the pixel grid (negative control: a thresholded draw, off by over
 half), and the specks fixed in world coordinates. On a prolate stone (a solid of
-revolution) the slope-corrected distance still runs short of the offset by up to 0.12 mm
-at 2 mm and 0.5 mm at 6 mm (p5 0.28 mm): the one-sided offset test cannot tell whether
-that is the level or a concave stretch of the profile, so the widest shells may read
-up to a tenth thin on such stones.
+revolution) the level's slope is 1.02-1.40 at the wall but 1.00 by 2 mm out, so the
+correction acts on thin rinds only; further out the distance runs short of the offset by
+up to 0.20 mm at 2 mm (p5 0.12) and 0.51 mm at 6 mm (p5 0.28). The one-sided offset
+test cannot tell whether that is the level or a concave stretch of the profile, so the
+widest shells may read up to a tenth thin on such stones. Port check (local
+`runs/host-probe/port_check.py`): `framed_rgb` matches the probe's picture within one
+grey level on two volcanic stones, and on a sediment stone once the clip below is
+switched off.
 *Correction:* the rhyolite specks cover 4.8 % of the host on average (1,000,000 random
 points, three keys), not the 7 % recorded above, and the first sheet's about 10 %, not
 15 %: the probe measured them on the small patch of host round one stone. The look the

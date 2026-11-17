@@ -1431,6 +1431,13 @@ left open, all assumptions (`effective`), for the owner to check:
   volcanic stones fall below 0.25 (about 0.9 mm); sheets 0-11 give a median of 0.29.
 - *Width by character:* log-linear from 0.6 mm (character 0) to 4 mm (character 1),
   as on the look sheet; no extra spread per stone beyond the noise along the wall.
+  **Amended 2026-11-17 (the owner, on sheet 1 stone 6's render):** thick, uneven
+  rinds occur but are rare edge cases, and drawn this often they look unrealistic. Now
+  0.6 to 1.5 mm, capped at 3 mm at any point (was 6 mm, after [@morteani2010]); along
+  the wall sigma 0.15 + 0.15 x character (was 0.35) and at most 2x the stone's typical
+  width (was 2.5x). The owner's experience, an assumption (`effective`). Look sheet
+  `runs/rind-thinner/` (local): the shells read as even rims; thin rims barely change.
+  Rare thick rinds are not drawn at all for now.
 - *Windows:* 1 volcanic stone in 13.5; radius 1.5-4 mm (log-uniform), fading over
   0.6 mm at the edge, at a random place on the wall. A cut shows a window only when it
   passes near that place, so far fewer faces than 1 in 13 show one (6 windows on sheets

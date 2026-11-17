@@ -75,7 +75,7 @@ QUARTZ_TINT_MUA: dict[str, tuple[float, float, float]] = {
     "amethyst": (0.033, 0.079, 0.022),
     "smoky": (0.12, 0.093, 0.072),
 }
-TINT_STRENGTH = 1.0  # x QUARTZ_TINT_MUA; the owner's pick from the probe
+TINT_STRENGTH = 2.0  # x QUARTZ_TINT_MUA; the owner's pick (2026-11-17, runs/item11-render/)
 
 
 def optics_for(r: StoneRecipe, base: OpticsTable | None = None) -> OpticsTable:

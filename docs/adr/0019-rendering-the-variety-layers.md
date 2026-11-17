@@ -238,7 +238,9 @@ as now, no face glare, no glare plus a display curve, a backlit 3 mm slice) was 
      spectrum, same server, read off its plot; [@marshall1955] for a moderately
      coloured stone). Pale amethyst has no source. ADR 0014's grey absorber (0.13)
      stays on quartz; with it 1x reads mauve-grey and 2x purple-grey in the 3 mm look.
-     Strength x TINT_STRENGTH by the owner (1 for now). Not read (the helper could not
+     Strength x TINT_STRENGTH: 2, the owner's pick (2026-11-17, after whole-face
+     renders of sheet 1 stone 6 at 1x and 2x, `runs/item11-render/`); the owner kept
+     the 0.05 mm needle grid too. Not read (the helper could not
      get them): Rossman 1994 (Rev. Mineral. 29), Nassau and Prescott 1977 (Mineral.
      Mag. 41), Lehmann 1967. Colour zoning (amethyst in r-sector growth zones) is not
      drawn.

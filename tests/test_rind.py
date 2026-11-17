@@ -12,13 +12,17 @@ import pytest
 from agatesim.volume.config import SolidConfig
 from pydantic import ValidationError
 
+from nodule import rind as rind_mod
 from nodule.rind import (
     RHYOLITE_GRAINS,
     RHYOLITE_SHAPES,
     SEDIMENT,
+    SHELL_MM,
+    THIN_MM,
     VALUE_STD,
     VOLCANIC,
     VOLCANIC_CAP_MM,
+    WIDEST,
     Rind,
     coverage,
     draw_rind_rgb,
@@ -30,6 +34,26 @@ from nodule.rind import (
 )
 from nodule.sheet import HOST_RGB, dressed_look, framed_rgb, host_kind, preview_rgb
 from nodule.variety import StoneRecipe, build, cut_of, rim_point
+
+
+def test_shell_rinds_stay_thin_and_even(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The owner (2026-11-17): rinds 1.5 mm or less as a rule, 3 mm at most, less
+    uneven. On a shell-end rind the width never passes the cap or WIDEST x typical, and
+    its spread along the wall (95th / 5th percentile) stays under 3.5. Control: the old
+    spread (sigma 0.15 + 0.35 c, 2.5 x) fails it."""
+    foot = np.random.default_rng(3).uniform(-30, 30, (100_000, 3))
+    rind = Rind(kind="volcanic", thickness_mm=SHELL_MM, character=1.0, tone="brown")
+
+    def spread() -> tuple[float, float]:
+        w = rind_width(rind, foot, 7, None)
+        return float(w.max()), float(np.percentile(w, 95) / np.percentile(w, 5))
+
+    most, ratio = spread()
+    assert most <= min(VOLCANIC_CAP_MM, WIDEST * SHELL_MM) + 1e-9
+    assert ratio < 3.5
+    monkeypatch.setattr(rind_mod, "WIDTH_SIGMA", (0.15, 0.35))
+    monkeypatch.setattr(rind_mod, "WIDEST", 2.5)
+    assert spread()[1] > 3.5
 
 
 def test_value_noise_scale_constant() -> None:
@@ -57,7 +81,7 @@ def test_rinds_follow_the_host(sheets: list[StoneRecipe]) -> None:
     assert 0.55 < np.mean(np.array(chars) < 0.25) < 0.8
     for r in sheets:
         if r.rind is not None and r.rind.kind == "volcanic":
-            assert 0.6 - 1e-9 <= r.rind.thickness_mm <= 4.0 + 1e-9
+            assert THIN_MM - 1e-9 <= r.rind.thickness_mm <= SHELL_MM + 1e-9
             assert r.rind.reach_mm() <= VOLCANIC_CAP_MM + 0.2 + 1e-9
         elif r.rind is not None:
             assert 0.05 - 1e-9 <= r.rind.thickness_mm <= 1.0 + 1e-9

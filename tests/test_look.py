@@ -40,6 +40,7 @@ from nodule.varietyrender import (
     NEEDLE_VOXELS,
     QUARTZ_TINT_MUA,
     SLICE_MM,
+    TINT_STRENGTH,
     WHOLE_GRID_MM,
     optics_for,
     whole_grid_mm,
@@ -97,7 +98,8 @@ def test_tinted_centres_take_their_tint_after_the_early_stage() -> None:
     assert first >= 1
     for tint in ("amethyst", "smoky"):
         o = optics_for(small_recipe().model_copy(update={"tint": tint}))
-        assert o.quartz_tint_mua == pytest.approx(QUARTZ_TINT_MUA[tint])
+        want = [TINT_STRENGTH * v for v in QUARTZ_TINT_MUA[tint]]
+        assert o.quartz_tint_mua == pytest.approx(want)
         assert o.quartz_tint_from == first
     amethyst = QUARTZ_TINT_MUA["amethyst"]
     assert amethyst[1] > max(amethyst[0], amethyst[2])  # absorbs green: purple

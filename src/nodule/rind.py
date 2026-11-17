@@ -10,8 +10,10 @@ The owner's choices (look sheet, 2026-11-17; ADR 0018 s.16):
 - Volcanic stones (vesicle, prolate): always a rind, from the thin green clay rim
   (character 0, about 0.6 mm; [@proust2007], [@morteani2010]: *verified*) to the
   mottled brown-green shell with host-coloured bites at its outer edge (character 1,
-  about 4 mm; the owner's eye on basalt, an assumption), about two thirds of the stones
-  at the thin end (the owner, 2026-11-17). Width capped at 6 mm [@morteani2010]. On
+  about 1.5 mm; the owner's eye on basalt, an assumption; 4 mm until the owner's
+  render verdict of 2026-11-17), about two thirds of the stones at the thin end (the
+  owner, 2026-11-17). Width capped at 3 mm by the owner (6 mm before, after
+  [@morteani2010]); it varies along the wall by at most 2x the stone's typical width. On
   about 1 nodule in 13 (the owner's experience) a window: a patch of the wall with no
   rind, at a random place (the owner kept it random, 2026-11-17).
 - Rind colour: half the stones echo their own colour class, the rest draw one of five
@@ -50,7 +52,10 @@ SEDIMENT = ("irregular", "pebble")
 PALE_CHANCE = 0.5  # sediment stones with the pale rind (owner: "sometimes"; proposed half)
 PALE_MM = (0.05, 1.0)  # log-uniform: median about 0.22 mm (owner's observation)
 PALE_SPREAD = 1.6  # the pale rind's widest, as a multiple of its typical width
-THIN_MM, SHELL_MM = 0.6, 4.0  # rind width at character 0 and 1 (the look sheet's)
+# Rind width at character 0 and 1. The shell end was 4 mm on the look sheet; the owner
+# (2026-11-17, sheet 1 stone 6's render) judged thick, uneven rinds rare edge cases that
+# look unrealistic as drawn: typical 1.5 mm or less, 3 mm at most.
+THIN_MM, SHELL_MM = 0.6, 1.5
 # Character u**THIN_BIAS for u uniform: two thirds of the stones below 0.25, the thin-rim
 # end (the owner, 2026-11-17: "about two-thirds"; 0.25 ** (1 / 3.42) = 0.667).
 THIN_BIAS = 3.42
@@ -58,7 +63,14 @@ ECHO_CHANCE = 0.5
 WINDOW_CHANCE = 1 / 13.5  # owner: about 1 nodule in 12-15
 WINDOW_MM = (1.5, 4.0)  # window radius on the wall, log-uniform (assumption)
 WINDOW_RAMP_MM = 0.6  # the rind thins to nothing over this distance at a window's edge
-VOLCANIC_CAP_MM = 6.0  # "barely reaches 5 mm ... only in very rare cases 2 cm" [@morteani2010]
+# "barely reaches 5 mm ... only in very rare cases 2 cm" [@morteani2010]; the owner's cap
+# for the drawn rind, at any point, is 3 mm (2026-11-17; was 6).
+VOLCANIC_CAP_MM = 3.0
+# Along the wall: lognormal width, sigma WIDTH_SIGMA[0] + WIDTH_SIGMA[1] x character, at
+# most WIDEST x the stone's typical width (was 0.15 + 0.35 c and 2.5 x; the owner: less
+# variable, 2026-11-17).
+WIDTH_SIGMA = (0.15, 0.15)
+WIDEST = 2.0
 
 ECHO: dict[str, tuple[int, int, int]] = {  # a muted rind colour by the stone's colour class
     "neutral": (118, 116, 104),
@@ -122,7 +134,7 @@ class Rind(BaseModel):
     def reach_mm(self) -> float:
         """The widest the rind can be drawn (mm)."""
         if self.kind == "volcanic":
-            return min(2.5 * self.thickness_mm, VOLCANIC_CAP_MM) + 0.2
+            return min(WIDEST * self.thickness_mm, VOLCANIC_CAP_MM) + 0.2
         return PALE_SPREAD * self.thickness_mm + 0.05
 
     def summary(self) -> str:
@@ -363,10 +375,10 @@ def rind_width(rind: Rind, foot: FloatArray, seed: int, window_at: FloatArray | 
     k = HOST_KEY * 104729 + seed * 31
     if rind.kind == "volcanic":
         c = rind.character
-        sig = 0.15 + 0.35 * c
+        sig = WIDTH_SIGMA[0] + WIDTH_SIGMA[1] * c
         w = rind.thickness_mm * np.exp(sig * noise(foot, 4.0, k + 1) - sig**2 / 2)
         w *= 1 + 0.12 * c * noise(foot, 0.8, k + 2)  # rough outer edge on the shell end
-        w = np.clip(w, 0, min(2.5 * rind.thickness_mm, VOLCANIC_CAP_MM))
+        w = np.clip(w, 0, min(WIDEST * rind.thickness_mm, VOLCANIC_CAP_MM))
     else:
         w = rind.thickness_mm * np.exp(0.3 * noise(foot, 3.0, k + 1) - 0.045)
         # inside its reach (1-3 % of the wall would pass it), so the drawn edge is the

@@ -4,9 +4,10 @@ Screening only, for the owner's eye before any render: chalcedony takes agatesim
 stand-in colour (`chalcedony_colour`, as `nodule.descriptors.stand_in_rgb`), quartz
 a glassy grey shaded per grain (tinted for amethyst or smoky centres), open space
 near black, plumes by their tint (`nodule.plumes`), white early crystals as milky
-chalcedony (`nodule.crystals`), and the host a flat colour by setting. No glow,
-sub-banding or rind: a render differs. Appearance only (ADR 0002); every colour here is
-`effective`.
+chalcedony (`nodule.crystals`), and the host a flat colour by setting. Sheets add the
+host rind and host specks (`nodule.rind`, ADR 0018 s.16) round the cut (`framed_rgb`);
+renders draw neither yet. No glow or sub-banding: a render differs. Appearance only
+(ADR 0002); every colour here is `effective`.
 
 Run: `uv run --no-sync python -m nodule.sheet --seed 1 --out runs/variety-sheet`.
 Reports time and peak traced memory per stone (CLAUDE.md).
@@ -31,8 +32,17 @@ from PIL import Image, ImageDraw
 
 from nodule.dust import dust_excess
 from nodule.plumes import inclusion_rgb
-from nodule.specimen import SpecimenCut, window_cut
-from nodule.variety import MAX_SLOPE, Roughness, StoneRecipe, build, cut_of, draw_sheet
+from nodule.rind import VOLCANIC, draw_rind_rgb, host_specks
+from nodule.specimen import Specimen, SpecimenCut, window_cut
+from nodule.variety import (
+    MAX_SLOPE,
+    Roughness,
+    StoneRecipe,
+    build,
+    cut_of,
+    draw_sheet,
+    rim_point,
+)
 
 HOST_RGB = {  # effective: basalt grey, rhyolite pink-brown, sediment tan
     "volcanic": (68, 66, 66),
@@ -62,12 +72,54 @@ def preview_rgb(cut: SpecimenCut, recipe: StoneRecipe) -> NDArray[np.uint8]:
     # Plumes (and tubes) by their tint through nodule's ramp (`nodule.plumes`).
     inclusion = cut.inside & (f.phase == Phase.INCLUSION)
     rgb[inclusion] = inclusion_rgb(f.impurity[inclusion])
-    host = (
-        "thunder-egg"
-        if recipe.outline == "thunder-egg"
-        else ("volcanic" if recipe.outline in ("vesicle", "prolate") else "sedimentary")
+    rgb[~cut.inside] = HOST_RGB[host_kind(recipe)]
+    return np.clip(np.rint(rgb), 0, 255).astype(np.uint8)[::-1]
+
+
+def host_kind(recipe: StoneRecipe) -> str:
+    if recipe.outline == "thunder-egg":
+        return "thunder-egg"
+    return "volcanic" if recipe.outline in VOLCANIC else "sedimentary"
+
+
+def framed_rgb(specimen: Specimen, cut: SpecimenCut, recipe: StoneRecipe) -> NDArray[np.uint8]:
+    """The stand-in picture with host specks and the stone's rind (ADR 0018 s.16),
+    rows top to bottom. The cut already covers the stone's bounding box, so pixels
+    added round it (as wide as the rind can reach) are host by construction: the
+    picture is padded, not re-evaluated, and the cut's own agate pixels keep their
+    colour except where a rind pixel's share covers them."""
+    rind = recipe.rind
+    h = cut.spacing_mm
+    k = math.ceil((rind.reach_mm() + h) / h) if rind is not None else 0
+    s = np.concatenate(
+        [cut.s[0] + h * np.arange(-k, 0), cut.s, cut.s[-1] + h * np.arange(1, k + 1)]
     )
-    rgb[~cut.inside] = HOST_RGB[host]
+    t = np.concatenate(
+        [cut.t[0] + h * np.arange(-k, 0), cut.t, cut.t[-1] + h * np.arange(1, k + 1)]
+    )
+    host = host_kind(recipe)
+    rgb = np.empty((len(t), len(s), 3))
+    rgb[:] = HOST_RGB[host]
+    inside = np.zeros((len(t), len(s)), bool)
+    core = (slice(k, k + len(cut.t)), slice(k, k + len(cut.s)))
+    rgb[core] = preview_rgb(cut, recipe)[::-1]
+    inside[core] = cut.inside
+    ss, tt = np.meshgrid(s, t)
+    pts = cut.plane.points(ss, tt).reshape(-1, 3)
+    flat, ins = rgb.reshape(-1, 3), inside.reshape(-1)
+    out = np.flatnonzero(~ins)
+    host_part = flat[out]
+    host_specks(host_part, pts[out], host, recipe.seed)
+    flat[out] = host_part
+    if rind is not None:
+        solid = specimen.volume.solid
+        window_at = None
+        if rind.window is not None:
+            window_at = solid.centre() + rim_point(solid, np.asarray(rind.window))
+        draw_rind_rgb(
+            flat, pts, ins, h, solid, rind, rind.colour(recipe.colour), flat.copy(),
+            recipe.seed, window_at,
+        )  # fmt: skip
     return np.clip(np.rint(rgb), 0, 255).astype(np.uint8)[::-1]
 
 
@@ -115,7 +167,7 @@ def make_sheet(
         lo, hi = specimen.volume.solid.bounds()
         spacing = float(np.max(np.asarray(hi) - np.asarray(lo))) / px
         cut = cut_of(specimen, rec, spacing)
-        img = Image.fromarray(preview_rgb(cut, rec))
+        img = Image.fromarray(framed_rgb(specimen, cut, rec))
         t2 = time.perf_counter()
         peak = tracemalloc.get_traced_memory()[1] / 1e6
         tracemalloc.stop()

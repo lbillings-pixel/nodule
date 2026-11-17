@@ -22,6 +22,7 @@ from nodule.dust import (
 )
 from nodule.moss import draw_moss, moss_plan
 from nodule.plumes import draw_plumes, plume_plan
+from nodule.rind import draw_rind
 from nodule.variety.cracks import CRACK_CUT_ANGLE, draw_fractures
 from nodule.variety.layers import palette_of
 from nodule.variety.mottle import MOTTLE_SHARE, MOTTLE_STONES, mottle_size
@@ -171,7 +172,13 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
         else:
             moss = draw_moss(s, r.centre == "solid", r.centre_width, r.floor)
             out[i] = r.model_copy(update={"moss": moss})
-    return out
+    # Host rinds from a stream spawned after the combinations', so every earlier draw
+    # stands (ADR 0018 s.16); every stone draws its numbers, eligible or not.
+    rind_streams = np.random.default_rng(root.spawn(1)[0]).spawn(n)
+    return [
+        r.model_copy(update={"rind": draw_rind(rind_streams[i], r.outline)})
+        for i, r in enumerate(out)
+    ]
 
 
 def chalcedony_mm(recipe: StoneRecipe) -> float:

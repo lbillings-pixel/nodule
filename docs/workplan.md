@@ -79,7 +79,9 @@ before any statistics.
   beneath; not yet separated).
   Options: model the renderer's materials in the preview (1-2 sessions), or judge looks
   on quick renders (whole face 1.5-5.5 min a stone on the GPU).
-- [ ] 13. Host rind, host speckle and pigment bleed into the host.
+- [x] 13. (2026-11-17, ADR 0018 s.16 "Built"; `nodule.rind`, sheets only, renders draw
+  neither yet; no bleed, the owner's choice) Host rind, host speckle and pigment bleed
+  into the host.
 - [ ] 14. Black manganese dendrites in band partings.
 - [ ] 15. Eyes and escape tubes.
 - [ ] 16. Depth through clear bands (a render test).

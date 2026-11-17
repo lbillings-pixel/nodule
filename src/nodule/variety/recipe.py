@@ -21,6 +21,7 @@ from nodule.dust import (
 )
 from nodule.moss import Moss
 from nodule.plumes import Plumes
+from nodule.rind import SEDIMENT, VOLCANIC, Rind
 from nodule.thunderegg import ArmShape, ArmStyle, thunder_egg_outline
 
 Centre = Literal["solid", "quartz-filled", "quartz-lined"]
@@ -243,11 +244,26 @@ class StoneRecipe(BaseModel):
     # on the wall before the bands (`nodule.crystals`, ADR 0018 s.15)
     crystals: Crystals | None = None
     cut: SliceConfig
+    # outside the wall, previews only (`nodule.rind`, ADR 0018 s.16)
+    rind: Rind | None = None
 
     @model_validator(mode="after")
     def _one_dendrite_stage(self) -> StoneRecipe:
         if self.plumes is not None and self.moss is not None:
             raise ValueError("plumes or moss, not both: agatesim runs one dendrite stage")
+        return self
+
+    @model_validator(mode="after")
+    def _rind_fits_the_host(self) -> StoneRecipe:
+        r = self.rind
+        if r is None:
+            return self
+        if r.kind == "volcanic" and self.outline not in VOLCANIC:
+            raise ValueError("a volcanic rind belongs on a vesicle or prolate stone")
+        if r.kind == "pale" and self.outline not in SEDIMENT:
+            raise ValueError("the pale rind belongs on a sediment stone (irregular, pebble)")
+        if r.window is not None and r.kind != "volcanic":
+            raise ValueError("windows only on volcanic rinds")
         return self
 
     @property
@@ -283,6 +299,8 @@ class StoneRecipe(BaseModel):
             parts.append(self.inclusions.summary())
         if self.crystals is not None:
             parts.append(self.crystals.summary())
+        if self.rind is not None:
+            parts.append(self.rind.summary())
         parts.append(f"bands {self.band_mm:.2f} mm")
         return ", ".join(parts)
 

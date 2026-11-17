@@ -1398,9 +1398,46 @@ coordinates; a rind thinner than a pixel is drawn by the share of the pixel it c
 - Host specks: rhyolite specks were too big and too dense on the first sheet (about
   1 mm, 15 % of the host); the owner asked for 10-15 % smaller and 25-35 % fewer.
   Now grains 0.5-1.0 mm across (blocky feldspar, rounded quartz, a few dark flakes),
-  about 7 % of the host face, inside the 5-20 % of [@goetze2024]. The rhyolite ground
-  colour stays unsourced. Basalt: sparse filled holes, green rims (*plausible*),
+  about 7 % of the host face, inside the 5-20 % of [@goetze2024]. (Corrected under
+  "Built" below: the shares were measured on a small patch; over a large sample they
+  are about 10 % before and 4.8 % now.) The rhyolite ground colour stays unsourced. Basalt: sparse filled holes, green rims (*plausible*),
   white cores an assumption; sediment host lightly mottled (assumption).
+
+**Built (step e, 2026-11-17; `nodule.rind`).** The probe's drawing moved into `src/` as
+the owner accepted it; `StoneRecipe.rind` holds each stone's rind, drawn from a stream
+spawned after the combinations' (every stone draws its numbers, eligible or not). The
+recipes of sheets 0-11 are otherwise unchanged (hashes of every recipe and volume config
+identical with the new field left out, `runs/crystal-probe/snapshot.py`). Sheets draw the
+rind and host specks round the cut (`sheet.framed_rgb`): the picture is padded by as far
+as the rind can reach, not re-evaluated. Renders draw neither yet. Choices the verdict
+left open, all assumptions (`effective`), for the owner to check:
+- *How many stones sit near the thin end:* character = u², u uniform, so half the
+  volcanic stones fall below 0.25 (about 0.9 mm); sheets 0-11 give a median of 0.29.
+- *Width by character:* log-linear from 0.6 mm (character 0) to 4 mm (character 1),
+  as on the look sheet; no extra spread per stone beyond the noise along the wall.
+- *Windows:* 1 volcanic stone in 13.5; radius 1.5-4 mm (log-uniform), fading over
+  0.6 mm at the edge, at a random place on the wall. A cut shows a window only when it
+  passes near that place, so far fewer faces than 1 in 13 show one (6 windows on sheets
+  0-11; one on sheet 1, stone 1).
+- *Sediment:* the pale rind on half the sediment stones (11 of 24 on sheets 0-11),
+  0.05-1 mm log-uniform (median 0.22 mm).
+Checks (local `runs/host-probe/src_check.py`, every stone of sheets 0-1 at 600 px):
+level > 0 matches the cut's inside on every pixel, slip is 0, and no agate pixel more than
+1.5 px from the wall changes; the padded picture costs 1-7 s and under 0.21 GB a stone.
+Tests (`tests/test_rind.py`) keep the distance by slope on an ellipsoid within 0.01 mm
+per mm out (negative control: the raw level, short by over 15 %), the sub-pixel width
+exact at any phase of the pixel grid (negative control: a thresholded draw, off by over
+half), and the specks fixed in world coordinates. On a prolate stone (a solid of
+revolution) the slope-corrected distance still runs short of the offset by up to 0.12 mm
+at 2 mm and 0.5 mm at 6 mm (p5 0.28 mm): the one-sided offset test cannot tell whether
+that is the level or a concave stretch of the profile, so the widest shells may read
+up to a tenth thin on such stones.
+*Correction:* the rhyolite specks cover 4.8 % of the host on average (1,000,000 random
+points, three keys), not the 7 % recorded above, and the first sheet's about 10 %, not
+15 %: the probe measured them on the small patch of host round one stone. The look the
+owner judged is unchanged; 4.8 % sits at the low edge of the 5-20 % of [@goetze2024]
+(*verified*). Raising the chance from 0.7 to 1.0 gives about 6.8 %, if the owner wants
+the share inside the sourced range.
 
 ## Limits
 

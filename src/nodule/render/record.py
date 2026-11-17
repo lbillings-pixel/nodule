@@ -58,6 +58,9 @@ class BandRecord:
     translucency: F32
     # the step's material varies along its band (agatesim ADR 0078): banded chalcedony
     shifts: BoolArray = field(default_factory=lambda: np.zeros(STEPS, bool))
+    # steps that plumes or moss fill (`plume_points`); never seen, since no silica shares
+    # their stage, and they take the next seen step's chalcedony (`nearest_seen`)
+    plume: BoolArray = field(default_factory=lambda: np.zeros(STEPS, bool))
 
     @classmethod
     def empty(cls) -> BandRecord:
@@ -68,6 +71,7 @@ class BandRecord:
             impurity=np.zeros(STEPS, np.float32),
             translucency=np.zeros(STEPS, np.float32),
             shifts=np.zeros(STEPS, bool),
+            plume=np.zeros(STEPS, bool),
         )
 
     @classmethod
@@ -101,6 +105,9 @@ class BandRecord:
             "shifts": shifts[body],
         }
         out = cls.empty()
+        plumes = plume_points(f, inside)
+        kp = np.clip(np.floor(f.t_dep[plumes] * STEPS).astype(np.intp), 0, STEPS - 1)
+        out.plume[kp] = True
         if not len(k):
             return out
         steps, first = np.unique(k, return_index=True)
@@ -121,15 +128,24 @@ class BandRecord:
             if not np.array_equal(a[both], b[both]):
                 raise ValueError(f"records disagree on {name} at a growth step")
             merged[name] = np.where(pick, b, a)
+        merged["plume"] = self.plume | other.plume
         return BandRecord(**merged)  # pyright: ignore[reportArgumentType]
 
     def nearest_seen(self) -> NDArray[np.intp]:
         """For each step, the nearest step seen (itself if seen; the earlier on a tie).
-        Unseen steps lie only where no grid node fell, so only interpolated t reaches them."""
+        Unseen steps lie only where no grid node fell, so only interpolated t reaches them.
+        A plume step (unseen: its stage lays no silica) takes the next seen step instead,
+        the first band that wraps the plumes: in a stone with early crystals the nearest
+        step for the first half of the plume stage would be the crystals' (ADR 0018 s.15),
+        so plume roots would take the crystals' material. Without crystals the next seen
+        step is also the nearest, so such stones are unchanged."""
         idx = np.flatnonzero(self.seen)
         if not len(idx):
             raise ValueError("no growth step seen: the grid misses the stone")
         k = np.arange(STEPS)
         j = np.searchsorted(idx, k)
         lo, hi = idx[np.clip(j - 1, 0, len(idx) - 1)], idx[np.clip(j, 0, len(idx) - 1)]
-        return np.where(np.abs(k - lo) <= np.abs(hi - k), lo, hi)
+        out = np.where(np.abs(k - lo) <= np.abs(hi - k), lo, hi)
+        # a plume step past the last seen step keeps its nearest (no band after it)
+        later = self.plume & ~self.seen & (hi > k)
+        return np.where(later, hi, out)

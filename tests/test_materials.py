@@ -127,6 +127,26 @@ def test_nearest_seen() -> None:
     assert near[[0, 10, 14, 15, 16, 20, STEPS - 1]].tolist() == [10, 10, 10, 10, 20, 20, 20]
 
 
+def test_plume_steps_take_the_band_that_wraps_them() -> None:
+    """A combination stone (ADR 0018 s.15): crystals at steps 0-1, plumes at 2-3, bands
+    from 4. Plume steps take the first band, not the crystals; without the plume mark
+    (negative control) step 2 takes the crystals' material."""
+    k = [0, 1, 2, 3, 4, 5]
+    phase = [Phase.QUARTZ] * 2 + [Phase.INCLUSION] * 2 + [Phase.CHALCEDONY] * 2
+    rec = BandRecord.of(fields(steps_mid(k), phase=phase), np.ones(6, bool))
+    assert np.flatnonzero(rec.plume).tolist() == [2, 3]
+    assert np.flatnonzero(rec.seen).tolist() == [0, 1, 4, 5]
+    assert rec.nearest_seen()[[2, 3]].tolist() == [4, 4]
+    unmarked = replace(rec, plume=np.zeros(STEPS, bool))
+    assert unmarked.nearest_seen()[2] == 1  # the crystals: what the mark prevents
+    merged = BandRecord.empty().merge(rec)
+    assert np.flatnonzero(merged.plume).tolist() == [2, 3]
+    # without crystals, plume steps already took the next band: unchanged
+    plain = BandRecord.of(fields(steps_mid(k[2:]), phase=phase[2:]), np.ones(4, bool))
+    assert plain.nearest_seen()[[2, 3]].tolist() == [4, 4]
+    assert replace(plain, plume=np.zeros(STEPS, bool)).nearest_seen()[[2, 3]].tolist() == [4, 4]
+
+
 # --- the table ----------------------------------------------------------------------------
 
 

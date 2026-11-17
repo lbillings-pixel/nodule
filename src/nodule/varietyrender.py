@@ -45,8 +45,9 @@ WHOLE_GRID_MM = 0.1
 # White fine needles (0.15 mm wide) vanish on the 0.1 mm grid of a whole face; at 0.05 mm
 # they show as faint strokes (work plan item 11, runs/needle-grid-probe/, 2026-11-17):
 # `effective`. The fill costs ~7x (40 mm stone: 168 s, 3.9 GB RAM, 1.8 GB GPU), so
-# the grid coarsens to stay within NEEDLE_VOXELS (~11 GB RAM, ~5 GB GPU; the largest
-# needle stone on sheets 0-11 needs ~92 M at 0.05 mm).
+# the grid coarsens to stay within NEEDLE_VOXELS (~11 GB RAM, ~5 GB GPU, scaled from
+# that stone, not measured; the largest needle stone on sheets 0-11 needs ~92 M at
+# 0.05 mm).
 NEEDLE_GRID_MM = 0.05
 NEEDLE_VOXELS = 100e6
 CLOSE_MM, CLOSE_PIXEL_MM, CLOSE_GRID_MM = 12.0, 0.03, 0.03
@@ -68,7 +69,7 @@ CARNELIAN_LOADING = 0.5
 # amethyst from a 6.2 mm Anahi slab's spectrum (o-ray, Rossman's Caltech data, not
 # peer-reviewed), its 545 nm band within the range of a deep zone read off
 # [@hassan1974, Fig. 3] (0.075, 0.165, 0.07); medium smoky from a 15.5 mm Saline Valley
-# spectrum (same server, read off its plot, (2o + e)/3), between [@mensner1955]'s
+# spectrum (same server, read off its plot, (2o + e)/3), between [@marshall1955]'s
 # moderately coloured stone and a dark one. Strength by the owner's eye.
 QUARTZ_TINT_MUA: dict[str, tuple[float, float, float]] = {
     "amethyst": (0.033, 0.079, 0.022),

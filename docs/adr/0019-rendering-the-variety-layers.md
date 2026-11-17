@@ -235,7 +235,7 @@ as now, no face glare, no glare plus a display curve, a backlit 3 mm slice) was 
      0.033, 0.079, 0.022 mm^-1 at 450, 550, 650 nm (a 6.2 mm Anahi slab, o-ray, from
      Rossman's Caltech spectra [@rossman-quartz2026], not peer-reviewed; a deep zone reads ~0.075, 0.165,
      0.07 off [@hassan1974, Fig. 3]); medium smoky 0.12, 0.093, 0.072 (a Saline Valley
-     spectrum, same server, read off its plot; [@mensner1955] for a moderately
+     spectrum, same server, read off its plot; [@marshall1955] for a moderately
      coloured stone). Pale amethyst has no source. ADR 0014's grey absorber (0.13)
      stays on quartz; with it 1x reads mauve-grey and 2x purple-grey in the 3 mm look.
      Strength x TINT_STRENGTH by the owner (1 for now). Not read (the helper could not
@@ -244,8 +244,8 @@ as now, no face glare, no glare plus a display curve, a backlit 3 mm slice) was 
      drawn.
    - Needles: see ADR 0018 s.15 (correction): white remnants enter the record as milky
      chalcedony, and white fine needles render the whole face at NEEDLE_GRID_MM
-     0.05 mm, coarsened to stay within NEEDLE_VOXELS (100 M voxels, ~11 GB RAM, ~5 GB
-     GPU). Measured on sheet 0 stone 2 (40 mm): fill 168 s against 24 s, peak RAM
+     0.05 mm, coarsened to stay within NEEDLE_VOXELS (100 M voxels; ~11 GB RAM, ~5 GB
+     GPU, an estimate scaled from the stone below, not measured). Measured on sheet 0 stone 2 (40 mm): fill 168 s against 24 s, peak RAM
      3.9 GB against 1.0 GB, GPU pool 1.8 GB against 0.24 GB.
 
 Tests (tests/test_look.py), each with a negative control: glare off removes exactly

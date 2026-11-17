@@ -3665,9 +3665,9 @@ topics = ["amethyst", "quartz", "colour-centres", "optics", "absorption"]
 notes = """Read 2026-11-17 by a helper (text, Figs 1-3, Tables 1-2). Deep zone of Brazilian amethyst R-1454, ~1 cm block, unpolarised. Main band 2.27-2.29 eV (~545 nm), a second at 3.54 eV (350 nm) giving the blue/UV rise. Decadic absorbance per cm read off Fig. 3 (light perpendicular to c), approximate: 0.81 (450 nm), 1.19 (550), 0.79 (650) over a ~0.48 floor near 1.4 eV; excess above the floor as Napierian mu_a ~0.075 / 0.165 / 0.07 per mm (work plan item 11)."""
 
 [[references]]
-id = "mensner1955"
+id = "marshall1955"
 kind = "article"
-authors = ["Mensner, R. R."]
+authors = ["Marshall, R. R."]
 year = 1955
 title = "Absorption spectra of smoky quartz from an Arkansas vein deposit and from a Sierran miarolitic granite"
 venue = "American Mineralogist 40, 535–537"
@@ -3676,7 +3676,7 @@ access = "open"
 licence = "publisher copyright; cite only"
 checked = "full-text"
 topics = ["smoky-quartz", "quartz", "colour-centres", "optics", "absorption"]
-notes = """Read 2026-11-17 by a helper (text, Fig. 1). Natural 'moderately colored' smoky quartz, 1.30 cm, light along c, reflection corrected; K read off Fig. 1 ~0.28 (450 nm), 0.22 (550), 0.16 (650) per cm, scattering included, log base not stated. Absorption rising steadily toward the blue; scattered light adds to the apparent absorption (the note says so). Title from the PDF's text layer (confirmed by a web search 2026-11-17); the author's name is garbled there ('Roy R. Mensner'?, Caltech): unconfirmed."""
+notes = """Read 2026-11-17 by a helper (text, Fig. 1). Natural 'moderately colored' smoky quartz, 1.30 cm, light along c, reflection corrected; K read off Fig. 1 ~0.28 (450 nm), 0.22 (550), 0.16 (650) per cm, scattering included, log base not stated. Absorption rising steadily toward the blue; scattered light adds to the apparent absorption (the note says so). Title from the PDF's text layer (confirmed by a web search 2026-11-17); the text layer garbles the author as 'Mensner'; Mindat's reference record (id 522649) gives Marshall, Royal R."""
 [[references]]
 id = "rossman-quartz2026"
 kind = "web"

@@ -37,7 +37,7 @@ from typing import Literal, Protocol, cast
 import numpy as np
 from agatesim.grid import FloatArray
 from numpy.typing import NDArray
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 RindKind = Literal["volcanic", "pale"]
 Tone = Literal["echo", "green", "brown-green", "brown", "red-brown", "yellow-ochre", "tan"]
@@ -48,6 +48,7 @@ SEDIMENT = ("irregular", "pebble")
 # Recipe shares and sizes (ADR 0018 s.16, the owner's verdict 2026-11-17).
 PALE_CHANCE = 0.5  # sediment stones with the pale rind (owner: "sometimes"; proposed half)
 PALE_MM = (0.05, 1.0)  # log-uniform: median about 0.22 mm (owner's observation)
+PALE_SPREAD = 1.6  # the pale rind's widest, as a multiple of its typical width
 THIN_MM, SHELL_MM = 0.6, 4.0  # rind width at character 0 and 1 (the look sheet's)
 # Character u**THIN_BIAS for u uniform: half the stones below 0.25 ("most stones towards
 # the thin end", the owner; the exponent is an assumption).
@@ -89,7 +90,9 @@ class Rind(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     kind: RindKind
-    thickness_mm: float = Field(gt=0, description="The stone's typical rind width.")
+    thickness_mm: float = Field(
+        gt=0, le=VOLCANIC_CAP_MM, description="The stone's typical rind width."
+    )
     character: float = Field(
         default=0.0, ge=0, le=1, description="Volcanic: 0 thin clay rim .. 1 mottled shell."
     )
@@ -97,7 +100,18 @@ class Rind(BaseModel):
     window: tuple[float, float, float] | None = Field(
         default=None, description="Unit direction from the solid's centre to a window."
     )
-    window_mm: float = Field(default=2.5, gt=0)
+    window_mm: float = Field(default=2.5, gt=0, le=10)
+
+    @model_validator(mode="after")
+    def _consistent(self) -> Rind:
+        if (self.kind == "pale") != (self.tone == "tan"):
+            raise ValueError("the pale rind is tan, and only the pale rind")
+        if self.window is not None:
+            if self.kind != "volcanic":
+                raise ValueError("windows only on volcanic rinds")
+            if abs(math.hypot(*self.window) - 1.0) > 1e-6:
+                raise ValueError("a window's direction must be a unit vector")
+        return self
 
     def colour(self, colour_class: str) -> tuple[int, int, int]:
         if self.tone == "echo":
@@ -108,7 +122,7 @@ class Rind(BaseModel):
         """The widest the rind can be drawn (mm)."""
         if self.kind == "volcanic":
             return min(2.5 * self.thickness_mm, VOLCANIC_CAP_MM) + 0.2
-        return 1.6 * self.thickness_mm + 0.05
+        return PALE_SPREAD * self.thickness_mm + 0.05
 
     def summary(self) -> str:
         if self.kind == "pale":
@@ -354,6 +368,9 @@ def rind_width(rind: Rind, foot: FloatArray, seed: int, window_at: FloatArray | 
         w = np.clip(w, 0, min(2.5 * rind.thickness_mm, VOLCANIC_CAP_MM))
     else:
         w = rind.thickness_mm * np.exp(0.3 * noise(foot, 3.0, k + 1) - 0.045)
+        # inside its reach (1-3 % of the wall would pass it), so the drawn edge is the
+        # noise's and not the cut-off band's, which moves with the pixel size
+        w = np.clip(w, 0, PALE_SPREAD * rind.thickness_mm)
     if window_at is not None:
         t = np.linalg.norm(foot - window_at, axis=1)
         w = w * np.clip((t - (rind.window_mm - WINDOW_RAMP_MM)) / WINDOW_RAMP_MM, 0, 1)

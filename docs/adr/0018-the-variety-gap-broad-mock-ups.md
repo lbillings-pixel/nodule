@@ -1420,7 +1420,9 @@ left open, all assumptions (`effective`), for the owner to check:
   passes near that place, so far fewer faces than 1 in 13 show one (6 windows on sheets
   0-11; one on sheet 1, stone 1).
 - *Sediment:* the pale rind on half the sediment stones (11 of 24 on sheets 0-11),
-  0.05-1 mm log-uniform (median 0.22 mm).
+  0.05-1 mm log-uniform (median 0.22 mm); its width along the wall is clipped at 1.6
+  times the typical (1-3 % of the wall), so its outer edge does not move with the pixel
+  size (found by an independent review, 2026-11-17).
 Checks (local `runs/host-probe/src_check.py`, every stone of sheets 0-1 at 600 px):
 level > 0 matches the cut's inside on every pixel, slip is 0, and no agate pixel more than
 1.5 px from the wall changes; the padded picture costs 1-7 s and under 0.21 GB a stone.

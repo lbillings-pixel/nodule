@@ -139,6 +139,9 @@ def test_plume_steps_take_the_band_that_wraps_them() -> None:
     assert rec.nearest_seen()[[2, 3]].tolist() == [4, 4]
     unmarked = replace(rec, plume=np.zeros(STEPS, bool))
     assert unmarked.nearest_seen()[2] == 1  # the crystals: what the mark prevents
+    # a coarse grid that caught only the second plume step: the whole run still goes on
+    partial = replace(rec, plume=np.isin(np.arange(STEPS), [3]))
+    assert partial.nearest_seen()[[2, 3]].tolist() == [4, 4]
     merged = BandRecord.empty().merge(rec)
     assert np.flatnonzero(merged.plume).tolist() == [2, 3]
     # without crystals, plume steps already took the next band: unchanged

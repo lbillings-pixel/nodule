@@ -77,6 +77,20 @@ def test_a_rind_must_fit_its_host(sheets: list[StoneRecipe]) -> None:
     with pytest.raises(ValidationError):
         StoneRecipe.model_validate(vesicle.model_dump() | {"rind": pale.model_dump()})
     StoneRecipe.model_validate(vesicle.model_dump() | {"rind": volcanic.model_dump()})
+    with pytest.raises(ValidationError):  # the pale rind is tan, and only it
+        Rind(kind="pale", thickness_mm=0.2, tone="echo")
+    with pytest.raises(ValidationError):
+        Rind(kind="volcanic", thickness_mm=1.0, tone="green", window=(0.0, 0.0, 0.0))
+
+
+def test_the_pale_rind_stays_inside_its_reach() -> None:
+    """The drawn width never passes the reach, so the outer edge is the noise's at any
+    pixel size (a cut-off would move with the pixel)."""
+    rind = Rind(kind="pale", thickness_mm=1.0, tone="tan")
+    foot = np.random.default_rng(2).uniform(-100, 100, (200_000, 3))
+    w = rind_width(rind, foot, seed=4, window_at=None)
+    assert w.max() <= rind.reach_mm() - 0.05 + 1e-9
+    assert np.mean(w >= 1.6 - 1e-9) < 0.05  # clipped on a few per cent of the wall
 
 
 def _wall_points(solid: object, n: int = 200) -> np.ndarray:

@@ -174,9 +174,10 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
             out[i] = r.model_copy(update={"moss": moss})
     # Host rinds from a stream spawned after the combinations', so every earlier draw
     # stands (ADR 0018 s.16); every stone draws its numbers, eligible or not.
+    # Validated (model_copy would skip the recipe's check that the rind fits the host).
     rind_streams = np.random.default_rng(root.spawn(1)[0]).spawn(n)
     return [
-        r.model_copy(update={"rind": draw_rind(rind_streams[i], r.outline)})
+        StoneRecipe.model_validate(r.model_dump() | {"rind": draw_rind(rind_streams[i], r.outline)})
         for i, r in enumerate(out)
     ]
 

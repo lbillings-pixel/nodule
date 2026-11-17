@@ -134,7 +134,8 @@ class BandRecord:
     def nearest_seen(self) -> NDArray[np.intp]:
         """For each step, the nearest step seen (itself if seen; the earlier on a tie).
         Unseen steps lie only where no grid node fell, so only interpolated t reaches them.
-        A plume step (unseen: its stage lays no silica) takes the next seen step instead,
+        A plume step (unseen: its stage lays no silica), and every unseen step in the
+        same run, takes the next seen step instead,
         the first band that wraps the plumes: in a stone with early crystals the nearest
         step for the first half of the plume stage would be the crystals' (ADR 0018 s.15),
         so plume roots would take the crystals' material. Without crystals the next seen
@@ -146,6 +147,10 @@ class BandRecord:
         j = np.searchsorted(idx, k)
         lo, hi = idx[np.clip(j - 1, 0, len(idx) - 1)], idx[np.clip(j, 0, len(idx) - 1)]
         out = np.where(np.abs(k - lo) <= np.abs(hi - k), lo, hi)
-        # a plume step past the last seen step keeps its nearest (no band after it)
-        later = self.plume & ~self.seen & (hi > k)
-        return np.where(later, hi, out)
+        # The whole run of unseen steps round a plume mark is the plume stage (a coarse
+        # grid may catch only some of its steps); a run past the last seen step keeps
+        # its nearest (no band after it).
+        unseen = ~self.seen
+        run = np.cumsum(self.seen)  # constant along each run of unseen steps
+        plume_run = unseen & np.isin(run, run[self.plume & unseen])
+        return np.where(plume_run & (hi > k), hi, out)

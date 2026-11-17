@@ -89,6 +89,9 @@ def framed_rgb(specimen: Specimen, cut: SpecimenCut, recipe: StoneRecipe) -> NDA
     picture is padded, not re-evaluated, and the cut's own agate pixels keep their
     colour except where a rind pixel's share covers them."""
     rind = recipe.rind
+    if rind is not None and specimen.max_slip_mm > 0:
+        # the rind follows the unslipped solid's level, the cut the slipped stone
+        raise ValueError("a rind on a stone with slipping fractures is not drawn")
     h = cut.spacing_mm
     k = math.ceil((rind.reach_mm() + h) / h) if rind is not None else 0
     s = np.concatenate(

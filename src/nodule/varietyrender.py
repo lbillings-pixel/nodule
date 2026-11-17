@@ -22,6 +22,7 @@ GPU. Logs time per stone; resumes, skipping stones already saved.
 from __future__ import annotations
 
 import json
+import math
 import time
 from dataclasses import replace
 from pathlib import Path
@@ -30,16 +31,24 @@ import numpy as np
 from agatesim import progress
 from PIL import Image, ImageDraw
 
+from nodule.plumes import STAGE
 from nodule.render.cutface import CutRenderer, Rendering
 from nodule.render.fakes import stone_record
 from nodule.render.materials import OpticsTable
-from nodule.render.record import BandRecord
+from nodule.render.record import STEPS, BandRecord
 from nodule.sheet import dressed_look, dustiest, preview_rgb
 from nodule.specimen import Specimen, SpecimenCut, window_cut
 from nodule.variety import StoneRecipe, build, cut_of, draw_sheet
 
 WHOLE_PX = 600  # pixels across the stone's box
 WHOLE_GRID_MM = 0.1
+# White fine needles (0.15 mm wide) vanish on the 0.1 mm grid of a whole face; at 0.05 mm
+# they show as faint strokes (work plan item 11, runs/needle-grid-probe/, 2026-11-17):
+# `effective`. The fill costs ~7x (40 mm stone: 168 s, 3.9 GB RAM, 1.8 GB GPU), so
+# the grid coarsens to stay within NEEDLE_VOXELS (~11 GB RAM, ~5 GB GPU; the largest
+# needle stone on sheets 0-11 needs ~92 M at 0.05 mm).
+NEEDLE_GRID_MM = 0.05
+NEEDLE_VOXELS = 100e6
 CLOSE_MM, CLOSE_PIXEL_MM, CLOSE_GRID_MM = 12.0, 0.03, 0.03
 SPP = 512  # samples per pixel (effective; noise falls as 1/sqrt(spp))
 SLICE_MM = 3.0  # backlit slice thickness, owner's choice (2026-11-09; and ADR 0007 am. 5)
@@ -54,6 +63,18 @@ VIEWS = ("look", "backlit")
 # 2026-11-09 carnelian sweeps, ADR 0019 s.6): `effective`, *speculative*.
 HEMATITE_RED_K = 0.05
 CARNELIAN_LOADING = 0.5
+# Colour-centre absorption of a tinted quartz centre over clear quartz's, mm^-1 at the
+# channels' 450, 550, 650 nm (work plan item 11): `effective`, *plausible*. Medium
+# amethyst from a 6.2 mm Anahi slab's spectrum (o-ray, Rossman's Caltech data, not
+# peer-reviewed), its 545 nm band within the range of a deep zone read off
+# [@hassan1974, Fig. 3] (0.075, 0.165, 0.07); medium smoky from a 15.5 mm Saline Valley
+# spectrum (same server, read off its plot, (2o + e)/3), between [@mensner1955]'s
+# moderately coloured stone and a dark one. Strength by the owner's eye.
+QUARTZ_TINT_MUA: dict[str, tuple[float, float, float]] = {
+    "amethyst": (0.033, 0.079, 0.022),
+    "smoky": (0.12, 0.093, 0.072),
+}
+TINT_STRENGTH = 1.0  # x QUARTZ_TINT_MUA; the owner's pick from the probe
 
 
 def optics_for(r: StoneRecipe, base: OpticsTable | None = None) -> OpticsTable:
@@ -62,7 +83,27 @@ def optics_for(r: StoneRecipe, base: OpticsTable | None = None) -> OpticsTable:
     loading x CARNELIAN_LOADING (its slices were too opaque, owner 2026-11-09)."""
     base = base or OpticsTable()
     phi = base.phi_iron_oxide * (CARNELIAN_LOADING if r.colour == "carnelian" else 1.0)
-    return replace(base, hematite_red_k=HEMATITE_RED_K, phi_iron_oxide=phi)
+    out = replace(base, hematite_red_k=HEMATITE_RED_K, phi_iron_oxide=phi)
+    if r.tint == "none":
+        return out
+    mua = tuple(TINT_STRENGTH * v for v in QUARTZ_TINT_MUA[r.tint])
+    # after the early stage: clear early crystals are quartz too and stay clear
+    first = math.ceil(STAGE * STEPS - 1e-9)
+    return replace(out, quartz_tint_mua=mua, quartz_tint_from=first)  # pyright: ignore[reportArgumentType]
+
+
+def whole_grid_mm(r: StoneRecipe, cut: SpecimenCut) -> float:
+    """The whole face's grid spacing: WHOLE_GRID_MM, or for white fine needles
+    NEEDLE_GRID_MM, coarsened (never past WHOLE_GRID_MM) so the grid under the face,
+    padded by the slab, stays within NEEDLE_VOXELS. Hollow needles are left at
+    WHOLE_GRID_MM (none rendered yet)."""
+    c = r.crystals
+    if c is None or c.habit != "fine needles" or c.fill != "white":
+        return WHOLE_GRID_MM
+    a = float(np.ptp(cut.s)) + 2 * SLICE_MM
+    b = float(np.ptp(cut.t)) + 2 * SLICE_MM
+    least = (a * b * SLICE_MM / NEEDLE_VOXELS) ** (1 / 3)
+    return min(max(NEEDLE_GRID_MM, least), WHOLE_GRID_MM)
 
 
 def render_stone(
@@ -84,7 +125,9 @@ def render_stone(
     rng = np.random.default_rng(r.seed + 1)
     row: dict[str, object] = {"stone": r.index + 1, "summary": r.summary()}
     name = f"stone-{r.index + 1:02d}"
-    row |= views(specimen, cut, r, record, WHOLE_GRID_MM, optics, spp, rng, out / name, "whole")
+    grid_mm = whole_grid_mm(r, cut)
+    row["whole_grid_mm"] = round(grid_mm, 3)
+    row |= views(specimen, cut, r, record, grid_mm, optics, spp, rng, out / name, "whole")
     Image.fromarray(preview_rgb(cut, r)).save(out / f"{name}-preview.png")
     if r.dust is not None and close_ups:
         near = window_cut(specimen, cut, dustiest(cut, CLOSE_MM), CLOSE_MM, CLOSE_PIXEL_MM)

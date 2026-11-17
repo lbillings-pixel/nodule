@@ -197,6 +197,19 @@ def stage_mask(fields: Fields, inside: NDArray[np.bool_]) -> NDArray[np.bool_]:
     return inside & (t <= STAGE + 1e-6) & (fields.phase != Phase.INCLUSION)
 
 
+def early_points(fields: Fields) -> NDArray[np.bool_]:
+    """Crystal-stage silica, white or clear (`stage_mask` without the stone's outline:
+    silica lies only in the stone)."""
+    t = np.nan_to_num(fields.t_dep, nan=np.inf)
+    silica = (fields.phase == Phase.QUARTZ) | (fields.phase == Phase.CHALCEDONY)
+    return (t <= STAGE + 1e-6) & silica
+
+
+# A white remnant's one shade per growth step (the middle of WHITE_TRANSLUCENCY): what
+# a renderer's record holds, as the per-crystal spread varies from place to place.
+WHITE_STEP_TRANSLUCENCY = float(np.mean(WHITE_TRANSLUCENCY))
+
+
 def white_translucency(grain: NDArray[np.int32]) -> NDArray[np.float32]:
     """Each white crystal's own translucency, by its grain number."""
     shade = ((grain.astype(np.int64) * 7919 + 13) % 1000) / 1000.0

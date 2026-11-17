@@ -1227,7 +1227,16 @@ each: 0 steps changed). No combination stone has been rendered yet.
 as milky chalcedony, through the layers: rendered 2026-11-16, `runs/variety-render-moss/`,
 local; on a neutral stone, sheet 1 stone 6, small blades merge with the milky first
 bands, showing only as the bands' bumps; fine needles, 0.15 mm wide, vanish on the
-0.1 mm render grid of a whole face, sheet 0 stone 2); late patches that
+0.1 mm render grid of a whole face, sheet 0 stone 2. Corrected 2026-11-17 (work plan item
+11, `runs/needle-grid-probe/`, local): the grid was the lesser cause. The white came
+from the layers' place-to-place part, which the renderer bakes as absorption only, so
+its record held the remnants as clear quartz, unseen at any grid (0.05 mm too). White
+remnants are now milky chalcedony in the per-step part (`VarietyLayers.per_step`, one
+shade, WHITE_STEP_TRANSLUCENCY 0.07; the per-crystal spread stays in the previews,
+which are unchanged pixel for pixel on the 7 white-crystal stones of sheets 0-5). Then
+a 12 mm close-up shows the needles; a whole face shows them faintly at 0.05 mm, not at
+0.07 or 0.1 mm. `nodule.varietyrender.whole_grid_mm` gives white fine needles 0.05 mm
+within a voxel budget (owner's eye pending); hollow needles are untested); late patches that
 cut across bands; true radial needle sprays (would need agatesim).
 
 ### 16. Host rind and host specks: reading and the owner's choices (2026-11-16)

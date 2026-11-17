@@ -224,11 +224,36 @@ as now, no face glare, no glare plus a display curve, a backlit 3 mm slice) was 
      stone 6's 3 mm shell). Sheets are unchanged (`framed_rgb` pads its own picture).
    Test (tests/test_rind.py): on a flat stand-in render, host pixels equal the sheet
    picture's to rounding, not the render's tan, and agate clear of the rind is kept.
+9. **Tinted quartz centres and white needles** (work plan item 11, 2026-11-17; built,
+   the owner's eye pending; look sheet from `runs/tint-probe/` and
+   `runs/needle-grid-probe/`, local).
+   - Cause of the grey amethyst: nothing in the renderer read the recipe's tint.
+     `OpticsTable.quartz_tint_mua` now adds colour-centre absorption to quartz laid
+     at or after `quartz_tint_from` (the first step after the early stage, so clear
+     early crystals stay clear), its own material key so other quartz keeps its row.
+     `varietyrender.QUARTZ_TINT_MUA` (`effective`, *plausible*): medium amethyst
+     0.033, 0.079, 0.022 mm^-1 at 450, 550, 650 nm (a 6.2 mm Anahi slab, o-ray, from
+     Rossman's Caltech spectra [@rossman-quartz2026], not peer-reviewed; a deep zone reads ~0.075, 0.165,
+     0.07 off [@hassan1974, Fig. 3]); medium smoky 0.12, 0.093, 0.072 (a Saline Valley
+     spectrum, same server, read off its plot; [@mensner1955] for a moderately
+     coloured stone). Pale amethyst has no source. ADR 0014's grey absorber (0.13)
+     stays on quartz; with it 1x reads mauve-grey and 2x purple-grey in the 3 mm look.
+     Strength x TINT_STRENGTH by the owner (1 for now). Not read (the helper could not
+     get them): Rossman 1994 (Rev. Mineral. 29), Nassau and Prescott 1977 (Mineral.
+     Mag. 41), Lehmann 1967. Colour zoning (amethyst in r-sector growth zones) is not
+     drawn.
+   - Needles: see ADR 0018 s.15 (correction): white remnants enter the record as milky
+     chalcedony, and white fine needles render the whole face at NEEDLE_GRID_MM
+     0.05 mm, coarsened to stay within NEEDLE_VOXELS (100 M voxels, ~11 GB RAM, ~5 GB
+     GPU). Measured on sheet 0 stone 2 (40 mm): fill 168 s against 24 s, peak RAM
+     3.9 GB against 1.0 GB, GPU pool 1.8 GB against 0.24 GB.
 
 Tests (tests/test_look.py), each with a negative control: glare off removes exactly
 F0 Ld; the look's exposure matches the compare's lightness; one fill serves a backlit
 slice sample for sample; the red setting touches only the HEMATITE pigment's red;
-carnelian alone takes the lighter loading.
+carnelian alone takes the lighter loading; tinted centres take their tint, untinted
+stones none; white fine needles alone take the finer grid, within the budget
+(test_materials.py: early-stage quartz stays untinted; tint off changes nothing).
 
 ## Consequences
 

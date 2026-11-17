@@ -25,10 +25,12 @@ from nodule.crystals import (
     NO_COMBOS,
     NO_CRYSTALS,
     SIZE_SPREAD,
+    WHITE_STEP_TRANSLUCENCY,
     Crystals,
     combo_plan,
     crystal_plan,
     draw_crystals,
+    early_points,
     stage_mask,
 )
 from nodule.moss import draw_moss
@@ -261,6 +263,35 @@ def test_wrapped_crystals_pass_and_pasted_ones_are_rejected() -> None:
     wrapped = np.minimum(wall, distance_inside(~crystal) * _PX)  # grown round them
     assert wrap_share(wrapped, crystal, band, _PX) > 0.9
     assert wrap_share(wall, crystal, band, _PX) < 0.5  # pasted on finished bands
+
+
+def test_white_crystals_are_milky_in_the_renderers_record() -> None:
+    """The record a renderer holds (`Specimen.step_fields`, no place-to-place part) has
+    white remnants as milky chalcedony at one shade (work plan item 11: they rendered as
+    clear quartz, unseen). Controls: clear crystals stay quartz; without crystals the
+    first bands (which then start at once) keep their own values."""
+    p = None
+    for fill, want in (("white", Phase.CHALCEDONY), ("clear", Phase.QUARTZ)):
+        r = _stone(crystals=BLADES.model_copy(update={"fill": fill}))
+        specimen, _ = build(r)
+        if p is None:
+            lo, hi = specimen.volume.solid.bounds()
+            p = np.random.default_rng(0).uniform(lo, hi, (200_000, 3))
+        f, inside = specimen.step_fields(p)
+        early = inside & early_points(f)
+        assert early.sum() > 100
+        assert (f.phase[early] == want).all()
+        if fill == "white":
+            assert np.allclose(f.translucency[early], WHITE_STEP_TRANSLUCENCY)
+            assert np.allclose(f.impurity[early], 0.0)
+        else:
+            assert (f.translucency[early] > 0.5).all()
+    plain = _stone()
+    assert p is not None
+    f, inside = build(plain)[0].step_fields(p)
+    first = inside & early_points(f)
+    assert first.sum() > 100
+    assert not np.isclose(f.translucency[first], WHITE_STEP_TRANSLUCENCY).any()
 
 
 def test_a_crystal_stone_wraps_its_white_blades() -> None:

@@ -20,7 +20,7 @@ from agatesim.volume.models import SmoothNoise3
 from agatesim.volume.solids import BoolArray, Solid
 from numpy.typing import NDArray
 
-from nodule.crystals import stage_mask, white_translucency
+from nodule.crystals import WHITE_STEP_TRANSLUCENCY, early_points, white_translucency
 from nodule.dust import (
     BLOB_STRENGTH,
     PIGMENT_AT,
@@ -400,12 +400,43 @@ class VarietyLayers:
             return out
 
         bi, bt = fields.band_impurity, fields.band_translucency
-        return replace(
+        out = replace(
             fields,
             impurity=iron(fields.impurity),
             translucency=white(fields.translucency),
             band_impurity=None if bi is None else iron(bi),
             band_translucency=None if bt is None else white(bt),
+        )
+        crystals = self.recipe.crystals
+        if crystals is None or crystals.fill != "white":
+            return out
+        # White remnants as milky chalcedony at one shade, so a renderer's record (which
+        # bakes no scattering from place to place) shows them; `__call__` spreads the
+        # shade per crystal. Before this the render drew them as clear quartz, unseen.
+        early = early_points(fields)
+        if not early.any():
+            return out
+
+        def at(a: NDArray[np.float32] | None, v: float) -> NDArray[np.float32] | None:
+            if a is None:
+                return None
+            a = a.copy()
+            a[early] = v
+            return a
+
+        phase = out.phase.copy()
+        phase[early] = Phase.CHALCEDONY
+        pig = None if out.pigment is None else out.pigment.copy()
+        if pig is not None:
+            pig[early] = Pigment.IRON
+        return replace(
+            out,
+            phase=phase,
+            pigment=pig,
+            impurity=at(out.impurity, 0.0),
+            translucency=at(out.translucency, WHITE_STEP_TRANSLUCENCY),
+            band_impurity=at(out.band_impurity, 0.0),
+            band_translucency=at(out.band_translucency, WHITE_STEP_TRANSLUCENCY),
         )
 
     def __call__(
@@ -428,7 +459,7 @@ class VarietyLayers:
             # White remnants: milky, unstained, a little varied per crystal (the white
             # is an assumption, set by the owner's eye; ADR 0018 s.15). They take no
             # later stain below, but a crack may still cross them.
-            early = stage_mask(fields, inside) & (phase == Phase.QUARTZ)
+            early = inside & early_points(fields)  # chalcedony since `per_step`
             phase[early] = Phase.CHALCEDONY
             trans[early] = white_translucency(fields.grain[early])
             imp[early] = 0.0

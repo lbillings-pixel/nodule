@@ -64,6 +64,10 @@ before any statistics.
 
 - [ ] 11. (owner, 2026-11-17, on the moss renders: fix amethyst centres rendering grey; fix
   fine needles vanishing at whole face unless that proves resource-prohibitive, then skip it.
+  2026-11-17: both fixed, owner's eye pending (ADR 0018 s.15 correction; ADR 0019 s.6.9):
+  white remnants now milky in the render's record; white needles on a 0.05 mm grid within
+  a voxel budget; amethyst and smoky centres take colour-centre absorption, strength by
+  the owner from `runs/tint-probe/` (1x medium amethyst for now).
   Recipes done with item 8; moss rendered 2026-11-16, sheet 0 stones 9 and 11,
   `runs/variety-render-moss/`, local: green tufts and red drapes show in their sheaths;
   waits for the owner's eye; amethyst centres render grey in the look, seen, not fixed;

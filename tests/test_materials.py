@@ -227,6 +227,33 @@ def test_scattering_parts_follow_translucency_and_pigment() -> None:
     assert (quartz.g == tab.quartz_g).all()
 
 
+def test_quartz_tint_takes_later_quartz_only() -> None:
+    """Amethyst or smoky (work plan item 11): quartz from step quartz_tint_from on gains
+    the tint's absorption; the same quartz before it (clear early crystals) and the
+    chalcedony do not. Negative control: no tint leaves every material as it was."""
+    q, ch = Phase.QUARTZ, Phase.CHALCEDONY
+    ks = [0, 1, 5, 6, 7]
+    f = fields(steps_mid(ks), phase=[q, q, ch, q, q], impurity=[0.05] * 5,
+               translucency=[0.9] * 5)  # fmt: skip
+    rec = BandRecord.of(f, np.ones(5, bool))
+    tint = (0.1, 0.2, 0.05)
+    plain = OpticsTable().materials(rec)
+    tinted = OpticsTable(quartz_tint_mua=tint, quartz_tint_from=2).materials(rec)
+
+    def mua(m: Materials, k: int) -> np.ndarray:
+        return np.asarray(m.mua[2 + int(m.profile[k])], np.float64)
+
+    base = np.asarray(OpticsTable().band(q, Pigment.IRON, 0.05, 0.9).mua, np.float64)
+    assert np.allclose(mua(plain, 6), base, atol=1e-6)
+    assert np.allclose(mua(tinted, 6), base + tint, atol=1e-6)
+    assert np.allclose(mua(tinted, 7), base + tint, atol=1e-6)
+    assert np.allclose(mua(tinted, 0), base, atol=1e-6)  # early crystals stay clear
+    assert np.allclose(mua(tinted, 5), mua(plain, 5), atol=1e-6)  # chalcedony untouched
+    off = OpticsTable(quartz_tint_from=2).materials(rec)  # no tint: as before
+    assert np.array_equal(off.mua, plain.mua)
+    assert np.array_equal(off.profile, plain.profile)
+
+
 def test_materials_validation_catches_a_profile_beyond_the_table() -> None:
     with pytest.raises(ValueError, match="beyond the table"):
         Materials.of(np.zeros((3, 3)), np.zeros((3, 3)), np.zeros(3), profile=[0, 1])

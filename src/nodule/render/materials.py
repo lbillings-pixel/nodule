@@ -175,6 +175,12 @@ class OpticsTable:
     # window between its bands, so through thick stone the source's k overstates the red
     # absorption the eye sees. The IRON pigment (the photo compare's) keeps the source's k.
     hematite_red_k: float | None = None
+    # Colour centres of a tinted quartz centre (amethyst, smoky; work plan item 11):
+    # absorption (mm^-1, the channels' order) added to quartz laid at or after step
+    # quartz_tint_from, so early clear crystals (quartz in the crystal stage) stay clear.
+    # `effective`, *plausible* (`nodule.varietyrender.QUARTZ_TINT_MUA` gives its sources).
+    quartz_tint_mua: tuple[float, float, float] = (0.0, 0.0, 0.0)
+    quartz_tint_from: int = 0
 
     def _hematite(self, phi: float, red_k: float | None = None) -> F64:
         n, k = HEMATITE_NK[self.hematite]
@@ -233,6 +239,12 @@ class OpticsTable:
         mua = self.matrix_mua + self.pigment_mua(pigment, impurity)
         return self.scattering(pigment, impurity, translucency)._replace(mua=mua)
 
+    def tinted(self, o: Optics, takes: bool) -> Optics:
+        """A quartz deposit's optics with the tint's absorption, if it takes it."""
+        if not takes:
+            return o
+        return o._replace(mua=np.asarray(o.mua, float) + np.asarray(self.quartz_tint_mua))
+
     def materials(self, record: BandRecord, shift: ShiftArrays | None = None) -> Materials:
         """The camera's material table for a record: 0 host, 1 tube core, then one
         material per distinct deposit, and the step -> material profile (dt = 1/STEPS).
@@ -248,17 +260,22 @@ class OpticsTable:
         ADR 0007's assumption). First scope: iron oxides only, whose scattering does not
         depend on pigment or impurity; any other pigment that takes the shift is refused."""
         src = record.nearest_seen()
-        keys = np.stack([getattr(record, name)[src].astype(np.float64) for name in FIELDS], 1)
+        cols = [getattr(record, name)[src].astype(np.float64) for name in FIELDS]
+        # quartz that takes the tint, a key of its own so untinted quartz keeps its row
+        tinted = (cols[0] == Phase.QUARTZ) & (np.arange(STEPS) >= self.quartz_tint_from)
+        tinted &= any(v > 0 for v in self.quartz_tint_mua)
+        keys = np.stack([*cols, tinted.astype(np.float64)], 1)
         uniq, prof = np.unique(keys, axis=0, return_inverse=True)
         rows = [self.host, self.tube_core] + [
-            self.band(int(p), int(pg), float(x), float(tr)) for p, pg, x, tr, _ in uniq
+            self.tinted(self.band(int(p), int(pg), float(x), float(tr)), bool(tq))
+            for p, pg, x, tr, _, tq in uniq
         ]
         along: F64 | None = None
         tr_rows = (0, 0)
         if shift is not None:
             along = np.zeros((len(rows), 4))
             along[:, 0] = -1.0
-            for i, (p, pg, x, tr, takes) in enumerate(uniq):
+            for i, (p, pg, x, tr, takes, _) in enumerate(uniq):
                 if not takes:
                     continue
                 if Phase(int(p)) is not Phase.CHALCEDONY or Pigment(int(pg)) not in IRON_OXIDES:

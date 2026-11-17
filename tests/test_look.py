@@ -6,11 +6,15 @@ control."""
 
 from __future__ import annotations
 
+import math
+
 import numpy as np
 import pytest
 from agatesim.fields import Pigment
 from agatesim.volume.config import SliceConfig, SolidConfig
 
+from nodule.crystals import Crystals
+from nodule.plumes import STAGE
 from nodule.render import _gpu
 from nodule.render.camera import Light, render, rolloff
 from nodule.render.cutface import (
@@ -24,7 +28,7 @@ from nodule.render.cutface import (
 )
 from nodule.render.fakes import stone_record
 from nodule.render.materials import OpticsTable
-from nodule.render.record import BandRecord
+from nodule.render.record import STEPS, BandRecord
 from nodule.specimen import Specimen, SpecimenCut
 from nodule.variety import StoneRecipe, build, cut_of
 from nodule.varietyrender import (
@@ -32,7 +36,13 @@ from nodule.varietyrender import (
     BACKLIT_KNEE,
     CARNELIAN_LOADING,
     HEMATITE_RED_K,
+    NEEDLE_GRID_MM,
+    NEEDLE_VOXELS,
+    QUARTZ_TINT_MUA,
+    SLICE_MM,
+    WHOLE_GRID_MM,
     optics_for,
+    whole_grid_mm,
 )
 
 gpu = pytest.mark.skipif(not _gpu.available(), reason="needs a CUDA GPU and CuPy")
@@ -78,6 +88,44 @@ def test_carnelian_alone_takes_the_lighter_loading() -> None:
     assert carn.hematite_red_k == iron.hematite_red_k == HEMATITE_RED_K
     assert carn.phi_iron_oxide == pytest.approx(CARNELIAN_LOADING * base.phi_iron_oxide)
     assert iron.phi_iron_oxide == base.phi_iron_oxide
+
+
+def test_tinted_centres_take_their_tint_after_the_early_stage() -> None:
+    """Amethyst and smoky stones get their colour centres' absorption on quartz after the
+    early stage (clear early crystals stay clear). Control: an untinted stone gets none."""
+    first = math.ceil(STAGE * STEPS - 1e-9)
+    assert first >= 1
+    for tint in ("amethyst", "smoky"):
+        o = optics_for(small_recipe().model_copy(update={"tint": tint}))
+        assert o.quartz_tint_mua == pytest.approx(QUARTZ_TINT_MUA[tint])
+        assert o.quartz_tint_from == first
+    amethyst = QUARTZ_TINT_MUA["amethyst"]
+    assert amethyst[1] > max(amethyst[0], amethyst[2])  # absorbs green: purple
+    plain = optics_for(small_recipe())
+    assert plain.quartz_tint_mua == (0.0, 0.0, 0.0)
+
+
+def test_white_fine_needles_alone_take_a_finer_grid_within_the_budget() -> None:
+    """White fine needles render on NEEDLE_GRID_MM, coarsened for a big face so the
+    grid stays within NEEDLE_VOXELS, never past WHOLE_GRID_MM. Controls: blades,
+    hollow needles and stones without crystals keep WHOLE_GRID_MM."""
+
+    class Face:
+        def __init__(self, mm: float) -> None:
+            self.s = np.linspace(0.0, mm, 50)
+            self.t = np.linspace(0.0, mm, 50)
+
+    needles = Crystals(habit="fine needles", fill="white", spacing_mm=1.0, length_mm=0.9,
+                       elongation=12.0, scatter_deg=45.0)  # fmt: skip
+    r = small_recipe().model_copy(update={"crystals": needles})
+    assert whole_grid_mm(r, Face(30.0)) == NEEDLE_GRID_MM  # type: ignore[arg-type]
+    big = whole_grid_mm(r, Face(80.0))  # type: ignore[arg-type]
+    assert NEEDLE_GRID_MM < big <= WHOLE_GRID_MM
+    assert (80.0 + 2 * SLICE_MM) ** 2 * SLICE_MM / big**3 == pytest.approx(NEEDLE_VOXELS)
+    for c in (needles.model_copy(update={"fill": "hollow"}),
+              needles.model_copy(update={"habit": "small blades"}), None):  # fmt: skip
+        other = small_recipe().model_copy(update={"crystals": c})
+        assert whole_grid_mm(other, Face(30.0)) == WHOLE_GRID_MM  # type: ignore[arg-type]
 
 
 def test_look_needs_the_dome() -> None:

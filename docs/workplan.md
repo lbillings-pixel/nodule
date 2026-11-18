@@ -100,12 +100,13 @@ before any statistics.
   crack dendrites, picks confirmed, moss + dendrites allowed. Done: every dendrite stone's
   cut shows them; Mn opaque in renders (30 mm^-1). CLOSED 2026-11-18: the owner kept
   30 for wall dendrites too (one strength for both carriers).
-- [ ] 15. (reading done 2026-11-17, ADR 0018 s.18; tubes BUILT 2026-11-17, 1 in 6
+- [x] 15. (reading done 2026-11-17, ADR 0018 s.18; tubes BUILT 2026-11-17, 1 in 6
   non-pebble stones, `nodule.tubes`; eyes wait for the owner's choice of view, to be
   shown as a sketch) Eyes and escape tubes.
   2026-11-18: eyes probed and BUILT (ADR 0018 s.18 "Eye probe", "Built"; `nodule.eyes`):
   agatesim's spherulitic domes, owner "good, build them"; 1 in 10 volcanic stones, 1 in
-  50 thunder eggs; size and spacing per stone; few-ring eyes rare.
+  50 thunder eggs; size and spacing per stone; few-ring eyes rare; floor stones too.
+  CLOSED 2026-11-18 by the owner.
 - [ ] 16. Depth through clear bands (a render test).
 
 ## Batch 4: large (several sessions each)

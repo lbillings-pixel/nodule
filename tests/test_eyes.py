@@ -9,7 +9,15 @@ import pytest
 from agatesim.models.growth import TIME_STEPS, Mode, ProceduralGrowth, growth_modes
 from pydantic import ValidationError
 
-from nodule.eyes import EYE_CHANCE, EYE_OUTLINES, FEW_RINGS_WEIGHT, Eyes, draw_eyes, eligible
+from nodule.eyes import (
+    EYE_CHANCE,
+    EYE_OUTLINES,
+    FEW_RINGS_WEIGHT,
+    RADIUS_CAP_SHARE,
+    Eyes,
+    draw_eyes,
+    eligible,
+)
 from nodule.specimen import Specimen
 from nodule.variety import StoneRecipe, build, volume_config
 from nodule.variety.layers import Growth
@@ -18,7 +26,7 @@ from nodule.variety.layers import Growth
 def test_eyes_on_their_outlines_at_the_owners_rates(sheets: list[StoneRecipe]) -> None:
     eyed = [r for r in sheets if r.eyes is not None]
     volcanic = [r for r in sheets if r.outline in ("vesicle", "prolate")]
-    assert len(eyed) == 9  # all on vesicle or prolate stones in sheets 0-11
+    assert len(eyed) == 8  # all on vesicle or prolate stones in sheets 0-11
     assert 0.04 < sum(r.outline in ("vesicle", "prolate") for r in eyed) / len(volcanic) < 0.2
     for r in eyed:
         assert r.outline in EYE_OUTLINES
@@ -30,18 +38,28 @@ def test_eyes_on_their_outlines_at_the_owners_rates(sheets: list[StoneRecipe]) -
 def test_eyes_with_few_rings_are_rare() -> None:
     def rate(band_mm: float) -> float:
         rng = np.random.default_rng
-        return np.mean(
-            [draw_eyes(rng(s), "vesicle", band_mm, True) is not None for s in range(4000)]
-        )
+        drawn = [draw_eyes(rng(s), "vesicle", band_mm, True, 100.0) for s in range(4000)]
+        return float(np.mean([e is not None for e in drawn]))
 
-    fine, coarse = rate(0.2), rate(2.0)  # every radius gives >= 3 rings at 0.2 mm, none at 2
+    # every radius (2-4 mm) gives >= MIN_RINGS bands across it at 0.2 mm, none at 1 mm
+    fine, coarse = rate(0.2), rate(1.0)
     assert fine == pytest.approx(EYE_CHANCE["vesicle"], abs=0.03)
     assert coarse == pytest.approx(FEW_RINGS_WEIGHT * EYE_CHANCE["vesicle"], abs=0.015)
 
 
+def test_the_radius_is_capped_by_the_chalcedony() -> None:
+    rng = np.random.default_rng
+    for s in range(300):
+        free = draw_eyes(rng(s), "vesicle", 0.1, True, 100.0)
+        tight = draw_eyes(rng(s), "vesicle", 0.1, True, 6.0)
+        assert (free is None) == (tight is None)
+        if free is not None and tight is not None:
+            assert tight.radius_mm == pytest.approx(min(free.radius_mm, RADIUS_CAP_SHARE * 6.0))
+
+
 def test_no_eyes_where_not_eligible(sheets: list[StoneRecipe]) -> None:
     rng = np.random.default_rng
-    assert all(draw_eyes(rng(s), "vesicle", 0.3, False) is None for s in range(300))
+    assert all(draw_eyes(rng(s), "vesicle", 0.3, False, 20.0) is None for s in range(300))
     for outline, floor, early in [
         ("irregular", 0.0, False),
         ("pebble", 0.0, False),
@@ -112,5 +130,8 @@ def test_eyes_are_domes_on_the_wall(sheets: list[StoneRecipe]) -> None:
     assert plain in (0.0, 1.0)
 
 
-def test_eyes_summary() -> None:
-    assert Eyes(radius_mm=3.0, spacing_mm=9.0).summary() == "eyes 6 mm"
+def test_eyes_summary_and_push() -> None:
+    eyes = Eyes(radius_mm=3.0, spacing_mm=6.6)  # touching: 2.2 radii
+    assert eyes.summary() == "eyes 6 mm"
+    assert eyes.advance_mm("vesicle") == pytest.approx(3.6)
+    assert eyes.advance_mm("thunder-egg") < eyes.advance_mm("vesicle")

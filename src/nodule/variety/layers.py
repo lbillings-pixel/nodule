@@ -183,7 +183,8 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
         # seeds on the wall and the crystals both (ADR 0018 s.15).
         growth = growth.with_plumes(early * PLUME_STAGE)
     if recipe.eyes is not None:  # never with a floor or an early stage (the recipe's check)
-        growth = growth.with_eyes(recipe.eyes.radius_mm, recipe.eyes.advance_mm())
+        eyes = recipe.eyes
+        growth = growth.with_eyes(eyes.radius_mm, eyes.advance_mm(recipe.outline))
     g = growth.growth_mm
     model: dict[str, object] = {
         "kind": "procedural-growth",

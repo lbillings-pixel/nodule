@@ -28,9 +28,18 @@ EYE_OUTLINES = ("vesicle", "prolate", "thunder-egg")
 # first stage, `eligible`) whose eyes show at least MIN_RINGS rings. Set so that the
 # expected share over sheets 0-59 is 1 vesicle or prolate stone in 10 and 1 thunder egg
 # in 50 (local `runs/eye-probe/calibrate.py`; ADR 0018 s.18).
-EYE_CHANCE = {"vesicle": 0.263, "prolate": 0.263, "thunder-egg": 0.035}
-MIN_RINGS = 3.0  # radius / band width: fewer rings than this ...
-FEW_RINGS_WEIGHT = 0.15  # ... and the chance is this share (owner: "quite rare")
+EYE_CHANCE = {"vesicle": 0.45, "prolate": 0.45, "thunder-egg": 0.054}
+# The radius is capped at this share of the stone's chalcedony thickness, as tube depths
+# are (`nodule.tubes`): the domes push the bands up to 1.2 R inward, so a thin wall must
+# keep chalcedony after them (eligible stones of sheets 0-59: 6.0 mm thick at least).
+RADIUS_CAP_SHARE = 0.5
+# Bands across the radius (radius / band width) below which an eye shows few rings: a
+# face just under the skin (cut B, 0.4 R in) crosses only the outer 0.6 R of the dome,
+# so it shows about 0.6 of them as rings. On the eyed stones of sheets 0-11, ratios 3.3-
+# 4.9 showed 1-3 rings on cut B and 6.5-7 about 3-4 (by eye, `recipe_sheet.py`): below
+# 6, an eye reads as a plain dome with a ring or two ...
+MIN_RINGS = 6.0
+FEW_RINGS_WEIGHT = 0.08  # ... and the chance is this share (owner: "quite rare")
 RADIUS_MM = (2.0, 4.0)  # uniform: 4-8 mm across (Pabian, Fig. 38)
 SPACING_PER_RADIUS = (2.2, 6.0)  # uniform: touching (2.2) to well apart (6)
 RATE_VARIABILITY = 0.2  # spread of the domes' sizes within a stone
@@ -39,10 +48,18 @@ RATE_VARIABILITY = 0.2  # spread of the domes' sizes within a stone
 # (local `runs/eye-probe/advance.py`): the push grows with depth, from 0.3-1.0 R at 6 mm
 # from the wall to 1.0-1.4 R at 15-18 mm, as the domes' tips come to set the fronts. The
 # domes take R of the run, so the run changes by R minus this. Checked on the quartz-
-# centre eyed stones of sheets 0-11 (`build_check.py`): quartz +2 % to +35 %, open
-# centres 84-92 % of the same stones without eyes (0.6-1.0 left them 14-71 % smaller).
+# centre eyed stones of sheets 0-11 (`build_check.py`): centre width (cube root of the
+# quartz and open centre's volume) 1.02-1.17 of the same stones without eyes, except a
+# tiny centre (5-5, 0.2 % of the stone) at 1.6; a push of 0.6-1.0, measured near the
+# wall, had left them clearly smaller. The push depends on where the domes fall, so this
+# is a mean, not a per-stone value.
 ADVANCE_AT = (2.2, 3.5, 6.0)
 ADVANCE_SHARE = (1.2, 1.1, 1.0)
+# A thunder egg's centre lies far from most of its wall (the star's arms), so domes there
+# push its centre much less: 0.35 R kept 16-4's quartz-lined centre as without eyes
+# (443 quartz points of 100,000; 0 gave 94, 0.5 gave 734, 1.0 gave 1854 and a void;
+# one stone measured, local `runs/eye-probe/te_push.py`).
+THUNDER_EGG_ADVANCE_SHARE = 0.35
 
 
 class Eyes(BaseModel):
@@ -60,8 +77,11 @@ class Eyes(BaseModel):
             "spherulite_rate_variability": self.rate_variability,
         }
 
-    def advance_mm(self) -> float:
-        """How far the domes move the later bands inward (`ADVANCE_SHARE`)."""
+    def advance_mm(self, outline: str) -> float:
+        """How far the domes move the later bands inward where the centre forms
+        (`ADVANCE_SHARE`; a thunder egg's `THUNDER_EGG_ADVANCE_SHARE`)."""
+        if outline == "thunder-egg":
+            return THUNDER_EGG_ADVANCE_SHARE * self.radius_mm
         k = self.spacing_mm / self.radius_mm
         return float(np.interp(k, ADVANCE_AT, ADVANCE_SHARE)) * self.radius_mm
 
@@ -75,11 +95,14 @@ def eligible(outline: str, floor: float, early: bool) -> bool:
     return outline in EYE_OUTLINES and not floor and not early
 
 
-def draw_eyes(rng: np.random.Generator, outline: str, band_mm: float, ok: bool) -> Eyes | None:
+def draw_eyes(
+    rng: np.random.Generator, outline: str, band_mm: float, ok: bool, chalcedony_mm: float
+) -> Eyes | None:
     """One stone's eyes, or none. Every stone draws the same numbers, so a later change
     of eligibility moves no other stone's draw."""
     u = rng.random(3)
     radius = RADIUS_MM[0] + float(u[1]) * (RADIUS_MM[1] - RADIUS_MM[0])
+    radius = min(radius, RADIUS_CAP_SHARE * chalcedony_mm)
     if not ok:
         return None
     chance = EYE_CHANCE[outline]

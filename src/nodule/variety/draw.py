@@ -215,7 +215,7 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
         rec = with_dendrites(rec, dendrite_streams[i])
         early = rec.crystals is not None or rec.inclusions is not None
         ok = eyes_eligible(rec.outline, rec.floor, early)
-        eyes = draw_eyes(eye_streams[i], rec.outline, rec.band_mm, ok)
+        eyes = draw_eyes(eye_streams[i], rec.outline, rec.band_mm, ok, chalcedony_mm(rec))
         final.append(rec if eyes is None else rec.model_copy(update={"eyes": eyes}))
     return final
 

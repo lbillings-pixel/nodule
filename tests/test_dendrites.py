@@ -191,6 +191,25 @@ def test_crack_dendrites_lie_on_their_crack() -> None:
     assert np.all(crack.distance(pts, centre) < g.h_mm)
 
 
+def test_dendrites_on_a_cracked_stones_own_cracks(sheets: list[StoneRecipe]) -> None:
+    """No crack carrier on sheets 0-99 lands on a cracked stone (it needs both rare
+    draws), so this one is forced: stone 1-9's bent 8.4 mm crack (sagitta 0.47) and its
+    3.4 mm one, two carriers at once. Cells stay on their own crack (0.035 mm measured)."""
+    rec = sheets[12 + 9]
+    assert rec.dendrites is not None
+    den = rec.dendrites.model_copy(update={"carrier": "crack", "sites": (), "cracks": (3, 7)})
+    rec = StoneRecipe.model_validate(rec.model_dump() | {"dendrites": den.model_dump()})
+    sp, layers = build(rec)
+    assert layers.dendrites is not None
+    centre = np.asarray(sp.volume.solid.centre(), float)
+    for j, k in enumerate((3, 7)):
+        g = layers.dendrites.grown(j)
+        pts = g.frame.to_world(g.agg.centres())
+        assert len(pts) > 1000
+        assert np.all(rec.fractures[k].distance(pts, centre) < 0.05)
+    assert rec.fractures[3].sagitta_mm > 0.4  # the bent one
+
+
 def test_the_layer_draws_mn_only_near_a_dendrite(wall_stone: Stone) -> None:
     rec, den, sp, layers = wall_stone
     lay = DendriteLayer.of(den, rec.fractures, sp.volume.solid,

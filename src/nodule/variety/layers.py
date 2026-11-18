@@ -33,7 +33,6 @@ from nodule.plumes import reach_mm as plume_reach_mm
 from nodule.specimen import Specimen, SpecimenConfig, SpecimenCut
 from nodule.variety.cracks import IRON_TRACE
 from nodule.variety.dendrites import MN_IMPURITY, DendriteLayer
-from nodule.variety.dendrites import PIGMENT_AT as MN_PIGMENT_AT
 from nodule.variety.mottle import (
     DARK_RIM_SHARE,
     LIGHT_RIM,
@@ -537,8 +536,12 @@ class VarietyLayers:
                 hit = cov > 0
                 k = idx[hit]
                 c = cov[hit].astype(np.float32)
-                imp[k] += c * np.maximum(MN_IMPURITY - imp[k], 0.0)
-                pig[k[c >= MN_PIGMENT_AT]] = Pigment.MANGANESE
+                before = imp[k].copy()
+                added = c * np.maximum(MN_IMPURITY - before, 0.0)
+                imp[k] = before + added
+                # the pixel's colour is Mn's once Mn outweighs what was there, so a part-
+                # covered edge on a pale band reads grey, not rust (no halo, ADR s.17)
+                pig[k[added >= before]] = Pigment.MANGANESE
 
         return replace(fields, phase=phase, impurity=imp, translucency=trans, pigment=pig)
 

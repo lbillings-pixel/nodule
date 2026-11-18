@@ -40,7 +40,6 @@ from nodule.variety.recipe import FractureLayer, rim_point
 
 CAVITY_DEPTH = 0.9  # depth (0 wall, 1 last chalcedony) a dendrite stops short of
 MN_IMPURITY = 0.9  # the preview's Mn black-brown, as on the probe's sheets
-PIGMENT_AT = 0.25  # coverage from which a pixel takes the Mn pigment
 MIN_TREE = 5  # cells: a tree that grew at all
 CHUNK = 1_000_000  # lattice cells read per pass (memory)
 NO_GRAVITY = np.array([0.0, 0.0, -1.0])  # the grower's bias axis; unused at upward 0

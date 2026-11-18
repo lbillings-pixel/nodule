@@ -1578,12 +1578,17 @@ none fits, its dendrites grow from the wall. The hairline may lie on a stone wit
 roughness, which drawn cracks never do: that rule guarded against slipping fractures,
 and a layer crack never slips (16 crack-carrier stones on sheets 0-99 are rough; without
 this many would fall back to the wall and tilt the owner's half and half). Dendrites are drawn last among the layers,
-in chalcedony only, as Mn black: impurity raised to 0.9 by pixel coverage and the Mn
-pigment where a pixel is at least a quarter covered. Growth is lazy: a dendrite is grown
+in chalcedony only, as Mn black: impurity raised towards 0.9 by pixel coverage, and the
+Mn pigment where the Mn added outweighs the impurity already there (so a part-covered
+edge on a pale band reads grey, not rust: no halo). Growth is lazy: a dendrite is grown
 whole, from its own stream, the first time points come near its box.
 Measured: 5 of the 144 stones of sheets 0-11 carry dendrites (3 with a hairline); only
-1 of the 5 cuts meets one; on sheets 12-99, 8 of 28 (so about 1 stone in 100 shows
-dendrites on its cut, the price of no steering). Growing what a cut meets: a crack 2-7 s;
+1 of the 5 cuts meets one; on sheets 12-85, 8 of 28 (the scan stopped at its eighth
+hit, so that share leans high); on sheets 0-99, 42 of 1200 stones carry dendrites. So
+about 1 stone in 100 or fewer shows dendrites on its cut, the price of no steering.
+No crack carrier on sheets 0-99 lands on a stone with drawn cracks (both draws are
+rare), so that path is tested on a forced stone (1-9, two cracks, one bent). A crack
+over about 24 mm in radius coarsens its lattice past 0.05 mm (agatesim's 4 M-cell cap). Growing what a cut meets: a crack 2-7 s;
 a wall patch 13-51 s for two (GPU), peak traced memory 670 MB; stones whose cut misses
 pay nothing. Look sheet: local `runs/dendrite-probe/look/recipes-12-100.png` (cut stones
 picked because their cut meets a dendrite).
@@ -1605,7 +1610,11 @@ dendrites render as soft dark branching smudges seen into the slice (more branch
 than the preview's specks, as the renderer looks into the stone; item 16). A crack
 dendrite renders as a faint grey line, much softer than the preview's black dashes (the
 bake gives absorption, not an opaque body: layerbake limits). Cost: 10-11 min per stone
-for the pair of windows (fills 190-250 s each). Not tuned: for the owner's verdict.
+for the pair of windows (fills 190-250 s each). Whole faces as `varietyrender` makes
+them (0.1 mm grid; stones 84-1 and 80-8, 2-2.5 min each, local
+`runs/dendrite-probe/whole-84/`, `whole-80/`): both carry through, the crack dendrite as
+a faint grey line, the wall dendrite as soft grey branching shadows inside the stone.
+Not tuned: for the owner's verdict.
 
 ### 18. Eyes and escape tubes: reading and options (2026-11-17, proposed)
 

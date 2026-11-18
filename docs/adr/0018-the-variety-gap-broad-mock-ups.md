@@ -1643,6 +1643,8 @@ normalised strength). Mn is the dendrites' only pigment, so the wall carrier dar
 for the owner's eye. Also a crack's film shows 0.2 mm thick across the crack
 (`CrackGrowth.seen_mm`, `effective`; grown about 0.15 mm), its pattern within the crack
 unchanged (the face-on check is measured on the grown film; a test holds both).
+*The owner's verdict on the wall darkness (2026-11-18): keep 30 for both carriers.* One
+Mn strength for crack and wall dendrites; no per-carrier lever. Item 14 is closed.
 
 ### 18. Eyes and escape tubes: reading and options (2026-11-17, proposed)
 

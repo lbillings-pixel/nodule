@@ -240,10 +240,18 @@ as now, no face glare, no glare plus a display curve, a backlit 3 mm slice) was 
      stays on quartz; with it 1x reads mauve-grey and 2x purple-grey in the 3 mm look.
      Strength x TINT_STRENGTH: 2, the owner's pick (2026-11-17, after whole-face
      renders of sheet 1 stone 6 at 1x and 2x, `runs/item11-render/`); the owner kept
-     the 0.05 mm needle grid too. Not read (the helper could not
-     get them): Rossman 1994 (Rev. Mineral. 29), Nassau and Prescott 1977 (Mineral.
-     Mag. 41), Lehmann 1967. Colour zoning (amethyst in r-sector growth zones) is not
-     drawn.
+     the 0.05 mm needle grid too. Colour zoning (amethyst in r-sector growth zones) is
+     not drawn.
+     *Read later (2026-11-17, night; `notes/n1-reading/item11-quartz-colour-papers.md`,
+     local).* [@nassau1977] (owner-supplied) puts smoky colour in the A3 band at 2.90 eV
+     (428 nm, FWHM 1.5 eV; *verified*). In one natural crystal it grows from about 0.6
+     to 2.6 cm^-1 (decadic, E parallel to c) between a low dose and saturation (*plausible*,
+     read off Fig. 5). The smoky ratio of blue to red, 1.67, matches its saturated crystal
+     (about 1.74, *plausible*), and 2x (0.24 mm^-1 at 450 nm) lies between its low-dose
+     and saturated cases. So the smoky values stay. The paper has no amethyst data. The
+     file supplied as Lehmann was [@lehmann1971-yellow] (yellow centres, no amethyst
+     spectrum), so Lehmann 1967 is still unread. Rossman 1994 could not be obtained.
+     Amethyst stays as above.
    - Needles: see ADR 0018 s.15 (correction): white remnants enter the record as milky
      chalcedony, and white fine needles render the whole face at NEEDLE_GRID_MM
      0.05 mm, coarsened to stay within NEEDLE_VOXELS (100 M voxels; ~11 GB RAM, ~5 GB

@@ -1794,6 +1794,57 @@ Fetch list: Shaub 1955 (Am. J. Sci. 253, 117-120), Landmesser 1984, 1988 and 199
 Pabian 1978 (Gems & Gemology 16, 16-28), two zobodat/Stuttgart PDFs the helper could not
 open (see the report).
 
+### 19. Thunder-egg cavities in 3D: probe and the owner's choices (2026-11-18)
+
+Item 17 of the work plan. Until now a thunder egg's star is a 2D outline extruded into a
+prism, so every cut shows the same star (s.10). The owner asked (2026-11-08) that a cut may
+gain or lose arms with where it falls.
+
+*Sources (already read in full or in sections; no new reading).* Ross: stars are sections
+across a modified pyritohedron whose faces project inward as pyramids, made by "30
+triangular shear planes"; the best star comes from a cut "about one-third above or below
+the equator" [@ross1941, pp. 729, 731]. Kile, for Del Norte: the centre "may range from
+simple lensoidal to a less commonly seen and more complex star pattern", the section
+depending partly on the cutting orientation [@kile2002, p. 256] (one locality, magazine
+with editorial review: *plausible* at most). Breitkreuz: central cavities are often
+lenticular; stars grow from sickles by radiating cracks [@breitkreuz2013, pp. 11-12;
+figures read by caption only]. Ross's model is geometry observed plus the author's
+mechanism (*plausible*); the 3D drawings below are looks only, never evidence for how
+cavities form (ADR 0002).
+
+*Probe (local `runs/thunderegg-3d/`).* Shapes on a 192-cell grid fixed in shape units
+(resolution-independent), cut at heights about 4 mm apart on a 55 mm cavity.
+- *Winding:* the approved 2D arms (`thunderegg._arm`), each now a fin (after Ross's
+  shear planes) with its own height (half-height 0.12-0.45 shape units, narrowing 40 % to
+  the tip), centre height, lean and twist; all `effective`. Cuts gain and lose arms with
+  height; cuts far from the middle show separate pockets. Middle cuts keep `arm_meander`
+  0.06-0.16 (traced approved 2D stars: 0.036-0.164; angular 0.009-0.019). Arms come out
+  somewhat stubbier than the 2D stars.
+- *Jagged:* convex wedges with fins plus flat facets pushed in or out (3D analogue of the
+  2D straight runs): cuts are ragged blobs with specks. Not usable yet.
+- *Check found wanting:* traced from a 192 grid, `wall_corners` no longer separates
+  approved jagged (0.09-0.23) from sinuous (0.06-0.27) drawings; the 3D build needs a new
+  corner check (with the sinuous star as its negative control).
+- *Negative control:* today's prism shows the same star at every height.
+- *Cost:* 0.5-3.5 s a cavity, peak 0.6 GB (numpy, CPU).
+
+*Owner's choices (2026-11-18).*
+- Winding stars in 3D: "build it" (arms lengthened to match the approved 2D look).
+- Lens centres on about 1 in 50-75 thunder eggs (`effective`), not the sources' larger
+  share: the owner limits them because a lens-shaped thunder egg is hard to tell from an
+  ordinary agate nodule. (By the sources the difference is the spherulitic shell round
+  the cavity [@ross1941, p. 731; @breitkreuz2013, p. 7], not the cavity's shape.)
+- The cutter cuts near the middle, as now (within 0.1 r).
+- Jagged: reworked in the build; a new sheet before it is built.
+
+*Build needs.* agatesim's pipeline uses solids only through generic calls, but its
+`SolidConfig` accepts only a preset or a 2D outline, so a 3D cavity needs one agatesim
+change (asked separately; agatesim changes need the owner's approval each time). Nodule
+code that assumes the prism will be revisited: the cut, `depth_fraction`, `inradius`,
+`rim_point`, crack placement, `cut_site`, `channel_fits`, eyes, needles, rind. All
+thunder-egg stones will be redrawn (on a spawned stream so other stones stay put). The
+solid is to be checked by 3D sampling, not one cut.
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

@@ -117,6 +117,9 @@ before any statistics.
 
 - [ ] 17. True 3D thunder-egg cavity (a cut may gain or lose arms with depth;
   at Del Norte lens-shaped centres are reported more often than stars).
+  2026-11-18: probe done and the owner's choices taken (ADR 0018 s.19): winding stars
+  as 3D fins, lens centres on 1 in 50-75, cut near the middle, jagged reworked (sheet
+  first); the agatesim change for a drawn 3D cavity approved. Next: build.
 - [ ] 18. Druse crystal faces in open cavities.
 - [ ] 19. Renderer physics: scattering in the camera code (ask the owner
   first), air with refraction in cavities (ADR 0019 A2), the fuller red fix

@@ -1531,6 +1531,32 @@ the thin-line trace a flat cut shows is enough for now (the see-through view aft
 16); dendrites are uncommon in the owner's experience, so at most 5 % of stones. Next: a
 probe and look sheet.
 
+*Correction (2026-11-17, night).* "No source describes a section through a dendrite" is
+too strong. The one agate nodule in [@bayirli2017] was cut through its middle, and its
+dendrites, seen on that cut, grow from the outer surface inward as branched forms (box
+dimension 1.63 on the section). That rests on the catalogue's full-text note of
+2026-10-20; the figure was not re-seen. For planar dendrites the thin-line trace stays
+an inference (*speculative*).
+
+*Probe (2026-11-17, local `runs/dendrite-probe/`).* Dendrites grown by agatesim's 3D
+aggregation (`agatesim.volume.dendrites.grow`, after [@hou2023]) on a lattice fixed in a
+local world frame, so any cut at any spacing shows the same dendrite. Four carriers were
+tried: 3D growth inward from the wall; flat sheets standing on the wall; a shell just
+inside it; a crack disc. On a flat cut the three planar carriers show a dashed dark line,
+and face-on a fern. The 3D growth shows specks on a cut and a dark mass seen through 2 mm
+(max over 41 planes, no optics). A smaller `amount` only shortens it. With the grower's
+plume bias turned inward it reaches in as fingers, but they are ruled along the lattice
+axis (an artefact). Costs: 3D 16-33 s and about 1.2 GB host RAM per dendrite; planar
+1.5-12 s. The preview's manganese is black, so no agatesim change was needed. All sizes
+`effective`; appearance only (ADR 0002).
+
+*The owner's choices after the probe (2026-11-17, night).* Half of dendrite stones take
+3D growth inward from the wall, made much sparser; the other half take dendrites on
+cracks. The owner judged flat sheets and cracks alike and left the pick to Claude, who
+chose cracks: they rest on sources from other rocks and reuse the crack discs. No
+partings, no shell. "At most 5 % of stones" counts stones that carry dendrites; no
+steering towards the cut.
+
 ### 18. Eyes and escape tubes: reading and options (2026-11-17, proposed)
 
 Work plan item 15. Reading by a helper (`notes/n1-reading/item15-eyes-tubes.md`, local).

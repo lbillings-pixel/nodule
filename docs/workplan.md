@@ -75,7 +75,7 @@ before any statistics.
   and the renderer; then drop plume frequency from
   1 in 4 to about 1 in 8-10 (owner, 2026-11-09). The owner's 3/4-up plume
   split depends on moss growing downward.
-- [ ] 12. Previews made from the renderer's own colour model, so the owner's
+- [x] 12. (closed 2026-11-17 by judging on quick renders, below) Previews made from the renderer's own colour model, so the owner's
   eye on sheets carries over to renders. Measured 2026-11-16 (7 pixel-aligned
   preview/look pairs, leave one stone out; `runs/preview-vs-render/`, local): the
   preview sits a median dE 11-20 from the look; neither one colour map nor a lookup on
@@ -85,6 +85,9 @@ before any statistics.
   beneath; not yet separated).
   Options: model the renderer's materials in the preview (1-2 sessions), or judge looks
   on quick renders (whole face 1.5-5.5 min a stone on the GPU).
+  2026-11-17: the owner left the pick to Claude ("whatever is faster and more
+  efficient"): judge looks on quick renders. Nothing to build; previews stay a
+  stand-in, and any look that matters goes to a quick render before the owner's verdict.
 - [x] 13. (2026-11-17, ADR 0018 s.16 "Built"; `nodule.rind`; on the renders'
   look too, host redrawn in sheet colours, ADR 0019 s.6.8; no bleed, the owner's choice) Host rind, host speckle and pigment bleed
   into the host.

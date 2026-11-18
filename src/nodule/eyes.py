@@ -12,7 +12,8 @@ source's claim: the dome is the form drawn, never evidence for a mechanism (ADR 
 The owner's choices (2026-11-18, after the probe in local `runs/eye-probe/`): about 1
 vesicle stone in 10, about 1 thunder egg in 50, none on sediment stones or pebbles; size
 4-8 mm across and spacing from touching to well apart, drawn per stone; any banded
-stone, but eyes showing few rings (coarse bands) quite rare. The rates are assumptions.
+stone, but eyes showing few rings (coarse bands) quite rare; floor stones too, the floor
+settling first (later the same day). The rates are assumptions.
 All values `effective`.
 """
 
@@ -24,14 +25,15 @@ from pydantic import BaseModel, ConfigDict, Field
 # Outlines that take eyes: the volcanic ones (vesicle, prolate: Pabian's amygdaloidal
 # agates) and thunder eggs. Not on sediment stones (irregular) or pebbles.
 EYE_OUTLINES = ("vesicle", "prolate", "thunder-egg")
-# Chance on an eligible stone (no floor, crystals, plumes or moss: these hold the wall's
-# first stage, `eligible`) whose eyes show at least MIN_RINGS rings. Set so that the
+# Chance on an eligible stone (no crystals, plumes or moss: these hold the wall's first
+# stage, `eligible`) whose eyes show at least MIN_RINGS rings. Set so that the
 # expected share over sheets 0-59 is 1 vesicle or prolate stone in 10 and 1 thunder egg
 # in 50 (local `runs/eye-probe/calibrate.py`; ADR 0018 s.18).
-EYE_CHANCE = {"vesicle": 0.45, "prolate": 0.45, "thunder-egg": 0.054}
+EYE_CHANCE = {"vesicle": 0.307, "prolate": 0.307, "thunder-egg": 0.054}
 # The radius is capped at this share of the stone's chalcedony thickness, as tube depths
 # are (`nodule.tubes`): the domes push the bands up to 1.2 R inward, so a thin wall must
-# keep chalcedony after them (eligible stones of sheets 0-59: 6.0 mm thick at least).
+# keep chalcedony after them. Where the cap falls below the smallest radius (walls under
+# 4 mm, some floor stones), the stone takes no eyes.
 RADIUS_CAP_SHARE = 0.5
 # Bands across the radius (radius / band width) below which an eye shows few rings: a
 # face just under the skin (cut B, 0.4 R in) crosses only the outer 0.6 R of the dome,
@@ -60,6 +62,12 @@ ADVANCE_SHARE = (1.2, 1.1, 1.0)
 # (443 quartz points of 100,000; 0 gave 94, 0.5 gave 734, 1.0 gave 1854 and a void;
 # one stone measured, local `runs/eye-probe/te_push.py`).
 THUNDER_EGG_ADVANCE_SHARE = 0.35
+# Above a floor the centre faces the floor's top, where few domes grow, so the push there
+# is also smaller: about 0.45 R kept the centres of 20-2 and 23-6 (quartz-lined) as
+# without eyes (0.35 R: 83 % and 81 % of their quartz; 0.7 R: 120 % and 430 %); at the
+# vesicles' 1.0-1.2 R both opened wide and solid 13-7 a void (local
+# `runs/eye-probe/floor_push.py`).
+FLOOR_ADVANCE_SHARE = 0.45
 
 
 class Eyes(BaseModel):
@@ -77,11 +85,14 @@ class Eyes(BaseModel):
             "spherulite_rate_variability": self.rate_variability,
         }
 
-    def advance_mm(self, outline: str) -> float:
+    def advance_mm(self, outline: str, floor: float = 0.0) -> float:
         """How far the domes move the later bands inward where the centre forms
-        (`ADVANCE_SHARE`; a thunder egg's `THUNDER_EGG_ADVANCE_SHARE`)."""
+        (`ADVANCE_SHARE`; a thunder egg's `THUNDER_EGG_ADVANCE_SHARE`, a floor stone's
+        `FLOOR_ADVANCE_SHARE`)."""
         if outline == "thunder-egg":
             return THUNDER_EGG_ADVANCE_SHARE * self.radius_mm
+        if floor:
+            return FLOOR_ADVANCE_SHARE * self.radius_mm
         k = self.spacing_mm / self.radius_mm
         return float(np.interp(k, ADVANCE_AT, ADVANCE_SHARE)) * self.radius_mm
 
@@ -89,10 +100,12 @@ class Eyes(BaseModel):
         return f"eyes {2 * self.radius_mm:.0f} mm"
 
 
-def eligible(outline: str, floor: float, early: bool) -> bool:
-    """Whether a stone may have eyes: an eye outline, no floor and no early stage
-    (crystals, plumes or moss), which would hold the wall's first stage."""
-    return outline in EYE_OUTLINES and not floor and not early
+def eligible(outline: str, early: bool) -> bool:
+    """Whether a stone may have eyes: an eye outline and no early stage (crystals,
+    plumes or moss), which would hold the wall's first stage. A floor is allowed: it
+    settles first and the eyes grow after it, on the walls and the floor's top (the
+    owner's choice, 2026-11-18)."""
+    return outline in EYE_OUTLINES and not early
 
 
 def draw_eyes(
@@ -103,7 +116,7 @@ def draw_eyes(
     u = rng.random(3)
     radius = RADIUS_MM[0] + float(u[1]) * (RADIUS_MM[1] - RADIUS_MM[0])
     radius = min(radius, RADIUS_CAP_SHARE * chalcedony_mm)
-    if not ok:
+    if not ok or radius < RADIUS_MM[0]:  # too thin a wall for a 4 mm eye: none
         return None
     chance = EYE_CHANCE[outline]
     if radius / band_mm < MIN_RINGS:

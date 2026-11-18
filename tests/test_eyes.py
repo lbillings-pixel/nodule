@@ -26,11 +26,11 @@ from nodule.variety.layers import Growth
 def test_eyes_on_their_outlines_at_the_owners_rates(sheets: list[StoneRecipe]) -> None:
     eyed = [r for r in sheets if r.eyes is not None]
     volcanic = [r for r in sheets if r.outline in ("vesicle", "prolate")]
-    assert len(eyed) == 8  # all on vesicle or prolate stones in sheets 0-11
+    assert len(eyed) == 9  # all on vesicle or prolate stones in sheets 0-11, two with floors
     assert 0.04 < sum(r.outline in ("vesicle", "prolate") for r in eyed) / len(volcanic) < 0.2
+    assert sum(bool(r.floor) for r in eyed) == 2
     for r in eyed:
         assert r.outline in EYE_OUTLINES
-        assert not r.floor
         assert r.crystals is None
         assert r.inclusions is None
 
@@ -55,25 +55,25 @@ def test_the_radius_is_capped_by_the_chalcedony() -> None:
         assert (free is None) == (tight is None)
         if free is not None and tight is not None:
             assert tight.radius_mm == pytest.approx(min(free.radius_mm, RADIUS_CAP_SHARE * 6.0))
+    # a wall too thin for the smallest eye (4 mm across) takes none
+    assert all(draw_eyes(rng(s), "vesicle", 0.1, True, 3.5) is None for s in range(300))
 
 
 def test_no_eyes_where_not_eligible(sheets: list[StoneRecipe]) -> None:
     rng = np.random.default_rng
     assert all(draw_eyes(rng(s), "vesicle", 0.3, False, 20.0) is None for s in range(300))
-    for outline, floor, early in [
-        ("irregular", 0.0, False),
-        ("pebble", 0.0, False),
-        ("vesicle", 0.3, False),
-        ("vesicle", 0.0, True),
-    ]:
-        assert not eligible(outline, floor, early)
-    assert eligible("thunder-egg", 0.0, False)
+    for outline, early in [("irregular", False), ("pebble", False), ("vesicle", True)]:
+        assert not eligible(outline, early)
+    assert eligible("thunder-egg", False)
     eyes = {"radius_mm": 3.0, "spacing_mm": 9.0}
-    floored = next(r for r in sheets if r.floor and r.outline == "vesicle")
+    crystal = next(r for r in sheets if r.crystals is not None and r.outline == "vesicle")
     sediment = next(r for r in sheets if r.outline == "irregular" and not r.floor)
-    for r in (floored, sediment):
+    for r in (crystal, sediment):
         with pytest.raises(ValidationError):
             StoneRecipe.model_validate(r.model_dump() | {"eyes": eyes})
+    floored = next(r for r in sheets if r.floor and r.outline == "vesicle" and r.inclusions is None
+                   and r.crystals is None)  # fmt: skip
+    assert StoneRecipe.model_validate(floored.model_dump() | {"eyes": eyes}).eyes is not None
 
 
 def test_the_eye_stage_comes_out_of_the_run() -> None:
@@ -83,12 +83,19 @@ def test_the_eye_stage_comes_out_of_the_run() -> None:
     # the walls lay 15 mm of chalcedony before; the domes moved them 3.6 mm of it
     assert g.quartz_at is not None
     assert (g.quartz_at * g.growth_mm - 3.0) == pytest.approx(15.0 - 3.6)
-    with pytest.raises(ValueError, match="no floor or plume stage"):
-        Growth(30.0, None, start=0.2).with_eyes(3.0, 3.0)
+    # after a floor (6 mm of the 30 mm run): the floor keeps its growth, the eyes follow
+    f = Growth(30.0, 0.5, start=0.2).with_eyes(3.0, 1.35)
+    assert f.growth_mm == pytest.approx(31.65)
+    assert f.start * f.growth_mm == pytest.approx(6.0)
+    assert f.eyes_end * f.growth_mm == pytest.approx(9.0)
+    assert f.quartz_at is not None
+    assert f.quartz_at * f.growth_mm == pytest.approx(15.0 + 3.0 - 1.35)
+    with pytest.raises(ValueError, match="no plume stage"):
+        Growth(30.0, None, start=0.2, plumes_end=0.1).with_eyes(3.0, 3.0)
 
 
 def _eyed(sheets: list[StoneRecipe]) -> StoneRecipe:
-    return next(r for r in sheets if r.eyes is not None and r.centre == "solid")
+    return next(r for r in sheets if r.eyes is not None and r.centre == "solid" and not r.floor)
 
 
 def test_the_eye_stage_reaches_the_model(sheets: list[StoneRecipe]) -> None:
@@ -100,10 +107,23 @@ def test_the_eye_stage_reaches_the_model(sheets: list[StoneRecipe]) -> None:
     assert model.spherulite_spacing_mm == rec.eyes.spacing_mm
     tau = (np.arange(TIME_STEPS) + 0.5) / TIME_STEPS
     n = int(np.count_nonzero(growth_modes(model, tau) == int(Mode.SPHERULITIC)))
-    assert n == pytest.approx(growth.eyes_end * TIME_STEPS, abs=1)
+    assert n == pytest.approx((growth.eyes_end - growth.start) * TIME_STEPS, abs=1)
     plain = volume_config(rec.model_copy(update={"eyes": None}))[0].model
     assert isinstance(plain, ProceduralGrowth)
     assert not np.any(growth_modes(plain, tau) == Mode.SPHERULITIC)
+
+
+def test_on_a_floor_stone_the_floor_settles_before_the_eyes(sheets: list[StoneRecipe]) -> None:
+    rec = next(r for r in sheets if r.eyes is not None and r.floor)
+    model = volume_config(rec)[0].model
+    assert isinstance(model, ProceduralGrowth)
+    tau = (np.arange(TIME_STEPS) + 0.5) / TIME_STEPS
+    modes = growth_modes(model, tau)
+    settle = np.flatnonzero(modes == int(Mode.SETTLING))
+    eyes = np.flatnonzero(modes == int(Mode.SPHERULITIC))
+    assert len(settle)
+    assert len(eyes)
+    assert settle.max() < eyes.min()
 
 
 def _dome_share(sp: Specimen, depth_mm: float, eyes_end: float) -> float:
@@ -135,3 +155,4 @@ def test_eyes_summary_and_push() -> None:
     assert eyes.summary() == "eyes 6 mm"
     assert eyes.advance_mm("vesicle") == pytest.approx(3.6)
     assert eyes.advance_mm("thunder-egg") < eyes.advance_mm("vesicle")
+    assert eyes.advance_mm("vesicle", floor=0.4) < eyes.advance_mm("vesicle")

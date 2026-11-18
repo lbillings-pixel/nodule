@@ -1752,35 +1752,43 @@ finer bands, so eyes with 1-2 rings on coarse stones are quite rare.
 *Built (2026-11-18; `nodule.eyes`, `StoneRecipe.eyes`, a stream spawned after the
 dendrites').* Outlines: vesicle and prolate (the volcanic hosts, Claude's reading of
 "vesicles" as Pabian's amygdaloidal agates) and thunder eggs; none on irregular stones
-or pebbles. Eyes go only on stones with no floor, crystals, plumes or moss: those hold
-the wall's first stage, and agatesim's settling and dendrite stages override the
-spherulitic one (an assumption; floors with eyes would also grow domes on the floor's
-top). So about 1 plain vesicle in 4 has eyes. Eligible are 38 % of volcanic stones and
-62 % of thunder eggs, so the chance on an eligible stone is 0.45 and 0.054, set from the
-expected share over sheets 0-59 (1 in 10, 1 in 50). Radius uniform 2-4 mm, capped at
-half the chalcedony's thickness (as tube depths; eligible stones have 6 mm or more),
-spacing 2.2-6 radii (touching to well apart), rate variability 0.2. Few rings: cut B
+or pebbles. No eyes with crystals, plumes or moss: those hold the wall's first stage
+(an assumption). Floor stones take eyes (the owner's choice, 2026-11-18, accepting
+domes on the floor's top): the floor settles first, then the eye stage, then the bands
+(agatesim's settling overrides the spherulitic mode, so the order holds). Eligible are
+over half of volcanic stones (38 % without floors) and 62 % of thunder eggs, so the chance on an eligible
+stone is 0.307 and 0.054, set from the expected share over sheets 0-59 (1 in 10, 1 in
+50). Radius uniform 2-4 mm, capped at half the chalcedony's thickness (as tube depths);
+where the cap falls under 2 mm (walls under 4 mm, some floor stones) the stone takes
+none. Spacing 2.2-6 radii (touching to well apart), rate variability 0.2. Few rings: cut B
 (0.4 R in) crosses only the outer 0.6 R of a dome, so it shows about 0.6 of the bands
 across the radius as rings; on the first built sheet, eyes with 3.3-4.9 bands across
 showed 1-3 rings and those with 6.5-7 about 3-4 (by eye). An eye with fewer than 6
-bands across its radius takes 0.08 of the chance. Over sheets 0-29: 24 of 240 volcanic
-stones (1 in 10; prolates 5 of 30, a small sample) and 2 of 60 thunder eggs have eyes,
-2 of the 26 with fewer than 6 bands across. The eye stage runs from time 0 to R / g.
+bands across its radius takes 0.08 of the chance. Over sheets 0-59: 55 of 480 volcanic
+stones (1 in 8.7, against 48 expected; prolates 8 of 60) and 2 of 120 thunder eggs have
+eyes, 4 of the 57 with fewer than 6 bands across. The eye stage runs where the walls
+start (time 0, or after the floor) for R of the run.
 Growth budget: the domes take R of the run but move the later bands inward by 1.2 R
 (touching) to 1.0 R (6 radii apart) where the centre forms (measured: the push grows
 with depth, from 0.3-1.0 R at 6 mm to 1.0-1.4 R at 15-18 mm, on 7-3 and 11-1); on a
 thunder egg, whose centre lies far from most of its wall, 0.35 R (16-4: 0.35 kept its
-quartz-lined centre, 1.0 opened a void; one stone). The run changes by R minus the
-push. Centre width (cube root of the quartz and open centre's volume, 100,000 points)
-against the same stones without eyes, every quartz-centre eyed stone of sheets 0-11 and
-both eyed thunder eggs of sheets 0-29: 1.01-1.17, except 5-5's tiny centre (0.2 % of the
-stone) at 1.6. The push depends on where the domes fall, so it is a mean, not a
-per-stone value. No stone gains void beyond its open centre. All values `effective`.
-Sheets 0-11: 8 eyed stones; every recipe otherwise unchanged and every other stone's
-config unchanged (snapshot against the pre-eye baseline). Build 2-10 s a stone.
+quartz-lined centre, 1.0 opened a void; one stone); above a floor, where the centre
+faces the floor's top and few domes, 0.45 R (20-2 and 23-6, quartz-lined: 0.35 kept
+81-83 % of their quartz, 0.7 gave 120 % and 430 %; at 1.0-1.2 R both opened wide and
+solid 13-7 a void). The run changes by R minus the push. Centre width (cube root of the
+quartz and open centre's volume, 100,000 points) against the same stones without eyes,
+every quartz-centre eyed stone of sheets 0-11, both eyed thunder eggs and the six eyed
+floor stones of sheets 0-29: 0.98-1.17, except two tiny centres: 5-5's (0.2 % of the
+stone) at 1.6, and 5-7's (floor, 0.3 %) closed. The push depends on where the domes
+fall, so it is a mean, not a per-stone value. No stone gains void beyond its open
+centre. All values `effective`. Sheets 0-11: 9 eyed stones (two with floors); every
+recipe otherwise unchanged and every other stone's config unchanged (snapshot against
+the pre-eye baseline). Build 2-10 s a stone. On the floor stones' slabs few domes
+show on the floor's top (local `runs/eye-probe/look/floor-eyes.png`).
 A check with its negative control (`tests/test_eyes.py`): under the skin (0.4 R in),
 part of the face lies in domes and part between them (4-10: 8 %); the same stone
-without eyes is one band there.
+without eyes is one band there. On a floor stone the settling steps all come before
+the eye stage's.
 
 Fetch list: Shaub 1955 (Am. J. Sci. 253, 117-120), Landmesser 1984, 1988 and 1992,
 Pabian 1978 (Gems & Gemology 16, 16-28), two zobodat/Stuttgart PDFs the helper could not

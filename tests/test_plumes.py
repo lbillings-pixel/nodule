@@ -113,7 +113,7 @@ def test_plume_stones_get_the_stage_first_and_floors_after_it(
     # A floored stone with no early stage, given plumes (seeds 0-11 deal none at 1 in 9).
     floored = next(
         r for r in sheets if r.floor and r.crystals is None and r.inclusions is None
-    ).model_copy(update={"plumes": draw_plumes(np.random.default_rng(3))})
+    ).model_copy(update={"plumes": draw_plumes(np.random.default_rng(3)), "eyes": None})
     assert floored.plumes is not None
     config, _ = volume_config(floored)
     on, settle = _on(config.model, "dendrite"), _on(config.model, "settling")

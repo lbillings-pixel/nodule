@@ -259,10 +259,10 @@ class StoneRecipe(BaseModel):
     @model_validator(mode="after")
     def _eyes_on_their_own(self) -> StoneRecipe:
         early = self.crystals is not None or self.inclusions is not None
-        if self.eyes is not None and not eligible(self.outline, self.floor, early):
+        if self.eyes is not None and not eligible(self.outline, early):
             raise ValueError(
-                "eyes only on vesicle, prolate or thunder-egg stones without a floor, "
-                "crystals, plumes or moss"
+                "eyes only on vesicle, prolate or thunder-egg stones without crystals, "
+                "plumes or moss"
             )
         return self
 

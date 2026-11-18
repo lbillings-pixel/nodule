@@ -1,0 +1,116 @@
+"""Eyes in the recipes (ADR 0018 s.18): the owner's rates and outlines, eyes showing few
+rings kept rare, eyes never with a floor or an early stage, the growth budget, and the
+domes themselves (negative control: the same stone without eyes has none)."""
+
+from __future__ import annotations
+
+import numpy as np
+import pytest
+from agatesim.models.growth import TIME_STEPS, Mode, ProceduralGrowth, growth_modes
+from pydantic import ValidationError
+
+from nodule.eyes import EYE_CHANCE, EYE_OUTLINES, FEW_RINGS_WEIGHT, Eyes, draw_eyes, eligible
+from nodule.specimen import Specimen
+from nodule.variety import StoneRecipe, build, volume_config
+from nodule.variety.layers import Growth
+
+
+def test_eyes_on_their_outlines_at_the_owners_rates(sheets: list[StoneRecipe]) -> None:
+    eyed = [r for r in sheets if r.eyes is not None]
+    volcanic = [r for r in sheets if r.outline in ("vesicle", "prolate")]
+    assert len(eyed) == 9  # all on vesicle or prolate stones in sheets 0-11
+    assert 0.04 < sum(r.outline in ("vesicle", "prolate") for r in eyed) / len(volcanic) < 0.2
+    for r in eyed:
+        assert r.outline in EYE_OUTLINES
+        assert not r.floor
+        assert r.crystals is None
+        assert r.inclusions is None
+
+
+def test_eyes_with_few_rings_are_rare() -> None:
+    def rate(band_mm: float) -> float:
+        rng = np.random.default_rng
+        return np.mean(
+            [draw_eyes(rng(s), "vesicle", band_mm, True) is not None for s in range(4000)]
+        )
+
+    fine, coarse = rate(0.2), rate(2.0)  # every radius gives >= 3 rings at 0.2 mm, none at 2
+    assert fine == pytest.approx(EYE_CHANCE["vesicle"], abs=0.03)
+    assert coarse == pytest.approx(FEW_RINGS_WEIGHT * EYE_CHANCE["vesicle"], abs=0.015)
+
+
+def test_no_eyes_where_not_eligible(sheets: list[StoneRecipe]) -> None:
+    rng = np.random.default_rng
+    assert all(draw_eyes(rng(s), "vesicle", 0.3, False) is None for s in range(300))
+    for outline, floor, early in [
+        ("irregular", 0.0, False),
+        ("pebble", 0.0, False),
+        ("vesicle", 0.3, False),
+        ("vesicle", 0.0, True),
+    ]:
+        assert not eligible(outline, floor, early)
+    assert eligible("thunder-egg", 0.0, False)
+    eyes = {"radius_mm": 3.0, "spacing_mm": 9.0}
+    floored = next(r for r in sheets if r.floor and r.outline == "vesicle")
+    sediment = next(r for r in sheets if r.outline == "irregular" and not r.floor)
+    for r in (floored, sediment):
+        with pytest.raises(ValidationError):
+            StoneRecipe.model_validate(r.model_dump() | {"eyes": eyes})
+
+
+def test_the_eye_stage_comes_out_of_the_run() -> None:
+    g = Growth(30.0, 0.5).with_eyes(3.0, 3.6)
+    assert g.growth_mm == pytest.approx(29.4)
+    assert g.eyes_end == pytest.approx(3.0 / 29.4)
+    # the walls lay 15 mm of chalcedony before; the domes moved them 3.6 mm of it
+    assert g.quartz_at is not None
+    assert (g.quartz_at * g.growth_mm - 3.0) == pytest.approx(15.0 - 3.6)
+    with pytest.raises(ValueError, match="no floor or plume stage"):
+        Growth(30.0, None, start=0.2).with_eyes(3.0, 3.0)
+
+
+def _eyed(sheets: list[StoneRecipe]) -> StoneRecipe:
+    return next(r for r in sheets if r.eyes is not None and r.centre == "solid")
+
+
+def test_the_eye_stage_reaches_the_model(sheets: list[StoneRecipe]) -> None:
+    rec = _eyed(sheets)
+    assert rec.eyes is not None
+    config, growth = volume_config(rec)
+    model = config.model
+    assert isinstance(model, ProceduralGrowth)
+    assert model.spherulite_spacing_mm == rec.eyes.spacing_mm
+    tau = (np.arange(TIME_STEPS) + 0.5) / TIME_STEPS
+    n = int(np.count_nonzero(growth_modes(model, tau) == int(Mode.SPHERULITIC)))
+    assert n == pytest.approx(growth.eyes_end * TIME_STEPS, abs=1)
+    plain = volume_config(rec.model_copy(update={"eyes": None}))[0].model
+    assert isinstance(plain, ProceduralGrowth)
+    assert not np.any(growth_modes(plain, tau) == Mode.SPHERULITIC)
+
+
+def _dome_share(sp: Specimen, depth_mm: float, eyes_end: float) -> float:
+    """Share of the points at depth_mm from the wall laid down in the eye stage."""
+    solid = sp.volume.solid
+    lo, hi = solid.bounds()
+    pts = np.random.default_rng(2).uniform(lo, hi, (300_000, 3))
+    pts = pts[solid.contains(pts)]
+    shell = pts[np.abs(solid.wall_distance(pts) - depth_mm) < 0.1]
+    t = sp.growth_time(shell)
+    return float(np.mean(t[np.isfinite(t)] < eyes_end))
+
+
+def test_eyes_are_domes_on_the_wall(sheets: list[StoneRecipe]) -> None:
+    """Under the skin (0.4 R in) part of the face lies in domes and part between them;
+    the same stone without eyes is one band there (all or nothing)."""
+    rec = _eyed(sheets)  # a solid vesicle, about 3 s each to build
+    assert rec.eyes is not None
+    _, growth = volume_config(rec)
+    depth = 0.4 * rec.eyes.radius_mm
+    eyed = _dome_share(build(rec)[0], depth, growth.eyes_end)
+    plain = _dome_share(build(rec.model_copy(update={"eyes": None}))[0], depth, growth.eyes_end)
+    assert 0.03 < eyed < 0.97  # 4-10: domes 8 mm across, 22 mm apart, cover 8 %
+    assert plain in (0.0, 1.0)
+
+
+def test_eyes_summary() -> None:
+    assert Eyes(radius_mm=3.0, spacing_mm=9.0).summary() == "eyes 6 mm"

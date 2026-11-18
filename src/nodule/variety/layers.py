@@ -77,6 +77,7 @@ class Growth:
     quartz_at: float | None
     start: float = 0.0  # growth time at which the walls start (after a floor)
     plumes_end: float = 0.0  # growth time at which the plume stage ends (none: 0)
+    eyes_end: float = 0.0  # growth time at which the eye stage ends (none: 0)
 
     @property
     def chalcedony_end(self) -> float:
@@ -104,6 +105,19 @@ class Growth:
         g = self.growth_mm / (1 - span)
         quartz_at = None if self.quartz_at is None else span + (1 - span) * self.quartz_at
         return Growth(g, quartz_at, span + (1 - span) * self.start, span)
+
+    def with_eyes(self, radius_mm: float, advance_mm: float) -> Growth:
+        """This run with an eye stage first: domes of radius_mm (that much of the run)
+        that move the later bands inward by advance_mm on average (`Eyes.advance_mm`).
+        The walls then grow what is left of this run, so the centre keeps its width.
+        Only on a run with no floor or plume stage (eyes are not drawn with them)."""
+        if self.start or self.plumes_end:
+            raise ValueError("eyes go on a run with no floor or plume stage")
+        g = self.growth_mm + radius_mm - advance_mm
+        quartz_at = None
+        if self.quartz_at is not None:
+            quartz_at = (radius_mm + self.quartz_at * self.growth_mm - advance_mm) / g
+        return Growth(g, quartz_at, eyes_end=radius_mm / g)
 
 
 def growth_for(recipe: StoneRecipe, r: float, shift_mm: float = 0.0) -> Growth:
@@ -168,6 +182,8 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
         # run; no silica lies down in them. Crystals come first, so a dendrite stage
         # seeds on the wall and the crystals both (ADR 0018 s.15).
         growth = growth.with_plumes(early * PLUME_STAGE)
+    if recipe.eyes is not None:  # never with a floor or an early stage (the recipe's check)
+        growth = growth.with_eyes(recipe.eyes.radius_mm, recipe.eyes.advance_mm())
     g = growth.growth_mm
     model: dict[str, object] = {
         "kind": "procedural-growth",
@@ -232,6 +248,13 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
         # An escape tube: agatesim's wall channel, placed from its own feature stream, so
         # no other part of the stone moves (agatesim ADR 0077; ADR 0018 s.18).
         model |= recipe.channel.model_params()
+    if recipe.eyes is not None:
+        # Eyes: agatesim's spherulitic stage from the start of the run, its sites on the
+        # wall from their own stream (agatesim ADR 0023; ADR 0018 s.18); the bands that
+        # follow drape over the domes.
+        model |= recipe.eyes.model_params()
+        stage = {"type": "step", "at": growth.eyes_end, "value": 0.0}
+        schedules["spherulitic"] = {"base": 1.0, "events": [stage]}
     palette, iron = palette_of(recipe)
     schedules["iron"] = {"base": iron}
     model["palette"] = palette

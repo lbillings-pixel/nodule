@@ -20,6 +20,7 @@ from nodule.dendrites import Dendrites
 from nodule.dust import (
     Dust,
 )
+from nodule.eyes import Eyes, eligible
 from nodule.moss import Moss
 from nodule.plumes import Plumes
 from nodule.rind import SEDIMENT, VOLCANIC, Rind
@@ -252,6 +253,18 @@ class StoneRecipe(BaseModel):
     channel: Channel | None = None
     # black Mn dendrites, from the wall or on cracks (`nodule.dendrites`, ADR 0018 s.17)
     dendrites: Dendrites | None = None
+    # banded domes on the wall: agatesim's spherulitic stage (`nodule.eyes`, ADR 0018 s.18)
+    eyes: Eyes | None = None
+
+    @model_validator(mode="after")
+    def _eyes_on_their_own(self) -> StoneRecipe:
+        early = self.crystals is not None or self.inclusions is not None
+        if self.eyes is not None and not eligible(self.outline, self.floor, early):
+            raise ValueError(
+                "eyes only on vesicle, prolate or thunder-egg stones without a floor, "
+                "crystals, plumes or moss"
+            )
+        return self
 
     @model_validator(mode="after")
     def _dendrite_cracks_exist(self) -> StoneRecipe:
@@ -324,6 +337,8 @@ class StoneRecipe(BaseModel):
             parts.append(self.channel.summary())
         if self.dendrites is not None:
             parts.append(self.dendrites.summary())
+        if self.eyes is not None:
+            parts.append(self.eyes.summary())
         parts.append(f"bands {self.band_mm:.2f} mm")
         return ", ".join(parts)
 

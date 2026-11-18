@@ -25,6 +25,8 @@ from nodule.dust import (
     SPECK_SHARE,
     draw_dust,
 )
+from nodule.eyes import draw_eyes
+from nodule.eyes import eligible as eyes_eligible
 from nodule.moss import draw_moss, moss_plan
 from nodule.plumes import draw_plumes, plume_plan
 from nodule.rind import draw_rind
@@ -197,6 +199,8 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     tube_streams = np.random.default_rng(root.spawn(1)[0]).spawn(n)
     # Mn dendrites from a stream spawned after the tubes' (ADR 0018 s.17), on the same terms.
     dendrite_streams = np.random.default_rng(root.spawn(1)[0]).spawn(n)
+    # Eyes from a stream spawned after the dendrites' (ADR 0018 s.18), on the same terms.
+    eye_streams = np.random.default_rng(root.spawn(1)[0]).spawn(n)
     final: list[StoneRecipe] = []
     for i, r in enumerate(out):
         rec = StoneRecipe.model_validate(
@@ -208,7 +212,11 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
         )
         if rec.channel is not None and not channel_fits(rec):
             rec = StoneRecipe.model_validate(rec.model_dump() | {"channel": None})
-        final.append(with_dendrites(rec, dendrite_streams[i]))
+        rec = with_dendrites(rec, dendrite_streams[i])
+        early = rec.crystals is not None or rec.inclusions is not None
+        ok = eyes_eligible(rec.outline, rec.floor, early)
+        eyes = draw_eyes(eye_streams[i], rec.outline, rec.band_mm, ok)
+        final.append(rec if eyes is None else rec.model_copy(update={"eyes": eyes}))
     return final
 
 

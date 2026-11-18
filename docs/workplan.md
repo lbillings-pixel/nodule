@@ -103,6 +103,9 @@ before any statistics.
 - [ ] 15. (reading done 2026-11-17, ADR 0018 s.18; tubes BUILT 2026-11-17, 1 in 6
   non-pebble stones, `nodule.tubes`; eyes wait for the owner's choice of view, to be
   shown as a sketch) Eyes and escape tubes.
+  2026-11-18: eyes probed and BUILT (ADR 0018 s.18 "Eye probe", "Built"; `nodule.eyes`):
+  agatesim's spherulitic domes, owner "good, build them"; 1 in 10 volcanic stones, 1 in
+  50 thunder eggs; size and spacing per stone; few-ring eyes rare.
 - [ ] 16. Depth through clear bands (a render test).
 
 ## Batch 4: large (several sessions each)

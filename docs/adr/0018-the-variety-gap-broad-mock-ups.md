@@ -1730,6 +1730,52 @@ the stone cuts each dome through its middle (stacked half-rings at the rim); B, 
 just under the skin looks down on it (full rings, as Pabian's Fig. 38). The owner's
 choice (2026-11-17): cut B when eyes are what is being evaluated, cut A as usual whenever
 eyes are incidental.
+
+*Eye probe (2026-11-18, local `runs/eye-probe/`; no agatesim change).* Eyes drawn as
+agatesim's spherulitic stage (agatesim ADR 0023, 0024, 0031): banded domes of radius R
+grow from blue-noise sites on the wall from time 0, then the bands drape over them.
+Four plain stones (vesicles 4-10, 11-1, 7-3; irregular 8-6), each without eyes, with
+touching eyes (R 2 mm, spacing 5 mm) and isolated ones (R 3 mm, spacing 15 mm), rate
+variability 0.2 (all `effective`). Previews (`look/eyes.png`, 124 s, 0.74 GB): cut B
+(a plane parallel to the wall at 0.4 R, centred on a dome) shows bullseyes; cut A shows a
+row of scallops at the rim that later bands copy and smooth inward (the scalloped band
+starts of the image study, *speculative* as the same thing); no void on 100,000 random
+points in any stone. The eye's rings are the stone's own bands, so a 0.65 mm-banded
+stone shows one or two rings per eye, against Pabian's 4-8. Quick renders of 4-10 and
+11-1 (`render/eyes-renders.png`, 11 min): cut B's 3 mm backlit slice is black (the slice
+reaches the host), so cut B is shown as the look only.
+*The owner's choices (2026-11-18).* Look: "good, build them". About 1 vesicle stone in
+10 has eyes, about 1 thunder egg in 50, none on sediment stones or pebbles (Pabian's
+distribution, the rates an assumption). Radius and spacing drawn per stone: 4-8 mm across,
+from touching to well apart. Any banded stone may have eyes, but heavily weighted to
+finer bands, so eyes with 1-2 rings on coarse stones are quite rare.
+*Built (2026-11-18; `nodule.eyes`, `StoneRecipe.eyes`, a stream spawned after the
+dendrites').* Outlines: vesicle and prolate (the volcanic hosts, Claude's reading of
+"vesicles" as Pabian's amygdaloidal agates) and thunder eggs; none on irregular stones
+or pebbles. Eyes go only on stones with no floor, crystals, plumes or moss: those hold
+the wall's first stage, and agatesim's settling and dendrite stages override the
+spherulitic one (an assumption; floors with eyes would also grow domes on the floor's
+top). Eligible are 38 % of volcanic stones and 62 % of thunder eggs, so the chance on an
+eligible stone is 0.263 and 0.035, set from the expected share over sheets 0-59 (1 in 10,
+1 in 50). Radius uniform 2-4 mm, spacing 2.2-6 radii (touching to well apart), rate
+variability 0.2. An eye showing fewer than 3 rings (radius / band width) has 0.15 of
+the chance: over sheets 0-29, 28 of 240 volcanic stones (1 in 8.6) and 2 of 60 thunder
+eggs have eyes, 1 of the 30 with fewer than 3 rings. The eye stage runs from time 0 to
+R / g. Growth budget: the domes take R of the run but move the later bands inward by
+1.2 R (touching) to 1.0 R (6 radii apart) where the centre forms (measured: the push
+grows with depth, from 0.3-1.0 R at 6 mm to 1.0-1.4 R at 15-18 mm, on 7-3 and 11-1);
+the run changes by R minus that push. On the quartz-centre eyed stones of sheets 0-11
+the centres stay close to the same stones without eyes: quartz +2 % to +5 % (0-0,
+8-11), a thicker lining on 6-11 (+35 %, its opening 84 %); a push of 0.6-1.0 R,
+measured near the wall, had left them 14-71 % smaller. All values `effective`. Sheets 0-11: 9 eyed
+stones; every recipe otherwise unchanged and every other stone's config unchanged
+(snapshot against the pre-eye baseline); on 100,000 points no stone gains void (solid
+and quartz-filled stones none; the open centres of quartz-lined ones keep 84-92 % of
+their points, 6-11 and 8-11). Build 2-9 s a stone.
+A check with its negative control (`tests/test_eyes.py`): under the skin (0.4 R in),
+part of the face lies in domes and part between them (4-10: 8 %); the same stone
+without eyes is one band there.
+
 Fetch list: Shaub 1955 (Am. J. Sci. 253, 117-120), Landmesser 1984, 1988 and 1992,
 Pabian 1978 (Gems & Gemology 16, 16-28), two zobodat/Stuttgart PDFs the helper could not
 open (see the report).

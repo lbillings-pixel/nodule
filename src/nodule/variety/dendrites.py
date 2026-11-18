@@ -14,9 +14,13 @@ cut at any spacing (CLAUDE.md). Moved from the local probe `runs/dendrite-probe/
   owner).
 
 Growth is lazy: a dendrite is grown, whole, the first time points come near its box,
-and kept. Most sites lie away from a stone's cut, so a cut pays only for those it meets;
-the result never depends on which points asked first. Costs (probe, measured): a wall
-dendrite 16-33 s and about 1.2 GB host RAM; a crack up to about 12 s.
+and kept; the result never depends on which points asked first. Sites are steered onto
+the cut (2026-11-18), so a dendrite stone's cut grows all of them; a stone without
+dendrites pays nothing. Costs (probe, measured): a wall dendrite 16-33 s and about
+1.2 GB host RAM; a crack up to about 12 s.
+
+A crack's film is shown `CrackGrowth.seen_mm` thick across the crack (`Grown.across`),
+its pattern within the crack unchanged.
 
 All sizes `effective` (no source gives them). Couplings, each an assumption: dendrites
 keep out of the last chalcedony and the quartz (CAVITY_DEPTH); they lie over whatever
@@ -31,6 +35,7 @@ from dataclasses import dataclass, field
 import numpy as np
 from agatesim.grid import FloatArray
 from agatesim.volume.dendrites import Aggregate3, Lattice3, grow
+from agatesim.volume.slicing import Plane
 from agatesim.volume.solids import Solid
 from numpy.typing import NDArray
 
@@ -59,13 +64,17 @@ class WallGrowth:
 
 @dataclass(frozen=True)
 class CrackGrowth:
-    """`grow_crack` of the probe at its defaults."""
+    """`grow_crack` of the probe at its defaults; `seen_mm` the thickness the film
+    shows across the crack (`effective`, the owner's "darker", 2026-11-18): grown one
+    cell (0.08 mm) thick, its trace on a cut covered under half of each 0.1 mm render
+    pixel (84-1: mean 0.39) and rendered faint grey."""
 
     reach_mm: float = 6.0
     h_mm: float = 0.05
     amount: float = 0.25
     density: float = 0.04
     sticking: float = 0.5
+    seen_mm: float = 0.2
 
 
 WALL, CRACK = WallGrowth(), CrackGrowth()
@@ -99,8 +108,13 @@ class Frame:
 
 @dataclass(frozen=True)
 class Grown:
+    """A grown dendrite. `across` (<= 1) scales the local third coordinate before the
+    distance, so a film on a crack shows 1/across times thicker across it and alike
+    within its plane (the face-on pattern stands)."""
+
     frame: Frame
     agg: Aggregate3
+    across: float = 1.0
 
     def distance(self, points: FloatArray) -> FloatArray:
         """Distance (mm) to the dendrite's surface (negative inside); inf away from
@@ -110,6 +124,7 @@ class Grown:
             return out
         lat = self.agg.lattice
         q = self.frame.to_local(points)
+        q[:, 2] *= self.across
         lo, hi = lat.origin - lat.h, lat.origin + (np.asarray(lat.shape) + 1) * lat.h
         idx = np.flatnonzero(np.all((q > lo) & (q < hi), axis=1))
         if len(idx):
@@ -217,6 +232,69 @@ def meets_wall(solid: Solid, crack: FractureLayer) -> bool:
     return not bool(solid.contains(pts).all())
 
 
+def crack_frame(solid: Solid, crack: FractureLayer) -> Frame:
+    """The crack's local frame (bowl-following; e1 points away from the solid's centre)."""
+    c0 = np.asarray(solid.centre(), float)
+    centre = c0 + np.asarray(crack.centre_mm)
+    n = unit(np.asarray(crack.normal, float))
+    out_dir = centre - c0 if np.linalg.norm(centre - c0) > 1e-9 else np.array([1.0, 0.0, 0.0])
+    e1 = out_dir - (out_dir @ n) * n
+    e1 = unit(e1 if np.linalg.norm(e1) > 1e-9 else np.cross(n, [0.0, 0.0, 1.0]))
+    return Frame(centre, np.stack([e1, np.cross(n, e1), n]), crack.sagitta_mm, crack.radius_mm)
+
+
+ON_CUT_MM = 0.1  # a crack point this near the cut's plane lies on the cut
+WALL_END_MM = 1.0  # the cut crosses a crack within this of where it meets the wall
+
+
+def meets_wall_on_cut(solid: Solid, crack: FractureLayer, plane: Plane) -> bool:
+    """Whether the cut crosses the crack where it meets the wall: crack points on the
+    cut's plane lie both outside the stone and inside within WALL_END_MM of the wall,
+    so dendrites grown inward from that edge show on the cut. Sampled every ~0.1 mm."""
+    r = crack.radius_mm
+    rho = np.linspace(0.0, r, max(int(r / 0.1), 2))
+    phi = np.linspace(0.0, 2 * np.pi, max(int(2 * np.pi * r / 0.1), 8), endpoint=False)
+    rr, pp = (a.ravel() for a in np.meshgrid(rho, phi))
+    q = np.stack([rr * np.cos(pp), rr * np.sin(pp), np.zeros_like(rr)], axis=1)
+    pts = crack_frame(solid, crack).to_world(q)
+    on = np.abs((pts - plane.origin) @ np.asarray(plane.normal)) < ON_CUT_MM
+    pts = pts[on]
+    if not len(pts):
+        return False
+    d, _ = wall_distance(solid, pts, WALL_END_MM + 1.0)
+    return bool(np.any(d > 0)) and bool(np.any((d < 0) & (d > -WALL_END_MM)))
+
+
+def cut_site(solid: Solid, plane: Plane, v: FloatArray) -> tuple[float, float, float] | None:
+    """A wall site on the cut (the owner, 2026-11-18): the unit direction from the
+    solid's centre to where the ray in the cut's plane, from its origin along v (put
+    into the plane), leaves the stone. None where the plane's origin lies outside the
+    stone, v is nearly normal to the plane, or the ray from the centre along that
+    direction leaves elsewhere (`rim_point` lands over SITE_TOL_MM away: another lobe)."""
+    m = np.asarray(plane.normal, float)
+    o = np.asarray(plane.origin, float)
+    u = v - (v @ m) * m
+    if np.linalg.norm(u) < 1e-3 or not solid.contains(o[None, :])[0]:
+        return None
+    u = unit(u)
+    lo, hi = 0.0, float(np.linalg.norm(np.asarray(solid.bounds()[1]) - solid.bounds()[0]))
+    for _ in range(30):
+        mid = 0.5 * (lo + hi)
+        if solid.contains((o + mid * u)[None, :])[0]:
+            lo = mid
+        else:
+            hi = mid
+    c = np.asarray(solid.centre(), float)
+    d = unit(o + lo * u - c)
+    if np.linalg.norm(c + rim_point(solid, d) - (o + lo * u)) > SITE_TOL_MM:
+        return None
+    x, y, z = d.tolist()
+    return (x, y, z)
+
+
+SITE_TOL_MM = 0.5
+
+
 def crack_site(
     solid: Solid,
     depth: Callable[[FloatArray], FloatArray],
@@ -225,14 +303,10 @@ def crack_site(
     g: CrackGrowth,
 ) -> Site:
     """On the crack, from the whole edge where it meets the wall, inward along it."""
-    c0 = np.asarray(solid.centre(), float)
-    centre = c0 + np.asarray(crack.centre_mm)
-    n = unit(np.asarray(crack.normal, float))
-    out_dir = centre - c0 if np.linalg.norm(centre - c0) > 1e-9 else np.array([1.0, 0.0, 0.0])
-    e1 = out_dir - (out_dir @ n) * n
-    e1 = unit(e1 if np.linalg.norm(e1) > 1e-9 else np.cross(n, [0.0, 0.0, 1.0]))
-    frame = Frame(centre, np.stack([e1, np.cross(n, e1), n]), crack.sagitta_mm, crack.radius_mm)
-    reach = np.sqrt(np.clip(1 - n**2, 0, 1)) * crack.radius_mm + crack.sagitta_mm + 2 * g.h_mm
+    frame = crack_frame(solid, crack)
+    centre, n = frame.origin, frame.axes[2]
+    reach = (np.sqrt(np.clip(1 - n**2, 0, 1)) * crack.radius_mm + crack.sagitta_mm
+             + 2 * g.h_mm + g.seen_mm)  # fmt: skip
 
     def build() -> Grown:
         rad = crack.radius_mm + g.h_mm
@@ -245,7 +319,11 @@ def crack_site(
         idx = np.flatnonzero(on)
         ok[idx], inward[idx] = chalcedony(solid, depth, frame.to_world(q[idx]), g.reach_mm)
         near = ok & (inward < 1.5 * lat.h)
-        return Grown(frame, _aggregate(lat, ok, np.flatnonzero(near), g, rng))
+        agg = _aggregate(lat, ok, np.flatnonzero(near), g, rng)
+        if not len(agg.cells):
+            return Grown(frame, agg)
+        half = float(np.abs(agg.centres()[:, 2]).max()) + agg.radius  # the film's half-thickness
+        return Grown(frame, agg, 2 * half / g.seen_mm if g.seen_mm > 2 * half else 1.0)
 
     return Site(centre - reach, centre + reach, build)
 

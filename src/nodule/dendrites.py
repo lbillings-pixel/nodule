@@ -6,8 +6,10 @@ appearance only (ADR 0002) and every number here is `effective`. The owner's cho
 of stone; half grow into the chalcedony from the wall, made sparse, as in the one agate
 nodule cut through its middle [@bayirli2017] (*verified* for that stone); half grow on
 cracks, from where a crack meets the wall, by analogy with other rocks
-[@swartzlow1934; @ngteh2009] (*verified*, not agate). Sites are random on the wall,
-never steered towards the cut, so many dendrite stones show nothing on their cut.
+[@swartzlow1934; @ngteh2009] (*verified*, not agate). Sites are steered onto the
+stone's cut (the owner, 2026-11-18, after unsteered sites showed on about 1 cut in
+100): wall sites on the cut's outline, carrier cracks crossed by the cut where they
+meet the wall (`nodule.variety.draw.with_dendrites`).
 
 This module holds the recipe entry and its draw; the growth (agatesim's 3D
 diffusion-limited aggregation on world-fixed lattices, so every cut at any spacing

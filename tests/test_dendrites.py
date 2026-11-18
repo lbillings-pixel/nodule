@@ -11,6 +11,7 @@ import numpy as np
 import pytest
 from agatesim.fields import Phase, Pigment
 from agatesim.volume.dendrites import Aggregate3, Lattice3
+from agatesim.volume.slicing import Plane
 from numpy.typing import NDArray
 from pydantic import ValidationError
 
@@ -26,14 +27,16 @@ from nodule.specimen import Specimen
 from nodule.variety import StoneRecipe, build, draw_sheet
 from nodule.variety.dendrites import (
     CAVITY_DEPTH,
+    SITE_TOL_MM,
     CrackGrowth,
     DendriteLayer,
     WallGrowth,
     largest_trees,
-    meets_wall,
+    meets_wall_on_cut,
 )
 from nodule.variety.draw import CRACK_CUT_ANGLE, HAIRLINE_MM, crack_cut_angle, is_hairline
 from nodule.variety.layers import VarietyLayers, chalcedony_depth
+from nodule.variety.recipe import rim_point
 
 SMALL = WallGrowth(reach_mm=2.0, h_mm=0.08)  # a quick wall growth for tests
 
@@ -47,11 +50,38 @@ def test_dendrites_on_few_stones_of_any_kind(sheets: list[StoneRecipe]) -> None:
         ("vesicle", "crack"),
         ("irregular", "crack"),
     ]  # 5 of 144, under the owner's 5 %
+
+
+def _cut_gap(r: StoneRecipe, direction: NDArray[np.float64]) -> float:
+    """How far (mm) the rim point in a direction from the centre lies off the cut."""
+    solid = r.solid.build()
+    plane = Plane.of(r.cut, solid.centre())
+    p = np.asarray(solid.centre()) + rim_point(solid, direction)
+    return abs(float((p - plane.origin) @ np.asarray(plane.normal)))
+
+
+def test_dendrites_are_steered_to_the_cut(sheets: list[StoneRecipe]) -> None:
+    """The owner (2026-11-18): every wall site lies on the cut's outline, and every
+    carrier crack is crossed by the cut where it meets the wall. Negative control:
+    random wall directions on the same stones mostly miss the cut, and a crack moved
+    off the cut fails the crack check."""
+    carrying = [r for r in sheets if r.dendrites is not None]
+    rng = np.random.default_rng(3)
     for r in carrying:
         assert r.dendrites is not None
         solid = r.solid.build()
+        plane = Plane.of(r.cut, solid.centre())
+        for s in r.dendrites.sites:
+            assert _cut_gap(r, np.asarray(s)) < SITE_TOL_MM
         for i in r.dendrites.cracks:
-            assert meets_wall(solid, r.fractures[i])
+            f = r.fractures[i]
+            assert meets_wall_on_cut(solid, f, plane)
+            m = np.asarray(plane.normal)
+            moved = f.model_copy(update={"centre_mm": tuple(np.asarray(f.centre_mm) + 5.0 * m)})
+            assert not meets_wall_on_cut(solid, moved, plane)
+        v = rng.standard_normal((50, 3))
+        v /= np.linalg.norm(v, axis=1, keepdims=True)
+        assert np.mean([_cut_gap(r, x) < SITE_TOL_MM for x in v]) < 0.1
 
 
 def test_the_draw_rate_and_carrier_split() -> None:
@@ -63,7 +93,7 @@ def test_the_draw_rate_and_carrier_split() -> None:
     assert all(1 <= len(d.sites) <= 3 for d in got)
 
 
-def test_the_hairline_carrier_is_healed_and_clear_of_the_cut(sheets: list[StoneRecipe]) -> None:
+def test_the_hairline_carrier_is_healed_and_at_a_clean_angle(sheets: list[StoneRecipe]) -> None:
     hairs = [(r, r.fractures[-1]) for r in sheets if r.fractures and is_hairline(r.fractures[-1])]
     assert len(hairs) == 3
     for r, f in hairs:
@@ -111,6 +141,18 @@ def test_crack_dendrites_read_as_dendrites_face_on(sheets: list[StoneRecipe]) ->
     ss, tt = np.meshgrid(x, x)
     q = np.stack([ss.ravel(), tt.ravel(), np.zeros(ss.size)], 1)
     assert dendritic((g.agg.distance(q) <= 0).reshape(ss.shape))
+    # Shown thicker across the crack only (the owner's "darker", 2026-11-18): within
+    # its plane the distance is the grown film's, so the face-on pattern stands.
+    ins = q[g.agg.distance(q) <= 0]
+    np.testing.assert_allclose(g.distance(g.frame.to_world(ins)), g.agg.distance(ins), atol=1e-6)
+    # Moved 0.08 mm across, no point lies in the grown film (two jittered cell layers)
+    # but some in the shown one (0.2 mm; 28 % measured); 0.12 mm across, in neither.
+    for dz, grown, shown in ((0.08, 0.0, 0.15), (0.12, 0.0, 0.0)):
+        for sign in (1, -1):
+            off = ins + np.array([0.0, 0.0, sign * dz])
+            assert np.mean(g.agg.distance(off) <= 0) == grown
+            share = np.mean(g.distance(g.frame.to_world(off)) <= 0)
+            assert share > shown if shown else share == 0
     n = 1000
     line = np.zeros((n, n), bool)
     line[n // 2, 50:950] = True
@@ -170,8 +212,9 @@ def test_wall_dendrites_stay_in_the_chalcedony(wall_stone: Stone) -> None:
     g = lay.grown(0)
     pts = g.frame.to_world(g.agg.centres())
     assert len(pts) > 0
-    assert sp.volume.solid.contains(pts).mean() > 0.99  # balls jitter by 0.2 cell
-    depth = chalcedony_depth(sp, layers)(pts)
+    inside = sp.volume.solid.contains(pts)
+    assert inside.mean() > 0.99  # balls jitter by 0.2 cell
+    depth = chalcedony_depth(sp, layers)(pts[inside])  # outside reads as depth 1
     assert np.all(depth < CAVITY_DEPTH + 0.02)
 
 
@@ -192,9 +235,10 @@ def test_crack_dendrites_lie_on_their_crack() -> None:
 
 
 def test_dendrites_on_a_cracked_stones_own_cracks(sheets: list[StoneRecipe]) -> None:
-    """No crack carrier on sheets 0-99 lands on a cracked stone (it needs both rare
-    draws), so this one is forced: stone 1-9's bent 8.4 mm crack (sagitta 0.47) and its
-    3.4 mm one, two carriers at once. Cells stay on their own crack (0.035 mm measured)."""
+    """Every crack carrier on sheets 0-99 is a hairline (none lands on a cracked stone:
+    it needs both rare draws), so this one is forced: stone 1-9's bent 8.4 mm crack
+    (sagitta 0.47) and its 3.4 mm one, two carriers at once. Cells stay on their own
+    crack (0.035 mm measured)."""
     rec = sheets[12 + 9]
     assert rec.dendrites is not None
     den = rec.dendrites.model_copy(update={"carrier": "crack", "sites": (), "cracks": (3, 7)})

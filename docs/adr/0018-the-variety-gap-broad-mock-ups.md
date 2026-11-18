@@ -1615,6 +1615,34 @@ them (0.1 mm grid; stones 84-1 and 80-8, 2-2.5 min each, local
 `runs/dendrite-probe/whole-84/`, `whole-80/`): both carry through, the crack dendrite as
 a faint grey line, the wall dendrite as soft grey branching shadows inside the stone.
 Not tuned: for the owner's verdict.
+*The owner's verdict (2026-11-18): steer to the cut, crack dendrites darker.* The owner
+confirmed Claude's picks (4 %, 1-3 wall sites, 1-2 cracks, the hairline carrier on
+pebbles and rough stones) and allowed moss with dendrites, but reversed "no steering":
+dendrites should show on the cut. The figures in "Built" above (1 of 5 cuts, about 1 in
+100) are those of the unsteered draw. Now (`draw.with_dendrites`, same draws, extra
+draws only from the stone's own dendrite stream): every wall site is moved onto the
+cut's outline (the drawn direction put into the cut's plane, from the plane's origin to
+the wall; redrawn up to 20 times where the ray from the centre would land on another
+lobe); a crack stone takes cracks that the cut crosses within 1 mm of where they meet
+the wall, else a hairline centred on the cut's outline (same angle and cavity rules),
+else wall sites on the cut. Measured: sheets 0-11 unchanged but for the dendrites (144
+re-hashed); on sheets 0-99 all 42 dendrite stones lie on their cut (every crack carrier
+a hairline: none of them is a cracked stone). Check: wall sites within 0.5 mm of the
+cut's plane, carrier cracks crossed at the wall; negative controls: random wall
+directions on the same stones (under 10 % land there) and a crack moved 5 mm off the
+cut (fails). Cost: every dendrite stone's cut now grows its dendrites (a crack seconds,
+a wall patch tens of seconds, as above).
+*Darker: the cause was the optics, not the geometry.* At a 0.1 mm pixel a crack's trace
+covered about a third of each pixel it touched (84-1: mean 0.39; 9-1: 0.32), but even
+a fully covered film was faint: Mn took the shape pigments' 3 mm^-1, so a 0.1 mm film
+passed about three quarters of the light, whereas Mn oxides are opaque. Mn now has its
+own strength, `OpticsTable.mua550_mn` (`effective`), 30 mm^-1: the crack dendrite renders
+as a black branching line and the wall dendrites as black-grey clusters (local
+`runs/dendrite-probe/mn/mn-crops.png`, 84-1 and 80-8 at 3 and 30; plumes keep their own
+normalised strength). Mn is the dendrites' only pigment, so the wall carrier darkens too:
+for the owner's eye. Also a crack's film shows 0.2 mm thick across the crack
+(`CrackGrowth.seen_mm`, `effective`; grown about 0.15 mm), its pattern within the crack
+unchanged (the face-on check is measured on the grown film; a test holds both).
 
 ### 18. Eyes and escape tubes: reading and options (2026-11-17, proposed)
 

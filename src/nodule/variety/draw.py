@@ -38,7 +38,7 @@ from nodule.variety.cracks import (
     draw_fractures,
     enters_cavity,
 )
-from nodule.variety.dendrites import meets_wall
+from nodule.variety.dendrites import cut_site, meets_wall_on_cut
 from nodule.variety.layers import palette_of, volume_config
 from nodule.variety.mottle import MOTTLE_SHARE, MOTTLE_STONES, mottle_size
 from nodule.variety.recipe import (
@@ -223,38 +223,69 @@ def is_hairline(f: FractureLayer) -> bool:
     return f.fill == "clear" and f.stain == 0 and f.pool_mm == 0
 
 
+SITE_TRIES = 20  # draws for a wall site on the cut, per site
+
+
 def with_dendrites(recipe: StoneRecipe, rng: np.random.Generator) -> StoneRecipe:
-    """The stone with its Mn dendrites, if it draws any (`nodule.dendrites`). A crack
-    stone takes 1-2 of its cracks that reach the wall; with none, a healed hairline
-    crack is added to carry them (clear, unstained, from the rim, clear of an open
-    cavity and of the cut's plane, so the cut stands); if none fits, its dendrites grow
-    from the wall instead. Validated (the recipe checks the carrier cracks exist)."""
+    """The stone with its Mn dendrites, if it draws any (`nodule.dendrites`), steered
+    to its cut (the owner, 2026-11-18). A crack stone takes 1-2 of its cracks that the
+    cut crosses where they meet the wall; with none, a healed hairline crack is added
+    to carry them (clear, unstained, from the rim on the cut, clear of an open cavity
+    and at a clean angle to the cut, so the cut stands); if none fits, its dendrites
+    grow from the wall instead. Every wall site is moved onto the cut's outline (kept
+    where no draw lands there). Validated (the recipe checks the carrier cracks exist)."""
     drawn = draw_dendrites(rng)
     if drawn is None:
         return recipe
-    update: dict[str, object] = {"dendrites": drawn.as_wall()}
+    solid = recipe.solid.build()
+    plane = Plane.of(recipe.cut, solid.centre())
     if drawn.carrier == "crack":
-        solid = recipe.solid.build()
-        reach = [i for i, f in enumerate(recipe.fractures) if meets_wall(solid, f)]
-        if reach:
-            picked = rng.permutation(reach)[: drawn.n_cracks]
-            update["dendrites"] = drawn.on_cracks(tuple(sorted(int(i) for i in picked)))
-        elif (hair := hairline(rng, recipe, solid)) is not None:
-            update["fractures"] = (*recipe.fractures, hair)
-            update["dendrites"] = drawn.on_cracks((len(recipe.fractures),))
-    return StoneRecipe.model_validate(recipe.model_dump() | update)
+        on_cut = [i for i, f in enumerate(recipe.fractures) if meets_wall_on_cut(solid, f, plane)]
+        if on_cut:
+            picked = rng.permutation(on_cut)[: drawn.n_cracks]
+            update = {"dendrites": drawn.on_cracks(tuple(sorted(int(i) for i in picked)))}
+            return StoneRecipe.model_validate(recipe.model_dump() | update)
+        if (hair := hairline(rng, recipe, solid, plane)) is not None:
+            update = {
+                "fractures": (*recipe.fractures, hair),
+                "dendrites": drawn.on_cracks((len(recipe.fractures),)),
+            }
+            return StoneRecipe.model_validate(recipe.model_dump() | update)
+    sites = tuple(_site_on_cut(rng, solid, plane, s) for s in drawn.sites)
+    wall = drawn._replace(sites=sites).as_wall()
+    return StoneRecipe.model_validate(recipe.model_dump() | {"dendrites": wall})
 
 
-def hairline(rng: np.random.Generator, recipe: StoneRecipe, solid: Solid) -> FractureLayer | None:
-    """A healed hairline crack running in from the rim (as a partial crack), or None
-    if CRACK_TRIES draws all reach an open cavity or lie near the cut's plane."""
+def _site_on_cut(
+    rng: np.random.Generator, solid: Solid, plane: Plane, drawn: tuple[float, float, float]
+) -> tuple[float, float, float]:
+    """The drawn wall direction moved onto the cut's outline (`cut_site`), else up to
+    SITE_TRIES fresh directions; the drawn one where none lands there."""
+    v = np.asarray(drawn)
+    for _ in range(SITE_TRIES + 1):
+        if (d := cut_site(solid, plane, v)) is not None:
+            return d
+        v = unit_vector(rng)
+    return drawn
+
+
+def hairline(
+    rng: np.random.Generator, recipe: StoneRecipe, solid: Solid, plane: Plane
+) -> FractureLayer | None:
+    """A healed hairline crack running in from the rim where the cut meets it (as a
+    partial crack centred on the cut's outline, so the cut crosses it at the wall), or
+    None if CRACK_TRIES draws all reach an open cavity, meet the cut at under
+    CRACK_CUT_ANGLE, or find no place on the cut's outline."""
     r = inradius(solid)
     cavity = None
     if recipe.centre == "quartz-lined":
         w = recipe.centre_width
         cavity = (1 - w) * r + recipe.lining * w * r
     for _ in range(CRACK_TRIES):
-        radial = unit_vector(rng)
+        site = cut_site(solid, plane, unit_vector(rng))
+        if site is None:
+            continue
+        radial = np.asarray(site)
         normal = np.cross(radial, unit_vector(rng))
         radius = float(rng.uniform(*PARTIAL_REACH)) * r
         bent = rng.uniform() >= STRAIGHT_SHARE

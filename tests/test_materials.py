@@ -13,6 +13,7 @@ from agatesim.volume.config import SliceConfig
 
 from nodule.render import tgrid
 from nodule.render.camera import Materials
+from nodule.render.layerbake import plume_stops
 from nodule.render.materials import (
     GOETHITE_K,
     GOETHITE_N,
@@ -164,6 +165,18 @@ def test_table_responds_to_the_fields_as_stated() -> None:
     assert yellow[0] > 2 * yellow[1]  # the effective blue edge makes it yellow
     with pytest.raises(ValueError, match="VOID"):
         tab.band(Phase.VOID, iron, 0.0, 0.0)
+
+
+def test_manganese_takes_its_own_strength() -> None:
+    """Mn (the dendrites) at mua550_mn, neutral; the other shape pigments keep
+    mua550_shape (negative control), and plume stops, normalised, do not move."""
+    tab = OpticsTable()
+    np.testing.assert_allclose(tab.pigment_mua(Pigment.MANGANESE, 0.5), [0.5 * tab.mua550_mn] * 3)
+    other = replace(tab, mua550_mn=3.0)
+    for p in (Pigment.CELADONITE, Pigment.VIOLET):
+        np.testing.assert_array_equal(tab.pigment_mua(p, 0.7), other.pigment_mua(p, 0.7))
+    assert tab.mua550_mn > 3 * tab.mua550_shape
+    np.testing.assert_allclose(plume_stops(tab), plume_stops(other))
 
 
 def test_iron_floor_clears_iron_oxides_below_it_only() -> None:

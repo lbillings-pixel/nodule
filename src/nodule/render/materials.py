@@ -84,6 +84,7 @@ SHAPE = {
     Pigment.VIOLET: (0.49, 1.0, 0.68),
 }
 IRON_OXIDES = frozenset({Pigment.IRON, Pigment.HEMATITE, Pigment.GOETHITE})
+MN_MUA = 30.0  # OpticsTable.mua550_mn's default (comment there); 3.0 before 2026-11-18
 
 
 def rayleigh_absorption(n: Sequence[float], k: Sequence[float], phi: float,
@@ -155,6 +156,12 @@ class OpticsTable:
     # linearly, an assumption), and mu_a at 550 nm at impurity 1 for the shape-only pigments.
     phi_iron_oxide: float = 4e-4  # ADR 0014 4f (ADR 0010 step 1 had 9e-4; earlier 3e-4)
     mua550_shape: float = 3.0
+    # MANGANESE (the dendrites' Mn oxide; plumes take their own strength) at impurity 1,
+    # mm^-1, `effective`: Mn oxides are opaque, but at the shape pigments' 3.0 a dendrite
+    # film ~0.1 mm thick passed about 3/4 of the light and rendered faint grey (owner:
+    # "darker", 2026-11-18). 30 renders black (runs/dendrite-probe/mn/); for the owner's
+    # eye (ADR 0018 s.17).
+    mua550_mn: float = MN_MUA
     # Agatesim's unnamed IRON stain runs ochre to deep red as impurity rises (agatesim
     # render.STAIN): assumed a goethite-hematite mixture with hematite share = impurity.
     # BLUE and WHITE pigments are scattering, not pigment (agatesim ADR 0050), both in lobe
@@ -201,6 +208,8 @@ class OpticsTable:
             h = min(max(x, 0.0), 1.0)
             goethite = rayleigh_absorption(GOETHITE_N, GOETHITE_K, (1 - h) * phi)
             return self._hematite(h * phi) + goethite
+        if p is Pigment.MANGANESE:
+            return x * self.mua550_mn * np.asarray(SHAPE[p], float)
         if p in SHAPE:
             return x * self.mua550_shape * np.asarray(SHAPE[p], float)
         return np.zeros(3)  # BLUE, WHITE: scattering only

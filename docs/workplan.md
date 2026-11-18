@@ -96,7 +96,10 @@ before any statistics.
   5 % of stones; probe next) Black manganese dendrites in band partings.
   2026-11-18: BUILT (ADR 0018 s.17 "Built"; `nodule.dendrites`): 4 % of stones, half
   from the wall (largest eighth of the trees), half on cracks (a hairline added where
-  needed); shows on about 1 cut in 100. Waits for the owner's verdict on the look sheet.
+  needed); shows on about 1 cut in 100. Owner the same day: steer to the cut, darker
+  crack dendrites, picks confirmed, moss + dendrites allowed. Done: every dendrite stone's
+  cut shows them; Mn opaque in renders (30 mm^-1). Waits on the owner's eye for the
+  wall dendrites' new darkness (runs/dendrite-probe/mn/).
 - [ ] 15. (reading done 2026-11-17, ADR 0018 s.18; tubes BUILT 2026-11-17, 1 in 6
   non-pebble stones, `nodule.tubes`; eyes wait for the owner's choice of view, to be
   shown as a sketch) Eyes and escape tubes.

@@ -272,6 +272,47 @@ carnelian alone takes the lighter loading; tinted centres take their tint, untin
 stones none; white fine needles alone take the finer grid, within the budget
 (test_materials.py: early-stage quartz stays untinted; tint off changes nothing).
 
+10. **Depth through clear bands: probe** (work plan item 16, 2026-11-18; nothing decided;
+   `runs/depth-probe/`, local). The look is a 2 mm slab over the grey matte bottom
+   (s.6.5), so nothing deeper than 2 mm can show. Diffusion theory with the model's own
+   clear-band values gives a diffusion length of about 7-18 mm (ADR 0014, from
+   [@jensen2001]; *inference*), so a clear band should show stone well below 2 mm. Probe:
+   one grid filled at the deepest slab, the look rendered at 2, 5, 10 and 15 mm from it,
+   and at the deepest over a black bottom; same record, optics and seeds; compared at the
+   2 mm look's exposure, luminance blurred 2 px, against a noise floor from the two
+   halves of the 2 mm render. Whole faces on a 0.2 mm grid (coarser than the look's
+   0.1 mm, so thin layers blur), 256 spp. Results (*verified* as measurements of the
+   model, *speculative* as optics):
+   - **Negative control** (sheet 2 stone 10 with every chalcedony step milky, translucency
+     0.08): mean change 1.2 grey levels against a floor of 1.15, 0.1 % of pixels above 5.
+     The same stone as drawn: 6.0 at 5 mm, 6.5 at 10 mm, 44 % of pixels above 5.
+   - **Clear stones** (sheet 0 stones 1 and 3, sheet 2 stone 10): 6-13 grey levels, 43-60 %
+     of the face. The change saturates by 10 mm (15 mm adds nothing measurable), and at
+     10 mm or more the bottom no longer matters (black against grey: same to 0.05).
+     5 mm gives most of it (6.0 of 6.5, 6.7 of 7.2, 8.9 of 13.2). By eye: clear zones
+     darken and show the walls curving away below the face (soft gradients at lobe joins
+     and round centres).
+   - **Quartz centres go black** by 10 mm (sheet 0 stones 1 and 11; the amethyst tint of
+     stone 11 vanishes; at 5 mm both are dark but keep some tone). The model's quartz is
+     nearly clear (`quartz_mus` 0.05 mm^-1, g 0.9, `effective`), so light entering a
+     centre runs down and is lost; at 2 mm the grey bottom returned it, the reason it was
+     chosen (s.6.5). Whether real centres scatter more (grain boundaries, fluid
+     inclusions, fractures) is not read: *speculative*. On stone 11 the look's matched
+     exposure rises from 5.1 to 8.8, so the whole stone re-levels (8.7 grey levels
+     between matched and fixed at 10 mm).
+   - **Iron stone** (sheet 0 stone 8): 2.0 grey levels, 7 % of pixels: iron absorbs before
+     depth tells. Carnelian not tried.
+   - **Dendrites seen through** (sheet 80 stone 9, 12 mm close-up at the face's densest
+     Mn, 0.08 mm grid, 2/5/10 mm): 3.2 grey levels, 21 % of pixels; the branches look the
+     same, no new ones appear from below (they sit in milky bands that hide what is under
+     them); only the clear bands between darken. So depth alone does not give the
+     face-on fern view of ADR 0018 s.17.
+   - **Cost** (sheet 2 stone 10, 64 x 51 mm face, the look's own 0.1 mm grid): 3 mm fill
+     ~12 M voxels, 5 mm 23 M (measured: fill 22 s, peak RAM 2.1 GB, GPU pool 0.5 GB,
+     look render 43 s against 22 s at 2 mm, 256 spp), 10 mm ~60 M (estimated, ~5 GB RAM).
+     The window pads by the fill depth, so close-ups grow fastest. White-needle stones'
+     voxel budget (NEEDLE_VOXELS) is padded by the 3 mm slice and would need revisiting.
+
 ## Consequences
 
 - Variety stones render with every ADR 0018 layer; open cavities with a stand-in (s.6.7);

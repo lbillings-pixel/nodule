@@ -68,9 +68,11 @@ CARNELIAN_LOADING = 0.5
 # channels' 450, 550, 650 nm (work plan item 11): `effective`, *plausible*. Medium
 # amethyst from a 6.2 mm Anahi slab's spectrum (o-ray, Rossman's Caltech data, not
 # peer-reviewed), its 545 nm band within the range of a deep zone read off
-# [@hassan1974, Fig. 3] (0.075, 0.165, 0.07); medium smoky from a 15.5 mm Saline Valley
-# spectrum (same server, read off its plot, (2o + e)/3), between [@marshall1955]'s
-# moderately coloured stone and a dark one. Strength by the owner's eye.
+# [@hassan1974, Fig. 3] (0.075, 0.165, 0.07), its shape matching a peer-reviewed
+# spectrum (450/550 0.40, 650/550 0.31 off [@lehmann1967, Fig. 3], a stone ~6x deeper);
+# medium smoky from a 15.5 mm Saline Valley spectrum (same server, read off its plot,
+# (2o + e)/3), between [@marshall1955]'s moderately coloured stone and a dark one.
+# Strength by the owner's eye.
 QUARTZ_TINT_MUA: dict[str, tuple[float, float, float]] = {
     "amethyst": (0.033, 0.079, 0.022),
     "smoky": (0.12, 0.093, 0.072),

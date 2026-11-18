@@ -249,9 +249,16 @@ as now, no face glare, no glare plus a display curve, a backlit 3 mm slice) was 
      read off Fig. 5). The smoky ratio of blue to red, 1.67, matches its saturated crystal
      (about 1.74, *plausible*), and 2x (0.24 mm^-1 at 450 nm) lies between its low-dose
      and saturated cases. So the smoky values stay. The paper has no amethyst data. The
-     file supplied as Lehmann was [@lehmann1971-yellow] (yellow centres, no amethyst
-     spectrum), so Lehmann 1967 is still unread. Rossman 1994 could not be obtained.
-     Amethyst stays as above.
+     file supplied as Lehmann was [@lehmann-yellow1971] (yellow centres, no amethyst
+     spectrum). Rossman 1994 could not be obtained.
+     *Lehmann 1967 read (2026-11-18; `notes/n1-reading/item11-lehmann1967.md`, local).*
+     [@lehmann1967] (owner-supplied, German) puts amethyst's colour in a band at 545 nm
+     (*verified*). Its Fig. 3 amethyst reads about 0.85, 2.1, 0.66 cm^-1 at 450, 550,
+     650 nm (*plausible*; decadic by convention, thickness and polarisation not given),
+     so 450/550 0.40 and 650/550 0.31 against the tuple's 0.42 and 0.28: the shape holds.
+     That stone is about 6x the tuple (0.49 mm^-1 Napierian at 550 nm, *speculative*), a
+     single very dark stone, so it bounds the strength from above (TINT_STRENGTH up to
+     about 6) and does not set a medium. Amethyst stays as above.
    - Needles: see ADR 0018 s.15 (correction): white remnants enter the record as milky
      chalcedony, and white fine needles render the whole face at NEEDLE_GRID_MM
      0.05 mm, coarsened to stay within NEEDLE_VOXELS (100 M voxels; ~11 GB RAM, ~5 GB

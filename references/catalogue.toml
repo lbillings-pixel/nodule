@@ -3698,6 +3698,7 @@ authors = ["Nassau, K.", "Prescott, B. E."]
 year = 1977
 title = "Smoky, blue, greenish yellow, and other irradiation-related colors in quartz"
 venue = "Mineralogical Magazine 41(319), 301–312"
+doi = "10.1180/minmag.1977.041.319.01"
 access = "closed"
 licence = "publisher copyright; cite only"
 checked = "full-text"
@@ -3705,14 +3706,29 @@ topics = ["smoky-quartz", "quartz", "colour-centres", "optics", "absorption", "z
 notes = """Owner-supplied PDF, read 2026-11-17 by a helper. Gamma-irradiated (15 Mrad saturation) and step-heated quartz; pi spectra fitted with Gaussians: A1 1.85 eV (FWHM 0.7), A2 2.55 (0.8), A3 2.90 (1.5; smoky, Al-hole), B 3.95 (1.2). Decadic A/t per cm, not reflection-corrected. Natural 6374: A3 ~0.6 cm^-1 at 0.17 Mrad, ~2.6 at saturation (Fig. 5, read off). Sigma below pi. Bleaching 140-380 C. Colour banding and sector zoning. No amethyst data. DOI not printed in the PDF."""
 
 [[references]]
-id = "lehmann1971-yellow"
+id = "lehmann-yellow1971"
 kind = "article"
 authors = ["Lehmann, G."]
 year = 1971
 title = "Yellow color centers in natural and synthetic quartz"
 venue = "Physik der kondensierten Materie 13, 297–306"
+doi = "10.1007/BF02422610"
 access = "closed"
 licence = "publisher copyright; cite only"
 checked = "full-text"
 topics = ["quartz", "colour-centres", "citrine", "smoky-quartz", "amethyst", "absorption"]
-notes = """Owner-supplied PDF (filed as lehmann1971.pdf), read 2026-11-17 by a helper. Not Lehmann 1967 (Z. Naturforsch. 22a, 2080; still unread) and not Lehmann 1971 Phys. stat. sol. B48 K65. Citrine = Fe2O3 inclusions (EPR); amethyst centre Fe4+(S) + Fe2+(I), model only; smoky A1 15400, A2 22200 cm^-1; smoky needs alkali- not OH-compensated Al (OH < 50 H/10^6 Si); honey quartz ~0.2 cm^-1 decadic after about 10^6 rad (page image; text layer garbles the exponent). DOI not printed in the PDF."""
+notes = """Owner-supplied PDF (filed as lehmann1971.pdf), read 2026-11-17 by a helper. Not Lehmann 1967 (Z. Naturforsch. 22a, 2080; read later, see lehmann1967) and not Lehmann 1971 Phys. stat. sol. B48 K65. Citrine = Fe2O3 inclusions (EPR); amethyst centre Fe4+(S) + Fe2+(I), model only; smoky A1 15400, A2 22200 cm^-1; smoky needs alkali- not OH-compensated Al (OH < 50 H/10^6 Si); honey quartz ~0.2 cm^-1 decadic after about 10^6 rad (page image; text layer garbles the exponent). DOI not printed in the PDF."""
+
+[[references]]
+id = "lehmann1967"
+kind = "article"
+authors = ["Lehmann, G."]
+year = 1967
+title = "Farbzentren des Eisens als Ursache der Farbe von Amethyst"
+venue = "Zeitschrift für Naturforschung A 22(12), 2080–2085"
+doi = "10.1515/zna-1967-1236"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["amethyst", "quartz", "colour-centres", "absorption", "iron", "citrine", "zoning"]
+notes = """Owner-supplied PDF, read 2026-11-17 by a helper (page scans; in German); Fig. 3 re-read by Claude 2026-11-18. ESR of Fe3+ S1/S2/I centres; model x Fe3+(S1) + x Fe3+(I) -> Fe4+(S) + Fe2+(I) by irradiation, reversed by heating. Bands 545 nm (colour, charge transfer, f = 2e-2), 357 (~70 % of its f), 950 (~10x weaker); 410 nm from smoky centres in most amethysts. Fig. 3 curve 1: one amethyst, locality, thickness and polarisation not given, 'Extinktionsmodul' cm^-1 (decadic by convention, not stated): ~0.85, 2.1, 0.66 at 450/550/650 nm (read off; hump drawn near 526 nm, text says 545). Above 350 C irreversibly yellow (citrine); some turn green (Fe2+ 740 nm). Synthetic: colour sites only under rhombohedral faces. No agate. DOI not on the page scans (filename 10.1515/zna-1967-1236); access and licence not checked (set conservatively)."""

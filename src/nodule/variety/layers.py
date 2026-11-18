@@ -32,6 +32,8 @@ from nodule.plumes import STAGE as PLUME_STAGE
 from nodule.plumes import reach_mm as plume_reach_mm
 from nodule.specimen import Specimen, SpecimenConfig, SpecimenCut
 from nodule.variety.cracks import IRON_TRACE
+from nodule.variety.dendrites import MN_IMPURITY, DendriteLayer
+from nodule.variety.dendrites import PIGMENT_AT as MN_PIGMENT_AT
 from nodule.variety.mottle import (
     DARK_RIM_SHARE,
     LIGHT_RIM,
@@ -300,6 +302,7 @@ class VarietyLayers:
     rim_noise: SmoothNoise3 | None = None
     edge_noise: SmoothNoise3 | None = None
     dust: DustLayer | None = None
+    dendrites: DendriteLayer | None = None
 
     @classmethod
     def of(cls, recipe: StoneRecipe, solid: Solid, growth: Growth) -> VarietyLayers:
@@ -524,6 +527,19 @@ class VarietyLayers:
             imp += (dust * (1 - imp)).astype(np.float32)
             pig[dust > PIGMENT_AT] = self.dust.pigment
 
+        if self.dendrites is not None:
+            # Mn dendrites, drawn last: they lie over the bands, stains, crack traces
+            # and dust (an assumption; they formed late), in chalcedony only.
+            host = inside & (phase == Phase.CHALCEDONY)
+            idx = np.flatnonzero(host)
+            if len(idx):
+                cov = self.dendrites.coverage(points[idx], pixel_mm)
+                hit = cov > 0
+                k = idx[hit]
+                c = cov[hit].astype(np.float32)
+                imp[k] += c * np.maximum(MN_IMPURITY - imp[k], 0.0)
+                pig[k[c >= MN_PIGMENT_AT]] = Pigment.MANGANESE
+
         return replace(fields, phase=phase, impurity=imp, translucency=trans, pigment=pig)
 
 
@@ -721,10 +737,30 @@ def build(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Specimen, 
             recipe.seed,
         )
         layers = replace(layers, dust=dust)
+    if recipe.dendrites is not None:
+        dendrites = DendriteLayer.of(
+            recipe.dendrites,
+            recipe.fractures,
+            specimen.volume.solid,
+            chalcedony_depth(specimen, layers),
+        )
+        layers = replace(layers, dendrites=dendrites)
     warp = None
     if recipe.roughness is not None:
         warp = BandRoughness.of(recipe.roughness, specimen.volume.solid, growth, recipe.seed)
     return replace(specimen, layers=layers, warp=warp), layers
+
+
+def chalcedony_depth(
+    specimen: Specimen, layers: VarietyLayers
+) -> Callable[[FloatArray], FloatArray]:
+    """Depth at world points (`VarietyLayers.depth` of the unwarped growth time): 0 at
+    the wall, 1 where the last chalcedony lies down, and 1 where nothing grew."""
+
+    def depth(points: FloatArray) -> FloatArray:
+        return layers.depth(np.nan_to_num(specimen.growth_time(points), nan=np.inf))
+
+    return depth
 
 
 def cut_of(

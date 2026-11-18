@@ -18,6 +18,7 @@ from agatesim.volume.slicing import Plane
 from agatesim.volume.solids import Rotated, Solid, SphereUnion
 
 from nodule.crystals import NEEDLES_ONLY, NO_COMBOS, combo_plan, crystal_plan, draw_crystals
+from nodule.dendrites import draw_dendrites
 from nodule.dust import (
     BLOB_SHARE,
     LINE_SHARE,
@@ -28,7 +29,16 @@ from nodule.moss import draw_moss, moss_plan
 from nodule.plumes import draw_plumes, plume_plan
 from nodule.rind import draw_rind
 from nodule.tubes import draw_channel
-from nodule.variety.cracks import CRACK_CUT_ANGLE, draw_fractures
+from nodule.variety.cracks import (
+    CRACK_CUT_ANGLE,
+    CRACK_TRIES,
+    PARTIAL_REACH,
+    SAG_SHARE,
+    STRAIGHT_SHARE,
+    draw_fractures,
+    enters_cavity,
+)
+from nodule.variety.dendrites import meets_wall
 from nodule.variety.layers import palette_of, volume_config
 from nodule.variety.mottle import MOTTLE_SHARE, MOTTLE_STONES, mottle_size
 from nodule.variety.recipe import (
@@ -56,9 +66,11 @@ from nodule.variety.recipe import (
     log_uniform,
     quota,
     recipe_size,
+    rim_point,
     scaled_count,
     share_weights,
     solid_for,
+    unit_vector,
 )
 
 # Cuts of overlapping-sphere outlines: the cutter's choice. A cut far off a
@@ -183,6 +195,8 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     rind_streams = np.random.default_rng(root.spawn(1)[0]).spawn(n)
     # Escape tubes from a stream spawned after the rinds' (ADR 0018 s.18), on the same terms.
     tube_streams = np.random.default_rng(root.spawn(1)[0]).spawn(n)
+    # Mn dendrites from a stream spawned after the tubes' (ADR 0018 s.17), on the same terms.
+    dendrite_streams = np.random.default_rng(root.spawn(1)[0]).spawn(n)
     final: list[StoneRecipe] = []
     for i, r in enumerate(out):
         rec = StoneRecipe.model_validate(
@@ -194,8 +208,73 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
         )
         if rec.channel is not None and not channel_fits(rec):
             rec = StoneRecipe.model_validate(rec.model_dump() | {"channel": None})
-        final.append(rec)
+        final.append(with_dendrites(rec, dendrite_streams[i]))
     return final
+
+
+HAIRLINE_MM = 0.05  # the thinnest crack trace drawn (FractureLayer's range)
+
+
+def is_hairline(f: FractureLayer) -> bool:
+    """A dendrite carrier's hairline (`hairline`): clear, unstained, no pool. Drawn
+    cracks always pool (0.5 mm or more), so none reads as one. Unlike drawn cracks it
+    may lie on a stone with band roughness: the warp moves where the bands are read,
+    and a layer crack, which never slips, is drawn where it lies (2026-11-18)."""
+    return f.fill == "clear" and f.stain == 0 and f.pool_mm == 0
+
+
+def with_dendrites(recipe: StoneRecipe, rng: np.random.Generator) -> StoneRecipe:
+    """The stone with its Mn dendrites, if it draws any (`nodule.dendrites`). A crack
+    stone takes 1-2 of its cracks that reach the wall; with none, a healed hairline
+    crack is added to carry them (clear, unstained, from the rim, clear of an open
+    cavity and of the cut's plane, so the cut stands); if none fits, its dendrites grow
+    from the wall instead. Validated (the recipe checks the carrier cracks exist)."""
+    drawn = draw_dendrites(rng)
+    if drawn is None:
+        return recipe
+    update: dict[str, object] = {"dendrites": drawn.as_wall()}
+    if drawn.carrier == "crack":
+        solid = recipe.solid.build()
+        reach = [i for i, f in enumerate(recipe.fractures) if meets_wall(solid, f)]
+        if reach:
+            picked = rng.permutation(reach)[: drawn.n_cracks]
+            update["dendrites"] = drawn.on_cracks(tuple(sorted(int(i) for i in picked)))
+        elif (hair := hairline(rng, recipe, solid)) is not None:
+            update["fractures"] = (*recipe.fractures, hair)
+            update["dendrites"] = drawn.on_cracks((len(recipe.fractures),))
+    return StoneRecipe.model_validate(recipe.model_dump() | update)
+
+
+def hairline(rng: np.random.Generator, recipe: StoneRecipe, solid: Solid) -> FractureLayer | None:
+    """A healed hairline crack running in from the rim (as a partial crack), or None
+    if CRACK_TRIES draws all reach an open cavity or lie near the cut's plane."""
+    r = inradius(solid)
+    cavity = None
+    if recipe.centre == "quartz-lined":
+        w = recipe.centre_width
+        cavity = (1 - w) * r + recipe.lining * w * r
+    for _ in range(CRACK_TRIES):
+        radial = unit_vector(rng)
+        normal = np.cross(radial, unit_vector(rng))
+        radius = float(rng.uniform(*PARTIAL_REACH)) * r
+        bent = rng.uniform() >= STRAIGHT_SHARE
+        f = FractureLayer(
+            centre_mm=tuple(rim_point(solid, radial).tolist()),
+            normal=tuple((normal / float(np.linalg.norm(normal))).tolist()),
+            radius_mm=radius,
+            aperture_mm=HAIRLINE_MM,
+            fill="clear",
+            stain=0.0,
+            halo_mm=0.0,
+            pool_mm=0.0,
+            sagitta_mm=float(rng.uniform(*SAG_SHARE)) * radius if bent else 0.0,
+        )
+        if cavity is not None and enters_cavity(solid, f, cavity):
+            continue
+        if crack_cut_angle(solid, recipe.cut, (f,)) < CRACK_CUT_ANGLE:
+            continue
+        return f
+    return None
 
 
 def channel_fits(recipe: StoneRecipe) -> bool:

@@ -16,6 +16,7 @@ from agatesim.volume.solids import Solid
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from nodule.crystals import Crystals
+from nodule.dendrites import Dendrites
 from nodule.dust import (
     Dust,
 )
@@ -249,6 +250,15 @@ class StoneRecipe(BaseModel):
     rind: Rind | None = None
     # an escape tube: agatesim's wall channel (`nodule.tubes`, ADR 0018 s.18)
     channel: Channel | None = None
+    # black Mn dendrites, from the wall or on cracks (`nodule.dendrites`, ADR 0018 s.17)
+    dendrites: Dendrites | None = None
+
+    @model_validator(mode="after")
+    def _dendrite_cracks_exist(self) -> StoneRecipe:
+        d = self.dendrites
+        if d is not None and any(not 0 <= i < len(self.fractures) for i in d.cracks):
+            raise ValueError("a dendrite carrier crack must be one of the stone's cracks")
+        return self
 
     @model_validator(mode="after")
     def _one_dendrite_stage(self) -> StoneRecipe:
@@ -312,6 +322,8 @@ class StoneRecipe(BaseModel):
             parts.append(self.rind.summary())
         if self.channel is not None:
             parts.append(self.channel.summary())
+        if self.dendrites is not None:
+            parts.append(self.dendrites.summary())
         parts.append(f"bands {self.band_mm:.2f} mm")
         return ", ".join(parts)
 

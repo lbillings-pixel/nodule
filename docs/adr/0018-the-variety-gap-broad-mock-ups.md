@@ -1557,6 +1557,56 @@ chose cracks: they rest on sources from other rocks and reuse the crack discs. N
 partings, no shell. "At most 5 % of stones" counts stones that carry dendrites; no
 steering towards the cut.
 
+*Sparser wall growth: the owner's pick (2026-11-17, night).* Lowering the grower's
+`amount` only shortened the growth, and turning its plume bias inward ruled the fingers
+along the lattice axis. What worked: grow once at the probe's defaults, then keep only
+the largest trees (agatesim traces which seed each cell grew from). The owner picked
+"the largest eighth" (round(trees / 8) of the trees of at least 5 cells) and closed the
+wall carrier's look on a cut: specks near the wall. Seeing branches through the stone
+waits for item 16. *The owner (2026-11-18): every kind of stone may carry dendrites.*
+
+*Built (2026-11-18; `nodule.dendrites`, `nodule.variety.dendrites`).* A recipe field
+drawn from its own stream, spawned after the tubes', so no other stone changes (sheets
+0-11 re-hashed: all 144 recipes and volume configs otherwise identical). Claude's
+choices, all `effective`, for the owner to change: 4 % of stones (under the cap); half
+wall, half crack; a wall stone grows from 1-3 random wall patches (5 mm reach, the
+largest eighth kept); a crack stone carries dendrites on 1-2 of its cracks that reach the
+wall, unthinned (as shown to the owner). A crack stone with no such crack gets one healed
+hairline crack (0.05 mm, clear, unstained, running in from the rim, clear of an open
+cavity and at 30 degrees or more to the cut, so the cut stands), pebbles included; if
+none fits, its dendrites grow from the wall. The hairline may lie on a stone with band
+roughness, which drawn cracks never do: that rule guarded against slipping fractures,
+and a layer crack never slips (16 crack-carrier stones on sheets 0-99 are rough; without
+this many would fall back to the wall and tilt the owner's half and half). Dendrites are drawn last among the layers,
+in chalcedony only, as Mn black: impurity raised to 0.9 by pixel coverage and the Mn
+pigment where a pixel is at least a quarter covered. Growth is lazy: a dendrite is grown
+whole, from its own stream, the first time points come near its box.
+Measured: 5 of the 144 stones of sheets 0-11 carry dendrites (3 with a hairline); only
+1 of the 5 cuts meets one; on sheets 12-99, 8 of 28 (so about 1 stone in 100 shows
+dendrites on its cut, the price of no steering). Growing what a cut meets: a crack 2-7 s;
+a wall patch 13-51 s for two (GPU), peak traced memory 670 MB; stones whose cut misses
+pay nothing. Look sheet: local `runs/dendrite-probe/look/recipes-12-100.png` (cut stones
+picked because their cut meets a dendrite).
+*Check (`nodule.dendrites.dendritic`).* Measured first (`runs/dendrite-probe/boxcount.py`,
+0.02 mm pixels): crack dendrites face-on (on the crack's own surface) have box dimension
+1.70 on both stones, inside 1.57-1.88 [@ngteh2009, Table 2]. But random specks at 5 %
+cover also give 1.66, so the dimension alone cannot reject dust. The check adds that at
+least 80 % of the pixels lie in connected patches of 50 or more (crack dendrites 0.98;
+random specks at 1-20 % cover 0). Negative controls: a line (1.00), a filled disc (1.96),
+random specks; all fail. *Limit:* on sections through a wall patch (as Bayirli's cut)
+the box dimension is 1.26-1.45 (16 sections, 4 patches), under the 1.63 of the one agate
+section [@bayirli2017], and random specks give similar values, so no check is set on
+sections. The look is the owner's closed choice, so it is not retuned; how Bayirli
+measured (resolution, area) was not re-read.
+*Render check (2026-11-18; local `runs/dendrite-probe/render/render-check.png`).* 12 mm
+look and backlit windows at the close-up settings (0.03 mm pixels and grid), with and
+without the dendrites (the control shows none). The Mn reaches the render. Wall
+dendrites render as soft dark branching smudges seen into the slice (more branch-like
+than the preview's specks, as the renderer looks into the stone; item 16). A crack
+dendrite renders as a faint grey line, much softer than the preview's black dashes (the
+bake gives absorption, not an opaque body: layerbake limits). Cost: 10-11 min per stone
+for the pair of windows (fills 190-250 s each). Not tuned: for the owner's verdict.
+
 ### 18. Eyes and escape tubes: reading and options (2026-11-17, proposed)
 
 Work plan item 15. Reading by a helper (`notes/n1-reading/item15-eyes-tubes.md`, local).

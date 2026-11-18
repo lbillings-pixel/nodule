@@ -66,6 +66,7 @@ from nodule.variety import (
     stray_quartz,
     volume_config,
 )
+from nodule.variety.draw import is_hairline
 
 SPACING = 0.12  # mm
 
@@ -610,7 +611,12 @@ def test_sheets_draw_gentle_smooth_roughness() -> None:
     rough = [r.roughness for r in SHEETS if r.roughness is not None]
     assert 0.25 * len(SHEETS) <= len(rough) <= 0.75 * len(SHEETS)
     assert all(not g.ridged and g.amplitude_mm <= ROUGHNESS_LIMIT_MM for g in rough)
-    assert not any(r.roughness and (r.fractures or r.outline == "pebble") for r in SHEETS)
+    # drawn cracks, not a dendrite carrier's hairline (`is_hairline`), keep roughness off
+    drawn = [any(not is_hairline(f) for f in r.fractures) for r in SHEETS]
+    assert not any(
+        r.roughness and (d or r.outline == "pebble") for r, d in zip(SHEETS, drawn, strict=True)
+    )
+    assert any(r.roughness and r.fractures for r in SHEETS)  # control: a rough hairline stone
     with pytest.raises(ValueError, match="less than or equal"):  # control: the trial's 0.4 mm
         Roughness(amplitude_mm=0.4, scale_mm=2.0)
 

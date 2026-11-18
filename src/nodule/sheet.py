@@ -4,10 +4,11 @@ Screening only, for the owner's eye before any render: chalcedony takes agatesim
 stand-in colour (`chalcedony_colour`, as `nodule.descriptors.stand_in_rgb`), quartz
 a glassy grey shaded per grain (tinted for amethyst or smoky centres), open space
 near black, plumes by their tint (`nodule.plumes`), white early crystals as milky
-chalcedony (`nodule.crystals`), and the host a flat colour by setting. Sheets add the
-host rind and host specks (`nodule.rind`, ADR 0018 s.16) round the cut (`framed_rgb`);
-renders draw neither yet. No glow or sub-banding: a render differs. Appearance only
-(ADR 0002); every colour here is `effective`.
+chalcedony (`nodule.crystals`), Mn dendrites black (`nodule.dendrites`), and the host
+a flat colour by setting. Sheets add the host rind and host specks (`nodule.rind`,
+ADR 0018 s.16) round the cut (`framed_rgb`); renders draw neither yet. No glow or
+sub-banding: a render differs. Appearance only (ADR 0002); every colour here is
+`effective`.
 
 Run: `uv run --no-sync python -m nodule.sheet --seed 1 --out runs/variety-sheet`.
 Reports time and peak traced memory per stone (CLAUDE.md).

@@ -31,7 +31,8 @@ so the face mask and quartz phase of the cut still apply.
   mirror reflection (as a polariser or dark surround gives), exposed so the face's mean
   lightness equals the photo-compare rendering's (`look_exposure`), over a grey matte
   bottom (an index-matched Lambertian reflector of LOOK_BOTTOM_ALBEDO, so clear quartz
-  no longer renders black). For the eye only; the compare's renderings are unchanged.
+  no longer renders black), LOOK_DEPTH_MM below the face so clear bands show the stone
+  under them (ADR 0019 s.6.10). For the eye only; the compare's renderings are unchanged.
 - **One fill, several lights** (`CutRenderer.on`): a grid filled for the deepest slab
   serves every rendering of the same record and optics, e.g. the look and a backlit slice.
 - **Open cavities** (ADR 0019 A1): a void in the stone renders as its lining's material
@@ -80,6 +81,10 @@ L1_DEPTH_MM = 2.0  # effective, ADR 0010 10b (module docstring)
 # The look's grey matte bottom (owner's pick 2026-11-09, ADR 0019 s.6.5): `effective`;
 # 0.35 washed fine bands out, 0.15 lights clear quartz and keeps them
 LOOK_BOTTOM_ALBEDO = 0.15
+# The look's slab: clear bands show the stone up to ~10 mm below (diffusion length 7-18 mm,
+# ADR 0014); 5 mm gives most of that while quartz centres keep some tone (owner's pick
+# 2026-11-18, ADR 0019 s.6.10): `effective`
+LOOK_DEPTH_MM = 5.0
 L3_DEPTH_MM = 3.0  # effective, owner (ADR 0007 amendment 5)
 # Matches the reflected photos' median lightness (L* 62); effective, a camera
 # setting, not a property of the stone (ADR 0013). Refitted for the ADR 0014 optics on
@@ -165,8 +170,10 @@ class Rendering:
     def look(cls, record: BandRecord, **kw: Any) -> Rendering:
         """The owner's look (ADR 0019 B3): the dome of `reflected` without the face's
         mirror reflection, at the lightness `reflected` gives, over a grey matte bottom
-        of LOOK_BOTTOM_ALBEDO (ADR 0019 s.6.5: clear quartz rendered black over black)."""
+        of LOOK_BOTTOM_ALBEDO (ADR 0019 s.6.5: clear quartz rendered black over black),
+        LOOK_DEPTH_MM deep (s.6.10)."""
         kw |= {"glare": False, "match_lightness": True}
+        kw.setdefault("depth_mm", LOOK_DEPTH_MM)
         if "bottom" not in kw:
             kw["bottom"] = "matte"
             kw.setdefault("bottom_albedo", (LOOK_BOTTOM_ALBEDO,) * 3)

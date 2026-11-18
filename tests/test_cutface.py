@@ -21,6 +21,7 @@ from nodule.descriptors import PhotoCut, measure, noise_to_add, photo_cut
 from nodule.render import _gpu, fakes
 from nodule.render.camera import Flag, Light, srgb
 from nodule.render.cutface import (
+    LOOK_DEPTH_MM,
     REFLECTED_EXPOSURE,
     CutRender,
     CutRenderer,
@@ -117,6 +118,16 @@ def test_rendering_takes_the_stratum_light() -> None:
     assert (r1.light.kind, r1.depth_mm) == ("dome", 2.0)  # ADR 0010 10b
     assert (r3.light.kind, r3.depth_mm, r3.exposure) == ("back", 3.0, 2.0)
     assert Rendering.reflected(rec, depth_mm=4.0).depth_mm == 4.0
+
+
+def test_look_sees_deeper_than_the_compare() -> None:
+    """The owner's look renders LOOK_DEPTH_MM of stone (ADR 0019 s.6.10); the photo
+    compare keeps ADR 0010 10b's 2 mm (control); an explicit depth still wins."""
+    rec = BandRecord.empty()
+    assert LOOK_DEPTH_MM == 5.0
+    assert Rendering.look(rec).depth_mm == LOOK_DEPTH_MM
+    assert Rendering.reflected(rec).depth_mm == 2.0
+    assert Rendering.look(rec, depth_mm=2.0).depth_mm == 2.0
 
 
 def test_exposure_is_set_per_light() -> None:

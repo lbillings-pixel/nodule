@@ -5,8 +5,8 @@ Per stone, two views of each cut, on one grid fill (owner's choice, ADR 0019 B3)
 open cavity renders dark in the look and as a hole in the slice (ADR 0019 A1):
 
 - **the look**: the dome (L1, ADR 0008 7c) over a grey matte bottom (ADR 0019 s.6.5)
-  without the face's mirror reflection, at the photo compare's mean lightness
-  (`Rendering.look`);
+  5 mm down (s.6.10) without the face's mirror reflection, at the photo compare's mean
+  lightness (`Rendering.look`);
 - **a backlit slice** SLICE_MM thick on a light box (L3, `Rendering.transmitted`), at
   one fixed exposure so slices differ in how much light they pass, with a highlight
   roll-off (BACKLIT_KNEE) so clear bands keep their shading.
@@ -32,7 +32,7 @@ from agatesim import progress
 from PIL import Image, ImageDraw
 
 from nodule.plumes import STAGE
-from nodule.render.cutface import CutRenderer, Rendering
+from nodule.render.cutface import LOOK_DEPTH_MM, CutRenderer, Rendering
 from nodule.render.fakes import stone_record
 from nodule.render.materials import OpticsTable
 from nodule.render.record import STEPS, BandRecord
@@ -53,6 +53,7 @@ NEEDLE_VOXELS = 100e6
 CLOSE_MM, CLOSE_PIXEL_MM, CLOSE_GRID_MM = 12.0, 0.03, 0.03
 SPP = 512  # samples per pixel (effective; noise falls as 1/sqrt(spp))
 SLICE_MM = 3.0  # backlit slice thickness, owner's choice (2026-11-09; and ADR 0007 am. 5)
+FILL_MM = max(SLICE_MM, LOOK_DEPTH_MM)  # one grid serves the look and the slice
 # Light box exposure (transmittance factor x this), `effective`, one for every stone so
 # slices differ in brightness as they pass more or less light (2026-11-09 look sheets).
 BACKLIT_EXPOSURE = 3.0
@@ -77,7 +78,10 @@ QUARTZ_TINT_MUA: dict[str, tuple[float, float, float]] = {
     "amethyst": (0.033, 0.079, 0.022),
     "smoky": (0.12, 0.093, 0.072),
 }
-TINT_STRENGTH = 2.0  # x QUARTZ_TINT_MUA; the owner's pick (2026-11-17, runs/item11-render/)
+# x QUARTZ_TINT_MUA; the owner's pick 2x at the 2 mm look (2026-11-17, runs/item11-render/),
+# lowered with the 5 mm look (owner, 2026-11-18, ADR 0019 s.6.10) so an amethyst centre
+# keeps its 2 mm hue (green/red 0.79 on sheet 0 stone 11); smoky scaled alike (assumption)
+TINT_STRENGTH = 0.8
 
 
 def optics_for(r: StoneRecipe, base: OpticsTable | None = None) -> OpticsTable:
@@ -103,9 +107,9 @@ def whole_grid_mm(r: StoneRecipe, cut: SpecimenCut) -> float:
     c = r.crystals
     if c is None or c.habit != "fine needles" or c.fill != "white":
         return WHOLE_GRID_MM
-    a = float(np.ptp(cut.s)) + 2 * SLICE_MM
-    b = float(np.ptp(cut.t)) + 2 * SLICE_MM
-    least = (a * b * SLICE_MM / NEEDLE_VOXELS) ** (1 / 3)
+    a = float(np.ptp(cut.s)) + 2 * FILL_MM
+    b = float(np.ptp(cut.t)) + 2 * FILL_MM
+    least = (a * b * FILL_MM / NEEDLE_VOXELS) ** (1 / 3)
     return min(max(NEEDLE_GRID_MM, least), WHOLE_GRID_MM)
 
 
@@ -157,7 +161,7 @@ def views(
     `<stem>-look.png` (host, specks and rind drawn on, `dressed_look`) and
     `<stem>-backlit.png` (as rendered)."""
     look = CutRenderer(specimen, cut, Rendering.look(record, grid_mm=grid_mm, optics=optics),
-                       rng, fill_depth_mm=SLICE_MM)  # fmt: skip
+                       rng, fill_depth_mm=FILL_MM)  # fmt: skip
     back = look.on(Rendering.transmitted(record, grid_mm=grid_mm, depth_mm=SLICE_MM,
                                          optics=optics, exposure=BACKLIT_EXPOSURE,
                                          rolloff_knee=BACKLIT_KNEE))  # fmt: skip

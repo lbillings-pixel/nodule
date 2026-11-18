@@ -312,6 +312,24 @@ stones none; white fine needles alone take the finer grid, within the budget
      look render 43 s against 22 s at 2 mm, 256 spp), 10 mm ~60 M (estimated, ~5 GB RAM).
      The window pads by the fill depth, so close-ups grow fastest. White-needle stones'
      voxel budget (NEEDLE_VOXELS) is padded by the 3 mm slice and would need revisiting.
+   - **The owner's pick (2026-11-18):** 5 mm, full renders first; the default changes only
+     on their verdict. *Full renders* (0.1 mm grid, 512 spp, matched lightness; sheet 2
+     stone 10, sheet 0 stones 1, 3, 11; `out/depth-full-2v5.png`): change at 5 mm 5.9-8.7
+     grey levels on the clear stones, 14.1 on the amethyst stone (its matched exposure 5.1
+     to 6.7), against floors of 0.9-1.2. Fill at 5 mm 22-305 s (rough and eye stones the
+     slowest), peak RAM 2.1-2.8 GB, GPU pool 0.5-0.7 GB; the 5 mm look renders in about
+     twice the 2 mm look's time.
+   - **Built (2026-11-18; the owner: "yes, lighter amethyst").** The look renders
+     `cutface.LOOK_DEPTH_MM` 5 mm (`effective`) over the same grey bottom; the photo
+     compare keeps 2 mm (ADR 0010 10b, 0014). `varietyrender` fills one grid FILL_MM
+     (max of the look and the 3 mm slice) deep for both views, and the white-needle
+     budget is padded by it (those faces coarsen a little more). Tinted centres: at 5 mm a
+     centre is darker whatever its tint (less light returns); the tint sets its hue.
+     Calibrated on sheet 0 stone 11 (0.2 mm grid, 128 spp): the 2 mm look at 2x gave a
+     centre green/red of 0.79; at 5 mm, 2x gave 0.53, 1x 0.74, 0.6x 0.83, so
+     `TINT_STRENGTH` 0.8 (*effective*; smoky scaled alike, an assumption). Tests: the look's
+     depth against the compare's 2 mm (control); one fill serves both views, sample for
+     sample (control: another seed), with and without a void.
 
 ## Consequences
 

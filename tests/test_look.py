@@ -19,6 +19,7 @@ from nodule.render import _gpu
 from nodule.render.camera import Light, render, rolloff
 from nodule.render.cutface import (
     F0,
+    LOOK_DEPTH_MM,
     REFLECTED_EXPOSURE,
     CutRenderer,
     Rendering,
@@ -35,6 +36,7 @@ from nodule.varietyrender import (
     BACKLIT_EXPOSURE,
     BACKLIT_KNEE,
     CARNELIAN_LOADING,
+    FILL_MM,
     HEMATITE_RED_K,
     NEEDLE_GRID_MM,
     NEEDLE_VOXELS,
@@ -123,7 +125,8 @@ def test_white_fine_needles_alone_take_a_finer_grid_within_the_budget() -> None:
     assert whole_grid_mm(r, Face(30.0)) == NEEDLE_GRID_MM  # type: ignore[arg-type]
     big = whole_grid_mm(r, Face(80.0))  # type: ignore[arg-type]
     assert NEEDLE_GRID_MM < big <= WHOLE_GRID_MM
-    assert (80.0 + 2 * SLICE_MM) ** 2 * SLICE_MM / big**3 == pytest.approx(NEEDLE_VOXELS)
+    assert max(SLICE_MM, LOOK_DEPTH_MM) == FILL_MM  # the grid serves the look and the slice
+    assert (80.0 + 2 * FILL_MM) ** 2 * FILL_MM / big**3 == pytest.approx(NEEDLE_VOXELS)
     for c in (needles.model_copy(update={"fill": "hollow"}),
               needles.model_copy(update={"habit": "small blades"}), None):  # fmt: skip
         other = small_recipe().model_copy(update={"crystals": c})
@@ -182,23 +185,24 @@ def test_glare_off_removes_exactly_the_face_reflection_and_its_control() -> None
 
 @gpu
 def test_one_fill_serves_a_backlit_slice_and_its_controls() -> None:
-    """A backlit slice rendered on the look's grid (filled 3 mm deep) equals one on its
-    own fill, sample for sample. Controls: another seed differs (the check can fail);
-    a slab deeper than the fill, or other optics, is refused."""
+    """A backlit slice rendered on the look's grid (filled FILL_MM deep, as
+    `varietyrender.views`) equals one on its own fill of that depth, sample for sample.
+    Controls: another seed differs (the check can fail); a slab deeper than the fill, or
+    other optics, is refused."""
     specimen, cut, record = small_stone()
     look = Rendering.look(record, grid_mm=0.25)
-    back = Rendering.transmitted(record, grid_mm=0.25, depth_mm=3.0)
-    shared = CutRenderer(specimen, cut, look, np.random.default_rng(5), fill_depth_mm=3.0)
+    back = Rendering.transmitted(record, grid_mm=0.25, depth_mm=SLICE_MM)
+    shared = CutRenderer(specimen, cut, look, np.random.default_rng(5), fill_depth_mm=FILL_MM)
     via = shared.on(back)
     via.more(16)
-    own = CutRenderer(specimen, cut, back, np.random.default_rng(5))
+    own = CutRenderer(specimen, cut, back, np.random.default_rng(5), fill_depth_mm=FILL_MM)
     own.more(16)
     assert np.array_equal(via.rgb, own.rgb)
     other = CutRenderer(specimen, cut, back, np.random.default_rng(6))
     other.more(16)
     assert not np.array_equal(via.rgb, other.rgb)
     with pytest.raises(ValueError, match="filled"):
-        shared.on(Rendering.transmitted(record, grid_mm=0.25, depth_mm=4.0))
+        shared.on(Rendering.transmitted(record, grid_mm=0.25, depth_mm=FILL_MM + 1.0))
     with pytest.raises(ValueError, match="optics"):
         shared.on(Rendering.transmitted(record, grid_mm=0.25, optics=OpticsTable(iron_floor=0)))
     shared.more(16)  # the look itself: lightness matched, exposure set per render

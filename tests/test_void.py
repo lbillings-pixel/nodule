@@ -22,6 +22,7 @@ from nodule.render.scene import with_void
 from nodule.render.tgrid import GrowthGrid, fill_nan, fill_void
 from nodule.specimen import Specimen, SpecimenCut, window_cut
 from nodule.variety import build, cut_of, draw_sheet
+from nodule.varietyrender import FILL_MM, SLICE_MM
 
 gpu = pytest.mark.skipif(not _gpu.available(), reason="needs a CUDA GPU and CuPy")
 GRID_MM = 0.25
@@ -143,10 +144,10 @@ def test_the_look_shows_the_cavity_dark_and_the_slice_shows_a_hole() -> None:
     specimen, cut, record = cavity_stone()
     core, near = rings(cut)
     look = CutRenderer(specimen, cut, Rendering.look(record, grid_mm=GRID_MM),
-                       np.random.default_rng(0), fill_depth_mm=3.0)  # fmt: skip
-    back = look.on(Rendering.transmitted(record, grid_mm=GRID_MM, depth_mm=3.0))
+                       np.random.default_rng(0), fill_depth_mm=FILL_MM)  # fmt: skip
+    back = look.on(Rendering.transmitted(record, grid_mm=GRID_MM, depth_mm=SLICE_MM))
     bare = CutRenderer(specimen, cut, Rendering.look(record, grid_mm=GRID_MM, void_mua=0.0),
-                       np.random.default_rng(0), fill_depth_mm=3.0)  # fmt: skip
+                       np.random.default_rng(0), fill_depth_mm=FILL_MM)  # fmt: skip
     out: dict[str, tuple[float, float]] = {}
     for name, cr in (("look", look), ("back", back), ("bare", bare)):
         cr.more(32)
@@ -163,11 +164,11 @@ def test_a_backlit_slice_on_the_looks_fill_equals_its_own_with_a_void() -> None:
     """The second view swaps only the void's absorption: equal, sample for sample, to a
     slice on its own fill. Control: another seed differs."""
     specimen, cut, record = cavity_stone()
-    back = Rendering.transmitted(record, grid_mm=GRID_MM, depth_mm=3.0)
+    back = Rendering.transmitted(record, grid_mm=GRID_MM, depth_mm=SLICE_MM)
     via = CutRenderer(specimen, cut, Rendering.look(record, grid_mm=GRID_MM),
-                      np.random.default_rng(5), fill_depth_mm=3.0).on(back)  # fmt: skip
-    own = CutRenderer(specimen, cut, back, np.random.default_rng(5))
-    other = CutRenderer(specimen, cut, back, np.random.default_rng(6))
+                      np.random.default_rng(5), fill_depth_mm=FILL_MM).on(back)  # fmt: skip
+    own = CutRenderer(specimen, cut, back, np.random.default_rng(5), fill_depth_mm=FILL_MM)
+    other = CutRenderer(specimen, cut, back, np.random.default_rng(6), fill_depth_mm=FILL_MM)
     for cr in (via, own, other):
         cr.more(16)
     assert np.array_equal(via.rgb, own.rgb)

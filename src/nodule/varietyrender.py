@@ -5,8 +5,8 @@ Per stone, two views of each cut, on one grid fill (owner's choice, ADR 0019 B3)
 open cavity renders dark in the look and as a hole in the slice (ADR 0019 A1):
 
 - **the look**: the dome (L1, ADR 0008 7c) over a grey matte bottom (ADR 0019 s.6.5)
-  5 mm down (s.6.10) without the face's mirror reflection, at the photo compare's mean
-  lightness (`Rendering.look`);
+  5 mm down (s.6.10; close-ups 2 mm, CLOSE_LOOK_MM) without the face's mirror
+  reflection, at the photo compare's mean lightness (`Rendering.look`);
 - **a backlit slice** SLICE_MM thick on a light box (L3, `Rendering.transmitted`), at
   one fixed exposure so slices differ in how much light they pass, with a highlight
   roll-off (BACKLIT_KNEE) so clear bands keep their shading.
@@ -51,6 +51,9 @@ WHOLE_GRID_MM = 0.1
 NEEDLE_GRID_MM = 0.05
 NEEDLE_VOXELS = 100e6
 CLOSE_MM, CLOSE_PIXEL_MM, CLOSE_GRID_MM = 12.0, 0.03, 0.03
+# Close-ups keep the 2 mm look (owner, 2026-11-18, ADR 0019 s.6.10): at 5 mm their grid,
+# padded by the fill, would grow from ~36 M to ~90 M points (est. 8-9 GB RAM). `effective`
+CLOSE_LOOK_MM = 2.0
 SPP = 512  # samples per pixel (effective; noise falls as 1/sqrt(spp))
 SLICE_MM = 3.0  # backlit slice thickness, owner's choice (2026-11-09; and ADR 0007 am. 5)
 FILL_MM = max(SLICE_MM, LOOK_DEPTH_MM)  # one grid serves the look and the slice
@@ -139,7 +142,7 @@ def render_stone(
     if r.dust is not None and close_ups:
         near = window_cut(specimen, cut, dustiest(cut, CLOSE_MM), CLOSE_MM, CLOSE_PIXEL_MM)
         row |= views(specimen, near, r, record, CLOSE_GRID_MM, optics, spp, rng,
-                     out / f"{name}-close", "close")  # fmt: skip
+                     out / f"{name}-close", "close", CLOSE_LOOK_MM)  # fmt: skip
         Image.fromarray(preview_rgb(near, r)).save(out / f"{name}-close-preview.png")
     row["seconds"] = round(time.perf_counter() - t0, 1)
     return row
@@ -156,12 +159,14 @@ def views(
     rng: np.random.Generator,
     stem: Path,
     key: str,
+    look_mm: float = LOOK_DEPTH_MM,
 ) -> dict[str, object]:
-    """The look and the backlit slice of one cut, on one grid fill; saves
-    `<stem>-look.png` (host, specks and rind drawn on, `dressed_look`) and
+    """The look (`look_mm` deep) and the backlit slice of one cut, on one grid fill;
+    saves `<stem>-look.png` (host, specks and rind drawn on, `dressed_look`) and
     `<stem>-backlit.png` (as rendered)."""
-    look = CutRenderer(specimen, cut, Rendering.look(record, grid_mm=grid_mm, optics=optics),
-                       rng, fill_depth_mm=FILL_MM)  # fmt: skip
+    look = CutRenderer(specimen, cut, Rendering.look(record, grid_mm=grid_mm, optics=optics,
+                                                     depth_mm=look_mm),
+                       rng, fill_depth_mm=max(SLICE_MM, look_mm))  # fmt: skip
     back = look.on(Rendering.transmitted(record, grid_mm=grid_mm, depth_mm=SLICE_MM,
                                          optics=optics, exposure=BACKLIT_EXPOSURE,
                                          rolloff_knee=BACKLIT_KNEE))  # fmt: skip

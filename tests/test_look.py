@@ -13,6 +13,7 @@ import pytest
 from agatesim.fields import Pigment
 from agatesim.volume.config import SliceConfig, SolidConfig
 
+import nodule.varietyrender as varietyrender
 from nodule.crystals import Crystals
 from nodule.plumes import STAGE
 from nodule.render import _gpu
@@ -36,6 +37,7 @@ from nodule.varietyrender import (
     BACKLIT_EXPOSURE,
     BACKLIT_KNEE,
     CARNELIAN_LOADING,
+    CLOSE_LOOK_MM,
     FILL_MM,
     HEMATITE_RED_K,
     NEEDLE_GRID_MM,
@@ -131,6 +133,31 @@ def test_white_fine_needles_alone_take_a_finer_grid_within_the_budget() -> None:
               needles.model_copy(update={"habit": "small blades"}), None):  # fmt: skip
         other = small_recipe().model_copy(update={"crystals": c})
         assert whole_grid_mm(other, Face(30.0)) == WHOLE_GRID_MM  # type: ignore[arg-type]
+
+
+def test_close_ups_keep_the_shallow_look(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Whole faces render the look LOOK_DEPTH_MM deep on a FILL_MM grid; close-ups keep
+    CLOSE_LOOK_MM on the slice's depth (owner, ADR 0019 s.6.10). Control: the two calls
+    differ, so the check can tell them apart."""
+    seen: list[tuple[float, float]] = []
+
+    class StopError(Exception):
+        pass
+
+    def fake(_sp: object, _cut: object, rendering: Rendering, _rng: object,
+             fill_depth_mm: float) -> None:  # fmt: skip
+        seen.append((rendering.depth_mm, fill_depth_mm))
+        raise StopError
+
+    monkeypatch.setattr(varietyrender, "CutRenderer", fake)
+    rec, rng = BandRecord.empty(), np.random.default_rng(0)
+    args = (None, None, small_recipe(), rec, 0.25, OpticsTable(), 2, rng, None)
+    for extra in (("whole",), ("close", CLOSE_LOOK_MM)):
+        with pytest.raises(StopError):
+            varietyrender.views(*args, *extra)  # type: ignore[arg-type]
+    assert seen[0] == (LOOK_DEPTH_MM, FILL_MM) == (5.0, 5.0)
+    assert seen[1] == (CLOSE_LOOK_MM, SLICE_MM) == (2.0, 3.0)
+    assert seen[0] != seen[1]
 
 
 def test_look_needs_the_dome() -> None:

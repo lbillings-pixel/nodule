@@ -327,9 +327,23 @@ stones none; white fine needles alone take the finer grid, within the budget
      centre is darker whatever its tint (less light returns); the tint sets its hue.
      Calibrated on sheet 0 stone 11 (0.2 mm grid, 128 spp): the 2 mm look at 2x gave a
      centre green/red of 0.79; at 5 mm, 2x gave 0.53, 1x 0.74, 0.6x 0.83, so
-     `TINT_STRENGTH` 0.8 (*effective*; smoky scaled alike, an assumption). Tests: the look's
+     `TINT_STRENGTH` 0.8 (*effective*): 2.0 x 2 mm and 0.8 x 5 mm give the same tint
+     optical depth down to the bottom, which is also the basis for scaling smoky alike.
+     Measured on the pipeline's own render (0.1 mm grid, 512 spp): centre green/red 0.78,
+     RGB about (69, 54, 65) against (101, 79, 96) before. Tests: the look's
      depth against the compare's 2 mm (control); one fill serves both views, sample for
      sample (control: another seed), with and without a void.
+   - **Side effects, the owner's calls (2026-11-18).** (i) The one tint strength also
+     lightens a backlit slice's tinted centre (sheet 1 stone 6, `out/backlit-check.png`):
+     kept, 0.8x for both views. (ii) Close-ups keep the 2 mm look
+     (`varietyrender.CLOSE_LOOK_MM`) on the slice's 3 mm fill: at 5 mm their grid, padded
+     by the fill, would grow from ~36 M to ~90 M points (est. 8-9 GB RAM, ~2.5x the fill
+     time; not measured). Whole face and close-up then differ a little in depth (test:
+     each call's look and fill depth; control: they differ). (iii) White-needle faces
+     coarsen within NEEDLE_VOXELS: on sheets 0-11, 5 of 6 go from 0.05 to 0.054-0.063 mm
+     (sheet 0 stone 2 stays 0.05, now 82 M points against 41 M): accepted, needles may be
+     a little fainter. Cost: whole faces at 5 mm, sheet 0 stone 1 (rough, eyes) took
+     550 s against about 5 min before.
 
 ## Consequences
 

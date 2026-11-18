@@ -107,7 +107,11 @@ before any statistics.
   agatesim's spherulitic domes, owner "good, build them"; 1 in 10 volcanic stones, 1 in
   50 thunder eggs; size and spacing per stone; few-ring eyes rare; floor stones too.
   CLOSED 2026-11-18 by the owner.
-- [ ] 16. Depth through clear bands (a render test).
+- [x] 16. Depth through clear bands (a render test). (2026-11-18; ADR 0019 s.6.10;
+  probe `runs/depth-probe/`, local) The look now renders 5 mm of stone under the face
+  (was 2 mm): clear zones shade where walls curve away below; tinted centres 0.8x so
+  amethyst keeps its hue; close-ups keep 2 mm; needle faces a little coarser. Deeper
+  would need quartz-centre scattering read first. CLOSED 2026-11-18 by the owner.
 
 ## Batch 4: large (several sessions each)
 

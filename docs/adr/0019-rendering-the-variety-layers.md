@@ -424,6 +424,48 @@ stones none; white fine needles alone take the finer grid, within the budget
      +1-3 min (narrow band at the fine spacing; agatesim's fill ran ~11 us a point in
      s.24), GPU memory +0.1-0.3 GB, render 1.3-2x the look's. Stones without a hollow:
      unchanged. All to be measured at each step.
+   - *Step 1, the probe: results* (2026-11-19; runs/hollow-air/, gitignored: normals_probe,
+     jumps_probe, edges_probe, look_and_cost; ~15 min of runs in all, peak 3.55 GB traced
+     once, in a candidate check since split into chunks, otherwise <= 1.1 GB). One stone
+     and one view (sheet 4, stone 5: 11 266 crystals, grain 0.5 mm, tip half-angle 38
+     deg, elongation 4); *verified* for it, untested on others.
+     - *Gate.* The level read from outside (arrival - last reach) has agatesim's VOID
+       sign on 100 % of points 2 um either side of the s.24 wall; every wall found is the
+       crystal level; |level| on it ~3e-5 mm. s.24's depths still hold after 740c2c4.
+     - *Controls.* A sphere level passes on every grid and store (100 % within 1.5 deg,
+       analytic glint share); its sign-only mask fails (0.5 %, median 18 deg).
+     - *Spot counts do not choose a spacing.* Every grid returns 38-96 spots a view
+       (exact normals 33-79; s.24's slopes 30-74, though they match the exact normals
+       on only 38 % of the wall). The share within 1.5 deg does: 0.1 mm 12-18 %, 0.05 mm
+       36-58 %, 0.025 mm 72-82 % (per-cell / node gradients). int16 storage equals
+       float64; int8 harms the per-cell gradient.
+     - *Why the rest fail: edges between crystals.* At 0.025 mm, cells whose stencil holds
+       one crystal: 96 % within 1.5 deg; within one cell of an owner change: 2 %; 1-2
+       cells: 78 %; beyond: 96-98 %. A grid rounds each edge over about a cell (an
+       `effective` rounding, shrinking with the spacing). The ~4 % still off far from
+       edges are *plausibly* the tip-to-side kink inside a crystal (the owner test
+       cannot see it). Six-faced tips would be exact inside faces but add edges.
+     - *Candidate jumps in agatesim's `assign`.* Against a wider candidate set (16
+       sites, 64 owner nodes) `assign` is late on 4.4 % of wall points, by up to 0.5 mm
+       (0.6 mm at nodes). Not the normals' cause: the jump-free level scores the same
+       (80 % at 0.025 mm). A jump-free wall would move > 0.1 mm on 3.1 % of rays (to at
+       least the 1 mm search limit). Whether the steps show in an air hollow is
+       untested.
+     - *Cost of a level grid.* This stone's world-aligned void box is 26 x 25 x 27 mm
+       (the cut is tilted). Dense: 0.1 mm 18 M nodes, 0.04 GB int16, fill ~1 min; 0.05
+       mm 143 M, 0.29 GB, ~6 min; 0.025 mm 1 140 M, 2.3 GB, ~51 min (out of budget). A
+       +-2-cell band at 0.025 mm is ~4 M nodes (from a lower-bound wall area), but needs
+       sparse storage on the GPU.
+     - *Alternative measured: an owner lattice.* Store each node's crystal (dense, 0.2
+       or 0.1 mm: 0.16-0.94 M nodes evaluated near the wall) plus the crystals' few
+       numbers; at a point take the earliest of the 8 corners' crystals in closed form
+       (`Crystals.pair_times`). The wall matches agatesim's within 0.01 mm on 98.2 % of
+       rays (0.2 mm lattice); there the normals are exact (100 % within 1.5 deg, median
+       0.001 deg), edges stay sharp. It changes what agatesim returns (its crystals, not
+       a level): **not covered by the approval on record; the owner's choice.**
+     - *Look* (runs/hollow-air/normals-look.png, mock-up shading, appearance only):
+       at sheet scale the grids differ from exact normals mainly in where glints fall;
+       0.1 mm scatters more of them.
 
 ## Consequences
 

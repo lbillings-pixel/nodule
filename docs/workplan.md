@@ -131,7 +131,10 @@ before any statistics.
   sheet: thin to fuller leaning fuller, 1 in 4 bent; ADR 0018 s.22). Still open:
   renders to the owner, and whether cracks on lens eggs should be sized to the egg.
   2026-11-19: renders sent; owner chose cracks sized to the egg, BUILT (0.3 x size;
-  ADR 0018 s.22). Still open: eyes and needles on 3D eggs, rerendered lens to the owner.
+  ADR 0018 s.22). Owner approved the rerender.
+  2026-11-19 night: eyes/needles sweep found 3D stars lost their quartz centres (bands
+  sized by the box); fixed with the true depth, eye push re-measured (ADR 0018 s.23).
+  Still open: owner's look at 3D eggs with centres, eyes and needles on renders.
 - [ ] 18. Druse crystal faces in open cavities.
 - [ ] 19. Renderer physics: scattering in the camera code (ask the owner
   first), air with refraction in cavities (ADR 0019 A2), the fuller red fix

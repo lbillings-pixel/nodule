@@ -156,3 +156,9 @@ def test_eyes_summary_and_push() -> None:
     assert eyes.advance_mm("vesicle") == pytest.approx(3.6)
     assert eyes.advance_mm("thunder-egg") < eyes.advance_mm("vesicle")
     assert eyes.advance_mm("vesicle", floor=0.4) < eyes.advance_mm("vesicle")
+    # 3D thunder eggs (ADR 0018 s.23): domes standing apart push the centre far less
+    assert eyes.advance_mm("thunder-egg") == pytest.approx(0.75 * 3.0)
+    apart = Eyes(radius_mm=3.0, spacing_mm=18.0)  # 6 radii
+    assert apart.advance_mm("thunder-egg") == pytest.approx(0.15 * 3.0)
+    middle = Eyes(radius_mm=3.0, spacing_mm=13.5)  # 4.5 radii: between the measured 3.5 and 6
+    assert 0.15 * 3.0 < middle.advance_mm("thunder-egg") < 0.55 * 3.0

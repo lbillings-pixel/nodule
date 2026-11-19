@@ -1997,6 +1997,46 @@ owner's 1 in 50-75; s.19) has a lens centre instead of a star.
   (`recipe.crack_scale`). No draws change, so other stones stand: recipes of sheets
   0-11, old code against new, 144 of 144 identical (the one natural lens has no
   cracks). A test checks the scale passed on a lens and, as negative control, a star.
+  With an open (quartz-lined) centre, 12 lenses x 40 draws keep 97 % of their cracks
+  (98 % at the old size); only the thinnest (depth 2.8 mm) loses a third. No crack
+  centre lies beyond its reach of the stone.
+
+### 23. 3D thunder eggs: bands sized by depth; eyes and needles (2026-11-19)
+
+Item 17's sweep of eyes and needles on 3D eggs (owner asleep; overnight work, local
+scripts `runs/thunderegg-3d/eye_needle_sweep.py`, `eye_push_3d.py`, `eye_push_check.py`).
+
+- *Fault found: no quartz centres on 3D stars.* Bands grew to (1 - w) x `inradius`, half
+  the box's thinnest side. On a winding star that is 2.0-2.7 x the deepest point's
+  distance from the wall (5 eggs: inradius 12.7-21.7 mm, depth 6.5-9.6 mm), on jagged
+  cores 1.3-1.6 x, on lenses 1.03-1.06 x. So chalcedony filled every quartz-filled or
+  -lined star: 0 quartz among 100,000 points on all six star eggs swept, though their
+  recipes (and sheet labels) said quartz. The prism stars of before were not affected
+  in this way. Fix: `recipe.cavity_depth`, the deepest point's wall distance on a drawn
+  3D cavity (48-point grid, then refined; 0.03 s), and `inradius` on other solids as
+  before. It sizes the bands (`layers.volume_config`), the open centre that cracks keep
+  clear of, and `chalcedony_mm` (the caps on eyes, crystals and tube depth). Crack sizes
+  and the cut's spread stay on `inradius`. After: e.g. jagged 6-5 (w 0.27) 981 quartz
+  points, winding 0-8 (w 0.17) 219. A star's centre is small (w is a share of the
+  depth, and the deepest region is narrow). Control, sheets 0-11 old against new: 140
+  of 144 recipes identical, every non-egg among them; 3 eggs change tube depth and one
+  quartz-lined egg its cracks. Test: depth against random points; quartz on a
+  quartz-filled star; negative control sized by `inradius`, no quartz.
+- *Eye push re-measured.* The push that keeps a centre as without eyes (s.18's
+  criterion) had been set to 0.35 R on one prism star. On six 3D eggs (2 winding, 2
+  jagged, 2 lens; filled and lined), per spacing: medians 0.73 at 2.2 R, 0.57 at 3.5 R,
+  0.13 at 6 R (lenses higher at 2.2 R, 0.75-0.93). Now interpolated by spacing as the
+  vesicles' push: 0.75, 0.55, 0.15 (`effective`). Held out (5 winding and 2 lens eggs,
+  not used to set it; no jagged egg qualified): open centre with eyes over without, at
+  2.2 R old 0.01-0.35, new 0.54-2.5; at 6 R old 1.2-4.5, new 0.44-1.3; median over all
+  spacings old 0.79, new 1.00; within 0.5-2 x, old 54 %, new 64 %. A rule of thumb,
+  as before: the push varies with where domes fall.
+- *Needles.* Fine needles grow on all three styles (100-350 needle points per 100,000
+  on a solid egg, as on prism eggs); build 1.6-7.4 s against 0.4-1.4 s plain. No
+  change made; looks on renders.
+- *Eyes on lenses.* A lens deeper than about 4 mm takes eyes (radius cap half the
+  chalcedony); at about 1 in 3,000 eggs (1 in 60 lenses x 1 in 50 eyed) not tuned
+  apart.
 
 ## Limits
 

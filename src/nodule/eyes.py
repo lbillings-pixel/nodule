@@ -57,11 +57,14 @@ RATE_VARIABILITY = 0.2  # spread of the domes' sizes within a stone
 # is a mean, not a per-stone value.
 ADVANCE_AT = (2.2, 3.5, 6.0)
 ADVANCE_SHARE = (1.2, 1.1, 1.0)
-# A thunder egg's centre lies far from most of its wall (the star's arms), so domes there
-# push its centre much less: 0.35 R kept 16-4's quartz-lined centre as without eyes
-# (443 quartz points of 100,000; 0 gave 94, 0.5 gave 734, 1.0 gave 1854 and a void;
-# one stone measured, local `runs/eye-probe/te_push.py`).
-THUNDER_EGG_ADVANCE_SHARE = 0.35
+# A thunder egg's centre lies far from most of its wall (the star's arms, or a lens's
+# long sides), so domes there push its centre less, and far less when they stand apart.
+# Per spacing (ADVANCE_AT), the share that kept the centre as without eyes on six 3D
+# eggs (2 winding, 2 jagged, 2 lens; quartz-filled and -lined), medians of 0.73, 0.57
+# and 0.13 (lenses ran higher at 2.2 R: 0.75-0.93; local `runs/thunderegg-3d/
+# eye_push_3d.py`; ADR 0018 s.23). The earlier single 0.35 was measured on one prism
+# star (16-4), before thunder eggs were drawn in 3D.
+THUNDER_EGG_ADVANCE_SHARE = (0.75, 0.55, 0.15)
 # Above a floor the centre faces the floor's top, where few domes grow, so the push there
 # is also smaller: about 0.45 R kept the centres of 20-2 and 23-6 (quartz-lined) as
 # without eyes (0.35 R: 83 % and 81 % of their quartz; 0.7 R: 120 % and 430 %); at the
@@ -89,11 +92,11 @@ class Eyes(BaseModel):
         """How far the domes move the later bands inward where the centre forms
         (`ADVANCE_SHARE`; a thunder egg's `THUNDER_EGG_ADVANCE_SHARE`, a floor stone's
         `FLOOR_ADVANCE_SHARE`)."""
+        k = self.spacing_mm / self.radius_mm
         if outline == "thunder-egg":
-            return THUNDER_EGG_ADVANCE_SHARE * self.radius_mm
+            return float(np.interp(k, ADVANCE_AT, THUNDER_EGG_ADVANCE_SHARE)) * self.radius_mm
         if floor:
             return FLOOR_ADVANCE_SHARE * self.radius_mm
-        k = self.spacing_mm / self.radius_mm
         return float(np.interp(k, ADVANCE_AT, ADVANCE_SHARE)) * self.radius_mm
 
     def summary(self) -> str:

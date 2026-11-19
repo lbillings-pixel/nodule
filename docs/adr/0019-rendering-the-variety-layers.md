@@ -605,17 +605,31 @@ stones none; white fine needles alone take the finer grid, within the budget
        not expose it: the probe reads `evaluate`'s closure (a probe only; never a source
        for src, which would copy agatesim). *Measured* (*verified* for these 4 stones):
        phi's sign equals "the stage's quartz by grain, or VOID" at every one of 1.6 M
-       random points; at 15 000 surface points found by bisection on that predicate phi is
-       within 3e-10 mm of zero. Air = crystal level > 0 and phi > 0 (the gate kept for
-       other phases changed nothing here): lost hollow 38.7 / 38.4 / 15.7 % -> 2.5 / 1.9 /
-       1.6 % with phi read trilinearly from 0.2 mm world nodes; the control (0/2, crystals
-       cover the wall) unchanged at 0.07 %; false air 0-5 points in ~390 000 solid. With
+       random points; at 15 000 surface points found by bisection on that predicate |phi|
+       is 3e-10 mm at p99. Air = crystal level > 0 and phi > 0 (the gate kept for other
+       phases changed nothing here): lost hollow 38.7 / 38.4 / 15.7 % -> 2.5 / 1.9 / 1.6 %
+       with phi read trilinearly from 0.2 mm world nodes; the control (0/2, crystals cover
+       the wall) unchanged at 0.07 %. False air 0-5 points in ~390 000 solid, but now some
+       are chalcedony (1 on 3/9, 4 on 0/1 at 0.2 mm), where the grid's phi crosses zero
+       early: the build's "gated air is never chalcedony" no longer holds exactly. With
        phi exact the loss is 0 % on 3/9 and 0.23 % on 0/1 (all of it the crystal box's
        slivers); so the rest is the grid: 0.2 mm 2.7 / 1.5 %, 0.1 mm 0.66 / 0.51 %.
-       Normals: median 0.2-0.3 deg off at 0.1 mm (0.6-1.0 at 0.2); 2-4 % over 20 deg,
-       nearly all (91-95 %) within 0.1 mm of a crease of phi (where a floor or needle's
-       coat meets the wall lining: a real edge, rounded by the grid). Cost: phi at the
-       0.2 mm nodes 0.1-3 s and 1-3 MB a stone; 0.1 mm ~8x the nodes.
+       Surface position from the 0.2 mm grid: median 1-4 um, p99 0.03-0.08 mm, max 0.33 mm.
+       Normals: median 0.2-0.3 deg off at 0.1 mm (0.6-1.0 at 0.2); over 20 deg at 4.5 / 1.9
+       % of near-surface points on 0.1 mm (9.3 / 3.6 % on 0.2 mm). Of the 0.2 mm ones,
+       91-95 % lie where phi's own normal turns over 10 deg within 0.1 mm (17 % / 9 % of
+       all near-surface points do). That these are creases where a floor or needle's coat
+       meets the wall lining is *plausible* (3/9 has a floor, 0/1 needles), not checked
+       piece by piece. Cost: phi at the 0.2 mm nodes 0.1-3 s and 1-3 MB a stone; at 0.1 mm
+       ~8x the nodes (an estimate, not timed).
+     - *The other source, not tested:* reading the surface from agatesim's public fields
+       (`t_smooth` in the chalcedony, inverted through the growth schedule) gives phi
+       only inside the stone's solid; past the wall it would have to be extrapolated,
+       and it adds error at the same creases. Dropped, since phi exists exactly in agatesim.
+     - *How many stones* (runs/hollow-air/stage_census.py, recipes only, 173 s): of the 144
+       stones on sheets 0-11, 96 end in quartz crystals, and every one of them has a
+       chalcedony lining just before; 15 have thin crystal linings (last reach under 1 mm,
+       incl. 3/9, 8/4, 0/1). So the one rule covers every crystal stone drawn.
      - *What it needs:* an agatesim change exposing phi (beside `CrystalWall`, sharing
        `evaluate`'s code, outputs unchanged), the owner's to approve. phi needs the
        wall distance, noise, delay and coats, so no closed form for the GPU: proposed, a

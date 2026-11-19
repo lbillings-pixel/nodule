@@ -1861,7 +1861,8 @@ centres follow after that.
   5.7 / 2.6 / 0.9, approved 2D stars (40) 6.5 / 5.4 / 2.8 / 0.6. The lever was the fins'
   height profile, not the reach: centre height and lean within ±0.1 (probe ±0.2) and the
   tip keeping 0.7 of the root's height (probe 0.4). Cuts still change with height: about
-  one arm 4 mm off the middle and three 8 mm off, on all 16 cavities. Owner sheet
+  one arm 4 mm off the middle and three 8 mm off, on all 16 cavities. Middle cuts keep
+  `arm_meander` 0.061-0.146 (median 0.091; approved 2D 0.036-0.164). Owner sheet
   `runs/thunderegg-3d/out/thunderegg-3d-build-owner.png` (local).
 - *Hand-over to agatesim.* The level is the signed distance in cells to the blurred wall,
   measured to the tangent plane at the nearest wall crossing of a grid edge (crossings by
@@ -1876,8 +1877,10 @@ centres follow after that.
   every cavity, at least 4.3 mm deep.
 - *Cost (CPU).* Drawing 0.7-1.1 s, level 0.7-1.7 s, peak 0.21 GB; agatesim's first query
   2.5-5.6 s; stored 119-250 kB a cavity (in the recipe JSON). Drawn cavities are remembered
-  by their stream's seed within a run; agatesim keeps the last 4 built. The test suite
-  grew from about 10 to 15 minutes locally (sheets drawn again in many tests).
+  by their stream's seed within a run; agatesim keeps the last 4 built. Tests that draw
+  sheets slowed most (the shared sheets 0-11: about 9 s before, 126 s now); the full suite
+  took 15 minutes locally (not timed before the change; an estimated 5 more), and two
+  share tests now reuse the shared sheets instead of drawing their own.
 - *Streams.* The yaw, the old 2D arm count and the style are drawn as before, so jagged
   stones come out exactly as they were (a test checks this); a winding star draws from a
   stream spawned from the stone's own.

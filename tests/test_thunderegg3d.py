@@ -6,11 +6,13 @@ import numpy as np
 import pytest
 from agatesim._scipy import linear_at
 from agatesim.volume.sampled import Sampled
+from agatesim.volume.slicing import Plane
 
 import nodule.variety.recipe as recipe_module
 from nodule import thunderegg3d as t3
 from nodule.thunderegg import ArmShape, sinuous_mask, thunder_egg_outline
-from nodule.variety.recipe import body_height, solid_for
+from nodule.variety import StoneRecipe
+from nodule.variety.recipe import inradius, solid_for
 
 HEIGHTS = (-0.3, -0.15, 0.0, 0.15, 0.3)  # shape units: about +-8 mm on a 55 mm egg
 
@@ -61,6 +63,18 @@ def test_drawn_cavities_are_remembered_only_for_fresh_streams() -> None:
     used = np.random.default_rng(73)
     used.random()
     assert t3.sinuous_solid(used, 50.0)[1] != a[1]
+    # A spawned stream of a list seed (as in tests and sheets) is remembered too.
+    b = t3.sinuous_solid(np.random.default_rng([61, 0]).spawn(1)[0], 50.0)
+    assert t3.sinuous_solid(np.random.default_rng([61, 0]).spawn(1)[0], 50.0) is b
+
+
+def test_one_node_bridges_do_not_split_the_stored_cavity() -> None:
+    """Draw 1 of the build check (root 1717) broke into pieces in agatesim's 8-bit
+    store until the level kept only the largest stored piece."""
+    rng = np.random.default_rng(1717).spawn(20)[1]
+    size = float(rng.uniform(40, 70))
+    level = t3.level_cells(t3.sinuous_field(rng, ArmShape.draw(rng)))
+    t3.SolidConfig(sampled=t3.SampledLevel.of(level), host="volcanic", size_mm=size)  # type: ignore[arg-type]
 
 
 def test_jagged_thunder_eggs_draw_as_before(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -85,13 +99,18 @@ def test_jagged_thunder_eggs_draw_as_before(monkeypatch: pytest.MonkeyPatch) -> 
     assert jagged >= 5
 
 
-def test_the_cutter_aims_at_the_deepest_point() -> None:
-    from nodule.variety import draw_sheet
-    from nodule.variety.recipe import inradius
-
-    eggs = [r for r in draw_sheet(1) if r.arms == "sinuous"]
-    assert eggs
-    for r in eggs:
+def test_the_cut_passes_near_the_deepest_point(sheets: list[StoneRecipe]) -> None:
+    """Checked on the plane agatesim cuts, against a deepest point found apart from
+    `body_height` (random points, not its grid)."""
+    eggs = [r for r in sheets if r.arms == "sinuous"]
+    assert len(eggs) >= 8
+    # The cuts furthest from the box's middle: a wrong sign or frame shows most there.
+    for r in sorted(eggs, key=lambda e: -abs(e.cut.offset_mm))[:3]:
         solid = r.solid.build()
         assert r.solid.sampled is not None
-        assert abs(r.cut.offset_mm - body_height(solid)) <= 0.1 * inradius(solid) + 1e-9
+        lo, hi = (np.asarray(b, dtype=np.float64) for b in solid.bounds())
+        pts = np.random.default_rng(5).uniform(lo, hi, (200_000, 3))
+        pts = pts[solid.contains(pts)]
+        deep = pts[int(np.argmax(solid.wall_distance(pts)))]
+        plane = Plane.of(r.cut, np.asarray(solid.centre()))
+        assert abs(float((deep - plane.origin) @ plane.normal)) <= 0.1 * inradius(solid) + 1.0

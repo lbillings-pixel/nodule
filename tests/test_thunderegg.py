@@ -19,7 +19,7 @@ from nodule.thunderegg import (
     thunder_egg_outline,
     wall_corners,
 )
-from nodule.variety import draw_sheet
+from nodule.variety import StoneRecipe
 
 
 def _outline(style: ArmStyle, k: int, seed: int = 29) -> np.ndarray:
@@ -52,8 +52,8 @@ def test_outlines_are_valid_and_repeatable(style: ArmStyle) -> None:
         assert 30 <= len(a) <= 2000
 
 
-def test_sheets_mix_sinuous_and_jagged_thunder_eggs() -> None:
-    eggs = [r for seed in range(1, 13) for r in draw_sheet(seed) if r.outline == "thunder-egg"]
+def test_sheets_mix_sinuous_and_jagged_thunder_eggs(sheets: list[StoneRecipe]) -> None:
+    eggs = [r for r in sheets if r.outline == "thunder-egg"]  # the shared sheets 0-11
     assert len(eggs) == 24
     styles = [r.arms for r in eggs]
     assert set(styles) == {"sinuous", "jagged"}
@@ -67,7 +67,7 @@ def test_sheets_mix_sinuous_and_jagged_thunder_eggs() -> None:
     extra = {s.extra_arms for s in shapes}
     assert extra <= set(range(EXTRA_ARMS_RANGE[0], EXTRA_ARMS_RANGE[1] + 1))
     assert len(extra) >= 3
-    others = [r for r in draw_sheet(1) if r.outline != "thunder-egg"]
+    others = [r for r in sheets if r.outline != "thunder-egg"]
     assert {(r.arms, r.arm_shape) for r in others} == {(None, None)}
 
 

@@ -18,7 +18,7 @@ from nodule.dust import (
     strip_cover,
 )
 from nodule.specimen import Specimen, SpecimenCut
-from nodule.variety import StoneRecipe, VarietyLayers, build, cut_of, draw_sheet
+from nodule.variety import StoneRecipe, VarietyLayers, build, cut_of
 
 SPACING = 0.05  # mm
 
@@ -202,9 +202,9 @@ def test_cell_draws_are_fixed_per_cell() -> None:
     assert abs(np.corrcoef(big[:, 0], big[:, 1])[0, 1]) < 0.03
 
 
-def test_sheets_draw_dust_shares_and_never_every_form() -> None:
+def test_sheets_draw_dust_shares_and_never_every_form(sheets: list[StoneRecipe]) -> None:
     for seed in range(1, 9):
-        sheet = draw_sheet(seed)
+        sheet = sheets[12 * seed : 12 * (seed + 1)]  # the shared sheets 0-11, 12 stones each
         dusts = [r.dust for r in sheet]
         assert sum(bool(d and d.lines) for d in dusts) == 6
         assert sum(bool(d and d.specks) for d in dusts) == 3

@@ -246,18 +246,20 @@ def sinuous_solid(
     seq = rng.bit_generator.seed_seq
     if isinstance(seq, np.random.SeedSequence):
         fresh = np.random.default_rng(seq).bit_generator.state == rng.bit_generator.state
-        if fresh:
-            key = (str(seq.entropy), tuple(seq.spawn_key), seq.pool_size)
+        if fresh and seq.entropy is not None:
+            ent = seq.entropy
+            entropy = int(ent) if isinstance(ent, int) else tuple(int(e) for e in ent)
+            key = (entropy, tuple(seq.spawn_key), seq.pool_size)
             return _remembered(key, size_mm, fins)
     return _draw_solid(rng, size_mm, fins)
 
 
 @functools.lru_cache(maxsize=64)
 def _remembered(
-    key: tuple[str, tuple[int, ...], int], size_mm: float, fins: Fins
+    key: tuple[int | tuple[int, ...], tuple[int, ...], int], size_mm: float, fins: Fins
 ) -> tuple[ArmShape, SolidConfig]:  # fmt: skip
     entropy, spawn_key, pool = key
-    seq = np.random.SeedSequence(int(entropy), spawn_key=spawn_key, pool_size=pool)
+    seq = np.random.SeedSequence(entropy, spawn_key=spawn_key, pool_size=pool)
     return _draw_solid(np.random.default_rng(seq), size_mm, fins)
 
 

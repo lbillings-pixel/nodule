@@ -478,6 +478,10 @@ stones none; white fine needles alone take the finer grid, within the budget
        its pixels are 0.06 mm, coarser than the 0.025-0.05 mm edge rounding, so the
        panels barely differ (0.1 mm scatters more glints). The look cannot decide this;
        cost and risk do.
+     - *Owner's choice (2026-11-19 night): the owner lattice ("crystal list").* The
+       larger agatesim change is approved: agatesim returns the crystal stage's crystals
+       and ships their closed form for the GPU. Order step 2 is now this change; the
+       slivers' rule and the GPU cost are measured as it is built.
 
 ## Consequences
 

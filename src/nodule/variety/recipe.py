@@ -93,6 +93,21 @@ QUARTZ_SUPPLY = 0.3
 QUARTZ_GRAIN_MM = 0.5
 
 
+# Wide open centres (owner 2026-11-19, ADR 0018 s.24): a share of quartz-lined stones
+# leave a wide hollow. Set by two shares of the cavity depth, open and quartz, so the
+# lining keeps a few crystals' thickness: centre_width = open + quartz, lining =
+# quartz / centre_width. Sources give the frequency in words only ("most",
+# [@howard2018, p. 99]; "sometimes", [@goetze2020, p. 9]); the owner chose 1 in 3 and
+# the open range from a look sheet. All `effective`, *assumption*.
+WIDE_CENTRE_CHANCE = 1 / 3
+WIDE_OPEN_SHARE = (0.2, 0.5)
+WIDE_QUARTZ_SHARE = (0.08, 0.16)
+WIDE_QUARTZ_MIN_MM = 1.5  # three nucleation spacings (QUARTZ_GRAIN_MM)
+# Thunder eggs keep small centres: their druse is described as microcrystals in a
+# small central cavity [@kile2002, p. 255] (*plausible*, a magazine source).
+NARROW_CENTRE_OUTLINES = ("thunder-egg",)
+
+
 # `physical`: macro-quartz holds 78-141 ppm Fe against 262-969 in the bands
 # [@mrozik2023, Table 5]; 0.2 lies inside the range of ratios (about 0.08-0.54).
 QUARTZ_IRON_RATIO = 0.2

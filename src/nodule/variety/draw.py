@@ -52,12 +52,17 @@ from nodule.variety.recipe import (
     FRACTURED_STONES,
     FULL_WOBBLE_STONES,
     MILD_WOBBLE_SHARE,
+    NARROW_CENTRE_OUTLINES,
     OUTLINE_SHARES,
     ROUGHNESS_MM,
     ROUGHNESS_SHARES,
     THICK_FLOOR_CHANCE,
     TINT_CHANCE,
     WARP_SHARES,
+    WIDE_CENTRE_CHANCE,
+    WIDE_OPEN_SHARE,
+    WIDE_QUARTZ_MIN_MM,
+    WIDE_QUARTZ_SHARE,
     DustForms,
     FractureLayer,
     Mottle,
@@ -119,6 +124,7 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     # draw their mottle, so their other draws stand).
     kept = set(mottle_pool[: scaled_count(plan, MOTTLE_STONES, n)].tolist())
     dust = dust_plan(plan, outlines)
+    wide = wide_plan(plan, outlines, centres)  # drawn last: the plan's earlier draws stand
     stones = [
         draw_stone(
             i,
@@ -134,6 +140,7 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
             odd_cut=i in odd,
             full_wobble=i in full,
             dust=dust[i],
+            wide=wide[i],
         )
         for i in range(n)
     ]
@@ -368,6 +375,37 @@ def dust_plan(plan: np.random.Generator, outlines: list[str]) -> list[DustForms]
     return [(i in lines, i in specks, i in blobs) for i in range(n)]
 
 
+WideCentre = tuple[float, float] | None  # open and quartz shares of the cavity depth
+
+
+def wide_plan(
+    plan: np.random.Generator, outlines: list[str], centres: list[str]
+) -> list[WideCentre]:
+    """Which quartz-lined stones leave a wide open centre, 1 in WIDE_CENTRE_CHANCE,
+    not thunder eggs (ADR 0018 s.24), and their open and quartz shares of the cavity
+    depth. Every stone takes its three draws, so a stone's values do not depend on
+    which others qualify."""
+    out: list[WideCentre] = []
+    for o, c in zip(outlines, centres, strict=True):
+        u = plan.uniform(size=3)
+        if c != "quartz-lined" or o in NARROW_CENTRE_OUTLINES or u[0] >= WIDE_CENTRE_CHANCE:
+            out.append(None)
+            continue
+        lo, hi = WIDE_OPEN_SHARE
+        qlo, qhi = WIDE_QUARTZ_SHARE
+        out.append((lo + (hi - lo) * float(u[1]), qlo + (qhi - qlo) * float(u[2])))
+    return out
+
+
+def wide_centre(wide: tuple[float, float], depth_mm: float) -> tuple[float, float]:
+    """centre_width and lining of a wide open centre: open + quartz shares of the
+    cavity's depth (above any floor), the quartz at least WIDE_QUARTZ_MIN_MM thick."""
+    open_share, quartz = wide
+    quartz = max(quartz, WIDE_QUARTZ_MIN_MM / depth_mm)
+    width = min(open_share + quartz, 1.0)
+    return width, quartz / width
+
+
 def draw_stone(
     index: int,
     rng: np.random.Generator,
@@ -383,6 +421,7 @@ def draw_stone(
     odd_cut: bool = False,
     full_wobble: bool = False,
     dust: DustForms = (False, False, False),
+    wide: WideCentre = None,
 ) -> StoneRecipe:
     solid_config, arms, arm_shape = solid_for(rng, outline)  # type: ignore[arg-type]
     solid = solid_config.build()
@@ -446,6 +485,10 @@ def draw_stone(
         mottle=mottle,
         cut=cut,
     )
+    if wide is not None:  # set after the stone's own draws, so they stand (ADR 0018 s.24)
+        depth = cavity_depth(solid) * max(1.0 - recipe.floor, 0.1)
+        width, lining = wide_centre(wide, depth)
+        recipe = recipe.model_copy(update={"centre_width": width, "lining": lining})
     if cracked:  # drawn last, as before, so the stone's other draws stand
         cavity = None
         if centre == "quartz-lined":

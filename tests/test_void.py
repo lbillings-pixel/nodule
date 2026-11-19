@@ -96,8 +96,10 @@ def test_the_back_light_passes_the_void_and_the_dome_darkens_it() -> None:
 def cavity_stone() -> tuple[Specimen, SpecimenCut, BandRecord]:
     """Sheet 1's stone 2 (quartz-lined, its cavity open on the cut), a WINDOW_MM window
     on the cavity at GRID_MM pixels. Without the plumes it has drawn since ADR 0018 s.13:
-    they fill its centre."""
-    r = draw_sheet(1)[1].model_copy(update={"plumes": None})
+    they fill its centre. Its centre as drawn before wide centres (ADR 0018 s.24): wide
+    since, its void fills the window and leaves no ring of stone round it."""
+    narrow = {"centre_width": 0.2912713475204078, "lining": 0.39653363777511125}
+    r = draw_sheet(1)[1].model_copy(update={"plumes": None} | narrow)
     assert r.centre == "quartz-lined"
     specimen, _ = build(r)
     whole = cut_of(specimen, r, 0.5)

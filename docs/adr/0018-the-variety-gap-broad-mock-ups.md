@@ -2099,6 +2099,19 @@ carry the pages). Centres already grow pointed quartz with agatesim's crystal gr
   refraction, and to the no-glare look of 2026-11-09, so glints stay small and only
   on faces in open voids), report, and show a look before building.
 
+*Wide open centres, built (2026-11-19).* A look sheet (`runs/druse-centres/width_sheet.py`;
+two quartz-lined stones, today's centre against open shares 0.20, 0.35 and 0.50 of the
+cavity depth, quartz at 0.12) showed hollows of about 4, 7 and 10 mm across, 2-31 % of
+the cut. The owner chose **1 in 3 quartz-lined stones, open share 0.20-0.50 drawn per
+stone**. Thunder eggs keep their small centres ([@kile2002, p. 255]: microcrystals in
+a small central cavity; *assumption* that this holds for the sheet's eggs). A wide stone
+is set by two shares of the cavity depth above any floor, open and quartz (0.08-0.16,
+at least 1.5 mm, three nucleation spacings): `centre_width` = open + quartz, `lining` =
+quartz / `centre_width` (`variety.draw.wide_plan`, `wide_centre`; all `effective`,
+*assumption*). The plan draws it after every earlier draw, and a stone's own draws
+are made before the override, so every other stone keeps its recipe. The black, ragged
+void on these cuts is the stand-in that the faces work (below) replaces.
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

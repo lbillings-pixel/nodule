@@ -559,6 +559,13 @@ stones none; white fine needles alone take the finer grid, within the budget
      - *Next stone for the gate:* the false hollow's 2.8 mm margin equals the stage's
        last reach, so it likely shrinks with a thinner lining; the build checks the stone
        with the smallest `last_reach` it can find.
+     - *Owner's verdict (2026-11-19 late): all proposals accepted.* Material below the
+       slab by option (b): each view's own grid continued down under the hollow (no
+       seam, face unchanged; close-up cost measured when built). The 0.2 mm world id box
+       per stone, its per-node region gate, a 3 mm shell (`effective`), and slivers taking
+       the lining's material (*assumption*). agatesim's `CrystalWall` docs and ADR 0090
+       now say where the level's sign marks the hollow (wording only, approved). Next:
+       the build, unwired from `pack` and `cutface`, with tests and controls.
 
 ## Consequences
 

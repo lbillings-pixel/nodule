@@ -165,7 +165,8 @@ before any statistics.
   closed form (approved). Step 2 done (agatesim ADR 0090, pin 7b9fa04; s.6.12 "Step
   2"). Step 3 probe done (s.6.12 "Step 3"): a 0.2 mm world id box per stone, gate holds,
   ~25 s a hollow stone, wall test cheap per point; material below the slab open (shared
-  0.2 mm shell or each view's grid continued down: owner's choice). Next: build
+  0.2 mm shell or each view's grid continued down: owner chose the view's grid, and
+  accepted the rest, 2026-11-19 late). Next: build
   `nodule.render.voidbox` (unwired, tests with controls), then step 4.
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 

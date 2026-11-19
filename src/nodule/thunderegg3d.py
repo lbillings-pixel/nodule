@@ -20,7 +20,7 @@ A jagged core (ADR 0018 s.21; owner's choice 2026-11-18: zigzag walls) is the 2D
 jagged method in 3D: a faceted core and kinked wedge arms, their walls flat runs
 between points pushed in or out, built as a union of flat-sided (convex) pieces
 after Ross's planar shear faces [@ross1941, p. 729] and the stepped walls of the
-Saxon lithophysae [@goetze2023, Fig. 2; sections only, so the 3D form is an
+Saxon lithophysae [@goetze2024, Fig. 2; sections only, so the 3D form is an
 assumption]. Its level is exact, not blurred: the largest, over pieces, of the
 least distance to a piece's face planes.
 
@@ -421,7 +421,7 @@ def _jagged_arm(
 
 def jagged_union(rng: np.random.Generator, jg: Jagged = JAGGED) -> NDArray[np.float32]:
     """A jagged 3D core's level on the drawing grid (shape units, [x, y, z],
-    positive inside): the core and 3-6 arms [@goetze2023, Fig. 2], each arm from
+    positive inside): the core and 3-6 arms [@goetze2024, Fig. 2], each arm from
     its own spawned stream."""
     u = _Union()
     step = rng.uniform(*jg.step)

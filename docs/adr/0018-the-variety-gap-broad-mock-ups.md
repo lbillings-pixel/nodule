@@ -536,7 +536,7 @@ judged ruler-straight black cracks fake. All values `effective` unless cited.
   was meant for the number of arms. Side lobes are back to 0-2 per arm; a sinuous
   star now has 5-8 arms plus an extra -1 to +2 drawn per stone (4-10, the ends
   rare; `ArmShape.extra_arms`).
-- **Jagged mode (owner's choice 2026-11-08, after [@goetze2023]):** the paper's
+- **Jagged mode (owner's choice 2026-11-08, after [@goetze2024]):** the paper's
   text gives no cavity geometry, but its Fig. 2 (p. 26; five Saxon lithophysae,
   checked by Claude) shows irregular, asymmetric cores with angular, stepped walls,
   3 to about 6 arms and bands that keep the wall's corners; no smooth winding arms.
@@ -1897,7 +1897,7 @@ Item 17, second part (`nodule.thunderegg3d`, `jagged_union`, `jagged_solid`). Th
 probe's jagged attempt (s.19: voxel walls roughened by nearest-seed facets) cut as
 ragged blobs with specks; it was redrawn and shown to the owner first.
 
-- *Drawing.* The 2D jagged method [@goetze2023, Fig. 2] carried into 3D as a union of
+- *Drawing.* The 2D jagged method [@goetze2024, Fig. 2] carried into 3D as a union of
   flat-sided (convex) pieces, after Ross's planar shear faces [@ross1941, p. 729]. The
   figure gives sections only, so the 3D form is an assumption. A faceted core (the 2D
   core's irregular 5-8-cornered ring, radius 0.32-0.52, with smaller rings above and

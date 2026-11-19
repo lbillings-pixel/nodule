@@ -17,7 +17,7 @@ stays as the negative control of the sinuous check and is never drawn on a sheet
   (thunderegg-1, agatesim `specimens/observations.md`; one specimen, so the look
   is *plausible*, never evidence for a mechanism; ADR 0002).
 - *jagged*: irregular, asymmetric cores of 3-6 broad arms with kinks and stepped,
-  zigzag walls, as in five Saxon lithophysae [@goetze2023, Fig. 2, p. 26]; also
+  zigzag walls, as in five Saxon lithophysae [@goetze2024, Fig. 2, p. 26]; also
   *plausible* as a look only.
 
 A sinuous star is a union of discs along winding arm centrelines around a lumpy
@@ -57,7 +57,7 @@ WIDTH_RANGE = (0.75, 1.3)  # multiplies each arm's half-width, drawn log-uniform
 ARMS_BASE = (5, 8)  # arms before the spread [@ross1941, p. 727: five-pointed stars]
 EXTRA_ARMS_RANGE = (-1, 2)  # added to the base count: 4-10 arms, the ends rare
 JAGGED_SHARE = 1 / 3  # owner, 2026-11-08 (Claude's suggested share); `effective`
-JAGGED_ARMS = (3, 6)  # arms of a jagged core [@goetze2023, Fig. 2]
+JAGGED_ARMS = (3, 6)  # arms of a jagged core [@goetze2024, Fig. 2]
 # `wall_corners` above this reads as jagged. Over 40 draws each (2026-11-08):
 # jagged 0.70-0.87, sinuous 0.07-0.36, angular 0.40-0.62.
 JAGGED_MIN = 0.66
@@ -244,7 +244,7 @@ def thunder_egg_outline(
 
 def jagged_mask(rng: np.random.Generator, arms: int) -> BoolArray:
     """A jagged core before its walls are stepped: kinked wedges, broad at the
-    base, around an irregular polygon [@goetze2023, Fig. 2]. Each arm draws from
+    base, around an irregular polygon [@goetze2024, Fig. 2]. Each arm draws from
     its own spawned stream."""
     corners = int(rng.integers(5, 9))
     th = np.sort((np.arange(corners) + rng.uniform(-0.3, 0.3, corners)) * 2 * math.pi / corners)

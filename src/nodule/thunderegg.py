@@ -1,4 +1,9 @@
-"""Thunder-egg star cavities, drawn as 2D outlines for agatesim (ADR 0018 s.10).
+"""Thunder-egg star cavities, drawn as 2D outlines (ADR 0018 s.10).
+
+Stones no longer use these outlines (extruded into prisms): both drawn styles
+are now drawn in 3D by `nodule.thunderegg3d` (ADR 0018 s.20-21), which takes
+its winding arms in plan from `arm_path` here. The 2D stars stay as the approved
+looks the 3D ones are measured against, and their checks as reference.
 
 Three styles exist because the sources disagree on how arms look. The owner
 chose (2026-11-08) sinuous on most stones and jagged on about 1 in 3; angular

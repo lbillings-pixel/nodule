@@ -594,6 +594,8 @@ stones none; white fine needles alone take the finer grid, within the budget
        (air beyond both), its source to be measured first (read from agatesim's fields
        from outside, as in step 1, or an agatesim change); (B) the gate on a finer grid,
        steps smaller but normals still wrong there; (C) such stones keep the stand-in.
+     - *Owner's choice (2026-11-19 night): (A)*, starting with a probe of the surface's
+       source; an agatesim change would be asked for separately.
 
 ## Consequences
 

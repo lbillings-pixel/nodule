@@ -2101,9 +2101,10 @@ carry the pages). Centres already grow pointed quartz with agatesim's crystal gr
 
 *Wide open centres, built (2026-11-19).* A look sheet (`runs/druse-centres/width_sheet.py`;
 two quartz-lined stones, today's centre against open shares 0.20, 0.35 and 0.50 of the
-cavity depth, quartz at 0.12) showed hollows of about 4, 7 and 10 mm across, 2-31 % of
+cavity depth, quartz at 0.12) showed hollows of radius about 4, 7 and 10 mm, 2-31 % of
 the cut. The owner chose **1 in 3 quartz-lined stones, open share 0.20-0.50 drawn per
-stone**. Thunder eggs keep their small centres ([@kile2002, p. 255]: microcrystals in
+stone**; with thunder eggs left out that is 6 of 72 stones on sheets 0-5 (about 1 in
+12). Thunder eggs keep their small centres ([@kile2002, p. 255]: microcrystals in
 a small central cavity; *assumption* that this holds for the sheet's eggs). A wide stone
 is set by two shares of the cavity depth above any floor, open and quartz (0.08-0.16,
 at least 1.5 mm, three nucleation spacings): `centre_width` = open + quartz, `lining` =
@@ -2111,6 +2112,46 @@ quartz / `centre_width` (`variety.draw.wide_plan`, `wide_centre`; all `effective
 *assumption*). The plan draws it after every earlier draw, and a stone's own draws
 are made before the override, so every other stone keeps its recipe. The black, ragged
 void on these cuts is the stand-in that the faces work (below) replaces.
+
+*Faces in the void: what glints need (measured 2026-11-19, `runs/druse-centres/
+glint_probe.py`; nothing built).*
+- *The void is not lit.* The look renders a hollow as its lining's material under a
+  stand-in absorption (`cutface.VOID_MUA`), so nothing inside it is seen; air with
+  refraction at the lining is item 19 (ADR 0019 A2).
+- *No flat faces.* agatesim's 3D crystals are round prisms with a cone tip
+  (`agatesim/volume/growth.py`, `across` is the radial distance), at quartz's 38°
+  half-angle. A cone mirrors a small lamp as a thin streak, not a whole face; six flat
+  faces per tip would need an agatesim change.
+- *The look's light gives no glints.* It is an even dome without the face's mirror
+  reflection (the owner's no-glare look, ADR 0019 B3). Under an even dome every
+  surface direction sees the same light, so sparkle needs a small lamp.
+- *Measured.* Looking straight into one wide stone's hollow (sheet 4 stone 5, open
+  ~9 mm; depth map by marching 0.06 mm pixels into the stone to 14 mm and bisecting to
+  0.0001 mm, 9.5 M points, 107 s, 0.5 GB): the far wall lies a median 9.2 mm below the
+  face, tilted 11-81° from the view (10-90 %). A lamp of 3° half-angle puts 0.03-0.09 %
+  of wall pixels in the mirror cone at 15°, 30°, 45° and 60° off the view (three
+  azimuths each): 30-74 separate glints per view, mostly specks on the cone tips.
+  Control: a smooth spherical bowl gives its analytic share (0.066-0.084 % against
+  0.073-0.084 % expected). Negative control: depths on a 0.0125 mm lattice (a first
+  run's 3 bisections) put slopes ~6° apart, coarser than the cone, and gave false
+  zeros at three angles and a false 0.39 % at 45°; that run's numbers were withdrawn.
+  A mock-up (diffuse stand-in shading, lamp at 50°, glints bloomed to 0.3 mm) is
+  `runs/druse-centres/glint-probe.png`.
+- *The owner's choice (2026-11-19).* Hollows stay black for now. Item 19 makes the hollow
+  air, so its crystal wall shows, and adds an optional small-lamp view for sparkle (the
+  soft look stays the default). It also gives the crystals six flat faces in agatesim
+  (the owner approved that agatesim change), so faces flash rather than speck.
+
+*Chalcedony to quartz, sharp or graded (2026-11-19).* Today every transition is sharp:
+agatesim switches to crystal growth in one step, and the renderer reads all quartz as
+one clear material (grain ids unused), so finer crystals could not show. A graded
+transition is therefore a clearing of the last chalcedony (`per_step`): translucency
+rises toward clear by up to 0.8 and iron falls toward quartz's, linearly over the zone,
+so the layering stays faintly visible at the contact [@conte2022, p. 8]. Look renders
+of two stones, sharp against 3 mm graded (`runs/druse-centres/transition_render.py`,
+46 min for four whole faces), showed it under both lights. The owner approved **1 in 3
+quartz centres graded, zone 2-4 mm per stone, the rest sharp** (`effective`,
+*assumption*; the 2 : 1 split from the sources' lean toward sharp, above).
 
 ## Limits
 

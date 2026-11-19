@@ -288,7 +288,9 @@ def test_star_eggs_keep_their_quartz_centres(
     `inradius` on solids that are not drawn in 3D. Negative control: sized by
     `inradius`, the same stone's centre fills with chalcedony."""
     vesicle = SolidConfig(preset="vesicle-round", size_mm=40.0).build()
-    assert cavity_depth(vesicle) == inradius(vesicle)
+    assert cavity_depth(vesicle) == inradius(vesicle)  # vesicles build as before
+    irregular = SolidConfig(preset="nodule-irregular", size_mm=50.0, yaw_deg=20.0).build()
+    assert cavity_depth(irregular) < 0.9 * inradius(irregular)  # measured: 0.82-0.85
     egg = next(
         r
         for r in sheets

@@ -2034,6 +2034,21 @@ scripts `runs/thunderegg-3d/eye_needle_sweep.py`, `eye_push_3d.py`, `eye_push_ch
 - *Needles.* Fine needles grow on all three styles (100-350 needle points per 100,000
   on a solid egg, as on prism eggs); build 1.6-7.4 s against 0.4-1.4 s plain. No
   change made; looks on renders.
+- *Irregular (sediment) nodules too.* Their measured depth is 0.82-0.85 of
+  `inradius` (round, lobed and almond vesicles 0.96-1.0), and none of sheets 0-11's
+  four quartz-lined irregular stones had any open centre in 3D. `cavity_depth` now
+  measures every solid (0.05-0.11 s) and uses the depth where it falls below
+  `DEPTH_GAP` 0.95 of the inradius (`effective`), so vesicles build as before. After:
+  void in all four (0.12-0.42 % of the cavity), on 3 of 4 cuts. Control: one recipe
+  of 144 changes (an irregular stone's tube depth).
+- *Why quartz-lined cuts rarely show a cavity (the owner's low-wait question, ADR
+  0019).* Over the 48 quartz-lined stones of sheets 0-11: the cut passes a median
+  1.2 mm from the open centre's middle and shows void on 40 (more than 0.2 % of the
+  cut). The open centre is small by recipe: radius (1 - lining) w x depth, median 1.3
+  mm (w is drawn with mean 0.2, lining 0.3-0.7), covering about 1-5 % of the cut
+  (largest 10 %). So the cutter is not at fault; the recipe's proportions are. Wider
+  open centres would be an owner's choice (sources in `notes/n1-reading/
+  item18-druse.md` disagree on how often a void is left: "most", "sometimes").
 - *Eyes on lenses.* A lens deeper than about 4 mm takes eyes (radius cap half the
   chalcedony); at about 1 in 3,000 eggs (1 in 60 lenses x 1 in 50 eyed) not tuned
   apart.

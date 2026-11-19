@@ -477,14 +477,24 @@ def cavity_depth(solid: Solid) -> float:
     grid a side within one step of it), and the `inradius` of other solids, as before.
     A winding star's box is 2-2.7 x as thick as its deepest point lies from the wall
     (jagged cores 1.3-1.6 x, lenses 1.03-1.06 x), so sizing its bands by `inradius`
-    grew chalcedony over every quartz centre (ADR 0018 s.23)."""
-    if not isinstance(solid, Sampled):
-        return inradius(solid)
+    grew chalcedony over every quartz centre (ADR 0018 s.23). Other solids keep their
+    `inradius` unless the measured depth is below DEPTH_GAP of it: the irregular
+    nodules (0.82-0.85) are measured, the round, lobed and almond vesicles (0.96-1.0)
+    are not, so they build as before."""
     deep, step = _deepest(solid)
     f = np.linspace(-1.0, 1.0, 9)
     near: FloatArray = np.stack(np.meshgrid(f, f, f, indexing="ij"), axis=-1).reshape(-1, 3)
     pts: FloatArray = deep + near * step
-    return float(np.max(solid.wall_distance(pts[solid.contains(pts)])))
+    depth = float(np.max(solid.wall_distance(pts[solid.contains(pts)])))
+    if isinstance(solid, Sampled):
+        return depth
+    r = inradius(solid)
+    return depth if depth < DEPTH_GAP * r else r
+
+
+# `effective`: below this share of the inradius, a solid's measured depth sizes its
+# bands (ADR 0018 s.23); a few per cent is left to the bands' wobble.
+DEPTH_GAP = 0.95
 
 
 def recipe_size(solid: Solid) -> float:

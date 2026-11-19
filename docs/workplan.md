@@ -136,6 +136,11 @@ before any statistics.
   sized by the box); fixed with the true depth, eye push re-measured (ADR 0018 s.23).
   Still open: owner's look at 3D eggs with centres, eyes and needles on renders.
 - [ ] 18. Druse crystal faces in open cavities.
+  2026-11-19 night: reading done (`notes/n1-reading/item18-druse.md`; catalogue notes
+  updated). Centres already grow agatesim's pointed crystals (0.5 mm grain); open
+  centres are small and their void renders black with ragged edges. Owner's choices
+  needed before building (open-centre size, sharp/gradual transition, how faces in
+  the void should look; the last overlaps item 19's air with refraction).
 - [ ] 19. Renderer physics: scattering in the camera code (ask the owner
   first), air with refraction in cavities (ADR 0019 A2), the fuller red fix
   (several wavelengths per channel; recheck ADR 0014), white ghost plumes.
@@ -163,7 +168,9 @@ In this order (ideas doc, section 4):
 
 ## Low wait list (owner, 2026-11-09)
 
-Why quartz-lined recipes rarely show a cavity on the cut; dust hard to see in
+Why quartz-lined recipes rarely show a cavity on the cut (ANSWERED 2026-11-19, ADR
+0018 s.23: the cut finds the open centre on 40 of 48, but the recipe draws it small,
+median radius 1.3 mm; widening it is the owner's call); dust hard to see in
 close-ups; stones with very thin drawn centres that rarely reach the cut.
 
 ## Standing limits

@@ -482,6 +482,21 @@ stones none; white fine needles alone take the finer grid, within the budget
        larger agatesim change is approved: agatesim returns the crystal stage's crystals
        and ships their closed form for the GPU. Order step 2 is now this change; the
        slivers' rule and the GPU cost are measured as it is built.
+   - *Step 2, the agatesim change: done* (2026-11-19; agatesim ADR 0090, 7b9fa04, pin
+     moved). `VolumeSimulation.crystal_wall` gives the last crystal stage's crystals
+     (`CrystalWall`: sites, axes, tip angle, side rate, last reach, grain offset;
+     `arrival` = agatesim's `assign`, `level` positive exactly where Fields say VOID,
+     `packed()` rows), and `agatesim.volume.crystal_gpu.CRYSTAL_TIME_CUDA` ships the
+     closed form as CUDA device functions (time and gradient: the exact normal),
+     tested on the GPU against `pair_times` and finite differences, with controls.
+     agatesim's fields are unchanged (hash before and after). The min over a point's
+     corner crystals stays in nodule. *GPU cost, measured* (RTX 4070, 10 M random
+     points, float32): the earliest of 8 crystals with the gradient 0.41 ns a point,
+     one trilinear fetch from a 260^3 grid 0.88 ns; with the 8 owner ids to fetch, a wall
+     test should cost about one fetch (*plausible*: synthetic points, one card). Smoke
+     check on the probe stone (runs/hollow-air/wall_smoke.py, 33 s): the public wall is
+     the stage the closure walk found, and its level's sign matches VOID at every
+     sampled point.
 
 ## Consequences
 

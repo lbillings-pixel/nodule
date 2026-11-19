@@ -162,7 +162,8 @@ before any statistics.
   level for the hollow's wall (needs approval), a void box below the fill, the camera.
   Owner approved it all; probe done (s.6.12 "Step 1"): a sampled level rounds crystal
   edges, so the owner chose an owner lattice, agatesim shipping its crystals and their
-  closed form (approved). Next: that agatesim change.
+  closed form (approved). Step 2 done (agatesim ADR 0090, pin 7b9fa04; s.6.12 "Step
+  2"). Next: step 3, the void box (owner ids per node, slivers rule).
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

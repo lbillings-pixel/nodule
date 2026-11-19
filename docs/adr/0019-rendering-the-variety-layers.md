@@ -662,18 +662,23 @@ stones none; white fine needles alone take the finer grid, within the budget
        takes the parents' trilinear mean. Air is the probe's rule R2: box level > 0, phi
        > 0, and all 8 id-cell corners gated or chalcedony (phase) at nodes with |phi| <
        0.6 mm. Without phi (agatesim's None, or `with_phi=False`) the box is the gate-only
-       box, ids and gate unchanged. Tests: tests/test_voidbox.py (6, 16 s), a thin crystal
+       box, ids and gate unchanged. Tests: tests/test_voidbox.py (7, 18 s), a thin crystal
        lining with the gate-only box as negative control, phi equal over a wider box,
-       trilinear exact on linear fields.
+       exact nodes beside a synthetic jump (the parents' mean as control), trilinear
+       exact on linear fields.
        - *Measured* (runs/hollow-air/phi_box_check.py and .log; 400 000 random points in
          each box; *verified* for these stones): lost hollow gate-only -> with phi: 3/9
          38.5 -> 0.53 %, 0/1 14.1 -> 0.45 %, 8/4 38.2 -> 0.50 %; control 0/2 0.063 %
-         unchanged. False air 0, 7 (2 of them chalcedony), 0, 0 points: "gated air is
-         never chalcedony" (step 3 build) no longer holds exactly; the test stone keeps
-         it. Against phi evaluated at every 0.1 mm node: band and dense agree in sign
-         at every filler node (filler nodes lie >= 0.55 mm from the surface) and give
-         the same air at all 400 000 points on all four stones. Cost: whole box with phi
-         0.8-12 s, traced peak 0.21-0.27 GB, phi grid 4-20 MB.
+         unchanged. False air gate-only -> with phi: 0 -> 0 on 3/9, 8/4, 0/2; 4 -> 7 on
+         0/1, 2 of the 7 chalcedony: "gated air is never chalcedony" (step 3 build) now
+         holds for the gate-only box only. Against phi evaluated at every 0.1 mm node:
+         band and dense agree in sign at every filler node (filler nodes lie >= 0.55 mm
+         from the surface) and give the same air at all 400 000 points on all four
+         stones. The sign-change rule picked no node on 0/1 or 0/2 (tested on a synthetic
+         jump only). Cost (runs/hollow-air/phi_cost.py, .log): phi adds 5.6 s on 0/1 (box
+         5.0 -> 10.6 s) and 6.2 s on 0/2 (6.0 -> 12.2 s); boxes with phi 0.8-12 s, traced
+         peak 0.21-0.27 GB, phi grid 4-20 MB. The step 3 probe stone's 25 s was a larger
+         box (4/4, 5.5 M nodes), not timed with phi.
 
 ## Consequences
 

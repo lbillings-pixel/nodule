@@ -9,7 +9,14 @@ from agatesim.fields import Phase
 from agatesim.volume.config import SliceConfig, SolidConfig
 from agatesim.volume.simulate import VolumeSimulation
 
-from nodule.render.voidbox import CORNERS, VoidBox, build_void_box, trilinear
+from nodule.render.voidbox import (
+    CORNERS,
+    VoidBox,
+    _phi_grid,  # pyright: ignore[reportPrivateUsage]
+    _upsample,  # pyright: ignore[reportPrivateUsage]
+    build_void_box,
+    trilinear,
+)
 from nodule.variety import StoneRecipe, build
 
 
@@ -49,18 +56,23 @@ def in_box(box: VoidBox, n: int, seed: int) -> np.ndarray:
     return lo + (hi - lo) * np.random.default_rng(seed).random((n, 3))
 
 
-def test_gated_air_is_the_hollow_and_never_chalcedony(
+def test_gated_air_is_the_hollow_and_almost_never_chalcedony(
     lined: tuple[VolumeSimulation, VoidBox],
 ) -> None:
+    """The gate-only box never calls chalcedony air; with phi, its grid may cross zero a
+    little early (a few points in 1e5 measured, ADR 0019 s.6.12 'Built in nodule')."""
     vol, box = lined
     p = in_box(box, 200_000, 0)  # points inside cells, not only nodes
     ins = vol.solid.contains(p)
     ph = np.where(ins, vol.evaluate(p, ins).phase, 254)
     air = box.air(p)
+    old = build_void_box(vol, with_phi=False)
+    assert old is not None
     chal, void, quartz = (ph == Phase.CHALCEDONY), (ph == Phase.VOID), (ph == Phase.QUARTZ)
     # Control: the level's sign alone finds a false hollow behind the crystals' sites.
     assert np.sum(chal & (box.level(p) > 0)) > 1000
-    assert not np.any(air & chal)
+    assert not np.any(old.air(p) & chal)
+    assert np.mean(air[chal]) < 1e-4
     assert not np.any(air & (ph == 254))
     assert void.sum() > 1000
     assert np.mean(air[void]) > 0.995  # slivers aside
@@ -133,6 +145,25 @@ def test_without_phi_the_box_is_the_gate_only_box(
     assert np.array_equal(old.air(p), want)
     with pytest.raises(ValueError, match="no chalcedony level"):
         old.chalcedony_level(p)
+
+
+def test_phi_is_exact_beside_a_jump(lined: tuple[VolumeSimulation, VoidBox]) -> None:
+    """A level jumping from +2 to -2 (as at a tube core, far beyond the band) is
+    evaluated exactly beside the jump, not averaged across it."""
+    vol, _ = lined
+    a, shape, h = np.array([-3, -3, -3]), (6, 6, 6), 0.2
+    x0 = (a[0] + 2) * h + 0.03  # between the 0.1 mm nodes 4 and 5 from the box's start
+
+    def step(p: np.ndarray, inside: np.ndarray) -> np.ndarray:
+        return np.where(p[:, 0] > x0, 2.0, -2.0)
+
+    fine, near = _phi_grid(vol, step, a, shape, h)
+    assert len(near) == 0  # nothing within the band: only the sign rule picks nodes
+    assert np.all(np.abs(fine) == 2.0)
+    # Control: the parents' mean alone puts zeros at the jump.
+    coarse = np.where((np.arange(6)[:, None, None] + a[0]) * h > x0, 2.0, -2.0)
+    mean = _upsample(np.broadcast_to(coarse, shape).astype(np.float32), "mean")
+    assert np.any(mean == 0.0)
 
 
 def test_trilinear_is_exact_on_linear_fields() -> None:

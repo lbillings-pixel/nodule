@@ -7,12 +7,16 @@ import pytest
 from agatesim._scipy import linear_at
 from agatesim.volume.sampled import Sampled
 from agatesim.volume.slicing import Plane
+from agatesim.volume.solids import Solid
 
+import nodule.variety.draw as draw_module
 import nodule.variety.recipe as recipe_module
 from nodule import thunderegg3d as t3
 from nodule.thunderegg import ARMS_BASE, JAGGED_SHARE, ArmShape, sinuous_mask
 from nodule.variety import StoneRecipe
-from nodule.variety.recipe import body_height, inradius, solid_for
+from nodule.variety.cracks import draw_fractures
+from nodule.variety.draw import draw_stone
+from nodule.variety.recipe import FractureLayer, body_height, crack_scale, inradius, solid_for
 
 HEIGHTS = (-0.3, -0.15, 0.0, 0.15, 0.3)  # shape units: about +-8 mm on a 55 mm egg
 
@@ -164,6 +168,54 @@ def test_agatesim_lens_solid_matches_the_drawing_in_3d() -> None:
     assert bad.mean() < 0.01
     assert np.abs(solid.level(pts[bad])).max() < 0.5 * solid.cell_mm
     assert solid.contains(np.asarray(solid.centre())[None, :])[0]
+
+
+def _cracked_egg(seed: int) -> StoneRecipe:
+    rng = np.random.default_rng(seed)
+    return draw_stone(
+        0, rng, "thunder-egg", "solid", "neutral", "mild", floor=False, cracked=True, mottled=False
+    )
+
+
+def test_lens_egg_cracks_are_sized_to_the_egg(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Owner, 2026-11-19 (ADR 0018 s.22): a lens egg's cracks scale with the egg's
+    size, not its thin depth; nicks stay 1-4 mm. Negative control: a star egg's
+    cracks follow its inradius and ignore LENS_CRACK_SHARE."""
+    cfg = t3.lens_solid(np.random.default_rng(83), 55.0)
+    assert crack_scale(cfg, cfg.build(), "lens") == pytest.approx(0.3 * 55.0)
+    assert crack_scale(cfg, cfg.build(), "lens") > 1.5 * inradius(cfg.build())
+
+    solid = cfg.build()
+    small = draw_fractures(np.random.default_rng(9), solid, False, None, 10.0)
+    big = draw_fractures(np.random.default_rng(9), solid, False, None, 20.0)
+    pairs = [(s.radius_mm, b.radius_mm) for s, b in zip(small, big, strict=True)]
+    assert any(b != s for s, b in pairs)
+    assert all(b == pytest.approx(2 * s) or (b == s and 1.0 <= s <= 4.0) for s, b in pairs)
+
+    seen: list[tuple[float | None, float]] = []
+
+    def spy(
+        rng: np.random.Generator,
+        solid: Solid,
+        red: bool,
+        cavity_mm: float | None = None,
+        scale_mm: float | None = None,
+    ) -> tuple[FractureLayer, ...]:
+        seen.append((scale_mm, inradius(solid)))
+        return draw_fractures(rng, solid, red, cavity_mm, scale_mm)
+
+    monkeypatch.setattr(draw_module, "draw_fractures", spy)
+    for lens in (True, False):
+        monkeypatch.setattr(recipe_module, "LENS_SHARE", 1.0 if lens else 0.0)
+        stone = _cracked_egg(5)
+        assert (stone.arms == "lens") is lens
+        scale, r = seen[-1]
+        assert scale is not None
+        if lens:
+            assert scale == pytest.approx(0.3 * stone.solid.size_mm)
+            assert scale > 1.5 * r
+        else:
+            assert scale == pytest.approx(r)  # negative control: a star keeps its inradius
 
 
 def _jagged_inside(k: int) -> np.ndarray:

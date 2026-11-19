@@ -105,7 +105,11 @@ def enters_cavity(solid: Solid, f: FractureLayer, cavity_mm: float) -> bool:
 
 
 def draw_fractures(
-    rng: np.random.Generator, solid: Solid, red: bool, cavity_mm: float | None = None
+    rng: np.random.Generator,
+    solid: Solid,
+    red: bool,
+    cavity_mm: float | None = None,
+    scale_mm: float | None = None,
 ) -> tuple[FractureLayer, ...]:
     """A cracked stone's cracks (ADR 0018 s.7, s.10): 3-8 partial cracks running in
     from the rim, 0-3 nicks 1-4 mm long at the rim and, on 1 cracked stone in 3,
@@ -114,8 +118,9 @@ def draw_fractures(
     fill. None is open; 1 in 3 is straight and the rest bend gently. The bends are
     drawn last, so the cracks lie where they were first drawn. With an open cavity
     (`cavity_mm` in from the wall), a crack that would reach it is redrawn, and
-    left out after CRACK_TRIES."""
-    r = inradius(solid)
+    left out after CRACK_TRIES. Crack sizes are shares of `scale_mm` (default the
+    inradius; see `crack_scale`)."""
+    r = inradius(solid) if scale_mm is None else scale_mm
     shares = RED_CRACK_FILLS if red else CRACK_FILLS
     fill: Fill = str(rng.choice(list(shares), p=share_weights(shares)))  # type: ignore[assignment]
     stain = float(rng.uniform(*STAIN))

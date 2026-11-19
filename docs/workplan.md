@@ -130,6 +130,8 @@ before any statistics.
   2026-11-18 night: lens centres BUILT (1 in 60 thunder eggs; owner's pick from a
   sheet: thin to fuller leaning fuller, 1 in 4 bent; ADR 0018 s.22). Still open:
   renders to the owner, and whether cracks on lens eggs should be sized to the egg.
+  2026-11-19: renders sent; owner chose cracks sized to the egg, BUILT (0.3 x size;
+  ADR 0018 s.22). Still open: eyes and needles on 3D eggs, rerendered lens to the owner.
 - [ ] 18. Druse crystal faces in open cavities.
 - [ ] 19. Renderer physics: scattering in the camera code (ask the owner
   first), air with refraction in cavities (ADR 0019 A2), the fuller red fix

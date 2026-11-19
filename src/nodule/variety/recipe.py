@@ -432,6 +432,22 @@ def inradius(solid: Solid) -> float:
     return 0.5 * float(np.min(np.asarray(hi) - np.asarray(lo)))
 
 
+# `effective`: a star thunder egg's inradius as a share of its size (sinuous 0.25-0.40,
+# median 0.33; jagged 0.21-0.32, median 0.27; ADR 0018 s.22). A lens's own inradius is
+# only half its depth (0.11-0.19 of its size), which left its cracks barely showing.
+LENS_CRACK_SHARE = 0.3
+
+
+def crack_scale(config: SolidConfig, solid: Solid, arms: str | None) -> float:
+    """The length (mm) a stone's cracks are sized by (ADR 0018 s.10, s.22): its
+    inradius, except on a lens-centred thunder egg, where it is the inradius a star egg
+    of that size typically has, so the cracks are sized to the egg (owner, 2026-11-19).
+    How far the cracks keep from an open centre still uses the true inradius."""
+    if arms == "lens":
+        return LENS_CRACK_SHARE * config.size_mm
+    return inradius(solid)
+
+
 def body_height(solid: Solid) -> float:
     """How far (mm, along z) the deepest point of a drawn 3D cavity lies from the
     centre of its box: where a thunder egg's cutter aims (ADR 0018 s.20). 0 for

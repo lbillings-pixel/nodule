@@ -1986,8 +1986,17 @@ owner's 1 in 50-75; s.19) has a lens centre instead of a star.
   escape tubes. `inradius` (half the box's thinnest side) is 3.4-11.3 mm against
   roughly 15-20 mm for stars, and here it is close to the true depth. Band growth and
   the quartz centre scale with it, as they should; cracks scale with it too, so on a
-  lens egg they come out about half as long as on a star egg of the same size (open:
-  the owner's call on a render).
+  lens egg they come out about half as long as on a star egg of the same size.
+- *Cracks sized to the egg (owner, 2026-11-19).* On a forced lens render (sheet 0,
+  stone 9) the cracks barely showed; the owner chose to size them to the egg. On a
+  lens egg, crack sizes (long cracks' radius and offset, partial cracks' and hairlines'
+  reach) are now shares of `LENS_CRACK_SHARE` x size, 0.3 (`effective`: a star egg's
+  inradius over its size is 0.25-0.40 for winding stars, median 0.33, and 0.21-0.32
+  for jagged cores, median 0.27, 40 eggs; lenses 0.11-0.19). Nicks stay 1-4 mm, and
+  how far cracks keep from an open centre still uses the true inradius
+  (`recipe.crack_scale`). No draws change, so other stones stand: recipes of sheets
+  0-11, old code against new, 144 of 144 identical (the one natural lens has no
+  cracks). A test checks the scale passed on a lens and, as negative control, a star.
 
 ## Limits
 

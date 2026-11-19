@@ -65,6 +65,7 @@ from nodule.variety.recipe import (
     StoneRecipe,
     Tint,
     body_height,
+    crack_scale,
     inradius,
     log_uniform,
     quota,
@@ -286,6 +287,7 @@ def hairline(
     None if CRACK_TRIES draws all reach an open cavity, meet the cut at under
     CRACK_CUT_ANGLE, or find no place on the cut's outline."""
     r = inradius(solid)
+    scale = crack_scale(recipe.solid, solid, recipe.arms)
     cavity = None
     if recipe.centre == "quartz-lined":
         w = recipe.centre_width
@@ -296,7 +298,7 @@ def hairline(
             continue
         radial = np.asarray(site)
         normal = np.cross(radial, unit_vector(rng))
-        radius = float(rng.uniform(*PARTIAL_REACH)) * r
+        radius = float(rng.uniform(*PARTIAL_REACH)) * scale
         bent = rng.uniform() >= STRAIGHT_SHARE
         f = FractureLayer(
             centre_mm=tuple(rim_point(solid, radial).tolist()),
@@ -449,7 +451,9 @@ def draw_stone(
             w = recipe.centre_width
             cavity = (1 - w) * r + recipe.lining * w * r
         red = colour in ("iron", "carnelian")
-        recipe = recipe.model_copy(update={"fractures": draw_fractures(rng, solid, red, cavity)})
+        scale = crack_scale(solid_config, solid, arms)
+        fractures = draw_fractures(rng, solid, red, cavity, scale)
+        recipe = recipe.model_copy(update={"fractures": fractures})
     refined = _refine(recipe, solid, r, odd_cut=odd_cut, keep_mottle=keep_mottle)
     if any(dust):  # drawn last, so the stone's other draws stand
         lines, specks, blobs = dust

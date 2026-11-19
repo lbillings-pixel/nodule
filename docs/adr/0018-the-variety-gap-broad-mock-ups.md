@@ -1891,6 +1891,61 @@ centres follow after that.
   side, an upper bound) is 0.27-0.36 of the size against the prism's 0.3; the true
   deepest point (5.5-10 mm) is under half of it. `depth_fraction` no longer applies to winding stars.
 
+### 21. Jagged cores built in 3D (2026-11-18)
+
+Item 17, second part (`nodule.thunderegg3d`, `jagged_union`, `jagged_solid`). The
+probe's jagged attempt (s.19: voxel walls roughened by nearest-seed facets) cut as
+ragged blobs with specks; it was redrawn and shown to the owner first.
+
+- *Drawing.* The 2D jagged method [@goetze2023, Fig. 2] carried into 3D as a union of
+  flat-sided (convex) pieces, after Ross's planar shear faces [@ross1941, p. 729]. The
+  figure gives sections only, so the 3D form is an assumption. A faceted core (the 2D
+  core's irregular 5-8-cornered ring, radius 0.32-0.52, with smaller rings above and
+  below, half-height 0.44-0.72 of the mean radius) and 3-6 kinked wedge arms as in 2D,
+  each a fin of six-sided section (half-height 0.15-0.4 at the centre, the tip keeping
+  0.7 of it, centre and lean within ±0.1, as the winding fins). Zigzag walls as the 2D
+  outline: points about one run apart (0.06-0.12) pushed in or out by up to 0.02-0.04,
+  flat between; on the core as sector pieces over the core shrunk so inward pushes
+  show (pushes smaller where the core narrows), on the arms at stations along the arm
+  (both sides, top and bottom). Pieces run on about one cell past their joints, so the
+  union has no seams. All `effective`; a look only (ADR 0002).
+- *Level.* Exact, not blurred: the largest, over pieces, of the least distance to a
+  piece's face planes (slope at most 1, wall exact), in cells, clamped and cropped as
+  the winding stars, with stray stored pieces turned outside.
+- *Owner's sheet (2026-11-18).* Four zigzag cavities (unselected) and two with blocky
+  steps (offset segments and wall chips), cut at five heights through agatesim's
+  stored solid, under approved 2D jagged cores
+  (`runs/thunderegg-3d/out/jagged-3d-owner.png`, local). Owner: "zigzag, build it".
+  The build draws the sheet's cavities exactly (same values on its four streams).
+- *Arm length (measured, middle cut of the stored solid).* Arms crossing circles at
+  1.5 / 2 / 2.5 / 3 core radii, 20 cavities: 5.0 / 3.4 / 1.2 / 0.1; approved 2D jagged
+  cores (40): 4.75 / 3.0 / 0.9 / 0. A core 1.1x as large gave 4.2 / 2.1 / 0.3, so the
+  2D radii were kept.
+- *Specks.* Pieces under 1 mm² on cuts at -8 / -4 / 0 / +4 / +8 mm, 20 cavities: 3 / 2 /
+  1 / 2 / 1 cuts. The middle one is a 2-pixel crumb at a hooked arm tip.
+- *Corner check (new; the 2D `wall_corners` does not carry over).* On traced cuts of
+  the stored solid, the grid's staircase swamps the turning: 60 variants of step,
+  smoothing and threshold, and `arm_meander` (jagged arms kink), all overlapped. The
+  check that works (`cut_corners`) orders the wall by tracing but takes its direction
+  from the stored level's gradient. It pools cuts at -4 / 0 / +4 mm about the deepest
+  point and gives the share of turning at turns tighter than 3 lattice cells. Seeds
+  2117 (20 + 20): jagged 0.446-0.607, winding 0.202-0.418; threshold `CORNER_MIN` 0.43.
+  Fresh seeds 2118: jagged 0.394-0.658 (median 0.53, 19 of 20 above), winding
+  0.280-0.405 (all below). It holds for a set, not stone by stone, so the test asks it
+  of four jagged eggs of the shared sheets (median above, at least three of four
+  above), with four winding eggs as the negative control (every one below).
+- *Streams.* The style is drawn as before; a jagged core now draws from the stone's
+  first spawned stream (as a winding star), then the size from the stone's own, so
+  winding stones are unchanged and jagged stones are redrawn (a test checks the
+  bookkeeping).
+- *Prism assumptions.* Jagged eggs now use the same 3D paths as winding ones (cut aimed
+  at the deepest point, `body_height`). Swept on the six jagged eggs of sheets 0-11:
+  cracks reach the cavity, cuts open 27-48 % of the box (winding 20-47 %), two carry
+  escape tubes.
+- *Cost (CPU).* Drawing 0.3-1.1 s, peak 0.13 GB, stored 124-214 kB; agatesim's first
+  query 2.5-4.6 s. Drawing the shared sheets 0-11 went from 126 s to 146 s; the
+  corner test takes about 30 s.
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

@@ -25,6 +25,12 @@ def hull_2d(points: NDArray[np.float64]) -> tuple[NDArray[np.float64], NDArray[n
     return vertices, np.asarray(hull.equations, dtype=np.float64)
 
 
+def hull_planes(points: NDArray[np.float64]) -> NDArray[np.float64]:
+    """The faces of the convex hull of points (n, d) as planes n·p + c ≤ 0
+    inside, rows (n_1 .. n_d, c) with unit outward normals n."""
+    return np.asarray(ConvexHull(points).equations, dtype=np.float64)
+
+
 def nearest(points: NDArray[np.float64], queries: NDArray[np.float64]) -> NDArray[np.intp]:
     """Index of the nearest of `points` (n, 2) to each of `queries` (m, 2)."""
     _, index = KDTree(points).query(queries)

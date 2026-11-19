@@ -124,6 +124,9 @@ before any statistics.
   stars BUILT in 3D (ADR 0018 s.20, `nodule.thunderegg3d`), arms matched to the 2D
   look by measurement; owner sheet sent. Still open: jagged rework (sheet first), lens
   centres, renders to the owner.
+  2026-11-18 night: jagged cores BUILT in 3D with zigzag walls (owner's pick from a
+  sheet; ADR 0018 s.21), new corner check on the stored solid. Still open: lens
+  centres, renders to the owner.
 - [ ] 18. Druse crystal faces in open cavities.
 - [ ] 19. Renderer physics: scattering in the camera code (ask the owner
   first), air with refraction in cavities (ADR 0019 A2), the fuller red fix

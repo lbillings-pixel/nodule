@@ -25,15 +25,8 @@ from nodule.eyes import Eyes, eligible
 from nodule.moss import Moss
 from nodule.plumes import Plumes
 from nodule.rind import SEDIMENT, VOLCANIC, Rind
-from nodule.thunderegg import (
-    ARMS_BASE,
-    JAGGED_ARMS,
-    JAGGED_SHARE,
-    ArmShape,
-    ArmStyle,
-    jagged_outline,
-)
-from nodule.thunderegg3d import sinuous_solid
+from nodule.thunderegg import ARMS_BASE, JAGGED_SHARE, ArmShape, ArmStyle
+from nodule.thunderegg3d import jagged_solid, sinuous_solid
 from nodule.tubes import NO_TUBES, Channel
 
 Centre = Literal["solid", "quartz-filled", "quartz-lined"]
@@ -416,23 +409,15 @@ def solid_for(
                 None,
             )
         case "thunder-egg":
-            # Draws as `thunder_egg_outline`, so jagged stones stay as they were; a
-            # winding star is drawn in 3D from a spawned stream (ADR 0018 s.20).
+            # The style is drawn as in `thunder_egg_outline`; both styles are drawn in
+            # 3D from a spawned stream (ADR 0018 s.20-21), then the size.
             rng.integers(ARMS_BASE[0], ARMS_BASE[1] + 1)  # the 2D arm count, unused now
             if rng.random() >= JAGGED_SHARE:
                 child = rng.spawn(1)[0]
                 shape, solid = sinuous_solid(child, float(rng.uniform(40, 70)))
                 return solid, "sinuous", shape
-            style: ArmStyle = "jagged"
-            shape = None
-            star = jagged_outline(rng, int(rng.integers(JAGGED_ARMS[0], JAGGED_ARMS[1] + 1)))
-            solid = SolidConfig(
-                outline=star,
-                host="volcanic",  # type: ignore[arg-type]
-                size_mm=float(rng.uniform(40, 70)),
-                depth_fraction=0.6,
-            )
-            return solid, style, shape
+            child = rng.spawn(1)[0]
+            return jagged_solid(child, float(rng.uniform(40, 70))), "jagged", None
 
 
 def inradius(solid: Solid) -> float:

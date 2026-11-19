@@ -10,9 +10,9 @@ from agatesim.volume.slicing import Plane
 
 import nodule.variety.recipe as recipe_module
 from nodule import thunderegg3d as t3
-from nodule.thunderegg import ArmShape, sinuous_mask, thunder_egg_outline
+from nodule.thunderegg import ARMS_BASE, JAGGED_SHARE, ArmShape, sinuous_mask
 from nodule.variety import StoneRecipe
-from nodule.variety.recipe import inradius, solid_for
+from nodule.variety.recipe import body_height, inradius, solid_for
 
 HEIGHTS = (-0.3, -0.15, 0.0, 0.15, 0.3)  # shape units: about +-8 mm on a 55 mm egg
 
@@ -77,33 +77,99 @@ def test_one_node_bridges_do_not_split_the_stored_cavity() -> None:
     t3.SolidConfig(sampled=t3.SampledLevel.of(level), host="volcanic", size_mm=size)  # type: ignore[arg-type]
 
 
-def test_jagged_thunder_eggs_draw_as_before(monkeypatch: pytest.MonkeyPatch) -> None:
-    """The 3D build changed only winding stars: a jagged stone's draws are those of
-    the 2D `thunder_egg_outline` (a control on the stream bookkeeping)."""
+def test_thunder_egg_streams_are_kept(monkeypatch: pytest.MonkeyPatch) -> None:
+    """A control on the stream bookkeeping: the style is drawn as in the 2D
+    `thunder_egg_outline`, each 3D cavity from the stone's first spawned stream,
+    and the size next from the stone's own stream (so a winding stone draws as
+    before the jagged build)."""
+    seen: list[tuple[str, tuple[int, ...], float]] = []
 
-    def no_3d(rng: np.random.Generator, size_mm: float) -> tuple[ArmShape, None]:
-        return ArmShape(), None  # winding stars are not compared here
+    def fake_sinuous(rng: np.random.Generator, size_mm: float) -> tuple[ArmShape, str]:
+        seq = rng.bit_generator.seed_seq
+        assert isinstance(seq, np.random.SeedSequence)
+        seen.append(("sinuous", tuple(seq.spawn_key), size_mm))
+        return ArmShape(), "solid"
 
-    monkeypatch.setattr(recipe_module, "sinuous_solid", no_3d)
-    jagged = 0
+    def fake_jagged(rng: np.random.Generator, size_mm: float) -> str:
+        seq = rng.bit_generator.seed_seq
+        assert isinstance(seq, np.random.SeedSequence)
+        seen.append(("jagged", tuple(seq.spawn_key), size_mm))
+        return "solid"
+
+    monkeypatch.setattr(recipe_module, "sinuous_solid", fake_sinuous)
+    monkeypatch.setattr(recipe_module, "jagged_solid", fake_jagged)
+    styles: list[str | None] = []
     for k in range(30):
-        cfg, style, _ = solid_for(np.random.default_rng([61, k]), "thunder-egg")
-        old = np.random.default_rng([61, k])
-        old.uniform(0, 360)  # `solid_for` draws a yaw first, for every outline
-        old_style, _, outline = thunder_egg_outline(old)
-        assert style == old_style
-        if style == "jagged":
-            jagged += 1
-            assert cfg.outline == outline
-            assert cfg.size_mm == float(old.uniform(40, 70))
-    assert jagged >= 5
+        _, style, _ = solid_for(np.random.default_rng([61, k]), "thunder-egg")
+        ref = np.random.default_rng([61, k])
+        ref.uniform(0, 360)  # `solid_for` draws a yaw first, for every outline
+        ref.integers(ARMS_BASE[0], ARMS_BASE[1] + 1)  # as `thunder_egg_outline`
+        old_style = "jagged" if ref.random() < JAGGED_SHARE else "sinuous"
+        assert style == old_style == seen[-1][0]
+        assert seen[-1][1] == (0,)  # the stone's first spawned stream
+        assert seen[-1][2] == float(ref.uniform(40, 70))
+        styles.append(style)
+    assert 5 <= styles.count("jagged") <= 25
+
+
+def _jagged_inside(k: int) -> np.ndarray:
+    return (t3.jagged_union(np.random.default_rng([59, k])) > 0).astype(np.float32)
+
+
+def test_jagged_cuts_gain_and_lose_arms() -> None:
+    changed = sum(
+        len({t3.arms_crossing(m) for m in t3.sections(_jagged_inside(k), HEIGHTS)}) > 1
+        for k in range(4)
+    )
+    assert changed >= 3
+
+
+def test_agatesim_jagged_solid_matches_the_drawing_in_3d() -> None:
+    """Checked by sampling the whole cavity: agatesim's solid and the drawn union
+    agree except within a small part of a cell of the wall."""
+    cfg = t3.jagged_solid(np.random.default_rng(79), 55.0)
+    assert t3.jagged_solid(np.random.default_rng(79), 55.0) is cfg  # remembered
+    level = t3.jagged_union(np.random.default_rng(79))
+    solid = cfg.build()
+    assert isinstance(solid, Sampled)
+    lo, hi = (np.asarray(b, dtype=np.float64) for b in solid.bounds())
+    pts = np.random.default_rng(3).uniform(lo, hi, (100_000, 3))
+    got = solid.contains(pts)
+    idx = (pts - solid.origin) / solid.cell_mm
+    crop = np.maximum(np.argwhere(level > 0).min(axis=0) - t3.PAD, 0)
+    at = idx + crop
+    want = linear_at(level.astype(np.float64), [at[:, 0], at[:, 1], at[:, 2]]) > 0
+    bad = got != want
+    assert bad.mean() < 0.01
+    assert np.abs(solid.level(pts[bad])).max() < 0.5 * solid.cell_mm
+    assert solid.contains(np.asarray(solid.centre())[None, :])[0]
+
+
+def test_jagged_walls_are_cornered_and_winding_ones_are_not(sheets: list[StoneRecipe]) -> None:
+    """The corner check, as a group (it is not reliable stone by stone: on fresh
+    seeds 1 jagged cavity in 20 fell below). Negative control: winding cavities,
+    every one below. Four of each from the shared sheets."""
+
+    def score(r: StoneRecipe) -> float:
+        solid = r.solid.build()
+        assert isinstance(solid, Sampled)
+        return t3.cut_corners(solid, float(np.asarray(solid.centre())[2]) + body_height(solid))
+
+    eggs = [r for r in sheets if r.outline == "thunder-egg"]
+    jag = [score(r) for r in [r for r in eggs if r.arms == "jagged"][:4]]
+    wind = [score(r) for r in [r for r in eggs if r.arms == "sinuous"][:4]]
+    assert len(jag) == len(wind) == 4
+    assert float(np.median(jag)) > t3.CORNER_MIN
+    assert sum(j > t3.CORNER_MIN for j in jag) >= 3
+    assert max(wind) < t3.CORNER_MIN
 
 
 def test_the_cut_passes_near_the_deepest_point(sheets: list[StoneRecipe]) -> None:
     """Checked on the plane agatesim cuts, against a deepest point found apart from
     `body_height` (random points, not its grid)."""
-    eggs = [r for r in sheets if r.arms == "sinuous"]
-    assert len(eggs) >= 8
+    eggs = [r for r in sheets if r.outline == "thunder-egg"]
+    assert {r.arms for r in eggs} == {"sinuous", "jagged"}
+    assert len(eggs) >= 12
     # The cuts furthest from the box's middle: a wrong sign or frame shows most there.
     for r in sorted(eggs, key=lambda e: -abs(e.cut.offset_mm))[:3]:
         solid = r.solid.build()

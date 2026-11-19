@@ -9,7 +9,7 @@ from agatesim.fields import Phase
 from agatesim.volume.config import SliceConfig, SolidConfig
 from agatesim.volume.simulate import VolumeSimulation
 
-from nodule.render.voidbox import VoidBox, build_void_box
+from nodule.render.voidbox import CORNERS, VoidBox, build_void_box, trilinear
 from nodule.variety import StoneRecipe, build
 
 
@@ -76,6 +76,13 @@ def test_box_nodes_do_not_depend_on_its_bounds(lined: tuple[VolumeSimulation, Vo
     sl = tuple(slice(int(o[i]), int(o[i]) + box.shape[i]) for i in range(3))
     assert np.array_equal(big.ids[sl], box.ids)
     assert np.array_equal(big.gate[sl], box.gate)
+    assert box.phi is not None
+    assert big.phi is not None
+    assert big.chal is not None
+    assert box.chal is not None
+    assert np.array_equal(big.chal[sl], box.chal)
+    fl = tuple(slice(2 * int(o[i]), 2 * int(o[i]) + box.phi.shape[i]) for i in range(3))
+    assert np.array_equal(big.phi[fl], box.phi)
     # Control: nodes anchored at another corner (half a cell off the world lattice) differ.
     flat = np.arange(0, box.ids.size, 97)
     nodes = (np.stack(np.unravel_index(flat, box.shape), axis=-1) + box.a) * box.h
@@ -83,6 +90,63 @@ def test_box_nodes_do_not_depend_on_its_bounds(lined: tuple[VolumeSimulation, Vo
     _, same = box.wall.arrival(nodes)
     assert np.array_equal(same, box.ids.reshape(-1)[::97])
     assert np.mean(moved != same) > 0.05
+
+
+def test_bare_chalcedony_wall_is_air_beyond_its_surface() -> None:
+    """A thin crystal lining leaves bare chalcedony wall: the gate-only box (the negative
+    control) loses much of the hollow there; phi recovers it (s.6.12 option A)."""
+    vol = build(recipe(centre_width=0.1))[0].volume
+    box = build_void_box(vol)
+    old = build_void_box(vol, with_phi=False)
+    assert box is not None
+    assert old is not None
+    assert box.phi is not None
+    assert box.wall.last_reach < 1.0
+    p = in_box(box, 200_000, 3)
+    ins = vol.solid.contains(p)
+    ph = np.where(ins, vol.evaluate(p, ins).phase, 254)
+    void = ph == Phase.VOID
+    assert void.sum() > 1000
+    air, air_old = box.air(p), old.air(p)
+    assert np.mean(~air_old[void]) > 0.05  # control
+    assert np.mean(~air[void]) < 0.02
+    assert np.mean(air[ph == Phase.CHALCEDONY]) < 1e-3
+    assert not np.any(air & (ph == 254))
+
+
+def test_without_phi_the_box_is_the_gate_only_box(
+    lined: tuple[VolumeSimulation, VoidBox],
+) -> None:
+    vol, box = lined
+    old = build_void_box(vol, with_phi=False)
+    assert old is not None
+    assert old.phi is None
+    assert old.chal is None
+    assert np.array_equal(old.ids, box.ids)
+    assert np.array_equal(old.gate, box.gate)
+    p = in_box(box, 50_000, 4)
+    gated = np.ones(len(p), bool)
+    base, ok = old._cells(p)  # pyright: ignore[reportPrivateUsage]
+    idx = tuple((base[ok][:, None, :] + np.array(CORNERS)[None]).transpose(2, 0, 1))
+    gated[ok] = old.gate[idx].all(axis=1)
+    want = ok & gated & (np.nan_to_num(old.level(p), nan=-1.0) > 0)
+    assert np.array_equal(old.air(p), want)
+    with pytest.raises(ValueError, match="no chalcedony level"):
+        old.chalcedony_level(p)
+
+
+def test_trilinear_is_exact_on_linear_fields() -> None:
+    a, h = np.array([-3, 2, 5]), 0.1
+    idx = np.indices((6, 5, 7)).transpose(1, 2, 3, 0)
+    xyz = (idx + a) * h
+    grid = xyz @ np.array([1.0, -2.0, 0.5]) + 0.3
+    p = (a + 0.5) * h + np.random.default_rng(0).random((1000, 3)) * (np.array([4, 3, 5]) * h)
+    want = p @ np.array([1.0, -2.0, 0.5]) + 0.3
+    assert np.allclose(trilinear(grid, a, h, p), want)
+    # Control: the nearest node's value is not.
+    near = grid[tuple((np.rint(p / h).astype(int) - a).T)]
+    assert not np.allclose(near, want, atol=1e-3)
+    assert np.isnan(trilinear(grid, a, h, np.array([[0.0, 0.0, 0.0]]))).all()
 
 
 def test_no_hollow_or_no_crystal_wall_gives_no_box() -> None:

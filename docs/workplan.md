@@ -168,6 +168,8 @@ before any statistics.
   0.2 mm shell or each view's grid continued down: owner chose the view's grid, and
   accepted the rest, 2026-11-19 late). Next: build
   `nodule.render.voidbox` (unwired, tests with controls), then step 4.
+  2026-11-19: void box built; bare chalcedony walls via agatesim's phi (ADR 0091) on a
+  0.1 mm grid: thin linings lose 0.5 % of the hollow (was 14-38 %). Next: step 4, camera.
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

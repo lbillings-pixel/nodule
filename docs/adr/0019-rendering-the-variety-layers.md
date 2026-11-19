@@ -653,6 +653,27 @@ stones none; white fine needles alone take the finer grid, within the budget
        phi_sign_check.py). nodule caps a stack at half of all the chalcedony
        (tubes.DEPTH_CAP_SHARE), so a stone with thick early layers under a thin last
        lining could still fall back.
+     - *Built in nodule (2026-11-19, step 2 of option A; `nodule.render.voidbox`,
+       unwired):* the box holds phi at world nodes i * 0.1 mm (`PHI_MM`, *effective*),
+       float32, read trilinearly (base = floor(p / h), the GPU's rule). phi is exact at
+       the 0.2 mm id nodes; a 0.1 mm node is evaluated exactly when any of its 0.2 mm
+       parents lies within 0.6 mm of the surface (`PHI_BAND_MM`, *effective*) or the
+       parents differ in sign (a tube core reads minus the reach, a jump); elsewhere it
+       takes the parents' trilinear mean. Air is the probe's rule R2: box level > 0, phi
+       > 0, and all 8 id-cell corners gated or chalcedony (phase) at nodes with |phi| <
+       0.6 mm. Without phi (agatesim's None, or `with_phi=False`) the box is the gate-only
+       box, ids and gate unchanged. Tests: tests/test_voidbox.py (6, 16 s), a thin crystal
+       lining with the gate-only box as negative control, phi equal over a wider box,
+       trilinear exact on linear fields.
+       - *Measured* (runs/hollow-air/phi_box_check.py and .log; 400 000 random points in
+         each box; *verified* for these stones): lost hollow gate-only -> with phi: 3/9
+         38.5 -> 0.53 %, 0/1 14.1 -> 0.45 %, 8/4 38.2 -> 0.50 %; control 0/2 0.063 %
+         unchanged. False air 0, 7 (2 of them chalcedony), 0, 0 points: "gated air is
+         never chalcedony" (step 3 build) no longer holds exactly; the test stone keeps
+         it. Against phi evaluated at every 0.1 mm node: band and dense agree in sign
+         at every filler node (filler nodes lie >= 0.55 mm from the surface) and give
+         the same air at all 400 000 points on all four stones. Cost: whole box with phi
+         0.8-12 s, traced peak 0.21-0.27 GB, phi grid 4-20 MB.
 
 ## Consequences
 

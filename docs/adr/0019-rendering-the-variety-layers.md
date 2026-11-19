@@ -362,6 +362,66 @@ stones none; white fine needles alone take the finer grid, within the budget
      needs the second interface. Item 18's mock-up (runs/druse-centres/glint-probe.png;
      host-side shading, appearance only) stands for the look; the next step is the
      interface's design, then a measured build.
+12. **The hollow as air: design** (track A; proposed 2026-11-19, nothing built; the
+   owner's verdict pending).
+   - *Where the wall is.* Quartz-lined centres come from agatesim's CRYSTAL stage
+     (`agatesim/volume/growth.py`, `evaluate`): a point stays open when its crystal
+     arrival `metric.assign` (mm of full-rate growth) exceeds the stage's last reach.
+     The difference, arrival minus last reach, is a signed level: positive in the hollow,
+     negative in the crystals, zero on the wall made of the crystal tips. agatesim returns only the
+     open/filled verdict, so nodule sees a bare mask; slopes from a mask are too coarse
+     for glints (ADR 0018 s.24, the 3-bisection run). **Needs an agatesim change** (not
+     yet approved; the approval on record is for six-faced tips): return this level with
+     the fields, as agatesim ADR 0089 takes a level, not a mask. Hollow crystals (stick
+     moulds) have another level source and keep the stand-in (s.6.7).
+   - *The hollow is deeper than the fill.* The wide hollow probed for s.24 has its far wall
+     a median 9.2 mm below the face; the look fills 5 mm and close-ups 3 mm. Proposed:
+     a **void box** of its own around each hollow, reaching its bottom, at a fixed world
+     spacing (so face, close-up and needle grids see the same wall: the
+     resolution-independence rule). It holds the level and, in a shell of lining around
+     the hollow (thickness `effective`, 1-3 mm to be measured), the material; light
+     leaving the shell below the slab is lost (black, as into the rest of a stone, ADR
+     0014; *assumption*).
+   - *Grid spacing, measured first.* Today's tips are round cones, curved about their axes,
+     and the minimum over crystals has kinks, so trilinear normals are not exact. A probe
+     (runs/, no agatesim edit: it reads the stage's metric from outside) compares
+     normals from the level on 0.1, 0.05 and 0.025 mm grids with the bisection reference
+     on the s.24 stone. It reports the share of wall within 1.5 deg, whether 30-74 glints
+     a view come back, the bowl control, and any jumps in the level where agatesim's
+     candidate crystals change between lattice cells. The spacing, memory and cost
+     follow from it.
+   - *The camera (`cuda/camera.cu`).* Each free flight in the stone that enters the void
+     box is tested against the level (half-cell steps, then bisection); at a crossing the
+     path reflects or refracts by Fresnel (n 1.54 to 1, normal from the level's
+     gradient). In air it runs straight to the next wall, the face or the slab bottom, with
+     no scattering. Radiance bookkeeping: x n^2 leaving stone for air, / n^2 back. A
+     camera ray over an open pixel starts in air (no face Fresnel, no 1/n^2), and a path
+     leaving through the open mouth adds the light's radiance without n^2; the host's
+     face glare F0 Ld (photo compare) is masked there, since there is no polished face.
+     The stand-in absorption is off on a hollow drawn as air (it bleeds a cell into the
+     lining). Shadow rays cannot bend at the wall: a shadow leg that meets the wall (direct
+     and both mirror legs, tested exactly) carries nothing, and light paths through the
+     hollow are counted by phase sampling alone at weight 1, which stays unbiased. So glints
+     need the DISC lamp (a small lamp, the sparkle view): a DIRECTIONAL light has no
+     phase-sampled route and can never glint. The dome look needs no shadow rays.
+     `slab.cu` has no void path and is unchanged; stones without a hollow run the old code.
+   - *Order.* (1) the probe; (2) the agatesim level (with its own ADR and tests); (3)
+     the void box and its fill; (4) the camera under the dome, shown to the owner;
+     (5) the small-lamp view; (6) six-faced tips (agatesim), rechecking the probe's
+     numbers.
+   - *Tests planned, each with a negative control.* The wall test also works under flag 4
+     (homogeneous material), so analytic cases exist: a flat air layer under the face
+     against Fresnel's slab result (control: no level); a tilted flat facet glinting at
+     the predicted lamp angle under the disc (control: an untilted facet stays dark); a
+     white furnace (no absorption, white bottom, dome: every pixel Ld, hollow or not;
+     control: the n^2 step left out breaks it); with no hollow the image equals today's,
+     sample for sample.
+   - *Cost, estimated.* (Claude's estimates have run about 2x low, so these are already
+     doubled.) Work: probe 1 session; agatesim level 1; void box 2; camera and tests 3;
+     renders for the owner 1: about 8 sessions. Run time per stone with a wide hollow: fill
+     +1-3 min (narrow band at the fine spacing; agatesim's fill ran ~11 us a point in
+     s.24), GPU memory +0.1-0.3 GB, render 1.3-2x the look's. Stones without a hollow:
+     unchanged. All to be measured at each step.
 
 ## Consequences
 

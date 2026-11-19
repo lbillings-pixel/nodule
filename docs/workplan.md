@@ -158,6 +158,8 @@ before any statistics.
   small lamp, six-faced tips) first; then B, scattering by place (white ghost
   plumes wanted on some stones; quartz-centre scattering read first); then C,
   the red fix. No cheap stand-in shows the wall: next, design the second interface.
+  2026-11-19 night: design proposed (ADR 0019 s.6.12): probe first, then an agatesim
+  level for the hollow's wall (needs approval), a void box below the fill, the camera.
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

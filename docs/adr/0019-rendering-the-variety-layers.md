@@ -566,6 +566,34 @@ stones none; white fine needles alone take the finer grid, within the budget
        the lining's material (*assumption*). agatesim's `CrystalWall` docs and ADR 0090
        now say where the level's sign marks the hollow (wording only, approved). Next:
        the build, unwired from `pack` and `cutface`, with tests and controls.
+   - *Step 3, the build* (2026-11-19 night; `nodule.render.voidbox`, unwired;
+     tests/test_voidbox.py, 9 s, each with its control; checks in runs/hollow-air/
+     gate_check.py, gate_diag.py, thin_lining_map.py). The box holds ids and gate only
+     (material by option (b) stays on each view's grid). The coarse hollow is open points
+     with a positive crystal level (not every open point, so hollow crystals and tubes
+     elsewhere do not widen the box). *Assumption:* a cell is air when all 8 corners are
+     gated and the box's level is positive. The gate takes the stage's own quartz by grain
+     (`grain_offset + j`): early wall crystals are quartz too, with a positive level, and
+     passed the phase gate (977 of 400 000 points on sheet 0, stone 1).
+     - *Measured* (6 stones of sheets 0-11; random points in the box; *verified* for
+       them): gated air is never chalcedony or outside the stone, against 41 000-395 000
+       chalcedony points a stone where the ungated level is positive. Box cost: probe
+       stone 25 s, 0.35 GB traced (coordinates included); small stones 1-6 s, 0.21-0.25
+       GB. A box with wider bounds agrees node for node.
+     - *Where crystals cover the wall* (probe stone; sheet 0, stone 2): the hollow is air
+       but for 0.02-0.06 % of open points (slivers).
+     - *Where the hollow meets bare chalcedony it fails.* Thin crystal linings (sheet 3,
+       stone 9, last reach 0.35 mm; sheet 8, stone 4, 0.25 mm) leave sparse crystals on
+       a bare chalcedony wall; sheet 0, stone 1 (needles, a tube) has patches of it. Cells
+       with a chalcedony corner are solid, so 38 %, 38 % and 14 % of open points are not
+       air, within 0.16 mm (median) to 1.6 mm of air, and the wall there follows the
+       0.2 mm cells in steps with the crystals' normals (runs/hollow-air/
+       thin-lining-map.png). The bare wall is the chalcedony's last surface, which the
+       box does not hold. How many stones have it: not counted (2 of the 6 chosen for
+       thin linings). Options for the owner: (A) a second, smooth level for that surface
+       (air beyond both), its source to be measured first (read from agatesim's fields
+       from outside, as in step 1, or an agatesim change); (B) the gate on a finer grid,
+       steps smaller but normals still wrong there; (C) such stones keep the stand-in.
 
 ## Consequences
 

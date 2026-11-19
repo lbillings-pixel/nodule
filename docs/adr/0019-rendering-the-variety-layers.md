@@ -437,8 +437,9 @@ stones none; white fine needles alone take the finer grid, within the budget
      - *Spot counts do not choose a spacing.* Every grid returns 38-96 spots a view
        (exact normals 33-79; s.24's slopes 30-74, though they match the exact normals
        on only 38 % of the wall). The share within 1.5 deg does: 0.1 mm 12-18 %, 0.05 mm
-       36-58 %, 0.025 mm 72-82 % (per-cell / node gradients). int16 storage equals
-       float64; int8 harms the per-cell gradient.
+       38-58 %, 0.025 mm 72-82 % (per-cell / node gradients). int16 storage equals
+       float64; int8 harms the per-cell gradient. Rays with no crossing near the wall:
+       1.4 % at 0.1 mm, 0.3 % at 0.05, 0.06 % at 0.025 (thin tips lost).
      - *Why the rest fail: edges between crystals.* At 0.025 mm, cells whose stencil holds
        one crystal: 96 % within 1.5 deg; within one cell of an owner change: 2 %; 1-2
        cells: 78 %; beyond: 96-98 %. A grid rounds each edge over about a cell (an
@@ -456,16 +457,27 @@ stones none; white fine needles alone take the finer grid, within the budget
        mm 143 M, 0.29 GB, ~6 min; 0.025 mm 1 140 M, 2.3 GB, ~51 min (out of budget). A
        +-2-cell band at 0.025 mm is ~4 M nodes (from a lower-bound wall area), but needs
        sparse storage on the GPU.
-     - *Alternative measured: an owner lattice.* Store each node's crystal (dense, 0.2
-       or 0.1 mm: 0.16-0.94 M nodes evaluated near the wall) plus the crystals' few
-       numbers; at a point take the earliest of the 8 corners' crystals in closed form
-       (`Crystals.pair_times`). The wall matches agatesim's within 0.01 mm on 98.2 % of
-       rays (0.2 mm lattice); there the normals are exact (100 % within 1.5 deg, median
-       0.001 deg), edges stay sharp. It changes what agatesim returns (its crystals, not
-       a level): **not covered by the approval on record; the owner's choice.**
+     - *Alternative measured: an owner lattice.* Store each node's crystal (a dense box
+       at 0.2 mm is ~2 M nodes, at 0.1 mm ~18 M) plus each crystal's few numbers (site,
+       axis); at a point take the earliest of the 8 corners' crystals in closed form
+       (`Crystals.pair_times`). Over all wall rays found, normals within 1.5 deg: 98.2 %
+       (0.2 mm), 98.4 % (0.1 mm); where the wall did not move, exact (median 0.001 deg);
+       edges stay sharp. Its wall is a third one, neither agatesim's nor the jump-free:
+       it moves > 0.01 mm on ~2 % of rays, ~90 % of those making the hollow smaller (up
+       to the 3 mm search limit); the shell's material comes from agatesim's fields, so
+       those slivers need a rule (e.g. clear quartz). It has candidate jumps of its own:
+       late on 3.9 % of its wall points, up to 0.7 mm, much as `assign`. About 1.2 % of
+       rays found no wall within +-1 mm on every lattice and the jump-free level: cause
+       unknown (likely the search window). Not measured: GPU time of up to 8 closed-form
+       crystals a wall test against one trilinear fetch.
+       *Copy rule:* the closed form must not be copied into nodule's CUDA. agatesim would
+       ship it (a small CUDA function, checked against `pair_times` in its own tests)
+       with its crystals, and six-faced tips would then change it there once. That is a
+       larger agatesim change than the level approved: **the owner's choice.**
      - *Look* (runs/hollow-air/normals-look.png, mock-up shading, appearance only):
-       at sheet scale the grids differ from exact normals mainly in where glints fall;
-       0.1 mm scatters more of them.
+       its pixels are 0.06 mm, coarser than the 0.025-0.05 mm edge rounding, so the
+       panels barely differ (0.1 mm scatters more glints). The look cannot decide this;
+       cost and risk do.
 
 ## Consequences
 

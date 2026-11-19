@@ -596,6 +596,30 @@ stones none; white fine needles alone take the finer grid, within the budget
        steps smaller but normals still wrong there; (C) such stones keep the stand-in.
      - *Owner's choice (2026-11-19 night): (A)*, starting with a probe of the surface's
        source; an agatesim change would be asked for separately.
+     - *Option A probe* (runs/hollow-air/front_probe.py, front_diag.py, logs beside them;
+       ~3.5 min for both). *The source:* on all three thin-lining stones the stage before
+       the crystals is a chalcedony lining that coats everything earlier (3/9 a settled
+       floor, 0/1 needles), so its own fill rule is the surface: phi = d - the stage's last
+       reach, d the clamped distance to the stage's solid plus the tapered wobble plus the
+       channel delay; positive where the crystals start from open space. agatesim does
+       not expose it: the probe reads `evaluate`'s closure (a probe only; never a source
+       for src, which would copy agatesim). *Measured* (*verified* for these 4 stones):
+       phi's sign equals "the stage's quartz by grain, or VOID" at every one of 1.6 M
+       random points; at 15 000 surface points found by bisection on that predicate phi is
+       within 3e-10 mm of zero. Air = crystal level > 0 and phi > 0 (the gate kept for
+       other phases changed nothing here): lost hollow 38.7 / 38.4 / 15.7 % -> 2.5 / 1.9 /
+       1.6 % with phi read trilinearly from 0.2 mm world nodes; the control (0/2, crystals
+       cover the wall) unchanged at 0.07 %; false air 0-5 points in ~390 000 solid. With
+       phi exact the loss is 0 % on 3/9 and 0.23 % on 0/1 (all of it the crystal box's
+       slivers); so the rest is the grid: 0.2 mm 2.7 / 1.5 %, 0.1 mm 0.66 / 0.51 %.
+       Normals: median 0.2-0.3 deg off at 0.1 mm (0.6-1.0 at 0.2); 2-4 % over 20 deg,
+       nearly all (91-95 %) within 0.1 mm of a crease of phi (where a floor or needle's
+       coat meets the wall lining: a real edge, rounded by the grid). Cost: phi at the
+       0.2 mm nodes 0.1-3 s and 1-3 MB a stone; 0.1 mm ~8x the nodes.
+     - *What it needs:* an agatesim change exposing phi (beside `CrystalWall`, sharing
+       `evaluate`'s code, outputs unchanged), the owner's to approve. phi needs the
+       wall distance, noise, delay and coats, so no closed form for the GPU: proposed, a
+       float grid at 0.1 mm world nodes (`effective`) near the surface, read trilinearly.
 
 ## Consequences
 

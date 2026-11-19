@@ -362,17 +362,19 @@ stones none; white fine needles alone take the finer grid, within the budget
      needs the second interface. Item 18's mock-up (runs/druse-centres/glint-probe.png;
      host-side shading, appearance only) stands for the look; the next step is the
      interface's design, then a measured build.
-12. **The hollow as air: design** (track A; proposed 2026-11-19, nothing built; the
-   owner's verdict pending).
+12. **The hollow as air: design** (track A; proposed 2026-11-19, nothing built).
+   *Owner's verdict (2026-11-19 night): yes to all four points:* the agatesim change
+   returning the CRYSTAL-stage level is approved; the void box reaches the hollow's bottom;
+   the plan, order and ~8-session cost below are accepted; the design was pushed.
    - *Where the wall is.* Quartz-lined centres come from agatesim's CRYSTAL stage
      (`agatesim/volume/growth.py`, `evaluate`): a point stays open when its crystal
      arrival `metric.assign` (mm of full-rate growth) exceeds the stage's last reach.
      The difference, arrival minus last reach, is a signed level: positive in the hollow,
      negative in the crystals, zero on the wall made of the crystal tips. agatesim returns only the
      open/filled verdict, so nodule sees a bare mask; slopes from a mask are too coarse
-     for glints (ADR 0018 s.24, the 3-bisection run). **Needs an agatesim change** (not
-     yet approved; the approval on record is for six-faced tips): return this level with
-     the fields, as agatesim ADR 0089 takes a level, not a mask. Hollow crystals (stick
+     for glints (ADR 0018 s.24, the 3-bisection run). **Needs an agatesim change**: return this level with
+     the fields, as agatesim ADR 0089 takes a level, not a mask (approved by the owner
+     2026-11-19 night). Hollow crystals (stick
      moulds) have another level source and keep the stand-in (s.6.7).
    - *The hollow is deeper than the fill.* The wide hollow probed for s.24 has its far wall
      a median 9.2 mm below the face; the look fills 5 mm and close-ups 3 mm. Proposed:

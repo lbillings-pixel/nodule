@@ -89,3 +89,22 @@ def blur_noise_factor(sigma: float) -> float:
 def distance_inside(mask: NDArray[np.bool_]) -> NDArray[np.float64]:
     """Each pixel's distance to the nearest pixel outside `mask`; 0 outside it."""
     return cast(NDArray[np.float64], ndimage.distance_transform_edt(mask))
+
+
+def largest_component_3d(mask: NDArray[np.bool_]) -> NDArray[np.bool_]:
+    """The largest face-connected component of a 3D mask (all False if empty)."""
+    found, n = cast("tuple[NDArray[np.int32], int]", ndimage.label(mask))
+    if n <= 1:
+        return mask.copy()
+    sizes = np.bincount(found.ravel())
+    sizes[0] = 0
+    return found == int(np.argmax(sizes))
+
+
+def nearest_within(
+    points: NDArray[np.float64], queries: NDArray[np.float64], bound: float
+) -> tuple[NDArray[np.float64], NDArray[np.intp]]:
+    """Distance to, and index of, the nearest of `points` for each query; queries
+    with none within `bound` get distance inf and index len(points)."""
+    dist, index = KDTree(points).query(queries, distance_upper_bound=bound)
+    return np.asarray(dist, dtype=np.float64), np.asarray(index, dtype=np.intp)

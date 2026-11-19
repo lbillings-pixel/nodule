@@ -1845,6 +1845,49 @@ code that assumes the prism will be revisited: the cut, `depth_fraction`, `inrad
 thunder-egg stones will be redrawn (on a spawned stream so other stones stay put). The
 solid is to be checked by 3D sampling, not one cut.
 
+### 20. Winding thunder-egg stars built in 3D (2026-11-18)
+
+Item 17, first part (`nodule.thunderegg3d`; agatesim ADR 0089, pin 051b552). Winding
+stars only: jagged stars stay prisms until the owner has seen a reworked sheet, and lens
+centres follow after that.
+
+- *Drawing.* The probe's winding star: a lumpy flattened body and the approved 2D arms
+  (`thunderegg.arm_path`, side buds included), each raised into a fin with its own height,
+  centre height, lean and twist, as a union of balls on a 192-cell grid fixed in shape
+  units, blurred as in 2D (0.025). All `effective`; a look only (ADR 0002).
+- *Arm length (owner: "lengthen arms to match the 2D look").* Measured, not guessed: arms
+  crossing circles about the core at 1.5 / 2 / 2.5 / 3 core radii, on the cut through the
+  deepest point, mean of 16 cavities: probe fins 6.1 / 4.4 / 2.1 / 0.6, chosen fins 6.6 /
+  5.7 / 2.6 / 0.9, approved 2D stars (40) 6.5 / 5.4 / 2.8 / 0.6. The lever was the fins'
+  height profile, not the reach: centre height and lean within ±0.1 (probe ±0.2) and the
+  tip keeping 0.7 of the root's height (probe 0.4). Cuts still change with height: about
+  one arm 4 mm off the middle and three 8 mm off, on all 16 cavities. Owner sheet
+  `runs/thunderegg-3d/out/thunderegg-3d-build-owner.png` (local).
+- *Hand-over to agatesim.* The level is the signed distance in cells to the blurred wall,
+  measured to the tangent plane at the nearest wall crossing of a grid edge (crossings by
+  linear interpolation, so they fall anywhere along an edge, as agatesim requires), on the
+  grid cropped to the wall's box plus 6 nodes. agatesim counts pieces on its stored 8-bit
+  level, where a node just inside the wall rounds to zero; with the chosen fins 2 draws in
+  20 broke at such one-node bridges, so the level keeps only the largest piece as stored
+  (stray bits turned outside): then 20 of 20 accepted (a refused drawing would be redrawn
+  from the same stream, up to 8 times). Checked by sampling the whole cavity (chosen
+  fins, 20 draws): agatesim's solid and the drawing disagree on 0.24-0.36 % of random
+  points in the box, all within 0.3 cells of the wall; the solid's centre lies inside
+  every cavity, at least 4.3 mm deep.
+- *Cost (CPU).* Drawing 0.7-1.1 s, level 0.7-1.7 s, peak 0.21 GB; agatesim's first query
+  2.5-5.6 s; stored 119-250 kB a cavity (in the recipe JSON). Drawn cavities are remembered
+  by their stream's seed within a run; agatesim keeps the last 4 built. The test suite
+  grew from about 10 to 15 minutes locally (sheets drawn again in many tests).
+- *Streams.* The yaw, the old 2D arm count and the style are drawn as before, so jagged
+  stones come out exactly as they were (a test checks this); a winding star draws from a
+  stream spawned from the stone's own.
+- *Prism assumptions revisited.* The cutter aimed at the box's middle; the deepest point
+  now lies up to 2.8 mm (0.14 r) above or below it (probe fins: 4.9 mm, 0.31 r), so the
+  cut, and the cutter's crack dodging, aim within 0.1 r of the deepest point's height
+  (`recipe.body_height`, found on a 48-point grid). `inradius` (half the box's smallest
+  side, an upper bound) is 0.27-0.36 of the size against the prism's 0.3; the true
+  deepest point (5.5-10 mm) is under half of it. `depth_fraction` no longer applies to winding stars.
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

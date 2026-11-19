@@ -113,7 +113,7 @@ def _discs(mask: BoolArray, x: FloatArray, y: FloatArray, pts: FloatArray, w: Fl
         mask[i0:i1, j0:j1] |= sub
 
 
-def _arm(
+def arm_path(
     rng: np.random.Generator, angle: float, start: float, length: float, half_width: float,
     meander: float,
 ) -> tuple[FloatArray, FloatArray]:  # fmt: skip
@@ -167,7 +167,7 @@ def sinuous_mask(rng: np.random.Generator, arms: int, shape: ArmShape | None = N
         start = 0.6 * body
         half_width = shape.width * arm_rng.uniform(0.08, 0.14)
         meander = shape.bend * arm_rng.uniform(0.5, 1.0)
-        pts, w = _arm(arm_rng, float(a), start, reach - start, half_width, meander)
+        pts, w = arm_path(arm_rng, float(a), start, reach - start, half_width, meander)
         _discs(mask, x, y, pts, w)
         buds = int(arm_rng.integers(0, 3))
         bud_rngs = arm_rng.spawn(buds)

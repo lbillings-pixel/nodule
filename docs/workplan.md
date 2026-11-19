@@ -120,6 +120,10 @@ before any statistics.
   2026-11-18: probe done and the owner's choices taken (ADR 0018 s.19): winding stars
   as 3D fins, lens centres on 1 in 50-75, cut near the middle, jagged reworked (sheet
   first); the agatesim change for a drawn 3D cavity approved. Next: build.
+  2026-11-18: agatesim drawn 3D cavity done (agatesim ADR 0089, pin 051b552); winding
+  stars BUILT in 3D (ADR 0018 s.20, `nodule.thunderegg3d`), arms matched to the 2D
+  look by measurement; owner sheet sent. Still open: jagged rework (sheet first), lens
+  centres, renders to the owner.
 - [ ] 18. Druse crystal faces in open cavities.
 - [ ] 19. Renderer physics: scattering in the camera code (ask the owner
   first), air with refraction in cavities (ADR 0019 A2), the fuller red fix

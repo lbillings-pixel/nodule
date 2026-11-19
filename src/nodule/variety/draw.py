@@ -64,6 +64,7 @@ from nodule.variety.recipe import (
     Roughness,
     StoneRecipe,
     Tint,
+    body_height,
     inradius,
     log_uniform,
     quota,
@@ -409,7 +410,9 @@ def draw_stone(
         )
     if outline == "thunder-egg":
         cut = SliceConfig(
-            tilt_deg=0.0, azimuth_deg=0.0, offset_mm=float(rng.uniform(-0.1, 0.1) * r)
+            tilt_deg=0.0,
+            azimuth_deg=0.0,
+            offset_mm=body_height(solid) + float(rng.uniform(-0.1, 0.1) * r),
         )
     else:
         cut = SliceConfig(
@@ -569,13 +572,16 @@ def thunder_egg_cut(
     r: float,
     fractures: tuple[FractureLayer, ...],
 ) -> SliceConfig:
-    """A thunder egg is cut across its star (tilt 0); the cutter moves the cut along
-    the axis, within 0.1 r, to miss cracks lying near its plane."""
+    """A thunder egg is cut across its star (tilt 0), near the height of its
+    deepest point; the cutter moves the cut along the axis, within 0.1 r of that
+    height, to miss cracks lying near its plane."""
     best, least = first, crack_cut_angle(solid, first, fractures)
+    middle = body_height(solid)
     for _ in range(CUT_TRIES - 1):
         if least >= CRACK_CUT_ANGLE:
             break
-        cut = first.model_copy(update={"offset_mm": float(rng.uniform(-0.1, 0.1) * r)})
+        offset = middle + float(rng.uniform(-0.1, 0.1) * r)
+        cut = first.model_copy(update={"offset_mm": offset})
         a = crack_cut_angle(solid, cut, fractures)
         if a > least:
             best, least = cut, a

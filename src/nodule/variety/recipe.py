@@ -12,6 +12,7 @@ from typing import Literal
 import numpy as np
 from agatesim.grid import FloatArray
 from agatesim.volume.config import SliceConfig, SolidConfig
+from agatesim.volume.sampled import Sampled
 from agatesim.volume.solids import Solid
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -24,7 +25,15 @@ from nodule.eyes import Eyes, eligible
 from nodule.moss import Moss
 from nodule.plumes import Plumes
 from nodule.rind import SEDIMENT, VOLCANIC, Rind
-from nodule.thunderegg import ArmShape, ArmStyle, thunder_egg_outline
+from nodule.thunderegg import (
+    ARMS_BASE,
+    JAGGED_ARMS,
+    JAGGED_SHARE,
+    ArmShape,
+    ArmStyle,
+    jagged_outline,
+)
+from nodule.thunderegg3d import sinuous_solid
 from nodule.tubes import NO_TUBES, Channel
 
 Centre = Literal["solid", "quartz-filled", "quartz-lined"]
@@ -407,7 +416,16 @@ def solid_for(
                 None,
             )
         case "thunder-egg":
-            style, shape, star = thunder_egg_outline(rng)
+            # Draws as `thunder_egg_outline`, so jagged stones stay as they were; a
+            # winding star is drawn in 3D from a spawned stream (ADR 0018 s.20).
+            rng.integers(ARMS_BASE[0], ARMS_BASE[1] + 1)  # the 2D arm count, unused now
+            if rng.random() >= JAGGED_SHARE:
+                child = rng.spawn(1)[0]
+                shape, solid = sinuous_solid(child, float(rng.uniform(40, 70)))
+                return solid, "sinuous", shape
+            style: ArmStyle = "jagged"
+            shape = None
+            star = jagged_outline(rng, int(rng.integers(JAGGED_ARMS[0], JAGGED_ARMS[1] + 1)))
             solid = SolidConfig(
                 outline=star,
                 host="volcanic",  # type: ignore[arg-type]
@@ -422,6 +440,24 @@ def inradius(solid: Solid) -> float:
     the wall lining must grow to fill the cavity."""
     lo, hi = solid.bounds()
     return 0.5 * float(np.min(np.asarray(hi) - np.asarray(lo)))
+
+
+def body_height(solid: Solid) -> float:
+    """How far (mm, along z) the deepest point of a drawn 3D cavity lies from the
+    centre of its box: where a thunder egg's cutter aims (ADR 0018 s.20). 0 for
+    other solids (a prism's deepest points span its height). Found on a 48-point
+    grid a side, so to within about 2 % of the box."""
+    if not isinstance(solid, Sampled):
+        return 0.0
+    bounds = solid.bounds()
+    lo = np.asarray(bounds[0], dtype=np.float64)
+    hi = np.asarray(bounds[1], dtype=np.float64)
+    axes: list[FloatArray] = [np.linspace(float(lo[i]), float(hi[i]), 48) for i in range(3)]
+    grids: list[FloatArray] = list(np.meshgrid(*axes, indexing="ij"))
+    pts: FloatArray = np.stack(grids, axis=-1).reshape(-1, 3)
+    inside = pts[solid.contains(pts)]
+    deep = inside[int(np.argmax(solid.wall_distance(inside)))]
+    return float(deep[2] - np.asarray(solid.centre())[2])
 
 
 def recipe_size(solid: Solid) -> float:

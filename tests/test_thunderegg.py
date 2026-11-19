@@ -56,11 +56,12 @@ def test_sheets_mix_sinuous_and_jagged_thunder_eggs(sheets: list[StoneRecipe]) -
     eggs = [r for r in sheets if r.outline == "thunder-egg"]  # the shared sheets 0-11
     assert len(eggs) == 24
     styles = [r.arms for r in eggs]
-    assert set(styles) == {"sinuous", "jagged"}
+    assert set(styles) == {"sinuous", "jagged", "lens"}  # one lens: sheet 0, stone 6
+    assert styles.count("lens") == 1
     assert 0.15 <= styles.count("jagged") / len(styles) <= 0.5
     shapes = [r.arm_shape for r in eggs if r.arms == "sinuous"]
     assert all(s is not None for s in shapes)
-    assert all(r.arm_shape is None for r in eggs if r.arms == "jagged")
+    assert all(r.arm_shape is None for r in eggs if r.arms != "sinuous")
     shapes = [s for s in shapes if s is not None]
     assert all(BEND_RANGE[0] <= s.bend <= BEND_RANGE[1] for s in shapes)
     assert all(WIDTH_RANGE[0] <= s.width <= WIDTH_RANGE[1] for s in shapes)

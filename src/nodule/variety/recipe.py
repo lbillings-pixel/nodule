@@ -26,7 +26,7 @@ from nodule.moss import Moss
 from nodule.plumes import Plumes
 from nodule.rind import SEDIMENT, VOLCANIC, Rind
 from nodule.thunderegg import ARMS_BASE, JAGGED_SHARE, ArmShape, ArmStyle
-from nodule.thunderegg3d import jagged_solid, sinuous_solid
+from nodule.thunderegg3d import LENS_SHARE, LensStyle, jagged_solid, lens_solid, sinuous_solid
 from nodule.tubes import NO_TUBES, Channel
 
 Centre = Literal["solid", "quartz-filled", "quartz-lined"]
@@ -222,7 +222,7 @@ class StoneRecipe(BaseModel):
     seed: int = Field(ge=0)
     outline: Outline
     solid: SolidConfig
-    arms: ArmStyle | None = None  # a thunder egg's star: angular or sinuous arms
+    arms: ArmStyle | LensStyle | None = None  # a thunder egg's centre: star style, or a lens
     arm_shape: ArmShape | None = None  # a sinuous star's bend, width and side lobes
     centre: Centre
     centre_width: float = Field(ge=0, le=1, description="Share of the inradius.")
@@ -370,7 +370,7 @@ def log_uniform(rng: np.random.Generator, lo: float, hi: float) -> float:
 
 def solid_for(
     rng: np.random.Generator, outline: Outline
-) -> tuple[SolidConfig, ArmStyle | None, ArmShape | None]:
+) -> tuple[SolidConfig, ArmStyle | LensStyle | None, ArmShape | None]:
     """The outline follows the host [@pabian1994, pp. 11, 16] (ADR 0018 s.7); a
     thunder egg's star also has an arm style and, if sinuous, an arm shape
     (`nodule.thunderegg`)."""
@@ -410,14 +410,19 @@ def solid_for(
             )
         case "thunder-egg":
             # The style is drawn as in `thunder_egg_outline`; both styles are drawn in
-            # 3D from a spawned stream (ADR 0018 s.20-21), then the size.
+            # 3D from the first spawned stream (ADR 0018 s.20-21), then the size. A lens
+            # centre is chosen on the second spawned stream (s.22), so every star stone
+            # draws as before; a lens replaces the star before it is drawn.
             rng.integers(ARMS_BASE[0], ARMS_BASE[1] + 1)  # the 2D arm count, unused now
-            if rng.random() >= JAGGED_SHARE:
-                child = rng.spawn(1)[0]
-                shape, solid = sinuous_solid(child, float(rng.uniform(40, 70)))
-                return solid, "sinuous", shape
-            child = rng.spawn(1)[0]
-            return jagged_solid(child, float(rng.uniform(40, 70))), "jagged", None
+            jagged = rng.random() < JAGGED_SHARE
+            child, lens_rng = rng.spawn(2)
+            size = float(rng.uniform(40, 70))
+            if lens_rng.random() < LENS_SHARE:
+                return lens_solid(lens_rng.spawn(1)[0], size), "lens", None
+            if jagged:
+                return jagged_solid(child, size), "jagged", None
+            shape, solid = sinuous_solid(child, size)
+            return solid, "sinuous", shape
 
 
 def inradius(solid: Solid) -> float:

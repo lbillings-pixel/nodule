@@ -96,20 +96,74 @@ def test_thunder_egg_streams_are_kept(monkeypatch: pytest.MonkeyPatch) -> None:
         seen.append(("jagged", tuple(seq.spawn_key), size_mm))
         return "solid"
 
+    def fake_lens(rng: np.random.Generator, size_mm: float) -> str:
+        seq = rng.bit_generator.seed_seq
+        assert isinstance(seq, np.random.SeedSequence)
+        seen.append(("lens", tuple(seq.spawn_key), size_mm))
+        return "solid"
+
     monkeypatch.setattr(recipe_module, "sinuous_solid", fake_sinuous)
     monkeypatch.setattr(recipe_module, "jagged_solid", fake_jagged)
+    monkeypatch.setattr(recipe_module, "lens_solid", fake_lens)
     styles: list[str | None] = []
-    for k in range(30):
+    for k in range(3000):
         _, style, _ = solid_for(np.random.default_rng([61, k]), "thunder-egg")
         ref = np.random.default_rng([61, k])
         ref.uniform(0, 360)  # `solid_for` draws a yaw first, for every outline
         ref.integers(ARMS_BASE[0], ARMS_BASE[1] + 1)  # as `thunder_egg_outline`
         old_style = "jagged" if ref.random() < JAGGED_SHARE else "sinuous"
-        assert style == old_style == seen[-1][0]
-        assert seen[-1][1] == (0,)  # the stone's first spawned stream
         assert seen[-1][2] == float(ref.uniform(40, 70))
+        assert style == seen[-1][0]
+        if style == "lens":  # chosen and drawn on the second spawned stream (s.22)
+            assert seen[-1][1] == (1, 0)
+        else:
+            assert style == old_style
+            assert seen[-1][1] == (0,)  # the stone's first spawned stream
         styles.append(style)
-    assert 5 <= styles.count("jagged") <= 25
+    assert 800 <= styles.count("jagged") <= 1200
+    # 1 in 60: 50 expected of 3000 (binomial sd 7).
+    assert 28 <= styles.count("lens") <= 72
+
+
+def test_lens_cuts_are_long_and_star_cuts_are_not() -> None:
+    """The lens check on middle cuts; negative controls: winding and jagged stars."""
+    lenses = [t3.lens_field(r) for r in np.random.default_rng(1724).spawn(8)]
+    assert all(
+        t3.cut_elongation(t3.sections(f, (0.0,))[0]) > t3.LENS_ELONGATION_MIN for f in lenses
+    )
+    stars = [_field(k) for k in range(3)] + [_jagged_inside(k) for k in range(3)]
+    assert all(t3.cut_elongation(t3.sections(f, (0.0,))[0]) < t3.LENS_ELONGATION_MIN for f in stars)
+
+
+def test_lens_sizes_lean_fuller_and_a_quarter_are_bent() -> None:
+    """The owner's pick (2026-11-18): thin to fuller, leaning fuller; ~1 in 4 bent."""
+    sizes = np.array([t3.lens_size(np.random.default_rng([67, s])) for s in range(2000)])
+    ratio = sizes[:, 2] / sizes[:, 0]
+    lo, hi = t3.LENS.thick
+    assert lo <= ratio.min()
+    assert ratio.max() <= hi
+    assert np.median(ratio) > (lo + hi) / 2 + 0.03
+    assert 0.21 < float((sizes[:, 3] != 0).mean()) < 0.29
+
+
+def test_agatesim_lens_solid_matches_the_drawing_in_3d() -> None:
+    """Checked by sampling the whole cavity, as the stars."""
+    cfg = t3.lens_solid(np.random.default_rng(83), 55.0)
+    assert t3.lens_solid(np.random.default_rng(83), 55.0) is cfg  # remembered
+    field = t3.lens_field(np.random.default_rng(83))
+    solid = cfg.build()
+    assert isinstance(solid, Sampled)
+    lo, hi = (np.asarray(b, dtype=np.float64) for b in solid.bounds())
+    pts = np.random.default_rng(3).uniform(lo, hi, (100_000, 3))
+    got = solid.contains(pts)
+    idx = (pts - solid.origin) / solid.cell_mm
+    crop = np.maximum(np.argwhere(field > 0.5).min(axis=0) - t3.PAD, 0)
+    at = idx + crop
+    want = linear_at(field.astype(np.float64), [at[:, 0], at[:, 1], at[:, 2]]) > 0.5
+    bad = got != want
+    assert bad.mean() < 0.01
+    assert np.abs(solid.level(pts[bad])).max() < 0.5 * solid.cell_mm
+    assert solid.contains(np.asarray(solid.centre())[None, :])[0]
 
 
 def _jagged_inside(k: int) -> np.ndarray:
@@ -168,7 +222,7 @@ def test_the_cut_passes_near_the_deepest_point(sheets: list[StoneRecipe]) -> Non
     """Checked on the plane agatesim cuts, against a deepest point found apart from
     `body_height` (random points, not its grid)."""
     eggs = [r for r in sheets if r.outline == "thunder-egg"]
-    assert {r.arms for r in eggs} == {"sinuous", "jagged"}
+    assert {r.arms for r in eggs} >= {"sinuous", "jagged"}  # and a lens (sheet 0, stone 6)
     assert len(eggs) >= 12
     # The cuts furthest from the box's middle: a wrong sign or frame shows most there.
     for r in sorted(eggs, key=lambda e: -abs(e.cut.offset_mm))[:3]:

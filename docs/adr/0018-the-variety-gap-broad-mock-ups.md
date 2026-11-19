@@ -1946,6 +1946,49 @@ ragged blobs with specks; it was redrawn and shown to the owner first.
   query 2.5-4.6 s. Drawing the shared sheets 0-11 went from 126 s to 146 s; the
   corner test takes about 30 s.
 
+### 22. Lens-shaped centres built in 3D (2026-11-18)
+
+Item 17, third part (`nodule.thunderegg3d`: `Lens`, `lens_size`, `lens_field`,
+`lens_solid`, `cut_elongation`). About 1 thunder egg in 60 (`LENS_SHARE`, inside the
+owner's 1 in 50-75; s.19) has a lens centre instead of a star.
+
+- *Form (sources and assumptions).* One equatorial rib means "a single lensoidal agate
+  interior", and lapidaries cut so as to expose the lens [@kile2002, pp. 255-256, 266];
+  central cavities are often lenticular, and sickles are a cavity class
+  [@breitkreuz2013, pp. 11-12]. So the lens is a lentil standing across the cut plane
+  (thin along y), and the cut shows a pointed lens. No source gives its proportions,
+  so these are assumptions, all `effective`: half-length a 0.85-1.0 shape units,
+  height 0.6-0.9 a, centre half-thickness t (1 - rho²) with t 0.12-0.35 a, low lumps
+  (outline and thickness; the thickness lumps vary smoothly across the centre, since
+  angle-based lumps pinched the first sheet there), and a sickle bend on some. A look
+  only, never evidence for how cavities form (ADR 0002).
+- *Owner's sheet (2026-11-18).* Six lenses cut at five heights through agatesim's
+  stored solid, winding stars beside them (`runs/thunderegg-3d/out/lens-3d-owner.png`,
+  local): thin (deepest 4.0-4.4 mm), fuller (7.4-7.8 mm), bent (4.9-6.5 mm). Owner:
+  a mix, thin to fuller leaning fuller, about 1 in 4 bent. Built as t/a = 0.12 +
+  0.23 u^0.5 (median 0.28 over 2000 draws) and 510 of 2000 bent. The build's
+  streams differ from the sheet's, so it does not redraw the sheet's six.
+- *Check.* Elongation of the middle cut (long over short axis, from second moments):
+  40 lenses 2.42-5.34; negative controls 20 winding stars 1.02-1.76 and 20 jagged
+  cores 1.05-1.66. Threshold `LENS_ELONGATION_MIN` 2.0. (Arms crossing twice the core
+  radius did not separate them: lenses 2-3, stars 3-10.)
+- *Streams.* The style, the first spawned stream and the size are drawn as before; the
+  lens is chosen on the stone's second spawned stream and drawn from a stream spawned
+  from that, before any star is drawn. Control: recipes of sheets 0-11, old code
+  against new: 143 of 143 non-lens stones identical; one lens (sheet 0, stone 6) of 24
+  thunder eggs. A test checks the bookkeeping and the share over 3000 streams.
+- *agatesim and cost (CPU).* 20 fresh lenses all accepted at the first draw; drawing
+  0.1 s, level and agatesim's first query 3.9-8.5 s, peak 0.21 GB; deepest point
+  3.1-9.9 mm (median 6.5; winding stars 5.5-10). Sampling the whole cavity agrees with
+  the drawing as for the stars (test).
+- *Prism assumptions.* Swept on every thunder egg of sheets 0-5 forced to a lens (12):
+  crack centres land on or inside the wall, cuts pass through the lens, two carry
+  escape tubes. `inradius` (half the box's thinnest side) is 3.4-11.3 mm against
+  roughly 15-20 mm for stars, and here it is close to the true depth. Band growth and
+  the quartz centre scale with it, as they should; cracks scale with it too, so on a
+  lens egg they come out about half as long as on a star egg of the same size (open:
+  the owner's call on a render).
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

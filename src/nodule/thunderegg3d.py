@@ -23,6 +23,9 @@ after Ross's planar shear faces [@ross1941, p. 729] and the stepped walls of the
 Saxon lithophysae [@goetze2023, Fig. 2; sections only, so the 3D form is an
 assumption]. Its level is exact, not blurred: the largest, over pieces, of the
 least distance to a piece's face planes.
+
+A lens centre (ADR 0018 s.22; about 1 thunder egg in 60, the owner's share) is a
+lentil standing across the cut plane, so the cut shows a pointed lens.
 """
 
 from __future__ import annotations
@@ -31,7 +34,7 @@ import functools
 import math
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import cast
+from typing import Literal, cast
 
 import numpy as np
 from agatesim._scipy import distance_to_false, gaussian, label, linear_at
@@ -525,6 +528,81 @@ def jagged_solid(rng: np.random.Generator, size_mm: float, jg: Jagged = JAGGED) 
     return _accepted(lambda: union_cells(jagged_union(rng, jg)), size_mm)
 
 
+LensStyle = Literal["lens"]
+LENS_SHARE = 1 / 60  # of thunder eggs; owner, 2026-11-18: 1 in 50-75 (`effective`)
+
+
+@dataclass(frozen=True)
+class Lens:
+    """A lens-shaped centre (ADR 0018 s.22): a lentil standing across the cut plane
+    (the x-z plane, thin along y), as one equatorial rib means "a single lensoidal
+    agate interior" [@kile2002, pp. 255-256, 266]. Sizes are assumptions (no source
+    gives them), all `effective`, shape units. Owner's pick from a sheet
+    (2026-11-18): thin to fuller, leaning fuller; about 1 in 4 bent like a sickle
+    (sickle cavities: [@breitkreuz2013, pp. 11-12])."""
+
+    half_length: tuple[float, float] = (0.85, 1.0)  # a, along x
+    height: tuple[float, float] = (0.6, 0.9)  # c / a, along z
+    thick: tuple[float, float] = (0.12, 0.35)  # centre half-thickness t / a
+    lean_fuller: float = 0.5  # t / a = lo + (hi - lo) u ** this: below 1 leans fuller
+    bent_share: float = 0.25
+    bend: float = 0.25  # sickle: the mid-surface shifts by bend * a * (x/a)^2
+
+
+LENS = Lens()
+
+
+def lens_size(rng: np.random.Generator, lens: Lens = LENS) -> tuple[float, float, float, float]:
+    """Half-length a, half-height c, centre half-thickness t and bend (0 if straight)."""
+    a = float(rng.uniform(*lens.half_length))
+    c = a * float(rng.uniform(*lens.height))
+    lo, hi = lens.thick
+    t = a * (lo + (hi - lo) * float(rng.uniform()) ** lens.lean_fuller)
+    bent = rng.uniform() < lens.bent_share
+    bend = lens.bend * float(rng.choice([-1.0, 1.0])) if bent else 0.0
+    return a, c, t, bend
+
+
+def lens_field(rng: np.random.Generator, lens: Lens = LENS) -> NDArray[np.float32]:
+    """A lens centre on the drawing grid, [x, y, z]: half-thickness t (1 - rho^2),
+    rho the elliptical radius in x-z, with low lumps; a sickle's mid-surface is bent.
+    The wall is where the field crosses 0.5 (the field is 0.5 plus the signed gap)."""
+    a, c, t, bend = lens_size(rng, lens)
+    x, y, z = np.meshgrid(_C, _C, _C, indexing="ij", sparse=True)
+    phi = np.arctan2(z / c, x / a)  # jumps at the centre, where the outline lump is nil
+    lump_r = sum(
+        rng.uniform(0, 0.05) * np.cos(k * phi + rng.uniform(0, 2 * math.pi)) for k in (2, 3)
+    )
+    lump_t = sum(  # smooth across the centre
+        rng.uniform(0, 0.08) * np.cos(k * 0.5 * math.pi * x / a + rng.uniform(0, 2 * math.pi))
+        + rng.uniform(0, 0.08) * np.cos(k * 0.5 * math.pi * z / c + rng.uniform(0, 2 * math.pi))
+        for k in (1, 2, 3)
+    )
+    rho2 = ((x / a) ** 2 + (z / c) ** 2) / (1 + lump_r) ** 2
+    mid = bend * a * ((x / a) ** 2 + 0.3 * (z / c) ** 2)
+    return np.asarray(0.5 + t * (1 + lump_t) * (1 - rho2) - np.abs(y - mid), dtype=np.float32)
+
+
+LENS_ELONGATION_MIN = 2.0  # middle cuts, 2026-11-18: lenses 2.42-5.34 (40), stars to 1.76
+
+
+def cut_elongation(mask: BoolArray) -> float:
+    """Long over short axis of a cut's cavity (square root of its second moments'
+    ratio). A lens's middle cut is long and thin; a star's is not."""
+    yy, xx = np.nonzero(mask)
+    ev = np.linalg.eigvalsh(np.cov(np.stack([xx, yy]).astype(np.float64)))
+    return float(np.sqrt(ev[1] / max(float(ev[0]), 1e-12)))
+
+
+def lens_solid(rng: np.random.Generator, size_mm: float, lens: Lens = LENS) -> SolidConfig:
+    """A lens-shaped thunder-egg centre, longest side `size_mm`, as agatesim's drawn
+    3D solid; redrawn and remembered as `sinuous_solid`."""
+    key = _fresh_key(rng)
+    if key is not None:
+        return _remembered_lens(key, size_mm, lens)
+    return _accepted(lambda: level_cells(lens_field(rng, lens)), size_mm)
+
+
 _Key = tuple[int | tuple[int, ...], tuple[int, ...], int]
 
 
@@ -556,6 +634,12 @@ def _remembered_sinuous(key: _Key, size_mm: float, fins: Fins) -> tuple[ArmShape
 def _remembered_jagged(key: _Key, size_mm: float, jg: Jagged) -> SolidConfig:
     rng = _stream(key)
     return _accepted(lambda: union_cells(jagged_union(rng, jg)), size_mm)
+
+
+@functools.lru_cache(maxsize=64)
+def _remembered_lens(key: _Key, size_mm: float, lens: Lens) -> SolidConfig:
+    rng = _stream(key)
+    return _accepted(lambda: level_cells(lens_field(rng, lens)), size_mm)
 
 
 def _draw_sinuous(

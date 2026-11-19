@@ -2006,8 +2006,8 @@ owner's 1 in 50-75; s.19) has a lens centre instead of a star.
 Item 17's sweep of eyes and needles on 3D eggs (owner asleep; overnight work, local
 scripts `runs/thunderegg-3d/eye_needle_sweep.py`, `eye_push_3d.py`, `eye_push_check.py`).
 Stones are named sheet-index (0-based, as in the recipes); the owner's render sheets
-name them by stone number (index + 1). The eye-push curve and `DEPTH_GAP` are
-*proposed*, for the owner's verdict on renders.
+name them by stone number (index + 1). The eye-push curve and `DEPTH_GAP` were
+*proposed*, for the owner's verdict on renders; approved 2026-11-19 (end of section).
 
 - *Fault found: no quartz centres on 3D stars.* Bands grew to (1 - w) x `inradius`, half
   the box's thinnest side. On a winding star that is 2.0-2.7 x the deepest point's
@@ -2068,6 +2068,36 @@ name them by stone number (index + 1). The eye-push curve and `DEPTH_GAP` are
 - *Eyes on lenses.* A lens deeper than about 4 mm takes eyes (radius cap half the
   chalcedony); at about 1 in 3,000 eggs (1 in 60 lenses x 1 in 50 eyed) not tuned
   apart.
+
+*The owner's verdicts (2026-11-19).* The restored centres and the new eye push "look
+good" (both render sheets, the irregular stone's new open centre among them), so the
+depth sizing, `DEPTH_GAP` 0.95 and the eye-push curve stand. Tube depth on eggs was left
+to Claude: **the cap stays** (half the chalcedony, every stone alike), so egg tubes run
+1.8-5.0 mm and the owner's 3-10 mm holds where the chalcedony allows it. Reasons: the cap
+was set so a tube's stack never crosses every band, a geometry agatesim's placement was
+not checked for; an egg-only exception would be a special case for 27 tube eggs in 120;
+and renders can reopen it if egg tubes look stunted (*assumption*).
+
+### 24. Druse centres (item 18): the owner's choices (2026-11-19, building next)
+
+Reading: `notes/n1-reading/item18-druse.md` (local helper report; the catalogue notes
+carry the pages). Centres already grow pointed quartz with agatesim's crystal growth
+(`QUARTZ_GRAIN_MM` 0.5).
+
+- *Wider open centres on some stones* (owner). How many and how wide: to be proposed on a
+  look sheet, from s.23's finding that the recipe draws open centres small (median radius
+  1.3 mm).
+- *Chalcedony to quartz: a mix per stone, leaning sharp* (Claude's choice; the owner left
+  it open). Sources disagree: sharp "nearly always" [@heaney1993, p. 72], "mostly"
+  [@howard2018, p. 99]; graded in [@goetze2009, p. 677], [@goetze2020, p. 35],
+  [@conte2022, p. 8]. Proposed split about 2 sharp to 1 graded (`effective`,
+  *assumption*), shown on the look sheet before it is fixed.
+- *Faces in the void* (owner: "they should look realistic, and presumably should
+  perhaps sparkle a bit in some views due to light reflecting off their angular
+  faces"). Today the void renders black and the crystal tips are not lit as facets.
+  Next: measure what a facet glint needs in the renderer (it ties to item 19, air and
+  refraction, and to the no-glare look of 2026-11-09, so glints stay small and only
+  on faces in open voids), report, and show a look before building.
 
 ## Limits
 

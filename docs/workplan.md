@@ -115,7 +115,7 @@ before any statistics.
 
 ## Batch 4: large (several sessions each)
 
-- [ ] 17. True 3D thunder-egg cavity (a cut may gain or lose arms with depth;
+- [x] 17. True 3D thunder-egg cavity (a cut may gain or lose arms with depth;
   at Del Norte lens-shaped centres are reported more often than stars).
   2026-11-18: probe done and the owner's choices taken (ADR 0018 s.19): winding stars
   as 3D fins, lens centres on 1 in 50-75, cut near the middle, jagged reworked (sheet
@@ -134,13 +134,16 @@ before any statistics.
   ADR 0018 s.22). Owner approved the rerender.
   2026-11-19 night: eyes/needles sweep found 3D stars lost their quartz centres (bands
   sized by the box); fixed with the true depth, eye push re-measured (ADR 0018 s.23).
-  Still open: owner's look at 3D eggs with centres, eyes and needles on renders.
+  CLOSED 2026-11-19: owner approved the centres and eye push on renders; tube cap kept
+  on eggs (Claude's call, ADR 0018 s.23 end).
 - [ ] 18. Druse crystal faces in open cavities.
   2026-11-19 night: reading done (`notes/n1-reading/item18-druse.md`; catalogue notes
   updated). Centres already grow agatesim's pointed crystals (0.5 mm grain); open
-  centres are small and their void renders black with ragged edges. Owner's choices
-  needed before building (open-centre size, sharp/gradual transition, how faces in
-  the void should look; the last overlaps item 19's air with refraction).
+  centres are small and their void renders black with ragged edges.
+  2026-11-19: owner's choices (ADR 0018 s.24): wider open centres on some stones;
+  transition a mix per stone leaning sharp (Claude's call); faces realistic, with a
+  small glint in some views. Next: look sheet for centres/transition; measure what
+  facet glints cost in the renderer before building (overlaps item 19).
 - [ ] 19. Renderer physics: scattering in the camera code (ask the owner
   first), air with refraction in cavities (ADR 0019 A2), the fuller red fix
   (several wavelengths per channel; recheck ADR 0014), white ghost plumes.

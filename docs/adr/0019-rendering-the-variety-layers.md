@@ -634,6 +634,9 @@ stones none; white fine needles alone take the finer grid, within the budget
        `evaluate`'s code, outputs unchanged), the owner's to approve. phi needs the
        wall distance, noise, delay and coats, so no closed form for the GPU: proposed, a
        float grid at 0.1 mm world nodes (`effective`) near the surface, read trilinearly.
+     - *Owner's verdict (2026-11-19, late night): yes to both.* agatesim exposes phi
+       (beside `CrystalWall`, sharing `evaluate`'s code, outputs unchanged, a sign test
+       against its phases); nodule stores it on a 0.1 mm world grid, timed when built.
 
 ## Consequences
 

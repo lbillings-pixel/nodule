@@ -2005,14 +2005,18 @@ owner's 1 in 50-75; s.19) has a lens centre instead of a star.
 
 Item 17's sweep of eyes and needles on 3D eggs (owner asleep; overnight work, local
 scripts `runs/thunderegg-3d/eye_needle_sweep.py`, `eye_push_3d.py`, `eye_push_check.py`).
+Stones are named sheet-index (0-based, as in the recipes); the owner's render sheets
+name them by stone number (index + 1). The eye-push curve and `DEPTH_GAP` are
+*proposed*, for the owner's verdict on renders.
 
 - *Fault found: no quartz centres on 3D stars.* Bands grew to (1 - w) x `inradius`, half
   the box's thinnest side. On a winding star that is 2.0-2.7 x the deepest point's
   distance from the wall (5 eggs: inradius 12.7-21.7 mm, depth 6.5-9.6 mm), on jagged
-  cores 1.3-1.6 x, on lenses 1.03-1.06 x. So chalcedony filled every quartz-filled or
-  -lined star: 0 quartz among 100,000 points on all six star eggs swept, though their
-  recipes (and sheet labels) said quartz. The prism stars of before were not affected
-  in this way. Fix: `recipe.cavity_depth`, the deepest point's wall distance on a drawn
+  cores 1.3-1.6 x, on lenses 1.03-1.06 x. So chalcedony filled the centre of any star
+  whose w was below about 1 - depth/inradius (all winding stars, w being at most 0.6;
+  jagged ones up to w 0.23-0.38): 0 quartz among 100,000 points on all four quartz-centred stars swept
+  (w 0.08-0.27), though their recipes (and sheet labels) said quartz. A jagged core with
+  w 0.43 would have kept some. The prism stars of before were not checked this way. Fix: `recipe.cavity_depth`, the deepest point's wall distance on a drawn
   3D cavity (48-point grid, then refined; 0.03 s), and `inradius` on other solids as
   before. It sizes the bands (`layers.volume_config`), the open centre that cracks keep
   clear of, and `chalcedony_mm` (the caps on eyes, crystals and tube depth). Crack sizes
@@ -2025,8 +2029,9 @@ scripts `runs/thunderegg-3d/eye_needle_sweep.py`, `eye_push_3d.py`, `eye_push_ch
 - *Eye push re-measured.* The push that keeps a centre as without eyes (s.18's
   criterion) had been set to 0.35 R on one prism star. On six 3D eggs (2 winding, 2
   jagged, 2 lens; filled and lined), per spacing: medians 0.73 at 2.2 R, 0.57 at 3.5 R,
-  0.13 at 6 R (lenses higher at 2.2 R, 0.75-0.93). Now interpolated by spacing as the
-  vesicles' push: 0.75, 0.55, 0.15 (`effective`). Held out (5 winding and 2 lens eggs,
+  0.13 at 6 R (lenses higher at 2.2 R, 0.75-0.93). Proposed and built (a separate
+  commit; dropping it needs a small edit of this section): interpolated by spacing as
+  the vesicles' push, 0.75, 0.55, 0.15 (`effective`). Held out (5 winding and 2 lens eggs,
   not used to set it; no jagged egg qualified): open centre with eyes over without, at
   2.2 R old 0.01-0.35, new 0.54-2.5; at 6 R old 1.2-4.5, new 0.44-1.3; median over all
   spacings old 0.79, new 1.00; within 0.5-2 x, old 54 %, new 64 %. A rule of thumb,
@@ -2038,9 +2043,20 @@ scripts `runs/thunderegg-3d/eye_needle_sweep.py`, `eye_push_3d.py`, `eye_push_ch
   `inradius` (round, lobed and almond vesicles 0.96-1.0), and none of sheets 0-11's
   four quartz-lined irregular stones had any open centre in 3D. `cavity_depth` now
   measures every solid (0.05-0.11 s) and uses the depth where it falls below
-  `DEPTH_GAP` 0.95 of the inradius (`effective`), so vesicles build as before. After:
+  `DEPTH_GAP` 0.95 of the inradius (`effective`, proposed), so vesicles build as
+  before. After:
   void in all four (0.12-0.42 % of the cavity), on 3 of 4 cuts. Control: one recipe
-  of 144 changes (an irregular stone's tube depth).
+  of 144 changes (an irregular stone's tube depth); all 108 other non-egg stones of
+  sheets 0-11 (tilted almonds included) keep depth = inradius exactly.
+- *Scope.* Recipes barely move, but every 3D egg and every irregular stone now builds
+  differently, solid centres and floors included (band growth, floor growth and timing
+  all scale with the depth). Over sheets 0-59 (120 eggs), old sizing against new: eyed
+  eggs 1 and 1 (18-1; fewer than 1 in 50, unchanged by this fix), tube eggs 27 and 27,
+  tube depth 3.0-7.6 mm (median 4.7) against 1.8-5.0 (median 3.4). The tube cap (half
+  the chalcedony, `tubes.DEPTH_CAP_SHARE`) now sees the stars' true 3-5 mm of
+  chalcedony, so egg tubes fall below the owner's 3-10 mm; deeper ones would cross the
+  whole band stack, as the cap was set to prevent. Drawing a sheet takes 14.8 s
+  against 13.4 s (the depth search runs several times a stone).
 - *Why quartz-lined cuts rarely show a cavity (the owner's low-wait question, ADR
   0019).* Over the 48 quartz-lined stones of sheets 0-11: the cut passes a median
   1.2 mm from the open centre's middle and shows void on 40 (more than 0.2 % of the

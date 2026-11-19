@@ -505,15 +505,20 @@ stones none; white fine needles alone take the finer grid, within the budget
      box_fill.py, gpu_probe.py; nothing in src yet). The probe stone again (sheet 4, stone
      5); *verified* for it, untested on others (thin linings, hollows meeting chalcedony,
      tubes or needles).
-     - *The hollow.* A coarse pass (0.4 mm, 3 s) finds one piece; it meets crystal quartz
-       only. Box = the hollow + 3 mm, on world-anchored nodes (node i at i x 0.2 mm, so
-       every cut and close-up sees the same wall): 36 x 37 x 33 mm, 5.5 M nodes.
-     - *Crystal ids at every node* (int32, 22 MB): `wall.arrival` 14 s, peak 0.25 GB
-       traced. 0.1 mm would be 44 M nodes, ~106 s, for the same normals (step 1: 98.4 %
-       against 98.2 %), so 0.2 mm, the slab grid's own spacing (`effective`).
-     - *Shell* (phase and growth time from agatesim, in a band 0.8 mm into the hollow and
-       out to the shell): 1 mm 0.27 M nodes ~3 s; 2 mm 0.56 M ~5 s; 3 mm 0.91 M ~7 s. All
-       cheap; how much light the deeper shell returns is measured in the render (step 4).
+     - *The hollow.* A coarse pass (0.4 mm, 3 s) finds it: one piece of 74 972 nodes plus
+       three single nodes (not examined); it meets crystal quartz only. The box holds the
+       whole hollow, both sides of any cut, + 3 mm, so it is one box per stone, shared by
+       every cut and view: 36 x 37 x 33 mm. (Step 1's 26 x 25 x 27 mm was another
+       measure: the part seen from one cut's face, + 1 mm.) Nodes are world-anchored
+       (node i at i x 0.2 mm): 5.5 M.
+     - *Crystal ids at every node* (int32, 22 MB): `wall.arrival` 14 s, 0.25 GB traced
+       in the ids loop (the 0.27 GB of node coordinates, allocated before, not counted).
+       0.1 mm would be 44 M nodes, ~106 s, for the same normals (step 1: 98.4 % against
+       98.2 %), so 0.2 mm (`effective`). The wall's shape comes from the closed form, so
+       the id spacing does not limit its sharpness in any view.
+     - *Phase and growth time in a band* (0.8 mm into the hollow, out to the shell's
+       edge), for the gate and as one material option: 1 mm 0.27 M nodes ~3 s; 2 mm
+       0.56 M ~5 s; 3 mm 0.91 M ~7 s.
      - *The region gate holds at node resolution.* Among quartz and void nodes the
        level's sign equals VOID at every node; of 84 022 wall cells none has a corner
        outside quartz or void. The false hollow (level > 0 in chalcedony behind the sites)
@@ -524,21 +529,36 @@ stones none; white fine needles alone take the finer grid, within the budget
        where agatesim has quartz). *Assumption* (proposed rule): a sliver takes its
        lining's material, the nearest filled node's growth time, as `fill_void` gives
        open nodes today.
-     - *Material and the seam.* Box growth time, read trilinearly, against agatesim's in
-       the quartz lining: |dt| 2.6 growth steps typical, 19 at p99 (of 400; ~14 steps a
-       cell here), the slab grid's own error at this spacing. Two 0.2 mm samplings half a
-       cell apart differ by 2.0 steps typical, 16 at p99: the size of a seam where the
-       slab grid hands over to the box. Proposed: the slab grid wins down to its depth and
-       the box's material is read only below it, so the polished face is unchanged and
-       the seam (a plane 5 mm down) shows only through the hollow.
+     - *Material below the slab: open.* Variety renders read material on the view's own
+       grid: the whole face 0.1 mm (`WHOLE_GRID_MM`), needle stones 0.05, close-ups 0.03,
+       down to 5 mm (close-ups 2 mm). A 0.2 mm material shell would be coarser than all of
+       them. Measured on 0.2 mm in the quartz lining only (no chalcedony sampled): growth
+       time read trilinearly is off by 2.6 growth steps typical, 19 at p99 (of 400; ~14
+       steps a cell here); two samplings half a cell apart differ by 2.0 and 16 steps,
+       the size of a seam between two grids (*plausible* as the slab grids' error too, at
+       their spacing: not measured on them). Options: (a) one world 0.2 mm material shell
+       for every view (~7 s, view-independent), coarser than every view, with a seam
+       where each view's grid hands over, at a depth that differs by view (5 mm, close-ups
+       2 mm); (b) each view's own grid continued down under the hollow (same nodes, so no
+       seam, and the polished face unchanged); cost grows with the view (the whole face
+       roughly a footprint of 26 x 25 mm to ~10 mm further down at 0.1 mm, ~6-8 M nodes;
+       close-ups at 0.03 mm far more unless coarsened), measured when built. The choice
+       is the owner's; it does not change the id box or the gate.
      - *GPU cost* (RTX 4070, 10 M points drawn from the real near-wall points; agatesim's
        string prepended, fast math as the camera): the wall test (8 ids, 8 closed forms
-       with gradient, the earliest) 0.40 ns a point in random order, 0.06 ns sorted by
-       cell; one trilinear read of a float32 grid of the same box 0.15 and 0.03 ns. Its
-       level matches the CPU's float64 to 3e-6 mm, sign on every point. Not a risk.
-     - *Total per hollow stone:* ~25 s of fill (coarse 3, ids 14, shell 7) and ~0.05 GB
-       on the GPU, on top of the stone's build. Not checked again: step 1's 98 % normals
-       (the same nodes, ids and closed form, so the same lattice by construction).
+       with gradient, the earliest) 0.40 ns a point in random order; one trilinear read of
+       a float32 grid of the same box 0.15 ns. (Sorted by cell, 0.06 and 0.03 ns, near
+       the card's memory bandwidth for the harness's own reads and writes: those time the
+       harness, not the test.) Its level matches the CPU's float64 to 3e-6 mm, sign on
+       every point. Per point, not a risk; how many tests a flight needs is step 4's
+       measure.
+     - *Total per hollow stone:* ~25 s of fill (coarse 3, ids 14, band 7) and ~0.05 GB on
+       the GPU for ids and gate, on top of the stone's build; material by the option
+       taken. Not checked again: step 1's 98 % normals (`arrival` is agatesim's `assign`,
+       at the same world nodes, and the GPU matches the CPU).
+     - *Next stone for the gate:* the false hollow's 2.8 mm margin equals the stage's
+       last reach, so it likely shrinks with a thinner lining; the build checks the stone
+       with the smallest `last_reach` it can find.
 
 ## Consequences
 

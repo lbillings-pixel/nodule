@@ -637,6 +637,22 @@ stones none; white fine needles alone take the finer grid, within the budget
      - *Owner's verdict (2026-11-19, late night): yes to both.* agatesim exposes phi
        (beside `CrystalWall`, sharing `evaluate`'s code, outputs unchanged, a sign test
        against its phases); nodule stores it on a 0.1 mm world grid, timed when built.
+     - *Built in agatesim (2026-11-19, agatesim ADR 0091, c52c256):*
+       `CrystalWall.chalcedony_level(points, inside)`, Fields unchanged (hashes equal on
+       four runs, runs/hollow-air/phi_baseline.py). **Correction to "covers every crystal
+       stone" above:** the sign is exact only while a wall channel's stack stays within
+       the last lining. Where earlier stages (spherulites, a first lining) lie under the
+       last lining and the stack reaches past it, the lining's channel delay reaches their
+       material and phi calls it open (1 613 false points, about 4 % of the open region
+       and up to 1.6 mm deep, on a test geode at a stack 1.85x the lining; 12 at 1.0x;
+       none at 0.9x). agatesim therefore returns None when such a stack exceeds 0.8 of
+       the last lining (*effective*), and the void box keeps its gate there. Nodule's
+       stones are not affected so far: of the 96 crystal stones on sheets 0-11, 17 have a
+       channel and 11 of those an earlier stage, all with stacks 0.25-0.65 of the last
+       lining, and phi is exact on all 11 (runs/hollow-air/phi_census.py,
+       phi_sign_check.py). nodule caps a stack at half of all the chalcedony
+       (tubes.DEPTH_CAP_SHARE), so a stone with thick early layers under a thin last
+       lining could still fall back.
 
 ## Consequences
 

@@ -163,7 +163,9 @@ before any statistics.
   Owner approved it all; probe done (s.6.12 "Step 1"): a sampled level rounds crystal
   edges, so the owner chose an owner lattice, agatesim shipping its crystals and their
   closed form (approved). Step 2 done (agatesim ADR 0090, pin 7b9fa04; s.6.12 "Step
-  2"). Next: step 3, the void box (owner ids per node, slivers rule).
+  2"). Step 3 probe done (s.6.12 "Step 3"): 0.2 mm world box, 3 mm shell, ~25 s a
+  hollow stone, GPU cost negligible; spacing, shell, sliver rule and seam proposed to the
+  owner. Next: build `nodule.render.voidbox` (unwired, tests with controls), then step 4.
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

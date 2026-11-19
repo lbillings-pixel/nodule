@@ -501,6 +501,44 @@ stones none; white fine needles alone take the finer grid, within the budget
      chalcedony points (behind the crystals' sites). So the void box must take the
      hollow's wall from the level only inside the crystal stage's region (the phase,
      or the stage's solid), not from its sign alone.
+   - *Step 3, the void box: probe* (2026-11-19 late; runs/hollow-air/box_probe.py,
+     box_fill.py, gpu_probe.py; nothing in src yet). The probe stone again (sheet 4, stone
+     5); *verified* for it, untested on others (thin linings, hollows meeting chalcedony,
+     tubes or needles).
+     - *The hollow.* A coarse pass (0.4 mm, 3 s) finds one piece; it meets crystal quartz
+       only. Box = the hollow + 3 mm, on world-anchored nodes (node i at i x 0.2 mm, so
+       every cut and close-up sees the same wall): 36 x 37 x 33 mm, 5.5 M nodes.
+     - *Crystal ids at every node* (int32, 22 MB): `wall.arrival` 14 s, peak 0.25 GB
+       traced. 0.1 mm would be 44 M nodes, ~106 s, for the same normals (step 1: 98.4 %
+       against 98.2 %), so 0.2 mm, the slab grid's own spacing (`effective`).
+     - *Shell* (phase and growth time from agatesim, in a band 0.8 mm into the hollow and
+       out to the shell): 1 mm 0.27 M nodes ~3 s; 2 mm 0.56 M ~5 s; 3 mm 0.91 M ~7 s. All
+       cheap; how much light the deeper shell returns is measured in the render (step 4).
+     - *The region gate holds at node resolution.* Among quartz and void nodes the
+       level's sign equals VOID at every node; of 84 022 wall cells none has a corner
+       outside quartz or void. The false hollow (level > 0 in chalcedony behind the sites)
+       starts 2.8 mm from the real one (the stage's last reach). So a per-node flag
+       (quartz or void; the hollow's inside) gates the wall.
+     - *Slivers.* Of 300 000 points in wall cells, 0.22 % are VOID in agatesim but solid
+       on the lattice (median 0.06 mm deep, at most 0.47 mm); 0.01 % the reverse (air
+       where agatesim has quartz). *Assumption* (proposed rule): a sliver takes its
+       lining's material, the nearest filled node's growth time, as `fill_void` gives
+       open nodes today.
+     - *Material and the seam.* Box growth time, read trilinearly, against agatesim's in
+       the quartz lining: |dt| 2.6 growth steps typical, 19 at p99 (of 400; ~14 steps a
+       cell here), the slab grid's own error at this spacing. Two 0.2 mm samplings half a
+       cell apart differ by 2.0 steps typical, 16 at p99: the size of a seam where the
+       slab grid hands over to the box. Proposed: the slab grid wins down to its depth and
+       the box's material is read only below it, so the polished face is unchanged and
+       the seam (a plane 5 mm down) shows only through the hollow.
+     - *GPU cost* (RTX 4070, 10 M points drawn from the real near-wall points; agatesim's
+       string prepended, fast math as the camera): the wall test (8 ids, 8 closed forms
+       with gradient, the earliest) 0.40 ns a point in random order, 0.06 ns sorted by
+       cell; one trilinear read of a float32 grid of the same box 0.15 and 0.03 ns. Its
+       level matches the CPU's float64 to 3e-6 mm, sign on every point. Not a risk.
+     - *Total per hollow stone:* ~25 s of fill (coarse 3, ids 14, shell 7) and ~0.05 GB
+       on the GPU, on top of the stone's build. Not checked again: step 1's 98 % normals
+       (the same nodes, ids and closed form, so the same lattice by construction).
 
 ## Consequences
 

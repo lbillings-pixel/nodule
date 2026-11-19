@@ -16,6 +16,7 @@ from agatesim.volume.features import wall_features
 from agatesim.volume.models import Setting
 from agatesim.volume.slicing import Plane
 from agatesim.volume.solids import Rotated, Solid, SphereUnion
+from numpy.typing import NDArray
 
 from nodule.crystals import NEEDLES_ONLY, NO_COMBOS, combo_plan, crystal_plan, draw_crystals
 from nodule.dendrites import draw_dendrites
@@ -51,6 +52,8 @@ from nodule.variety.recipe import (
     FLOOR_SUPPLY,
     FRACTURED_STONES,
     FULL_WOBBLE_STONES,
+    GRADE_MM,
+    GRADED_CHANCE,
     MILD_WOBBLE_SHARE,
     NARROW_CENTRE_OUTLINES,
     OUTLINE_SHARES,
@@ -211,6 +214,10 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     dendrite_streams = np.random.default_rng(root.spawn(1)[0]).spawn(n)
     # Eyes from a stream spawned after the dendrites' (ADR 0018 s.18), on the same terms.
     eye_streams = np.random.default_rng(root.spawn(1)[0]).spawn(n)
+    # Graded transitions from a stream spawned after the eyes' (ADR 0018 s.24); every
+    # stone takes its two draws, quartz centre or not.
+    grade_rng = np.random.default_rng(root.spawn(1)[0])
+    grades = [graded_mm(grade_rng.uniform(size=2), r) for r in out]
     final: list[StoneRecipe] = []
     for i, r in enumerate(out):
         rec = StoneRecipe.model_validate(
@@ -218,6 +225,7 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
             | {
                 "rind": draw_rind(rind_streams[i], r.outline),
                 "channel": draw_channel(tube_streams[i], r.outline, chalcedony_mm(r)),
+                "grade_mm": grades[i],
             }
         )
         if rec.channel is not None and not channel_fits(rec):
@@ -228,6 +236,24 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
         eyes = draw_eyes(eye_streams[i], rec.outline, rec.band_mm, ok, chalcedony_mm(rec))
         final.append(rec if eyes is None else rec.model_copy(update={"eyes": eyes}))
     return final
+
+
+def graded_mm(u: NDArray[np.float64], recipe: StoneRecipe) -> float:
+    """A quartz centre's transition (ADR 0018 s.24): graded over GRADE_MM on
+    GRADED_CHANCE of them (from u[0]), its width from u[1], at most the centre's own
+    thickness (`centre_mm`), so a narrow centre is not ringed by a clear core several
+    times its size; 0 (sharp) otherwise."""
+    if recipe.centre == "solid" or u[0] >= GRADED_CHANCE:
+        return 0.0
+    lo, hi = GRADE_MM
+    return min(lo + (hi - lo) * float(u[1]), centre_mm(recipe))
+
+
+def centre_mm(recipe: StoneRecipe) -> float:
+    """Rough thickness (mm) of a stone's quartz and open centre: `centre_width` of the
+    cavity's depth left above any floor (as `chalcedony_mm`)."""
+    r = cavity_depth(recipe.solid.build()) * max(1.0 - recipe.floor, 0.1)
+    return recipe.centre_width * r
 
 
 HAIRLINE_MM = 0.05  # the thinnest crack trace drawn (FractureLayer's range)

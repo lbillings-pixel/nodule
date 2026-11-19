@@ -108,6 +108,19 @@ WIDE_QUARTZ_MIN_MM = 1.5  # three nucleation spacings (QUARTZ_GRAIN_MM)
 NARROW_CENTRE_OUTLINES = ("thunder-egg",)
 
 
+# Chalcedony to quartz, sharp or graded (owner 2026-11-19, ADR 0018 s.24). Sources
+# disagree: sharp "nearly always" [@heaney1993, p. 72], "mostly" [@howard2018, p. 99];
+# graded in [@goetze2009, p. 677], [@goetze2020, p. 35], [@conte2022, p. 8]. A graded
+# stone's last chalcedony clears toward the quartz over GRADE_MM: translucency up to
+# GRADE_CLEAR of the way to clear, iron down to QUARTZ_IRON_RATIO, linearly, so the
+# layering stays faintly visible at the contact (conte2022). All `effective`,
+# *assumption*; the zone takes at most GRADE_MAX_SHARE of the chalcedony's time.
+GRADED_CHANCE = 1 / 3
+GRADE_MM = (2.0, 4.0)
+GRADE_CLEAR = 0.8
+GRADE_MAX_SHARE = 0.5
+
+
 # `physical`: macro-quartz holds 78-141 ppm Fe against 262-969 in the bands
 # [@mrozik2023, Table 5]; 0.2 lies inside the range of ratios (about 0.08-0.54).
 QUARTZ_IRON_RATIO = 0.2
@@ -242,6 +255,12 @@ class StoneRecipe(BaseModel):
     centre: Centre
     centre_width: float = Field(ge=0, le=1, description="Share of the inradius.")
     lining: float = Field(ge=0, le=1, description="Quartz-lined: share of the centre in quartz.")
+    grade_mm: float = Field(
+        default=0.0,
+        ge=0,
+        description="Chalcedony to quartz: 0 sharp, else the depth (mm) over which the last "
+        "chalcedony clears toward the quartz (ADR 0018 s.24).",
+    )
     tint: Tint = "none"
     floor: float = Field(ge=0, le=1, description="0 = none, else the floor's target height.")
     floor_supply: float = Field(
@@ -310,6 +329,12 @@ class StoneRecipe(BaseModel):
         return self
 
     @model_validator(mode="after")
+    def _graded_needs_quartz(self) -> StoneRecipe:
+        if self.grade_mm and self.centre == "solid":
+            raise ValueError("a graded transition needs a quartz centre")
+        return self
+
+    @model_validator(mode="after")
     def _no_tube_on_a_pebble(self) -> StoneRecipe:
         if self.channel is not None and self.outline in NO_TUBES:
             raise ValueError("no escape tube on a pebble (Walger: none below cherry size)")
@@ -328,6 +353,8 @@ class StoneRecipe(BaseModel):
         ]
         if self.tint != "none":
             parts.append(self.tint)
+        if self.grade_mm:
+            parts.append(f"graded {self.grade_mm:.1f} mm")
         if self.floor:
             thick = " thick" if self.floor_supply >= 1 else ""
             parts.append(f"floor {self.floor:.2f}{thick}")

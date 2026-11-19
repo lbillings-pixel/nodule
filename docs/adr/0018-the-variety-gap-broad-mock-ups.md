@@ -2153,6 +2153,22 @@ of two stones, sharp against 3 mm graded (`runs/druse-centres/transition_render.
 quartz centres graded, zone 2-4 mm per stone, the rest sharp** (`effective`,
 *assumption*; the 2 : 1 split from the sources' lean toward sharp, above).
 
+*Graded transition, built (2026-11-19).* `StoneRecipe.grade_mm` (0 = sharp), drawn in
+`variety.draw.graded_mm` from a stream spawned after the eyes', every stone taking its
+draws, so no other recipe field moves (sheets 0-5: 0 of 72 changed otherwise; 13 of 48
+quartz centres graded). `VarietyLayers.graded` clears the zone per step; its width in
+growth time is grade_mm over the run's growth at full supply (the silica base until
+quartz), capped at half the chalcedony's time (`GRADE_MAX_SHARE`). A sharp stone takes
+no new code path. Thunder eggs take grading too (*assumption*: no source on their
+transition).
+- *The zone is at most the centre's thickness* (`draw.centre_mm`: `centre_width` of the
+  depth above any floor). Without this, a first check found clear cores several times
+  the centre: on 10 of 13 graded stones of sheets 0-5 the drawn 2-4 mm exceeded the
+  centre (up to 6.1 x, on narrow centres at `centre_width` 0.08), and the zone's last
+  2-4 mm of growth spread over flat centres (a lens above a floor, a thunder egg's star
+  body) as a clear core 10-14 mm across. The owner judged 3 mm on centres about 6 mm
+  thick, which the cap leaves as they were; narrow centres now grade over 0.6-1.5 mm.
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

@@ -41,6 +41,8 @@ from nodule.variety.mottle import (
     mottle_fields,
 )
 from nodule.variety.recipe import (
+    GRADE_CLEAR,
+    GRADE_MAX_SHARE,
     MAX_SLOPE,
     QUARTZ_GRAIN_MM,
     QUARTZ_IRON_RATIO,
@@ -330,6 +332,8 @@ class VarietyLayers:
     edge_noise: SmoothNoise3 | None = None
     dust: DustLayer | None = None
     dendrites: DendriteLayer | None = None
+    # growth time over which the last chalcedony clears toward the quartz (0: sharp)
+    grade_t: float = 0.0
 
     @classmethod
     def of(cls, recipe: StoneRecipe, solid: Solid, growth: Growth) -> VarietyLayers:
@@ -345,6 +349,12 @@ class VarietyLayers:
         end = growth.chalcedony_end
         if recipe.centre == "solid":  # the last band lies down at about 1/1.3 of the walls' run
             end = growth.start + (end - growth.start) / 1.3
+        grade = 0.0
+        if recipe.grade_mm and growth.quartz_at is not None:
+            # At full supply (the silica base, until quartz) the walls grow growth_mm
+            # per unit time, so grade_mm takes grade_mm / growth_mm of it.
+            first = max(growth.start, growth.plumes_end, growth.eyes_end)
+            grade = min(recipe.grade_mm / growth.growth_mm, GRADE_MAX_SHARE * (end - first))
         return cls(
             recipe,
             np.asarray(solid.centre(), dtype=np.float64),
@@ -354,6 +364,7 @@ class VarietyLayers:
             stain,
             rim,
             edge,
+            grade_t=grade,
         )
 
     def mottle_softness(self, points: FloatArray) -> FloatArray:
@@ -437,6 +448,8 @@ class VarietyLayers:
             band_impurity=None if bi is None else iron(bi),
             band_translucency=None if bt is None else white(bt),
         )
+        if self.grade_t > 0:
+            out = self.graded(out)
         crystals = self.recipe.crystals
         if crystals is None or crystals.fill != "white":
             return out
@@ -467,6 +480,34 @@ class VarietyLayers:
             translucency=at(out.translucency, WHITE_STEP_TRANSLUCENCY),
             band_impurity=at(out.band_impurity, 0.0),
             band_translucency=at(out.band_translucency, WHITE_STEP_TRANSLUCENCY),
+        )
+
+    def grade(self, t: FloatArray) -> FloatArray:
+        """0 before the graded zone, rising linearly to 1 where the last chalcedony lies
+        down (`grade_t` of growth time before it)."""
+        g = self.grade_t
+        return np.clip((t - (self.chalcedony_end - g)) / g, 0.0, 1.0)
+
+    def graded(self, fields: Fields) -> Fields:
+        """The graded transition (ADR 0018 s.24): chalcedony in the zone clears toward
+        the quartz, translucency up to GRADE_CLEAR of the way to clear and iron down
+        toward the quartz's (QUARTZ_IRON_RATIO), so its layering stays faintly visible.
+        Per step, as `per_step` (the step's own time)."""
+        t = np.nan_to_num(fields.t_dep, nan=0.0).astype(np.float64)
+        k = self.grade(t) * (fields.phase == Phase.CHALCEDONY)
+
+        def clear(a: NDArray[np.float32] | None) -> NDArray[np.float32] | None:
+            return None if a is None else (a + GRADE_CLEAR * k * (1 - a)).astype(np.float32)
+
+        def iron(a: NDArray[np.float32] | None) -> NDArray[np.float32] | None:
+            return None if a is None else (a * (1 - k * (1 - QUARTZ_IRON_RATIO))).astype(np.float32)
+
+        return replace(
+            fields,
+            translucency=clear(fields.translucency),
+            band_translucency=clear(fields.band_translucency),
+            impurity=iron(fields.impurity),
+            band_impurity=iron(fields.band_impurity),
         )
 
     def __call__(

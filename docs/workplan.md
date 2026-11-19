@@ -136,7 +136,11 @@ before any statistics.
   sized by the box); fixed with the true depth, eye push re-measured (ADR 0018 s.23).
   CLOSED 2026-11-19: owner approved the centres and eye push on renders; tube cap kept
   on eggs (Claude's call, ADR 0018 s.23 end).
-- [ ] 18. Druse crystal faces in open cavities.
+- [x] 18. Druse crystal faces in open cavities.
+  CLOSED 2026-11-19 (ADR 0018 s.24): wide open centres on 1 in 3 quartz-lined
+  stones (not eggs), open 0.20-0.50 of the depth; graded transition on 1 in 3
+  quartz centres (2-4 mm, at most the centre's thickness); glints measured (cone tips give specks, 30-74 a view
+  under a small lamp); the owner moved faces and sparkle into item 19.
   2026-11-19 night: reading done (`notes/n1-reading/item18-druse.md`; catalogue notes
   updated). Centres already grow agatesim's pointed crystals (0.5 mm grain); open
   centres are small and their void renders black with ragged edges.
@@ -147,6 +151,9 @@ before any statistics.
 - [ ] 19. Renderer physics: scattering in the camera code (ask the owner
   first), air with refraction in cavities (ADR 0019 A2), the fuller red fix
   (several wavelengths per channel; recheck ADR 0014), white ghost plumes.
+  From item 18 (owner 2026-11-19): the hollow as air so its crystal wall shows
+  (today black), an optional small-lamp view for sparkle (the soft look stays the
+  default), and six-faced crystal tips in agatesim (owner approved that change).
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

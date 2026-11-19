@@ -49,7 +49,7 @@ from nodule.variety.recipe import (
     WOBBLE_PER_SCALE_PER_CAP,
     Roughness,
     StoneRecipe,
-    inradius,
+    cavity_depth,
     unit_vector,
 )
 
@@ -166,7 +166,7 @@ def floor_growth_mm(share: float, r: float) -> float:
 
 def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[VolumeConfig, Growth]:
     solid = recipe.solid.build()
-    r = inradius(solid)
+    r = cavity_depth(solid)
     shift = centre_shift_mm(recipe)
     growth = growth_for(recipe, r, shift)
     if recipe.floor:

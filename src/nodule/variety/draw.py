@@ -65,6 +65,7 @@ from nodule.variety.recipe import (
     StoneRecipe,
     Tint,
     body_height,
+    cavity_depth,
     crack_scale,
     inradius,
     log_uniform,
@@ -286,7 +287,7 @@ def hairline(
     partial crack centred on the cut's outline, so the cut crosses it at the wall), or
     None if CRACK_TRIES draws all reach an open cavity, meet the cut at under
     CRACK_CUT_ANGLE, or find no place on the cut's outline."""
-    r = inradius(solid)
+    r = cavity_depth(solid)
     scale = crack_scale(recipe.solid, solid, recipe.arms)
     cavity = None
     if recipe.centre == "quartz-lined":
@@ -339,9 +340,9 @@ def channel_fits(recipe: StoneRecipe) -> bool:
 
 
 def chalcedony_mm(recipe: StoneRecipe) -> float:
-    """Rough thickness of a stone's chalcedony from the wall (mm): the inradius left
-    above any floor, less the centre."""
-    r = inradius(recipe.solid.build()) * max(1.0 - recipe.floor, 0.1)
+    """Rough thickness of a stone's chalcedony from the wall (mm): the cavity's depth
+    (`cavity_depth`) left above any floor, less the centre."""
+    r = cavity_depth(recipe.solid.build()) * max(1.0 - recipe.floor, 0.1)
     return (1.0 - recipe.centre_width) * r
 
 
@@ -448,8 +449,8 @@ def draw_stone(
     if cracked:  # drawn last, as before, so the stone's other draws stand
         cavity = None
         if centre == "quartz-lined":
-            w = recipe.centre_width
-            cavity = (1 - w) * r + recipe.lining * w * r
+            w, depth = recipe.centre_width, cavity_depth(solid)
+            cavity = (1 - w) * depth + recipe.lining * w * depth
         red = colour in ("iron", "carnelian")
         scale = crack_scale(solid_config, solid, arms)
         fractures = draw_fractures(rng, solid, red, cavity, scale)

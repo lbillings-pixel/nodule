@@ -5,18 +5,28 @@ from __future__ import annotations
 import numpy as np
 import pytest
 from agatesim._scipy import linear_at
+from agatesim.fields import Phase
+from agatesim.volume.config import SolidConfig
 from agatesim.volume.sampled import Sampled
 from agatesim.volume.slicing import Plane
 from agatesim.volume.solids import Solid
 
 import nodule.variety.draw as draw_module
+import nodule.variety.layers as layers_module
 import nodule.variety.recipe as recipe_module
 from nodule import thunderegg3d as t3
 from nodule.thunderegg import ARMS_BASE, JAGGED_SHARE, ArmShape, sinuous_mask
-from nodule.variety import StoneRecipe
+from nodule.variety import StoneRecipe, build
 from nodule.variety.cracks import draw_fractures
 from nodule.variety.draw import draw_stone
-from nodule.variety.recipe import FractureLayer, body_height, crack_scale, inradius, solid_for
+from nodule.variety.recipe import (
+    FractureLayer,
+    body_height,
+    cavity_depth,
+    crack_scale,
+    inradius,
+    solid_for,
+)
 
 HEIGHTS = (-0.3, -0.15, 0.0, 0.15, 0.3)  # shape units: about +-8 mm on a 55 mm egg
 
@@ -268,6 +278,43 @@ def test_jagged_walls_are_cornered_and_winding_ones_are_not(sheets: list[StoneRe
     assert float(np.median(jag)) > t3.CORNER_MIN
     assert sum(j > t3.CORNER_MIN for j in jag) >= 3
     assert max(wind) < t3.CORNER_MIN
+
+
+def test_star_eggs_keep_their_quartz_centres(
+    sheets: list[StoneRecipe], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """ADR 0018 s.23: bands are sized by the cavity's true depth, so a quartz-filled
+    star egg shows quartz. `cavity_depth` matches the deepest of random points, and is
+    `inradius` on solids that are not drawn in 3D. Negative control: sized by
+    `inradius`, the same stone's centre fills with chalcedony."""
+    vesicle = SolidConfig(preset="vesicle-round", size_mm=40.0).build()
+    assert cavity_depth(vesicle) == inradius(vesicle)
+    egg = next(
+        r
+        for r in sheets
+        if r.arms in ("sinuous", "jagged") and r.centre == "quartz-filled" and r.centre_width > 0.2
+    )
+    solid = egg.solid.build()
+    lo, hi = (np.asarray(b, dtype=np.float64) for b in solid.bounds())
+    pts = np.random.default_rng(7).uniform(lo, hi, (200_000, 3))
+    pts = pts[solid.contains(pts)]
+    deepest = float(solid.wall_distance(pts).max())
+    depth = cavity_depth(solid)
+    assert deepest - 0.05 <= depth <= deepest + 0.3
+    assert depth < 0.8 * inradius(solid)
+
+    plain = egg.model_copy(update={"eyes": None, "crystals": None, "moss": None, "plumes": None})
+    sample = pts[:50_000]
+
+    def quartz() -> int:
+        spec, _ = build(plain)
+        inside = spec.volume.solid.contains(sample)
+        phase: np.ndarray = spec.volume.evaluate(sample, inside).phase
+        return int(np.count_nonzero(phase[inside] == Phase.QUARTZ))
+
+    assert quartz() > 0.01 * len(sample)
+    monkeypatch.setattr(layers_module, "cavity_depth", inradius)
+    assert quartz() == 0
 
 
 def test_the_cut_passes_near_the_deepest_point(sheets: list[StoneRecipe]) -> None:

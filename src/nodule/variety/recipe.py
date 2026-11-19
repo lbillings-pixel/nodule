@@ -455,15 +455,36 @@ def body_height(solid: Solid) -> float:
     grid a side, so to within about 2 % of the box."""
     if not isinstance(solid, Sampled):
         return 0.0
+    deep, _ = _deepest(solid)
+    return float(deep[2] - np.asarray(solid.centre())[2])
+
+
+def _deepest(solid: Solid, n: int = 48) -> tuple[FloatArray, FloatArray]:
+    """The deepest of an n-point grid a side over the solid's box, and the grid's step."""
     bounds = solid.bounds()
     lo = np.asarray(bounds[0], dtype=np.float64)
     hi = np.asarray(bounds[1], dtype=np.float64)
-    axes: list[FloatArray] = [np.linspace(float(lo[i]), float(hi[i]), 48) for i in range(3)]
+    axes: list[FloatArray] = [np.linspace(float(lo[i]), float(hi[i]), n) for i in range(3)]
     grids: list[FloatArray] = list(np.meshgrid(*axes, indexing="ij"))
     pts: FloatArray = np.stack(grids, axis=-1).reshape(-1, 3)
     inside = pts[solid.contains(pts)]
-    deep = inside[int(np.argmax(solid.wall_distance(inside)))]
-    return float(deep[2] - np.asarray(solid.centre())[2])
+    return inside[int(np.argmax(solid.wall_distance(inside)))], (hi - lo) / (n - 1)
+
+
+def cavity_depth(solid: Solid) -> float:
+    """How far (mm) the wall lining must grow to fill the cavity: the wall distance of
+    a drawn 3D cavity's deepest point (found on `_deepest`'s grid, then on a 9-point
+    grid a side within one step of it), and the `inradius` of other solids, as before.
+    A winding star's box is 2-2.7 x as thick as its deepest point lies from the wall
+    (jagged cores 1.3-1.6 x, lenses 1.03-1.06 x), so sizing its bands by `inradius`
+    grew chalcedony over every quartz centre (ADR 0018 s.23)."""
+    if not isinstance(solid, Sampled):
+        return inradius(solid)
+    deep, step = _deepest(solid)
+    f = np.linspace(-1.0, 1.0, 9)
+    near: FloatArray = np.stack(np.meshgrid(f, f, f, indexing="ij"), axis=-1).reshape(-1, 3)
+    pts: FloatArray = deep + near * step
+    return float(np.max(solid.wall_distance(pts[solid.contains(pts)])))
 
 
 def recipe_size(solid: Solid) -> float:

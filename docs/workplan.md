@@ -154,6 +154,10 @@ before any statistics.
   From item 18 (owner 2026-11-19): the hollow as air so its crystal wall shows
   (today black), an optional small-lamp view for sparkle (the soft look stays the
   default), and six-faced crystal tips in agatesim (owner approved that change).
+  2026-11-19 eve (ADR 0019 s.6.11): owner's order: A, the hollow as air (then
+  small lamp, six-faced tips) first; then B, scattering by place (white ghost
+  plumes wanted on some stones; quartz-centre scattering read first); then C,
+  the red fix. No cheap stand-in shows the wall: next, design the second interface.
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

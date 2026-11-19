@@ -344,6 +344,24 @@ stones none; white fine needles alone take the finer grid, within the budget
      (sheet 0 stone 2 stays 0.05, now 82 M points against 41 M): accepted, needles may be
      a little fainter. Cost: whole faces at 5 mm, sheet 0 stone 1 (rough, eyes) took
      550 s against about 5 min before.
+11. **Renderer physics, order of work** (work plan item 19; the owner's choices,
+   2026-11-19). Item 19 splits into three tracks: (A) the open hollow as air, so the
+   crystal wall shows (option A2 above), then an optional small-lamp view for sparkle and
+   six-faced crystal tips in agatesim; (B) scattering that varies by place (today only
+   absorption is baked per grid node, s.6.7 and ADR 0018's plume bake; scattering comes
+   from the band material's row); (C) the fuller red fix (several wavelengths per
+   channel, then recheck ADR 0014). **The owner chose A first, and wants white (ghost)
+   plumes on some stones**, so B stays in item 19 (the owner's 2026-11-09 condition for a
+   plume material of its own, ADR 0018). Whether real quartz centres scatter more is
+   still unread (s.6.10): B reads it before any change there.
+   - **No cheap stand-in for A.** Dropping the void's stand-in absorption (`void_mua` 0)
+     does not show the wall: void nodes carry the lining's growth time (`tgrid.fill_void`),
+     so the hollow becomes clear lining quartz with no surface, as the backlit view's
+     plain white hole shows (runs/void-look/seed1/stone-02-backlit.png). The wall shows in
+     photographs through reflection and refraction at the air-to-crystal surface, which
+     needs the second interface. Item 18's mock-up (runs/druse-centres/glint-probe.png;
+     host-side shading, appearance only) stands for the look; the next step is the
+     interface's design, then a measured build.
 
 ## Consequences
 

@@ -119,6 +119,42 @@ def test_a_half_share_is_the_mixture(stone, light) -> None:
     assert np.all(np.abs(zc) > 10)
 
 
+GREY = [
+    ([1.0] * 3, [15.0] * 3, [0.8] * 3),
+    ([1.0] * 3, [10.0] * 3, [0.8] * 3),
+    ([0.08] * 3, [3.0] * 3, [0.9] * 3),
+]  # host, tube core, band: alike in every channel
+W_NEUTRAL = ([0.13] * 3, [30.3] * 3, [0.47] * 3)  # W's green channel in all three
+
+
+def grey(white: tuple[list[float], list[float], list[float]]) -> Materials:
+    rows = [*GREY, white]
+    return Materials.of([r[0] for r in rows], [r[1] for r in rows], [r[2] for r in rows],
+                        white=3)  # fmt: skip
+
+
+def test_white_opal_warms_the_backlit_slice(stone) -> None:
+    """Under the back light the bluish white row takes more blue than red out of the
+    light through the slice, so the same pixels read warmer (red over blue) with a share
+    of 1/2 than with none: the probe's tan shadow (s.13), here in a stone otherwise grey,
+    measured locally. Control: a white row scattering alike in every channel leaves red
+    over blue at 1."""
+    view, devs = stone
+    lt, kw = LIGHTS["back"]
+
+    def warmth(dev: Any, m: Materials) -> float:
+        im = render(dev, view, m, lt, spp=64, seed=51, **kw).image.reshape(-1, 3)
+        return float(im[:, 2].sum() / im[:, 0].sum())
+
+    plain = warmth(devs["none"], grey(W))
+    bluish = warmth(devs["half"], grey(W))
+    neutral = warmth(devs["half"], grey(W_NEUTRAL))
+    print(f"red over blue: none {plain:.4f}, bluish half {bluish:.4f}, neutral half {neutral:.4f}")
+    assert plain == pytest.approx(1.0, abs=1e-5)
+    assert bluish > 1.1
+    assert neutral == pytest.approx(1.0, abs=1e-5)  # control
+
+
 def test_a_white_share_needs_the_white_row(stone) -> None:
     view, devs = stone
     with pytest.raises(ValueError, match="white row"):

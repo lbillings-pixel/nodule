@@ -1119,7 +1119,10 @@ stones none; white fine needles alone take the finer grid, within the budget
        mu_s) under the dome, a directional light, the back light and the hollow-as-air
        build, |z| at most 1.4 (control: the mixture for 1/4, |z| 17-74); a share of 0
        renders as no share to 1e-7 relative (two identical renders differ by ~1e-7, the
-       order of the GPU's float additions; control: 1/2 changes it). Off the GPU
+       order of the GPU's float additions; control: 1/2 changes it); backlit, in a stone
+       otherwise grey, a half share of the white row reads warmer at the same pixels, red
+       over blue 3.51 against 1.0000 (control: a white row alike in every channel, 1.0000).
+       Off the GPU
        (test_whiteopal, test_plumebake, test_materials): the white row (control: micron
        pores near neutral); the cover kept, pigment dropped for white plumes, the plain
        bake unchanged for rims (control: no cover without white); rims 0.3 mm at three
@@ -1147,6 +1150,15 @@ stones none; white fine needles alone take the finer grid, within the budget
        s solid, 86 s rims (the white row raises the majorant: faint less); backlit 26-41
        s. RAM peak 5.62 GB (probe 5.37: the cover and the share, 4 bytes a node each);
        GPU 3.10 GiB (2.94).
+     - *Look renders for the owner* (runs/white-plumes/looks, `varietyrender
+       --whole-only`, 512 spp; sheet owner-looks.png, close-up owner-faint-closeup.png):
+       sheet 1 stone 2 (white plumes 0.76, milky hollow as air) 818 s (fill 636 s, look 67
+       s, backlit 27 s); sheet 7 stone 6 (faint, 0.12) 161 s; sheet 5 stone 1 (rims on
+       plumes, milky hollow as air) 530 s; sheet 3 stone 9 (rims on moss) 403 s; 34 min in
+       all; peak RAM 1.9-4.5 GB a stone (sampled). The white coexists with the milk and the
+       hollow as air; thin moss stays dark inside its rims; at level 0.12 white plumes,
+       which take no pigment, nearly vanish at whole-face scale (a faint pale patch up
+       close, nothing backlit): the owner's eye decides the faint end.
 
 ## Consequences
 

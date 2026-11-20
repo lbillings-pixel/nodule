@@ -191,10 +191,11 @@ class OpticsTable:
     # in the n2-slice record (4k); it is not fitted to the photos. 0 turns it off.
     iron_floor: float = 0.28
     # k at 650 nm for the HEMATITE pigment alone (None: the source's), `effective`,
-    # *speculative* (ADR 0019 s.6). One wavelength per channel puts the red channel beside
-    # hematite's 682 nm band (Scheinost Table 2); real red light passes mostly through the
-    # window between its bands, so through thick stone the source's k overstates the red
-    # absorption the eye sees. The IRON pigment (the photo compare's) keeps the source's k.
+    # *plausible* (ADR 0019 s.6, s.14). Measured hematite k at 650 nm disagrees about
+    # sixfold (Go et al.'s retained sets 0.07-0.41; the source's 0.2 is their middle); the
+    # variety pick, 0.05, sits at the low end, near Querry 1985. The earlier reason, a window
+    # between hematite's bands, was tested and withdrawn (s.14): there is none. The IRON
+    # pigment (the photo compare's) keeps the source's k.
     hematite_red_k: float | None = None
     # Colour centres of a tinted quartz centre (amethyst, smoky; work plan item 11):
     # absorption (mm^-1, the channels' order) added to quartz laid at or after step

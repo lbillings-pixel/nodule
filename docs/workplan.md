@@ -148,9 +148,11 @@ before any statistics.
   transition a mix per stone leaning sharp (Claude's call); faces realistic, with a
   small glint in some views. Next: look sheet for centres/transition; measure what
   facet glints cost in the renderer before building (overlaps item 19).
-- [ ] 19. Renderer physics: scattering in the camera code (ask the owner
+- [x] 19. Renderer physics: scattering in the camera code (ask the owner
   first), air with refraction in cavities (ADR 0019 A2), the fuller red fix
   (several wavelengths per channel; recheck ADR 0014), white ghost plumes.
+  CLOSED 2026-11-20 night: A (hollow as air) and B (white plumes and rims) built;
+  C (the red fix) probed, read and closed by the owner (ADR 0019 s.14).
   From item 18 (owner 2026-11-19): the hollow as air so its crystal wall shows
   (today black), an optional small-lamp view for sparkle (the soft look stays the
   default), and six-faced crystal tips in agatesim (owner approved that change).
@@ -211,6 +213,11 @@ before any statistics.
   owner). Next: the owner's look at a few white stones, then C, the red fix.
   2026-11-20 late: owner on the looks: floor raised (white plumes 8 to 16 per mm; at 4
   sparse ones nearly vanished), rims kept solid; build pushed. B done. Next: C, the red fix.
+  2026-11-20 night: C probed (runs/red-fix-probe/) and read (ADR 0019 s.14): no window
+  between hematite's bands in its measured k or in red agate spectra, so several
+  wavelengths per channel would not give the owner's carnelian look; measured red k
+  disagrees about sixfold and the pick (k 0.05) sits at its low end, near Querry 1985.
+  Owner: keep the pick, close C; Querry's spectrum held in reserve. Next: item 20.
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

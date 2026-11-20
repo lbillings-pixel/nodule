@@ -1192,9 +1192,10 @@ venue = "Crystals 13(6), 977"
 doi = "10.3390/cryst13060977"
 access = "open"
 licence = "open access (MDPI); licence not checked; cite only"
-checked = "abstract"
-topics = ["colour", "pigment", "hematite", "goethite", "celadonite"]
-notes = "Abstract read 2026-10-17: colour relates to contained minerals and trace elements, via electron transitions or charge transfer of Fe ions; green agate has the most Fe and is coloured by celadonite inclusions; red and yellow are mainly hematite and goethite, red agate holding more Fe than yellow."
+checked = "sections"
+sections_read = ["abstract", "methods: UV-Vis sentences (UV-3600, 200-800 nm)", "results: UV-Vis paragraphs (Figure 9 text)", "Fig. 9 (image)"]
+topics = ["colour", "pigment", "hematite", "goethite", "celadonite", "uv-vis", "reflectance"]
+notes = "Abstract read 2026-10-17: colour relates to contained minerals and trace elements, via electron transitions or charge transfer of Fe ions; green agate has the most Fe and is coloured by celadonite inclusions; red and yellow are mainly hematite and goethite, red agate holding more Fe than yellow. Item 19 C (2026-11-20, helper, in a browser tab): Fig. 9b's red agates (AR-1 to AR-3) are reflectance spectra ('Reflectivity%', no scale): low and flat to ~550 nm, a steep rise at ~560-620 nm, then flat or still rising to 800 nm, with no dip at 640-690 nm (figure reading, speculative); 359 and 475 nm are assigned to Fe3+ in goethite in the red group; the broad 734 nm band belongs to the green, celadonite agate. No sample thickness found."
 
 # --- Image models ------------------------------------------------------------
 [[references]]
@@ -3809,3 +3810,49 @@ licence = "publisher copyright; cite only"
 checked = "full-text"
 topics = ["amethyst", "quartz", "colour-centres", "absorption", "iron", "citrine", "zoning"]
 notes = """Owner-supplied PDF, read 2026-11-17 by a helper (page scans; in German); Fig. 3 re-read by Claude 2026-11-18. ESR of Fe3+ S1/S2/I centres; model x Fe3+(S1) + x Fe3+(I) -> Fe4+(S) + Fe2+(I) by irradiation, reversed by heating. Bands 545 nm (colour, charge transfer, f = 2e-2), 357 (~70 % of its f), 950 (~10x weaker); 410 nm from smoky centres in most amethysts. Fig. 3 curve 1: one amethyst, locality, thickness and polarisation not given, 'Extinktionsmodul' cm^-1 (decadic by convention, not stated): ~0.85, 2.1, 0.66 at 450/550/650 nm (read off; hump drawn near 526 nm, text says 545). Above 350 C irreversibly yellow (citrine); some turn green (Fe2+ 740 nm). Synthetic: colour sites only under rhombohedral faces. No agate. DOI not on the page scans (filename 10.1515/zna-1967-1236); access and licence not checked (set conservatively)."""
+
+# --- The red fix (item 19 C, 2026-11-20; notes/n1-reading/item19-red-*.md; ADR 0019 s.14) ---
+
+[[references]]
+id = "wyman2013"
+kind = "article"
+authors = ["Wyman, C.", "Sloan, P.-P.", "Shirley, P."]
+year = 2013
+title = "Simple Analytic Approximations to the CIE XYZ Color Matching Functions"
+venue = "Journal of Computer Graphics Techniques 2(2), 1–11"
+url = "https://jcgt.org/published/0002/02/01/"
+access = "open"
+licence = "CC-BY-ND-3.0"
+checked = "sections"
+sections_read = ["abstract", "1 Introduction", "2.2 Multi-Lobe, Piecewise Gaussian Fit (Eq. 4, Table 1, Listing 1)", "citation and licence block"]
+topics = ["colour", "cie", "colour-matching", "spectral-rendering", "rendering"]
+notes = """Read 2026-11-20 by Claude (item 19 C probe; PDF text via pypdf; a copy is in the owner's Downloads as wyman2013-cie-xyz-analytic-fits.pdf). Analytic fits to the CIE 1931 2-degree colour-matching functions; the multi-lobe piecewise-Gaussian fit (Eq. 4) uses three lobes for x and two each for y and z, with amplitude, centre and left/right inverse widths in Table 1. The authors put its squared error below the within-observer variance of the data behind the CIE standard (p. 4); their simpler single-lobe 1931 fits have rms error below 0.015 for x and y, about three times that for z (p. 3). The probe's coefficients were checked against Table 1."""
+
+[[references]]
+id = "querry1985"
+kind = "book"  # a contractor report; the schema has no report kind
+authors = ["Querry, M. R."]
+year = 1985
+title = "Optical Constants"
+venue = "Contractor Report CRDC-CR-85034 (US Army, Aberdeen Proving Ground; DTIC ADA158623)"
+url = "https://apps.dtic.mil/sti/citations/ADA158623"
+access = "open"  # DTIC public record; the PDF refused the fetcher (403)
+licence = "US Army report; cite only"
+checked = "citation"
+topics = ["hematite", "refractive-index", "optical-properties"]
+notes = """Not refereed. Report not seen (2026-11-20): citation from the refractiveindex.info file headers and Go et al. 2022's reference list, which retains it as one of five hematite sets. Its hematite n, k (ordinary and extraordinary ray) were read only as database files (refractiveindex2024); sample, method, temperature and uncertainty not seen. Held in reserve as the red fix's data if the carnelian red is reopened (ADR 0019 s.14)."""
+
+[[references]]
+id = "refractiveindex2024"
+kind = "web"
+authors = ["Polyanskiy, M. N."]
+year = 2024
+title = "refractiveindex.info database of optical constants: Fe2O3 (hematite), Querry 1985, ordinary and extraordinary ray"
+venue = "refractiveindex.info database, files database/data/main/Fe2O3/nk/Querry-o.yml and Querry-e.yml (data descriptor: Scientific Data 11, 94 (2024), doi 10.1038/s41597-023-02898-2)"
+url = "https://github.com/polyanskiy/refractiveindex.info-database/tree/master/database/data/main/Fe2O3/nk"
+access = "open"
+licence = "CC0-1.0"
+checked = "sections"
+sections_read = ["Querry-o.yml: references, comments and every data line 0.38-0.80 µm", "Querry-e.yml: the same"]
+topics = ["hematite", "refractive-index", "optical-properties", "database"]
+notes = """Read 2026-11-20 (item 19 C), twice: a helper and Claude, both through the fetch summariser, values agreeing; the NPSG hematite file credited to Sokolik and Toon 1999 equals (2 o + e)/3 of these within 4 % (helper note), an independent transcription check. Hematite k, o / e ray: 0.498 / 0.460 (550 nm), 0.149 / 0.186 (600), 0.089 / 0.134 (620), 0.057 / 0.103 (650), 0.031 / 0.075 (700), falling to a minimum near 780-800 nm (o 0.019). No dip between 560 and 650 nm. The database is public domain (CC0, repository page); the only metadata on the data is the ray. The values are Querry 1985's (querry1985), not refereed."""

@@ -90,7 +90,8 @@ SPARKLE_SPP_SHARE = 0.25
 SPARKLE_LAMP = Light("disc", theta_deg=45.0, phi_deg=135.0, irradiance=SPARKLE_SHARE * math.pi,
                      radius_deg=SPARKLE_RADIUS_DEG)  # fmt: skip
 # Hematite pigment's red absorption and carnelian's loading (owner's pick from the
-# 2026-11-09 carnelian sweeps, ADR 0019 s.6): `effective`, *speculative*.
+# 2026-11-09 carnelian sweeps, ADR 0019 s.6): `effective`, *plausible* (s.14: measured red k
+# disagrees ~6x; 0.05 sits at the low end, near Querry 1985's ~0.07; kept 2026-11-20).
 HEMATITE_RED_K = 0.05
 CARNELIAN_LOADING = 0.5
 # Colour-centre absorption of a tinted quartz centre over clear quartz's, mm^-1 at the

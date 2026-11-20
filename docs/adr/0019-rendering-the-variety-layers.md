@@ -2,7 +2,8 @@
 
 - Status: accepted (owner, 2026-11-09, after the decisions of section 6; built by
   Claude overnight with the owner's leave to choose the night's work). Option A2 of
-  section 5 (air with refraction) stays open.
+  section 5 (air with refraction) was built in track A (s.12); track B built (s.13);
+  track C, the red fix, probed and closed (s.14, 2026-11-20).
 - Date: 2026-11-09
 - Builds on: [ADR 0007](0007-renderer-cut-face-monte-carlo.md) (the GPU renderer and its
   growth-time grid), [ADR 0014](0014-optics-tuning-step-4-colour.md) (optics defaults, the iron
@@ -128,15 +129,15 @@ as now, no face glare, no glare plus a display curve, a backlit 3 mm slice) was 
    olive-grey, not lighter red; lowering hematite's red absorption as well gives
    carnelian red-orange (median red transmission of the slice 2.3 % -> 12 %). Owner's pick:
    **hematite pigment k(650 nm) = 0.05 (source 0.2) and carnelian loading x 0.5**
-   (`varietyrender.optics_for`; `OpticsTable.hematite_red_k`), both `effective`,
-   *speculative*. Reason (*plausible*, untested): one wavelength per channel puts the red
-   channel beside hematite's 682 nm band (Scheinost Table 2, notes/n2-reading/
-   agate-optics2.md); real red light passes mostly through the window between hematite's
-   bands, so the source's k overstates the red absorption seen through thick stone. Only
-   the HEMATITE pigment takes it (carnelian, one iron palette); the IRON pigment of the
-   photo compare keeps the source's k, so ADR 0014's calibration stands. A later, fuller
-   fix: several wavelengths within each channel, for every pigment, then recheck
-   ADR 0014.
+   (`varietyrender.optics_for`; `OpticsTable.hematite_red_k`), both `effective`;
+   *plausible* since s.14 (was *speculative*). The reason first given here (the red
+   channel sits beside hematite's 682 nm band, and red light passes through a window
+   between its bands) was tested and is **withdrawn** (s.14): neither hematite's measured
+   k nor red agate's spectra show such a window. What supports the pick instead: measured
+   values of hematite's red absorption disagree about sixfold, and 0.05 lies at their low
+   end (s.14). Only the HEMATITE pigment takes it (carnelian, one iron palette); the IRON
+   pigment of the photo compare keeps the source's k, so ADR 0014's calibration stands.
+   The fuller fix (several wavelengths per channel) was probed and closed (s.14).
 5. **A grey bottom for the look** (owner's pick after runs/grey-bottom/, 2026-11-09).
    Over the black bottom, clear quartz centres rendered black (seed 1, stones 1 and 6):
    light passing through them was lost. The look's slab (2 mm) now ends in an
@@ -350,7 +351,7 @@ stones none; white fine needles alone take the finer grid, within the budget
    six-faced crystal tips in agatesim; (B) scattering that varies by place (today only
    absorption is baked per grid node, s.6.7 and ADR 0018's plume bake; scattering comes
    from the band material's row); (C) the fuller red fix (several wavelengths per
-   channel, then recheck ADR 0014). **The owner chose A first, and wants white (ghost)
+   channel, then recheck ADR 0014; probed and closed, s.14). **The owner chose A first, and wants white (ghost)
    plumes on some stones**, so B stays in item 19 (the owner's 2026-11-09 condition for a
    plume material of its own, ADR 0018). Whether real quartz centres scatter more is
    still unread (s.6.10): B reads it before any change there.
@@ -1166,6 +1167,61 @@ stones none; white fine needles alone take the finer grid, within the budget
      solid strength; the build pushed (e8f46fc). Rims hugging their strand were kept
      (Claude's call: thin moss stayed dark on sheet 3 stone 9). Sheet 5 stone 1's backlit
      slice is nearly black, likely its onyx bands (not checked with white off).
+14. **The red fix: probed, read, closed** (track C; 2026-11-20 night; the owner's
+   decision). The question: would several wavelengths per channel explain the owner's
+   carnelian pick (s.6.4: hematite k(650 nm) 0.05 against the source's 0.2) through a
+   window between hematite's bands, as s.6.4 reasoned?
+   - *Probe, measured* (runs/red-fix-probe/, scratch; no renderer change; seconds).
+     Beer-Lambert transmittance of a pure absorber over one path length (0.5-10 mm), no
+     scattering, at carnelian strength (impurity 0.3-0.9 x 4e-4 x 0.5). Full spectrum:
+     380-780 nm in 5 nm steps, the CIE 1931 2-degree observer by Wyman et al.'s multi-lobe
+     fit [@wyman2013] (coefficients checked against its Table 1), D65 entered by hand, XYZ
+     to linear sRGB; ΔE is the CIE 1976 colour difference. Controls: a flat absorber gives
+     the same colour in both models (ΔE 0.04); equal energy falls at xy 0.3331/0.3336 and
+     D65 at 0.3127/0.3291 (CIE: 1/3, 1/3 and 0.3127/0.3290); a step absorber at 600 nm
+     differs (ΔE 13.7, the negative control). With the default hematite (three readings
+     off Go et al.'s Fig. 3, interpolated) the full spectrum's red channel acts as k(650)
+     0.19-0.26; with Bedidi's curve 0.21-0.22, and carnelian turns olive. Only a
+     hypothetical dip to k 0.08 near 615 nm gave the pick (0.03-0.10). *Verified* as
+     arithmetic; appearance only.
+   - *Reading* (two helpers; notes/n1-reading/item19-red-carnelian-spectra.md and
+     item19-red-hematite-k.md, local). **No window, in stones or in hematite.** The
+     absorbance of red and orange Beihong agates drops fast in the blue-green and levels
+     off toward the yellow [@zhou2022] (*verified*); its eight traces, read off the
+     figures, fall steadily past 700 nm, the heated hematite-rich one to a minimum near
+     770-800 nm (*speculative*). Red Moqi agates' reflectance rises steeply at 560-620 nm
+     with no dip at 640-690 nm [@zhang2023] (figure; *speculative*). Querry's hematite k
+     falls steadily through the red in both rays, to a minimum near 780-800 nm
+     [@refractiveindex2024; @querry1985] (*plausible*: a non-refereed report read through
+     a database); Bedidi's is flat [@bedidi1993].
+   - **The sources disagree on how much hematite absorbs in the red.** Read off Go et
+     al.'s Fig. 3b (*speculative*, about ±0.02), k at 650 nm for their five retained sets:
+     Vernon ~0.41, Scanza ~0.25, Chen and Cahan ~0.21 and ~0.13, Querry ~0.07; the default
+     0.2 is their middle. Sets they excluded that pass light through films or sols read
+     lower still (Marusak ~0.03, Kerker ~0.015) [@go2022]. [inference] Reflectance methods
+     measure a small k beside n ~3 poorly, which favours the low end; most sets' methods
+     were not checked. The agate spectra cannot pick a set: their measurement mode is not
+     stated [@zhou2022]; read as reflectance, their ratios match Querry's (mu_a 615/650
+     ~1.5, 700/650 ~0.65), read as transmission, Bedidi's (1.1, 0.9).
+   - *Querry at full strength* (probe, part 2). Querry's two rays, averaged for small
+     random particles ((2 o + e)/3 by absorption), absorb red like k(650) 0.074 and match
+     the default in the blue and green within 7 %. Carnelian with Querry in three channels
+     against the owner's pick: ΔE 0.5-7 backlit and 2-13 plain (on displayable colours).
+     With Querry's full spectrum the red acts as k(650) 0.022 at 0.5 mm rising to 0.106 at
+     10 mm: thin parts glow redder and thick parts darken. That is what a full-spectrum
+     build would add, and it is smaller than the sources' sixfold spread. Querry in the
+     photo compare's IRON mix would move its bands by ΔE 1.6-35 and need ADR 0014's
+     recheck.
+   - *Decision (owner, 2026-11-20 night).* **The owner's pick stays** (hematite k(650)
+     0.05, carnelian loading x 0.5, both `effective`), now *plausible*: it lies inside the
+     measured spread, at its low end beside Querry and the film and sol sets. **The window
+     reason of s.6.4 is withdrawn. Track C is closed:** no full-spectrum build, three
+     channels stay, and the photo compare keeps the default (ADR 0014 stands). **In
+     reserve, if the red is ever reopened:** Querry's hematite spectrum (both rays, 10 nm
+     steps; the database is public domain, so the table may enter the repository then),
+     in three channels or as a full spectrum; the probe holds the arithmetic. Reading that
+     would raise its grade then: Querry's report (its method) and Marusak et al.'s film
+     spectrum.
 
 ## Consequences
 
@@ -1176,3 +1232,5 @@ stones none; white fine needles alone take the finer grid, within the budget
   layers) are unchanged.
 - White opal scatters by place (s.13): a per-node share grid and one white row in the
   table; stones without white render as before (to the GPU's float-addition order).
+- The renderer keeps three wavelengths (s.14); the carnelian pick stays `effective`, now
+  *plausible*, with Querry's hematite spectrum held in reserve.

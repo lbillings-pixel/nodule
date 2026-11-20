@@ -29,9 +29,9 @@ SCENE_DTYPE = np.dtype(
      ("ns", "<i4"), ("nt", "<i4"), ("nw", "<i4"),
      ("nsph", "<i4"), ("ntube", "<i4"), ("nfrac", "<i4"),
      ("sph", "<u8"), ("tube", "<u8"), ("frac", "<u8"), ("grid", "<u8"),
-     ("level", "<u8"), ("absorb", "<u8"), ("voidf", "<u8")]
+     ("level", "<u8"), ("absorb", "<u8"), ("voidf", "<u8"), ("white", "<u8")]
 )  # fmt: skip
-assert SCENE_DTYPE.itemsize == 144  # the CUDA struct's size, pointers 8-aligned
+assert SCENE_DTYPE.itemsize == 152  # the CUDA struct's size, pointers 8-aligned
 
 
 @dataclass(frozen=True)
@@ -57,6 +57,10 @@ class SceneArrays:
     # grid's nodes; where its trilinear value passes 1/2 the camera takes the material
     # profile's last entry (the lining without the milk). None: no such switch.
     voidf: F32 | None = None
+    # White opal by place (ADR 0019 s.13): each node's share (0..1) of white opal, on the
+    # grid's nodes; the camera takes the material table's white row (`Materials.white`)
+    # with the share's trilinear value as probability. None: no white anywhere.
+    white: F32 | None = None
 
 
 def pack(
@@ -67,10 +71,16 @@ def pack(
     void_mua: float = 0.0,
     air: NDArray[np.bool_] | None = None,
     voidf: F32 | None = None,
+    white: F32 | None = None,
 ) -> SceneArrays:
     """void_mua: the absorption (mm^-1, every channel) added at the grid's void nodes,
     the open cavity's stand-in material (ADR 0019 A1); 0 leaves the void as its lining.
-    air: void nodes left without it (`with_void`). voidf: `SceneArrays.voidf`."""
+    air: void nodes left without it (`with_void`). voidf, white: `SceneArrays`'s."""
+    if white is not None:
+        if white.shape != grid.values.shape:
+            raise ValueError("the white share must lie on the grid's nodes")
+        if not (np.isfinite(white).all() and white.min() >= 0.0 and white.max() <= 1.0):
+            raise ValueError("the white share must lie within 0..1 at every node")
     solid = specimen.volume.solid
     exact = isinstance(solid, SphereUnion)
     if not exact and grid.level is None:
@@ -110,6 +120,7 @@ def pack(
         absorb=absorb,
         absorb_max=0.0 if absorb is None else max(float(absorb.max()), 0.0),
         voidf=voidf,
+        white=None if white is None else np.ascontiguousarray(white, np.float32),
     )
 
 
@@ -163,7 +174,7 @@ def upload(scene: SceneArrays) -> DeviceScene:
 
     cp = _gpu.cupy()
     arrays: dict[str, Any] = {}
-    for key in ("spheres", "tubes", "fractures", "grid", "level", "absorb", "voidf"):
+    for key in ("spheres", "tubes", "fractures", "grid", "level", "absorb", "voidf", "white"):
         a: F32 | None = getattr(scene, key)
         if a is None:
             continue
@@ -173,7 +184,7 @@ def upload(scene: SceneArrays) -> DeviceScene:
     h = scene.header.copy()
     for field, key in (("sph", "spheres"), ("tube", "tubes"), ("frac", "fractures"),
                        ("grid", "grid"), ("level", "level"), ("absorb", "absorb"),
-                       ("voidf", "voidf")):  # fmt: skip
+                       ("voidf", "voidf"), ("white", "white")):  # fmt: skip
         h[field] = arrays[key].data.ptr if key in arrays else 0
     struct = cp.asarray(np.frombuffer(h.tobytes(), np.uint8))
     return DeviceScene(

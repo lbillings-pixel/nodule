@@ -12,6 +12,7 @@ from agatesim.fields import Fields, Phase, Pigment
 from agatesim.volume.config import SliceConfig, SolidConfig
 
 from nodule import plumes
+from nodule._scipy import distance_inside
 from nodule.plumes import Plumes
 from nodule.render import tgrid
 from nodule.render.fakes import stone_record
@@ -24,8 +25,10 @@ from nodule.render.layerbake import (
 )
 from nodule.render.materials import OpticsTable
 from nodule.render.record import BandRecord, plume_points
+from nodule.render.whiteopal import RIM_MM
+from nodule.sheet import WHITE_FAINT_RGB, WHITE_SOLID_RGB, preview_rgb
 from nodule.specimen import Specimen
-from nodule.variety import StoneRecipe, build
+from nodule.variety import StoneRecipe, build, cut_of
 
 N = 200_000  # sample points through the stone
 
@@ -171,6 +174,83 @@ def test_the_ramp_runs_green_red_black_and_skips_silica() -> None:
     assert not silica.any()  # control: chalcedony takes no plume absorption
     tube = plume_absorption(stops, replace(f, t_dep=z * np.nan), np.ones(n, bool))
     assert not tube.any()  # control: tubes (no growth time) are not plumes
+
+
+WHITE = OpticsTable(white="plumes", white_transport=8.0)
+RIMS = OpticsTable(white="rims", white_transport=16.0)
+
+
+def test_white_plumes_gain_nothing_where_the_white_row_carries_them() -> None:
+    """White plumes (ADR 0019 s.13): a plume point gains nothing, its step's own pigment
+    included (the white row carries it), while halos still lose their colour. Control:
+    the plain bake gives the same points their pigment."""
+    sp = stone("plumes")
+    p = points(sp)
+    raw, inside = sp.restored_fields(p)
+    at = plume_points(sp.placed(p, raw, inside), inside)
+    white = Baker.of(sp, WHITE, 0.2, 1).gain(p, raw, inside, 0.0)
+    assert at.sum() > 50
+    assert not white[at].any()
+    assert (white.min(1) < -0.05).sum() > 50  # halos kept
+    plain, _, _ = gains(sp)
+    assert (plain[at].max(1) > 0.5 * PLUME_MUA).mean() > 0.95  # control
+    assert np.array_equal(white[~at], plain[~at])
+
+
+def test_the_fill_keeps_the_cover_for_white_opal() -> None:
+    """With white opal in the optics the fill keeps each node's share of sub-points in a
+    plume: about 1 inside a branch, between 0 and 1 at its edge. White plumes drop the
+    pigment there; rims keep the plain bake bit for bit (the layers read once, passed
+    on). Controls: the plain fill keeps no cover; the bare stone's cover is 0."""
+    sp = stone("plumes")
+    plane = sp.plane(recipe().cut)
+    plain = tgrid.GrowthGrid.fill(sp, plane, 0.2, 0.4, optics=OpticsTable())
+    white = tgrid.GrowthGrid.fill(sp, plane, 0.2, 0.4, optics=WHITE)
+    rims = tgrid.GrowthGrid.fill(sp, plane, 0.2, 0.4, optics=RIMS)
+    assert plain.cover is None  # control
+    assert white.cover is not None
+    assert rims.cover is not None
+    assert plain.absorb is not None
+    assert white.absorb is not None
+    assert rims.absorb is not None
+    pigment = plain.absorb.max(0) > 0.5 * PLUME_MUA
+    assert pigment.sum() > 5
+    assert (white.cover[pigment] >= 0.5).all()
+    edge = (white.cover > 0) & (white.cover < 1)
+    assert edge.sum() > pigment.sum() / 2  # edges and thin fronds keep a part
+    assert white.absorb.max(0)[pigment].max() < 0.1 * PLUME_MUA  # no pigment
+    assert np.array_equal(rims.absorb, plain.absorb)
+    assert np.array_equal(rims.cover, white.cover)
+    bare = tgrid.GrowthGrid.fill(stone("bare"), plane, 0.2, 0.4, optics=WHITE)
+    assert bare.cover is not None
+    assert not bare.cover.any()  # control
+
+
+def test_previews_draw_white_plumes_and_white_rims() -> None:
+    """The sheet preview (ADR 0019 s.13): white plumes take the faint-to-solid white of
+    their level; white rims a solid white ring within RIM_MM of the strands, on the stone.
+    Control: without white the strands keep their tint and nothing is white."""
+    sp = stone("plumes")
+    base = recipe(plumes=plume(), cut=SliceConfig(tilt_deg=90, azimuth_deg=0, offset_mm=-1.0))
+    cut = cut_of(sp, base, 0.1)
+    strands = plume_points(cut.fields, cut.inside)[::-1]  # preview rows run top down
+    assert strands.sum() > 100  # 178 pixels at seed 11
+    plain = preview_rgb(cut, base)
+    solid = np.rint(WHITE_SOLID_RGB).astype(np.uint8)
+    faint = np.rint(WHITE_FAINT_RGB).astype(np.uint8)
+
+    def white(kind: str, level: float) -> np.ndarray:
+        return preview_rgb(cut, base.model_copy(update={"white": kind, "white_level": level}))
+
+    assert (white("plumes", 1.0)[strands] == solid).all()
+    assert (white("plumes", 0.0)[strands] == faint).all()
+    rims = white("rims", 1.0)
+    ring = (rims == solid).all(-1) & ~(plain == solid).all(-1)
+    assert ring.sum() > strands.sum() / 2
+    assert not ring[strands].any()
+    near = distance_inside(~strands) * 0.1 <= RIM_MM + 1e-9
+    assert not ring[~near].any()
+    assert not (plain[strands] == solid).all(-1).any()  # control
 
 
 def test_per_step_lifts_halos_only() -> None:

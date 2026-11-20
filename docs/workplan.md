@@ -205,6 +205,10 @@ before any statistics.
   on the sheets: faint-to-solid white plumes per stone and white rims, the bluish kind
   (tan backlit), about 1 in 4 each, never both. Next: the build (s.13 "The build"), then
   C, the red fix.
+  2026-11-20 evening: white plumes and rims BUILT (s.13 "Built"): a white share per node
+  from the bake, one white row; 11 white stones on sheets 0-11 (4 white plumes, 7 rims);
+  stones without white render as before. Rims at solid strength (an assumption, for the
+  owner). Next: the owner's look at a few white stones, then C, the red fix.
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

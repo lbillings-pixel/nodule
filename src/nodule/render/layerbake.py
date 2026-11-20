@@ -24,8 +24,10 @@ grid the band's values; `Specimen.placed` the halo's).
 Limits (ADR 0019): scattering is not baked, so a clear-filled crack trace is clearer
 in colour but not in haze, a halo loses its band's colour but not its milkiness, and a
 plume scatters as the chalcedony round it, so it reads as a stain, not an opaque
-mineral body; a pigment change takes the new pigment's absorption at the point; plume
-branches thinner than the grid spacing blur. Appearance only (ADR 0002).
+mineral body (white opal plumes and rims scatter by place instead: the bake keeps each
+node's cover for them, `nodule.render.whiteopal`, s.13); a pigment change takes the new
+pigment's absorption at the point; plume branches thinner than the grid spacing blur.
+Appearance only (ADR 0002).
 """
 
 from __future__ import annotations
@@ -129,13 +131,19 @@ def _touched(a: Fields, b: Fields) -> NDArray[np.bool_]:
 @dataclass
 class Baker:
     """The bake, chunk by chunk, from the fields the grid fill reads anyway
-    (`GrowthGrid.fill` with optics), so each node is read once."""
+    (`GrowthGrid.fill` with optics), so each node is read once. With white opal in the
+    optics (ADR 0019 s.13) it also keeps each node's cover, its share of sub-points inside
+    a plume or moss strand (`record.plume_points`; `nodule.render.whiteopal`), and for white
+    plumes leaves the plume pigment out: a plume point gains nothing, the white row
+    carrying it."""
 
     specimen: Specimen
     table: F64
     stops: F64
     spacing_mm: float
     out: F32  # (3, n)
+    cover: F32 | None = None  # (n,); None without white opal
+    white_plumes: bool = False
 
     @classmethod
     def of(cls, specimen: Specimen, optics: OpticsTable, spacing_mm: float, n: int) -> Baker:
@@ -144,16 +152,31 @@ class Baker:
         if specimen.fractures:
             raise ValueError("a layered specimen takes no slipping fractures")
         table, stops = absorption_table(optics), plume_stops(optics)
-        return cls(specimen, table, stops, spacing_mm, np.zeros((3, n), np.float32))
+        cover = None if optics.white == "none" else np.zeros(n, np.float32)
+        out = np.zeros((3, n), np.float32)
+        return cls(specimen, table, stops, spacing_mm, out, cover, optics.white == "plumes")
 
-    def gain(self, p: FloatArray, raw: Fields, inside: NDArray[np.bool_], h: float) -> F64:
+    def gain(
+        self,
+        p: FloatArray,
+        raw: Fields,
+        inside: NDArray[np.bool_],
+        h: float,
+        placed: Fields | None = None,
+    ) -> F64:
         """Absorption (n, 3) of what lies at each point less that of its step's own
         material, which the camera gives it: `raw` the growth model's fields there
-        (`Specimen.restored_fields`), layers drawn at pixel h."""
+        (`Specimen.restored_fields`), layers drawn at pixel h (`placed`, if given, the
+        layers' fields there, `Specimen.placed`)."""
         sp = self.specimen
-        step, placed = sp.per_step(raw), sp.placed(p, raw, inside, h)
-        lies = absorption(self.table, placed) + plume_absorption(self.stops, placed, inside)
-        return lies - absorption(self.table, step)
+        step = sp.per_step(raw)
+        placed = sp.placed(p, raw, inside, h) if placed is None else placed
+        if not self.white_plumes:
+            lies = absorption(self.table, placed) + plume_absorption(self.stops, placed, inside)
+            return lies - absorption(self.table, step)
+        out = absorption(self.table, placed) - absorption(self.table, step)
+        out[plume_points(placed, inside)] = 0.0
+        return out
 
     def chunk(
         self,
@@ -173,14 +196,22 @@ class Baker:
             return
         q = p[touched]
         gain = np.zeros((len(q), 3))
+        cover = np.zeros(len(q))
         offsets = list(product((np.arange(SUB) + 0.5) / SUB - 0.5, repeat=3))
         for off in offsets:
             sub = q + np.asarray(off) * h
             fr, ib = self.specimen.restored_fields(sub)
-            gain += self.gain(sub, fr, ib, h / SUB)
+            if self.cover is None:
+                gain += self.gain(sub, fr, ib, h / SUB)
+                continue
+            pl = self.specimen.placed(sub, fr, ib, h / SUB)
+            gain += self.gain(sub, fr, ib, h / SUB, pl)
+            cover += plume_points(pl, ib)
         at = np.flatnonzero(touched)
         idx = start + at if isinstance(start, int) else start[at]
         self.out[:, idx] = (gain / len(offsets)).T.astype(np.float32)
+        if self.cover is not None:
+            self.cover[idx] = (cover / len(offsets)).astype(np.float32)
 
 
 def bake_absorption(specimen: Specimen, grid: GrowthGrid, optics: OpticsTable) -> F32 | None:

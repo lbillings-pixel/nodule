@@ -20,11 +20,13 @@ from nodule.render.materials import (
     HEMATITE_NK,
     MILK_G,
     STEPS,
+    WAVELENGTH_NM,
     Optics,
     OpticsTable,
     rayleigh_absorption,
 )
 from nodule.render.record import BandRecord
+from nodule.render.whiteopal import white_optics
 from nodule.specimen import Specimen, SpecimenConfig
 
 CUT = SliceConfig(tilt_deg=90.0, azimuth_deg=270.0, offset_mm=0.0)
@@ -266,6 +268,35 @@ def test_quartz_tint_takes_later_quartz_only() -> None:
     off = OpticsTable(quartz_tint_from=2).materials(rec)  # no tint: as before
     assert np.array_equal(off.mua, plain.mua)
     assert np.array_equal(off.profile, plain.profile)
+
+
+def test_white_opal_takes_its_own_last_row() -> None:
+    """White opal (ADR 0019 s.13): one row appended last, which `Materials.white` names:
+    the white row's scattering (`white_optics`) over the matrix's absorption, one lobe.
+    The other rows and the profile stay as they were, the milk's hollow entry too.
+    Negative controls: no white, no row; a white kind without a strength is refused."""
+    q, ch = Phase.QUARTZ, Phase.CHALCEDONY
+    ks = [0, 1, 5, 6, 7]
+    f = fields(steps_mid(ks), phase=[q, q, ch, q, q], impurity=[0.05] * 5,
+               translucency=[0.9] * 5)  # fmt: skip
+    rec = BandRecord.of(f, np.ones(5, bool))
+    for base in (OpticsTable(), OpticsTable(milk_mus=4.0, milk_from=2)):
+        plain = base.materials(rec)
+        white = replace(base, white="plumes", white_transport=8.0).materials(rec)
+        assert plain.white == -1  # control
+        assert white.white == len(white.mua) - 1 == len(plain.mua)
+        for name in ("mua", "mus", "g", "f", "gb"):
+            assert np.array_equal(getattr(white, name)[:-1], getattr(plain, name))
+        assert np.array_equal(white.profile, plain.profile)
+        mus, g = white_optics(8.0, WAVELENGTH_NM)
+        assert np.allclose(white.mus[-1], mus)
+        assert np.allclose(white.g[-1], g)
+        assert np.allclose(white.mua[-1], base.matrix_mua)
+        assert not white.f[-1].any()
+    with pytest.raises(ValueError, match="strength"):
+        OpticsTable(white="rims")
+    with pytest.raises(ValueError, match="strength"):
+        OpticsTable(white_transport=4.0)
 
 
 def test_milk_takes_the_lining_quartz_only() -> None:

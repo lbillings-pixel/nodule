@@ -120,6 +120,9 @@ class GrowthGrid:
     absorb: F32 | None = None
     # Nodes in an open cavity or hollow crystal (ADR 0019 A1); None: the grid has none
     void: NDArray[np.bool_] | None = None
+    # Each node's share of its bake sub-points inside a plume or moss strand (nw, nt, ns),
+    # baked when the optics ask for white opal (ADR 0019 s.13, `nodule.render.whiteopal`)
+    cover: F32 | None = None
     # Every node is filled down to this depth (slip pad aside); below it only the nodes a
     # `keep` test chose (under a hollow drawn as air, ADR 0019 s.6.12 step 4), the rest NaN
     full_depth_mm: float = math.inf
@@ -188,6 +191,7 @@ class GrowthGrid:
         progress.report(1.0, "filling the growth-time grid")
         lv = None if level is None else level.reshape(shape)
         absorb = None if bake is None else bake.out.reshape(3, *shape)
+        cover = None if bake is None or bake.cover is None else bake.cover.reshape(shape)
         return cls(
             plane=plane,
             s=s,
@@ -199,6 +203,7 @@ class GrowthGrid:
             absorb=absorb,
             void=void.reshape(shape) if void.any() else None,
             full_depth_mm=depth_mm if deep else math.inf,
+            cover=cover,
         )
 
     def filled(self, passes: int = 3, linear: bool = True) -> F32:

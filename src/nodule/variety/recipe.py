@@ -48,6 +48,9 @@ Warp = Literal["mild", "crenulated", "lobed"]
 Fill = Literal["open", "clear", "iron"]
 
 
+White = Literal["none", "plumes", "rims"]
+
+
 # Shares per sheet: the first sheet recipe (ADR 0018 s.7), all `effective`.
 CENTRE_SHARES: dict[str, float] = {"solid": 1, "quartz-filled": 1, "quartz-lined": 1}
 
@@ -144,6 +147,16 @@ MILK_LOW_SHARE = 0.2
 # `effective`.
 FILLED_MILK_LOW_TO = 1 / 3
 FILLED_MILK_HIGH_SHARE = 0.2
+# White opal (owner 2026-11-20, ADR 0019 s.13, from the probe sheets): about 1 in 4 plume
+# stones with white plumes, and about 1 in 4 plume or moss stones with white rims, never
+# both. One uniform draw a stone: below WHITE_PLUME_SHARE white plumes (plume stones),
+# then the next WHITE_RIM_SHARE white rims (plume and moss stones alike). A white plume's
+# level (0 faint, 1 solid; `nodule.varietyrender.white_transport`) is a second uniform
+# draw; rims take WHITE_RIM_LEVEL, solid as the owner saw them (an assumption: a faint
+# 0.3 mm rim barely shows). All `effective`.
+WHITE_PLUME_SHARE = 0.25
+WHITE_RIM_SHARE = 0.25
+WHITE_RIM_LEVEL = 1.0
 
 
 # The no-fold slope cap on band wobble (ADR 0005 s.3: below 1, bands cannot fold).
@@ -320,6 +333,28 @@ class StoneRecipe(BaseModel):
     dendrites: Dendrites | None = None
     # banded domes on the wall: agatesim's spherulitic stage (`nodule.eyes`, ADR 0018 s.18)
     eyes: Eyes | None = None
+    white: White = Field(
+        default="none",
+        description="White opal (ADR 0019 s.13; renders and previews only): 'plumes' makes "
+        "the plumes white opal, 'rims' mantles the plumes or moss in a white opal rim.",
+    )
+    white_level: float = Field(
+        default=0.0,
+        ge=0,
+        le=1,
+        description="The white opal's strength: 0 faint to 1 solid (ADR 0019 s.13; "
+        "`nodule.varietyrender.white_transport`); 0 without white.",
+    )
+
+    @model_validator(mode="after")
+    def _white_on_inclusions(self) -> StoneRecipe:
+        if self.white == "none" and self.white_level:
+            raise ValueError("no white opal, no white level")
+        if self.white == "plumes" and self.plumes is None:
+            raise ValueError("white plumes need plumes")
+        if self.white == "rims" and self.inclusions is None:
+            raise ValueError("white rims need plumes or moss")
+        return self
 
     @model_validator(mode="after")
     def _eyes_on_their_own(self) -> StoneRecipe:
@@ -421,6 +456,10 @@ class StoneRecipe(BaseModel):
             parts.append(self.dust.summary())
         if self.inclusions is not None:
             parts.append(self.inclusions.summary())
+        if self.white == "plumes":
+            parts.append(f"white plumes {self.white_level:.2f}")
+        elif self.white == "rims":
+            parts.append("white rims")
         if self.crystals is not None:
             parts.append(self.crystals.summary())
         if self.rind is not None:

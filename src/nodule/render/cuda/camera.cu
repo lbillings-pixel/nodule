@@ -46,7 +46,7 @@
 
 struct Cam { float s0, t0, pix; int nx, ny, spp; unsigned int seed; float n_in, D;
              int light; float lth, lph, E, Ld; float mubar; int nmat; int nprof; float dt;
-             int order; int flags; float lomc; float ba[3]; };
+             int order; int flags; float lomc; float ba[3]; int wrow; };
 
 // What a sample sees: m, the row of its scattering and phase function, and a, its absorption.
 // Without a shift a = mua[m]. With one (ADR 0016; shift.cuh), a band row that takes it adds
@@ -54,12 +54,20 @@ struct Cam { float s0, t0, pix; int nx, ny, spp; unsigned int seed; float n_in, 
 // with drift m becomes the translucency table's row nearest the drifted translucency.
 // The drift is read from the cut's baked grid when there is one (ADR 0016 s.9), else
 // worked out here; the lenses always are, being thinner than the grid.
+// White opal by place (ADR 0019 s.13): where the scene has a white share, a stone sample
+// takes the white row (C.wrow) with the share's trilinear value as probability, drawn anew
+// at each tentative collision, so delta and ratio tracking estimate the mixture without
+// bias (the transport equation is linear in the coefficients). The number is drawn only
+// where the share lies strictly between 0 and 1, so stones without white, and places with
+// none, draw what they drew before. A stand-in hollow (voidf) wins over white; the white
+// row keeps the layers' absorption and takes no shift.
 struct Mat { int m; float a[3]; };
 
 __device__ Mat matid(const Scene& S, const Cam& C, const Shift& H, const unsigned short* prof,
-                     const float* mua, float x, float y, float z) {
+                     const float* mua, float x, float y, float z, Rng& r) {
     Mat M; M.m = 0;
     float t = 0.f;
+    bool white = false;
     if (!(C.flags & 4)) {
         int c = classify(S, x, y, z, t, C.flags & 1);           // x, y, z now restored
         if (c < 2) M.m = c;
@@ -67,6 +75,10 @@ __device__ Mat matid(const Scene& S, const Cam& C, const Shift& H, const unsigne
             int u = (int)floorf(t / C.dt); u = min(max(u, 0), C.nprof - 1); M.m = 2 + prof[u];
             // a milky lining's stand-in hollow: the lining without the milk (ADR 0019 s.6.12)
             if (S.voidf != nullptr && grid_at(S, S.voidf, x, y, z) > 0.5f) M.m = 2 + prof[C.nprof - 1];
+            else if (S.white != nullptr) {                      // white opal (ADR 0019 s.13)
+                float sh = grid_at(S, S.white, x, y, z);
+                if (sh > 0.f && (sh >= 1.f || r.next() < sh)) { M.m = C.wrow; white = true; }
+            }
         }
     }
     for (int c = 0; c < 3; ++c) M.a[c] = mua[3 * M.m + c];
@@ -74,7 +86,7 @@ __device__ Mat matid(const Scene& S, const Cam& C, const Shift& H, const unsigne
         long long n = (long long)S.ns * S.nt * S.nw;
         for (int c = 0; c < 3; ++c) M.a[c] = fmaxf(M.a[c] + grid_at(S, S.absorb + c * n, x, y, z), 0.f);
     }
-    if (H.band == nullptr || M.m < 2) return M;
+    if (white || H.band == nullptr || M.m < 2) return M;
     const float* B = H.band + 4 * M.m;
     if (!(B[0] >= 0.f)) return M;                               // takes no shift
     bool lens = B[1] > 0.f || B[2] > 0.f || B[3] > 0.f, drift = H.ntr > 0;
@@ -100,7 +112,7 @@ __device__ void ratio(const Scene& S, const Cam& C, const Shift& H, const unsign
     for (int it = 0; it < 100000; ++it) {
         s += -logf(r.next()) / C.mubar;
         if (s >= L) return;
-        Mat M = matid(S, C, H, prof, mua, x + dx * s, y + dy * s, z + dz * s);
+        Mat M = matid(S, C, H, prof, mua, x + dx * s, y + dy * s, z + dz * s, r);
         for (int c = 0; c < 3; ++c) T[c] *= 1.f - (M.a[c] + mus[3 * M.m + c]) / C.mubar;
         float tm = fmaxf(T[0], fmaxf(T[1], T[2]));
         if (tm < 0.1f) {                                   // shadow roulette (unbiased)
@@ -437,7 +449,7 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
         }
         outside = false;
 #endif
-        Mat M = matid(S, C, H, prof, mua, x, y, z);
+        Mat M = matid(S, C, H, prof, mua, x, y, z, r);
         int m = M.m;
         if (spectral_step(w, M.a, mus, m, C.mubar, r)) {
             ++real;

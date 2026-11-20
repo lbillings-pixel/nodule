@@ -67,6 +67,9 @@ from nodule.variety.recipe import (
     THICK_FLOOR_CHANCE,
     TINT_CHANCE,
     WARP_SHARES,
+    WHITE_PLUME_SHARE,
+    WHITE_RIM_LEVEL,
+    WHITE_RIM_SHARE,
     WIDE_CENTRE_CHANCE,
     WIDE_OPEN_SHARE,
     WIDE_QUARTZ_MIN_MM,
@@ -77,6 +80,7 @@ from nodule.variety.recipe import (
     Roughness,
     StoneRecipe,
     Tint,
+    White,
     body_height,
     cavity_depth,
     crack_scale,
@@ -233,6 +237,10 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     # untinted quartz centres only (`milk_of`).
     milk_draws = np.random.default_rng(root.spawn(1)[0]).uniform(size=n)
     milks = [milk_of(float(u), r) for u, r in zip(milk_draws, out, strict=True)]
+    # White opal from a stream spawned after the milk's (ADR 0019 s.13): every stone
+    # draws its two numbers, plumes or moss or not, so no other draw moves (`white_of`).
+    white_draws = np.random.default_rng(root.spawn(1)[0]).uniform(size=(n, 2))
+    whites = [white_of(u, r) for u, r in zip(white_draws, out, strict=True)]
     final: list[StoneRecipe] = []
     for i, r in enumerate(out):
         rec = StoneRecipe.model_validate(
@@ -242,6 +250,8 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
                 "channel": draw_channel(tube_streams[i], r.outline, chalcedony_mm(r)),
                 "grade_mm": grades[i],
                 "milk": milks[i],
+                "white": whites[i][0],
+                "white_level": whites[i][1],
             }
         )
         if rec.channel is not None and not channel_fits(rec):
@@ -285,6 +295,18 @@ def milk_of(u: float, r: StoneRecipe) -> float:
     if r.centre == "quartz-filled":
         return filled_milk_level(u)
     return 0.0
+
+
+def white_of(u: NDArray[np.float64], r: StoneRecipe) -> tuple[White, float]:
+    """A stone's white opal and its level from its two uniform draws (owner, 2026-11-20,
+    ADR 0019 s.13): u[0] below WHITE_PLUME_SHARE gives a plume stone white plumes at level
+    u[1]; the next WHITE_RIM_SHARE gives a plume or moss stone white rims (at
+    WHITE_RIM_LEVEL); never both. Every other stone, none."""
+    if r.plumes is not None and u[0] < WHITE_PLUME_SHARE:
+        return "plumes", float(u[1])
+    if r.inclusions is not None and 0 <= u[0] - WHITE_PLUME_SHARE < WHITE_RIM_SHARE:
+        return "rims", WHITE_RIM_LEVEL
+    return "none", 0.0
 
 
 def graded_mm(u: NDArray[np.float64], recipe: StoneRecipe) -> float:

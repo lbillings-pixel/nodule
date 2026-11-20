@@ -43,6 +43,7 @@ from numpy.typing import ArrayLike, NDArray
 from nodule.render.camera import N_CHALCEDONY, Materials
 from nodule.render.mie import grain_part, pore_part
 from nodule.render.record import FIELDS, STEPS, BandRecord
+from nodule.render.whiteopal import WhiteKind, white_optics
 
 if TYPE_CHECKING:
     from nodule.render.shift import ShiftArrays
@@ -207,6 +208,16 @@ class OpticsTable:
     # computed (runs/hollow-air/milk_g.py).
     milk_mus: float = 0.0
     milk_from: int = 0
+    # White opal (ADR 0019 s.13, `nodule.render.whiteopal`): "plumes" renders the stone's
+    # plumes as white opal, "rims" mantles its plumes or moss in a white opal rim; the
+    # strength is the white row's transport mu_s (1 - g) at 550 nm, per mm. `effective`,
+    # the owner's picks; the row is appended last (`Materials.white`).
+    white: WhiteKind = "none"
+    white_transport: float = 0.0
+
+    def __post_init__(self) -> None:
+        if (self.white == "none") != (self.white_transport == 0.0) or self.white_transport < 0:
+            raise ValueError("white opal takes a positive strength, and no white none")
 
     def _hematite(self, phi: float, red_k: float | None = None) -> F64:
         n, k = HEMATITE_NK[self.hematite]
@@ -341,8 +352,15 @@ class OpticsTable:
                 rows += [self.scattering(Pigment.IRON, 0.0, a)
                          for a in np.linspace(0.0, 1.0, TR_NODES)]  # fmt: skip
                 along = np.r_[along, np.tile([-1.0, 0.0, 0.0, 0.0], (TR_NODES, 1))]
+        white = -1
+        if self.white != "none":  # the white opal row, last; it takes no shift
+            white = len(rows)
+            mus, g = white_optics(self.white_transport, WAVELENGTH_NM)
+            rows.append(Optics(np.full(3, self.matrix_mua), mus, g, np.zeros(3), np.zeros(3)))
+            if along is not None:
+                along = np.r_[along, [[-1.0, 0.0, 0.0, 0.0]]]
         return Materials.of(
             mua=[r.mua for r in rows], mus=[r.mus for r in rows], g=[r.g for r in rows],
             profile=prof.ravel(), dt=1.0 / STEPS, f=[r.f for r in rows], gb=[r.gb for r in rows],
-            along=along, tr_rows=tr_rows,
+            along=along, tr_rows=tr_rows, white=white,
         )  # fmt: skip

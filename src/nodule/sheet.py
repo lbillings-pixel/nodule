@@ -3,7 +3,8 @@
 Screening only, for the owner's eye before any render: chalcedony takes agatesim's
 stand-in colour (`chalcedony_colour`, as `nodule.descriptors.stand_in_rgb`), quartz
 a glassy grey shaded per grain (tinted for amethyst or smoky centres), open space
-near black, plumes by their tint (`nodule.plumes`), white early crystals as milky
+near black, plumes by their tint (`nodule.plumes`) or as white opal, white plumes or
+white rims round plumes and moss (ADR 0019 s.13), white early crystals as milky
 chalcedony (`nodule.crystals`), Mn dendrites black (`nodule.dendrites`), and the host
 a flat colour by setting. Sheets add the host rind and host specks (`nodule.rind`,
 ADR 0018 s.16) round the cut (`framed_rgb`); renders draw neither yet. No glow or
@@ -32,8 +33,11 @@ from agatesim.render import QUARTZ_CLEAR, QUARTZ_MILKY, chalcedony_colour
 from numpy.typing import NDArray
 from PIL import Image, ImageDraw
 
+from nodule._scipy import distance_inside
 from nodule.dust import dust_excess
 from nodule.plumes import inclusion_rgb
+from nodule.render.record import plume_points
+from nodule.render.whiteopal import RIM_MM
 from nodule.rind import VOLCANIC, draw_rind_rgb, host_specks
 from nodule.specimen import Specimen, SpecimenCut, window_cut
 from nodule.variety import (
@@ -52,6 +56,10 @@ HOST_RGB = {  # effective: basalt grey, rhyolite pink-brown, sediment tan
     "sedimentary": (148, 128, 104),
 }
 VOID_RGB = (16, 16, 20)
+# White opal (ADR 0019 s.13): white plumes from faint (a bluish grey) to solid white by the
+# recipe's level; white rims solid, RIM_MM wide round plumes and moss. By eye.
+WHITE_FAINT_RGB = np.array([200.0, 205.0, 212.0])
+WHITE_SOLID_RGB = np.array([242.0, 242.0, 238.0])
 LABEL_H = 64  # label rows under each stone: summary on up to 3 lines, scale bar
 LABEL_CHARS = 64  # characters per label line in a 400 px tile
 TINT = {"amethyst": np.array([1.0, 0.82, 1.08]), "smoky": np.array([0.72, 0.68, 0.64])}
@@ -74,6 +82,12 @@ def preview_rgb(cut: SpecimenCut, recipe: StoneRecipe) -> NDArray[np.uint8]:
     # Plumes (and tubes) by their tint through nodule's ramp (`nodule.plumes`).
     inclusion = cut.inside & (f.phase == Phase.INCLUSION)
     rgb[inclusion] = inclusion_rgb(f.impurity[inclusion])
+    strands = plume_points(f, cut.inside)  # plumes and moss, not tubes
+    if recipe.white == "plumes":
+        rgb[strands] = WHITE_FAINT_RGB + recipe.white_level * (WHITE_SOLID_RGB - WHITE_FAINT_RGB)
+    elif recipe.white == "rims" and strands.any():
+        near = distance_inside(~strands) * float(cut.s[1] - cut.s[0]) <= RIM_MM
+        rgb[near & cut.inside & ~inclusion & (f.phase != Phase.VOID)] = WHITE_SOLID_RGB
     rgb[~cut.inside] = HOST_RGB[host_kind(recipe)]
     return np.clip(np.rint(rgb), 0, 255).astype(np.uint8)[::-1]
 

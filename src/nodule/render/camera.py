@@ -83,13 +83,16 @@ class Materials:
     # takes (their own mua is unused).
     along: F32 | None = None
     tr_rows: tuple[int, int] = (0, 0)
+    # White opal's row (ADR 0019 s.13), which a stone sample takes with the scene's white
+    # share as probability (`SceneArrays.white`); -1: none. Its along row, if any, is -1.
+    white: int = -1
 
     @classmethod
     def of(cls, mua: ArrayLike, mus: ArrayLike, g: ArrayLike,
            profile: ArrayLike = (0,), dt: float = 1.0,
            f: ArrayLike | None = None, gb: ArrayLike | None = None,
            cut_deg: float = 0.0, along: ArrayLike | None = None,
-           tr_rows: tuple[int, int] = (0, 0)) -> Materials:  # fmt: skip
+           tr_rows: tuple[int, int] = (0, 0), white: int = -1) -> Materials:  # fmt: skip
         """g, f, gb: (m,) for one value per material or (m, 3) per channel. Without f the
         phase function is one HG lobe (f = 0). mus, f, g, gb describe the full phase
         function; `cut_deg` truncates it (see `kept`)."""
@@ -111,7 +114,7 @@ class Materials:
             profile=np.atleast_1d(np.asarray(profile, np.uint16)), dt=dt,
             f=per_channel(f, "f"), gb=per_channel(gb, "gb"), cut_deg=float(cut_deg),
             along=None if along is None else np.ascontiguousarray(along, np.float32),
-            tr_rows=(int(tr_rows[0]), int(tr_rows[1])),
+            tr_rows=(int(tr_rows[0]), int(tr_rows[1])), white=int(white),
         )  # fmt: skip
         if m.along is not None:
             if m.along.shape != (len(m.mua), 4):
@@ -121,6 +124,11 @@ class Materials:
         first, count = m.tr_rows
         if count and (count < 2 or first < 2 or first + count > len(m.mua)):
             raise ValueError("the translucency table must be 2 or more rows inside the table")
+        if m.white != -1:
+            if not 2 <= m.white < len(m.mua) or first <= m.white < first + count:
+                raise ValueError("the white row must be a stone row outside the drift's table")
+            if m.along is not None and m.along[m.white, 0] >= 0:
+                raise ValueError("the white row takes no shift (its along row -1)")
         if (m.mua < 0).any() or (m.mus < 0).any():
             raise ValueError("coefficients must be non-negative")
         if (m.f < 0).any() or (m.f > 1).any():
@@ -304,7 +312,7 @@ CAM_DTYPE = np.dtype(
      ("spp", "<i4"), ("seed", "<u4"), ("n_in", "<f4"), ("D", "<f4"), ("light", "<i4"),
      ("lth", "<f4"), ("lph", "<f4"), ("E", "<f4"), ("Ld", "<f4"), ("mubar", "<f4"),
      ("nmat", "<i4"), ("nprof", "<i4"), ("dt", "<f4"), ("order", "<i4"), ("flags", "<i4"),
-     ("lomc", "<f4"), ("ba", "<f4", (3,))]
+     ("lomc", "<f4"), ("ba", "<f4", (3,)), ("wrow", "<i4")]
 )  # fmt: skip
 
 
@@ -353,6 +361,8 @@ def render(
             raise ValueError("a void box takes no slipping fractures")
     if shift is not None and shift.materials is not materials:
         raise ValueError("the shift was uploaded for another material table")
+    if "white" in scene.arrays and materials.white < 0:
+        raise ValueError("a scene with white opal needs the material table's white row")
     if (
         shift is not None
         and shift.grid_shape is not None
@@ -387,7 +397,8 @@ def render(
                 lth=math.radians(light.theta_deg), lph=math.radians(light.phi_deg),
                 E=light.irradiance, Ld=light.radiance, mubar=mb, nmat=len(materials.g),
                 nprof=len(materials.profile), dt=materials.dt, order=order,
-                flags=int(flags), lomc=light.one_minus_cos, ba=bottom_albedo)  # fmt: skip
+                flags=int(flags), lomc=light.one_minus_cos, ba=bottom_albedo,
+                wrow=materials.white)  # fmt: skip
     for key, v in vals.items():
         c[key] = v
     cam = cp.asarray(np.frombuffer(c.tobytes(), np.uint8))

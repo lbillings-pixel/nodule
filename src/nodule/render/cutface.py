@@ -79,6 +79,7 @@ from nodule.render.shift import ShiftArrays, bake_drift, variation_of
 from nodule.render.shift import upload as shift_upload
 from nodule.render.tgrid import GrowthGrid, Window, to_world
 from nodule.render.voidbox import VoidBox, hollow_nodes, under_slab
+from nodule.render.whiteopal import white_share
 from nodule.specimen import Specimen, SpecimenCut
 
 GRID_MM = 0.2  # ADR 0007 7c
@@ -327,9 +328,11 @@ class CutRenderer:
             p = to_world(cut.plane, grid.s[i], grid.t[j], grid.w[k])
             self._air = np.zeros_like(grid.void)
             self._air[k, j, i] = hollow_nodes(self._box, p)
+        # white opal by place (ADR 0019 s.13): None without it, or with no white node here
+        self._white = white_share(r.optics.white, grid.cover, grid.values, grid.spacing_mm)
         packed = self._packed = pack(
             specimen, grid, absorb=grid.absorb, void_mua=r.void_mua, air=self._air,
-            voidf=self._void_mask(r),
+            voidf=self._void_mask(r), white=self._white,
         )  # fmt: skip
         self._dev = upload(packed)
         self._void = None if self._box is None else voidgpu.upload(voidgpu.pack_box(self._box))
@@ -337,7 +340,10 @@ class CutRenderer:
         # record marks steps that take them (a fake's record carries them with its runs)
         variation = variation_of(specimen) if r.record.shifts.any() else None
         host = ShiftArrays.of(variation) if variation is not None else None
-        self._mats = r.optics.materials(r.record, host)
+        optics = r.optics
+        if optics.white != "none" and self._white is None:  # no white here: no white row
+            optics = replace(optics, white="none", white_transport=0.0)
+        self._mats = optics.materials(r.record, host)
         self._shift = None
         if host is not None:
             baked = host.drift is not None and r.drift == "baked"

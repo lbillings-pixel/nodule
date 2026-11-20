@@ -126,6 +126,11 @@ MILK_CURVE: tuple[tuple[float, float], ...] = (
 )  # fmt: skip
 MILK_D_CENTRE = 1.052
 MILK_NEAR_CLEAR = 2.0
+# White opal (ADR 0019 s.13): the recipe's level (0 faint, 1 solid) to the white row's
+# transport mu_s (1 - g) at 550 nm, per mm, even in its logarithm between the probe sheet's
+# faint and solid tiles, the range the owner chose (2026-11-20). `effective`.
+WHITE_FAINT = 4.0
+WHITE_SOLID = 16.0
 
 
 def milk_mus(level: float) -> float:
@@ -137,6 +142,11 @@ def milk_mus(level: float) -> float:
     return float(np.exp(np.interp(want, cs, vs)))
 
 
+def white_transport(level: float) -> float:
+    """The white row's transport (per mm at 550 nm) for a recipe's white level."""
+    return WHITE_FAINT * (WHITE_SOLID / WHITE_FAINT) ** min(max(level, 0.0), 1.0)
+
+
 def optics_for(r: StoneRecipe, base: OpticsTable | None = None) -> OpticsTable:
     """The optics a variety stone renders with: `base` (default OpticsTable()) with the
     hematite pigment's red absorption at HEMATITE_RED_K, and carnelian's iron-oxide
@@ -144,13 +154,16 @@ def optics_for(r: StoneRecipe, base: OpticsTable | None = None) -> OpticsTable:
     centre's colour centres, and the milk (`milk_mus`) of a quartz-lined hollow's lining or
     an untinted quartz-filled centre (`StoneRecipe.takes_milk`), on quartz after the early
     stage (clear early crystals are quartz too and stay clear). Tinted filled centres keep
-    clear quartz (item 16's look; owner, 2026-11-20, ADR 0019 s.6.12)."""
+    clear quartz (item 16's look; owner, 2026-11-20, ADR 0019 s.6.12). White plumes or
+    rims (ADR 0019 s.13) at `white_transport` of the recipe's level."""
     base = base or OpticsTable()
     phi = base.phi_iron_oxide * (CARNELIAN_LOADING if r.colour == "carnelian" else 1.0)
     out = replace(base, hematite_red_k=HEMATITE_RED_K, phi_iron_oxide=phi)
     first = math.ceil(STAGE * STEPS - 1e-9)
     if r.takes_milk:
         out = replace(out, milk_mus=milk_mus(r.milk), milk_from=first)
+    if r.white != "none":
+        out = replace(out, white=r.white, white_transport=white_transport(r.white_level))
     if r.tint == "none":
         return out
     mua = tuple(TINT_STRENGTH * v for v in QUARTZ_TINT_MUA[r.tint])

@@ -1008,7 +1008,7 @@ stones none; white fine needles alone take the finer grid, within the budget
        irradiance gives the look back); the combined estimate equals phase sampling over a
        real stone's box too (control: legs let through).
 13. **Scattering by place: white plumes** (track B; 2026-11-20: reading done, the owner's
-   picks, a probe planned; nothing built).
+   picks, the probe judged; built the same evening, the owner's look pending).
    - *Reading* (helper report notes/n1-reading/item19-white-plumes.md; the quotes below
      re-checked in the local PDFs). Del Norte thunder-egg opal "is invariably an opaque to
      translucent white, with textures in hand samples ranging from vitreous ... to
@@ -1082,6 +1082,71 @@ stones none; white fine needles alone take the finer grid, within the budget
      lookup skipped for the white row. The share comes from the bake's own sub-samples
      (as the probe), rims from a distance transform on the node grid (no agatesim
      change). Costs: 4 bytes a node; the look ~1.8x slower on white stones (probe).
+   - *Built (2026-11-20 evening; `nodule.render.whiteopal`).*
+     - *Recipe.* `StoneRecipe.white` (none, plumes, rims) and `white_level` (0 faint to 1
+       solid), from a stream spawned after the milk's; every stone takes two uniforms, so
+       no other draw moves (sheets 0-11 redrawn: no other field of the 144 stones
+       changed). Below 1/4 white plumes (plume stones); the next 1/4 white rims (plume and
+       moss stones); never both. A white plume's level is the second uniform, even in the
+       logarithm of the strength: `nodule.varietyrender.white_transport` gives 4 x
+       4^level per mm, the faint to the solid tile. Rims take level 1, solid as the owner
+       saw them (*assumption*: a faint 0.3 mm rim barely shows; a spread would move no
+       draw). Sheets 0-11: 4 of 13 plume stones take white plumes (sheet 0 stone 12 at
+       0.79, sheet 1 stone 2 at 0.76, sheet 2 stone 5 at 0.28, sheet 7 stone 6 at 0.12)
+       and 7 of 37 plume or moss stones white rims (on plumes: sheet 4 stone 1, sheet 5
+       stone 1, sheet 11 stone 6; on moss: sheet 2 stone 12, sheet 3 stone 9, sheet 7
+       stone 5, sheet 9 stone 10). Summaries read "white plumes 0.79" or "white rims";
+       previews draw the plumes from a bluish grey (faint) to white (solid), rims white.
+     - *Optics.* `OpticsTable.white` and `white_transport`; the white row, appended last
+       (`Materials.white`), is the probe's sub-micron row (`white_optics`) over the
+       matrix's absorption, one lobe, taking no shift.
+     - *Bake.* With white the bake keeps each node's cover (`GrowthGrid.cover`, its
+       share of its 8 sub-points in a plume or moss strand). For white plumes a plume
+       sub-point gains nothing: the white row carries it at the matrix's absorption,
+       where the probe's row lost the band's own pigment (max(0.13 - band, 0)).
+     - *Share* (`white_share`). White plumes: the cover. Rims: (1 - cover) x clip(R / h
+       + 1 - d, 0, 1), d a node's distance (nodes) to the nearest node at least half
+       covered, R = 0.3 mm, h the spacing: a flat face's rim is 0.3 mm wide on average at
+       0.05, 0.1 and 0.2 mm (the probe's hard rim: 0.3 mm at 0.1 but 0.2 mm at 0.2), on
+       stone nodes only. The distance is worked in padded chunks of 64 rows (exact).
+     - *Camera.* `Scene.white` (float32, trilinear) and `Cam.wrow`: `matid` takes the
+       white row with the share as probability at each tentative collision (free flights
+       and shadow rays, in both builds), drawing a number only where 0 < share < 1; a
+       stand-in hollow wins; the white row keeps the layers' absorption and skips the
+       shift. A scene with white and no white row is refused.
+     - *Tests*, each with a negative control. tests/test_white_gpu.py: on n2-slice, a
+       share of 1/2 equals the exact mixture row (lobe b the white row's, f = s mu_s,W /
+       mu_s) under the dome, a directional light, the back light and the hollow-as-air
+       build, |z| at most 1.4 (control: the mixture for 1/4, |z| 17-74); a share of 0
+       renders as no share to 1e-7 relative (two identical renders differ by ~1e-7, the
+       order of the GPU's float additions; control: 1/2 changes it). Off the GPU
+       (test_whiteopal, test_plumebake, test_materials): the white row (control: micron
+       pores near neutral); the cover kept, pigment dropped for white plumes, the plain
+       bake unchanged for rims (control: no cover without white); rims 0.3 mm at three
+       spacings (control: the probe's hard rim, 0.2 mm at 0.2), exact in chunks
+       (control: unpadded chunks), none inside strands or off the stone; the rates on
+       20 000 uniforms (control: stones without plumes or moss take none); refusals;
+       previews (control: no white keeps the tint).
+     - *As before.* Sheet 0 stones 3 (milk, the hollow as air, the lining's stand-in
+       hole backlit) and 12 (plumes), rendered with white off before and after the
+       change: equal to 1.2e-7 relative.
+     - *Against the probe* (runs/white-plumes/build_check.py, build_check.log; the probe's
+       stones, set-up and ratios, 128 spp; stone 9's milk off as there). Stone 12 white
+       plumes, faint (level 0) and solid (1): look 1.77 and 2.70 (probe 1.77, 2.68),
+       backlit warmth 1.34 and 1.50 (1.35, 1.45). Rims: 1.68 round its plumes and 2.37
+       round stone 9's moss (1.59, 2.28); the strands inside them read 0.44 and 0.37
+       (0.39, 0.28), and stone 9's rim backlit 1.35 (1.10). Rims read whiter as they now
+       take the part of a strand's edge nodes outside it (1 - cover) and the ramp past
+       0.3 mm, which round a thin curved strand adds more than on a flat face; the
+       owner's look decides whether thin moss stays dark enough (if not: start the white
+       one node out, as the probe did). White nodes: 250 676 for the plumes (98 199 of
+       them partial, which the probe drew or dropped at 1/2), 414 381 rim nodes round
+       them, 865 050 round the moss.
+     - *Costs* (measured, same run). The fill with the cover: 97-104 s on stone 12's
+       43.0 M nodes (probe 98 s), 190 s on stone 9's. The look at 128 spp: 58 s faint, 85
+       s solid, 86 s rims (the white row raises the majorant: faint less); backlit 26-41
+       s. RAM peak 5.62 GB (probe 5.37: the cover and the share, 4 bytes a node each);
+       GPU 3.10 GiB (2.94).
 
 ## Consequences
 
@@ -1090,3 +1155,5 @@ stones none; white fine needles alone take the finer grid, within the budget
 - `Layers` implementations must split their work (`per_step` and the call).
 - The renderer's record now holds white fade and quartz iron; earlier stones (no
   layers) are unchanged.
+- White opal scatters by place (s.13): a per-node share grid and one white row in the
+  table; stones without white render as before (to the GPU's float-addition order).

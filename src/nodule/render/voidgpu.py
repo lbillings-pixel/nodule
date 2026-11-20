@@ -127,8 +127,9 @@ def upload(v: VoidArrays) -> DeviceVoid:
     return DeviceVoid(cp.asarray(np.frombuffer(h.tobytes(), np.uint8)), arrays, v.kind)
 
 
-def air_points(scene: Any, void: DeviceVoid, points: NDArray[np.floating]) -> tuple[Any, Any]:
-    """The GPU's air rule at world points: (air (n,) bool, values (n, 2): level, phi)."""
+def air_points(scene: Any, void: DeviceVoid, points: NDArray[np.floating]) -> tuple[Any, Any, Any]:
+    """The GPU's air rule at world points: (air (n,) bool, values (n, 2): level, phi,
+    within the shell (n,) bool)."""
     from nodule.render import _gpu
 
     cp = _gpu.cupy()
@@ -137,7 +138,8 @@ def air_points(scene: Any, void: DeviceVoid, points: NDArray[np.floating]) -> tu
     out, vals = cp.zeros(n, cp.uint8), cp.zeros((n, 2), cp.float32)
     k = _gpu.kernel("camera_void", "air_points")
     k(((n + 255) // 256,), (256,), (np.int64(n), p, scene.struct, void.struct, out, vals))
-    return out.get().astype(bool), vals.get()
+    o = out.get()
+    return (o & 1).astype(bool), vals.get(), (o & 2).astype(bool)
 
 
 def turn_points(

@@ -164,18 +164,21 @@ class VoidBox:
 
 
 def dilated_shell(box: VoidBox) -> VoidBox:
-    """The box with its shell grown by one id node (6 neighbours): a view grid's nodes
-    within a cell of the shell, which the camera's trilinear reads there may touch."""
+    """The box with its shell grown by one id node (all 26 neighbours, so no corner of a
+    cell next to the shell is left unfilled): a view grid's nodes within a cell of the
+    shell, which the camera's trilinear reads there may touch."""
     if box.shell is None:
         raise ValueError("this box holds no shell")
     s = box.shell.copy()
-    for ax in range(3):
+    for ax in range(3):  # separable: grown along each axis in turn gives the 3 x 3 x 3 block
+        grown = s.copy()
         for sh in (1, -1):
-            r = np.roll(box.shell, sh, axis=ax)
+            r = np.roll(s, sh, axis=ax)
             edge = [slice(None)] * 3
             edge[ax] = slice(0, 1) if sh > 0 else slice(-1, None)
             r[tuple(edge)] = False
-            s |= r
+            grown |= r
+        s = grown
     return replace(box, shell=s)
 
 

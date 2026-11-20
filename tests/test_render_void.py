@@ -232,7 +232,7 @@ def test_gpu_air_matches_the_box(flat, lined) -> None:
     p = np.concatenate([p, lo - 1.0 + rng.random((1000, 3))])  # off the box: never air
     want = box.air(p)
     dev = voidgpu.upload(voidgpu.pack_box(box))
-    got, _vals = voidgpu.air_points(flat, dev, p)
+    got, _vals, shell = voidgpu.air_points(flat, dev, p)
     assert near.sum() > 10_000
     assert want.sum() > 5_000
     assert not got[-1000:].any()
@@ -247,6 +247,48 @@ def test_gpu_air_matches_the_box(flat, lined) -> None:
     assert packed.nf is not None
     bare = voidgpu.VoidArrays(packed.header, packed.ids, packed.nf & ~np.uint8(3), packed.phi,
                               packed.rows)  # fmt: skip
-    got0, _ = voidgpu.air_points(flat, voidgpu.upload(bare), p)
+    got0, _, _ = voidgpu.air_points(flat, voidgpu.upload(bare), p)
     assert not got0.any()
     assert np.mean(got0 != want) > 0.05
+    # the shell (nearest node's flag) as the CPU reads it; control: the shell bit cleared
+    in_shell = box.in_shell(p)
+    assert in_shell.mean() > 0.2
+    assert np.mean(shell != in_shell) < 1e-4
+    noshell = voidgpu.VoidArrays(packed.header, packed.ids, packed.nf & ~np.uint8(voidgpu.SHELL),
+                                 packed.phi, packed.rows)  # fmt: skip
+    _, _, shell0 = voidgpu.air_points(flat, voidgpu.upload(noshell), p)
+    assert not shell0.any()
+
+
+def test_cut_renderer_draws_the_hollow_as_air_and_shares_its_fill(lined) -> None:
+    """`CutRenderer(box=)` with hollow="air": the grid continues under the hollow, the
+    look meets the wall, and `.on()` a stand-in rendering on the same fill does not (it
+    keeps the dark stand-in in the hollow); control: the stand-in alone never meets a wall."""
+    from nodule.render.cutface import CutRenderer, Rendering
+    from nodule.render.fakes import stone_record
+    from nodule.render.record import void_points
+    from nodule.specimen import window_cut
+    from nodule.variety import build, cut_of
+    from test_voidbox import recipe  # pyright: ignore[reportMissingImports]
+
+    _, box = lined
+    spec, _ = build(recipe())
+    cut = cut_of(spec, recipe(), 0.2)
+    jj, ii = np.nonzero(void_points(cut.fields, cut.inside))
+    near = window_cut(spec, cut, (float(cut.s[ii].mean()), float(cut.t[jj].min())), 6.0, 0.1)
+    record = stone_record(spec, np.random.default_rng(1))
+    look = Rendering.look(record, grid_mm=0.2, depth_mm=1.0, hollow="air")
+    air = CutRenderer(spec, near, look, np.random.default_rng(2), box=box)
+    assert air._grid.full_depth_mm == 1.0
+    assert air._grid.w[-1] > 3.0  # continued under the hollow
+    air.more(16)
+    assert air.crossings > 0.05
+    stand = air.on(Rendering.look(record, grid_mm=0.2, depth_mm=1.0))
+    stand.more(16)
+    assert stand.crossings == 0.0
+    hole = void_points(near.fields, near.inside)
+    assert hole.sum() > 100
+    lum = [cr.rgb[hole].astype(float).mean() for cr in (air, stand)]
+    assert lum[0] > lum[1] + 10  # the stand-in reads dark, the air shows the far wall
+    with pytest.raises(ValueError, match="void box"):
+        CutRenderer(spec, near, look, np.random.default_rng(2)).on(look)

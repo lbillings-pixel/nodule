@@ -26,7 +26,7 @@ struct Void {
 // where a cell's corner crystals change, s.6.12 step 1, so the wall there is a cell face, not
 // that crystal's), the wall is taken as met head-on (m = +-d) and the normal counted as guessed;
 // else such a path reflects into itself and meets the same wall again until the event cap
-// (found on the probe stone, 2026-11-20). `effective`.
+// (found on the probe stone, 2026-11-19). `effective`.
 #define VOID_FACING 0.02f
 
 __device__ __forceinline__ float vdepth(const Scene& S, float x, float y, float z) {
@@ -181,8 +181,8 @@ extern "C" __global__ void air_points(long long n, const float* pts, const Scene
                                       const Void* Vp, unsigned char* out, float* vals) {
     long long q = (long long)blockIdx.x * blockDim.x + threadIdx.x;
     if (q >= n) return;
-    float v[2];
-    out[q] = air_at(*Vp, *Sp, pts[3 * q], pts[3 * q + 1], pts[3 * q + 2], v);
+    float v[2], x = pts[3 * q], y = pts[3 * q + 1], z = pts[3 * q + 2];
+    out[q] = (air_at(*Vp, *Sp, x, y, z, v) ? 1 : 0) | (in_shell(*Vp, x, y, z) ? 2 : 0);
     vals[2 * q] = v[0]; vals[2 * q + 1] = v[1];
 }
 

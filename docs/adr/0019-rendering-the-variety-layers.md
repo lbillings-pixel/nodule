@@ -679,8 +679,8 @@ stones none; white fine needles alone take the finer grid, within the budget
          5.0 -> 10.6 s) and 6.2 s on 0/2 (6.0 -> 12.2 s); boxes with phi 0.8-12 s, traced
          peak 0.21-0.27 GB, phi grid 4-20 MB. The step 3 probe stone's 25 s was a larger
          box (4/4, 5.5 M nodes), not timed with phi.
-   - *Step 4, the camera: built* (2026-11-20; `cuda/voidbox.cuh`, `camera.cu` under
-     `NODULE_VOID`, `nodule.render.voidgpu`; tests/test_render_void.py, 9 GPU checks, and
+   - *Step 4, the camera: built* (2026-11-19; `cuda/voidbox.cuh`, `camera.cu` under
+     `NODULE_VOID`, `nodule.render.voidgpu`; tests/test_render_void.py, 10 GPU checks, and
      a deep-fill check in tests/test_voidbox.py). As planned above, with these choices:
      - *A separate compile.* The void path is the camera kernel compiled with
        `NODULE_VOID` (agatesim's `CRYSTAL_TIME_CUDA` prepended, never copied), so stones
@@ -752,6 +752,19 @@ stones none; white fine needles alone take the finer grid, within the budget
        3/9: the hollow barely reaches the cut (110 open pixels); its dark slit becomes a
        faint pale sliver. 8/4's hollow does not reach its cut. Exposure is matched on the
        face without the hollow, so it shifts a little (0/1: 4.97 -> 3.76).
+     - *The built specimen agrees with the box* (runs/hollow-air/box_vs_specimen.py, 400 000
+       random points a box): the renders read `Specimen.restored_fields` (warp, layers), the
+       box the bare volume; on 0/1, 4/4 (warped) and 3/9 (warped) their open points are the
+       same at every point, hollow lost 0.03-0.60 %, false air 0-4 points (*verified* for
+       these stones).
+     - *4/4's darker edge band is the bottom rule* (runs/hollow-air/air-render/
+       air-4-4-shell-vs-noshell.png): with the shell cleared, so the look's matte bottom
+       applies at 5 mm everywhere (and stone below it is lost), the band under the crystals
+       is lighter (row luminance 61 -> 85, 72 -> 88; deeper rows differ mostly by the matched
+       exposure, 3.39 vs 2.86). So under the shell's footprint, which on a geode covers most
+       of the face, the owner's matte bottom (s.6.5) is gone. Options for the owner: (a) keep
+       light leaving the shell below the slab lost (black); (b) the matte reflector at the
+       shell's edge below the slab as well (the look's stand-in for the rest of the stone).
      - *Not done yet:* a whole face (the look at 600 px; the fill grows with the deep part:
        4/4's window doubled), the owner's verdict, the matte question, and wiring into
        `varietyrender` (the box per stone, the look only).

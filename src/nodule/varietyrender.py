@@ -84,7 +84,7 @@ SPARKLE_RADIUS_DEG = 5.0  # a desk lamp's shade from ~50 cm; 2.5 deg (L2) lit 1/
 SPARKLE_SHARE = 0.5
 # The lamp pass's samples, as a share of the look's: a glint pixel saturates once any of its
 # samples mirrors the lamp (R ~ 4.5 %: 99.7 % of glint pixels at 128 spp), and the lamp's
-# light through the face is a third of the look's; a lamp pass costs ~5 looks a sample
+# light through the face is a third of the look's; a lamp pass costs ~8 looks a sample
 # (4/4, 2026-11-20: 362 s against 44 s at 256 spp, probe set-up).
 SPARKLE_SPP_SHARE = 0.25
 SPARKLE_LAMP = Light("disc", theta_deg=45.0, phi_deg=135.0, irradiance=SPARKLE_SHARE * math.pi,

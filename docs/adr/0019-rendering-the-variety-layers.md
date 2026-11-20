@@ -903,6 +903,44 @@ stones none; white fine needles alone take the finer grid, within the budget
        stones draw between 2/3 and D, 1 in 5 below (`MILK_HIGH_FROM`, `MILK_LOW_SHARE`,
        `draw.milk_level`, one draw on the same stream); amethyst and smoky linings stay
        near-clear (level 0). `effective`.
+     - *Milky filled centres (2026-11-20; the owner's look, owed since 2026-11-19).* Probe
+       (runs/hollow-air/filled_milk_probe.py, .log; sheet filled-milk/owner-sheet.png): sheet
+       0 stone 1 (`draw_sheet(0)[0]`; vesicle, quartz-filled 0.29, untinted, neutral; the
+       centre 18.4 mm across
+       as an equal-area circle on the cut) with the shipped neutral milk on its centre quartz
+       (one row, every quartz step from the early stage's end) at clear, level 0 (2.0 per
+       mm), 1/3 (10.2), 2/3 (20.3) and D (34.8); the look (5 mm, one exposure for all, the
+       clear render's own 2.39) and the 3 mm backlit slice; 0.2 mm grid, half the pixels,
+       256 spp; 172 s in all, RAM peak 0.85 GB, GPU 1.22 GiB. The centre over the
+       chalcedony (linear) reads 0.112, 0.218, 0.898, 1.464 and 1.996: one level reads far
+       whiter in a solid centre than in a lining round air (D twice the bands' lightness);
+       backlit, the centre turns from white (clear) to dark grey (D). Control: the
+       chalcedony's rows are unchanged, yet it lightens 1.3, 3.7, 4.4 and 4.9 % with the
+       level: light from the whiter centre reaching the bands through the slab. The look
+       holds the face's lightness with the centre counted (`look_exposure`): the renders'
+       own exposures fall to 2.29, 2.12, 2.08 and 2.05, so a milky filled stone's bands
+       come out 4-14 % darker than with a clear centre, as a camera's would; kept so (the
+       owner's call is open: an exact hold needs a clear pre-pass per stone).
+     - *Owner's choice (2026-11-20), on Claude's recommendation:* "mostly glassy grey":
+       about 4 in 5 untinted filled centres between level 0 and 1/3, 1 in 5 between 2/3 and
+       D. Grounds: one level whitens a solid centre far more than a lining, and centre quartz
+       in agates is mostly called colourless (the reading above), so a chalk-white core sits
+       nearer milky vein quartz (inference). `effective`.
+     - *Built (2026-11-20).* `StoneRecipe.takes_milk`: quartz-lined hollows and untinted
+       quartz-filled centres (thunder eggs' too); tinted filled centres stay clear, item
+       16's look (an assumption: the owner has not seen them milky). `draw.filled_milk_level`
+       (`FILLED_MILK_LOW_TO` 1/3, `FILLED_MILK_HIGH_SHARE` 0.2) on the same draw as the
+       linings' (every stone already took it, so no other draw moves); `optics_for` gives
+       `milk_mus(level)` from the same step as for linings. Sheets 0-11: 48 filled centres;
+       of the 41 untinted, 35 draw glassy grey (2.0-10.1 per mm) and 6 white (20.6-33.4);
+       the 7 amethyst and smoky ones stay clear.
+       Tests (test_look): both centres take the milk, even in lightness; controls: solid
+       and tinted filled centres take none (the tint kept); the shares on the mapping, no
+       filled level between 1/3 and 2/3. Checked through the shipped path
+       (runs/hollow-air/filled_built_check.py, .log; filled-built/): sheet 0 stones 1 and 9
+       (a thunder egg, level 0.14) and sheet 1 stone 10 (white, 0.68) at the probe set-up,
+       each drawn level reaching `optics_for` (asserted); 322 s for the three, RAM peak
+       1.36 GB, GPU 1.33 GiB.
      - *Six-faced tips (step 6; 2026-11-20 night, the owner away; approved 2026-11-19).*
        Built in agatesim as ADR 0092 on its branch `six-faced-tips` (15ddc46; 5029fc7 the
        GPU's face choice without angles; 83ab9d0 its ADR note; not pushed: pushing and

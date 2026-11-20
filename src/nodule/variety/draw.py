@@ -48,6 +48,8 @@ from nodule.variety.mottle import MOTTLE_SHARE, MOTTLE_STONES, mottle_size
 from nodule.variety.recipe import (
     CENTRE_SHARES,
     COLOUR_SHARES,
+    FILLED_MILK_HIGH_SHARE,
+    FILLED_MILK_LOW_TO,
     FLOOR_HEIGHT,
     FLOOR_STONES,
     FLOOR_SUPPLY,
@@ -226,14 +228,11 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     # stone takes its two draws, quartz centre or not.
     grade_rng = np.random.default_rng(root.spawn(1)[0])
     grades = [graded_mm(grade_rng.uniform(size=2), r) for r in out]
-    # Milky linings from a stream spawned after the grades' (ADR 0019 s.6.12): every stone
-    # draws its level, even within its lining (owner, 2026-11-20); kept on untinted
-    # quartz-lined hollows only (tinted ones stay near-clear, 0).
+    # Milky quartz from a stream spawned after the grades' (ADR 0019 s.6.12): every stone
+    # draws its level, even within its lining or centre (owner, 2026-11-20); kept on
+    # untinted quartz centres only (`milk_of`).
     milk_draws = np.random.default_rng(root.spawn(1)[0]).uniform(size=n)
-    milks = [
-        milk_level(float(u)) if r.centre == "quartz-lined" and r.tint == "none" else 0.0
-        for u, r in zip(milk_draws, out, strict=True)
-    ]
+    milks = [milk_of(float(u), r) for u, r in zip(milk_draws, out, strict=True)]
     final: list[StoneRecipe] = []
     for i, r in enumerate(out):
         rec = StoneRecipe.model_validate(
@@ -262,6 +261,30 @@ def milk_level(u: float) -> float:
     if u < MILK_LOW_SHARE:
         return u / MILK_LOW_SHARE * MILK_HIGH_FROM
     return MILK_HIGH_FROM + (u - MILK_LOW_SHARE) / (1 - MILK_LOW_SHARE) * (1 - MILK_HIGH_FROM)
+
+
+def filled_milk_level(u: float) -> float:
+    """A quartz-filled centre's milk level from a uniform u (owner, 2026-11-20): the first
+    1 - FILLED_MILK_HIGH_SHARE of u spread evenly over [0, FILLED_MILK_LOW_TO) (glassy
+    grey), the rest over [MILK_HIGH_FROM, 1]. Monotone, so a higher draw is never less
+    milky."""
+    low = 1.0 - FILLED_MILK_HIGH_SHARE
+    if u < low:
+        return u / low * FILLED_MILK_LOW_TO
+    return MILK_HIGH_FROM + (u - low) / FILLED_MILK_HIGH_SHARE * (1 - MILK_HIGH_FROM)
+
+
+def milk_of(u: float, r: StoneRecipe) -> float:
+    """A stone's milk level from its uniform draw u: lined hollows by `milk_level`,
+    filled centres by `filled_milk_level`, both untinted only; 0 for tinted centres (a
+    lining stays near-clear, a filled centre clear) and solid ones."""
+    if r.tint != "none":
+        return 0.0
+    if r.centre == "quartz-lined":
+        return milk_level(u)
+    if r.centre == "quartz-filled":
+        return filled_milk_level(u)
+    return 0.0
 
 
 def graded_mm(u: NDArray[np.float64], recipe: StoneRecipe) -> float:

@@ -135,6 +135,15 @@ QUARTZ_IRON_RATIO = 0.2
 # called clear, never milky [@gilg2003, p. 1009]). All `effective`.
 MILK_HIGH_FROM = 2 / 3
 MILK_LOW_SHARE = 0.2
+# Milky quartz-filled centres (owner 2026-11-20, ADR 0019 s.6.12, from a levels sheet of
+# sheet 0 stone 0, runs/hollow-air/filled_milk_probe.py): at one level a solid centre
+# reads far whiter than a lining round a hollow (D: twice the bands' lightness), so most
+# untinted filled centres stay glassy grey, drawn over [0, FILLED_MILK_LOW_TO), and
+# FILLED_MILK_HIGH_SHARE of them whiter, over [MILK_HIGH_FROM, 1]. Tinted filled centres
+# keep item 16's clear look (no milk; an assumption: the owner judged them clear). All
+# `effective`.
+FILLED_MILK_LOW_TO = 1 / 3
+FILLED_MILK_HIGH_SHARE = 0.2
 
 
 # The no-fold slope cap on band wobble (ADR 0005 s.3: below 1, bands cannot fold).
@@ -277,9 +286,10 @@ class StoneRecipe(BaseModel):
         default=0.0,
         ge=0,
         le=1,
-        description="A quartz-lined hollow's milkiness: 0 near-clear to 1 the owner's D (ADR "
-        "0019 s.6.12; `nodule.varietyrender.milk_mus`). 0 on tinted linings (near-clear) "
-        "and other centres (unused).",
+        description="A quartz centre's milkiness: 0 near-clear to 1 the owner's D (ADR 0019 "
+        "s.6.12; `nodule.varietyrender.milk_mus`), on quartz-lined hollows and untinted "
+        "quartz-filled centres (`takes_milk`). 0 on tinted linings (near-clear), tinted "
+        "filled centres (clear, no milk) and solid centres (unused).",
     )
     floor: float = Field(ge=0, le=1, description="0 = none, else the floor's target height.")
     floor_supply: float = Field(
@@ -354,12 +364,21 @@ class StoneRecipe(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def _milk_lines_a_hollow(self) -> StoneRecipe:
-        if self.milk and self.centre != "quartz-lined":
-            raise ValueError("milkiness belongs to a quartz-lined hollow's lining")
+    def _milk_in_a_quartz_centre(self) -> StoneRecipe:
+        if self.milk and self.centre == "solid":
+            raise ValueError("milkiness belongs to a quartz centre, lined or filled")
         if self.milk and self.tint != "none":
-            raise ValueError("a tinted lining stays near-clear (milk 0)")
+            raise ValueError("a tinted centre stays near-clear or clear (milk 0)")
         return self
+
+    @property
+    def takes_milk(self) -> bool:
+        """Whether the renders give this stone's quartz centre its milk (ADR 0019 s.6.12):
+        every quartz-lined hollow (tinted ones at level 0, near-clear) and untinted
+        quartz-filled centres; tinted filled centres stay clear (item 16's look)."""
+        return self.centre == "quartz-lined" or (
+            self.centre == "quartz-filled" and self.tint == "none"
+        )
 
     @model_validator(mode="after")
     def _no_tube_on_a_pebble(self) -> StoneRecipe:
@@ -380,7 +399,7 @@ class StoneRecipe(BaseModel):
         ]
         if self.tint != "none":
             parts.append(self.tint)
-        if self.centre == "quartz-lined":
+        if self.takes_milk:
             parts.append(f"milk {self.milk:.2f}")
         if self.grade_mm:
             parts.append(f"graded {self.grade_mm:.1f} mm")

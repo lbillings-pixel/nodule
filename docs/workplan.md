@@ -190,6 +190,15 @@ before any statistics.
   per irregular and lobate stone (ADR 0018 s.25), the small lamp and the sparkle view
   (s.6.12 step 5). Next: the owner's look at the whole faces, push agatesim and move the
   pin, then item 19 B (scattering by place).
+  2026-11-20 morning: owner: the night's looks all good; pushed (agatesim 83ab9d0, ADR
+  0092; pin moved, 650f260). A done. B started: reading on white plumes (the owner: the
+  reading decides faint versus opaque; quartz centres already read, s.6.12 "Reading on
+  milky druse"), and the owed look at a milky filled centre (sheet 0 stone 1, clear to D,
+  with backlit slices). Owner: "mostly glassy grey"; BUILT (s.6.12 "Milky filled
+  centres"): 4 in 5 untinted filled centres level 0-1/3, 1 in 5 from 2/3 to D. Reading on
+  white plumes done (notes/n1-reading/item19-white-plumes.md): an opal body, "opaque to
+  translucent white", tan-brown backlit (magazine-level); white opal rims on moss
+  (refereed). Next: the owner's pick of looks, then a design for scattering by place.
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

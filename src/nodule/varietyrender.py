@@ -111,7 +111,9 @@ QUARTZ_TINT_MUA: dict[str, tuple[float, float, float]] = {
 # keeps its 2 mm hue (green/red 0.79 on sheet 0 stone 11); smoky scaled alike (assumption)
 TINT_STRENGTH = 0.8
 # Milky hollow linings (ADR 0019 s.6.12): the recipe's level (0-1) to OpticsTable.milk_mus,
-# all `effective`, the owner's look. Matched by lightness to the C-D they chose on 4/4
+# all `effective`, the owner's look; untinted quartz-filled centres take the same scale,
+# though one level reads whiter there, so their levels are drawn lower
+# (recipe.FILLED_MILK_LOW_TO). Matched by lightness to the C-D they chose on 4/4
 # (runs/hollow-air/milk_probe.py, 2026-11-20): the hollow's centre over the chalcedony
 # face, per neutral milk_mus at the probe set-up (MILK_CURVE); D's centre is
 # MILK_D_CENTRE (34.8 per mm; C's, 0.547, came at 13.1; at both the ring and rim agree
@@ -139,14 +141,15 @@ def optics_for(r: StoneRecipe, base: OpticsTable | None = None) -> OpticsTable:
     """The optics a variety stone renders with: `base` (default OpticsTable()) with the
     hematite pigment's red absorption at HEMATITE_RED_K, and carnelian's iron-oxide
     loading x CARNELIAN_LOADING (its slices were too opaque, owner 2026-11-09); a tinted
-    centre's colour centres, and a quartz-lined hollow's milky lining (`milk_mus`), on
-    quartz after the early stage (clear early crystals are quartz too and stay clear).
-    Quartz-filled centres keep clear quartz (owner, 2026-11-19)."""
+    centre's colour centres, and the milk (`milk_mus`) of a quartz-lined hollow's lining or
+    an untinted quartz-filled centre (`StoneRecipe.takes_milk`), on quartz after the early
+    stage (clear early crystals are quartz too and stay clear). Tinted filled centres keep
+    clear quartz (item 16's look; owner, 2026-11-20, ADR 0019 s.6.12)."""
     base = base or OpticsTable()
     phi = base.phi_iron_oxide * (CARNELIAN_LOADING if r.colour == "carnelian" else 1.0)
     out = replace(base, hematite_red_k=HEMATITE_RED_K, phi_iron_oxide=phi)
     first = math.ceil(STAGE * STEPS - 1e-9)
-    if r.centre == "quartz-lined":
+    if r.takes_milk:
         out = replace(out, milk_mus=milk_mus(r.milk), milk_from=first)
     if r.tint == "none":
         return out

@@ -7,6 +7,7 @@ Appearance only: never evidence for a formation mechanism (ADR 0002).
 from __future__ import annotations
 
 import math
+import zlib
 from typing import Literal
 
 import numpy as np
@@ -28,6 +29,7 @@ from nodule.rind import SEDIMENT, VOLCANIC, Rind
 from nodule.thunderegg import ARMS_BASE, JAGGED_SHARE, ArmShape, ArmStyle
 from nodule.thunderegg3d import LENS_SHARE, LensStyle, jagged_solid, lens_solid, sinuous_solid
 from nodule.tubes import NO_TUBES, Channel
+from nodule.variety.lumps import lumps_solid
 
 Centre = Literal["solid", "quartz-filled", "quartz-lined"]
 
@@ -438,21 +440,27 @@ def log_uniform(rng: np.random.Generator, lo: float, hi: float) -> float:
     return float(math.exp(rng.uniform(math.log(lo), math.log(hi))))
 
 
+# Irregular and lobate stones draw their own lumps (owner 2026-11-19 night, ADR 0018
+# s.25; `nodule.variety.lumps`) instead of agatesim's one fixed union each. False
+# gives the presets back (a control for tests).
+OWN_LUMPS = True
+
+
 def solid_for(
     rng: np.random.Generator, outline: Outline
 ) -> tuple[SolidConfig, ArmStyle | LensStyle | None, ArmShape | None]:
     """The outline follows the host [@pabian1994, pp. 11, 16] (ADR 0018 s.7); a
     thunder egg's star also has an arm style and, if sinuous, an arm shape
-    (`nodule.thunderegg`)."""
+    (`nodule.thunderegg`). Lobate vesicles and irregular nodules draw their own
+    lumps from a stream spawned off `rng`, so `rng`'s draws stay as they were."""
     yaw = float(rng.uniform(0, 360))
     match outline:
         case "vesicle":
             preset = str(rng.choice(["vesicle-round", "vesicle-lobate"]))
-            return (
-                SolidConfig(preset=preset, size_mm=float(rng.uniform(30, 65)), yaw_deg=yaw),
-                None,
-                None,
-            )
+            size = float(rng.uniform(30, 65))
+            if preset == "vesicle-lobate" and OWN_LUMPS:  # its own lobes (`lumps`)
+                return lumps_solid(rng, "lobate", size), None, None
+            return SolidConfig(preset=preset, size_mm=size, yaw_deg=yaw), None, None
         case "prolate":
             return (
                 SolidConfig(
@@ -465,13 +473,10 @@ def solid_for(
                 None,
             )
         case "irregular":
-            return (
-                SolidConfig(
-                    preset="nodule-irregular", size_mm=float(rng.uniform(35, 60)), yaw_deg=yaw
-                ),
-                None,
-                None,
-            )
+            size = float(rng.uniform(35, 60))
+            if OWN_LUMPS:  # its own lumps (`lumps`)
+                return lumps_solid(rng, "irregular", size), None, None
+            return SolidConfig(preset="nodule-irregular", size_mm=size, yaw_deg=yaw), None, None
         case "pebble":
             return (
                 SolidConfig(preset="nodule-round", size_mm=float(rng.uniform(12, 20)), yaw_deg=yaw),
@@ -550,16 +555,30 @@ def cavity_depth(solid: Solid) -> float:
     grew chalcedony over every quartz centre (ADR 0018 s.23). Other solids keep their
     `inradius` unless the measured depth is below DEPTH_GAP of it: the irregular
     nodules (0.82-0.85) are measured, the round, lobed and almond vesicles (0.96-1.0)
-    are not, so they build as before."""
+    are not, so they build as before. A drawn cavity's depth is remembered by its stored
+    level (the same value; agatesim keeps only a few drawn solids' distances, so drawing a
+    sheet asked for each lumpy stone's several times)."""
+    key = None
+    if isinstance(solid, Sampled):
+        key = (solid.shape, solid.cell_mm, zlib.crc32(solid.raw), solid.raw[:64])
+        known = _SAMPLED_DEPTHS.get(key)
+        if known is not None:
+            return known
     deep, step = _deepest(solid)
     f = np.linspace(-1.0, 1.0, 9)
     near: FloatArray = np.stack(np.meshgrid(f, f, f, indexing="ij"), axis=-1).reshape(-1, 3)
     pts: FloatArray = deep + near * step
     depth = float(np.max(solid.wall_distance(pts[solid.contains(pts)])))
-    if isinstance(solid, Sampled):
+    if key is not None:
+        if len(_SAMPLED_DEPTHS) >= 1024:
+            _SAMPLED_DEPTHS.clear()
+        _SAMPLED_DEPTHS[key] = depth
         return depth
     r = inradius(solid)
     return depth if depth < DEPTH_GAP * r else r
+
+
+_SAMPLED_DEPTHS: dict[tuple[object, ...], float] = {}  # `cavity_depth` of drawn cavities
 
 
 # `effective`: below this share of the inradius, a solid's measured depth sizes its

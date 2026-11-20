@@ -2169,6 +2169,47 @@ transition).
   body) as a clear core 10-14 mm across. The owner judged 3 mm on centres about 6 mm
   thick, which the cap leaves as they were; narrow centres now grade over 0.6-1.5 mm.
 
+### 25. Each irregular and lobate stone's own lumps (2026-11-20 night, built)
+
+The owner's choice (2026-11-19 night, ADR 0019 s.6.12 "Diagnosis": 4/4's square hollow):
+agatesim's `nodule-irregular` is one fixed union of seven balls and `vesicle-lobate` one of
+four, so every such stone had one outline (size and turn only), and wall-distance bands
+turned its lobes into the same corners inward. Now each irregular stone and each lobate
+vesicle draws its own union of balls (`nodule.variety.lumps`), handed to agatesim as a
+drawn 3D cavity (agatesim ADR 0089), as thunder eggs are. Round vesicles, almonds, pebbles
+and thunder eggs are unchanged; the shares of outlines too. Corner rounding toward the
+centre (in agatesim) stays unchosen.
+
+- *The balls* (all `effective`, an assumption: no source gives lump counts or sizes; the
+  presets' own numbers are the anchor). Irregular: a core of radius 0.56-0.68 and 4-8
+  lumps (6 most often, as the preset) of 0.28-0.44 at 0.38-0.52 from the core's centre, in
+  directions at least 40 deg apart (the preset: 0.30-0.42 at 0.43-0.47). Lobate: a core of
+  0.56-0.66 and 2-4 lobes (3 most often, as the preset) of 0.34-0.46 at 0.52-0.68, spread
+  round one plane (within 12 deg of it; the preset's within 11) at even turns with jitter
+  (the preset's about 120 deg apart). Lopsided lobes are rare in real agates (the owner,
+  2026-11-08), so the spreads stay moderate. Units: the stored cavity is scaled so its
+  longest side is the drawn size; host sedimentary or volcanic as the presets.
+- *The level and its grid.* The union's level (the largest over balls of radius less
+  distance) is exact outside and near the wall; agatesim measures the true distance inside
+  from the wall, so the bands follow the wall as with the presets' exact unions. The grid
+  is 128 nodes across the 2.5-unit box (`runs/lumps/grid_cost.log`, 6 stones, 50 mm,
+  timed beside other work so slow): first distance query 3.4-6.8 s at 128 against
+  9.5-21 s at 192 (the thunder eggs' grid) and 1.7-3.3 s at 96; wall-distance error
+  against the exact union median 0.010-0.013 mm, p99 0.11-0.14 mm, largest 0.24-0.32 mm
+  (in the creases where balls meet, which the stored level rounds over about a cell),
+  against 0.005 / 0.07-0.09 / 0.15-0.22 at 192 and 0.02 / 0.17-0.19 / 0.36-0.48 at 96.
+  Drawing takes 0.2-0.4 s a stone. A drawn cavity's depth (`cavity_depth`) is now
+  remembered by its stored level (the same value; drawing a sheet asked for it several
+  times a stone, and agatesim keeps only a few drawn solids' distances).
+- *Streams.* The lumps come from a stream spawned off the stone's own (`Generator.spawn`
+  leaves its draws as they were), so every stone keeps its seed, colour, bands, warp,
+  wobble, tint and centre (tested against the presets on sheets 0-2). Choices made from the
+  stone's shape are redrawn with it, as planned: the cut (the cutter's choice is a
+  rejection loop whose draws depend on the shape, so the roughness drawn after it on the
+  same stream changes too; 4/4 lost its 0.06 mm roughness), crack placement, wide centres
+  and mottle sizes. Sheets 0-11: 12 irregular and 42 lobate of 144 stones, among them
+  stones behind closed verdicts (the owner saw "4 of 144" when choosing).
+
 ## Limits
 
 - One judge and one stone stand behind the trial; the list is what that judge named,

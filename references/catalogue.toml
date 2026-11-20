@@ -3824,7 +3824,7 @@ url = "https://jcgt.org/published/0002/02/01/"
 access = "open"
 licence = "CC-BY-ND-3.0"
 checked = "sections"
-sections_read = ["abstract", "1 Introduction", "2.2 Multi-Lobe, Piecewise Gaussian Fit (Eq. 4, Table 1, Listing 1)", "citation and licence block"]
+sections_read = ["abstract", "2.2 Multi-Lobe, Piecewise Gaussian Fit (Eq. 4, Table 1, Listing 1)", "citation and licence block"]
 topics = ["colour", "cie", "colour-matching", "spectral-rendering", "rendering"]
 notes = """Read 2026-11-20 by Claude (item 19 C probe; PDF text via pypdf; a copy is in the owner's Downloads as wyman2013-cie-xyz-analytic-fits.pdf). Analytic fits to the CIE 1931 2-degree colour-matching functions; the multi-lobe piecewise-Gaussian fit (Eq. 4) uses three lobes for x and two each for y and z, with amplitude, centre and left/right inverse widths in Table 1. The authors put its squared error below the within-observer variance of the data behind the CIE standard (p. 4); their simpler single-lobe 1931 fits have rms error below 0.015 for x and y, about three times that for z (p. 3). The probe's coefficients were checked against Table 1."""
 

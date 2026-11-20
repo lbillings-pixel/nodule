@@ -129,8 +129,9 @@ as now, no face glare, no glare plus a display curve, a backlit 3 mm slice) was 
    olive-grey, not lighter red; lowering hematite's red absorption as well gives
    carnelian red-orange (median red transmission of the slice 2.3 % -> 12 %). Owner's pick:
    **hematite pigment k(650 nm) = 0.05 (source 0.2) and carnelian loading x 0.5**
-   (`varietyrender.optics_for`; `OpticsTable.hematite_red_k`), both `effective`;
-   *plausible* since s.14 (was *speculative*). The reason first given here (the red
+   (`varietyrender.optics_for`; `OpticsTable.hematite_red_k`), both `effective`; the k
+   *plausible* since s.14 (was *speculative*), the loading still *speculative* (not
+   examined). The reason first given here (the red
    channel sits beside hematite's 682 nm band, and red light passes through a window
    between its bands) was tested and is **withdrawn** (s.14): neither hematite's measured
    k nor red agate's spectra show such a window. What supports the pick instead: measured
@@ -1195,17 +1196,17 @@ stones none; white fine needles alone take the finer grid, within the budget
      [@refractiveindex2024; @querry1985] (*plausible*: a non-refereed report read through
      a database); Bedidi's is flat [@bedidi1993].
    - **The sources disagree on how much hematite absorbs in the red.** Read off Go et
-     al.'s Fig. 3b (*speculative*, about ±0.02), k at 650 nm for their five retained sets:
-     Vernon ~0.41, Scanza ~0.25, Chen and Cahan ~0.21 and ~0.13, Querry ~0.07; the default
-     0.2 is their middle. Sets they excluded that pass light through films or sols read
-     lower still (Marusak ~0.03, Kerker ~0.015) [@go2022]. [inference] Reflectance methods
-     measure a small k beside n ~3 poorly, which favours the low end; most sets' methods
-     were not checked. The agate spectra cannot pick a set: their measurement mode is not
-     stated [@zhou2022]; read as reflectance, their ratios match Querry's (mu_a 615/650
-     ~1.5, 700/650 ~0.65), read as transmission, Bedidi's (1.1, 0.9).
+     al.'s Fig. 3b (*speculative*, about ±0.02; curves told apart by legend colour), k at
+     650 nm for their five retained sets: Vernon ~0.41, Scanza ~0.25, Chen and Cahan ~0.21
+     and ~0.13, Querry ~0.07; the default 0.2 is their middle. Two sets they excluded plot
+     lower still (Marusak ~0.03, Kerker ~0.015) [@go2022]; their methods were not read.
+     [inference] Reflectance methods constrain a small k beside n ~3 poorly, so the high
+     values are not secure either. The agate spectra cannot pick a set: their measurement
+     mode is not stated [@zhou2022]; read as reflectance, their ratios match Querry's
+     (mu_a 615/650 ~1.5, 700/650 ~0.65), read as transmission, Bedidi's (1.1, 0.9).
    - *Querry at full strength* (probe, part 2). Querry's two rays, averaged for small
      random particles ((2 o + e)/3 by absorption), absorb red like k(650) 0.074 and match
-     the default in the blue and green within 7 %. Carnelian with Querry in three channels
+     the default in the blue and green to about 7 %. Carnelian with Querry in three channels
      against the owner's pick: ΔE 0.5-7 backlit and 2-13 plain (on displayable colours).
      With Querry's full spectrum the red acts as k(650) 0.022 at 0.5 mm rising to 0.106 at
      10 mm: thin parts glow redder and thick parts darken. That is what a full-spectrum
@@ -1213,8 +1214,9 @@ stones none; white fine needles alone take the finer grid, within the budget
      photo compare's IRON mix would move its bands by ΔE 1.6-35 and need ADR 0014's
      recheck.
    - *Decision (owner, 2026-11-20 night).* **The owner's pick stays** (hematite k(650)
-     0.05, carnelian loading x 0.5, both `effective`), now *plausible*: it lies inside the
-     measured spread, at its low end beside Querry and the film and sol sets. **The window
+     0.05 and carnelian loading x 0.5, both `effective`). The k is now *plausible*: it
+     lies inside the measured spread, at its low end beside Querry. The loading was not
+     examined and stays *speculative*. **The window
      reason of s.6.4 is withdrawn. Track C is closed:** no full-spectrum build, three
      channels stay, and the photo compare keeps the default (ADR 0014 stands). **In
      reserve, if the red is ever reopened:** Querry's hematite spectrum (both rays, 10 nm
@@ -1232,5 +1234,5 @@ stones none; white fine needles alone take the finer grid, within the budget
   layers) are unchanged.
 - White opal scatters by place (s.13): a per-node share grid and one white row in the
   table; stones without white render as before (to the GPU's float-addition order).
-- The renderer keeps three wavelengths (s.14); the carnelian pick stays `effective`, now
+- The renderer keeps three wavelengths (s.14); the carnelian red k stays `effective`, now
   *plausible*, with Querry's hematite spectrum held in reserve.

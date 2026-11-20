@@ -108,11 +108,8 @@ def pack_box(box: VoidBox, *, flags: int = 0) -> VoidArrays:
     h["nx"], h["ny"], h["nz"] = box.shape
     h["ax"], h["ay"], h["az"] = (int(v) for v in box.a)
     h["h"] = box.h
-    # agatesim ADR 0092 adds the face count (an agatesim before it gives two numbers and
-    # round crystals: drop the length test when the pin moves)
-    nums = shape_numbers(box.wall)
-    h["cot_a"], h["elong"], h["last"] = nums[0], nums[1], box.wall.last_reach
-    h["faces"] = nums[2] if len(nums) > 2 else 0  # pyright: ignore[reportGeneralTypeIssues]
+    cot_a, elong, faces = shape_numbers(box.wall)  # faces: agatesim ADR 0092 (0 round)
+    h["cot_a"], h["elong"], h["last"], h["faces"] = cot_a, elong, box.wall.last_reach, faces
     if box.phi is not None:
         h["pnx"], h["pny"], h["pnz"] = box.phi.shape
     return VoidArrays(

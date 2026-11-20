@@ -50,13 +50,9 @@ __device__ float vlevel(const Void& V, float x, float y, float z, int i, int j, 
     float best = 3.0e38f, gc[3];
     for (int c = 0; c < 8; ++c) {
         int id = V.ids[b + ((c >> 2) & 1) * sx + ((c >> 1) & 1) * sy + (c & 1)];
-#ifdef AGATESIM_CRYSTAL_ROW  // agatesim ADR 0092: rows of AGATESIM_CRYSTAL_ROW, faces
+        // agatesim ADR 0092: rows of AGATESIM_CRYSTAL_ROW numbers, the stage's face count
         float t = agatesim_crystal_time_grad<float>(x, y, z, V.rows + AGATESIM_CRYSTAL_ROW * id,
                                                     V.cot_a, V.elong, V.faces, g ? gc : (float*)0);
-#else  // agatesim ADR 0090 (the pin until ADR 0092 is pushed): rows of 6, round; drop then
-        float t = agatesim_crystal_time_grad<float>(x, y, z, V.rows + 6 * id, V.cot_a, V.elong,
-                                                    g ? gc : (float*)0);
-#endif
         if (t < best) { best = t; if (g) { g[0] = gc[0]; g[1] = gc[1]; g[2] = gc[2]; } }
     }
     return best - V.last;

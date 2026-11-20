@@ -915,7 +915,9 @@ stones none; white fine needles alone take the finer grid, within the budget
        pinned agatesim (round, six-number rows) and with ADR 0092 (checked by putting the
        branch's source first on the path: test_voidbox, test_render_void, and the new
        six-faces test pass both ways; rechecked after the night's later changes, at
-       90a7a73 against 5029fc7: 28 passed). The shims (`FACES_KNOWN`, the #else path, the
+       90a7a73 against 5029fc7: 28 passed). *Adopted 2026-11-20 morning (owner: "push
+       everything"):* agatesim main fast-forwarded to 83ab9d0 and pushed, the pin moved
+       there, the shims dropped; the full suite had passed with that code (727). The shims (`FACES_KNOWN`, the #else path, the
        length test) go when the pin moves. On agatesim's quartz geode the hollow is
        2.93 % of the solid against 2.97 % round.
      - *The small lamp in the camera (step 5; 2026-11-20 night).* The void kernel now also

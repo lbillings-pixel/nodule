@@ -56,11 +56,8 @@ from nodule.variety.recipe import (
 )
 
 # Six-faced quartz crystals (owner-approved, ADR 0019 s.6.12; agatesim ADR 0092): a
-# hexagonal prism under a hexagonal pyramid, `physical` for quartz. An agatesim before
-# ADR 0092 (the pin until it is pushed) has no such parameter, and its crystals stay
-# round: drop FACES_KNOWN when the pin moves.
+# hexagonal prism under a hexagonal pyramid, `physical` for quartz.
 QUARTZ_TIP_FACES = 6
-FACES_KNOWN = "quartz_tip_faces" in ProceduralGrowth.model_fields
 
 # How far early crystals move the bands inward, per mm of crystal length, on average
 # over the wall: the centre (quartz or open) shrinks by about this much without the
@@ -219,9 +216,8 @@ def volume_config(recipe: StoneRecipe, max_slope: float = MAX_SLOPE) -> tuple[Vo
             "quartz_grain_mm": QUARTZ_GRAIN_MM,
             "quartz_elongation": 4.0,
             "quartz_axis_scatter_deg": 40.0,
+            "quartz_tip_faces": QUARTZ_TIP_FACES,
         }
-        if FACES_KNOWN:
-            model["quartz_tip_faces"] = QUARTZ_TIP_FACES
         silica.append({"type": "step", "at": growth.quartz_at, "value": QUARTZ_SUPPLY})
     schedules: dict[str, object] = {"silica": {"base": 1.0, "events": silica}}
     if recipe.floor:

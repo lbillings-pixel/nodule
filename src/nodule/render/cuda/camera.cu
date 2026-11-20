@@ -148,8 +148,8 @@ __device__ void nee(const Scene& S, const Cam& C, const Shift& H, const unsigned
 // it runs straight, tested at the same steps, to the next wall (/ n^2 back into the stone) or up
 // through the face's plane at the open mouth (adds w Ld: no face there). A camera ray over an
 // open pixel starts in air at weight 1. Below the slab (depth D) the bottom does not apply
-// within the void box's shell; a path leaving the shell below D is lost (ADR 0019 s.6.12,
-// *assumption*). stats[2], [3], [4]: wall meetings, those the gate alone decided, and those
+// within the void box's shell; a path leaving the shell below D meets the bottom's rule there
+// (black: lost; matte: sent back up; ADR 0019 s.6.12, owner's option (b), *assumption*). stats[2], [3], [4]: wall meetings, those the gate alone decided, and those
 // that passed through the wall (the rest reflected).
 extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* Hp,
 #ifdef NODULE_VOID
@@ -239,9 +239,10 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
             if (++events > 200000) break;
             continue;
         }
-        // within the shell, no bottom below the slab (the material continues under the hollow)
-        if (un > 0.f && V.kind == 1 &&
-            (depth >= C.D || in_shell(V, x + dx * db, y + dy * db, z + dz * db))) db = INF;
+        // below the slab only through the hollow's air: a stone path from above meets the
+        // bottom at D as without a hollow; one already below (it came through the air, to the
+        // far wall) has no bottom there (owner's option (b) as refined 2026-11-19)
+        if (un > 0.f && V.kind == 1 && depth >= C.D) db = INF;
 #endif
         float s = -logf(r.next()) / C.mubar;
 #ifdef NODULE_VOID
@@ -320,7 +321,20 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
         }
         x += dx * s; y += dy * s; z += dz * s; ++events;
 #ifdef NODULE_VOID
-        if (V.kind == 1 && vdepth(S, x, y, z) > C.D && !in_shell(V, x, y, z)) break;  // lost
+        // left the shell below the slab: the slab's bottom there too (owner's option (b),
+        // 2026-11-19): lost when black; when matte, sent back up as from the bottom
+        if (V.kind == 1 && vdepth(S, x, y, z) > C.D && !in_shell(V, x, y, z)) {
+            if (C.ba[0] <= 0.f && C.ba[1] <= 0.f && C.ba[2] <= 0.f) break;
+            for (int c = 0; c < 3; ++c) w[c] *= C.ba[c];
+            float ct = sqrtf(1.f - r.next()), st = sqrtf(fmaxf(0.f, 1.f - ct * ct));
+            float p = 6.28318531f * r.next(), cu = cosf(p) * st, sv = sinf(p) * st;
+            dx = ct * S.n[0] + cu * S.u[0] + sv * S.v[0];
+            dy = ct * S.n[1] + cu * S.u[1] + sv * S.v[1];
+            dz = ct * S.n[2] + cu * S.u[2] + sv * S.v[2];
+            ntop = nbot = 0;
+            if (!roulette(w, w0, r)) break;
+            continue;
+        }
 #endif
         Mat M = matid(S, C, H, prof, mua, x, y, z);
         int m = M.m;

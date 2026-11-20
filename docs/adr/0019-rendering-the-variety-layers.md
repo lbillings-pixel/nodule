@@ -765,6 +765,18 @@ stones none; white fine needles alone take the finer grid, within the budget
        of the face, the owner's matte bottom (s.6.5) is gone. Options for the owner: (a) keep
        light leaving the shell below the slab lost (black); (b) the matte reflector at the
        shell's edge below the slab as well (the look's stand-in for the rest of the stone).
+     - *Owner's verdict (2026-11-19 evening):* the air looks are the right direction; the
+       bottom by option (b); push approved. *Built, refined:* (b) taken literally (the matte
+       reflector at the shell's edge below the slab) barely lightened the band (row 100:
+       61 -> 65), since under it the stone continues down around the hollow and the
+       reflector sits far below. What lit it in the picture the owner chose is the grey
+       bottom at 5 mm right under the band. So the rule is now: a stone path coming down
+       from above meets the bottom at the slab's depth as without a hollow; only a path
+       already below it (one that came through the hollow's air, to its far wall) has no
+       bottom there, within the shell; leaving the shell below the slab it meets the
+       bottom's rule (matte: sent back up; black: lost). *Assumption*, `effective`. On 4/4
+       the band's rows then read 85, 96, 127, 157, 150, the values of the shell-cleared
+       render; 0/1 unchanged in look (runs/hollow-air/air-render/air-compare-b.png).
      - *Not done yet:* a whole face (the look at 600 px; the fill grows with the deep part:
        4/4's window doubled), the owner's verdict, the matte question, and wiring into
        `varietyrender` (the box per stone, the look only).

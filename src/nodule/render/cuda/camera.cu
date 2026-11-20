@@ -103,16 +103,40 @@ __device__ void ratio(const Scene& S, const Cam& C, const Shift& H, const unsign
     }
 }
 
+#ifdef NODULE_VOID
+// Does a straight shadow leg from (x, y, z) along unit l, of length L, meet the hollow's air?
+// Tested at the flights' steps (vstep). A shadow leg cannot bend at the wall, so one that
+// meets air carries nothing; routes through the hollow are left to phase sampling at weight 1
+// (ADR 0019 s.6.12, the small lamp).
+__device__ bool leg_meets_air(const Void& V, const Scene& S, float x, float y, float z,
+                              float lx, float ly, float lz, float L) {
+    if (V.kind == 0 || !(L > 0.f) || (V.flags & VFLAG_LEGS_IGNORE_AIR)) return false;
+    float st = vstep(V), v[2];
+    for (int it = 1; it < 1000000; ++it) {
+        float s = fminf(it * st, L);
+        if (air_at(V, S, x + lx * s, y + ly * s, z + lz * s, v)) return true;
+        if (s >= L) break;
+    }
+    return false;
+}
+#define VOID_PARAM , const Void& V
+#define VOID_ARG , V
+#else
+#define VOID_PARAM
+#define VOID_ARG
+#endif
+
 // Next-event estimate toward one air direction o (unit, pointing at the light, o.n > 0) from
 // a real collision at (x, y, z) with material m, path direction d. fac is the light's
 // irradiance on a surface facing it (directional: E; disc sample: Omega Lr). With mis, the
 // estimate is weighted against phase sampling (balance heuristic); omega is the solid angle
 // the light direction was drawn from (in air). Direct path through the face, plus 1 in 4 the
-// path via the mirror image in the bottom face (weight 4; flag 16 drops it).
+// path via the mirror image in the bottom face (weight 4; flag 16 drops it). With the hollow
+// as air, a leg that meets air carries nothing (`leg_meets_air`).
 __device__ void nee(const Scene& S, const Cam& C, const Shift& H, const unsigned short* prof,
                     const float* mua, const float* mus, const float* ph, int m, const float* w, float x, float y,
                     float z, float dx, float dy, float dz, float n, float ox, float oy, float oz,
-                    float fac, bool mis, float omega, float* acc, Rng& r) {
+                    float fac, bool mis, float omega, float* acc, Rng& r VOID_PARAM) {
     float cth = ox * S.n[0] + oy * S.n[1] + oz * S.n[2];
     if (!(cth > 0.f)) return;                                   // below the horizon
     float tx = (ox - cth * S.n[0]) / n, ty = (oy - cth * S.n[1]) / n, tz = (oz - cth * S.n[2]) / n;
@@ -124,14 +148,26 @@ __device__ void nee(const Scene& S, const Cam& C, const Shift& H, const unsigned
     float cl = lx * dx + ly * dy + lz * dz;                     // omega_t . (-d), omega_t = -l
     float d0 = -((x - S.o[0]) * S.n[0] + (y - S.o[1]) * S.n[1] + (z - S.o[2]) * S.n[2]);
     float T[3];
-    ratio(S, C, H, prof, mua, mus, x, y, z, lx, ly, lz, d0 / ct, T, r);
-    float wl = mis ? pl / (pl + sample_pdf(ph, m, w, cl)) : 1.f;
-    for (int c = 0; c < 3; ++c) acc[c] += w[c] * phase_pdf(ph, m, c, cl) * Ein * T[c] * wl;
+#ifdef NODULE_VOID
+    bool open = !leg_meets_air(V, S, x, y, z, lx, ly, lz, d0 / ct);
+#else
+    bool open = true;
+#endif
+    if (open) {
+        ratio(S, C, H, prof, mua, mus, x, y, z, lx, ly, lz, d0 / ct, T, r);
+        float wl = mis ? pl / (pl + sample_pdf(ph, m, w, cl)) : 1.f;
+        for (int c = 0; c < 3; ++c) acc[c] += w[c] * phase_pdf(ph, m, c, cl) * Ein * T[c] * wl;
+    }
     if (isfinite(C.D) && Rb > 0.f && !(C.flags & (16 | 2048)) && r.next() < 0.25f) {
         // mirror path: refract in, reflect off the bottom, arrive along
         // omega_r = ct n - (tangent). Shadow legs: down along m = -omega_r, then up along l.
         float mx = -ct * S.n[0] + tx, my = -ct * S.n[1] + ty, mz = -ct * S.n[2] + tz;
         float L1 = (C.D - d0) / ct, T1[3], T2[3];
+#ifdef NODULE_VOID
+        float bx = x + mx * L1, by = y + my * L1, bz = z + mz * L1;
+        if (leg_meets_air(V, S, x, y, z, mx, my, mz, L1) ||
+            leg_meets_air(V, S, bx, by, bz, lx, ly, lz, C.D / ct)) return;
+#endif
         ratio(S, C, H, prof, mua, mus, x, y, z, mx, my, mz, L1, T1, r);
         ratio(S, C, H, prof, mua, mus, x + mx * L1, y + my * L1, z + mz * L1, lx, ly, lz, C.D / ct, T2, r);
         float cm = mx * dx + my * dy + mz * dz;                // omega_r . (-d)
@@ -142,7 +178,10 @@ __device__ void nee(const Scene& S, const Cam& C, const Shift& H, const unsigned
 }
 
 // The hollow as air (NODULE_VOID, a separate compile: voidbox.cuh; ADR 0019 s.6.12 step 4).
-// Dome only (no shadow rays cross the wall). The path carries its medium. A free flight in the
+// Under the dome, or the small lamp (disc: the sparkle view, step 5). No shadow ray crosses the
+// wall: one that meets air carries nothing (`leg_meets_air`), and a path that met the wall
+// since its last real collision keeps phase weight 1, as does one leaving through the open
+// mouth into the lamp (no face there, so no n^2). The path carries its medium. A free flight in the
 // stone is tested for air at steps of at most vstep, then bisected; at the wall it reflects or
 // refracts by Fresnel (n to 1, normal from the level or phi), weight x n^2 into the air. In air
 // it runs straight, tested at the same steps, to the next wall (/ n^2 back into the stone) or up
@@ -186,6 +225,7 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
     bool doNee = C.light == 0 || (disc && !(C.flags & 256));
     bool mis = disc && C.order == 0 && !(C.flags & (128 | 256 | 512));
     float lastpp = 0.f; int ntop = 0, nbot = 0;                 // since the last real collision
+    bool walled = false;                                        // ditto: met the hollow's wall
     int events = 0, real = 0;
 #ifdef NODULE_VOID
     const Void& V = *Vp;
@@ -220,6 +260,8 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
             if (hit == 2) {                                     // up out of the mouth: the dome
                 if (C.light == 1 && !((C.flags & 32) && real == 0))
                     for (int c = 0; c < 3; ++c) acc[c] += w[c] * C.Ld;
+                if (hits && dx * a0 + dy * a1 + dz * a2 >= 1.f - omc)   // or into the lamp
+                    for (int c = 0; c < 3; ++c) acc[c] += w[c] * Lr;
                 break;
             }
             if (hit == 0) break;
@@ -237,7 +279,7 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
                 for (int c = 0; c < 3; ++c) w[c] /= wn2;
             } else { x = xa; y = ya; z = za; }
             dx = d[0]; dy = d[1]; dz = d[2];
-            ntop = nbot = 0;
+            ntop = nbot = 0; walled = true;
             if (++events > 200000) break;
             continue;
         }
@@ -272,7 +314,7 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
                     for (int c = 0; c < 3; ++c) w[c] *= wn2;
                 } else { x = xs; y = ys; z = zs; }
                 dx = d[0]; dy = d[1]; dz = d[2];
-                ntop = nbot = 0;
+                ntop = nbot = 0; walled = true;
                 if (++events > 200000) break;
                 continue;
             }
@@ -312,7 +354,7 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
                 if (ox * a0 + oy * a1 + oz * a2 >= 1.f - omc) {
                     float wp = 1.f;                             // routes NEE cannot make: 1
                     bool mirror = isfinite(C.D) && !(C.flags & (16 | 2048)) && fresnel(ci, n, 1.f) > 0.f;
-                    if (mis && real > 0 && ntop == 0 && (nbot == 0 || (nbot == 1 && mirror))) {
+                    if (mis && real > 0 && !walled && ntop == 0 && (nbot == 0 || (nbot == 1 && mirror))) {
                         float pl = n * n * ci / (Om * ca) * (nbot ? 0.25f : 1.f);
                         wp = lastpp / (lastpp + pl);
                     }
@@ -358,16 +400,16 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
                     float psi = 6.28318531f * r.next(), cp = cosf(psi) * sb, sp = sinf(psi) * sb;
                     nee(S, C, H, prof, mua, mus, ph, m, w, x, y, z, dx, dy, dz, n,
                         cb * a0 + cp * e10 + sp * e20, cb * a1 + cp * e11 + sp * e21,
-                        cb * a2 + cp * e12 + sp * e22, Om * Lr, mis, Om, acc, r);
+                        cb * a2 + cp * e12 + sp * e22, Om * Lr, mis, Om, acc, r VOID_ARG);
                 } else {
                     nee(S, C, H, prof, mua, mus, ph, m, w, x, y, z, dx, dy, dz, n, a0, a1, a2, C.E,
-                        false, 0.f, acc, r);
+                        false, 0.f, acc, r VOID_ARG);
                 }
             }
             if (C.order != 0 && real >= C.order) break;
             scatter(ph, m, w, dx, dy, dz, r, !(C.flags & 64), hits ? &lastpp : nullptr,
                     C.flags & 1024);
-            ntop = nbot = 0;
+            ntop = nbot = 0; walled = false;
         }
         if (!roulette(w, w0, r)) break;
         if (events > 200000) break;

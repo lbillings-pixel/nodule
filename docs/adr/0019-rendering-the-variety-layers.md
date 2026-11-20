@@ -912,6 +912,22 @@ stones none; white fine needles alone take the finer grid, within the budget
        six-faces test pass both ways). The shims (`FACES_KNOWN`, the #else path, the
        length test) go when the pin moves. On agatesim's quartz geode the hollow is
        2.93 % of the solid against 2.97 % round.
+     - *The small lamp in the camera (step 5; 2026-11-20 night).* The void kernel now also
+       renders under the disc lamp (L2, ADR 0007 7b), so crystal faces open to the hollow can
+       glint; the soft look stays the default (the owner's word, 2026-11-19). As planned
+       above: a path leaving through the open mouth inside the lamp's cone adds the lamp's
+       radiance (no face there, so no n^2); a shadow leg (direct, and both mirror legs) that
+       meets the hollow's air carries nothing, tested at the flights' steps
+       (`leg_meets_air`), since a shadow ray cannot bend at the wall; and a path that met the
+       wall since its last real collision keeps phase weight 1, as NEE cannot make its
+       route. Tests (`tests/test_render_void.py`), each with controls: a flat facet open at
+       the face, tilted half the lamp's polar angle toward it, makes every open pixel read
+       R(22.5 deg) Lr (an untilted facet, or one turned away, stays dark); under a wide lamp
+       the combined estimate equals phase sampling alone over a buried air layer and an air
+       sphere (shadow rays alone read darker; shadow legs let through the air read biased,
+       control flag LEGS_IGNORE_AIR); with no air the void kernel gives the plain kernel's
+       image under the lamp too, sample for sample. The matte bottom stays dome-only (no
+       NEE reaches it), so a lamp pass takes the black bottom.
 
 ## Consequences
 

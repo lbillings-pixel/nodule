@@ -6,8 +6,10 @@
 // its last surface, 4 within the shell); air = all 8 corners of the point's cell flagged 1 or 2,
 // the earliest of their 8 crystals later than the stage's last reach (level > 0) and, with phi,
 // the chalcedony's last surface passed (phi > 0, phi read trilinearly at h / 2). Outside the
-// box: not air. kinds 2 and 3 are analytic shapes for the checks: an air layer between depths
-// p[0] < p[1] below the face, an air sphere of centre p[0..2] and radius p[3].
+// box: not air. kinds 2, 3 and 4 are analytic shapes for the checks: an air layer between depths
+// p[0] < p[1] below the face, an air sphere of centre p[0..2] and radius p[3], and a flat facet:
+// air below the face on the side of the plane through p[0..2] that its unit normal p[3..5]
+// points to (open at the face; the small lamp's glint check).
 // Both values (level, phi) are positive in air; their gradients point into the air.
 
 struct Void {
@@ -22,6 +24,7 @@ struct Void {
 #define VOID_SHELL 4
 #define VFLAG_NO_WALL_N2 1   // control: leave the n^2 out at the hollow's wall
 #define VFLAG_SHELL_STAY 2   // control: a shell exit below the slab turns outside (pre-fix)
+#define VFLAG_LEGS_IGNORE_AIR 4   // control: shadow legs pass the hollow as if it were stone
 // A crossing into air needs a normal facing along the path (d . m > 0; into the stone < 0).
 // Where the found normal does not (|cos| under this, or the wrong side: the box's level jumps
 // where a cell's corner crystals change, s.6.12 step 1, so the wall there is a cell face, not
@@ -101,6 +104,11 @@ __device__ bool air_at(const Void& V, const Scene& S, float x, float y, float z,
         v[0] = V.p[3] - sqrtf(dx * dx + dy * dy + dz * dz);
         return v[0] > 0.f;
     }
+    if (V.kind == 4) {
+        float a = (x - V.p[0]) * V.p[3] + (y - V.p[1]) * V.p[4] + (z - V.p[2]) * V.p[5];
+        v[0] = fminf(a, vdepth(S, x, y, z));
+        return v[0] > 0.f;
+    }
     int i, j, k;
     if (!vcell(V, x, y, z, i, j, k)) return false;
     long long sy = V.nz, sx = (long long)V.ny * V.nz, b = i * sx + j * sy + k;
@@ -138,6 +146,8 @@ __device__ bool wall_normal(const Void& V, const Scene& S, float xa, float ya, f
     }
     if (V.kind == 3) {
         m[0] = V.p[0] - xa; m[1] = V.p[1] - ya; m[2] = V.p[2] - za;
+    } else if (V.kind == 4) {
+        m[0] = V.p[3]; m[1] = V.p[4]; m[2] = V.p[5];
     } else {
         bool usephi = vs[0] > 0.f && vs[1] <= 0.f;
         sure = !(vs[0] > 0.f) || usephi;

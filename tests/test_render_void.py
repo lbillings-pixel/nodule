@@ -166,13 +166,95 @@ def test_no_air_gives_the_plain_kernel_image(flat) -> None:
     assert not np.allclose(layer, plain, rtol=1e-3)
 
 
-def test_void_needs_the_dome_without_glare(flat) -> None:
+def test_void_needs_the_dome_or_the_lamp_without_glare(flat) -> None:
     m = Materials.of([[0.1] * 3], [[1.0] * 3], [0.9])
     v = voidgpu.upload(voidgpu.layer(0.5, 1.0))
     with pytest.raises(ValueError, match="dome"):
-        render(flat, VIEW, m, Light("disc"), spp=1, flags=Flag.HOMOGENEOUS, void=v, glare=False)
+        render(flat, VIEW, m, Light("directional"), spp=1, flags=Flag.HOMOGENEOUS, void=v,
+               glare=False)  # fmt: skip
     with pytest.raises(ValueError, match="glare"):
         render(flat, VIEW, m, DOME, spp=1, flags=Flag.HOMOGENEOUS, void=v)
+    with pytest.raises(ValueError, match="glare"):
+        render(flat, VIEW, m, LAMP, spp=1, flags=Flag.HOMOGENEOUS, void=v)
+
+
+# --- the small lamp (ADR 0019 s.6.12 step 5) ---------------------------------------------
+
+LAMP = Light("disc", theta_deg=45.0, phi_deg=90.0, radius_deg=2.5)
+LAMP_KW: dict[str, Any] = dict(depth_mm=2.0, flags=Flag.HOMOGENEOUS | Flag.BLACK_BOTTOM,
+                               glare=False)  # fmt: skip
+CLEAR = Materials.of([[0.05] * 3], [[0.0] * 3], [0.0])
+
+
+def facet_toward(tilt_deg: float, phi_deg: float = 90.0) -> Any:
+    """A facet through the middle of the view at 1 mm deep, its normal tilted from the face's
+    normal (+z: the homogeneous scene's face) toward azimuth phi (from u = x toward v = y)."""
+    t, p = math.radians(tilt_deg), math.radians(phi_deg)
+    normal = (math.sin(t) * math.cos(p), math.sin(t) * math.sin(p), math.cos(t))
+    return voidgpu.upload(voidgpu.facet((1.6, 1.6, -1.0), normal))
+
+
+def test_a_facet_glints_at_the_mirror_angle_only(flat) -> None:
+    """A clear stone over a black bottom, open above a flat facet: a camera ray in the air
+    meets the facet and reflects (Fresnel R at the facet's tilt) or refracts into the stone
+    and is lost below. Tilted half the lamp's polar angle toward it, the mirror sends it into
+    the lamp: every open pixel reads R(22.5 deg) Lr exactly. Controls: an untilted facet, and
+    one tilted away from the lamp, stay dark."""
+    out = render(flat, VIEW, CLEAR, LAMP, spp=256, seed=11, void=facet_toward(22.5), **LAMP_KW)
+    want = reference.fresnel(math.cos(math.radians(22.5)), 1.0, N) * LAMP.disc_radiance
+    mean, se = mean_se(out.image)  # every pixel is open: the facet lies below them all
+    assert abs(mean - want) < 4 * se
+    assert se < 0.02 * want
+    assert np.mean(out.image[..., 0] > 0) > 0.99
+    assert abs(out.crossings - 1.0) < 1e-6  # one wall meeting a path
+    for tilt, phi in ((0.0, 90.0), (22.5, 270.0)):
+        dark = render(flat, VIEW, CLEAR, LAMP, spp=64, seed=12, void=facet_toward(tilt, phi),
+                      **LAMP_KW).image  # fmt: skip
+        assert float(dark.max()) == 0.0
+
+
+def test_the_lamp_weights_stay_unbiased_with_air(flat) -> None:
+    """A lightly scattering stone under a wide lamp, with buried air (a flat layer under a
+    thin cap, so most shadow legs cross it; then a sphere, a curved wall): the combined
+    estimate (shadow rays plus phase sampling) equals phase sampling alone, so a shadow leg
+    that meets air carries nothing and the routes it cannot make keep weight 1. Controls:
+    shadow rays alone miss the routes through the air (darker); shadow legs that pass the
+    air as stone count light the phase routes also count (biased)."""
+    m = Materials.of([[0.02] * 3], [[0.5] * 3], [0.6])
+    lamp = Light("disc", theta_deg=40.0, phi_deg=90.0, radius_deg=10.0)
+
+    def lit(flags: int, seed: int, vflags: int = 0, shape: str = "layer") -> tuple[float, float]:
+        """The image's mean, and its standard error from 8 independent batches (pixels
+        differ in brightness, so their spread is no noise estimate)."""
+        air = (voidgpu.layer(0.3, 1.0, flags=vflags) if shape == "layer"
+               else voidgpu.sphere((1.6, 1.6, -1.0), 0.8, flags=vflags))  # fmt: skip
+        v = voidgpu.upload(air)
+        means = [float(render(flat, VIEW, m, lamp, seed=seed + 100 * k, void=v, spp=2048,
+                              depth_mm=2.0, flags=Flag.HOMOGENEOUS | Flag.BLACK_BOTTOM | flags,
+                              glare=False).image[..., 0].mean())
+                 for k in range(8)]  # fmt: skip
+        return float(np.mean(means)), float(np.std(means, ddof=1) / math.sqrt(len(means)))
+
+    def apart(a: tuple[float, float], b: tuple[float, float]) -> float:
+        return abs(a[0] - b[0]) / math.hypot(a[1], b[1])
+
+    both, phase = lit(0, 13), lit(256, 14)
+    assert apart(both, phase) < 4
+    shadow = lit(128, 15)  # shadow rays alone: darker
+    assert shadow[0] < both[0]
+    assert apart(both, shadow) > 4
+    assert apart(lit(0, 16, vflags=voidgpu.LEGS_IGNORE_AIR), phase) > 4  # legs leak: biased
+    assert apart(lit(0, 17, shape="sphere"), lit(256, 18, shape="sphere")) < 4
+
+
+def test_no_air_gives_the_plain_kernel_image_under_the_lamp(flat) -> None:
+    m = Materials.of([[0.05] * 3], [[3.0] * 3], [0.9])
+    kw: dict[str, Any] = dict(LAMP_KW, spp=64, seed=16)
+    plain = render(flat, VIEW, m, LAMP, **kw).image
+    with_void = render(flat, VIEW, m, LAMP, void=voidgpu.upload(voidgpu.none()), **kw).image
+    assert np.allclose(with_void, plain, rtol=1e-6, atol=1e-9)
+    facet = render(flat, VIEW, m, LAMP, void=facet_toward(22.5), **kw).image
+    assert not np.allclose(facet, plain, rtol=1e-3)  # control: air changes it
 
 
 # --- a stone's box on the GPU ------------------------------------------------------------

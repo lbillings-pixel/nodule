@@ -33,6 +33,7 @@ NO_WALL_N2 = 1  # Void.flags: control, the n^2 left out at the wall
 # made where the path ended, outside the shell, as before the 2026-11-19 fix (the next short
 # flight then meets the rule again)
 SHELL_STAY = 2
+LEGS_IGNORE_AIR = 4  # Void.flags, control for the small lamp: shadow legs pass the hollow
 ANALYTIC_STEP_MM = 0.05  # march step for the analytic shapes (effective, checks only)
 
 
@@ -74,6 +75,18 @@ def sphere(centre: tuple[float, float, float], radius_mm: float, *, flags: int =
     """An air sphere (world coordinates)."""
     h = _header(3, flags)
     h["p"][:4] = (*centre, radius_mm)
+    h["p"][7] = ANALYTIC_STEP_MM
+    return VoidArrays(h)
+
+
+def facet(
+    point: tuple[float, float, float], normal: tuple[float, float, float], *, flags: int = 0
+) -> VoidArrays:
+    """Air below the face on the side of a plane (world coordinates) that its normal points
+    to: a flat crystal facet open at the face, for the small lamp's glint check."""
+    m = np.asarray(normal, np.float64)
+    h = _header(4, flags)
+    h["p"][:6] = (*point, *(m / np.linalg.norm(m)))
     h["p"][7] = ANALYTIC_STEP_MM
     return VoidArrays(h)
 

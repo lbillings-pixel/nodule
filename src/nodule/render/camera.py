@@ -332,11 +332,15 @@ def render(
     makes the black bottom matte, an index-matched Lambertian reflector of that albedo
     per channel (the look's grey bottom, ADR 0019; `effective`). void: where the stone is
     air (`voidgpu`; ADR 0019 s.6.12 step 4), rendered by the camera's void variant: the dome
-    only, without the face glare (the open mouth has no face); a stone's box also needs the
-    black or matte bottom and no slipping fractures."""
+    or the small lamp (disc, the sparkle view, step 5), without the face glare (the open
+    mouth has no face); a stone's box also needs the black or matte bottom and no slipping
+    fractures."""
     if void is not None:
-        if light.kind != "dome" or glare:
-            raise ValueError("the hollow as air renders under the dome without the face glare")
+        if light.kind not in ("dome", "disc") or glare:
+            raise ValueError(
+                "the hollow as air renders under the dome or the small lamp (disc), "
+                "without the face glare"
+            )
         if void.kind == 1 and not flags & Flag.BLACK_BOTTOM:
             raise ValueError("a void box needs the black or matte bottom")
         if void.kind == 1 and scene.fractures:

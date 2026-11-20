@@ -793,6 +793,11 @@ stones none; white fine needles alone take the finer grid, within the budget
        Scaled by nodes from 4/4, needle stone 0/1 would need ~20 GB RAM and ~12-13 GiB GPU
        (the look's and the slice's scenes are both on the card): over the 12 GB card, not
        run (the owner's call).
+     - *Owner's verdict on 4/4 (2026-11-19 late):* close, needs changes: the hollow too
+       dark, a dark ring just outside it, crystals like uniform fur rather than faces, the
+       hollow a square cushion inside the lobed stone (the last is the build's geometry:
+       the stand-in preview shows it too). Needle stone 0/1: the look only. Each fault is
+       diagnosed with probes before any change.
 
 ## Consequences
 

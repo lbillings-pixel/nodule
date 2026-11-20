@@ -201,8 +201,10 @@ before any statistics.
   (refereed). Owner's picks (ADR 0019 s.6.13): look sheet of A (white opal plumes, solid
   where thick, faint where thin) and C (white rims on coloured plumes and moss), both
   colour readings; camera-like exposure kept for milky centres; opal papers skipped for
-  now. Next: the probe (no kernel change: plume or rim mask through the void mask's row
-  swap), the look sheet, then the build.
+  now. Probe done (s.13 "Probe, measured"; no kernel change, control ratio 1.0000). Owner
+  on the sheets: faint-to-solid white plumes per stone and white rims, the bluish kind
+  (tan backlit), about 1 in 4 each, never both. Next: the build (s.13 "The build"), then
+  C, the red fix.
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

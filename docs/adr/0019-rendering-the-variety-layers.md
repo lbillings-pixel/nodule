@@ -1050,13 +1050,38 @@ stones none; white fine needles alone take the finer grid, within the budget
      everywhere against a render of the white row alone; the neutral row must backlight
      grey, never tan. Limits: the mask is hard-edged at the node grid, and fronds thinner
      than a node drop out.
-   - *The build, after the sheet (proposed).* A per-node white share grid (trilinear), the
-     white row picked with that probability at each tentative collision (unbiased for the
-     mixture under delta and ratio tracking), so edges and thin fronds fade instead of
-     dropping; the extra random number drawn only where the grid exists, so other stones
-     render bit for bit as before; the shift lookup skipped for the white row. Costs: 4
-     bytes a node; the white row raises the stone's global majorant (slower renders on
-     those stones, to be measured).
+   - *Probe, measured (2026-11-20; runs/white-plumes/probe.py, probe.log; owner sheets
+     probe/owner-plumes.png, owner-moss.png).* Sheet 0 stone 12 (black-brown plumes, solid
+     centre; 43.0 M nodes at 0.1 mm) and stone 9 (green-moss thunder egg, its milk taken
+     off; 27.4 M nodes); full pixels, 256 spp; 1947 s in all, RAM peak 5.37 GB, GPU 2.94
+     GiB. White rows (air pores in opal, equal volume per radius; transport mu_s (1 - g) at
+     550 nm): sub-micron (radii 0.07-0.14 um) mu_s 11.8/7.6/5.1 per mm at transport 4 and
+     47.2/30.3/20.3 at 16 (blue/green/red), g 0.57/0.47/0.39; micron (1-2.5 um) mu_s ~90
+     per mm at 16, g 0.82, neutral (water pores there scatter at g 0.98 and would need ~870
+     per mm). Lightness of the inclusion pixels over the chalcedony (look): today 0.27;
+     faint 1.77; solid 2.68 for both kinds. Backlit red/blue over the chalcedony's:
+     sub-micron 1.35 (faint) and 1.45 (solid), the tan shadow; micron 1.11, near neutral
+     (the slight warmth likely light diffused through the iron-tinted chalcedony round it:
+     inference). Rims 0.3 mm: over the chalcedony 1.59 round plumes, 2.28 round moss.
+     Control: the mask at 1 on every node against a table whose every band row is the
+     white row: 0.54634 against 0.54636 (ratio 1.0000). Costs: the white row raises the
+     majorant, so the look took 164 s (sub-micron) and 303 s (micron) against 90 s
+     without. Limits as stated: hard edges at the node grid.
+   - *Owner's verdict (2026-11-20), on Claude's recommendations:* per-stone strength from
+     faint to solid (tiles 2 to 3: transport 4 to 16 per mm at 550 nm), and white rims on
+     plume and moss stones; the bluish kind (sub-micron; tan backlit), which the two
+     sources' description matches and which renders quicker; about 1 in 4 plume stones
+     with white plumes and about 1 in 4 plume or moss stones with white rims, never both
+     on one stone. Rates, strengths, rim width (0.3 mm as shown) and pore sizes are
+     `effective`.
+   - *The build, after the sheet (proposed; the owner approved the plan 2026-11-20).* A
+     per-node white share grid (trilinear), the white row picked with that probability at
+     each tentative collision (unbiased for the mixture under delta and ratio tracking),
+     so edges and thin fronds fade instead of dropping; the extra random number drawn only
+     where the grid exists, so other stones render bit for bit as before; the shift
+     lookup skipped for the white row. The share comes from the bake's own sub-samples
+     (as the probe), rims from a distance transform on the node grid (no agatesim
+     change). Costs: 4 bytes a node; the look ~1.8x slower on white stones (probe).
 
 ## Consequences
 

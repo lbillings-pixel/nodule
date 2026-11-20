@@ -178,7 +178,9 @@ before any statistics.
   Diagnosed (ADR 0019 s.6.12 "Diagnosis"): no light lost; dark = the clear, grey-absorbing
   quartz lining; ring = the look's clear quartz; a fault in the shell's exit rule fixed;
   fur = round crystal tips; square = agatesim's one fixed irregular outline. Owner: milky
-  crystals, C-D. Next: which quartz turns milky; the square's fix; six-faced tips.
+  crystals C-D, hollow linings only first (white, spread per stone; then show a filled
+  centre and a backlit slice); own lumps per irregular and lobate stone. Next: reading on
+  milky geode quartz, build the linings' milkiness, six-faced tips, per-stone lumps.
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

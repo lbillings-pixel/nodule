@@ -839,10 +839,13 @@ stones none; white fine needles alone take the finer grid, within the budget
          Wall distance does this (ADR 0005, "Corners stay sharp to the centre"); real bands
          commonly lose their sharp edges toward the centre [@moxon2013, p. 228].
      - *Owner's verdict on the options (2026-11-19 night):* the milky crystals look good,
-       C and D the most realistic. Open before building: which quartz takes it (crystals
-       lining a hollow only, or every quartz centre and the backlit slice, item 16's look), a
-       neutral scattering for quartz, a spread between C and D per stone; reading first (item
-       19 B). `effective`, a look choice.
+       C and D the most realistic. Then, on Claude's recommendations: the crystals lining
+       an open hollow first, each stone drawn between C and D, white rather than bluish
+       (neutral scattering); filled quartz centres keep item 16's look until the owner has
+       seen C-D on one, with a backlit slice. The square: each irregular and lobate
+       stone gets its own lumps (nodule, agatesim's drawn solid, checked first), then the
+       owner judges the corners; corner rounding in agatesim not chosen. `effective`, look
+       choices; reading first (item 19 B).
 
 ## Consequences
 

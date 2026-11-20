@@ -777,9 +777,22 @@ stones none; white fine needles alone take the finer grid, within the budget
        bottom's rule (matte: sent back up; black: lost). *Assumption*, `effective`. On 4/4
        the band's rows then read 85, 96, 127, 157, 150, the values of the shell-cleared
        render; 0/1 unchanged in look (runs/hollow-air/air-render/air-compare-b.png).
-     - *Not done yet:* a whole face (the look at 600 px; the fill grows with the deep part:
-       4/4's window doubled), the owner's verdict, the matte question, and wiring into
-       `varietyrender` (the box per stone, the look only).
+     - *Wired into `varietyrender`* (2026-11-19): `render_stone` builds the box; the whole
+       face's look draws the hollow as air; the backlit slice (`on`) and the close-ups keep
+       the stand-in; `--stand-in` keeps the old look (test: tests/test_look.py, with its
+       control). The deep part is small on the whole face (runs/hollow-air/whole_plan.py,
+       nodes slab + below): 0/1 85.1 + 3.8 M (0.05 mm needle grid), 4/4 27.7 + 4.7 M,
+       0/2 25.8 + 0.4 M, 3/9 and 8/4 none.
+     - *Whole faces measured* (runs/hollow-air/whole/; 512 samples; RAM: python processes
+       sampled every 5 s; GPU: the card, 1.0 GiB idle). 4/4: box 50 s, fill 604 s (~19 us
+       a node), look 130 s, backlit 51 s, 14.8 min in all; RAM 7.5 GB, GPU 5.6 GiB. 3/9:
+       6.4 min, RAM 1.7 GB, GPU 1.8 GiB. *Control:* 3/9 rendered with the stand-in as well:
+       backlit and preview identical to the pixel; the look differs by noise (another
+       kernel, other random paths; mean 0.05 of 255) except at the hollow, whose dark slit
+       becomes nearly invisible, with one bright speck (appearance only, ADR 0002).
+       Scaled by nodes from 4/4, needle stone 0/1 would need ~20 GB RAM and ~12-13 GiB GPU
+       (the look's and the slice's scenes are both on the card): over the 12 GB card, not
+       run (the owner's call).
 
 ## Consequences
 

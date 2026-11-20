@@ -170,6 +170,10 @@ before any statistics.
   `nodule.render.voidbox` (unwired, tests with controls), then step 4.
   2026-11-19: void box built; bare chalcedony walls via agatesim's phi (ADR 0091) on a
   0.1 mm grid: thin linings lose 0.5 % of the hollow (was 14-38 %). Next: step 4, camera.
+  2026-11-19 late: step 4 built (bottom rule (b)) and wired into `varietyrender` (whole
+  look only); 4/4 whole face 15 min, 7.5 GB RAM, 5.6 GiB GPU (ADR 0019 s.6.12). Next: the
+  owner's verdict on 4/4; needle stone 0/1 needs a memory decision; then the small lamp
+  and six-faced tips.
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

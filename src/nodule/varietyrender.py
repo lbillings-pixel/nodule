@@ -89,20 +89,47 @@ QUARTZ_TINT_MUA: dict[str, tuple[float, float, float]] = {
 # lowered with the 5 mm look (owner, 2026-11-18, ADR 0019 s.6.10) so an amethyst centre
 # keeps its 2 mm hue (green/red 0.79 on sheet 0 stone 11); smoky scaled alike (assumption)
 TINT_STRENGTH = 0.8
+# Milky hollow linings (ADR 0019 s.6.12): the recipe's level (0-1) to OpticsTable.milk_mus,
+# all `effective`, the owner's look. Matched by lightness to the C-D they chose on 4/4
+# (runs/hollow-air/milk_probe.py, 2026-11-20): the hollow's centre over the chalcedony
+# face, per neutral milk_mus at the probe set-up (MILK_CURVE); D's centre is
+# MILK_D_CENTRE (34.8 per mm; C's, 0.547, came at 13.1; at both the ring and rim agree
+# within 2 %, so one strength matches the whole hollow). Level 0 is
+# MILK_NEAR_CLEAR (an assumption: barely milky), 1 is D; levels in between are even in
+# that lightness, so a uniform level spreads evenly to the eye on 4/4.
+MILK_CURVE: tuple[tuple[float, float], ...] = (
+    (1.0, 0.127), (2.0, 0.151), (4.0, 0.216), (8.0, 0.359), (16.0, 0.623), (32.0, 0.998),
+    (40.0, 1.143), (48.0, 1.266),
+)  # fmt: skip
+MILK_D_CENTRE = 1.052
+MILK_NEAR_CLEAR = 2.0
+
+
+def milk_mus(level: float) -> float:
+    """A lining's milk_mus (per mm) for its recipe level (MILK_CURVE's comment)."""
+    vs = np.log([v for v, _ in MILK_CURVE])
+    cs = np.array([c for _, c in MILK_CURVE])
+    lo = float(np.interp(math.log(MILK_NEAR_CLEAR), vs, cs))
+    want = lo + min(max(level, 0.0), 1.0) * (MILK_D_CENTRE - lo)
+    return float(np.exp(np.interp(want, cs, vs)))
 
 
 def optics_for(r: StoneRecipe, base: OpticsTable | None = None) -> OpticsTable:
     """The optics a variety stone renders with: `base` (default OpticsTable()) with the
     hematite pigment's red absorption at HEMATITE_RED_K, and carnelian's iron-oxide
-    loading x CARNELIAN_LOADING (its slices were too opaque, owner 2026-11-09)."""
+    loading x CARNELIAN_LOADING (its slices were too opaque, owner 2026-11-09); a tinted
+    centre's colour centres, and a quartz-lined hollow's milky lining (`milk_mus`), on
+    quartz after the early stage (clear early crystals are quartz too and stay clear).
+    Quartz-filled centres keep clear quartz (owner, 2026-11-19)."""
     base = base or OpticsTable()
     phi = base.phi_iron_oxide * (CARNELIAN_LOADING if r.colour == "carnelian" else 1.0)
     out = replace(base, hematite_red_k=HEMATITE_RED_K, phi_iron_oxide=phi)
+    first = math.ceil(STAGE * STEPS - 1e-9)
+    if r.centre == "quartz-lined":
+        out = replace(out, milk_mus=milk_mus(r.milk), milk_from=first)
     if r.tint == "none":
         return out
     mua = tuple(TINT_STRENGTH * v for v in QUARTZ_TINT_MUA[r.tint])
-    # after the early stage: clear early crystals are quartz too and stay clear
-    first = math.ceil(STAGE * STEPS - 1e-9)
     return replace(out, quartz_tint_mua=mua, quartz_tint_from=first)  # pyright: ignore[reportArgumentType]
 
 

@@ -62,10 +62,12 @@ def pack(
     absorb: F32 | None = None,
     void_mua: float = 0.0,
     air: NDArray[np.bool_] | None = None,
+    void_time: float | None = None,
 ) -> SceneArrays:
     """void_mua: the absorption (mm^-1, every channel) added at the grid's void nodes,
     the open cavity's stand-in material (ADR 0019 A1); 0 leaves the void as its lining.
-    air: void nodes left without it (`with_void`)."""
+    air: void nodes left without it (`with_void`). void_time: the growth time the void
+    nodes take (`GrowthGrid.filled`); None, their lining's."""
     solid = specimen.volume.solid
     exact = isinstance(solid, SphereUnion)
     if not exact and grid.level is None:
@@ -97,7 +99,7 @@ def pack(
         spheres=spheres,
         tubes=tubes,
         fractures=fractures,
-        grid=grid.filled() if filled is None else filled,
+        grid=grid.filled(void_time=void_time) if filled is None else filled,
         covers_mm=min(
             float(grid.w[-1]) - (specimen.max_slip_mm + grid.spacing_mm), grid.full_depth_mm
         ),

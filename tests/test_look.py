@@ -33,6 +33,8 @@ from nodule.render.materials import OpticsTable
 from nodule.render.record import STEPS, BandRecord
 from nodule.specimen import Specimen, SpecimenCut
 from nodule.variety import StoneRecipe, build, cut_of
+from nodule.variety.draw import milk_level
+from nodule.variety.recipe import MILK_HIGH_FROM, MILK_LOW_SHARE
 from nodule.varietyrender import (
     BACKLIT_EXPOSURE,
     BACKLIT_KNEE,
@@ -40,6 +42,9 @@ from nodule.varietyrender import (
     CLOSE_LOOK_MM,
     FILL_MM,
     HEMATITE_RED_K,
+    MILK_CURVE,
+    MILK_D_CENTRE,
+    MILK_NEAR_CLEAR,
     NEEDLE_GRID_MM,
     NEEDLE_VOXELS,
     QUARTZ_TINT_MUA,
@@ -109,6 +114,57 @@ def test_tinted_centres_take_their_tint_after_the_early_stage() -> None:
     assert amethyst[1] > max(amethyst[0], amethyst[2])  # absorbs green: purple
     plain = optics_for(small_recipe())
     assert plain.quartz_tint_mua == (0.0, 0.0, 0.0)
+
+
+def test_lined_hollows_alone_take_their_milk_after_the_early_stage() -> None:
+    """A quartz-lined hollow's lining takes milk_mus(level) from the early stage's end
+    (ADR 0019 s.6.12): level 0 the near-clear end, 1 the owner's D, rising between, even
+    in the curve's lightness. Controls: quartz-filled and solid centres take none; an
+    amethyst lining takes both its tint and its milk."""
+    first = math.ceil(STAGE * STEPS - 1e-9)
+    lined = small_recipe().model_copy(update={"centre": "quartz-lined", "centre_width": 0.3})
+    levels = [0.0, 0.25, 0.5, 0.75, 1.0]
+    mus = [optics_for(lined.model_copy(update={"milk": u})).milk_mus for u in levels]
+    assert mus[0] == pytest.approx(MILK_NEAR_CLEAR)
+    assert np.all(np.diff(mus) > 0)
+    cs = np.array([c for _, c in MILK_CURVE])
+    vs = np.log([v for v, _ in MILK_CURVE])
+    centre = np.interp(np.log(mus), vs, cs)  # even steps in the centre's lightness
+    assert np.allclose(np.diff(centre), np.diff(centre)[0], rtol=1e-6)
+    assert centre[-1] == pytest.approx(MILK_D_CENTRE)
+    assert optics_for(lined).milk_from == first
+    for tint in ("amethyst", "smoky"):  # tinted linings: near-clear, with their tint
+        o = optics_for(lined.model_copy(update={"tint": tint}))
+        assert o.milk_mus == pytest.approx(MILK_NEAR_CLEAR)
+        assert o.quartz_tint_mua != (0.0, 0.0, 0.0)
+    with pytest.raises(ValueError, match="near-clear"):
+        StoneRecipe.model_validate(lined.model_dump() | {"milk": 0.5, "tint": "amethyst"})
+    for centre_kind in ("quartz-filled", "solid"):
+        o = optics_for(small_recipe().model_copy(update={"centre": centre_kind}))
+        assert o.milk_mus == 0.0
+    with pytest.raises(ValueError, match="quartz-lined"):
+        StoneRecipe.model_validate(small_recipe().model_dump() | {"milk": 0.5})
+
+
+def test_sheets_draw_milk_on_lined_hollows_only(sheets: list[StoneRecipe]) -> None:
+    """Every untinted quartz-lined stone on sheets 0-11 draws its own level, most from
+    MILK_HIGH_FROM up to D, some below (owner, 2026-11-20). Controls: tinted linings and
+    every other centre stay at 0."""
+    lined = [r.milk for r in sheets if r.centre == "quartz-lined" and r.tint == "none"]
+    assert len(lined) >= 20
+    assert len(set(lined)) == len(lined)
+    # 41 stones are too few for the share (sheets 0-11 hold 2 low ones; the 144 draws
+    # under them pass a uniformity test), so the share is checked on the mapping below
+    assert min(lined) < MILK_HIGH_FROM <= max(lined) <= 1.0
+    assert all(r.milk == 0.0 for r in sheets if r.centre != "quartz-lined" or r.tint != "none")
+    u = np.linspace(0.0, 1.0, 101)
+    levels = [milk_level(float(x)) for x in u]
+    assert levels[0] == 0.0
+    assert levels[-1] == pytest.approx(1.0)
+    assert np.all(np.diff(levels) > 0)
+    assert milk_level(MILK_LOW_SHARE) == pytest.approx(MILK_HIGH_FROM)
+    many = [milk_level(float(x)) for x in np.random.default_rng(5).uniform(size=20000)]
+    assert np.mean(np.array(many) < MILK_HIGH_FROM) == pytest.approx(MILK_LOW_SHARE, abs=0.01)
 
 
 def test_white_fine_needles_alone_take_a_finer_grid_within_the_budget() -> None:

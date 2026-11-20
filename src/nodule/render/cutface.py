@@ -39,7 +39,9 @@ so the face mask and quartz phase of the cut still apply.
   plus a stand-in absorption, `Rendering.void_mua`: VOID_MUA under the dome, so the
   cavity reads dark, as a lined geode's face often photographs; 0 under the back light,
   so a slice's hole passes the light box. Not air: no refraction at the cavity's lining
-  (A2). The look's lightness is matched over the stone's face without the void.
+  (A2). The look's lightness is matched over the stone's face without the void. A milky
+  lining's void (ADR 0019 s.6.12) takes its last step's material without the milk
+  (`materials.VOID_TIME`), so a slice's hole stays clear.
 
 Procedural images: never evidence for a formation mechanism (ADR 0002).
 """
@@ -69,7 +71,7 @@ from nodule.render.camera import (
     rolloff,
     srgb,
 )
-from nodule.render.materials import OpticsTable
+from nodule.render.materials import VOID_TIME, OpticsTable
 from nodule.render.record import BandRecord, void_points
 from nodule.render.scene import pack, upload, with_void
 from nodule.render.shift import ShiftArrays, bake_drift, variation_of
@@ -302,9 +304,12 @@ class CutRenderer:
             p = to_world(cut.plane, grid.s[i], grid.t[j], grid.w[k])
             self._air = np.zeros_like(grid.void)
             self._air[k, j, i] = hollow_nodes(self._box, p)
+        # a milky lining's hollow takes a material of its own, not the milk (ADR 0019 s.6.12)
+        void_time = VOID_TIME if r.optics.milk_mus > 0 else None
         packed = self._packed = pack(
-            specimen, grid, absorb=grid.absorb, void_mua=r.void_mua, air=self._air
-        )
+            specimen, grid, absorb=grid.absorb, void_mua=r.void_mua, air=self._air,
+            void_time=void_time,
+        )  # fmt: skip
         self._dev = upload(packed)
         self._void = None if self._box is None else voidgpu.upload(voidgpu.pack_box(self._box))
         # materials that vary along the bands (ADR 0016), when the stone has them and the

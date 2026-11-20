@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import math
 from dataclasses import replace
 
 import numpy as np
@@ -18,7 +19,9 @@ from nodule.render.materials import (
     GOETHITE_K,
     GOETHITE_N,
     HEMATITE_NK,
+    MILK_G,
     STEPS,
+    VOID_TIME,
     Optics,
     OpticsTable,
     rayleigh_absorption,
@@ -265,6 +268,57 @@ def test_quartz_tint_takes_later_quartz_only() -> None:
     off = OpticsTable(quartz_tint_from=2).materials(rec)  # no tint: as before
     assert np.array_equal(off.mua, plain.mua)
     assert np.array_equal(off.profile, plain.profile)
+
+
+def test_milk_takes_the_lining_quartz_only() -> None:
+    """A hollow's milky lining (ADR 0019 s.6.12): quartz from step milk_from on gains the
+    inclusions' neutral scattering as lobe b (MILK_G), with the tint where both apply.
+    Negative controls: early quartz (clear crystals) and chalcedony keep their optics; no
+    milk leaves every material array as it was."""
+    q, ch = Phase.QUARTZ, Phase.CHALCEDONY
+    ks = [0, 1, 5, 6, 7]
+    f = fields(steps_mid(ks), phase=[q, q, ch, q, q], impurity=[0.05] * 5,
+               translucency=[0.9] * 5)  # fmt: skip
+    rec = BandRecord.of(f, np.ones(5, bool))
+    tint = (0.1, 0.2, 0.05)
+    plain = OpticsTable().materials(rec)
+    milky = OpticsTable(milk_mus=4.0, milk_from=2).materials(rec)
+    both = OpticsTable(milk_mus=4.0, milk_from=2, quartz_tint_mua=tint,
+                       quartz_tint_from=2).materials(rec)  # fmt: skip
+
+    def row(m: Materials, k: int) -> int:
+        return 2 + int(m.profile[k])
+
+    tab = OpticsTable()
+    for k in (6, 7):
+        i = row(milky, k)
+        assert np.allclose(milky.mus[i], tab.quartz_mus + 4.0)
+        assert np.allclose(milky.f[i], 4.0 / (tab.quartz_mus + 4.0))
+        assert np.allclose(milky.gb[i], MILK_G)
+        assert np.allclose(milky.g[i], tab.quartz_g)  # quartz's own lobe kept
+        assert np.allclose(milky.mua[i], plain.mua[row(plain, k)])
+        j = row(both, k)
+        assert np.allclose(both.mus[j], milky.mus[i])
+        assert np.allclose(both.mua[j], plain.mua[row(plain, k)] + np.asarray(tint), atol=1e-6)
+    for m in (milky, both):  # early crystals stay clear, chalcedony untouched
+        for k in (0, 5):
+            for name in ("mua", "mus", "g", "f", "gb"):
+                assert np.array_equal(getattr(m, name)[row(m, k)],
+                                      getattr(plain, name)[row(plain, k)])  # fmt: skip
+    # the hollow's entries (VOID_TIME): the last step again, then it without the milk
+    assert len(plain.profile) == STEPS
+    assert len(milky.profile) == STEPS + 2
+    assert milky.profile[STEPS] == milky.profile[STEPS - 1]
+    hole = 2 + int(milky.profile[STEPS + 1])
+    last = row(plain, STEPS - 1)
+    for name in ("mua", "mus", "g", "f", "gb"):
+        assert np.array_equal(getattr(milky, name)[hole], getattr(plain, name)[last])
+    assert np.allclose(both.mua[2 + int(both.profile[STEPS + 1])],
+                       plain.mua[last] + np.asarray(tint), atol=1e-6)  # fmt: skip
+    assert math.floor(VOID_TIME * STEPS) == STEPS + 1
+    off = OpticsTable(milk_from=2).materials(rec)  # no milk: bit for bit as before
+    for name in ("mua", "mus", "g", "f", "gb", "profile"):
+        assert np.array_equal(getattr(off, name), getattr(plain, name))
 
 
 def test_materials_validation_catches_a_profile_beyond_the_table() -> None:

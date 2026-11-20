@@ -55,6 +55,8 @@ from nodule.variety.recipe import (
     GRADE_MM,
     GRADED_CHANCE,
     MILD_WOBBLE_SHARE,
+    MILK_HIGH_FROM,
+    MILK_LOW_SHARE,
     NARROW_CENTRE_OUTLINES,
     OUTLINE_SHARES,
     ROUGHNESS_MM,
@@ -218,6 +220,14 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
     # stone takes its two draws, quartz centre or not.
     grade_rng = np.random.default_rng(root.spawn(1)[0])
     grades = [graded_mm(grade_rng.uniform(size=2), r) for r in out]
+    # Milky linings from a stream spawned after the grades' (ADR 0019 s.6.12): every stone
+    # draws its level, even within its lining (owner, 2026-11-20); kept on untinted
+    # quartz-lined hollows only (tinted ones stay near-clear, 0).
+    milk_draws = np.random.default_rng(root.spawn(1)[0]).uniform(size=n)
+    milks = [
+        milk_level(float(u)) if r.centre == "quartz-lined" and r.tint == "none" else 0.0
+        for u, r in zip(milk_draws, out, strict=True)
+    ]
     final: list[StoneRecipe] = []
     for i, r in enumerate(out):
         rec = StoneRecipe.model_validate(
@@ -226,6 +236,7 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
                 "rind": draw_rind(rind_streams[i], r.outline),
                 "channel": draw_channel(tube_streams[i], r.outline, chalcedony_mm(r)),
                 "grade_mm": grades[i],
+                "milk": milks[i],
             }
         )
         if rec.channel is not None and not channel_fits(rec):
@@ -236,6 +247,15 @@ def draw_sheet(seed: int, n: int = 12) -> list[StoneRecipe]:
         eyes = draw_eyes(eye_streams[i], rec.outline, rec.band_mm, ok, chalcedony_mm(rec))
         final.append(rec if eyes is None else rec.model_copy(update={"eyes": eyes}))
     return final
+
+
+def milk_level(u: float) -> float:
+    """A lining's milk level from a uniform u (owner, 2026-11-20): the first
+    MILK_LOW_SHARE of u spread evenly over [0, MILK_HIGH_FROM), the rest over
+    [MILK_HIGH_FROM, 1]. Monotone, so a higher draw is never less milky."""
+    if u < MILK_LOW_SHARE:
+        return u / MILK_LOW_SHARE * MILK_HIGH_FROM
+    return MILK_HIGH_FROM + (u - MILK_LOW_SHARE) / (1 - MILK_LOW_SHARE) * (1 - MILK_HIGH_FROM)
 
 
 def graded_mm(u: NDArray[np.float64], recipe: StoneRecipe) -> float:

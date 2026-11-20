@@ -126,6 +126,16 @@ GRADE_MAX_SHARE = 0.5
 QUARTZ_IRON_RATIO = 0.2
 
 
+# Milky hollow linings (owner 2026-11-20, ADR 0019 s.6.12): levels on the even-lightness
+# scale of `nodule.varietyrender.milk_mus` (0 near-clear, 1 the owner's D). The owner
+# found 2/3 and 1 both right on 4/4, so most stones draw between MILK_HIGH_FROM and 1 and
+# MILK_LOW_SHARE of them below it, keeping a few darker, clearer hollows. Tinted linings
+# (amethyst, smoky) stay near-clear, level 0 (owner's pick; colour-centre quartz is
+# called clear, never milky [@gilg2003, p. 1009]). All `effective`.
+MILK_HIGH_FROM = 2 / 3
+MILK_LOW_SHARE = 0.2
+
+
 # The no-fold slope cap on band wobble (ADR 0005 s.3: below 1, bands cannot fold).
 # 0.5 is the look preset's; the owner asked to try higher (2026-11-08, ADR 0018 s.8).
 MAX_SLOPE = 0.5
@@ -262,6 +272,14 @@ class StoneRecipe(BaseModel):
         "chalcedony clears toward the quartz (ADR 0018 s.24).",
     )
     tint: Tint = "none"
+    milk: float = Field(
+        default=0.0,
+        ge=0,
+        le=1,
+        description="A quartz-lined hollow's milkiness: 0 near-clear to 1 the owner's D (ADR "
+        "0019 s.6.12; `nodule.varietyrender.milk_mus`). 0 on tinted linings (near-clear) "
+        "and other centres (unused).",
+    )
     floor: float = Field(ge=0, le=1, description="0 = none, else the floor's target height.")
     floor_supply: float = Field(
         default=1.0, gt=0, le=1, description="Silica supply while the floor settles."
@@ -335,6 +353,14 @@ class StoneRecipe(BaseModel):
         return self
 
     @model_validator(mode="after")
+    def _milk_lines_a_hollow(self) -> StoneRecipe:
+        if self.milk and self.centre != "quartz-lined":
+            raise ValueError("milkiness belongs to a quartz-lined hollow's lining")
+        if self.milk and self.tint != "none":
+            raise ValueError("a tinted lining stays near-clear (milk 0)")
+        return self
+
+    @model_validator(mode="after")
     def _no_tube_on_a_pebble(self) -> StoneRecipe:
         if self.channel is not None and self.outline in NO_TUBES:
             raise ValueError("no escape tube on a pebble (Walger: none below cherry size)")
@@ -353,6 +379,8 @@ class StoneRecipe(BaseModel):
         ]
         if self.tint != "none":
             parts.append(self.tint)
+        if self.centre == "quartz-lined":
+            parts.append(f"milk {self.milk:.2f}")
         if self.grade_mm:
             parts.append(f"graded {self.grade_mm:.1f} mm")
         if self.floor:

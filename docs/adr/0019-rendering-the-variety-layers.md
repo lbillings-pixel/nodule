@@ -872,6 +872,33 @@ stones none; white fine needles alone take the finer grid, within the budget
        per-stone spread from near-clear up to D (replacing "between C and D"; some hollows
        will read darker, as clear quartz does); amethyst-lined hollows: one stone rendered
        both ways (milky as the others vs barely milky), the owner picks. `effective`.
+     - *Built (2026-11-20; awaiting the owner's look).* `OpticsTable.milk_mus`: neutral
+       scattering (every channel alike) added as lobe b to quartz laid from the end of the
+       early stage on (`milk_from`, as the tint), so early wall crystals stay clear and an
+       amethyst lining takes tint and milk together; set by `optics_for` on quartz-lined
+       hollows only (quartz-filled centres keep clear quartz). Its asymmetry `MILK_G` 0.94
+       is Mie for water in quartz (m 0.863) over log-normal diameters with medians 2-50 µm
+       (0.938-0.957, flat across the channels; Q_sca ~2, so neutral;
+       runs/hollow-air/milk_g.log): `physical` for that inclusion, liquid by
+       [@gilg2003, p. 1013], sizes assumed. Strength by lightness on 4/4 (probe set-up,
+       after d176428; runs/hollow-air/milk_probe.py, milk_probe.log, milk_levels.log): the
+       hollow's centre over the chalcedony face reads 0.547 for the borrowed C and 1.052 for
+       D; neutral 13.1 and 34.8 per mm match them, and at both the ring and the rim agree
+       within 2 %, so one strength matches the whole hollow. Per stone a level drawn
+       uniformly in 0-1 on a stream spawned after the grades' (sheets 0-11: every other
+       draw unchanged, checked), mapped so levels step evenly in that lightness from
+       `MILK_NEAR_CLEAR` 2 per mm (level 0; an assumption: barely milky) to D (level 1).
+       The strengths are `effective`, read on one stone. The stand-in hollow (backlit
+       slice, close-ups) rendered a void as its lining's material, which filled a slice's
+       hole with the milk; a milky lining's void nodes now take `VOID_TIME`, past the run's
+       end, which the material profile maps to the last step without the milk (a numerical
+       device; stones without milk unchanged bit for bit).
+     - *Owner's verdict on the level sheet (2026-11-20; runs/hollow-air/milk-probe/
+       owner-sheet.png):* levels 0.67 and 1 both work, neither clearly better; amethyst
+       "definitely" near-clear. On Claude's recommendations: about 4 in 5 untinted lined
+       stones draw between 2/3 and D, 1 in 5 below (`MILK_HIGH_FROM`, `MILK_LOW_SHARE`,
+       `draw.milk_level`, one draw on the same stream); amethyst and smoky linings stay
+       near-clear (level 0). `effective`.
 
 ## Consequences
 

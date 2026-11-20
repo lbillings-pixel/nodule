@@ -85,6 +85,19 @@ SHAPE = {
 }
 IRON_OXIDES = frozenset({Pigment.IRON, Pigment.HEMATITE, Pigment.GOETHITE})
 MN_MUA = 30.0  # OpticsTable.mua550_mn's default (comment there); 3.0 before 2026-11-18
+# Asymmetry of milky quartz's inclusions (OpticsTable.milk_mus): Mie for water in quartz
+# (m 0.863), log-normal diameters with medians 2-50 um, gives 0.938-0.957, flat across the
+# channels, Q_sca ~2 (neutral) (runs/hollow-air/milk_g.log). `physical` for that
+# inclusion; liquid inclusions [@gilg2003, p. 1013], their sizes an assumption (ADR 0019
+# s.6.12).
+MILK_G = 0.94
+# A milky lining's hollow (ADR 0019 s.6.12): the stand-in renders a void as its lining's
+# material (cutface, A1), which would fill a slice's hole with the milk. Its nodes take
+# this growth time instead (`GrowthGrid.filled`), past the run's end; the profile then
+# holds two more entries: step STEPS repeats the last step (lining times up to 1.0 stay
+# lining) and STEPS + 1, reached only within ~1/10 of a node of a void node, is the last
+# step's material without the milk. Numerical, not a model choice.
+VOID_TIME = (STEPS + 1.5) / STEPS
 
 
 def rayleigh_absorption(n: Sequence[float], k: Sequence[float], phi: float,
@@ -188,6 +201,12 @@ class OpticsTable:
     # `effective`, *plausible* (`nodule.varietyrender.QUARTZ_TINT_MUA` gives its sources).
     quartz_tint_mua: tuple[float, float, float] = (0.0, 0.0, 0.0)
     quartz_tint_from: int = 0
+    # Milky quartz (a hollow's lining, ADR 0019 s.6.12): fluid inclusions' scattering (per
+    # mm, the same in every channel) added to quartz laid at or after step milk_from, in a
+    # lobe of its own. Strength `effective` (the owner's look, set per stone); MILK_G is
+    # computed (runs/hollow-air/milk_g.py).
+    milk_mus: float = 0.0
+    milk_from: int = 0
 
     def _hematite(self, phi: float, red_k: float | None = None) -> F64:
         n, k = HEMATITE_NK[self.hematite]
@@ -254,6 +273,14 @@ class OpticsTable:
             return o
         return o._replace(mua=np.asarray(o.mua, float) + np.asarray(self.quartz_tint_mua))
 
+    def milky(self, o: Optics, takes: bool) -> Optics:
+        """A quartz deposit's optics with the inclusions' scattering as lobe b, if it takes
+        it (quartz's own scattering is one lobe, so lobe b is free)."""
+        if not takes:
+            return o
+        mus = np.asarray(o.mus, float) + self.milk_mus
+        return o._replace(mus=mus, f=self.milk_mus / mus, gb=np.full(3, MILK_G))
+
     def materials(self, record: BandRecord, shift: ShiftArrays | None = None) -> Materials:
         """The camera's material table for a record: 0 host, 1 tube core, then one
         material per distinct deposit, and the step -> material profile (dt = 1/STEPS).
@@ -273,18 +300,33 @@ class OpticsTable:
         # quartz that takes the tint, a key of its own so untinted quartz keeps its row
         tinted = (cols[0] == Phase.QUARTZ) & (np.arange(STEPS) >= self.quartz_tint_from)
         tinted &= any(v > 0 for v in self.quartz_tint_mua)
-        keys = np.stack([*cols, tinted.astype(np.float64)], 1)
+        # and quartz that takes the milk, independently (an amethyst lining takes both)
+        milky = (cols[0] == Phase.QUARTZ) & (np.arange(STEPS) >= self.milk_from)
+        milky &= self.milk_mus > 0
+        keys = np.stack([*cols, tinted.astype(np.float64), milky.astype(np.float64)], 1)
         uniq, prof = np.unique(keys, axis=0, return_inverse=True)
-        rows = [self.host, self.tube_core] + [
-            self.tinted(self.band(int(p), int(pg), float(x), float(tr)), bool(tq))
-            for p, pg, x, tr, _, tq in uniq
-        ]
+        rows = [self.host, self.tube_core]
+        for p, pg, x, tr, _, tq, mq in uniq:
+            o = self.tinted(self.band(int(p), int(pg), float(x), float(tr)), bool(tq))
+            rows.append(self.milky(o, bool(mq)))
+        prof = prof.ravel()
+        if self.milk_mus > 0:  # the hollow's own entries (VOID_TIME)
+            k = keys[-1].copy()
+            k[-1] = 0.0
+            hit = np.flatnonzero((uniq == k).all(axis=1))
+            if hit.size:
+                void = int(hit[0])
+            else:
+                p, pg, x, tr, _, tq, _ = k
+                rows.append(self.tinted(self.band(int(p), int(pg), float(x), float(tr)), bool(tq)))
+                void = len(uniq)
+            prof = np.r_[prof, prof[-1], void]
         along: F64 | None = None
         tr_rows = (0, 0)
         if shift is not None:
             along = np.zeros((len(rows), 4))
             along[:, 0] = -1.0
-            for i, (p, pg, x, tr, takes, _) in enumerate(uniq):
+            for i, (p, pg, x, tr, takes, _, _) in enumerate(uniq):
                 if not takes:
                     continue
                 if Phase(int(p)) is not Phase.CHALCEDONY or Pigment(int(pg)) not in IRON_OXIDES:

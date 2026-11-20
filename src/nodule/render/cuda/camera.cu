@@ -149,8 +149,10 @@ __device__ void nee(const Scene& S, const Cam& C, const Shift& H, const unsigned
 // through the face's plane at the open mouth (adds w Ld: no face there). A camera ray over an
 // open pixel starts in air at weight 1. Below the slab (depth D) the bottom does not apply
 // within the void box's shell; a path leaving the shell below D meets the bottom's rule there
-// (black: lost; matte: sent back up; ADR 0019 s.6.12, owner's option (b), *assumption*). stats[2], [3], [4]: wall meetings, those the gate alone decided, and those
-// that passed through the wall (the rest reflected).
+// (black: lost; matte: sent back up once, from inside the shell; ADR 0019 s.6.12, owner's
+// option (b), *assumption*). stats[2], [3], [4]: wall meetings, those the gate alone decided,
+// and those that passed through the wall (the rest reflected); [5], [6]: the bottom rule's
+// turns at the shell's exit, and the exits.
 extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* Hp,
 #ifdef NODULE_VOID
                                   const Void* Vp,
@@ -189,8 +191,8 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
     const Void& V = *Vp;
     const float INF = __int_as_float(0x7f800000);
     const float wn2 = (V.flags & VFLAG_NO_WALL_N2) ? 1.f : n * n;
-    unsigned long long crossings = 0, guessed = 0, turned = 0;
-    bool inair = false;
+    unsigned long long crossings = 0, guessed = 0, turned = 0, shellx = 0, exits = 0;
+    bool inair = false, outside = false;
     {
         float v[2], e = 1e-4f;
         if (air_at(V, S, x + dx * e, y + dy * e, z + dz * e, v)) {   // an open pixel: no face
@@ -319,13 +321,22 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
             }
             break;
         }
+#ifdef NODULE_VOID
+        float xp = x, yp = y, zp = z;                           // before the flight
+#endif
         x += dx * s; y += dy * s; z += dz * s; ++events;
 #ifdef NODULE_VOID
         // left the shell below the slab: the slab's bottom there too (owner's option (b),
-        // 2026-11-19): lost when black; when matte, sent back up as from the bottom
+        // 2026-11-19): lost when black; when matte, sent back up as from the bottom, ONCE: the
+        // turn is made from where the flight began, inside the shell (2026-11-19; left
+        // outside, the next short flight met the rule again, 2.3 turns an exit on 4/4).
+        // stats[5], [6]: such turns, and the exits they belong to (a run of turns with no
+        // other event between is one exit). Control VFLAG_SHELL_STAY: the old turn in place.
         if (V.kind == 1 && vdepth(S, x, y, z) > C.D && !in_shell(V, x, y, z)) {
+            ++shellx; if (!outside) ++exits; outside = true;
             if (C.ba[0] <= 0.f && C.ba[1] <= 0.f && C.ba[2] <= 0.f) break;
             for (int c = 0; c < 3; ++c) w[c] *= C.ba[c];
+            if (!(V.flags & VFLAG_SHELL_STAY)) { x = xp; y = yp; z = zp; }
             float ct = sqrtf(1.f - r.next()), st = sqrtf(fmaxf(0.f, 1.f - ct * ct));
             float p = 6.28318531f * r.next(), cu = cosf(p) * st, sv = sinf(p) * st;
             dx = ct * S.n[0] + cu * S.u[0] + sv * S.v[0];
@@ -335,6 +346,7 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
             if (!roulette(w, w0, r)) break;
             continue;
         }
+        outside = false;
 #endif
         Mat M = matid(S, C, H, prof, mua, x, y, z);
         int m = M.m;
@@ -365,5 +377,6 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
 #ifdef NODULE_VOID
     if (crossings) { atomicAdd(stats + 2, crossings); atomicAdd(stats + 3, guessed);
                      atomicAdd(stats + 4, turned); }
+    if (shellx) { atomicAdd(stats + 5, shellx); atomicAdd(stats + 6, exits); }
 #endif
 }

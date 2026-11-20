@@ -287,6 +287,10 @@ class Rendered:
     crossings: float = 0.0
     guessed: float = 0.0
     passed: float = 0.0  # share of wall meetings that passed through (the rest reflected)
+    # below the slab, leaving the void box's shell: the bottom rule's turns per path, and
+    # the exits they belong to per path (a run of turns outside the shell is one exit)
+    shell_turns: float = 0.0
+    shell_exits: float = 0.0
 
 
 CAM_DTYPE = np.dtype(
@@ -378,7 +382,7 @@ def render(
         c[key] = v
     cam = cp.asarray(np.frombuffer(c.tobytes(), np.uint8))
     img = cp.zeros((view.ny, view.nx, 3), cp.float32)
-    stats = cp.zeros(5, cp.uint64)
+    stats = cp.zeros(7, cp.uint64)
     k = _gpu.kernel("camera" if void is None else "camera_void", "render")
     _gpu.synchronize()
     t0 = time.perf_counter()
@@ -401,7 +405,8 @@ def render(
     return Rendered(image=out, seconds=sec, paths=paths, events=float(st[0]) / paths,
                     real=float(st[1]) / paths, crossings=float(st[2]) / paths,
                     guessed=float(st[3]) / max(float(st[2]), 1.0),
-                    passed=float(st[4]) / max(float(st[2]), 1.0))  # fmt: skip
+                    passed=float(st[4]) / max(float(st[2]), 1.0),
+                    shell_turns=float(st[5]) / paths, shell_exits=float(st[6]) / paths)  # fmt: skip
 
 
 def reflectance_factor(image: F64, light: Light) -> F64:

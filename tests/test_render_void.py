@@ -220,6 +220,35 @@ def test_index_matched_box_walls_all_pass(lined) -> None:
     assert glass.events < 20
 
 
+def test_shell_exit_turns_once(lined) -> None:
+    """A path leaving the shell below the slab meets the matte bottom's rule once: the turn
+    is made from inside the shell (ADR 0019 s.6.12, 2026-11-19). In a scattering stone (short
+    flights, as chalcedony; on geode 4/4 1.12 turns an exit) a run of turns with nothing
+    between is then rare; in clear stone a turned path can fly out again at once, a real
+    second bounce (1.7 here, runs/hollow-air/shell_test_probe.py). Control: turned in place,
+    outside the shell, the next short flight meets the rule again (2.3 an exit on 4/4)."""
+    from nodule.specimen import Specimen
+    from test_voidbox import recipe  # pyright: ignore[reportMissingImports]
+
+    vol, box = lined
+    plane = Specimen(volume=vol, fractures=()).plane(recipe().cut)
+    sa = scene.homogeneous()
+    h = sa.header.copy()
+    h["o"], h["u"], h["v"], h["n"] = plane.origin, plane.u, plane.v, plane.normal
+    dev = scene.upload(scene.SceneArrays(h, sa.spheres, sa.tubes, sa.fractures, sa.grid))
+    view = View(-6.0, -6.0, 0.12, 100, 100)
+    m = Materials.of([[0.01] * 3], [[20.0] * 3], [0.9])  # scattering like chalcedony
+    kw: dict[str, Any] = dict(spp=64, depth_mm=1.0, glare=False, seed=3,
+                              flags=Flag.HOMOGENEOUS | Flag.BLACK_BOTTOM,
+                              bottom_albedo=(0.15,) * 3)  # fmt: skip
+    fixed = render(dev, view, m, DOME, void=voidgpu.upload(voidgpu.pack_box(box)), **kw)
+    stay = render(dev, view, m, DOME, **kw,
+                  void=voidgpu.upload(voidgpu.pack_box(box, flags=voidgpu.SHELL_STAY)))  # fmt: skip
+    assert fixed.shell_exits > 0.1  # the check sees enough exits (0.7 a path)
+    assert fixed.shell_turns / fixed.shell_exits < 1.3  # 1.11
+    assert stay.shell_turns / stay.shell_exits > 1.8  # 2.29
+
+
 def test_gpu_air_matches_the_box(flat, lined) -> None:
     _, box = lined
     rng = np.random.default_rng(2)

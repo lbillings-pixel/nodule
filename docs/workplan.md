@@ -174,6 +174,11 @@ before any statistics.
   look only); 4/4 whole face 15 min, 7.5 GB RAM, 5.6 GiB GPU (ADR 0019 s.6.12). Next: the
   owner's verdict on 4/4; needle stone 0/1 needs a memory decision; then the small lamp
   and six-faced tips.
+  2026-11-19 night: owner on 4/4: close, needs changes (too dark, dark ring, fur, square).
+  Diagnosed (ADR 0019 s.6.12 "Diagnosis"): no light lost; dark = the clear, grey-absorbing
+  quartz lining; ring = the look's clear quartz; a fault in the shell's exit rule fixed;
+  fur = round crystal tips; square = agatesim's one fixed irregular outline. Owner: milky
+  crystals, C-D. Next: which quartz turns milky; the square's fix; six-faced tips.
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

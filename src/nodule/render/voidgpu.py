@@ -29,6 +29,10 @@ assert VOID_DTYPE.itemsize == 128  # the CUDA struct's size
 
 GATE, CHAL, SHELL = 1, 2, 4  # node flag bits (voidbox.cuh)
 NO_WALL_N2 = 1  # Void.flags: control, the n^2 left out at the wall
+# Void.flags, control for the shell's exit below the slab (camera.cu): the bottom rule's turn
+# made where the path ended, outside the shell, as before the 2026-11-19 fix (the next short
+# flight then meets the rule again)
+SHELL_STAY = 2
 ANALYTIC_STEP_MM = 0.05  # march step for the analytic shapes (effective, checks only)
 
 

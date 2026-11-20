@@ -798,6 +798,51 @@ stones none; white fine needles alone take the finer grid, within the budget
        hollow a square cushion inside the lobed stone (the last is the build's geometry:
        the stand-in preview shows it too). Needle stone 0/1: the look only. Each fault is
        diagnosed with probes before any change.
+     - *Diagnosis (2026-11-19 night; runs/hollow-air/dark_probe.py, dark_options.py,
+       shell_exit_probe.py).* Probe set-up: 4/4's whole face on a 0.2 mm grid at half the
+       pixels (about 3 min; RAM 1.8 GB peak, GPU 1.9 GiB), so far walls read their own
+       materials. Means are linear (dome radiance 1).
+       - *No light lost by the void path:* a white furnace on the stone's real box (no
+         absorption in any material or layer, bottom albedo 1) reads 0.9549 on the face (1 -
+         F0 = 0.9548) and 0.9997 over the hollow (0.9986 at its rim).
+       - *Too dark: the lining's material.* As built the hollow's centre reads 0.011, its
+         rim 0.038, the face's chalcedony 0.126. 59 % of the nodes filled below the slab are
+         the lining's quartz (mua 0.13 mm^-1, ADR 0014's matrix absorber; mus 0.05): light
+         entering a crystal passes on to the shell's edge and meets the grey rule there. With
+         no absorption anywhere the centre reads 0.025; bottom albedo 1: x6.6; quartz without
+         its absorber: x1.6; quartz scattering like the stone's milkiest chalcedony: x20.
+       - *A fault in the shell's exit rule, fixed:* the turn left the path outside the
+         shell, so the next short flight met the rule again, 2.25 turns an exit on 4/4 (x0.15
+         each). The turn is now made from where the flight began, inside the shell (1.12 an
+         exit): the hollow's centre 0.011 -> 0.014, its rim and the face unchanged. Test:
+         `test_shell_exit_turns_once` (control: the old turn, `voidgpu.SHELL_STAY`). In clear
+         stone a turned path can leave again in one flight, a true second bounce (1.7 an exit).
+       - *The dark ring is the look's clear quartz,* not the rule below the hollow (as Claude
+         first told the owner): the lining's crystal layer, cut, reads 0.034 under air, 0.017
+         under the stand-in, and 5 mm of the same quartz, flat over the grey bottom, 0.014. It
+         is clear quartz at the look's depth (s.6.5, s.6.10), as every quartz centre; air made
+         it lighter.
+       - *Look options* (runs/hollow-air/dark-probe/hollow-options.png; one exposure, 2.44;
+         appearance only, ADR 0002; before the exit fix): A quartz without its absorber; B, C,
+         D quartz scattering 5, 15 and 40 % of the stone's milkiest chalcedony (that row's
+         phase function, borrowed: blue-heavy). Hollow centre / ring: A 0.018 / 0.071, B 0.031
+         / 0.088, C 0.071 / 0.170, D 0.139 / 0.282.
+       - *Fur: the crystals' form.* agatesim's crystal metric is rotationally symmetric (a
+         cone tip on a round prism: `Crystals.pair_times`, `CRYSTAL_TIME_CUDA`), so the tips
+         read as uniform fur. The six-faced tips the owner approved are the first step,
+         untested as the fix; milkier crystals soften faces, so both are judged together.
+       - *Square cushion: the bands.* agatesim's `nodule-irregular` is one fixed union of
+         seven spheres (`_LUMPS`; the lobate vesicle one fixed `_LOBES`), so every irregular
+         stone has the same outline. On 4/4's cut its four lobes (the outline radius's
+         fourth harmonic, 0.11 of the mean) become corners inward: 0.20 at the last
+         chalcedony surface, 0.18 at the hollow (the crystal layer rounds them a little).
+         Wall distance does this (ADR 0005, "Corners stay sharp to the centre"); real bands
+         commonly lose their sharp edges toward the centre [@moxon2013, p. 228].
+     - *Owner's verdict on the options (2026-11-19 night):* the milky crystals look good,
+       C and D the most realistic. Open before building: which quartz takes it (crystals
+       lining a hollow only, or every quartz centre and the backlit slice, item 16's look), a
+       neutral scattering for quartz, a spread between C and D per stone; reading first (item
+       19 B). `effective`, a look choice.
 
 ## Consequences
 

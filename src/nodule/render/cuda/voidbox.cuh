@@ -21,6 +21,7 @@ struct Void {
 #define VOID_GATE 3      // gated, or chalcedony near its last surface
 #define VOID_SHELL 4
 #define VFLAG_NO_WALL_N2 1   // control: leave the n^2 out at the hollow's wall
+#define VFLAG_SHELL_STAY 2   // control: a shell exit below the slab turns outside (pre-fix)
 // A crossing into air needs a normal facing along the path (d . m > 0; into the stone < 0).
 // Where the found normal does not (|cos| under this, or the wrong side: the box's level jumps
 // where a cell's corner crystals change, s.6.12 step 1, so the wall there is a cell face, not

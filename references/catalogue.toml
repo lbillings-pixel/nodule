@@ -366,7 +366,7 @@ access = "open"
 licence = "CC-BY-4.0"
 checked = "full-text"
 topics = ["moss", "celadonite"]
-notes = """Read in full 2026-10-23 (local PDF; reference list skipped). Green moss agate in pores and fractures of andesitic breccias (Yixian Formation, 135–122 Ma), blocks 5–8 cm to tens of cm. Inclusions clustered, filamentous, platy, globular and irregular; most grow from the walls of pores and fractures inward, a few in the interior; filaments up to 10 mm long and 0.2 mm wide (no length distribution). Zoning from core to margin and, at larger scale, green inclusion, opal-CT, chalcedony, macrocrystalline quartz, grown inward from the wall or around isolated inclusions; celadonite grains coarsen from older to younger zones (no sizes given). Celadonite by d(060) 1.501–1.511 Å and EPMA. Genesis: direct hydrothermal precipitation; host alteration rejected; no organic bands by FTIR, which they say doesn't exclude a biogenic precursor (contrast akahane2025). Distinguishes 3D green filaments from 2D DLA-like dendritic texture; no branching or length statistics."""
+notes = """Read in full 2026-10-23 (local PDF; reference list skipped). Green moss agate in pores and fractures of andesitic breccias (Yixian Formation, 135–122 Ma), blocks 5–8 cm to tens of cm. Inclusions clustered, filamentous, platy, globular and irregular; most grow from the walls of pores and fractures inward, a few in the interior; filaments up to 10 mm long and 0.2 mm wide (no length distribution). Zoning from core to margin and, at larger scale, green inclusion, opal-CT, chalcedony, macrocrystalline quartz, grown inward from the wall or around isolated inclusions; celadonite grains coarsen from older to younger zones (no sizes given). Celadonite by d(060) 1.501–1.511 Å and EPMA. Genesis: direct hydrothermal precipitation; host alteration rejected; no organic bands by FTIR, which they say doesn't exclude a biogenic precursor (contrast akahane2025). Distinguishes 3D green filaments from 2D DLA-like dendritic texture; no branching or length statistics. Item 19 white-plume pass 2026-11-20 (quotes re-checked by Claude in the local PDF): green inclusions 'commonly mantled with cryptocrystalline silica (opal-CT) of milky-white color' (p. 3; Fig. 2e 'a white coating composed of opal-CT', p. 4); 'brown fibrous opal-CT (macroscopically appearing milky white ...)' (p. 7); zone Z2 'light brown' in plane-polarised light (p. 8). Coating widths read off Fig. 2e by the helper, about 0.2-0.7 mm (speculative); no opal-CT grain or pore size."""
 
 [[references]]
 id = "liu2023"
@@ -3332,7 +3332,7 @@ access = "open"
 licence = "cite only"
 checked = "full-text"
 topics = ["agate", "inclusions", "locality", "deformation", "eyes", "tubes", "iris", "outline"]
-notes = """Local scan, read in full 2026-11-08 by a helper agent through OCR (683 s) plus viewing figures; the Fig. 1 map and about 4 lines on p. 3 were unreadable. Based on about 15,000 agates from 18 localities; its genesis model (ash-derived gels) is the authors' own and context only. Table 1 (pp. 4-5) rates features per locality (Abundant >90 %, Rare <5 %): flow or plastic deformation structures present at all 12 tabulated localities; host-rock weathering products rare in Lake Superior agates, abundant in Chihuahua and Alpine, Texas. "Almost every agate nodule has a pod of euhedral quartz" in the innermost band (p. 20, qualitative). Escape tubes: inner bands thin and converge (p. 20); diapiric pods truncate outer bands (Figs 34-35, p. 20). Basalt/andesite vesicles almond-shaped; rhyolite thunder-egg cavities star-shaped (pp. 11, 16). Eyes are surface hemispheres, most common in amygdaloidal agates, few in thunder eggs (pp. 21-22). Cristobalite membrane tubes 0.3-0.5 mm across, several cm long (p. 15); iris in about 7 % of agates (p. 22). No fracture or breccia data for nodules. Dust search 2026-11-09 (helper agent, the same OCR): hematite globules "quite common in banded agates" (p. 15); Fig. 22 (X120) shows a loose row where fibrous fans start plus scattered globules; earthy hematite or limonite "may collect at the bottom of a gas vesicle" before banding (pp. 13-14, Fig. 26); dendrites "in the tiny space between the bands" (p. 23); no counts, sizes or densities for band dust. Plume passages re-read 2026-11-09 by a helper agent: in thunder eggs filaments are most common and plumes rarest (p. 10, citing Brown); plumes and moss are pre-banding and engulfed by the bands (pp. 13, 20, 23); relict plumes; Zarins: plume orientation is shared within a locality, horizontal in one basalt, vertical in another (pp. 14-15); Table 1: limonite plumes in over 90 % of Alpine (Texas) stones, hematite plumes common at Richardson (Oregon), rare (under 5 %) at Lake Superior and Botswana. Dendrite passages re-read 2026-11-17 by a helper agent (item 14): p. 23, dendrites are "branched or tree-like inclusions, usually of manganese or iron oxides", "often confined to the tiny space between the bands", oriented by the bands, "a post-banding inclusion, whereas plumes are pre-banding"; p. 23 does not name Montana; "sunbursts" (radiating masses, read by the authors as ballistic aggregation) are "common to agates from Montana" (Fig. 46 caption, p. 24; Fig. 47 a Yellowstone River example, about 12 mm by eye); Table 1 has no dendrite row, so no frequency. Collectors' circular: plausible at most."""
+notes = """Local scan, read in full 2026-11-08 by a helper agent through OCR (683 s) plus viewing figures; the Fig. 1 map and about 4 lines on p. 3 were unreadable. Based on about 15,000 agates from 18 localities; its genesis model (ash-derived gels) is the authors' own and context only. Table 1 (pp. 4-5) rates features per locality (Abundant >90 %, Rare <5 %): flow or plastic deformation structures present at all 12 tabulated localities; host-rock weathering products rare in Lake Superior agates, abundant in Chihuahua and Alpine, Texas. "Almost every agate nodule has a pod of euhedral quartz" in the innermost band (p. 20, qualitative). Escape tubes: inner bands thin and converge (p. 20); diapiric pods truncate outer bands (Figs 34-35, p. 20). Basalt/andesite vesicles almond-shaped; rhyolite thunder-egg cavities star-shaped (pp. 11, 16). Eyes are surface hemispheres, most common in amygdaloidal agates, few in thunder eggs (pp. 21-22). Cristobalite membrane tubes 0.3-0.5 mm across, several cm long (p. 15); iris in about 7 % of agates (p. 22). No fracture or breccia data for nodules. Dust search 2026-11-09 (helper agent, the same OCR): hematite globules "quite common in banded agates" (p. 15); Fig. 22 (X120) shows a loose row where fibrous fans start plus scattered globules; earthy hematite or limonite "may collect at the bottom of a gas vesicle" before banding (pp. 13-14, Fig. 26); dendrites "in the tiny space between the bands" (p. 23); no counts, sizes or densities for band dust. Plume passages re-read 2026-11-09 by a helper agent: in thunder eggs filaments are most common and plumes rarest (p. 10, citing Brown); plumes and moss are pre-banding and engulfed by the bands (pp. 13, 20, 23); relict plumes; Zarins: plume orientation is shared within a locality, horizontal in one basalt, vertical in another (pp. 14-15); Table 1: limonite plumes in over 90 % of Alpine (Texas) stones, hematite plumes common at Richardson (Oregon), rare (under 5 %) at Lake Superior and Botswana. Dendrite passages re-read 2026-11-17 by a helper agent (item 14): p. 23, dendrites are "branched or tree-like inclusions, usually of manganese or iron oxides", "often confined to the tiny space between the bands", oriented by the bands, "a post-banding inclusion, whereas plumes are pre-banding"; p. 23 does not name Montana; "sunbursts" (radiating masses, read by the authors as ballistic aggregation) are "common to agates from Montana" (Fig. 46 caption, p. 24; Fig. 47 a Yellowstone River example, about 12 mm by eye); Table 1 has no dendrite row, so no frequency. Item 19 white-plume pass 2026-11-20 (helper, p. 14 read on the page image): 'relict plumes from which the hematite has been removed and the molds filled by clear chalcedony are sometimes preserved'; neither 'ghost' nor 'white' there. Collectors' circular: plausible at most."""
 
 [[references]]
 id = "jebrak1997"
@@ -3471,7 +3471,7 @@ access = "closed"
 licence = "publisher copyright; cite only"
 checked = "full-text"
 topics = ["plume", "moss", "thunder-egg"]
-notes = "Del Norte, Colorado thunder eggs. Full text read 2026-11-09 (notes/n1-reading/kile2002-reading.md). Magazine with editorial review, not strictly refereed: claims plausible at most. Plume sizes, colours, halos, frequency (<1 % plume, personal communication); no green moss. Item 18 pass 2026-11-19 (helper, keyword passages of the local PDF; not a cover-to-cover read): plausible at most. Residual open cavities hold 'minute quartz crystals predominantly composed of rhombohedral faces (Landmesser 1988)' (p. 263); Fig. 6 caption, 'a small central cavity lined with euhedral quartz microcrystals' in a 4.5-inch egg, no crystal size given (p. 255); 'Drusy quartz crystals sometimes line a hollow central cavity within the chalcedony' (p. 257); a thunder egg 'may have a hollow center or it may have a center that is partly or completely filled by agate and/or opal' (p. 256); fill order wall chalcedony, Uruguay bands, banded chalcedony, euhedral quartz, 'not all phases are necessarily present' (p. 263); magnesian calcite and gypsum in hollow quartz-lined cavities (p. 258); cavity outlines lens- to star-shaped (p. 256)."
+notes = "Del Norte, Colorado thunder eggs. Full text read 2026-11-09 (notes/n1-reading/kile2002-reading.md). Magazine with editorial review, not strictly refereed: claims plausible at most. Plume sizes, colours, halos, frequency (<1 % plume, personal communication); no green moss. Item 18 pass 2026-11-19 (helper, keyword passages of the local PDF; not a cover-to-cover read): plausible at most. Residual open cavities hold 'minute quartz crystals predominantly composed of rhombohedral faces (Landmesser 1988)' (p. 263); Fig. 6 caption, 'a small central cavity lined with euhedral quartz microcrystals' in a 4.5-inch egg, no crystal size given (p. 255); 'Drusy quartz crystals sometimes line a hollow central cavity within the chalcedony' (p. 257); a thunder egg 'may have a hollow center or it may have a center that is partly or completely filled by agate and/or opal' (p. 256); fill order wall chalcedony, Uruguay bands, banded chalcedony, euhedral quartz, 'not all phases are necessarily present' (p. 263); magnesian calcite and gypsum in hollow quartz-lined cavities (p. 258); cavity outlines lens- to star-shaped (p. 256). Item 19 white-plume pass 2026-11-20 (helper, keyword passages and Figs 5, 21-23; the quotes re-checked by Claude in the local PDF, whose page 1 is a cover): Del Norte opal 'is invariably an opaque to translucent white, with textures in hand samples ranging from vitreous with a conchoidal fracture to chalky', 'heavily included with an unknown substance' that accounts for its white colour and opacity in hand samples, while 'in thin sections under plane-polarized light the opal has an overall tan to pale brown color'; n = 1.444 +- 0.004 in one sample (p. 258); 'White plume structures were identified as a phase of opal (possibly a mixture of opal-C and opal-CT)' by polarized-light microscopy, SEM on one (p. 260). That the white plumes look like the p. 258 opal is inference."
 
 [[references]]
 id = "hofmann2008"
@@ -3486,6 +3486,66 @@ licence = "publisher copyright; cite only"
 checked = "full-text"
 topics = ["moss", "filaments", "biosignatures", "morphometry"]
 notes = "Full text read 2026-11-09 (notes/n1-reading/hofmann2008-reading.md): Table 2 morphometry, fabrics (masses, mats, drapes), Fe-hydroxide crusts, filaments sticking out of Uruguay-type layers (p. 110). Abstract: tubular filaments of median diameter 1.6 µm at high density, as irregular masses, matted fabrics and stalactite-like drapes; abiogenic forms differ in width distribution and have lower curvature and fewer direction changes."
+
+# --- White plumes (item 19 B reading, 2026-11-20; notes/n1-reading/item19-white-plumes.md) ---
+
+[[references]]
+id = "gaillou2008"
+kind = "article"
+authors = ["Gaillou, E.", "Fritsch, E.", "Aguilar-Reyes, B.", "Rondeau, B.", "Post, J.", "Barreau, A.", "et al. (list truncated in the reference seen)"]
+year = 2008
+title = "Common gem opal: an investigation of micro- to nano-structure"
+venue = "American Mineralogist 93, 1865-1873"
+url = "https://hal.archives-ouvertes.fr/hal-00345967"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "citation"
+topics = ["opal", "opal-CT", "nanostructure", "translucency", "scattering", "white"]
+notes = """Item 19 white-plume pass 2026-11-20: citation only, from search results (DOI not seen; the HAL record was bot-blocked; HAL lists pages 1685-1873, likely a typo). Would give nanograin and pore sizes against common opal's opacity, telling sub-micron (bluish-leaning) from micron (neutral) scattering in white opal plumes. Offered to the owner 2026-11-20: skipped for now."""
+
+[[references]]
+id = "goetze2021"
+kind = "article"
+authors = ["Götze, J.", "Stanek, K.", "Orozco, G.", "Liesegang, M.", "Mohr-Westheide, T."]
+year = 2021
+title = "Occurrence and distribution of moganite and opal-CT in agates from Paleocene/Eocene tuffs, El Picado (Cuba)"
+venue = "Minerals 11(5), 531"
+url = "https://refubium.fu-berlin.de/handle/fub188/30887"
+access = "open"
+licence = "CC-BY-4.0 (not confirmed)"
+checked = "citation"
+topics = ["agate", "opal-CT", "moganite", "porosity", "microtexture"]
+notes = """Item 19 white-plume pass 2026-11-20: citation and a search summary only (opal-CT over 6 wt%, moganite over 16 wt%, varying microtexture and porosity: abstract-level, supports no claim). MDPI refused the fetcher (403), the repository rate-limited it (429). To read for the colour of opal-CT-rich zones and pore sizes. Offered to the owner 2026-11-20: skipped for now."""
+
+[[references]]
+id = "geologyin2023"
+kind = "web"
+authors = ["Anonymous (Geology In)"]
+year = 2023
+title = "Plume Agate: Types, Properties, Value"
+venue = "Geology In (popular geology website)"
+url = "https://geologyin.com/2023/11/plume-agate-meaning-varieties-of-plume-agate.html"
+access = "open"
+licence = "cite only"
+checked = "sections"
+sections_read = ["whole page, through the fetch summariser (not verbatim)"]
+topics = ["plume", "phantom", "ghost", "terminology"]
+notes = """Read 2026-11-20 through the fetch summariser (item 19 white plumes); popular page, no author or date (year from the URL): speculative at most. 'Phantom plume agate ... features faint, ghost-like inclusions within the stone', 'only truly visible when held up to light'; never calls them white; no locality or mineral."""
+
+[[references]]
+id = "fossilera2026"
+kind = "web"
+authors = ["FossilEra (dealer)"]
+year = 2026
+title = '11" Polished White Plume Agate Slab - Nevada'
+venue = "FossilEra sales listing"
+url = "https://www.fossilera.com/minerals/11-polished-white-plume-agate-slab-nevada"
+access = "open"
+licence = "cite only"
+checked = "sections"
+sections_read = ["whole listing, through the fetch summariser (not verbatim)"]
+topics = ["plume", "white", "locality", "trade"]
+notes = """Read 2026-11-20 through the fetch summariser (item 19 white plumes); undated trade listing: 'white plume agate collected in Nevada', exact locality 'unknown'; no description of the plumes' look or make-up. Occurrence only, speculative."""
 
 # --- Early crystals: wall calcite and zeolites (reading pass, 2026-11-16) -----
 

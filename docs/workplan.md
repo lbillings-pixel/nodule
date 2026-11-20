@@ -198,7 +198,11 @@ before any statistics.
   centres"): 4 in 5 untinted filled centres level 0-1/3, 1 in 5 from 2/3 to D. Reading on
   white plumes done (notes/n1-reading/item19-white-plumes.md): an opal body, "opaque to
   translucent white", tan-brown backlit (magazine-level); white opal rims on moss
-  (refereed). Next: the owner's pick of looks, then a design for scattering by place.
+  (refereed). Owner's picks (ADR 0019 s.6.13): look sheet of A (white opal plumes, solid
+  where thick, faint where thin) and C (white rims on coloured plumes and moss), both
+  colour readings; camera-like exposure kept for milky centres; opal papers skipped for
+  now. Next: the probe (no kernel change: plume or rim mask through the void mask's row
+  swap), the look sheet, then the build.
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

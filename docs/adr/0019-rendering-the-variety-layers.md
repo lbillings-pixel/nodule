@@ -919,8 +919,9 @@ stones none; white fine needles alone take the finer grid, within the budget
        level: light from the whiter centre reaching the bands through the slab. The look
        holds the face's lightness with the centre counted (`look_exposure`): the renders'
        own exposures fall to 2.29, 2.12, 2.08 and 2.05, so a milky filled stone's bands
-       come out 4-14 % darker than with a clear centre, as a camera's would; kept so (the
-       owner's call is open: an exact hold needs a clear pre-pass per stone).
+       come out 4-14 % darker than with a clear centre, as a camera's would; kept so
+       (owner, 2026-11-20: camera-like, as the milky hollows; an exact hold would need a
+       clear pre-pass per stone).
      - *Owner's choice (2026-11-20), on Claude's recommendation:* "mostly glassy grey":
        about 4 in 5 untinted filled centres between level 0 and 1/3, 1 in 5 between 2/3 and
        D. Grounds: one level whitens a solid centre far more than a lining, and centre quartz
@@ -1006,6 +1007,56 @@ stones none; white fine needles alone take the finer grid, within the budget
        (sRGB luminance, as `look_exposure`) and lights the hollow (control: a lamp of no
        irradiance gives the look back); the combined estimate equals phase sampling over a
        real stone's box too (control: legs let through).
+13. **Scattering by place: white plumes** (track B; 2026-11-20: reading done, the owner's
+   picks, a probe planned; nothing built).
+   - *Reading* (helper report notes/n1-reading/item19-white-plumes.md; the quotes below
+     re-checked in the local PDFs). Del Norte thunder-egg opal "is invariably an opaque to
+     translucent white, with textures in hand samples ranging from vitreous ... to
+     chalky", "heavily included with an unknown substance" that accounts for its white
+     colour and opacity, while "in thin sections under plane-polarized light the opal has
+     an overall tan to pale brown color"; one sample n = 1.444 [@kile2002, p. 258]. "White
+     plume structures were identified as a phase of opal" [@kile2002, p. 260]. Both
+     *plausible* (a magazine); that the white plumes look like the p. 258 opal is
+     inference. Green moss is "commonly mantled with cryptocrystalline silica (opal-CT) of
+     milky-white color" [@zhang2026, p. 3], the same opal-CT "brown" in section yet
+     "macroscopically appearing milky white" [@zhang2026, p. 7] (*verified*). Relict
+     plumes are filled with clear chalcedony [@pabian1994, p. 14] (*plausible*). No
+     refereed study of white plumes as such, no frequency, no scatterer size, no measured
+     strength; trade lists white plume agate from Nevada [@fossilera2026] (*speculative*).
+     "Ghost plume" was not found; one popular page calls faint inclusions seen against the
+     light "phantom" plumes, not white ones [@geologyin2023] (*speculative*).
+   - *Physics (inference).* Opal's index sits near chalcedony's, so the white needs
+     scatterers inside it. White in front light and tan-brown in thin section fits
+     sub-micron scatterers, which take blue out of the transmitted light (the size rule of
+     [@pelto1956]), or a weak stain. No source describes a thick backlit slice: its tan or
+     grey shadow is a prediction (*speculative*).
+   - *Owner's picks (2026-11-20).* "Let the reading decide" between faint and opaque: the
+     reading supports both, so the look sheet shows (A) white opal plumes, one body that is
+     solid where thick and faint where thin, and (C) white rims, 0.1-0.7 mm, round coloured
+     plumes and green moss; each under both colour readings (sub-micron: bluish white, tan
+     backlit; micron: neutral white, grey backlit), the owner's eye to pick. Not veils
+     alone, nor colourless relicts. The opal papers [@gaillou2008; @goetze2021] are skipped
+     for now. `effective` throughout.
+   - *Probe (approved 2026-11-20; probe code stays outside the package until the owner has
+     judged the sheet).* The camera already swaps a sample's material by place: where the
+     void mask (`Scene.voidf`) passes 1/2, `matid` takes the profile's last entry (s.6.12,
+     the milky lining's stand-in hollow). The probe passes a plume mask (A) or a rim mask
+     (C) there, and a white opal row as that entry, on stones without milk, hollow or
+     shifts: no kernel change. The plume mask comes from the fill's own sub-samples (each
+     node's share inside a plume), the rims from a distance transform on the node grid
+     (plumes and moss alike; agatesim's exact plume distances are not exposed). For A the
+     plume pigment is left out of the bake; for C it stays. White rows from
+     `mie.pore_part` (pores in opal; their sizes are assumptions). Controls: the mask at 1
+     everywhere against a render of the white row alone; the neutral row must backlight
+     grey, never tan. Limits: the mask is hard-edged at the node grid, and fronds thinner
+     than a node drop out.
+   - *The build, after the sheet (proposed).* A per-node white share grid (trilinear), the
+     white row picked with that probability at each tentative collision (unbiased for the
+     mixture under delta and ratio tracking), so edges and thin fronds fade instead of
+     dropping; the extra random number drawn only where the grid exists, so other stones
+     render bit for bit as before; the shift lookup skipped for the white row. Costs: 4
+     bytes a node; the white row raises the stone's global majorant (slower renders on
+     those stones, to be measured).
 
 ## Consequences
 

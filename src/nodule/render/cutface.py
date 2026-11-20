@@ -40,8 +40,9 @@ so the face mask and quartz phase of the cut still apply.
   cavity reads dark, as a lined geode's face often photographs; 0 under the back light,
   so a slice's hole passes the light box. Not air: no refraction at the cavity's lining
   (A2). The look's lightness is matched over the stone's face without the void. A milky
-  lining's void (ADR 0019 s.6.12) takes its last step's material without the milk
-  (`materials.VOID_TIME`), so a slice's hole stays clear.
+  lining's stand-in void (ADR 0019 s.6.12) takes its last step's material without the
+  milk, where the trilinear void mask passes 1/2 (`CutRenderer._void_mask`,
+  `Scene.voidf`), so a slice's hole stays clear and the growth time stays the lining's.
 
 Procedural images: never evidence for a formation mechanism (ADR 0002).
 """
@@ -71,7 +72,7 @@ from nodule.render.camera import (
     rolloff,
     srgb,
 )
-from nodule.render.materials import VOID_TIME, OpticsTable
+from nodule.render.materials import OpticsTable
 from nodule.render.record import BandRecord, void_points
 from nodule.render.scene import pack, upload, with_void
 from nodule.render.shift import ShiftArrays, bake_drift, variation_of
@@ -318,11 +319,9 @@ class CutRenderer:
             p = to_world(cut.plane, grid.s[i], grid.t[j], grid.w[k])
             self._air = np.zeros_like(grid.void)
             self._air[k, j, i] = hollow_nodes(self._box, p)
-        # a milky lining's hollow takes a material of its own, not the milk (ADR 0019 s.6.12)
-        void_time = VOID_TIME if r.optics.milk_mus > 0 else None
         packed = self._packed = pack(
             specimen, grid, absorb=grid.absorb, void_mua=r.void_mua, air=self._air,
-            void_time=void_time,
+            voidf=self._void_mask(r),
         )  # fmt: skip
         self._dev = upload(packed)
         self._void = None if self._box is None else voidgpu.upload(voidgpu.pack_box(self._box))
@@ -349,6 +348,17 @@ class CutRenderer:
         self.exposure = r.exposure  # as used for `rgb` (the look sets it per render)
         self.crossings = self.guessed = 0.0  # the hollow's wall, last batch (camera.Rendered)
 
+    def _void_mask(self, rendering: Rendering) -> NDArray[np.float32] | None:
+        """The void nodes (1, else 0) for a stand-in hollow inside a milky lining: there the
+        camera takes the lining's last material without the milk (`Scene.voidf`, the
+        profile's last entry; ADR 0019 s.6.12), so a slice's hole stays clear. None for a
+        hollow drawn as air (its stone near the wall keeps the lining's material) or a stone
+        without milk (bit for bit as before)."""
+        void = self._grid.void
+        if rendering.optics.milk_mus <= 0 or rendering.hollow == "air" or void is None:
+            return None
+        return void.astype(np.float32)
+
     def on(self, rendering: Rendering) -> CutRenderer:
         """A renderer for another rendering on this one's filled grid (no new fill):
         same record, optics, grid spacing and drift; a slab no deeper than the fill.
@@ -374,15 +384,18 @@ class CutRenderer:
         air_there = self._void is not None and rendering.hollow == "air"
         if not air_there:
             other._void = None  # e.g. the backlit slice keeps the stand-in
-        if (rendering.void_mua != r.void_mua or air_here != air_there) and (
+        mask = self._void_mask(rendering)
+        mask_changes = (mask is None) != (self._packed.voidf is None)
+        if (rendering.void_mua != r.void_mua or air_here != air_there or mask_changes) and (
             self._grid.void is not None
         ):
-            # another stand-in for the void: only the absorption grid changes, but the
-            # scene is uploaded whole (one more copy of the grid on the GPU)
+            # another stand-in for the void: only the absorption grid (and the milky
+            # lining's void mask) change, but the scene is uploaded whole (one more copy of
+            # the grid on the GPU)
             g = self._grid
             a = with_void(g.absorb, g, rendering.void_mua, self._air if air_there else None)
             amax = 0.0 if a is None else max(float(a.max()), 0.0)
-            other._dev = upload(replace(self._packed, absorb=a, absorb_max=amax))
+            other._dev = upload(replace(self._packed, absorb=a, absorb_max=amax, voidf=mask))
         return other
 
     def more(self, spp: int) -> None:
@@ -420,13 +433,22 @@ class CutRenderer:
 def sparkle_rgb(look: CutRenderer, lamp: CutRenderer) -> NDArray[np.uint8]:
     """The sparkle view (ADR 0019 s.6.12 step 5): the look plus a lamp pass on the same
     fill (`Rendering.lamp`; its strength is the lamp's irradiance against the dome's),
-    exposed so the stone's face without its hollow keeps the look's mean lightness. Facets
-    that mirror the lamp clip to white, as glints do in a photograph."""
-    a, b = look.linear(), lamp.linear()
-    total = a + b
+    exposed so the stone's face without its hollow keeps the look's mean lightness (mean
+    sRGB-encoded luminance, as `look_exposure` matches it). Facets that mirror the lamp
+    clip to white, as glints do in a photograph."""
+    light = look.rendering.light
     face = look._face
-    scale = float(a[face].mean()) / max(float(total[face].mean()), 1e-30)
-    return to_rgb(total, look.rendering.light, look.exposure * scale, None)
+    a = reflectance_factor(look.linear(), light)
+    total = a + reflectance_factor(lamp.linear(), light)
+    target = mean_lightness(a, face, look.exposure)
+    exposure = look.exposure
+    if mean_lightness(total, face, exposure) != target:  # (a lamp that adds nothing keeps it)
+        lo, hi = exposure / 100.0, exposure * 100.0
+        for _ in range(50):  # bisection in log exposure; lightness rises with exposure
+            mid = math.sqrt(lo * hi)
+            lo, hi = (mid, hi) if mean_lightness(total, face, mid) < target else (lo, mid)
+        exposure = math.sqrt(lo * hi)
+    return to_rgb(total * light.white(), light, exposure, None)
 
 
 @dataclass(frozen=True)

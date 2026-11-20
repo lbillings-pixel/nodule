@@ -433,12 +433,14 @@ def test_the_sparkle_view_adds_the_lamp_and_keeps_the_face(lined) -> None:
     lamp.more(32)
     assert lamp.crossings > 0.05  # the lamp pass draws the hollow as air too
     rgb = sparkle_rgb(look, lamp)
-    from nodule.sheet import srgb_to_linear
+    face = look._face
 
-    face = look._face  # kept before clipping; clipping can only take a little off
-    lin, base = srgb_to_linear(rgb), srgb_to_linear(look.rgb)
+    def lightness(im: np.ndarray) -> float:  # mean sRGB-encoded luminance, as the look's
+        y = im.astype(float) / 255
+        return float((0.2126 * y[..., 0] + 0.7152 * y[..., 1] + 0.0722 * y[..., 2])[face].mean())
+
     assert face.sum() > 1000
-    assert 0.9 < lin[face].mean() / base[face].mean() < 1.02
+    assert abs(lightness(rgb) / lightness(look.rgb) - 1.0) < 0.005
     hole = void_points(near.fields, near.inside)
     assert not np.array_equal(rgb[hole], look.rgb[hole])
     dark = look.on(Rendering.lamp(record, Light("disc", irradiance=0.0), grid_mm=0.2,
@@ -481,3 +483,41 @@ def test_the_lamp_weights_stay_unbiased_over_a_stone_box(lined) -> None:
     phase = lit(256, 21)
     assert apart(lit(0, 22), phase) < 4
     assert apart(lit(0, 23, vflags=voidgpu.LEGS_IGNORE_AIR), phase) > 4
+
+
+def test_a_milky_linings_stand_in_hole_stays_clear(lined, monkeypatch) -> None:
+    """A stand-in hollow inside a milky lining (backlit slice): where the void mask says
+    hollow, the camera takes the lining without the milk (`Scene.voidf`), so the hole
+    passes the light box as with a clear lining; the growth time stays the lining's, so
+    nothing leaks into the cells along the wall. Control: without the mask the milky
+    lining fills the hole and darkens it."""
+    from dataclasses import replace
+
+    from nodule.render.cutface import CutRenderer, Rendering
+    from nodule.render.fakes import stone_record
+    from nodule.render.materials import OpticsTable
+    from nodule.render.record import void_points
+    from nodule.specimen import window_cut
+    from nodule.variety import build, cut_of
+    from test_voidbox import recipe  # pyright: ignore[reportMissingImports]
+
+    spec, _ = build(recipe())
+    cut = cut_of(spec, recipe(), 0.2)
+    jj, ii = np.nonzero(void_points(cut.fields, cut.inside))
+    near = window_cut(spec, cut, (float(cut.s[ii].mean()), float(cut.t[jj].mean())), 6.0, 0.1)
+    hole = void_points(near.fields, near.inside)
+    assert hole.sum() > 200
+    record = stone_record(spec, np.random.default_rng(1))
+    milky = replace(OpticsTable(), milk_mus=30.0, milk_from=1)
+
+    def hole_light(optics: OpticsTable) -> float:
+        back = Rendering.transmitted(record, grid_mm=0.2, depth_mm=1.0, optics=optics,
+                                     exposure=3.0)  # fmt: skip
+        cr = CutRenderer(spec, near, back, np.random.default_rng(2))
+        cr.more(64)
+        return float(cr.linear()[hole].mean())
+
+    clear, masked = hole_light(OpticsTable()), hole_light(milky)
+    assert abs(masked / clear - 1.0) < 0.1
+    monkeypatch.setattr(CutRenderer, "_void_mask", lambda self, rendering: None)
+    assert hole_light(milky) < 0.7 * clear

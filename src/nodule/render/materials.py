@@ -92,12 +92,12 @@ MN_MUA = 30.0  # OpticsTable.mua550_mn's default (comment there); 3.0 before 202
 # s.6.12).
 MILK_G = 0.94
 # A milky lining's hollow (ADR 0019 s.6.12): the stand-in renders a void as its lining's
-# material (cutface, A1), which would fill a slice's hole with the milk. Its nodes take
-# this growth time instead (`GrowthGrid.filled`), past the run's end; the profile then
-# holds two more entries: step STEPS repeats the last step (lining times up to 1.0 stay
-# lining) and STEPS + 1, reached only within ~1/10 of a node of a void node, is the last
-# step's material without the milk. Numerical, not a model choice.
-VOID_TIME = (STEPS + 1.5) / STEPS
+# material (cutface, A1), which would fill a slice's hole with the milk. With milk the
+# profile holds two more entries: step STEPS repeats the last step (a time of exactly 1.0
+# stays lining), and the last, STEPS + 1, is the last step's material without the milk,
+# which the camera takes where the stand-in's void mask says hollow (`Scene.voidf`). A
+# growth time cannot mark the void: interpolated, it would pass through every later
+# step on the way (the 2026-11-20 review).
 
 
 def rayleigh_absorption(n: Sequence[float], k: Sequence[float], phi: float,
@@ -310,7 +310,7 @@ class OpticsTable:
             o = self.tinted(self.band(int(p), int(pg), float(x), float(tr)), bool(tq))
             rows.append(self.milky(o, bool(mq)))
         prof = prof.ravel()
-        if self.milk_mus > 0:  # the hollow's own entries (VOID_TIME)
+        if self.milk_mus > 0:  # the hollow's own entries (above MILK_G)
             k = keys[-1].copy()
             k[-1] = 0.0
             hit = np.flatnonzero((uniq == k).all(axis=1))

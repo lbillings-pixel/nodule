@@ -6,10 +6,21 @@ import math
 
 import numpy as np
 import pytest
+from agatesim.volume.config import SliceConfig, SolidConfig
 
 from nodule.variety import StoneRecipe, draw_sheet
+from nodule.variety import lumps as lumps_module
 from nodule.variety import recipe as recipe_module
-from nodule.variety.lumps import IRREGULAR, LOBATE, ball_level, draw_balls, lumps_solid
+from nodule.variety.draw import CLEAN_CUT, clean_cut, cut_obliqueness
+from nodule.variety.lumps import (
+    IRREGULAR,
+    LOBATE,
+    _remembered,  # pyright: ignore[reportPrivateUsage]
+    ball_level,
+    balls_of,
+    draw_balls,
+    lumps_solid,
+)
 
 # draws that do not depend on the solid's geometry
 OWN_DRAWS = ("seed", "colour", "warp", "band_mm", "wobble_mm", "wobble_scale_mm",
@@ -106,13 +117,62 @@ def test_ball_level_is_the_union() -> None:
 
 def test_lumpy_solids_are_one_piece_of_the_drawn_size() -> None:
     """A lumpy solid's longest side is the drawn size, it contains its centre and
-    has room inside; the same stream gives the same solid (remembered)."""
+    has room inside; the same stream draws the same solid again (cache cleared)."""
     for kind in ("irregular", "lobate"):
         cfg = lumps_solid(np.random.default_rng(np.random.SeedSequence(77)), kind, 44.0)
+        _remembered.cache_clear()
         again = lumps_solid(np.random.default_rng(np.random.SeedSequence(77)), kind, 44.0)
+        assert again is not cfg
         assert again == cfg
         solid = cfg.build()
         lo, hi = (np.asarray(b) for b in solid.bounds())
         assert float(np.max(hi - lo)) == pytest.approx(44.0, rel=0.02)
         assert solid.contains(np.zeros((1, 3)))[0]
         assert float(solid.wall_distance(np.zeros((1, 3)))[0]) > 8.0
+
+
+def test_a_lumpy_solids_balls_sit_on_its_wall() -> None:
+    """The balls registered for the cutter's rule (`balls_of`) are the stored solid's, in
+    its own mm: points on a ball's surface outside every other ball lie on the solid's wall
+    (within a few tenths of a cell), points at the balls' centres inside. Controls: balls
+    shifted by 2 mm miss the wall; another kind of solid has no balls."""
+    for kind in ("irregular", "lobate"):
+        solid = lumps_solid(np.random.default_rng(np.random.SeedSequence(5)), kind, 40.0).build()
+        balls = balls_of(solid)
+        assert balls is not None
+        centres, radii = balls
+        assert solid.contains(centres).all()
+        rng = np.random.default_rng(1)
+        d = rng.normal(size=(4000, 3))
+        d /= np.linalg.norm(d, axis=1)[:, None]
+        k = rng.integers(0, len(radii), 4000)
+        p = centres[k] + radii[k, None] * d
+        exposed = np.all(np.linalg.norm(p[:, None] - centres[None], axis=2) >= radii - 1e-9,
+                         axis=1)  # fmt: skip
+        assert exposed.sum() > 1000
+        cell = float(np.max(radii)) / 40  # a rough cell (the core spans ~40 grid cells)
+        assert np.median(np.abs(solid.level(p[exposed]))) < 0.3 * cell
+        shifted = np.abs(solid.level(p[exposed] + 2.0))
+        assert np.median(shifted) > 0.5
+    preset = SolidConfig(preset="vesicle-round", size_mm=40).build()
+    assert balls_of(preset) is None
+
+
+def test_the_cutter_avoids_grazing_a_lump(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The cutter's rule (`cut_obliqueness`, `clean_cut`) reads a lumpy solid's balls: a
+    cut grazing a lump scores near 1 and is redrawn to a clean one. Control: without its
+    balls (another process's solid) the rule cannot see the lump."""
+    solid = lumps_solid(np.random.default_rng(np.random.SeedSequence(9)), "lobate", 40.0).build()
+    rng = np.random.default_rng(2)
+    grazing = SliceConfig(tilt_deg=90.0, azimuth_deg=0.0, offset_mm=0.0)
+    for _ in range(400):
+        grazing = SliceConfig(tilt_deg=float(rng.uniform(70, 90)),
+                              azimuth_deg=float(rng.uniform(0, 360)),
+                              offset_mm=float(rng.uniform(-8.0, 8.0)))  # fmt: skip
+        if cut_obliqueness(solid, grazing) > 0.9:
+            break
+    assert cut_obliqueness(solid, grazing) > 0.9
+    chosen = clean_cut(np.random.default_rng(3), solid, grazing, 10.0)
+    assert cut_obliqueness(solid, chosen) <= CLEAN_CUT
+    monkeypatch.setattr(lumps_module, "_BALLS", {})
+    assert cut_obliqueness(solid, grazing) == 0.0

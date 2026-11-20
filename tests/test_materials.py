@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import math
 from dataclasses import replace
 
 import numpy as np
@@ -21,7 +20,6 @@ from nodule.render.materials import (
     HEMATITE_NK,
     MILK_G,
     STEPS,
-    VOID_TIME,
     Optics,
     OpticsTable,
     rayleigh_absorption,
@@ -305,7 +303,7 @@ def test_milk_takes_the_lining_quartz_only() -> None:
             for name in ("mua", "mus", "g", "f", "gb"):
                 assert np.array_equal(getattr(m, name)[row(m, k)],
                                       getattr(plain, name)[row(plain, k)])  # fmt: skip
-    # the hollow's entries (VOID_TIME): the last step again, then it without the milk
+    # the hollow's entries (`Scene.voidf`): the last step again, then it without the milk
     assert len(plain.profile) == STEPS
     assert len(milky.profile) == STEPS + 2
     assert milky.profile[STEPS] == milky.profile[STEPS - 1]
@@ -315,7 +313,6 @@ def test_milk_takes_the_lining_quartz_only() -> None:
         assert np.array_equal(getattr(milky, name)[hole], getattr(plain, name)[last])
     assert np.allclose(both.mua[2 + int(both.profile[STEPS + 1])],
                        plain.mua[last] + np.asarray(tint), atol=1e-6)  # fmt: skip
-    assert math.floor(VOID_TIME * STEPS) == STEPS + 1
     off = OpticsTable(milk_from=2).materials(rec)  # no milk: bit for bit as before
     for name in ("mua", "mus", "g", "f", "gb", "profile"):
         assert np.array_equal(getattr(off, name), getattr(plain, name))

@@ -43,6 +43,7 @@ from nodule.variety.cracks import (
 )
 from nodule.variety.dendrites import cut_site, meets_wall_on_cut
 from nodule.variety.layers import palette_of, volume_config
+from nodule.variety.lumps import balls_of
 from nodule.variety.mottle import MOTTLE_SHARE, MOTTLE_STONES, mottle_size
 from nodule.variety.recipe import (
     CENTRE_SHARES,
@@ -596,15 +597,20 @@ def _refine(
 
 def cut_obliqueness(solid: Solid, cut: SliceConfig) -> float:
     """Largest |offset| / radius over the spheres of an overlapping-sphere solid
-    that the cut crosses: 0 through every centre, near 1 where it grazes one
-    (a nub on the outline). 0 for other solids."""
+    (agatesim's presets, or a stone's own lumps, `lumps.balls_of`) that the cut
+    crosses: 0 through every centre, near 1 where it grazes one (a nub on the
+    outline). 0 for other solids."""
     rotation, inner = (solid.rotation, solid.inner) if isinstance(solid, Rotated) else (None, solid)
-    if not isinstance(inner, SphereUnion):
+    if isinstance(inner, SphereUnion):
+        centres, radii = inner.centres, inner.radii
+    elif (balls := balls_of(inner)) is not None:
+        centres, radii = balls
+    else:
         return 0.0
-    centres = inner.centres if rotation is None else inner.centres @ rotation.T
+    centres = centres if rotation is None else centres @ rotation.T
     plane = Plane.of(cut, solid.centre())
     z = np.abs((centres - plane.origin) @ plane.normal)
-    return float(np.max(np.where(z < inner.radii, z / inner.radii, 0.0)))
+    return float(np.max(np.where(z < radii, z / radii, 0.0)))
 
 
 def crack_cut_angle(solid: Solid, cut: SliceConfig, fractures: tuple[FractureLayer, ...]) -> float:

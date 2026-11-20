@@ -29,9 +29,9 @@ SCENE_DTYPE = np.dtype(
      ("ns", "<i4"), ("nt", "<i4"), ("nw", "<i4"),
      ("nsph", "<i4"), ("ntube", "<i4"), ("nfrac", "<i4"),
      ("sph", "<u8"), ("tube", "<u8"), ("frac", "<u8"), ("grid", "<u8"),
-     ("level", "<u8"), ("absorb", "<u8")]
+     ("level", "<u8"), ("absorb", "<u8"), ("voidf", "<u8")]
 )  # fmt: skip
-assert SCENE_DTYPE.itemsize == 136  # the CUDA struct's size, pointers 8-aligned
+assert SCENE_DTYPE.itemsize == 144  # the CUDA struct's size, pointers 8-aligned
 
 
 @dataclass(frozen=True)
@@ -53,6 +53,10 @@ class SceneArrays:
     # (`layerbake`); None: no layers. absorb_max: its largest value per channel (>= 0)
     absorb: F32 | None = None
     absorb_max: float = 0.0
+    # A milky lining's stand-in hollow (ADR 0019 s.6.12): 1 at void nodes, else 0, on the
+    # grid's nodes; where its trilinear value passes 1/2 the camera takes the material
+    # profile's last entry (the lining without the milk). None: no such switch.
+    voidf: F32 | None = None
 
 
 def pack(
@@ -62,12 +66,11 @@ def pack(
     absorb: F32 | None = None,
     void_mua: float = 0.0,
     air: NDArray[np.bool_] | None = None,
-    void_time: float | None = None,
+    voidf: F32 | None = None,
 ) -> SceneArrays:
     """void_mua: the absorption (mm^-1, every channel) added at the grid's void nodes,
     the open cavity's stand-in material (ADR 0019 A1); 0 leaves the void as its lining.
-    air: void nodes left without it (`with_void`). void_time: the growth time the void
-    nodes take (`GrowthGrid.filled`); None, their lining's."""
+    air: void nodes left without it (`with_void`). voidf: `SceneArrays.voidf`."""
     solid = specimen.volume.solid
     exact = isinstance(solid, SphereUnion)
     if not exact and grid.level is None:
@@ -99,13 +102,14 @@ def pack(
         spheres=spheres,
         tubes=tubes,
         fractures=fractures,
-        grid=grid.filled(void_time=void_time) if filled is None else filled,
+        grid=grid.filled() if filled is None else filled,
         covers_mm=min(
             float(grid.w[-1]) - (specimen.max_slip_mm + grid.spacing_mm), grid.full_depth_mm
         ),
         level=None if exact else grid.level,
         absorb=absorb,
         absorb_max=0.0 if absorb is None else max(float(absorb.max()), 0.0),
+        voidf=voidf,
     )
 
 
@@ -159,7 +163,7 @@ def upload(scene: SceneArrays) -> DeviceScene:
 
     cp = _gpu.cupy()
     arrays: dict[str, Any] = {}
-    for key in ("spheres", "tubes", "fractures", "grid", "level", "absorb"):
+    for key in ("spheres", "tubes", "fractures", "grid", "level", "absorb", "voidf"):
         a: F32 | None = getattr(scene, key)
         if a is None:
             continue
@@ -168,7 +172,8 @@ def upload(scene: SceneArrays) -> DeviceScene:
         )
     h = scene.header.copy()
     for field, key in (("sph", "spheres"), ("tube", "tubes"), ("frac", "fractures"),
-                       ("grid", "grid"), ("level", "level"), ("absorb", "absorb")):  # fmt: skip
+                       ("grid", "grid"), ("level", "level"), ("absorb", "absorb"),
+                       ("voidf", "voidf")):  # fmt: skip
         h[field] = arrays[key].data.ptr if key in arrays else 0
     struct = cp.asarray(np.frombuffer(h.tobytes(), np.uint8))
     return DeviceScene(

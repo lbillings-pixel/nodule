@@ -201,17 +201,8 @@ class GrowthGrid:
             full_depth_mm=depth_mm if deep else math.inf,
         )
 
-    def filled(self, passes: int = 3, linear: bool = True, void_time: float | None = None) -> F32:
-        """Growth time with NaN filled; void nodes take their lining's (`fill_void`), or
-        `void_time` when given (a time past the run's end that the material profile maps
-        to the hollow's own stand-in material, `OpticsTable.materials`)."""
-        if self.void is None:
-            g = self.values
-        elif void_time is None:
-            g = fill_void(self.values, self.void)
-        else:
-            g = self.values.astype(np.float32, copy=True)
-            g[self.void] = np.float32(void_time)
+    def filled(self, passes: int = 3, linear: bool = True) -> F32:
+        g = self.values if self.void is None else fill_void(self.values, self.void)
         return fill_nan(g, passes=passes, linear=linear)
 
     def lookup(self, restored: FloatArray, values: F32 | None = None) -> FloatArray:

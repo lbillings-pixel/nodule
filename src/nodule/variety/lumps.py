@@ -23,12 +23,14 @@ stay moderate. Appearance only: never evidence for how cavities form (ADR 0002).
 from __future__ import annotations
 
 import functools
+import hashlib
 import math
 from dataclasses import dataclass
 
 import numpy as np
 from agatesim.volume.config import SampledLevel, SolidConfig
-from agatesim.volume.sampled import CLAMP_CELLS, QUANT
+from agatesim.volume.sampled import CLAMP_CELLS, QUANT, Sampled
+from agatesim.volume.solids import Solid
 from numpy.typing import NDArray
 
 from nodule._scipy import largest_component_3d
@@ -132,19 +134,42 @@ def ball_level(centres: FloatArray, radii: FloatArray, grid: int = GRID) -> NDAr
 
 def stored_cells(level: NDArray[np.float32], grid: int = GRID) -> FloatArray:
     """The level agatesim stores: in cells, clamped, on the grid cropped to the
-    union's box plus PAD nodes; nodes that the 8-bit storage would read as a second
-    piece are turned outside (as `thunderegg3d.union_cells`)."""
+    union's box plus PAD nodes (`crop_start` gives where); nodes that the 8-bit storage
+    would read as a second piece are turned outside (as `thunderegg3d.union_cells`)."""
     cell = 2 * EXTENT / grid
     inside = largest_component_3d(level > 0)
-    idx = np.argwhere(inside)
-    lo = np.maximum(idx.min(axis=0) - PAD, 0)
-    hi = np.minimum(idx.max(axis=0) + PAD + 1, grid)
+    lo = crop_start(inside)
+    hi = np.minimum(np.argwhere(inside).max(axis=0) + PAD + 1, grid)
     sub = (slice(lo[0], hi[0]), slice(lo[1], hi[1]), slice(lo[2], hi[2]))
     cells = np.clip(level[sub].astype(np.float64) / cell, -CLAMP_CELLS, CLAMP_CELLS)
     cells = np.where((cells > 0) & ~inside[sub], -cells, cells)
     stored = np.rint(cells / CLAMP_CELLS * QUANT) > 0
     stray = stored & ~largest_component_3d(stored)
     return np.where(stray, -np.abs(cells), cells)
+
+
+def crop_start(inside: NDArray[np.bool_]) -> NDArray[np.int64]:
+    """The drawing-grid index of the stored lattice's node 0 (`stored_cells`' crop)."""
+    return np.maximum(np.argwhere(inside).min(axis=0) - PAD, 0)
+
+
+def sampled_key(solid: Sampled) -> tuple[object, ...]:
+    """A drawn cavity's identity: its lattice, scale and stored level (a 128-bit hash)."""
+    digest = hashlib.blake2b(solid.raw, digest_size=16).digest()
+    return (solid.shape, solid.cell_mm, digest)
+
+
+# Each lumpy solid's balls in its own frame (mm), by `sampled_key`: for the cutter's rule
+# (`draw.cut_obliqueness`), which agatesim's drawn cavity cannot answer.
+_BALLS: dict[tuple[object, ...], tuple[FloatArray, FloatArray]] = {}
+
+
+def balls_of(solid: Solid) -> tuple[FloatArray, FloatArray] | None:
+    """A lumpy solid's balls, centres (k, 3) and radii (k,) in mm in its own frame, as
+    drawn in this process; None for any other solid."""
+    if not isinstance(solid, Sampled):
+        return None
+    return _BALLS.get(sampled_key(solid))
 
 
 def lumps_solid(rng: np.random.Generator, kind: str, size_mm: float) -> SolidConfig:
@@ -173,12 +198,21 @@ def _remembered(
     style = STYLES[kind]
     for _ in range(TRIES):
         centres, radii = draw_balls(rng, style)
+        level = ball_level(centres, radii)
         try:
-            return SolidConfig(
-                sampled=SampledLevel.of(stored_cells(ball_level(centres, radii))),
+            cfg = SolidConfig(
+                sampled=SampledLevel.of(stored_cells(level)),
                 host=HOSTS[kind],  # type: ignore[arg-type]
                 size_mm=size_mm,
             )
         except ValueError:
             continue
+        solid = cfg.build()
+        assert isinstance(solid, Sampled)
+        # shape units to the solid's mm: node i of the stored lattice is drawing-grid
+        # node crop_start + i, at origin + cell_mm i
+        c0 = CENTRES[crop_start(largest_component_3d(level > 0))]
+        scale = solid.cell_mm / CELL
+        _BALLS[sampled_key(solid)] = (solid.origin + (centres - c0) * scale, radii * scale)
+        return cfg
     raise RuntimeError(f"no {kind} lumps accepted in {TRIES} draws")

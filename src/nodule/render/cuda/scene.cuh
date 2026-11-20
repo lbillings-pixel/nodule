@@ -17,6 +17,8 @@ struct Scene {
     const float* level;  // (nw, nt, ns): the solid's signed level, for outlines other than
                          // sphere unions (nsph 0); null: test the spheres (ADR 0019)
     const float* absorb; // 3 x (nw, nt, ns): the layers' added absorption (mm^-1); null: none
+    const float* voidf;  // (nw, nt, ns): 1 at a milky lining's stand-in void nodes, else 0;
+                         // over 1/2 (trilinear) takes the profile's last entry; null: none
 };
 
 __device__ __forceinline__ float bell(float s) { float c = fminf(s, 1.f); float q = 1.f - c * c; return q * q; }

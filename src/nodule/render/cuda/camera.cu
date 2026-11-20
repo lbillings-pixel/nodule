@@ -60,7 +60,11 @@ __device__ Mat matid(const Scene& S, const Cam& C, const Shift& H, const unsigne
     if (!(C.flags & 4)) {
         int c = classify(S, x, y, z, t, C.flags & 1);           // x, y, z now restored
         if (c < 2) M.m = c;
-        else { int u = (int)floorf(t / C.dt); u = min(max(u, 0), C.nprof - 1); M.m = 2 + prof[u]; }
+        else {
+            int u = (int)floorf(t / C.dt); u = min(max(u, 0), C.nprof - 1); M.m = 2 + prof[u];
+            // a milky lining's stand-in hollow: the lining without the milk (ADR 0019 s.6.12)
+            if (S.voidf != nullptr && grid_at(S, S.voidf, x, y, z) > 0.5f) M.m = 2 + prof[C.nprof - 1];
+        }
     }
     for (int c = 0; c < 3; ++c) M.a[c] = mua[3 * M.m + c];
     if (S.absorb != nullptr && M.m >= 2) {                      // the layers (ADR 0019)
@@ -105,15 +109,25 @@ __device__ void ratio(const Scene& S, const Cam& C, const Shift& H, const unsign
 
 #ifdef NODULE_VOID
 #define LEG_SKIP_CAP 4.f   // a shadow leg's longest skip, in steps (vstep)
-// Does a straight shadow leg from (x, y, z) along unit l, of length L, meet the hollow's air?
-// Tested at the flights' steps (vstep), from the leg's start; a stone's box (kind 1) clips the
-// leg to the box first, as air lies nowhere else. A shadow leg cannot bend at the wall, so one
-// that meets air carries nothing; routes through the hollow are left to phase sampling at
-// weight 1 (ADR 0019 s.6.12, the small lamp).
+// Is a straight shadow leg from (x, y, z) along unit l, of length L, blocked by the hollow: does
+// it meet the hollow's air, or (a stone's box) leave the shell below the slab (depth D), where
+// a path meets the bottom's rule (lost when black)? Air is tested at the flights' steps (vstep)
+// from the leg's start, clipped to the box (kind 1), as air lies nowhere else. A shadow leg
+// cannot bend at the wall, so one that meets air carries nothing; routes through the hollow
+// are left to phase sampling at weight 1 (ADR 0019 s.6.12, the small lamp).
 __device__ bool leg_meets_air(const Void& V, const Scene& S, float x, float y, float z,
-                              float lx, float ly, float lz, float L) {
+                              float lx, float ly, float lz, float L, float D) {
     if (V.kind == 0 || !(L > 0.f) || (V.flags & VFLAG_LEGS_IGNORE_AIR)) return false;
     float st = vstep(V), v[2], s0 = 0.f, s1 = L;
+    if (V.kind == 1 && vdepth(S, x, y, z) > D) {                // below the slab: in the shell?
+        float up = lx * S.n[0] + ly * S.n[1] + lz * S.n[2];     // depth falls at this rate
+        float below = up > 0.f ? fminf((vdepth(S, x, y, z) - D) / up, L) : L;
+        for (int it = 1; it < 1000000; ++it) {
+            float q = fminf(it * st, below);
+            if (!in_shell(V, x + lx * q, y + ly * q, z + lz * q)) return true;
+            if (q >= below) break;
+        }
+    }
     if (V.kind == 1) {                                          // the part inside the box
         const float p[3] = {x, y, z}, d[3] = {lx, ly, lz};
         const int a0[3] = {V.ax, V.ay, V.az}, n[3] = {V.nx, V.ny, V.nz};
@@ -128,19 +142,22 @@ __device__ bool leg_meets_air(const Void& V, const Scene& S, float x, float y, f
         }
         if (!(s0 <= s1)) return false;
     }
-    // Skips (sphere tracing on the air test's own values; LEG_SKIP_CAP steps at most): phi, the
+    // Skips (sphere tracing on the air test's own values; LEG_SKIP_CAP steps at most). phi, the
     // chalcedony's level, changes by at most ~1.2 per mm (a wall distance plus its wobble), so a
-    // point at phi < 0 lies at least -phi / 1.5 from air; the crystals' arrival time changes by
-    // at most max(elongation, 1 + cot) per mm, and the box's earliest of 8 corner crystals can
-    // only overstate it, so a point at level < 0 lies at least -level / (2 max(...)) from air.
-    float lip = 2.f * fmaxf(V.elong, V.cot_a + 1.f), s = fmaxf(s0, 0.f) + st;
+    // point at phi < 0 lies at least -phi / 1.5 from air (tube cores read minus the reach, a
+    // jump the cap bounds). The crystals' arrival time changes by at most K = max(elongation,
+    // 1 + cot) per mm, and the box's earliest of a cell's 8 corner crystals overstates the true
+    // earliest by at most K sqrt(3) h (each corner's owner is the true earliest at its node), so
+    // a point at box level -L lies at least L / K - sqrt(3) h from box air (the 2026-11-20
+    // review's bound; analytic shapes: h 0, K 1, their level an exact distance).
+    float K = fmaxf(V.elong, V.cot_a + 1.f), slack = 1.7320508f * V.h, s = fmaxf(s0, 0.f) + st;
     for (int it = 0; it < 1000000; ++it) {
         float q = fminf(s, s1);
         if (air_at(V, S, x + lx * q, y + ly * q, z + lz * q, v)) return true;
         if (q >= s1) break;
         float skip = 0.f;
         if (v[1] < 0.f) skip = -v[1] / 1.5f;
-        else if (v[0] < 0.f) skip = -v[0] / lip;
+        else if (v[0] < 0.f) skip = -v[0] / K - slack;
         s += fminf(fmaxf(skip, st), LEG_SKIP_CAP * st);
     }
     return false;
@@ -175,7 +192,7 @@ __device__ void nee(const Scene& S, const Cam& C, const Shift& H, const unsigned
     float d0 = -((x - S.o[0]) * S.n[0] + (y - S.o[1]) * S.n[1] + (z - S.o[2]) * S.n[2]);
     float T[3];
 #ifdef NODULE_VOID
-    bool open = !leg_meets_air(V, S, x, y, z, lx, ly, lz, d0 / ct);
+    bool open = !leg_meets_air(V, S, x, y, z, lx, ly, lz, d0 / ct, C.D);
 #else
     bool open = true;
 #endif
@@ -191,8 +208,8 @@ __device__ void nee(const Scene& S, const Cam& C, const Shift& H, const unsigned
         float L1 = (C.D - d0) / ct, T1[3], T2[3];
 #ifdef NODULE_VOID
         float bx = x + mx * L1, by = y + my * L1, bz = z + mz * L1;
-        if (leg_meets_air(V, S, x, y, z, mx, my, mz, L1) ||
-            leg_meets_air(V, S, bx, by, bz, lx, ly, lz, C.D / ct)) return;
+        if (leg_meets_air(V, S, x, y, z, mx, my, mz, L1, C.D) ||
+            leg_meets_air(V, S, bx, by, bz, lx, ly, lz, C.D / ct, C.D)) return;
 #endif
         ratio(S, C, H, prof, mua, mus, x, y, z, mx, my, mz, L1, T1, r);
         ratio(S, C, H, prof, mua, mus, x + mx * L1, y + my * L1, z + mz * L1, lx, ly, lz, C.D / ct, T2, r);

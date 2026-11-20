@@ -7,7 +7,6 @@ Appearance only: never evidence for a formation mechanism (ADR 0002).
 from __future__ import annotations
 
 import math
-import zlib
 from typing import Literal
 
 import numpy as np
@@ -29,7 +28,7 @@ from nodule.rind import SEDIMENT, VOLCANIC, Rind
 from nodule.thunderegg import ARMS_BASE, JAGGED_SHARE, ArmShape, ArmStyle
 from nodule.thunderegg3d import LENS_SHARE, LensStyle, jagged_solid, lens_solid, sinuous_solid
 from nodule.tubes import NO_TUBES, Channel
-from nodule.variety.lumps import lumps_solid
+from nodule.variety.lumps import lumps_solid, sampled_key
 
 Centre = Literal["solid", "quartz-filled", "quartz-lined"]
 
@@ -560,7 +559,7 @@ def cavity_depth(solid: Solid) -> float:
     sheet asked for each lumpy stone's several times)."""
     key = None
     if isinstance(solid, Sampled):
-        key = (solid.shape, solid.cell_mm, zlib.crc32(solid.raw), solid.raw[:64])
+        key = sampled_key(solid)
         known = _SAMPLED_DEPTHS.get(key)
         if known is not None:
             return known

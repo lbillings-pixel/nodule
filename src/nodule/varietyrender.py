@@ -2,7 +2,9 @@
 ADR 0018's features through the path tracer instead of the stand-in colours.
 
 Per stone, two views of each cut, on one grid fill (owner's choice, ADR 0019 B3); an
-open cavity renders dark in the look and as a hole in the slice (ADR 0019 A1):
+open cavity renders dark in the look and as a hole in the slice (ADR 0019 A1), except a
+crystal-lined hollow in the whole face's look, drawn as air so its wall shows (ADR 0019
+s.6.12 step 4; `--stand-in` keeps the dark stand-in there too):
 
 - **the look**: the dome (L1, ADR 0008 7c) over a grey matte bottom (ADR 0019 s.6.5)
   5 mm down (s.6.10; close-ups 2 mm, CLOSE_LOOK_MM) without the face's mirror
@@ -26,6 +28,7 @@ import math
 import time
 from dataclasses import replace
 from pathlib import Path
+from typing import Literal
 
 import numpy as np
 from agatesim import progress
@@ -36,6 +39,7 @@ from nodule.render.cutface import LOOK_DEPTH_MM, CutRenderer, Rendering
 from nodule.render.fakes import stone_record
 from nodule.render.materials import OpticsTable
 from nodule.render.record import STEPS, BandRecord
+from nodule.render.voidbox import VoidBox, build_void_box
 from nodule.sheet import dressed_look, dustiest, preview_rgb
 from nodule.specimen import Specimen, SpecimenCut, window_cut
 from nodule.variety import StoneRecipe, build, cut_of, draw_sheet
@@ -122,7 +126,11 @@ def render_stone(
     spp: int = SPP,
     optics: OpticsTable | None = None,
     close_ups: bool = True,
+    hollow: Literal["air", "stand-in"] = "air",
 ) -> dict[str, object]:
+    """One stone's views (module docstring). hollow: a crystal-lined hollow in the whole
+    face's look drawn as air (its void box built here), or the stand-in; the backlit
+    slice and the close-ups keep the stand-in."""
     optics = optics_for(r, optics)
     t0 = time.perf_counter()
     specimen, _ = build(r)
@@ -137,7 +145,15 @@ def render_stone(
     name = f"stone-{r.index + 1:02d}"
     grid_mm = whole_grid_mm(r, cut)
     row["whole_grid_mm"] = round(grid_mm, 3)
-    row |= views(specimen, cut, r, record, grid_mm, optics, spp, rng, out / name, "whole")
+    # the hollow drawn as air in the whole face's look (ADR 0019 s.6.12 step 4)
+    box = None
+    if hollow == "air":
+        tb = time.perf_counter()
+        box = build_void_box(specimen.volume)
+        row["box_s"] = round(time.perf_counter() - tb, 1)
+    row["hollow"] = "air" if box is not None else "stand-in"
+    row |= views(specimen, cut, r, record, grid_mm, optics, spp, rng, out / name, "whole",
+                 box=box)  # fmt: skip
     Image.fromarray(preview_rgb(cut, r)).save(out / f"{name}-preview.png")
     if r.dust is not None and close_ups:
         near = window_cut(specimen, cut, dustiest(cut, CLOSE_MM), CLOSE_MM, CLOSE_PIXEL_MM)
@@ -160,13 +176,16 @@ def views(
     stem: Path,
     key: str,
     look_mm: float = LOOK_DEPTH_MM,
+    box: VoidBox | None = None,
 ) -> dict[str, object]:
     """The look (`look_mm` deep) and the backlit slice of one cut, on one grid fill;
     saves `<stem>-look.png` (host, specks and rind drawn on, `dressed_look`) and
-    `<stem>-backlit.png` (as rendered)."""
-    look = CutRenderer(specimen, cut, Rendering.look(record, grid_mm=grid_mm, optics=optics,
-                                                     depth_mm=look_mm),
-                       rng, fill_depth_mm=max(SLICE_MM, look_mm))  # fmt: skip
+    `<stem>-backlit.png` (as rendered). With the stone's void box the look draws the
+    hollow as air (the grid continues down under it); the slice keeps the stand-in."""
+    hollow: Literal["air", "stand-in"] = "air" if box is not None else "stand-in"
+    look =CutRenderer(specimen, cut, Rendering.look(record, grid_mm=grid_mm, optics=optics,
+                                                     depth_mm=look_mm, hollow=hollow),
+                       rng, fill_depth_mm=max(SLICE_MM, look_mm), box=box)  # fmt: skip
     back = look.on(Rendering.transmitted(record, grid_mm=grid_mm, depth_mm=SLICE_MM,
                                          optics=optics, exposure=BACKLIT_EXPOSURE,
                                          rolloff_knee=BACKLIT_KNEE))  # fmt: skip
@@ -228,6 +247,9 @@ def main(argv: list[str] | None = None) -> None:
     )
     parser.add_argument("--whole-only", action="store_true", help="no close-ups")
     parser.add_argument(
+        "--stand-in", action="store_true", help="hollows as the dark stand-in, not air"
+    )
+    parser.add_argument(
         "--stones", type=int, nargs="*", help="stone numbers (1-based); default all"
     )
     args = parser.parse_args(argv)
@@ -247,7 +269,8 @@ def main(argv: list[str] | None = None) -> None:
         if r.index + 1 in done:
             continue
         optics = OpticsTable(phi_iron_oxide=OpticsTable().phi_iron_oxide * args.phi_scale)
-        row = render_stone(r, out, args.spp, optics, close_ups=not args.whole_only)
+        row = render_stone(r, out, args.spp, optics, close_ups=not args.whole_only,
+                           hollow="stand-in" if args.stand_in else "air")  # fmt: skip
         done[r.index + 1] = row
         with log.open("a", encoding="utf-8") as f:
             f.write(json.dumps(row) + "\n")

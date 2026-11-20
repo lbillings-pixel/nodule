@@ -223,10 +223,11 @@ def test_index_matched_box_walls_all_pass(lined) -> None:
 def test_shell_exit_turns_once(lined) -> None:
     """A path leaving the shell below the slab meets the matte bottom's rule once: the turn
     is made from inside the shell (ADR 0019 s.6.12, 2026-11-19). In a scattering stone (short
-    flights, as chalcedony; on geode 4/4 1.12 turns an exit) a run of turns with nothing
-    between is then rare; in clear stone a turned path can fly out again at once, a real
-    second bounce (1.7 here, runs/hollow-air/shell_test_probe.py). Control: turned in place,
-    outside the shell, the next short flight meets the rule again (2.3 an exit on 4/4)."""
+    flights, as chalcedony; on geode 4/4 1.12 turns a run) a run of turns with nothing
+    between is then rare (a floor: one step inside ends a run); in clear stone a turned path
+    can fly out again at once (1.7 here, runs/hollow-air/shell_test_probe.py). Control:
+    turned in place, outside the shell, the next short flight meets the rule again (2.3 a
+    run on 4/4)."""
     from nodule.specimen import Specimen
     from test_voidbox import recipe  # pyright: ignore[reportMissingImports]
 

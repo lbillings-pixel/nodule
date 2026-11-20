@@ -813,10 +813,13 @@ stones none; white fine needles alone take the finer grid, within the budget
          its absorber: x1.6; quartz scattering like the stone's milkiest chalcedony: x20.
        - *A fault in the shell's exit rule, fixed:* the turn left the path outside the
          shell, so the next short flight met the rule again, 2.25 turns an exit on 4/4 (x0.15
-         each). The turn is now made from where the flight began, inside the shell (1.12 an
-         exit): the hollow's centre 0.011 -> 0.014, its rim and the face unchanged. Test:
-         `test_shell_exit_turns_once` (control: the old turn, `voidgpu.SHELL_STAY`). In clear
-         stone a turned path can leave again in one flight, a true second bounce (1.7 an exit).
+         each). The turn is now made from where the flight began, inside the shell: the
+         hollow's centre 0.011 -> 0.014, its rim and the face unchanged; turned about -d
+         instead of up (a probe variant, not kept), the same (0.0136). Test: `test_shell_exit_turns_once` (control: the
+         old turn, `voidgpu.SHELL_STAY`). Its count (1.12 turns a run on 4/4) is a floor: one
+         step inside the shell ends a run, so a quick re-exit counts as a new one. In clear
+         stone a turned path can leave again in one flight (1.7 a run); untested whether that
+         matches a reflector at the shell's edge.
        - *The dark ring is the look's clear quartz,* not the rule below the hollow (as Claude
          first told the owner): the lining's crystal layer, cut, reads 0.034 under air, 0.017
          under the stand-in, and 5 mm of the same quartz, flat over the grey bottom, 0.014. It

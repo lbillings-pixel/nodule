@@ -13,6 +13,10 @@ s.6.12 step 4; `--stand-in` keeps the dark stand-in there too):
   one fixed exposure so slices differ in how much light they pass, with a highlight
   roll-off (BACKLIT_KNEE) so clear bands keep their shading.
 
+With `--sparkle`, a crystal-lined hollow's whole face also gets **the sparkle view**: the
+look plus a small lamp on the same fill, its crystal faces glinting (SPARKLE_LAMP; ADR 0019
+s.6.12 step 5).
+
 The whole face, and for a dusty stone a 12 mm close-up at 0.03 mm pixels where its dust
 is densest, each beside its stand-in preview. No photo blur or noise: these are for the
 eye, not the blind test.
@@ -35,7 +39,8 @@ from agatesim import progress
 from PIL import Image, ImageDraw
 
 from nodule.plumes import STAGE
-from nodule.render.cutface import LOOK_DEPTH_MM, CutRenderer, Rendering
+from nodule.render.camera import Light
+from nodule.render.cutface import LOOK_DEPTH_MM, CutRenderer, Rendering, sparkle_rgb
 from nodule.render.fakes import stone_record
 from nodule.render.materials import OpticsTable
 from nodule.render.record import STEPS, BandRecord
@@ -68,6 +73,15 @@ BACKLIT_EXPOSURE = 3.0
 # 2026-11-09, ADR 0019 s.6.6): `effective`; the bare light box stays white
 BACKLIT_KNEE = 0.6
 VIEWS = ("look", "backlit")
+# The sparkle view (`--sparkle`; ADR 0019 s.6.12 step 5): the look plus a small lamp, for a
+# crystal-lined hollow drawn as air, its faces glinting; the soft look stays the default
+# (owner, 2026-11-19). The lamp: a disc at 45 deg from the normal toward the upper left, of
+# SPARKLE_RADIUS_DEG and SPARKLE_SHARE of the dome's irradiance. All `effective`, chosen on
+# 4/4 (runs/hollow-air/sparkle_probe.py).
+SPARKLE_RADIUS_DEG = 2.5
+SPARKLE_SHARE = 0.5
+SPARKLE_LAMP = Light("disc", theta_deg=45.0, phi_deg=135.0, irradiance=SPARKLE_SHARE * math.pi,
+                     radius_deg=SPARKLE_RADIUS_DEG)  # fmt: skip
 # Hematite pigment's red absorption and carnelian's loading (owner's pick from the
 # 2026-11-09 carnelian sweeps, ADR 0019 s.6): `effective`, *speculative*.
 HEMATITE_RED_K = 0.05
@@ -154,10 +168,12 @@ def render_stone(
     optics: OpticsTable | None = None,
     close_ups: bool = True,
     hollow: Literal["air", "stand-in"] = "air",
+    sparkle: bool = False,
 ) -> dict[str, object]:
     """One stone's views (module docstring). hollow: a crystal-lined hollow in the whole
     face's look drawn as air (its void box built here), or the stand-in; the backlit
-    slice and the close-ups keep the stand-in."""
+    slice and the close-ups keep the stand-in. sparkle: also the whole face's sparkle view
+    when its hollow is drawn as air (SPARKLE_LAMP)."""
     optics = optics_for(r, optics)
     t0 = time.perf_counter()
     specimen, _ = build(r)
@@ -180,7 +196,7 @@ def render_stone(
         row["box_s"] = round(time.perf_counter() - tb, 1)
     row["hollow"] = "air" if box is not None else "stand-in"
     row |= views(specimen, cut, r, record, grid_mm, optics, spp, rng, out / name, "whole",
-                 box=box)  # fmt: skip
+                 box=box, sparkle=sparkle)  # fmt: skip
     Image.fromarray(preview_rgb(cut, r)).save(out / f"{name}-preview.png")
     if r.dust is not None and close_ups:
         near = window_cut(specimen, cut, dustiest(cut, CLOSE_MM), CLOSE_MM, CLOSE_PIXEL_MM)
@@ -204,11 +220,14 @@ def views(
     key: str,
     look_mm: float = LOOK_DEPTH_MM,
     box: VoidBox | None = None,
+    sparkle: bool = False,
 ) -> dict[str, object]:
     """The look (`look_mm` deep) and the backlit slice of one cut, on one grid fill;
     saves `<stem>-look.png` (host, specks and rind drawn on, `dressed_look`) and
     `<stem>-backlit.png` (as rendered). With the stone's void box the look draws the
-    hollow as air (the grid continues down under it); the slice keeps the stand-in."""
+    hollow as air (the grid continues down under it); the slice keeps the stand-in. With
+    sparkle and a void box, also `<stem>-sparkle.png`: the look plus SPARKLE_LAMP on the
+    same fill (`sparkle_rgb`), dressed as the look."""
     hollow: Literal["air", "stand-in"] = "air" if box is not None else "stand-in"
     look =CutRenderer(specimen, cut, Rendering.look(record, grid_mm=grid_mm, optics=optics,
                                                      depth_mm=look_mm, hollow=hollow),
@@ -223,12 +242,20 @@ def views(
         Image.fromarray(rgb[::-1]).save(f"{stem}-{view}.png")
         row |= {f"{key}_{view}_s": round(cr.render_s, 1), f"{key}_{view}_noise": round(cr.noise, 2)}
     row[f"{key}_look_exposure"] = round(look.exposure, 2)
+    if sparkle and box is not None:
+        lamp = look.on(Rendering.lamp(record, SPARKLE_LAMP, grid_mm=grid_mm, optics=optics,
+                                      depth_mm=look_mm, hollow="air"))  # fmt: skip
+        lamp.more(spp)
+        rgb = dressed_look(specimen, cut, recipe, sparkle_rgb(look, lamp))
+        Image.fromarray(rgb[::-1]).save(f"{stem}-sparkle.png")
+        row[f"{key}_sparkle_s"] = round(lamp.render_s, 1)
     return row
 
 
 COLUMNS = {
     "look": "look (dome, no face glare)",
     "backlit": f"backlit {SLICE_MM:g} mm slice",
+    "sparkle": "sparkle (small lamp)",
     "preview": "stand-in preview",
     "close-look": "12 mm look",
     "close-backlit": "12 mm backlit",
@@ -277,6 +304,9 @@ def main(argv: list[str] | None = None) -> None:
         "--stand-in", action="store_true", help="hollows as the dark stand-in, not air"
     )
     parser.add_argument(
+        "--sparkle", action="store_true", help="also the sparkle view (a small lamp) of hollows"
+    )
+    parser.add_argument(
         "--stones", type=int, nargs="*", help="stone numbers (1-based); default all"
     )
     args = parser.parse_args(argv)
@@ -297,7 +327,8 @@ def main(argv: list[str] | None = None) -> None:
             continue
         optics = OpticsTable(phi_iron_oxide=OpticsTable().phi_iron_oxide * args.phi_scale)
         row = render_stone(r, out, args.spp, optics, close_ups=not args.whole_only,
-                           hollow="stand-in" if args.stand_in else "air")  # fmt: skip
+                           hollow="stand-in" if args.stand_in else "air",
+                           sparkle=args.sparkle)  # fmt: skip
         done[r.index + 1] = row
         with log.open("a", encoding="utf-8") as f:
             f.write(json.dumps(row) + "\n")

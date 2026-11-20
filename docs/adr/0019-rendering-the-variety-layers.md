@@ -928,6 +928,25 @@ stones none; white fine needles alone take the finer grid, within the budget
        control flag LEGS_IGNORE_AIR); with no air the void kernel gives the plain kernel's
        image under the lamp too, sample for sample. The matte bottom stays dome-only (no
        NEE reaches it), so a lamp pass takes the black bottom.
+     - *The sparkle view (step 5, built; awaiting the owner's look).* `varietyrender
+       --sparkle` adds, for a crystal-lined hollow drawn as air, `<stone>-sparkle.png`: the
+       look plus a lamp pass on the same fill (`Rendering.lamp`, `sparkle_rgb`), exposed so
+       the face without its hollow keeps the look's mean lightness; facets mirroring the lamp
+       clip to white, as glints do in photographs. The lamp (`SPARKLE_LAMP`, all
+       `effective`): a disc 45 deg from the normal toward the upper left, radius 2.5 deg (L2's)
+       and half the dome's irradiance. On 4/4 (its own lumps, six-faced crystals, milk 0.79;
+       probe set-up, runs/hollow-air/sparkle_probe.py): 4.8 % of the hollow's pixels glint to
+       white at 2.5 deg, 1.2 % at 5 deg (dimmer glints), mostly on the far wall, which faces
+       the lamp. Cost (runs/hollow-air/lamp_cost.py, 64 spp): the leg test was 3/4 of the lamp
+       pass (58 s; 13 s without it, the dome look 7 s), since the milky lining scatters and
+       every collision there sends a leg through the crystals, each step evaluating 8
+       crystals. Clipping legs to the box changed nothing (they lie in it); skipping ahead by
+       the air test's own values (phi changes at most ~1.2 per mm; the crystals' arrival at
+       most max(elongation, 1 + cot alpha) per mm, which the box's 8-corner estimate can only
+       overstate; skips capped at 4 steps) brought it to 40 s. A whole face at 256 spp: about
+       11 min more a hollow stone. Tests: the composite keeps the face's lightness and lights
+       the hollow (control: a lamp of no irradiance gives the look back); the combined
+       estimate equals phase sampling over a real stone's box too (control: legs let through).
 
 ## Consequences
 

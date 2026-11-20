@@ -144,9 +144,11 @@ class Rendering:
         if self.hollow not in ("stand-in", "air"):
             raise ValueError(f"hollow must be 'stand-in' or 'air', not {self.hollow!r}")
         if self.hollow == "air" and (
-            self.light.kind != "dome" or self.glare or self.bottom not in ("black", "matte")
+            self.light.kind not in ("dome", "disc")
+            or self.glare
+            or self.bottom not in ("black", "matte")
         ):
-            raise ValueError("the hollow as air: dome, no glare, black or matte bottom")
+            raise ValueError("the hollow as air: dome or lamp, no glare, black or matte bottom")
         if self.match_lightness and self.light.kind != "dome":
             raise ValueError("lightness is matched to the dome's photo-compare rendering")
         if self.bottom not in ("air", "black", "matte"):
@@ -191,6 +193,18 @@ class Rendering:
             kw["bottom"] = "matte"
             kw.setdefault("bottom_albedo", (LOOK_BOTTOM_ALBEDO,) * 3)
         return cls.reflected(record, **kw)
+
+    @classmethod
+    def lamp(cls, record: BandRecord, light: Light, **kw: Any) -> Rendering:
+        """A small lamp (a disc, L2 of ADR 0007 7b) over the look's slab, for the sparkle
+        view (ADR 0019 s.6.12 step 5): no face glare, as the look; the black bottom, since
+        the matte one takes no shadow rays. Added to the look, not shown alone."""
+        if light.kind != "disc":
+            raise ValueError("the sparkle view's lamp is a disc")
+        kw |= {"glare": False}
+        kw.setdefault("depth_mm", LOOK_DEPTH_MM)
+        kw.setdefault("bottom", "black")
+        return cls(light, record, kw.pop("depth_mm"), **kw)
 
     @classmethod
     def transmitted(cls, record: BandRecord, **kw: Any) -> Rendering:
@@ -396,6 +410,23 @@ class CutRenderer:
         self.rgb = to_rgb(mean, r.light, self.exposure, knee)
         self.noise = half_noise(a, b, self._face)
         self.render_s += time.perf_counter() - t0
+
+    def linear(self) -> NDArray[np.float64]:
+        """The mean linear image so far (radiance per channel, rows as `rgb` before any
+        flip)."""
+        return (self._sums[0] + self._sums[1]) / max(self.spp, 1)
+
+
+def sparkle_rgb(look: CutRenderer, lamp: CutRenderer) -> NDArray[np.uint8]:
+    """The sparkle view (ADR 0019 s.6.12 step 5): the look plus a lamp pass on the same
+    fill (`Rendering.lamp`; its strength is the lamp's irradiance against the dome's),
+    exposed so the stone's face without its hollow keeps the look's mean lightness. Facets
+    that mirror the lamp clip to white, as glints do in a photograph."""
+    a, b = look.linear(), lamp.linear()
+    total = a + b
+    face = look._face
+    scale = float(a[face].mean()) / max(float(total[face].mean()), 1e-30)
+    return to_rgb(total, look.rendering.light, look.exposure * scale, None)
 
 
 @dataclass(frozen=True)

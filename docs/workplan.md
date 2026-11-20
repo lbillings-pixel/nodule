@@ -184,6 +184,12 @@ before any statistics.
   2026-11-20: reading done (ADR 0019 s.6.12 "Reading on milky druse"): agate druse mostly
   colourless or clear; milky stays an effective look. Owner: even per stone, spread from
   near-clear up to D, amethyst hollow shown both ways. Next: build the linings' milkiness.
+  2026-11-20: milky linings built (s.6.12 "Built"); owner: 0.67 and D both fine (4 in 5
+  stones 2/3..D), amethyst and smoky near-clear. Night (owner away, autonomy granted): six-
+  faced tips built in agatesim (ADR 0092, branch not pushed; nodule ready for it), own lumps
+  per irregular and lobate stone (ADR 0018 s.25), the small lamp and the sparkle view
+  (s.6.12 step 5). Next: the owner's look at the whole faces, push agatesim and move the
+  pin, then item 19 B (scattering by place).
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

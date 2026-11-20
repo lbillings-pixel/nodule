@@ -404,3 +404,80 @@ def test_cut_renderer_draws_the_hollow_as_air_and_shares_its_fill(lined) -> None
     assert lum[0] > lum[1] + 10  # the stand-in reads dark, the air shows the far wall
     with pytest.raises(ValueError, match="void box"):
         CutRenderer(spec, near, look, np.random.default_rng(2)).on(look)
+
+
+def test_the_sparkle_view_adds_the_lamp_and_keeps_the_face(lined) -> None:
+    """The sparkle view (`sparkle_rgb`): a lamp pass (`Rendering.lamp`) on the look's fill,
+    added and exposed so the face without its hollow keeps the look's mean lightness, the
+    hollow lit by the lamp as well. Controls: only a disc makes a lamp; a lamp pass of zero
+    irradiance gives the look back."""
+    from nodule.render.cutface import CutRenderer, Rendering, sparkle_rgb
+    from nodule.render.fakes import stone_record
+    from nodule.render.record import void_points
+    from nodule.specimen import window_cut
+    from nodule.variety import build, cut_of
+    from test_voidbox import recipe  # pyright: ignore[reportMissingImports]
+
+    _, box = lined
+    spec, _ = build(recipe())
+    cut = cut_of(spec, recipe(), 0.2)
+    jj, ii = np.nonzero(void_points(cut.fields, cut.inside))
+    near = window_cut(spec, cut, (float(cut.s[ii].mean()), float(cut.t[jj].min())), 6.0, 0.1)
+    record = stone_record(spec, np.random.default_rng(1))
+    look = CutRenderer(spec, near, Rendering.look(record, grid_mm=0.2, depth_mm=1.0,
+                                                  hollow="air"), np.random.default_rng(2),
+                       box=box)  # fmt: skip
+    look.more(32)
+    lamp_light = Light("disc", theta_deg=45.0, phi_deg=135.0, irradiance=math.pi / 2)
+    lamp = look.on(Rendering.lamp(record, lamp_light, grid_mm=0.2, depth_mm=1.0, hollow="air"))
+    lamp.more(32)
+    assert lamp.crossings > 0.05  # the lamp pass draws the hollow as air too
+    rgb = sparkle_rgb(look, lamp)
+    from nodule.sheet import srgb_to_linear
+
+    face = look._face  # kept before clipping; clipping can only take a little off
+    lin, base = srgb_to_linear(rgb), srgb_to_linear(look.rgb)
+    assert face.sum() > 1000
+    assert 0.9 < lin[face].mean() / base[face].mean() < 1.02
+    hole = void_points(near.fields, near.inside)
+    assert not np.array_equal(rgb[hole], look.rgb[hole])
+    dark = look.on(Rendering.lamp(record, Light("disc", irradiance=0.0), grid_mm=0.2,
+                                  depth_mm=1.0, hollow="air"))  # fmt: skip
+    with np.errstate(divide="ignore", invalid="ignore"):  # its own preview has no white
+        dark.more(2)
+    assert np.array_equal(sparkle_rgb(look, dark), look.rgb)
+    with pytest.raises(ValueError, match="disc"):
+        Rendering.lamp(record, DOME)
+
+
+def test_the_lamp_weights_stay_unbiased_over_a_stone_box(lined) -> None:
+    """As over the analytic air, on a stone's own crystal-lined hollow (its box clips the
+    shadow legs before testing them for air): the combined estimate equals phase sampling
+    alone under a wide lamp. Control: shadow legs let through the air read biased."""
+    from nodule.specimen import Specimen
+    from test_voidbox import recipe  # pyright: ignore[reportMissingImports]
+
+    vol, box = lined
+    plane = Specimen(volume=vol, fractures=()).plane(recipe().cut)
+    sa = scene.homogeneous()
+    h = sa.header.copy()
+    h["o"], h["u"], h["v"], h["n"] = plane.origin, plane.u, plane.v, plane.normal
+    dev = scene.upload(scene.SceneArrays(h, sa.spheres, sa.tubes, sa.fractures, sa.grid))
+    view = View(-6.0, -6.0, 0.24, 50, 50)
+    m = Materials.of([[0.02] * 3], [[0.5] * 3], [0.6])
+    lamp = Light("disc", theta_deg=40.0, phi_deg=90.0, radius_deg=10.0)
+
+    def lit(flags: int, seed: int, vflags: int = 0) -> tuple[float, float]:
+        v = voidgpu.upload(voidgpu.pack_box(box, flags=vflags))
+        means = [float(render(dev, view, m, lamp, seed=seed + 100 * k, void=v, spp=512,
+                              depth_mm=3.0, flags=Flag.HOMOGENEOUS | Flag.BLACK_BOTTOM | flags,
+                              glare=False).image[..., 0].mean())
+                 for k in range(8)]  # fmt: skip
+        return float(np.mean(means)), float(np.std(means, ddof=1) / math.sqrt(len(means)))
+
+    def apart(a: tuple[float, float], b: tuple[float, float]) -> float:
+        return abs(a[0] - b[0]) / math.hypot(a[1], b[1])
+
+    phase = lit(256, 21)
+    assert apart(lit(0, 22), phase) < 4
+    assert apart(lit(0, 23, vflags=voidgpu.LEGS_IGNORE_AIR), phase) > 4

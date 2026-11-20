@@ -104,18 +104,44 @@ __device__ void ratio(const Scene& S, const Cam& C, const Shift& H, const unsign
 }
 
 #ifdef NODULE_VOID
+#define LEG_SKIP_CAP 4.f   // a shadow leg's longest skip, in steps (vstep)
 // Does a straight shadow leg from (x, y, z) along unit l, of length L, meet the hollow's air?
-// Tested at the flights' steps (vstep). A shadow leg cannot bend at the wall, so one that
-// meets air carries nothing; routes through the hollow are left to phase sampling at weight 1
-// (ADR 0019 s.6.12, the small lamp).
+// Tested at the flights' steps (vstep), from the leg's start; a stone's box (kind 1) clips the
+// leg to the box first, as air lies nowhere else. A shadow leg cannot bend at the wall, so one
+// that meets air carries nothing; routes through the hollow are left to phase sampling at
+// weight 1 (ADR 0019 s.6.12, the small lamp).
 __device__ bool leg_meets_air(const Void& V, const Scene& S, float x, float y, float z,
                               float lx, float ly, float lz, float L) {
     if (V.kind == 0 || !(L > 0.f) || (V.flags & VFLAG_LEGS_IGNORE_AIR)) return false;
-    float st = vstep(V), v[2];
-    for (int it = 1; it < 1000000; ++it) {
-        float s = fminf(it * st, L);
-        if (air_at(V, S, x + lx * s, y + ly * s, z + lz * s, v)) return true;
-        if (s >= L) break;
+    float st = vstep(V), v[2], s0 = 0.f, s1 = L;
+    if (V.kind == 1) {                                          // the part inside the box
+        const float p[3] = {x, y, z}, d[3] = {lx, ly, lz};
+        const int a0[3] = {V.ax, V.ay, V.az}, n[3] = {V.nx, V.ny, V.nz};
+        for (int a = 0; a < 3; ++a) {
+            float lo = a0[a] * V.h, hi = (a0[a] + n[a] - 1) * V.h;
+            if (fabsf(d[a]) < 1e-12f) {
+                if (p[a] < lo || p[a] >= hi) return false;
+                continue;
+            }
+            float t0 = (lo - p[a]) / d[a], t1 = (hi - p[a]) / d[a];
+            s0 = fmaxf(s0, fminf(t0, t1)); s1 = fminf(s1, fmaxf(t0, t1));
+        }
+        if (!(s0 <= s1)) return false;
+    }
+    // Skips (sphere tracing on the air test's own values; LEG_SKIP_CAP steps at most): phi, the
+    // chalcedony's level, changes by at most ~1.2 per mm (a wall distance plus its wobble), so a
+    // point at phi < 0 lies at least -phi / 1.5 from air; the crystals' arrival time changes by
+    // at most max(elongation, 1 + cot) per mm, and the box's earliest of 8 corner crystals can
+    // only overstate it, so a point at level < 0 lies at least -level / (2 max(...)) from air.
+    float lip = 2.f * fmaxf(V.elong, V.cot_a + 1.f), s = fmaxf(s0, 0.f) + st;
+    for (int it = 0; it < 1000000; ++it) {
+        float q = fminf(s, s1);
+        if (air_at(V, S, x + lx * q, y + ly * q, z + lz * q, v)) return true;
+        if (q >= s1) break;
+        float skip = 0.f;
+        if (v[1] < 0.f) skip = -v[1] / 1.5f;
+        else if (v[0] < 0.f) skip = -v[0] / lip;
+        s += fminf(fmaxf(skip, st), LEG_SKIP_CAP * st);
     }
     return false;
 }

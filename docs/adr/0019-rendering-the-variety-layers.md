@@ -899,6 +899,19 @@ stones none; white fine needles alone take the finer grid, within the budget
        stones draw between 2/3 and D, 1 in 5 below (`MILK_HIGH_FROM`, `MILK_LOW_SHARE`,
        `draw.milk_level`, one draw on the same stream); amethyst and smoky linings stay
        near-clear (level 0). `effective`.
+     - *Six-faced tips (step 6; 2026-11-20 night, the owner away; approved 2026-11-19).*
+       Built in agatesim as ADR 0092 on its branch `six-faced-tips` (15ddc46, not pushed:
+       pushing and moving the pin wait for the owner). Each crystal is a hexagonal prism
+       under a hexagonal pyramid, its faces at the 38 deg tip half-angle, turned by a
+       draw crystal sites never used (no stream moves); `quartz_tip_faces` 6 in the
+       recipes' crystal stage (`layers.QUARTZ_TIP_FACES`, `physical` for quartz). Nodule
+       reads the row width and face count from agatesim (`voidbox.cuh` by
+       AGATESIM_CRYSTAL_ROW, `voidgpu.pack_box` by `shape_numbers`), so it runs with the
+       pinned agatesim (round, six-number rows) and with ADR 0092 (checked by putting the
+       branch's source first on the path: test_voidbox, test_render_void, and the new
+       six-faces test pass both ways). The shims (`FACES_KNOWN`, the #else path, the
+       length test) go when the pin moves. On agatesim's quartz geode the hollow is
+       2.93 % of the solid against 2.97 % round.
 
 ## Consequences
 

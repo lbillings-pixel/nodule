@@ -3,6 +3,8 @@ without a hollow, each check with its negative control (CLAUDE.md)."""
 
 from __future__ import annotations
 
+from typing import Any
+
 import numpy as np
 import pytest
 from agatesim.fields import Phase
@@ -226,3 +228,33 @@ def test_no_hollow_or_no_crystal_wall_gives_no_box() -> None:
     solid = build(recipe(centre="solid", centre_width=0.0, lining=0.5))[0].volume
     assert solid.crystal_wall is None
     assert build_void_box(solid) is None
+
+
+def test_the_lining_takes_six_faces_where_agatesim_has_them(
+    lined: tuple[VolumeSimulation, VoidBox],
+) -> None:
+    """Six-faced quartz (agatesim ADR 0092): with an agatesim that has them, the lining's
+    crystals carry six faces and the packed box hands the GPU their face normals and
+    count; with one before it (the pin until it moves), round crystals and six-number
+    rows, as before. Either way the rows' width is agatesim's own."""
+    from agatesim.volume.crystal_gpu import ROW
+
+    from nodule.render.voidgpu import pack_box
+    from nodule.variety.layers import FACES_KNOWN, QUARTZ_TIP_FACES
+
+    vol, box = lined
+    wall = vol.crystal_wall
+    assert wall is not None
+    packed = pack_box(box)
+    assert packed.rows is not None
+    assert packed.rows.shape == (len(wall.sites), ROW)
+    if not FACES_KNOWN:
+        assert ROW == 6
+        assert int(packed.header["faces"]) == 0
+        return
+    faced: Any = wall  # the pinned agatesim's CrystalWall has no faces yet
+    assert faced.faces == QUARTZ_TIP_FACES
+    assert int(packed.header["faces"]) == QUARTZ_TIP_FACES
+    normals = packed.rows[:, 6:9].astype(np.float64)
+    assert np.allclose(np.linalg.norm(normals, axis=1), 1.0, atol=1e-5)
+    assert np.allclose(np.sum(normals * packed.rows[:, 3:6], axis=1), 0.0, atol=1e-5)

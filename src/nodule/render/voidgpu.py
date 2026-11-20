@@ -21,7 +21,7 @@ from nodule.render.voidbox import VoidBox
 VOID_DTYPE = np.dtype(
     [("kind", "<i4"), ("flags", "<i4"), ("nx", "<i4"), ("ny", "<i4"), ("nz", "<i4"),
      ("ax", "<i4"), ("ay", "<i4"), ("az", "<i4"), ("pnx", "<i4"), ("pny", "<i4"),
-     ("pnz", "<i4"), ("pad0", "<i4"), ("h", "<f4"), ("cot_a", "<f4"), ("elong", "<f4"),
+     ("pnz", "<i4"), ("faces", "<i4"), ("h", "<f4"), ("cot_a", "<f4"), ("elong", "<f4"),
      ("last", "<f4"), ("p", "<f4", (8,)), ("ids", "<u8"), ("nf", "<u8"), ("phi", "<u8"),
      ("rows", "<u8")]
 )  # fmt: skip
@@ -95,8 +95,11 @@ def pack_box(box: VoidBox, *, flags: int = 0) -> VoidArrays:
     h["nx"], h["ny"], h["nz"] = box.shape
     h["ax"], h["ay"], h["az"] = (int(v) for v in box.a)
     h["h"] = box.h
-    cot_a, elong = shape_numbers(box.wall)
-    h["cot_a"], h["elong"], h["last"] = cot_a, elong, box.wall.last_reach
+    # agatesim ADR 0092 adds the face count (an agatesim before it gives two numbers and
+    # round crystals: drop the length test when the pin moves)
+    nums = shape_numbers(box.wall)
+    h["cot_a"], h["elong"], h["last"] = nums[0], nums[1], box.wall.last_reach
+    h["faces"] = nums[2] if len(nums) > 2 else 0  # pyright: ignore[reportGeneralTypeIssues]
     if box.phi is not None:
         h["pnx"], h["pny"], h["pnz"] = box.phi.shape
     return VoidArrays(

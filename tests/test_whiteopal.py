@@ -215,15 +215,17 @@ def test_the_recipe_refuses_white_without_its_inclusions() -> None:
 
 
 def test_the_level_maps_to_the_strength() -> None:
-    """Level 0 the faint tile, 1 the solid one, even in the logarithm between. Control:
-    a stone without white keeps optics without it."""
+    """Level 0 the raised floor (8 per mm, the probe range's middle: owner, 2026-11-20
+    late), 1 the solid tile (16), even in the logarithm between. Control: a stone without
+    white keeps optics without it."""
+    assert (WHITE_FAINT, WHITE_SOLID) == (8.0, 16.0)
     assert white_transport(0.0) == pytest.approx(WHITE_FAINT)
     assert white_transport(1.0) == pytest.approx(WHITE_SOLID)
     assert white_transport(0.5) == pytest.approx(np.sqrt(WHITE_FAINT * WHITE_SOLID))
     r = with_plumes().model_copy(update={"white": "plumes", "white_level": 0.5})
     o = optics_for(r)
     assert o.white == "plumes"
-    assert o.white_transport == pytest.approx(8.0)
+    assert o.white_transport == pytest.approx(np.sqrt(128.0))
     plain = optics_for(with_plumes())
     assert plain.white == "none"
     assert plain.white_transport == 0.0  # control

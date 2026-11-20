@@ -127,9 +127,11 @@ MILK_CURVE: tuple[tuple[float, float], ...] = (
 MILK_D_CENTRE = 1.052
 MILK_NEAR_CLEAR = 2.0
 # White opal (ADR 0019 s.13): the recipe's level (0 faint, 1 solid) to the white row's
-# transport mu_s (1 - g) at 550 nm, per mm, even in its logarithm between the probe sheet's
-# faint and solid tiles, the range the owner chose (2026-11-20). `effective`.
-WHITE_FAINT = 4.0
+# transport mu_s (1 - g) at 550 nm, per mm, even in its logarithm from WHITE_FAINT to the
+# probe sheet's solid tile. The owner first chose the probe's faint tile (4) as the floor;
+# at 0.12 on sheet 7 stone 6 sparse white plumes nearly vanished whole-face, so the owner
+# raised it to the range's middle (2026-11-20 late). `effective`.
+WHITE_FAINT = 8.0
 WHITE_SOLID = 16.0
 
 

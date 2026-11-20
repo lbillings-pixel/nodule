@@ -209,6 +209,8 @@ before any statistics.
   from the bake, one white row; 11 white stones on sheets 0-11 (4 white plumes, 7 rims);
   stones without white render as before. Rims at solid strength (an assumption, for the
   owner). Next: the owner's look at a few white stones, then C, the red fix.
+  2026-11-20 late: owner on the looks: floor raised (white plumes 8 to 16 per mm; at 4
+  sparse ones nearly vanished), rims kept solid; build pushed. B done. Next: C, the red fix.
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

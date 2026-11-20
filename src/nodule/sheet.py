@@ -56,9 +56,10 @@ HOST_RGB = {  # effective: basalt grey, rhyolite pink-brown, sediment tan
     "sedimentary": (148, 128, 104),
 }
 VOID_RGB = (16, 16, 20)
-# White opal (ADR 0019 s.13): white plumes from faint (a bluish grey) to solid white by the
-# recipe's level; white rims solid, RIM_MM wide round plumes and moss. By eye.
-WHITE_FAINT_RGB = np.array([200.0, 205.0, 212.0])
+# White opal (ADR 0019 s.13): white plumes from faint (a pale bluish grey: level 0 is the
+# middle strength since the owner raised the floor) to solid white by the recipe's level;
+# white rims solid, RIM_MM wide round plumes and moss. By eye.
+WHITE_FAINT_RGB = np.array([221.0, 224.0, 225.0])
 WHITE_SOLID_RGB = np.array([242.0, 242.0, 238.0])
 LABEL_H = 64  # label rows under each stone: summary on up to 3 lines, scale bar
 LABEL_CHARS = 64  # characters per label line in a 400 px tile

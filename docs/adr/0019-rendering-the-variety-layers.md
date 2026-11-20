@@ -1088,8 +1088,9 @@ stones none; white fine needles alone take the finer grid, within the budget
        no other draw moves (sheets 0-11 redrawn: no other field of the 144 stones
        changed). Below 1/4 white plumes (plume stones); the next 1/4 white rims (plume and
        moss stones); never both. A white plume's level is the second uniform, even in the
-       logarithm of the strength: `nodule.varietyrender.white_transport` gives 4 x
-       4^level per mm, the faint to the solid tile. Rims take level 1, solid as the owner
+       logarithm of the strength: `nodule.varietyrender.white_transport` gives 8 x
+       2^level per mm since the owner raised the floor (below; built as 4 x 4^level, the
+       faint to the solid tile). Rims take level 1, solid as the owner
        saw them (*assumption*: a faint 0.3 mm rim barely shows; a spread would move no
        draw). Sheets 0-11: 4 of 13 plume stones take white plumes (sheet 0 stone 12 at
        0.79, sheet 1 stone 2 at 0.76, sheet 2 stone 5 at 0.28, sheet 7 stone 6 at 0.12)
@@ -1159,6 +1160,12 @@ stones none; white fine needles alone take the finer grid, within the budget
        hollow as air; thin moss stays dark inside its rims; at level 0.12 white plumes,
        which take no pigment, nearly vanish at whole-face scale (a faint pale patch up
        close, nothing backlit): the owner's eye decides the faint end.
+   - *Owner's verdict on the looks (2026-11-20 late), on Claude's recommendations:* the
+     floor raised to the range's middle, white plumes drawn from 8 to 16 per mm (sheet 7
+     stone 6 at 0.12 re-rendered at 8.7 per mm: a clear pale patch; 174 s); rims kept at
+     solid strength; the build pushed (e8f46fc). Rims hugging their strand were kept
+     (Claude's call: thin moss stayed dark on sheet 3 stone 9). Sheet 5 stone 1's backlit
+     slice is nearly black, likely its onyx bands (not checked with white off).
 
 ## Consequences
 

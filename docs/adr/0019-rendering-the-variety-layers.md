@@ -1220,8 +1220,9 @@ stones none; white fine needles alone take the finer grid, within the budget
      reason of s.6.4 is withdrawn. Track C is closed:** no full-spectrum build, three
      channels stay, and the photo compare keeps the default (ADR 0014 stands). **In
      reserve, if the red is ever reopened:** Querry's hematite spectrum (both rays, 10 nm
-     steps; the database is public domain, so the table may enter the repository then),
-     in three channels or as a full spectrum; the probe holds the arithmetic. Reading that
+     steps, 0.30-1.00 µm, copied unchanged from the public-domain database into
+     `references/hematite-querry1985.toml`), in three channels or as a full spectrum; the
+     probe holds the arithmetic. Reading that
      would raise its grade then: Querry's report (its method) and Marusak et al.'s film
      spectrum.
 

@@ -890,9 +890,13 @@ stones none; white fine needles alone take the finer grid, within the budget
        `MILK_NEAR_CLEAR` 2 per mm (level 0; an assumption: barely milky) to D (level 1).
        The strengths are `effective`, read on one stone. The stand-in hollow (backlit
        slice, close-ups) rendered a void as its lining's material, which filled a slice's
-       hole with the milk; a milky lining's void nodes now take `VOID_TIME`, past the run's
-       end, which the material profile maps to the last step without the milk (a numerical
-       device; stones without milk unchanged bit for bit).
+       hole with the milk. Stand-in renderings of a milky lining now carry a void mask (1 at
+       void nodes; `Scene.voidf`, `CutRenderer._void_mask`): where its trilinear value
+       passes 1/2 the camera takes the profile's last entry, the last step without the
+       milk. Stones without milk, and the look with the hollow as air, are unchanged bit for
+       bit. (First built as a growth time past the run's end at the void nodes; an
+       independent review the same night found that, interpolated, it passed through every
+       later step in the cells along the wall, and the mask replaced it.)
      - *Owner's verdict on the level sheet (2026-11-20; runs/hollow-air/milk-probe/
        owner-sheet.png):* levels 0.67 and 1 both work, neither clearly better; amethyst
        "definitely" near-clear. On Claude's recommendations: about 4 in 5 untinted lined
@@ -941,12 +945,16 @@ stones none; white fine needles alone take the finer grid, within the budget
        pass (58 s; 13 s without it, the dome look 7 s), since the milky lining scatters and
        every collision there sends a leg through the crystals, each step evaluating 8
        crystals. Clipping legs to the box changed nothing (they lie in it); skipping ahead by
-       the air test's own values (phi changes at most ~1.2 per mm; the crystals' arrival at
-       most max(elongation, 1 + cot alpha) per mm, which the box's 8-corner estimate can only
-       overstate; skips capped at 4 steps) brought it to 40 s. A whole face at 256 spp: about
-       11 min more a hollow stone. Tests: the composite keeps the face's lightness and lights
-       the hollow (control: a lamp of no irradiance gives the look back); the combined
-       estimate equals phase sampling over a real stone's box too (control: legs let through).
+       the air test's own values brought it to 40 s (phi changes at most ~1.2 per mm; for the
+       crystals' level the review's provable bound, -level / K - sqrt(3) h with K =
+       max(elongation, 1 + cot alpha), since the box's 8-corner estimate can overstate the
+       arrival by up to K sqrt(3) h; skips capped at 4 steps; the tube cores' jump in phi is
+       bounded by the cap only). A leg that leaves the shell below the slab is blocked, as a
+       phase path there meets the bottom's rule. A whole face at 512 spp: about 20 min more a
+       hollow stone (4/4, 2026-11-20). Tests: the composite keeps the face's mean lightness
+       (sRGB luminance, as `look_exposure`) and lights the hollow (control: a lamp of no
+       irradiance gives the look back); the combined estimate equals phase sampling over a
+       real stone's box too (control: legs let through).
 
 ## Consequences
 

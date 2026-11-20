@@ -2209,6 +2209,17 @@ centre (in agatesim) stays unchosen.
   same stream changes too; 4/4 lost its 0.06 mm roughness), crack placement, wide centres
   and mottle sizes. Sheets 0-11: 12 irregular and 42 lobate of 144 stones, among them
   stones behind closed verdicts (the owner saw "4 of 144" when choosing).
+- *The cutter's rule* (s.9: cross every ball within 0.3 of its radius of its centre, so
+  no nub) needs the balls, which agatesim's drawn cavity does not keep: lumps register
+  them in the solid's own mm (`lumps.balls_of`, by a hash of the stored level; tested to
+  sit on the stored wall). Drawn first without this (an independent review caught it the
+  same night). Random lumps are harder to cross cleanly than the preset's arranged balls
+  (about 1 random plane in 150 for six lumps), so lumpy stones try 512 cuts, not 64
+  (`CUT_TRIES_LUMPS`; analytic, a few ms). Sheets 1-6, 28 lumpy stones: with 64 tries 8
+  cuts missed the rule (0.33-0.99, more than one a sheet); with 512, 5, of which three
+  (0.75-0.99) are the deliberate odd cuts (`ODD_CUTS`, at most one a sheet: with them
+  off only 0.33 and 0.36 remain). 4/4's cut is now clean (0.17; it was 0.33), 1/9's 0.33,
+  10/8's unchanged (0.20).
 
 ## Limits
 

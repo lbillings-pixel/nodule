@@ -96,6 +96,11 @@ CLEAN_CUT = 0.3  # largest |offset| / radius of any sphere the cut crosses
 
 
 CUT_TRIES = 64
+# A stone's own lumps (ADR 0018 s.25) lie in random directions, so a plane crossing each
+# lump near its centre or not at all is rarer than for the presets' arranged balls (about 1
+# random plane in 150 for six lumps); the rule is analytic and cheap, so such stones try
+# more (sheets 1-6: 8 of 28 cuts missed the rule with 64, three of them grazing a lump).
+CUT_TRIES_LUMPS = 512
 
 
 ODD_CUTS = (0, 1)  # per 12 stones: keep the first cut drawn, however oblique
@@ -647,11 +652,13 @@ def clean_cut(
     r: float,
     fractures: tuple[FractureLayer, ...] = (),
 ) -> SliceConfig:
-    """The first of up to CUT_TRIES cuts (the drawn one first) that crosses every
-    sphere it meets within CLEAN_CUT of its centre and meets no crack at under
-    CRACK_CUT_ANGLE, else the one that misses least."""
+    """The first of up to CUT_TRIES cuts (the drawn one first; CUT_TRIES_LUMPS for a
+    stone's own lumps) that crosses every sphere it meets within CLEAN_CUT of its centre
+    and meets no crack at under CRACK_CUT_ANGLE, else the one that misses least."""
+    inner = solid.inner if isinstance(solid, Rotated) else solid
+    tries = CUT_TRIES_LUMPS if balls_of(inner) is not None else CUT_TRIES
     best, least = first, _cut_fault(solid, first, fractures)
-    for _ in range(CUT_TRIES - 1):
+    for _ in range(tries - 1):
         if least == 0:
             break
         cut = SliceConfig(

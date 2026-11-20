@@ -521,3 +521,27 @@ def test_a_milky_linings_stand_in_hole_stays_clear(lined, monkeypatch) -> None:
     assert abs(masked / clear - 1.0) < 0.1
     monkeypatch.setattr(CutRenderer, "_void_mask", lambda self, rendering: None)
     assert hole_light(milky) < 0.7 * clear
+
+
+def test_glints_only_keeps_the_mirror_and_drops_the_scattered_glow(flat) -> None:
+    """`Flag.MOUTH_GLINTS_ONLY` (the sparkle view's lamp): over a scattering stone under the
+    tilted facet, every open pixel reads exactly the mirror's R(22.5 deg) Lr: the facet's
+    reflection counts (no scattering on the way), light scattered in the stone that leaves
+    through the mouth into the lamp does not, and shadow legs from below cross the air, so
+    carry nothing. Control: without the flag the scattered glow adds to it."""
+    m = Materials.of([[0.02] * 3], [[2.0] * 3], [0.6])
+    # a wide lamp: the glint's radiance falls as 1/sin^2(radius), the scattered glow does not,
+    # so the control can see the glow (at 2.5 deg it is ~1 % of the glint here)
+    lamp = Light("disc", theta_deg=45.0, phi_deg=90.0, radius_deg=10.0)
+    want = reference.fresnel(math.cos(math.radians(22.5)), 1.0, N) * lamp.disc_radiance
+    t = math.radians(22.5)  # the facet 1.5 mm deep: it meets the face 2 mm off the view
+    facet = voidgpu.upload(voidgpu.facet((1.6, 1.6, -1.5), (0.0, math.sin(t), math.cos(t))))
+    kw: dict[str, Any] = dict(depth_mm=3.0, glare=False, void=facet)
+    flags = Flag.HOMOGENEOUS | Flag.BLACK_BOTTOM
+    glints = render(flat, VIEW, m, lamp, spp=1024, seed=21, flags=flags | Flag.MOUTH_GLINTS_ONLY,
+                    **kw)  # fmt: skip
+    mean, se = mean_se(glints.image)
+    assert abs(mean - want) < 4 * se
+    every = render(flat, VIEW, m, lamp, spp=1024, seed=22, flags=flags, **kw)
+    more, se2 = mean_se(every.image)
+    assert more > mean + 4 * math.hypot(se, se2)

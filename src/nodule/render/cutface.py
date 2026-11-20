@@ -140,6 +140,9 @@ class Rendering:
     # a crystal-lined hollow: the stand-in, or drawn as air when the renderer is given the
     # stone's void box (ADR 0019 s.6.12 step 4; the dome without glare, black or matte bottom)
     hollow: Literal["stand-in", "air"] = "stand-in"
+    # the lamp only: count only unscattered paths leaving through the hollow's open mouth
+    # (glints; `Flag.MOUTH_GLINTS_ONLY`, the sparkle view's lamp pass)
+    glints_only: bool = False
 
     def __post_init__(self) -> None:
         if self.hollow not in ("stand-in", "air"):
@@ -169,11 +172,14 @@ class Rendering:
             raise ValueError("void_mua must be >= 0")
         if self.bottom == "black" and self.light.kind == "back":
             raise ValueError("the back light shines through the bottom: no black bottom")
+        if self.glints_only and self.light.kind != "disc":
+            raise ValueError("glints_only is the lamp's (a disc)")
 
     @property
     def flags(self) -> int:
         """Kernel flags of this rendering."""
-        return int(Flag.BLACK_BOTTOM) if self.bottom in ("black", "matte") else 0
+        flags = int(Flag.BLACK_BOTTOM) if self.bottom in ("black", "matte") else 0
+        return flags | (int(Flag.MOUTH_GLINTS_ONLY) if self.glints_only else 0)
 
     @classmethod
     def reflected(cls, record: BandRecord, **kw: Any) -> Rendering:
@@ -199,10 +205,12 @@ class Rendering:
     def lamp(cls, record: BandRecord, light: Light, **kw: Any) -> Rendering:
         """A small lamp (a disc, L2 of ADR 0007 7b) over the look's slab, for the sparkle
         view (ADR 0019 s.6.12 step 5): no face glare, as the look; the black bottom, since
-        the matte one takes no shadow rays. Added to the look, not shown alone."""
+        the matte one takes no shadow rays; glints only at the hollow's mouth (unless
+        glints_only=False is given). Added to the look, not shown alone."""
         if light.kind != "disc":
             raise ValueError("the sparkle view's lamp is a disc")
         kw |= {"glare": False}
+        kw.setdefault("glints_only", True)
         kw.setdefault("depth_mm", LOOK_DEPTH_MM)
         kw.setdefault("bottom", "black")
         return cls(light, record, kw.pop("depth_mm"), **kw)

@@ -76,10 +76,17 @@ VIEWS = ("look", "backlit")
 # The sparkle view (`--sparkle`; ADR 0019 s.6.12 step 5): the look plus a small lamp, for a
 # crystal-lined hollow drawn as air, its faces glinting; the soft look stays the default
 # (owner, 2026-11-19). The lamp: a disc at 45 deg from the normal toward the upper left, of
-# SPARKLE_RADIUS_DEG and SPARKLE_SHARE of the dome's irradiance. All `effective`, chosen on
-# 4/4 (runs/hollow-air/sparkle_probe.py).
-SPARKLE_RADIUS_DEG = 2.5
+# SPARKLE_RADIUS_DEG and SPARKLE_SHARE of the dome's irradiance; glints only at the hollow's
+# mouth (`Rendering.lamp`): counting scattered light there too gave mostly fireflies (4/4:
+# 4.0 % of the hollow's pixels white, against 0.16 % for glints alone). All `effective`,
+# chosen on 4/4 (runs/hollow-air/sparkle_probe.py).
+SPARKLE_RADIUS_DEG = 5.0  # a desk lamp's shade from ~50 cm; 2.5 deg (L2) lit 1/4 the facets
 SPARKLE_SHARE = 0.5
+# The lamp pass's samples, as a share of the look's: a glint pixel saturates once any of its
+# samples mirrors the lamp (R ~ 4.5 %: 99.7 % of glint pixels at 128 spp), and the lamp's
+# light through the face is a third of the look's; a lamp pass costs ~5 looks a sample
+# (4/4, 2026-11-20: 362 s against 44 s at 256 spp, probe set-up).
+SPARKLE_SPP_SHARE = 0.25
 SPARKLE_LAMP = Light("disc", theta_deg=45.0, phi_deg=135.0, irradiance=SPARKLE_SHARE * math.pi,
                      radius_deg=SPARKLE_RADIUS_DEG)  # fmt: skip
 # Hematite pigment's red absorption and carnelian's loading (owner's pick from the
@@ -245,7 +252,7 @@ def views(
     if sparkle and box is not None:
         lamp = look.on(Rendering.lamp(record, SPARKLE_LAMP, grid_mm=grid_mm, optics=optics,
                                       depth_mm=look_mm, hollow="air"))  # fmt: skip
-        lamp.more(spp)
+        lamp.more(max(2, round(spp * SPARKLE_SPP_SHARE / 2) * 2))
         rgb = dressed_look(specimen, cut, recipe, sparkle_rgb(look, lamp))
         Image.fromarray(rgb[::-1]).save(f"{stem}-sparkle.png")
         row[f"{key}_sparkle_s"] = round(lamp.render_s, 1)

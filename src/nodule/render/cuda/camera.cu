@@ -40,6 +40,9 @@
 //   DISC only: 128 NEE only (weight 1); 256 phase sampling only (weight 1); 512 both
 //   strategies at weight 1 (control: counts the light twice).
 //   1024 draw scattering from the whole lobes although they are truncated (control).
+//   4096 (NODULE_VOID, the lamp): a path leaving through the open mouth into the lamp counts
+//   only if it never scattered (glints; the sparkle view leaves out the scattered glow that
+//   reaches the lamp that way, found by phase sampling alone as fireflies).
 
 struct Cam { float s0, t0, pix; int nx, ny, spp; unsigned int seed; float n_in, D;
              int light; float lth, lph, E, Ld; float mubar; int nmat; int nprof; float dt;
@@ -303,7 +306,8 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
             if (hit == 2) {                                     // up out of the mouth: the dome
                 if (C.light == 1 && !((C.flags & 32) && real == 0))
                     for (int c = 0; c < 3; ++c) acc[c] += w[c] * C.Ld;
-                if (hits && dx * a0 + dy * a1 + dz * a2 >= 1.f - omc)   // or into the lamp
+                if (hits && dx * a0 + dy * a1 + dz * a2 >= 1.f - omc   // or into the lamp
+                    && !((C.flags & 4096) && real > 0))                 // glints only (4096)
                     for (int c = 0; c < 3; ++c) acc[c] += w[c] * Lr;
                 break;
             }

@@ -56,6 +56,12 @@ class Flag(IntFlag):
     # An option, not a control: the back face index-matched and black, so light reaching
     # depth_mm going down is lost, as into the rest of a stone (ADR 0014; `effective`).
     BLACK_BOTTOM = 2048
+    # An option (the sparkle view, ADR 0019 s.6.12 step 5): under the lamp, a path leaving
+    # through the hollow's open mouth counts only if it never scattered (a glint: specular
+    # turns at walls alone). Scattered light that reaches the small lamp that way is a
+    # faint glow that phase sampling alone finds about once in a thousand paths, as
+    # fireflies; it is left out (a bias, `effective`).
+    MOUTH_GLINTS_ONLY = 4096
 
 
 @dataclass(frozen=True)

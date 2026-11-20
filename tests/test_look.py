@@ -138,26 +138,32 @@ def test_white_fine_needles_alone_take_a_finer_grid_within_the_budget() -> None:
 def test_close_ups_keep_the_shallow_look(monkeypatch: pytest.MonkeyPatch) -> None:
     """Whole faces render the look LOOK_DEPTH_MM deep on a FILL_MM grid; close-ups keep
     CLOSE_LOOK_MM on the slice's depth (owner, ADR 0019 s.6.10). Control: the two calls
-    differ, so the check can tell them apart."""
-    seen: list[tuple[float, float]] = []
+    differ, so the check can tell them apart. With the stone's void box the look draws
+    the hollow as air and is handed the box (ADR 0019 s.6.12 step 4); control: without
+    one, the stand-in and no box."""
+    seen: list[tuple[float, float, str, object]] = []
 
     class StopError(Exception):
         pass
 
     def fake(_sp: object, _cut: object, rendering: Rendering, _rng: object,
-             fill_depth_mm: float) -> None:  # fmt: skip
-        seen.append((rendering.depth_mm, fill_depth_mm))
+             fill_depth_mm: float, box: object = None) -> None:  # fmt: skip
+        seen.append((rendering.depth_mm, fill_depth_mm, rendering.hollow, box))
         raise StopError
 
     monkeypatch.setattr(varietyrender, "CutRenderer", fake)
     rec, rng = BandRecord.empty(), np.random.default_rng(0)
     args = (None, None, small_recipe(), rec, 0.25, OpticsTable(), 2, rng, None)
-    for extra in (("whole",), ("close", CLOSE_LOOK_MM)):
+    box = object()  # stands in for a VoidBox; the fake never reads it
+    for extra in (("whole",), ("close", CLOSE_LOOK_MM), ("whole", LOOK_DEPTH_MM, box)):
         with pytest.raises(StopError):
             varietyrender.views(*args, *extra)  # type: ignore[arg-type]
-    assert seen[0] == (LOOK_DEPTH_MM, FILL_MM) == (5.0, 5.0)
-    assert seen[1] == (CLOSE_LOOK_MM, SLICE_MM) == (2.0, 3.0)
+    assert seen[0] == (LOOK_DEPTH_MM, FILL_MM, "stand-in", None)
+    assert seen[1] == (CLOSE_LOOK_MM, SLICE_MM, "stand-in", None)
+    assert seen[0][:2] == (5.0, 5.0)
+    assert seen[1][:2] == (2.0, 3.0)
     assert seen[0] != seen[1]
+    assert seen[2] == (LOOK_DEPTH_MM, FILL_MM, "air", box)
 
 
 def test_look_needs_the_dome() -> None:

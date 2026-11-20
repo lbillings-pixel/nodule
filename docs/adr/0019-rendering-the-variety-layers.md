@@ -849,6 +849,29 @@ stones none; white fine needles alone take the finer grid, within the budget
        stone gets its own lumps (nodule, agatesim's drawn solid, checked first), then the
        owner judges the corners; corner rounding in agatesim not chosen. `effective`, look
        choices; reading first (item 19 B).
+     - *Reading on milky druse (2026-11-20; helper report notes/n1-reading/item19-milky-quartz.md,
+       two critic passes).* Centre and lining quartz in agates and amethyst geodes is mostly
+       called colourless [@goetze2020; @comminfischer2010] or, at one agate locality, clear
+       [@gilg2003, p. 1012] (*verified* as wording; whether "colourless" also means clear is
+       open). Whitish-only geodes occur [@morteani2010, p. 933] (*verified*); no source gives
+       how often, and none reports milky bases, milky zones or a milky layer under amethyst
+       in agates; colourless quartz precedes amethyst, which is never called milky
+       [@gilg2003, p. 1009]. Geode inclusions sit on growth planes and healed fractures and
+       are almost all one-phase liquid [@gilg2003, p. 1013] (*verified*); no number density
+       or volume fraction exists for geode quartz. Clear and milky zones alternating along
+       growth faces are a vein texture [@dong1995, p. 1842] (*verified* for veins only).
+       Neutral (white) scattering from inclusions of a few µm or more, and forward-peaked
+       scattering, rest on transfer from ice, alumina and vein quartz (*plausible* at best).
+       C-D sits nearer milky vein quartz than the sparse inclusions agate papers describe
+       (inference). **Assumption stated:** milky hollow linings are the owner's `effective`
+       look choice, not a physical claim. C-D as shown were total mu_s with the borrowed
+       row's blue slope (blue/red 2.3) and two-lobe phase function, so the neutral build is
+       matched to C-D by lightness (hollow centre and ring), not by copying mu_s.
+     - *Owner's choices after the reading (2026-11-20):* milkiness even within each stone's
+       lining (no base-to-tip fade, no milky shells: those are vein analogues only); a
+       per-stone spread from near-clear up to D (replacing "between C and D"; some hollows
+       will read darker, as clear quartz does); amethyst-lined hollows: one stone rendered
+       both ways (milky as the others vs barely milky), the owner picks. `effective`.
 
 ## Consequences
 

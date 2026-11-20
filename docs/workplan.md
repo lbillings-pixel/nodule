@@ -181,6 +181,9 @@ before any statistics.
   crystals C-D, hollow linings only first (white, spread per stone; then show a filled
   centre and a backlit slice); own lumps per irregular and lobate stone. Next: reading on
   milky geode quartz, build the linings' milkiness, six-faced tips, per-stone lumps.
+  2026-11-20: reading done (ADR 0019 s.6.12 "Reading on milky druse"): agate druse mostly
+  colourless or clear; milky stays an effective look. Owner: even per stone, spread from
+  near-clear up to D, amethyst hollow shown both ways. Next: build the linings' milkiness.
 - [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
 
 ## Follow-on projects (when the feature work pauses)

@@ -3596,6 +3596,35 @@ topics = ["paragenesis", "parana", "basalt", "amethyst", "celadonite", "rind", "
 notes = "Read 2026-11-16 (owner-supplied PDF, helper; report notes/n1-reading/item13-downloads-brazil.md). Artigas, Uruguay (online 2009); geodes a few cm to 60 cm. 'The geodes are surrounded by a dark green rim consisting of massive, but rather soft, celadonite'; it 'barely reaches 5 mm in thickness and only in very rare cases 2 cm', 'much smaller' than at Ametista do Sul (no Brazil figure) (p.933). 'The outer rim of the geodes proper is always constituted by a shell of concentrically banded agate', often with horizontal bands at the bottom; then quartz, amethyst, whitish calcite (p.933). 'In some cases the lower part of the calcite crystals is included in the celadonite rim and the banded agate' (p.933, one sentence, no figure). No sulphates at Artigas (pp.933, 941). Basalt wall fragments with the rim attached found inside geodes (p.933). 'the absence of reactions rims around the geodes' (p.942). Host: intersertal, vitrophyric basalt, phenocrysts plagioclase, pyroxene, opaque oxides, interstitial light to dark green celadonite, slightly red flow-wide; small vesicles rimmed by dark to very pale green celadonite with agate or Fe-hydroxide cores (p.931); no mm sizes. Calcite in two isotopic groups (Table 6). Figures read as captions only. Item 18 pass 2026-11-19 (helper, keyword passages of the local PDF; not a cover-to-cover read): 'The banded agate is followed to the inside of the geode by euhedral quartz crystals' (reads as a continuous lining); 'The violet amethyst colour increases in the individual quartz crystals towards the rim. Geodes with only colourless, yellowish or whitish quartz crystals also occur'; whitish euhedral calcite on top of the quartz (p. 933). 'Rim' is ambiguous (the crystal's outer end or the geode's rim); not settled. Stalactites have 'colourless quartz or amethyst overgrowing colourless quartz as in the geodes' (p. 932; Fig. 8, p. 935)."
 
 [[references]]
+id = "gilg2003"
+kind = "article"
+authors = ["Gilg, H. A.", "Morteani, G.", "Kostitsyn, Y.", "Preinfalk, C.", "Gatter, I.", "Strieder, A. J."]
+year = 2003
+title = "Genesis of amethyst geodes in basaltic rocks of the Serra Geral Formation (Ametista do Sul, Rio Grande do Sul, Brazil): a fluid inclusion, REE, oxygen, carbon, and Sr isotope study on basalt, quartz, and calcite"
+venue = "Mineralium Deposita 38, 1009–1025 (online 2002)"
+doi = "10.1007/s00126-002-0310-7"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "sections"
+sections_read = ["abstract", "introduction", "regional and local geology", "petrography of amethyst-bearing geodes", "analytical techniques (fluid inclusions)", "fluid inclusions", "host basalts", "REE", "stable isotopes", "Sr isotopes", "discussion", "conclusions", "Figs 3 and 4 viewed"]
+topics = ["amethyst", "geode", "macrocrystalline-quartz", "fluid-inclusions", "druse-clarity"]
+notes = """Owner's PDF (Downloads/gilg2002.pdf), item 19 deep read 2026-11-19, two critic passes (report notes/n1-reading/item19-milky-quartz.md). Wall inward: celadonite, agate, 'colorless and finally amethystine quartz' (p. 1009); Fig. 3 'Clear quartz' (p. 1012). Salto do Jacui agate geodes: 'central zone of clear macrocrystalline euhedral quartz' (p. 1012). Quartz never called milky; 'whitish' only for calcite (cavity calcite p. 1012; zoned calcite 'translucent whitish core and clear rim', p. 1016). Violet 'increases towards the central cavity' (p. 1012), geode scale. Inclusions (p. 1013): primaries on r-face growth planes, scarce; pseudosecondaries on healed fractures and 2D clusters, more abundant; secondaries most frequent; almost all monophase liquid; two-phase very rare, in colourless quartz (text; Fig. 4c caption says amethyst), fill >0.9 (p. 1014). No fluid-inclusion sizes in text (calcite solid inclusions 5–20 µm; Fig. 4 bar 10 µm). No optics. Questions Thomas & Blankenburg 1981 (p. 1021). 'Clear' may mean only colourless (inference). Cite for clear/colourless druse and almost all-liquid inclusions, not for milky druse."""
+
+[[references]]
+id = "dong1995"
+kind = "article"
+authors = ["Dong, G.", "Morrison, G.", "Jaireth, S."]
+year = 1995
+title = "Quartz textures in epithermal veins, Queensland—classification, origin, and implication"
+venue = "Economic Geology 90, 1841–1856"
+doi = "10.2113/gsecongeo.90.6.1841"
+access = "closed"
+licence = "publisher copyright; cite only"
+checked = "full-text"
+topics = ["vein-quartz", "quartz-textures", "milky-quartz", "zonal-quartz", "comb-quartz"]
+notes = """Owner's PDF, item 19 deep read 2026-11-19, critic-checked 2026-11-20. DOI not printed in the PDF; confirmed by Crossref 2026-11-20 (title, authors, 90(6):1841-1856). VEIN quartz (Queensland epithermal); transfer to agate druse is an assumption. Zonal: 'alternating clear and milky zones within individual quartz crystals'; milky zones 'usually crowded with fluid or solid inclusions and are always parallel to crystal growth faces' (p. 1842); Fig. 2f 'alternating clear and inclusion crowded zones' (p. 1845). Origin (interpretation): slightly saturated fluid, slow or mildly fluctuating conditions (p. 1849). Feathery and flamboyant textures on crystal margins and rims around a clear euhedral core (p. 1842), not called milky. No inclusion sizes, densities, phases, optics, frequencies, base-to-tip trend or amethyst."""
+
+[[references]]
 id = "maliva1987"
 kind = "article"
 authors = ["Maliva, R. G."]

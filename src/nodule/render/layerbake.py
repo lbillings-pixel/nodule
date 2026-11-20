@@ -156,10 +156,16 @@ class Baker:
         return lies - absorption(self.table, step)
 
     def chunk(
-        self, start: int, p: FloatArray, raw: Fields, step: Fields, inside: NDArray[np.bool_]
+        self,
+        start: int | NDArray[np.int64],
+        p: FloatArray,
+        raw: Fields,
+        step: Fields,
+        inside: NDArray[np.bool_],
     ) -> None:
-        """Nodes start .. start + len(p): their places, the growth model's fields there
-        and their per-step view (`Specimen.per_step`, which the grid holds)."""
+        """Nodes start .. start + len(p) (or the node indices `start`): their places, the
+        growth model's fields there and their per-step view (`Specimen.per_step`, which the
+        grid holds)."""
         h = self.spacing_mm
         placed = self.specimen.placed(p, raw, inside, h)
         touched = inside & (_touched(placed, step) | plume_points(placed, inside))
@@ -172,7 +178,8 @@ class Baker:
             sub = q + np.asarray(off) * h
             fr, ib = self.specimen.restored_fields(sub)
             gain += self.gain(sub, fr, ib, h / SUB)
-        idx = start + np.flatnonzero(touched)
+        at = np.flatnonzero(touched)
+        idx = start + at if isinstance(start, int) else start[at]
         self.out[:, idx] = (gain / len(offsets)).T.astype(np.float32)
 
 

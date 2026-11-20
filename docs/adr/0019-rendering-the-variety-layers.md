@@ -679,6 +679,82 @@ stones none; white fine needles alone take the finer grid, within the budget
          5.0 -> 10.6 s) and 6.2 s on 0/2 (6.0 -> 12.2 s); boxes with phi 0.8-12 s, traced
          peak 0.21-0.27 GB, phi grid 4-20 MB. The step 3 probe stone's 25 s was a larger
          box (4/4, 5.5 M nodes), not timed with phi.
+   - *Step 4, the camera: built* (2026-11-20; `cuda/voidbox.cuh`, `camera.cu` under
+     `NODULE_VOID`, `nodule.render.voidgpu`; tests/test_render_void.py, 9 GPU checks, and
+     a deep-fill check in tests/test_voidbox.py). As planned above, with these choices:
+     - *A separate compile.* The void path is the camera kernel compiled with
+       `NODULE_VOID` (agatesim's `CRYSTAL_TIME_CUDA` prepended, never copied), so stones
+       without a hollow run the plain kernel and its register use (ADR 0016 s.15). With no
+       air (kind 0) the void kernel gives the plain kernel's image (checked).
+     - *One wall test for stones and checks.* `air_at` holds the box rule (8 corners gated
+       or chalcedony near phi, the earliest corner crystal past the last reach, phi > 0;
+       off the box: solid) and two analytic shapes (a flat air layer, an air sphere) that
+       run the same march, bisection and Fresnel code. The path carries its medium. A free
+       flight in the stone, and the hop to the face or bottom, is tested at steps of at most
+       half an id cell (0.1 mm, `effective`) and bisected (18 halvings); the path is placed
+       on the bracket point of the side it ends on. In air it is tested at the same steps;
+       the face's plane is tested before the wall (an open mouth leaves to the dome). The
+       normal comes from the value that changes sign across the bracket (the crystal level,
+       or phi); where neither does, the gate alone decided and the level's normal is a
+       guess, counted (`Rendered.guessed`).
+     - *Below the slab.* The box now holds its shell (nodes within 3 mm of the coarse
+       hollow). The look's bottom at 5 mm does not apply within the shell; a stone path
+       there below the slab that leaves the shell is lost (black), as proposed above
+       (*assumption*). The view's growth grid continues down to the deepest shell node
+       under its window (the owner's option (b)), filled only at nodes within one id node
+       of the shell (`GrowthGrid.fill(deep_mm, keep)`); the rest stay NaN and are never
+       read. The slab's nodes are those of the plain fill (checked).
+     - *Stand-in.* Void nodes of the crystal hollow (in the shell, agatesim's crystal level
+       positive; slivers included) take no stand-in absorption; tubes and hollow crystals
+       elsewhere keep it.
+     - *Scope.* The dome without face glare only (the look), black or matte bottom, no
+       slipping fractures; the backlit slice and close-ups keep the stand-in
+       (`Rendering.hollow`, default "stand-in").
+     - *Checks* (each with its control): the wall's turn against Snell and the mirror
+       (control: the indices swapped); a buried flat air layer under a pure absorber against
+       the incoherent Fresnel stack (control: no layer returns nothing), and the layer open
+       at the face giving F0; white furnaces (no absorption, white matte bottom) with a
+       buried layer (1 - F0 of the dome at every pixel), an open layer (all of it) and an
+       air sphere open at the face (both, by pixel; exact to 1e-4); control: the wall's n^2
+       left out breaks the sphere's furnace (an air layer alone hides it: its n^2 cancels
+       on the way in and out); the GPU's air rule against `VoidBox.air` on a lined stone
+       (random and near-wall points: no disagreement more than 1e-4 mm from a surface;
+       off the box never air; control: a box without its gate).
+     - *A fault found on the probe stone, and its fix.* The first render met the wall 184
+       times a path and ran 36x the stand-in's time. With the stone's index set to 1
+       (nothing can reflect) only 75 % of meetings passed: one path had met the same wall
+       200 000 times (the event cap). Where the box's level jumps (a cell's corner crystals
+       change, step 1's candidate jumps) the wall is a cell face, the found crystal's normal
+       can lie almost along it, and the path reflected into itself. Now a normal that does
+       not face along the crossing (|cos| < 0.02, `VOID_FACING`, `effective`) is replaced by
+       the path's own direction (met head-on) and counted as guessed: 0.18-0.26 % of meetings
+       on the probe stone's box under a homogeneous material (runs/hollow-air/
+       crossings_diag.py). Meetings a path then 0.8 (clear) to 1.9 (milky), every one passing
+       at n = 1, the image means unchanged (the circling paths carried nothing), times 20-70x
+       lower. Test: tests/test_render_void.py, the stone's box at n = 1 (all pass) and 1.54
+       (meetings and events a path bounded); it fails with the fix taken out.
+     - *Cost measured* (probe stone 4/4, a 12 mm window on the hollow's edge, 0.1 mm grid;
+       runs/hollow-air/air_render.py and logs): void box 51-55 s (with phi; step 3's 25 s
+       was gate-only); the deep grid to 17.5 mm with ~2 M shell nodes below the slab: one
+       fill 233 s, 0.90 GB traced (a first window centred on the hollow, slab only:
+       209 s for 2.6 M nodes). The fill's
+       time is agatesim's own evaluation (the vesicle solid's seam distance and the crystals'
+       assign, ~50 us a node on this stone), not the deep part's bookkeeping; the old
+       "~2 s per million points" (tgrid) holds for the n2 stones only. Render, 512 samples,
+       224 x 224 px, after the fix: air 8.0 s against the stand-in's 17.9 s (its 10 mm^-1
+       raises the majorant for every path); 1.04 meetings a path, 0.30 % guessed.
+     - *Looks for the owner* (runs/hollow-air/air-render/air-compare.png; 12 mm windows,
+       stand-in left, air right; appearance only, ADR 0002). 0/1 (thin lining, needles):
+       the black hole becomes a sparkling crystal-lined cavity (fill 40 s, render 10.8 s,
+       2.1 meetings a path, 0.20 % guessed). 4/4: crystal tips show in the hollow; the quartz
+       band at its edge is darker than under the stand-in (its light now passes into the
+       hollow; the black beyond the shell may add to it: the matte alternative is open).
+       3/9: the hollow barely reaches the cut (110 open pixels); its dark slit becomes a
+       faint pale sliver. 8/4's hollow does not reach its cut. Exposure is matched on the
+       face without the hollow, so it shifts a little (0/1: 4.97 -> 3.76).
+     - *Not done yet:* a whole face (the look at 600 px; the fill grows with the deep part:
+       4/4's window doubled), the owner's verdict, the matte question, and wiring into
+       `varietyrender` (the box per stone, the look only).
 
 ## Consequences
 

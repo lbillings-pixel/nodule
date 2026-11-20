@@ -141,7 +141,20 @@ __device__ void nee(const Scene& S, const Cam& C, const Shift& H, const unsigned
     }
 }
 
+// The hollow as air (NODULE_VOID, a separate compile: voidbox.cuh; ADR 0019 s.6.12 step 4).
+// Dome only (no shadow rays cross the wall). The path carries its medium. A free flight in the
+// stone is tested for air at steps of at most vstep, then bisected; at the wall it reflects or
+// refracts by Fresnel (n to 1, normal from the level or phi), weight x n^2 into the air. In air
+// it runs straight, tested at the same steps, to the next wall (/ n^2 back into the stone) or up
+// through the face's plane at the open mouth (adds w Ld: no face there). A camera ray over an
+// open pixel starts in air at weight 1. Below the slab (depth D) the bottom does not apply
+// within the void box's shell; a path leaving the shell below D is lost (ADR 0019 s.6.12,
+// *assumption*). stats[2], [3], [4]: wall meetings, those the gate alone decided, and those
+// that passed through the wall (the rest reflected).
 extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* Hp,
+#ifdef NODULE_VOID
+                                  const Void* Vp,
+#endif
                                   const unsigned short* prof, const float* mua, const float* mus,
                                   const float* ph, float* img, unsigned long long* stats) {
     const Scene& S = *Sp; const Cam& C = *Cp; const Shift& H = *Hp;
@@ -172,11 +185,96 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
     bool mis = disc && C.order == 0 && !(C.flags & (128 | 256 | 512));
     float lastpp = 0.f; int ntop = 0, nbot = 0;                 // since the last real collision
     int events = 0, real = 0;
+#ifdef NODULE_VOID
+    const Void& V = *Vp;
+    const float INF = __int_as_float(0x7f800000);
+    const float wn2 = (V.flags & VFLAG_NO_WALL_N2) ? 1.f : n * n;
+    unsigned long long crossings = 0, guessed = 0, turned = 0;
+    bool inair = false;
+    {
+        float v[2], e = 1e-4f;
+        if (air_at(V, S, x + dx * e, y + dy * e, z + dz * e, v)) {   // an open pixel: no face
+            inair = true; w0 = 1.f; w[0] = w[1] = w[2] = 1.f;
+        }
+    }
+#endif
     for (;;) {
         float depth = -((x - S.o[0]) * S.n[0] + (y - S.o[1]) * S.n[1] + (z - S.o[2]) * S.n[2]);
         float un = -(dx * S.n[0] + dy * S.n[1] + dz * S.n[2]);   // d(depth)/ds
         float db = un < 0.f ? depth / -un : (un > 0.f ? (C.D - depth) / un : __int_as_float(0x7f800000));
+#ifdef NODULE_VOID
+        if (inair) {                                            // straight to the next wall
+            float dface = un < 0.f ? depth / -un : INF, st = vstep(V), s0 = 0.f, s1 = 0.f, v[2];
+            int hit = 0;                                        // 1 a wall, 2 the open face
+            for (int it = 0; it < 100000 && !hit; ++it) {
+                s1 = s0 + st;
+                if (s1 >= dface) {                              // the face's plane first: test
+                    s1 = fmaxf(s0, dface - 1e-4f);              // just under it, then leave
+                    if (air_at(V, S, x + dx * s1, y + dy * s1, z + dz * s1, v)) { hit = 2; break; }
+                }
+                if (!air_at(V, S, x + dx * s1, y + dy * s1, z + dz * s1, v)) hit = 1;
+                else s0 = s1;
+            }
+            if (hit == 2) {                                     // up out of the mouth: the dome
+                if (C.light == 1 && !((C.flags & 32) && real == 0))
+                    for (int c = 0; c < 3; ++c) acc[c] += w[c] * C.Ld;
+                break;
+            }
+            if (hit == 0) break;
+            float sa = s0, ss = s1, vs[2] = {v[0], v[1]}, m[3];
+            bisect(V, S, x, y, z, dx, dy, dz, sa, ss, vs);
+            float xa = x + dx * sa, ya = y + dy * sa, za = z + dz * sa;
+            float xs = x + dx * ss, ys = y + dy * ss, zs = z + dz * ss;
+            ++crossings; if (!wall_normal(V, S, xa, ya, za, vs, m)) ++guessed;
+            if (!(dx * m[0] + dy * m[1] + dz * m[2] < -VOID_FACING)) {      // see VOID_FACING
+                m[0] = -dx; m[1] = -dy; m[2] = -dz; ++guessed;
+            }
+            float d[3] = {dx, dy, dz};
+            if (fresnel_turn(d, m, 1.f, n, r.next())) {         // into the stone
+                ++turned; x = xs; y = ys; z = zs; inair = false;
+                for (int c = 0; c < 3; ++c) w[c] /= wn2;
+            } else { x = xa; y = ya; z = za; }
+            dx = d[0]; dy = d[1]; dz = d[2];
+            ntop = nbot = 0;
+            if (++events > 200000) break;
+            continue;
+        }
+        // within the shell, no bottom below the slab (the material continues under the hollow)
+        if (un > 0.f && V.kind == 1 &&
+            (depth >= C.D || in_shell(V, x + dx * db, y + dy * db, z + dz * db))) db = INF;
+#endif
         float s = -logf(r.next()) / C.mubar;
+#ifdef NODULE_VOID
+        if (V.kind != 0) {                                      // does the flight meet air?
+            float seg = fminf(s, db), st = vstep(V), s0 = 0.f, s1 = 0.f, v[2];
+            bool hit = false;
+            while (s0 < seg && !hit) {
+                s1 = fminf(s0 + st, seg);
+                if (air_at(V, S, x + dx * s1, y + dy * s1, z + dz * s1, v)) hit = true;
+                else s0 = s1;
+            }
+            if (hit) {
+                float sa = s1, ss = s0, vs[2], m[3];
+                air_at(V, S, x + dx * ss, y + dy * ss, z + dz * ss, vs);
+                bisect(V, S, x, y, z, dx, dy, dz, sa, ss, vs);
+                float xa = x + dx * sa, ya = y + dy * sa, za = z + dz * sa;
+                float xs = x + dx * ss, ys = y + dy * ss, zs = z + dz * ss;
+                ++crossings; if (!wall_normal(V, S, xa, ya, za, vs, m)) ++guessed;
+                if (!(dx * m[0] + dy * m[1] + dz * m[2] > VOID_FACING)) {   // see VOID_FACING
+                    m[0] = dx; m[1] = dy; m[2] = dz; ++guessed;
+                }
+                float d[3] = {dx, dy, dz}, nn[3] = {-m[0], -m[1], -m[2]};   // facing the stone
+                if (fresnel_turn(d, nn, n, 1.f, r.next())) {    // out into the air
+                    ++turned; x = xa; y = ya; z = za; inair = true;
+                    for (int c = 0; c < 3; ++c) w[c] *= wn2;
+                } else { x = xs; y = ys; z = zs; }
+                dx = d[0]; dy = d[1]; dz = d[2];
+                ntop = nbot = 0;
+                if (++events > 200000) break;
+                continue;
+            }
+        }
+#endif
         if (s >= db) {
             x += dx * db; y += dy * db; z += dz * db;
             if (un > 0.f && (C.flags & 2048)) {                 // black or matte bottom
@@ -221,6 +319,9 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
             break;
         }
         x += dx * s; y += dy * s; z += dz * s; ++events;
+#ifdef NODULE_VOID
+        if (V.kind == 1 && vdepth(S, x, y, z) > C.D && !in_shell(V, x, y, z)) break;  // lost
+#endif
         Mat M = matid(S, C, H, prof, mua, x, y, z);
         int m = M.m;
         if (spectral_step(w, M.a, mus, m, C.mubar, r)) {
@@ -247,4 +348,8 @@ extern "C" __global__ void render(const Scene* Sp, const Cam* Cp, const Shift* H
     }
     for (int c = 0; c < 3; ++c) atomicAdd(img + 3 * px + c, acc[c] / C.spp);
     atomicAdd(stats, (unsigned long long)events); atomicAdd(stats + 1, (unsigned long long)real);
+#ifdef NODULE_VOID
+    if (crossings) { atomicAdd(stats + 2, crossings); atomicAdd(stats + 3, guessed);
+                     atomicAdd(stats + 4, turned); }
+#endif
 }

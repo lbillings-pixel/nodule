@@ -23,17 +23,19 @@ s.6.12 probe). Without phi (agatesim returns None) the box is the gate-only box.
 from __future__ import annotations
 
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Any
 
 import numpy as np
 from agatesim.fields import Phase
 from agatesim.volume.growth import CrystalWall
 from agatesim.volume.simulate import VolumeSimulation
+from agatesim.volume.slicing import Plane
 from numpy.typing import NDArray
 
 from nodule._scipy import distance_inside
 from nodule.render.record import void_points
+from nodule.render.tgrid import Window, to_plane
 
 ID_MM = 0.2  # effective: id spacing; the wall's shape comes from the closed form (s.6.12)
 COARSE_MM = 0.4  # effective: the pass that finds the hollow
@@ -94,6 +96,9 @@ class VoidBox:
     # The chalcedony's last surface (None: agatesim gives no phi; the gate alone decides).
     phi: NDArray[np.float32] | None = None  # at world nodes (2 a + index) * h / 2
     chal: BoolArray | None = None  # chalcedony at nodes with |phi| < PHI_BAND_MM (id grid)
+    # Nodes within the shell (shell_mm of the coarse hollow, the hollow included): below the
+    # slab the camera reads material here and loses light leaving it (s.6.12 step 4)
+    shell: BoolArray | None = None
 
     @property
     def shape(self) -> tuple[int, int, int]:
@@ -105,6 +110,17 @@ class VoidBox:
         base = np.floor(points / self.h).astype(np.int64) - self.a
         ok = np.all((base >= 0) & (base < np.array(self.shape) - 1), axis=1)
         return np.where(ok[:, None], base, 0), ok
+
+    def in_shell(self, points: NDArray[np.floating]) -> BoolArray:
+        """Points whose nearest id node lies in the shell (the GPU's rule); False off the box."""
+        if self.shell is None:
+            raise ValueError("this box holds no shell")
+        i = np.rint(points / self.h).astype(np.int64) - self.a
+        ok = np.all((i >= 0) & (i < np.array(self.shape)), axis=1)
+        out = np.zeros(len(points), bool)
+        j = i[ok]
+        out[ok] = self.shell[j[:, 0], j[:, 1], j[:, 2]]
+        return out
 
     def chalcedony_level(self, points: F64) -> F64:
         """phi read trilinearly from its grid (NaN outside the box). Requires phi."""
@@ -145,6 +161,48 @@ class VoidBox:
         if self.phi is not None and out.any():
             out[out] = self.chalcedony_level(points[out]) > 0
         return out
+
+
+def dilated_shell(box: VoidBox) -> VoidBox:
+    """The box with its shell grown by one id node (6 neighbours): a view grid's nodes
+    within a cell of the shell, which the camera's trilinear reads there may touch."""
+    if box.shell is None:
+        raise ValueError("this box holds no shell")
+    s = box.shell.copy()
+    for ax in range(3):
+        for sh in (1, -1):
+            r = np.roll(box.shell, sh, axis=ax)
+            edge = [slice(None)] * 3
+            edge[ax] = slice(0, 1) if sh > 0 else slice(-1, None)
+            r[tuple(edge)] = False
+            s |= r
+    return replace(box, shell=s)
+
+
+def under_slab(
+    box: VoidBox, plane: Plane, window: Window, spacing_mm: float
+) -> tuple[float, Callable[[NDArray[np.floating]], BoolArray]]:
+    """How deep a view's grid must reach below its face to hold the shell under its window
+    (the owner's option (b), s.6.12 step 3: the view's own grid continued down), and the
+    keep test for the nodes below its slab: the shell grown by one node."""
+    grown = dilated_shell(box)
+    assert grown.shell is not None
+    nodes = (np.argwhere(grown.shell) + box.a) * box.h
+    s, t, w = to_plane(plane, nodes.astype(np.float64))
+    (s0, s1), (t0, t1) = window
+    under = (s >= s0) & (s <= s1) & (t >= t0) & (t <= t1)
+    deep = float(w[under].max()) + spacing_mm if under.any() else 0.0
+    return deep, grown.in_shell
+
+
+def hollow_nodes(box: VoidBox, points: NDArray[np.floating]) -> BoolArray:
+    """Points of the crystal hollow (agatesim's crystal level positive) within the shell:
+    drawn as air, or as their lining where the box's wall is a hair off (slivers), so the
+    void's stand-in absorption is left off there (s.6.12 step 4)."""
+    out = box.in_shell(points)
+    if out.any():
+        out[out] = box.wall.level(points[out]) > 0
+    return out
 
 
 def trilinear(grid: NDArray[np.floating], a: I64, h: float, points: F64) -> F64:
@@ -271,6 +329,7 @@ def build_void_box(
     d_in = distance_inside(hol3).ravel() * h
     band = np.flatnonzero((d_out <= shell_mm) & ((d_out > 0) | (d_in <= INNER_MM)))
     gate = hol & (d_in > INNER_MM)  # deep in the hollow: open, or a crystal's tip
+    shell = d_out <= shell_mm
     del d_out, d_in
 
     phi, near = None, np.zeros(0, np.int64)
@@ -301,4 +360,5 @@ def build_void_box(
         wall=wall,
         phi=phi,
         chal=None if phi is None else chal.reshape(shape),
+        shell=shell.reshape(shape),
     )

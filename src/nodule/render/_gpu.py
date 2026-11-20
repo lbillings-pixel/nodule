@@ -13,11 +13,23 @@ from functools import cache
 from importlib import resources
 from typing import Any
 
+AGATESIM = "agatesim:CRYSTAL_TIME_CUDA"  # agatesim ADR 0090's string, prepended (never copied)
 SOURCES = {
     "slab": ("common.cuh", "slab.cu"),
     "scene": ("common.cuh", "scene.cuh"),
     "shift": ("common.cuh", "scene.cuh", "shift.cuh"),
     "camera": ("common.cuh", "scene.cuh", "shift.cuh", "camera.cu"),
+    # the hollow drawn as air (ADR 0019 s.6.12 step 4): the camera compiled with its void path,
+    # so stones without a hollow keep the plain kernel and its register use
+    "camera_void": (
+        "#define NODULE_VOID",
+        "common.cuh",
+        "scene.cuh",
+        "shift.cuh",
+        AGATESIM,
+        "voidbox.cuh",
+        "camera.cu",
+    ),
 }
 # fast-math is safe in the camera kernel (checked against analytic values in
 # tests/test_render_gpu.py); the shift module is the camera's shift code alone, compiled
@@ -32,6 +44,7 @@ FAST = ("--use_fast_math",)
 CAMERA_REGISTERS = 128
 OPTIONS: dict[str, tuple[str, ...]] = {
     "camera": (*FAST, f"--maxrregcount={CAMERA_REGISTERS}"),
+    "camera_void": (*FAST, f"--maxrregcount={CAMERA_REGISTERS}"),
     "shift": FAST,
 }
 
@@ -56,7 +69,17 @@ def cupy() -> Any:
 
 def source(name: str) -> str:
     folder = resources.files("nodule.render") / "cuda"
-    return "\n".join((folder / f).read_text(encoding="utf-8") for f in SOURCES[name])
+
+    def part(f: str) -> str:
+        if f == AGATESIM:
+            from agatesim.volume.crystal_gpu import CRYSTAL_TIME_CUDA
+
+            return CRYSTAL_TIME_CUDA
+        if f.startswith("#"):
+            return f
+        return (folder / f).read_text(encoding="utf-8")
+
+    return "\n".join(part(f) for f in SOURCES[name])
 
 
 @cache

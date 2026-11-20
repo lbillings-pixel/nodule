@@ -32,6 +32,7 @@ from nodule.render.tgrid import GrowthGrid
 
 if TYPE_CHECKING:
     from nodule.render.shift import DeviceShift
+    from nodule.render.voidgpu import DeviceVoid
 
 N_CHALCEDONY = 1.54  # physical: bulk chalcedony 1.53-1.539 [@lorenzi2022; @white1961]
 F32 = NDArray[np.float32]
@@ -281,6 +282,11 @@ class Rendered:
     paths: int
     events: float  # tentative collisions per path
     real: float  # real collisions per path
+    # with a void (the hollow as air): wall crossings per path, and the share of them whose
+    # normal is a guess (the gate alone decided, voidbox.cuh wall_normal)
+    crossings: float = 0.0
+    guessed: float = 0.0
+    passed: float = 0.0  # share of wall meetings that passed through (the rest reflected)
 
 
 CAM_DTYPE = np.dtype(
@@ -309,6 +315,7 @@ def render(
     shift: DeviceShift | None = None,
     glare: bool = True,
     bottom_albedo: tuple[float, float, float] = (0.0, 0.0, 0.0),
+    void: DeviceVoid | None = None,
 ) -> Rendered:
     """Linear radiance per pixel, including the face's specular F(0) L of a dome, or
     of a disc that contains the normal; glare=False leaves that reflection out, as a
@@ -319,7 +326,17 @@ def render(
     vary along the bands (shift.upload, for these materials); None renders each growth
     step's own material. bottom_albedo (with BLACK_BOTTOM, dome only): a nonzero value
     makes the black bottom matte, an index-matched Lambertian reflector of that albedo
-    per channel (the look's grey bottom, ADR 0019; `effective`)."""
+    per channel (the look's grey bottom, ADR 0019; `effective`). void: where the stone is
+    air (`voidgpu`; ADR 0019 s.6.12 step 4), rendered by the camera's void variant: the dome
+    only, without the face glare (the open mouth has no face); a stone's box also needs the
+    black or matte bottom and no slipping fractures."""
+    if void is not None:
+        if light.kind != "dome" or glare:
+            raise ValueError("the hollow as air renders under the dome without the face glare")
+        if void.kind == 1 and not flags & Flag.BLACK_BOTTOM:
+            raise ValueError("a void box needs the black or matte bottom")
+        if void.kind == 1 and scene.fractures:
+            raise ValueError("a void box takes no slipping fractures")
     if shift is not None and shift.materials is not materials:
         raise ValueError("the shift was uploaded for another material table")
     if (
@@ -361,15 +378,15 @@ def render(
         c[key] = v
     cam = cp.asarray(np.frombuffer(c.tobytes(), np.uint8))
     img = cp.zeros((view.ny, view.nx, 3), cp.float32)
-    stats = cp.zeros(2, cp.uint64)
-    k = _gpu.kernel("camera", "render")
+    stats = cp.zeros(5, cp.uint64)
+    k = _gpu.kernel("camera" if void is None else "camera_void", "render")
     _gpu.synchronize()
     t0 = time.perf_counter()
     from nodule.render.shift import off
 
     hs = (off() if shift is None else shift).struct
-    k(((paths + block - 1) // block,), (block,),
-      (scene.struct, cam, hs, prof, mua, mus, ph, img, stats))  # fmt: skip
+    head = (scene.struct, cam, hs) if void is None else (scene.struct, cam, hs, void.struct)
+    k(((paths + block - 1) // block,), (block,), (*head, prof, mua, mus, ph, img, stats))
     _gpu.synchronize()
     sec = time.perf_counter() - t0
     out = img.get().astype(np.float64)
@@ -382,7 +399,9 @@ def render(
         out += f0 * light.disc_radiance
     st = stats.get()
     return Rendered(image=out, seconds=sec, paths=paths, events=float(st[0]) / paths,
-                    real=float(st[1]) / paths)  # fmt: skip
+                    real=float(st[1]) / paths, crossings=float(st[2]) / paths,
+                    guessed=float(st[3]) / max(float(st[2]), 1.0),
+                    passed=float(st[4]) / max(float(st[2]), 1.0))  # fmt: skip
 
 
 def reflectance_factor(image: F64, light: Light) -> F64:

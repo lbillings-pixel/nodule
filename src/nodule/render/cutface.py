@@ -58,6 +58,7 @@ import numpy as np
 from agatesim.specimen.quality import luminance
 from numpy.typing import NDArray
 
+from nodule.render import voidgpu
 from nodule.render.camera import (
     N_CHALCEDONY,
     Flag,
@@ -73,7 +74,8 @@ from nodule.render.record import BandRecord, void_points
 from nodule.render.scene import pack, upload, with_void
 from nodule.render.shift import ShiftArrays, bake_drift, variation_of
 from nodule.render.shift import upload as shift_upload
-from nodule.render.tgrid import GrowthGrid, Window
+from nodule.render.tgrid import GrowthGrid, Window, to_world
+from nodule.render.voidbox import VoidBox, hollow_nodes, under_slab
 from nodule.specimen import Specimen, SpecimenCut
 
 GRID_MM = 0.2  # ADR 0007 7c
@@ -132,8 +134,17 @@ class Rendering:
     rolloff_knee: float | None = None
     # the open cavity's stand-in absorption (module docstring, ADR 0019 A1), mm^-1
     void_mua: float = VOID_MUA
+    # a crystal-lined hollow: the stand-in, or drawn as air when the renderer is given the
+    # stone's void box (ADR 0019 s.6.12 step 4; the dome without glare, black or matte bottom)
+    hollow: Literal["stand-in", "air"] = "stand-in"
 
     def __post_init__(self) -> None:
+        if self.hollow not in ("stand-in", "air"):
+            raise ValueError(f"hollow must be 'stand-in' or 'air', not {self.hollow!r}")
+        if self.hollow == "air" and (
+            self.light.kind != "dome" or self.glare or self.bottom not in ("black", "matte")
+        ):
+            raise ValueError("the hollow as air: dome, no glare, black or matte bottom")
         if self.match_lightness and self.light.kind != "dome":
             raise ValueError("lightness is matched to the dome's photo-compare rendering")
         if self.bottom not in ("air", "black", "matte"):
@@ -261,9 +272,11 @@ class CutRenderer:
         rendering: Rendering,
         rng: np.random.Generator,
         fill_depth_mm: float | None = None,
+        box: VoidBox | None = None,
     ) -> None:
         """fill_depth_mm: fill the grid this deep (default the rendering's slab), so
-        renderings with deeper slabs can share it (`on`)."""
+        renderings with deeper slabs can share it (`on`). box: the stone's void box, for a
+        rendering with hollow="air" (the grid then continues down under the hollow)."""
         r = self.rendering = rendering
         t0 = time.perf_counter()
         depth = r.depth_mm if fill_depth_mm is None else fill_depth_mm
@@ -272,13 +285,28 @@ class CutRenderer:
         # the grid covers the view, padded by the slab's depth for light that wanders
         # sideways (a close-up's grid then covers its window, not the whole stone)
         # with the layers' place-to-place part baked as absorption in the same pass (ADR 0019)
+        window = window_of(cut, depth)
+        self._box = box if r.hollow == "air" else None
+        deep, keep = None, None
+        if self._box is not None:  # the view's grid continued down under the hollow
+            deep, keep = under_slab(self._box, cut.plane, window, r.grid_mm)
         grid = GrowthGrid.fill(
-            specimen, cut.plane, r.grid_mm, depth, window_of(cut, depth), r.optics
+            specimen, cut.plane, r.grid_mm, depth, window, r.optics, deep_mm=deep, keep=keep
         )
         self._fill_depth = depth
         self._grid = grid
-        packed = self._packed = pack(specimen, grid, absorb=grid.absorb, void_mua=r.void_mua)
+        # the hollow's own void nodes take no stand-in when it is drawn as air
+        self._air = None
+        if self._box is not None and grid.void is not None:
+            k, j, i = np.nonzero(grid.void)
+            p = to_world(cut.plane, grid.s[i], grid.t[j], grid.w[k])
+            self._air = np.zeros_like(grid.void)
+            self._air[k, j, i] = hollow_nodes(self._box, p)
+        packed = self._packed = pack(
+            specimen, grid, absorb=grid.absorb, void_mua=r.void_mua, air=self._air
+        )
         self._dev = upload(packed)
+        self._void = None if self._box is None else voidgpu.upload(voidgpu.pack_box(self._box))
         # materials that vary along the bands (ADR 0016), when the stone has them and the
         # record marks steps that take them (a fake's record carries them with its runs)
         variation = variation_of(specimen) if r.record.shifts.any() else None
@@ -300,6 +328,7 @@ class CutRenderer:
         self.rgb: NDArray[np.uint8] = np.zeros((self._view.ny, self._view.nx, 3), np.uint8)
         self.noise = math.inf  # of `rgb`, grey levels per pixel, before any blur
         self.exposure = r.exposure  # as used for `rgb` (the look sets it per render)
+        self.crossings = self.guessed = 0.0  # the hollow's wall, last batch (camera.Rendered)
 
     def on(self, rendering: Rendering) -> CutRenderer:
         """A renderer for another rendering on this one's filled grid (no new fill):
@@ -320,11 +349,19 @@ class CutRenderer:
         other.rgb = np.zeros_like(self.rgb)
         other.noise = math.inf
         other.exposure = rendering.exposure
-        if rendering.void_mua != r.void_mua and self._grid.void is not None:
+        if rendering.hollow == "air" and self._void is None:
+            raise ValueError("the hollow as air needs a renderer made with the void box")
+        air_here = self._void is not None and r.hollow == "air"
+        air_there = self._void is not None and rendering.hollow == "air"
+        if not air_there:
+            other._void = None  # e.g. the backlit slice keeps the stand-in
+        if (rendering.void_mua != r.void_mua or air_here != air_there) and (
+            self._grid.void is not None
+        ):
             # another stand-in for the void: only the absorption grid changes, but the
             # scene is uploaded whole (one more copy of the grid on the GPU)
             g = self._grid
-            a = with_void(g.absorb, g, rendering.void_mua)
+            a = with_void(g.absorb, g, rendering.void_mua, self._air if air_there else None)
             amax = 0.0 if a is None else max(float(a.max()), 0.0)
             other._dev = upload(replace(self._packed, absorb=a, absorb_max=amax))
         return other
@@ -340,8 +377,10 @@ class CutRenderer:
             seed = int(self._rng.integers(1, 2**32 - 1))  # the kernel's seed is uint32
             out = render(self._dev, self._view, self._mats, r.light, spp=add, seed=seed,
                          depth_mm=r.depth_mm, flags=r.flags, shift=self._shift,
-                         glare=r.glare, bottom_albedo=r.bottom_albedo)  # fmt: skip
+                         glare=r.glare, bottom_albedo=r.bottom_albedo,
+                         void=self._void)  # fmt: skip
             self._sums[k] += out.image * add
+            self.crossings, self.guessed = out.crossings, out.guessed
         self.spp += 2 * add
         half = self.spp / 2
         mean = (self._sums[0] + self._sums[1]) / self.spp

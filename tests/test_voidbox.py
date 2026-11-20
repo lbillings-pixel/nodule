@@ -16,6 +16,7 @@ from nodule.render.voidbox import (
     _upsample,  # pyright: ignore[reportPrivateUsage]
     build_void_box,
     trilinear,
+    under_slab,
 )
 from nodule.variety import StoneRecipe, build
 
@@ -93,6 +94,10 @@ def test_box_nodes_do_not_depend_on_its_bounds(lined: tuple[VolumeSimulation, Vo
     assert big.chal is not None
     assert box.chal is not None
     assert np.array_equal(big.chal[sl], box.chal)
+    assert big.shell is not None
+    assert box.shell is not None
+    assert np.array_equal(big.shell[sl], box.shell)
+    assert box.shell[box.gate].all()  # the gate lies within the shell
     fl = tuple(slice(2 * int(o[i]), 2 * int(o[i]) + box.phi.shape[i]) for i in range(3))
     assert np.array_equal(big.phi[fl], box.phi)
     # Control: nodes anchored at another corner (half a cell off the world lattice) differ.
@@ -178,6 +183,40 @@ def test_trilinear_is_exact_on_linear_fields() -> None:
     near = grid[tuple((np.rint(p / h).astype(int) - a).T)]
     assert not np.allclose(near, want, atol=1e-3)
     assert np.isnan(trilinear(grid, a, h, np.array([[0.0, 0.0, 0.0]]))).all()
+
+
+def test_deep_grid_continues_the_slab_under_the_hollow(
+    lined: tuple[VolumeSimulation, VoidBox],
+) -> None:
+    """Option (b), s.6.12 step 4: the view's grid continued down: the slab's nodes as the
+    plain fill gives them, the shell's below it from the same lattice, NaN elsewhere."""
+    from nodule.render.tgrid import GrowthGrid, to_world
+    from nodule.specimen import Specimen
+
+    vol, box = lined
+    spec = Specimen(volume=vol, fractures=())
+    plane = spec.plane(recipe().cut)
+    window = ((-4.0, 4.0), (-4.0, 4.0))
+    deep, keep = under_slab(box, plane, window, 0.4)
+    assert deep > 6.0  # the hollow reaches well below a 1 mm slab
+    plain = GrowthGrid.fill(spec, plane, 0.4, 1.0, window)
+    grid = GrowthGrid.fill(spec, plane, 0.4, 1.0, window, deep_mm=deep, keep=keep)
+    n = len(plain.w)
+    assert np.array_equal(grid.values[:n], plain.values[:n], equal_nan=True)
+    assert grid.full_depth_mm == 1.0
+    k, j, i = np.meshgrid(np.arange(n, len(grid.w)), np.arange(len(grid.t)),
+                          np.arange(len(grid.s)), indexing="ij")  # fmt: skip
+    p = to_world(plane, grid.s[i.ravel()], grid.t[j.ravel()], grid.w[k.ravel()])
+    kept = keep(p)
+    below = grid.values[n:].ravel()
+    inside = spec.volume.solid.contains(p)
+    assert kept.sum() > 1000
+    assert np.isnan(below[~kept]).all()
+    assert grid.void is not None
+    solid = inside & ~grid.void[n:].ravel()  # open nodes hold NaN until `filled`
+    assert not np.isnan(below[kept & solid]).any()
+    # control: the kept nodes are the shell's (grown by a node), not every node below
+    assert kept.mean() < 0.9
 
 
 def test_no_hollow_or_no_crystal_wall_gives_no_box() -> None:

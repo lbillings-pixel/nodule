@@ -25,6 +25,7 @@ Cost (n2-slice, 0.2 mm, 10 mm deep): 4.6 M points, 18 MB float32, fill
 from __future__ import annotations
 
 import math
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
@@ -119,6 +120,9 @@ class GrowthGrid:
     absorb: F32 | None = None
     # Nodes in an open cavity or hollow crystal (ADR 0019 A1); None: the grid has none
     void: NDArray[np.bool_] | None = None
+    # Every node is filled down to this depth (slip pad aside); below it only the nodes a
+    # `keep` test chose (under a hollow drawn as air, ADR 0019 s.6.12 step 4), the rest NaN
+    full_depth_mm: float = math.inf
 
     @property
     def spacing_mm(self) -> float:
@@ -133,15 +137,26 @@ class GrowthGrid:
         depth_mm: float,
         window: Window | None = None,
         optics: OpticsTable | None = None,
+        deep_mm: float | None = None,
+        keep: Callable[[FloatArray], NDArray[np.bool_]] | None = None,
     ) -> GrowthGrid:
         """Evaluate agatesim at every node (CPU; ~2 s per million points), keeping
-        what fills each growth step (`bands`) for the materials table."""
-        s, t, w = grid_axes(specimen, plane, spacing_mm, depth_mm, window)
+        what fills each growth step (`bands`) for the materials table. With `deep_mm`
+        (> depth_mm) the grid reaches that deep, but below depth_mm's nodes only where
+        `keep` (world points) is True; the rest stay NaN (`full_depth_mm`)."""
+        deep = deep_mm is not None and deep_mm > depth_mm
+        if deep and keep is None:
+            raise ValueError("a deeper grid needs the keep test for its lower nodes")
+        reach = deep_mm if deep_mm is not None and deep else depth_mm
+        s, t, w = grid_axes(specimen, plane, spacing_mm, reach, window)
         shape = (len(w), len(t), len(s))
         n = math.prod(shape)
-        out = np.empty(n, np.float32)
+        # nodes [0, full) are the grid depth_mm alone would have (same axes, w a prefix)
+        full = n if not deep else len(grid_axes(specimen, plane, spacing_mm, depth_mm, window)[2])
+        full = full if not deep else full * len(t) * len(s)
+        out = np.full(n, np.nan, np.float32)
         solid = specimen.volume.solid
-        level = None if isinstance(solid, SphereUnion) else np.empty(n, np.float32)
+        level = None if isinstance(solid, SphereUnion) else np.full(n, np.nan, np.float32)
         bake = None
         if optics is not None and specimen.layers is not None:
             from nodule.render.layerbake import Baker  # imports this module
@@ -151,19 +166,25 @@ class GrowthGrid:
         void = np.zeros(n, bool)
         for a in range(0, n, CHUNK_POINTS):
             progress.report(a / n, "filling the growth-time grid")
-            k, j, i = np.unravel_index(np.arange(a, min(a + CHUNK_POINTS, n)), shape)
+            idx = np.arange(a, min(a + CHUNK_POINTS, n))
+            k, j, i = np.unravel_index(idx, shape)
             p = to_world(plane, s[i], t[j], w[k])
+            if a + len(idx) > full and keep is not None:  # below the full part: kept nodes only
+                chosen = (idx < full) | keep(p)
+                idx, p = idx[chosen], p[chosen]
+                if not len(idx):
+                    continue
             raw, inside = specimen.restored_fields(p)  # any warp
             f = specimen.per_step(raw)  # one material per step: no halos; layers' per-step part
             if f.t_smooth is None:
                 raise ValueError("the model gives no smooth growth time (agatesim ADR 0076 s. 6)")
-            out[a : a + len(p)] = f.t_smooth
+            out[idx] = f.t_smooth
             if level is not None:
-                level[a : a + len(p)] = solid.level(p)
+                level[idx] = solid.level(p)
             bands = bands.merge(BandRecord.of(f, inside))
-            void[a : a + len(p)] = void_points(f, inside)
+            void[idx] = void_points(f, inside)
             if bake is not None:
-                bake.chunk(a, p, raw, f, inside)
+                bake.chunk(idx, p, raw, f, inside)
         progress.report(1.0, "filling the growth-time grid")
         lv = None if level is None else level.reshape(shape)
         absorb = None if bake is None else bake.out.reshape(3, *shape)
@@ -177,6 +198,7 @@ class GrowthGrid:
             level=lv,
             absorb=absorb,
             void=void.reshape(shape) if void.any() else None,
+            full_depth_mm=depth_mm if deep else math.inf,
         )
 
     def filled(self, passes: int = 3, linear: bool = True) -> F32:

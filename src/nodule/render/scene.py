@@ -61,9 +61,11 @@ def pack(
     filled: F32 | None = None,
     absorb: F32 | None = None,
     void_mua: float = 0.0,
+    air: NDArray[np.bool_] | None = None,
 ) -> SceneArrays:
     """void_mua: the absorption (mm^-1, every channel) added at the grid's void nodes,
-    the open cavity's stand-in material (ADR 0019 A1); 0 leaves the void as its lining."""
+    the open cavity's stand-in material (ADR 0019 A1); 0 leaves the void as its lining.
+    air: void nodes left without it (`with_void`)."""
     solid = specimen.volume.solid
     exact = isinstance(solid, SphereUnion)
     if not exact and grid.level is None:
@@ -89,30 +91,42 @@ def pack(
     tubes = np.asarray(specimen.volume.setting.tubes, np.float32).reshape(-1, 7)
     fractures = np.asarray(rows, np.float32).reshape(-1, 17)
     h["nsph"], h["ntube"], h["nfrac"] = len(spheres), len(tubes), len(fractures)
-    absorb = with_void(absorb, grid, void_mua)
+    absorb = with_void(absorb, grid, void_mua, air)
     return SceneArrays(
         header=h,
         spheres=spheres,
         tubes=tubes,
         fractures=fractures,
         grid=grid.filled() if filled is None else filled,
-        covers_mm=float(grid.w[-1]) - (specimen.max_slip_mm + grid.spacing_mm),
+        covers_mm=min(
+            float(grid.w[-1]) - (specimen.max_slip_mm + grid.spacing_mm), grid.full_depth_mm
+        ),
         level=None if exact else grid.level,
         absorb=absorb,
         absorb_max=0.0 if absorb is None else max(float(absorb.max()), 0.0),
     )
 
 
-def with_void(absorb: F32 | None, grid: GrowthGrid, void_mua: float) -> F32 | None:
+def with_void(
+    absorb: F32 | None,
+    grid: GrowthGrid,
+    void_mua: float,
+    air: NDArray[np.bool_] | None = None,
+) -> F32 | None:
     """The layers' absorption (3, nw, nt, ns) with void_mua added at the void nodes
-    (a new array; trilinear on the GPU, so the cavity's wall is placed within a cell)."""
+    (a new array; trilinear on the GPU, so the cavity's wall is placed within a cell).
+    air: nodes the camera draws as air or as their lining (the crystal hollow and its
+    slivers, ADR 0019 s.6.12 step 4), which take no stand-in."""
     if void_mua < 0.0:
         raise ValueError("void_mua must be >= 0")
     if grid.void is None or void_mua == 0.0:
         return absorb
+    dark = grid.void if air is None else grid.void & ~air
+    if not dark.any():
+        return absorb
     shape = (3, *grid.void.shape)
     out = np.zeros(shape, np.float32) if absorb is None else absorb.astype(np.float32, copy=True)
-    out[:, grid.void] += np.float32(void_mua)
+    out[:, dark] += np.float32(void_mua)
     return out
 
 
@@ -135,6 +149,7 @@ class DeviceScene:
     arrays: dict[str, Any]
     covers_mm: float = math.inf  # SceneArrays.covers_mm
     absorb_max: float = 0.0  # SceneArrays.absorb_max, for the majorant
+    fractures: int = 0  # how many slipping fractures the scene holds
 
 
 def upload(scene: SceneArrays) -> DeviceScene:
@@ -155,5 +170,9 @@ def upload(scene: SceneArrays) -> DeviceScene:
         h[field] = arrays[key].data.ptr if key in arrays else 0
     struct = cp.asarray(np.frombuffer(h.tobytes(), np.uint8))
     return DeviceScene(
-        struct=struct, arrays=arrays, covers_mm=scene.covers_mm, absorb_max=scene.absorb_max
+        struct=struct,
+        arrays=arrays,
+        covers_mm=scene.covers_mm,
+        absorb_max=scene.absorb_max,
+        fractures=len(scene.fractures),
     )

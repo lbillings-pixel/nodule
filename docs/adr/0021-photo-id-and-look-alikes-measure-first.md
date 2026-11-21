@@ -75,9 +75,12 @@ screen on 2026-10-24 and 2026-10-29). Only photos labelled as showing forms coun
   Over all 261 photos labelled with forms, fortification is on 220 (84 %).
 - **Minimum.** A verdict needs at least 10 specimens (groups) that show the form or
   feature. Fewer reads "too few to judge".
-- **Verdicts.** "Works now": held-out precision at least 0.8 and recall at least 0.5, both
-  above the base rate. "Partly": precision at least 0.8 with lower recall. Otherwise "no".
-  These thresholds are an assumption, and the owner may change them.
+- **Verdicts.** "Works now": held-out precision at least 0.8 and above the base rate, and
+  recall at least 0.5. "Partly": the same precision with lower recall. Otherwise "no".
+  Answering "yes" to every photo scores a precision equal to the base rate, so precision
+  must beat it; recall needs no such baseline. These thresholds are an assumption, and the
+  owner may change them. (This wording was corrected before any run: the first draft also
+  asked recall to beat the base rate, which tests nothing.)
 - **1b.** With 10 stones it gives counts, not verdicts.
 - **Negative control.** 1a and 1c rerun with the label sets shuffled among specimen groups
   (seed 1). Precision must fall to about the base rate. If a shuffled run "works", the

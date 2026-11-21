@@ -3856,3 +3856,35 @@ checked = "sections"
 sections_read = ["Querry-o.yml: whole file (downloaded 2026-11-20)", "Querry-e.yml: whole file (downloaded 2026-11-20)"]
 topics = ["hematite", "refractive-index", "optical-properties", "database"]
 notes = """Read 2026-11-20 (item 19 C), first twice through the fetch summariser (a helper and Claude, values agreeing), then as the exact files, downloaded with the owner's leave: all 86 summariser values at 380-800 nm matched. Every line at 0.30-1.00 µm is stored unchanged in references/hematite-querry1985.toml (held in reserve, ADR 0019 s.14); the NPSG hematite file credited to Sokolik and Toon 1999 equals (2 o + e)/3 of these within 4 % (helper note), an independent transcription check. Hematite k, o / e ray: 0.498 / 0.460 (550 nm), 0.149 / 0.186 (600), 0.089 / 0.134 (620), 0.057 / 0.103 (650), 0.031 / 0.075 (700), falling to a minimum near 780-800 nm (o 0.019). No dip between 560 and 650 nm. The database is public domain (CC0, repository page); the only metadata on the data is the ray. The values are Querry 1985's (querry1985), not refereed."""
+
+[[references]]
+id = "harvey2012"
+kind = "article"
+authors = ["Harvey, J. E.", "Schröder, S.", "Choi, N.", "Duparré, A."]
+year = 2012
+title = "Total integrated scatter from surfaces with arbitrary roughness, correlation widths, and incident angles"
+venue = "Optical Engineering 51(1), 013402"
+doi = "10.1117/1.OE.51.1.013402"
+url = "https://api.creol.ucf.edu/Publications/5412.pdf"
+access = "open"
+licence = "publisher copyright (SPIE); author-institution copy; cite only"
+checked = "sections"
+sections_read = ["1", "2 (to Eq. 9; Eqs 12-15 in keyword windows)", "3", "4", "5", "Table 1"]
+topics = ["surface-scatter", "roughness", "total-integrated-scatter", "correlation-length", "specular", "gloss", "optical-properties"]
+notes = """Read 2026-11-20 by a helper agent for item 20 (ADR 0020; local report notes/n1-reading/item20-optics.md) in a copy the fetch tool auto-saved, with pymupdf; the quotes used in ADR 0020 re-checked by Claude in that copy. After Bennett and Porteus and Davies, 'the fraction of the total reflected radiant power remaining in the specular beam after reflection from a single moderately rough surface' is Rs/Rt = exp[-(4π cos θi σ/λ)²] (Sec. 1, Eq. 1); only spatial frequencies below 1/λ count at normal incidence (Sec. 2); for Gaussian correlation σrel²/σtotal² = 1 - exp[-(πl/λ)²]; for l ≪ λ, TIS = (64/3)π⁴σ²l²/λ⁴; Table 1: σ/λ 0.5 with l/λ 0.03 gives TIS 0.29. 'even moderately rough surfaces become specular at grazing incidence' (Sec. 3). 'We have not proven ... that Eq. (5) is accurate for roughnesses and incident angles that result in arbitrarily high TIS values' (Sec. 5). Written for mirrors; theory, so plausible at most."""
+
+[[references]]
+id = "simonsen2009"
+kind = "article"
+authors = ["Simonsen, I.", "Larsen, Å.", "Andreassen, E.", "Ommundsen, E.", "Nord-Varhaug, K."]
+year = 2009
+title = "Haze of surface random systems: An approximate analytic approach"
+venue = "Physical Review A 79, 063813"
+doi = "10.1103/PhysRevA.79.063813"
+url = "https://arxiv.org/abs/0904.3753"
+access = "open"
+licence = "publisher copyright (APS) for the journal version; arXiv preprint; cite only"
+checked = "sections"
+sections_read = ["IV.C (Eqs 27-29)", "V", "VI", "arXiv pp. 9, 11-13; keyword windows pp. 1-8, 10"]
+topics = ["haze", "gloss", "surface-scatter", "roughness", "correlation-length", "transmission", "index-matching", "optical-properties"]
+notes = """Read 2026-11-20 by a helper agent for item 20 (ADR 0020; local report notes/n1-reading/item20-optics.md) as arXiv:0904.3753v1, a copy the fetch tool auto-saved, with pymupdf; the quotes used in ADR 0020 re-checked by Claude in that copy (arXiv PDF pages). Haze = share of light sent more than 2.5° from the specular direction. 'the amount of integrated reflected or transmitted light is much less sensitive to the presence of surface roughness' (p. 8, keyword window). Phase-perturbation exponents (Eqs 29a-b, p. 9): reflection 16π²ε0(σ/λ)²cos²θ0, transmission 4π²ε0(σ/λ)²(√(ε1/ε0 - sin²θ0) - cos θ0)² (theory, plausible). Measured (Sec. V.B, p. 12): blown polyethylene film (n about 1.5, σ 0.04 µm, correlation length 1.3 µm), transmission haze 18.9 % at normal incidence; glycerol (n 1.47) on both faces cut it to 5 %, films at 12-30 % to 3-6 %. Polymer film: a transfer for stone."""

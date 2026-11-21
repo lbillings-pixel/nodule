@@ -218,7 +218,14 @@ before any statistics.
   wavelengths per channel would not give the owner's carnelian look; measured red k
   disagrees about sixfold and the pick (k 0.05) sits at its low end, near Querry 1985.
   Owner: keep the pick, close C; Querry's spectrum held in reserve. Next: item 20.
-- [ ] 20. Saw marks and polish level (last, by the owner's earlier order).
+- [x] 20. Saw marks and polish level (last, by the owner's earlier order).
+  2026-11-21: read (two helper passes) and CLOSED by the owner without a build (ADR 0020):
+  the cut face stays polished. A dry sawn face's veil is the face reflection the look drops
+  (the washed-out look), saw marks were never measured, "glints" meant the crystal sparkle
+  (built), and the 31 faces re-tagged sawn were photographed wet or oiled. The feature
+  items end here. Next (owner's pick, 2026-11-21): the follow-on projects, bands as
+  signals first; at its start, ask the owner whether ADR 0018 s.5's stopping trial or the
+  roadmap's realism score (N3) comes first.
 
 ## Follow-on projects (when the feature work pauses)
 

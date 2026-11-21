@@ -105,11 +105,14 @@ the photo-like path at a photo's resolution, and band counts are scored as count
 than the limit (ADR 0006 section 10). It is designed after part 1, once agatesim's recorded
 results (the ADR 0011 fit, the rim finder) are collected.
 
-### Part 3. The owner's new photos (a fresh test)
+### Part 3. A private photo set (a fresh test, then training)
 
-The photos go in a subfolder of agatesim's `specimens/`, outside the app's training. They
-are scored as they come and again after any build, and never tuned on. The owner chooses
-whether Claude views them.
+The owner supplies these photos privately (2026-11-21). They never enter a repository, a
+commit or a distribution, and the records give only aggregate figures, never names or
+descriptions. Claude may view them, and what they teach may be used. Nothing has seen
+them yet, so they are scored first as a fresh test of today's tools. Then they are split
+by stone: part becomes training material, and the rest stays a sealed test that nothing
+is tuned on.
 
 ### Part 1 results (2026-11-21)
 

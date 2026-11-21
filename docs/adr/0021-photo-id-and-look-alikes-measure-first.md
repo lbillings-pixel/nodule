@@ -109,10 +109,11 @@ results (the ADR 0011 fit, the rim finder) are collected.
 
 The owner supplies these photos privately (2026-11-21). They never enter a repository, a
 commit or a distribution, and the records give only aggregate figures, never names or
-descriptions. Claude may view them, and what they teach may be used. Nothing has seen
-them yet, so they are scored first as a fresh test of today's tools. Then they are split
-by stone: part becomes training material, and the rest stays a sealed test that nothing
-is tuned on.
+descriptions. Claude may view them. What they teach may shape what is published (the
+owner's deliberate intention, 2026-11-21), though the photos themselves never are.
+Nothing has seen them yet, so they are scored first as a fresh test of today's tools.
+Then they are split by stone: part becomes training material, and the rest stays a
+sealed test that nothing is tuned on.
 
 ### Part 1 results (2026-11-21)
 

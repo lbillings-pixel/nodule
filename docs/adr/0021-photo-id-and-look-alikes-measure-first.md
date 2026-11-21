@@ -32,11 +32,13 @@ What exists (read in the code, 2026-11-21):
   features (ADR 0018) and a renderer (ADR 0019).
 - Nothing sets Nodule's 3D recipe from a photo. Most of its features (cracks, rind,
   crystals, dendrites, plumes in Nodule's sense) have no detector.
-- agatesim's replication stage (M35: procedural look-alikes, with mechanistic fits as
-  fidelity tests) moved to Nodule (agatesim ADR 0072) and was never started there. How
-  well the 2D fit's replicas match was never recorded. agatesim's rim finder drew outlines
-  that followed the rim on 75 of 88 held-out photos (85 %, below its 90 % bar), so an
-  outline is measured only after a helper's yes (agatesim ADR 0075).
+- agatesim's roadmap marks its replication stage (M35: procedural look-alikes, with
+  mechanistic fits as fidelity tests) "moved" to Nodule (agatesim ADR 0072). It was never
+  started in agatesim, and Nodule has no module for it (its module list, 2026-11-21). A
+  survey of agatesim's ADRs found no record of how well the 2D fit's replicas match.
+  agatesim's rim finder drew outlines that followed the rim on 75 of 88 held-out photos
+  (85 %, below its 90 % bar), so an outline is measured only after a helper's yes
+  (agatesim ADR 0075).
 
 Limits that hold whatever is built:
 
@@ -124,9 +126,12 @@ fortification off 30 of the 41 photos without it, the shuffled run off only 3 of
 counts below stand, *verified* as counts for these photos.
 
 Next comes a dated post-hoc amendment. It replaces only the base-rate clause, with a null
-from many group-level shuffles, counted in specimens because photos of one stone move
-together. The 0.8 and 0.5 floors and the 10-specimen minimum stay. The amendment is
-committed before the rerun.
+from many shuffles that move whole specimens, since photos of one stone move together. A
+shuffle changes each form's photo count (eye went from 27 to 38 photos in the seed-1
+run), so each form's margin over its own base rate is compared with the margins the
+shuffles reach. The amendment also settles how forms marked unsure are scored (below).
+The 0.8 and 0.5 floors and the 10-specimen minimum stay. The amendment is committed before
+the rerun.
 
 **1a, forms (230 photos, 178 specimens).** The top answer is among the labels for 0.909
 of photos, against 0.822 for always naming fortification. This is not comparable with
@@ -169,6 +174,13 @@ answer, always right, says nothing. The secondary forms:
 
 In the shuffled run, open cavity scored 17 of 38 against a base rate of 0.25. One seed
 cannot show the null's spread; the amendment's many shuffles will.
+
+**Forms marked unsure.** The scoring reads only each photo's forms and features, so one
+the owner marked unsure counts as absent, as agatesim's classifier reads it (agatesim ADR
+0071). Of the 230 photos, 11 carry unsure entries: tube 3, inclusions 3, plume 2, moss 2,
+quartz core 2, host rock 2, open cavity 1. Up to 3 of the 7 wrong tube reports may
+therefore fall on photos marked "unsure: tube", and the other counts may shift by up to
+their unsure entries.
 
 **The key's history, corrected.** The saved classifier's training counts match the
 labels as of agatesim 67b0246 (2026-10-24: tube 26, moss 55, plume 9). Today's tuning

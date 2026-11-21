@@ -227,6 +227,15 @@ before any statistics.
   signals first; at its start, ask the owner whether ADR 0018 s.5's stopping trial or the
   roadmap's realism score (N3) comes first.
 
+## New direction (owner, 2026-11-21): a stand-alone app
+
+Asked that question, the owner set a new direction instead. Nodule is to become a
+stand-alone package that others can run: photo upload, identification and a look-alike 3D
+stone; then polish, packaging and presentation. Bands as signals, the stopping trial and
+the realism score are deferred, not dropped. Step 1: measure today's tools before
+building ([ADR 0021](adr/0021-photo-id-and-look-alikes-measure-first.md)). Then an options
+record on platforms (open), where the app lives and signing.
+
 ## Follow-on projects (when the feature work pauses)
 
 In this order (ideas doc, section 4):

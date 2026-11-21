@@ -19,6 +19,8 @@
 - Grep first, then read only the lines needed; cap command output.
 - Batch independent tool calls; use helper agents for bulky reading
   (papers, many-file surveys) so only their summary enters the session.
+- Consult the advisor before a plan locks, after the same error twice, and
+  before a task is marked done.
 
 ## Relation to agatesim
 - agatesim (sibling folder `..\agatesim`, github.com/lbillings-pixel/agatesim)

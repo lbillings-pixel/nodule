@@ -228,6 +228,47 @@ statistic below are assumptions the owner may change.
   GB. The rerun writes a new record, `runs/photo-id-measure/part1-amended.json`; the
   original `part1.json` stays as it was.
 
+### Part 1 results under the amendment (2026-11-21)
+
+The run took 825 s (the estimate of about 12 minutes was 15 % low), with a peak of 0.22
+GB; the record is `runs/photo-id-measure/part1-amended.json` (local). k is 14, so a pass
+needs p at most 0.0036. Every shuffle kept each name's photo and specimen counts (checked
+in the run).
+
+**The new rule holds.** None of the 21 control runs passed anything, under either reading
+of unsure labels (the break line was 4). The verdicts below therefore stand, *verified* for
+these photos under these conditions, appearance only (ADR 0002). Both readings of unsure
+gave the same verdict for every name.
+
+| Name | Specimens | Right / reported | Found / labelled | p | Verdict |
+|---|---|---|---|---|---|
+| fortification | 154 | 186 / 197 | 186 / 189 | 0.002 | works now |
+| fortification-waterline | 21 | 14 / 14 | 14 / 26 | 0.002 | works now |
+| waterline | 25 | 16 / 19 | 16 / 32 | 0.002 | works now |
+| botryoidal | 14 | 8 / 9 | 8 / 16 | 0.002 | works now |
+| rough (feature) | 18 | 17 / 21 | 17 / 25 | 0.002 | works now |
+| moss | 38 | 31 / 40 | 31 / 53 | 0.002 | no (precision 0.78) |
+| polished (feature) | 21 | 12 / 17 | 12 / 21 | 0.002 | no (precision 0.71) |
+| quartz core (feature) | 72 | 49 / 85 | 49 / 85 | 0.002 | no (precision 0.58) |
+| host rock (feature) | 18 | 10 / 18 | 10 / 25 | 0.002 | no (precision 0.56) |
+| open cavity (feature) | 45 | 24 / 47 | 24 / 51 | 0.002 | no (precision 0.51) |
+| quartz-geode | 38 | 23 / 45 | 23 / 56 | 0.002 | no (precision 0.51) |
+| eye | 23 | 9 / 18 | 9 / 27 | 0.002 | no (precision 0.50) |
+| inclusions (feature) | 15 | 4 / 12 | 4 / 21 | 0.012 | no |
+| tube | 18 | 1 / 8 | 1 / 21 | 0.36 | no |
+
+Counts are with unsure read as absent; read as present, they shift by the unsure entries
+and no verdict changes. Iris, plume, shadow, stick, seam and iridescence have too few
+specimens to judge.
+
+What this says, without new verdicts: the tools hold real signal for 12 of the 14 names
+(p 0.002, no shuffle reached them), but seven of those 12 miss the 0.8 precision floor.
+Inclusions clear chance only with unsure read as present (p 0.012 absent, 0.002 present;
+its precision fails either way), and tube is not above chance in either reading (p 0.36
+and 0.16). Waterline (16 of 32) and botryoidal (8 of 16) sit exactly on the 0.5
+recall line, so one photo would turn either to "partly". Fortification "works" partly
+because it is on 4 photos in 5; the shuffles allow for that, which the old rule did not.
+
 **The key's history, corrected.** The saved classifier's training counts match the
 labels as of agatesim 67b0246 (2026-10-24: tube 26, moss 55, plume 9). Today's tuning
 labels have tube 21, moss 53 and plume 5, because the labels were edited on 2026-10-25

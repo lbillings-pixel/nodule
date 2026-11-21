@@ -1,7 +1,8 @@
 # 21. Photo ID and look-alike stones: measure today's tools first
 
 - Status: proposed. The owner chose "measure first" (2026-11-21); the rules of part 1 are
-  fixed here before anything runs.
+  fixed here before anything runs. Part 1's verdict rule was amended post hoc on
+  2026-11-21, before the rerun; the amendment and its results are at the end of Decision.
 - Date: 2026-11-21
 - Builds on: [ADR 0003](0003-scope-a-3d-specimen-simulator.md) (goals),
   [ADR 0002](0002-founding-nodule.md) (graded claims),
@@ -91,7 +92,8 @@ screen on 2026-10-24 and 2026-10-29). Only photos labelled as showing forms coun
 - **1b.** With 10 stones it gives counts, not verdicts.
 - **Negative control.** 1a and 1c rerun with the label sets shuffled among specimen groups
   (seed 1). Precision must fall to about the base rate. If a shuffled run "works", the
-  scoring is broken and no verdict stands.
+  scoring is broken and no verdict stands. (This control failed; the amendment below
+  replaces it and the base-rate clause.)
 - **Grade.** *Verified* as counts, for these photos under these conditions. Appearance
   only (ADR 0002).
 - **No writes into agatesim.** The saved classifier and the embeddings cache are copied
@@ -121,7 +123,8 @@ The run took 6.4 s on the processor, with a peak of 0.28 GB. agatesim was left u
 its status is clean, and both model files are unchanged since 2026-10-24 16:13. The
 record is `runs/photo-id-measure/part1.json` (local).
 
-**The negative control failed, so no verdict of part 1 stands.** With the label sets
+**The negative control failed, so no verdict of part 1 stands** under the first rules.
+(The verdicts that stand come from the amended rerun, below.) With the label sets
 shuffled, fortification still "worked": precision 188/218 (0.862) against a base rate of
 197/230 (0.857). The verdict rule failed, not the scoring. Fortification is on more than 4
 photos in 5, so the 0.8 floor is no bar, and "above the base rate" was passed by less than
@@ -187,6 +190,12 @@ quartz core 2, host rock 2, open cavity 1. Up to 3 of the 7 wrong tube reports m
 therefore fall on photos marked "unsure: tube", and the other counts may shift by up to
 their unsure entries.
 
+**The key's history, corrected.** The saved classifier's training counts match the
+labels as of agatesim 67b0246 (2026-10-24: tube 26, moss 55, plume 9). Today's tuning
+labels have tube 21, moss 53 and plume 5, because the labels were edited on 2026-10-25
+(agatesim 443af3f, ADR 0071). The key is therefore the owner's labels of 10-24 and 10-29
+as edited on 10-25, and the saved classifier saw the earlier version.
+
 ### Amendment to the part 1 rules (2026-11-21, post hoc)
 
 Written after the failed control above and before any new shuffle was run. It replaces
@@ -209,9 +218,9 @@ statistic below are assumptions the owner may change.
   least the real run's) / (N + 1); ties count against. Alpha is 0.05 for the whole family,
   split evenly (Bonferroni) over the forms and features in 1a and 1c that reach 10
   specimens on the real labels with unsure read as absent. With k of them, a pass needs
-  p at most 0.05 / k. With N = 499 the smallest p is 0.002, enough for k up to 25. "Works now" then needs: 10 specimens, p at most 0.05 / k,
-  precision at least 0.8 and recall at least 0.5. "Partly": the same without the recall
-  floor. Otherwise "no".
+  p at most 0.05 / k. With N = 499 the smallest p is 0.002, enough for k up to 25.
+  "Works now" then needs: 10 specimens, p at most 0.05 / k, precision at least 0.8 and
+  recall at least 0.5. "Partly": the same without the recall floor. Otherwise "no".
 - **Forms marked unsure.** agatesim's cross-validation returns only totals, so a report on
   an unsure photo cannot be dropped from the score without changing agatesim or copying
   its fold loop here. Instead everything (real run, null and control) is run twice: once
@@ -235,45 +244,51 @@ GB; the record is `runs/photo-id-measure/part1-amended.json` (local). k is 14, s
 needs p at most 0.0036. Every shuffle kept each name's photo and specimen counts (checked
 in the run).
 
-**The new rule holds.** None of the 21 control runs passed anything, under either reading
-of unsure labels (the break line was 4). The verdicts below therefore stand, *verified* for
-these photos under these conditions, appearance only (ADR 0002). Both readings of unsure
-gave the same verdict for every name.
+**No scrambled key passed.** None of the 21 control runs passed anything, under either
+reading of unsure labels; the line set in advance was 4. (The record keeps neither the
+control runs' p values nor the null itself, so it cannot show whether the shuffle test or
+the 0.8 floor stopped each one.) The verdicts below therefore stand, *verified* for these
+photos under these conditions, appearance only (ADR 0002). 1a is cross-validated on folds
+that ADR 0067 chose its settings on, so it stays somewhat optimistic. Both readings of
+unsure gave the same verdict for every name. Counts are with unsure read as absent; read
+as present, they shift by the unsure entries.
 
-| Name | Specimens | Right / reported | Found / labelled | p | Verdict |
+**1a, forms (today's tool).**
+
+| Form | Specimens | Right / reported | Found / labelled | p | Verdict |
 |---|---|---|---|---|---|
 | fortification | 154 | 186 / 197 | 186 / 189 | 0.002 | works now |
 | fortification-waterline | 21 | 14 / 14 | 14 / 26 | 0.002 | works now |
 | waterline | 25 | 16 / 19 | 16 / 32 | 0.002 | works now |
 | botryoidal | 14 | 8 / 9 | 8 / 16 | 0.002 | works now |
-| rough (feature) | 18 | 17 / 21 | 17 / 25 | 0.002 | works now |
 | moss | 38 | 31 / 40 | 31 / 53 | 0.002 | no (precision 0.78) |
-| polished (feature) | 21 | 12 / 17 | 12 / 21 | 0.002 | no (precision 0.71) |
-| quartz core (feature) | 72 | 49 / 85 | 49 / 85 | 0.002 | no (precision 0.58) |
-| host rock (feature) | 18 | 10 / 18 | 10 / 25 | 0.002 | no (precision 0.56) |
-| open cavity (feature) | 45 | 24 / 47 | 24 / 51 | 0.002 | no (precision 0.51) |
 | quartz-geode | 38 | 23 / 45 | 23 / 56 | 0.002 | no (precision 0.51) |
 | eye | 23 | 9 / 18 | 9 / 27 | 0.002 | no (precision 0.50) |
-| inclusions (feature) | 15 | 4 / 12 | 4 / 21 | 0.012 | no |
 | tube | 18 | 1 / 8 | 1 / 21 | 0.36 | no |
 
-Counts are with unsure read as absent; read as present, they shift by the unsure entries
-and no verdict changes. Iris, plume, shadow, stick, seam and iridescence have too few
-specimens to judge.
+Iris, plume, shadow, stick and seam have too few specimens to judge.
 
-What this says, without new verdicts: the tools hold real signal for 12 of the 14 names
-(p 0.002, no shuffle reached them), but seven of those 12 miss the 0.8 precision floor.
-Inclusions clear chance only with unsure read as present (p 0.012 absent, 0.002 present;
-its precision fails either way), and tube is not above chance in either reading (p 0.36
-and 0.16). Waterline (16 of 32) and botryoidal (8 of 16) sit exactly on the 0.5
+**1c, the feature probe (reported apart; not one of today's tools).**
+
+| Feature | Specimens | Right / reported | Found / labelled | p | Verdict |
+|---|---|---|---|---|---|
+| rough | 18 | 17 / 21 | 17 / 25 | 0.002 | works now |
+| polished | 21 | 12 / 17 | 12 / 21 | 0.002 | no (precision 0.71) |
+| quartz core | 72 | 49 / 85 | 49 / 85 | 0.002 | no (precision 0.58) |
+| host rock | 18 | 10 / 18 | 10 / 25 | 0.002 | no (precision 0.56) |
+| open cavity | 45 | 24 / 47 | 24 / 51 | 0.002 | no (precision 0.51) |
+| inclusions | 15 | 4 / 12 | 4 / 21 | 0.012 | no |
+
+Iridescence has too few specimens to judge.
+
+What this says, without new verdicts: 7 of the 8 forms and 5 of the 6 features beat every
+shuffle (p 0.002), but three of those forms and four of those features miss the 0.8
+precision floor. "No" for them means real signal below the floor, not no signal. Tube is
+not above chance in either reading (p 0.36 and 0.16). Inclusions clear the corrected line
+(0.0036) only with unsure read as present (p 0.012 absent, 0.002 present); its precision
+fails either way. Waterline (16 of 32) and botryoidal (8 of 16) sit exactly on the 0.5
 recall line, so one photo would turn either to "partly". Fortification "works" partly
 because it is on 4 photos in 5; the shuffles allow for that, which the old rule did not.
-
-**The key's history, corrected.** The saved classifier's training counts match the
-labels as of agatesim 67b0246 (2026-10-24: tube 26, moss 55, plume 9). Today's tuning
-labels have tube 21, moss 53 and plume 5, because the labels were edited on 2026-10-25
-(agatesim 443af3f, ADR 0071). The key is therefore the owner's labels of 10-24 and 10-29
-as edited on 10-25, and the saved classifier saw the earlier version.
 
 ## Consequences
 

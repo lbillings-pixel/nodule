@@ -135,7 +135,8 @@ shuffle changes each form's photo count (eye went from 27 to 38 photos in the se
 run), so each form's margin over its own base rate is compared with the margins the
 shuffles reach. The amendment also settles how forms marked unsure are scored (below).
 The 0.8 and 0.5 floors and the 10-specimen minimum stay. The amendment is committed before
-the rerun.
+the rerun. (The amendment as written, below, keeps each form's photo count fixed
+instead.)
 
 **1a, forms (230 photos, 178 specimens).** The top answer is among the labels for 0.909
 of photos, against 0.822 for always naming fortification. This is not comparable with
@@ -185,6 +186,47 @@ the owner marked unsure counts as absent, as agatesim's classifier reads it (aga
 quartz core 2, host rock 2, open cavity 1. Up to 3 of the 7 wrong tube reports may
 therefore fall on photos marked "unsure: tube", and the other counts may shift by up to
 their unsure entries.
+
+### Amendment to the part 1 rules (2026-11-21, post hoc)
+
+Written after the failed control above and before any new shuffle was run. It replaces
+only "and above the base rate" in **Verdicts**, and the single-seed **Negative control**.
+The 0.8 precision and 0.5 recall floors and the 10-specimen minimum stay. N, alpha and the
+statistic below are assumptions the owner may change.
+
+- **The null.** N = 499 shuffles (seeds 1 to 499). A shuffle moves each specimen's whole
+  list of photo labels, unsure marks included, onto another specimen with the same number
+  of photos, so every form keeps its photo count and its base rate. The real labelling is
+  then one of the possible shuffles, which makes the test exact for this family. Specimens
+  whose photo count is unique cannot move: today four of them (4, 6, 10 and 15 photos, 35
+  photos in all) keep their own labels in every shuffle. Each shuffle is cross-validated as
+  in 1a (forms) and 1c (features), with the same folds, seed and settings.
+- **The statistic: excess hits**, right minus reported times the base rate. It is the
+  number of right reports beyond what saying "yes" at random as often would score. It is
+  defined when a form is never reported (zero) and does not reward one lucky report the way
+  precision does (1 right of 1 is precision 1.0 but excess hits under 1).
+- **The pass rule.** For each form or feature, p = (1 + shuffles whose excess hits are at
+  least the real run's) / (N + 1); ties count against. Alpha is 0.05 for the whole family,
+  split evenly (Bonferroni) over the forms and features in 1a and 1c that reach 10
+  specimens on the real labels with unsure read as absent. With k of them, a pass needs
+  p at most 0.05 / k. With N = 499 the smallest p is 0.002, enough for k up to 25. "Works now" then needs: 10 specimens, p at most 0.05 / k,
+  precision at least 0.8 and recall at least 0.5. "Partly": the same without the recall
+  floor. Otherwise "no".
+- **Forms marked unsure.** agatesim's cross-validation returns only totals, so a report on
+  an unsure photo cannot be dropped from the score without changing agatesim or copying
+  its fold loop here. Instead everything (real run, null and control) is run twice: once
+  with unsure read as absent, as agatesim trains, and once with unsure read as present, in
+  training and scoring alike. A verdict stands only when both readings give it; where they
+  differ, the form reads "unsettled by unsure labels".
+- **Negative control for the new rule.** 20 further shuffles (seeds 10001 to 10020), and
+  the seed-1 shuffle that broke the old rule, are each scored as if they were the real
+  labels, against the same null. With the family alpha of 0.05, about 1 of these 21 runs
+  may pass something by chance. If 4 or more of the 21 runs pass any form or feature (under
+  2 % likely by chance alone), the rule is broken and no verdict stands.
+- **Cost.** One shuffle takes about 0.66 s (1a 0.47 s, 1c 0.19 s, measured on the real
+  labels), so both readings of the null and the control take about 12 minutes, under 0.3
+  GB. The rerun writes a new record, `runs/photo-id-measure/part1-amended.json`; the
+  original `part1.json` stays as it was.
 
 **The key's history, corrected.** The saved classifier's training counts match the
 labels as of agatesim 67b0246 (2026-10-24: tube 26, moss 55, plume 9). Today's tuning
